@@ -1,8 +1,4 @@
 <p align="center">
-  <img src="assets/marketing/vito-demo.gif" alt="Vito in action — speak and clean text is pasted at your cursor" width="480">
-</p>
-
-<p align="center">
   <img src="assets/marketing/banner.png" alt="Vito — Voice In, Text Out" width="100%">
 </p>
 
@@ -29,6 +25,10 @@
 
 **Vito** is short for **Voice In, Text Out**. It's a small background app that turns your voice into
 polished, ready-to-use text — anywhere you can type.
+
+<p align="center">
+  <img src="assets/marketing/vito-demo.gif" alt="Vito in action — speak and clean text is pasted at your cursor" width="480">
+</p>
 
 You press a hotkey, speak naturally, and Vito:
 
