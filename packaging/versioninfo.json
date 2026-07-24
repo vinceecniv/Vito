@@ -1,0 +1,24 @@
+{
+  "FixedFileInfo": {
+    "FileVersion":    { "Major": 2026, "Minor": 7, "Patch": 1, "Build": 0 },
+    "ProductVersion": { "Major": 2026, "Minor": 7, "Patch": 1, "Build": 0 },
+    "FileFlagsMask": "3f",
+    "FileFlags": "00",
+    "FileOS": "040004",
+    "FileType": "01",
+    "FileSubType": "00"
+  },
+  "StringFileInfo": {
+    "CompanyName": "Vincent Blok",
+    "ProductName": "Vito",
+    "FileDescription": "Vito — voice dictation (Voice In, Text Out)",
+    "InternalName": "vito",
+    "OriginalFilename": "vito.exe",
+    "LegalCopyright": "© Vincent Blok",
+    "FileVersion": "2026.7.1",
+    "ProductVersion": "2026.7.1"
+  },
+  "VarFileInfo": {
+    "Translation": { "LangID": "0409", "CharsetID": "04B0" }
+  }
+}

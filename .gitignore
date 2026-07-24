@@ -1,0 +1,26 @@
+# Build outputs
+/vito
+/dictate
+/dictate.exe
+/dist/
+*.exe
+
+# Local config / caches
+/config.json
+*.log
+/.claude/settings.local.json
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# generated work order for the translation subagents (see web/i18n/TRANSLATING.md)
+/scripts/missing-keys.json
+
+# Built installers
+/dist/Vito-Setup-*.exe
+/dist/Vito-Setup-*.sha256
+
+# AppImage build tree
+/build/
+eigenschappen.txt

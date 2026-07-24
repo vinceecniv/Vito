@@ -1,0 +1,7 @@
+# udev rule granting the "input" group access to uinput, needed by ydotoold.
+# Install:
+#   sudo cp packaging/99-uinput.rules /etc/udev/rules.d/
+#   sudo usermod -aG input $USER
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+# Then log out and back in for the group change to take effect.
+KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"

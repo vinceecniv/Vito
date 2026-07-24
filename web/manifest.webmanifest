@@ -1,0 +1,17 @@
+{
+  "name": "Vito — Voice In, Text Out",
+  "short_name": "Vito",
+  "description": "Dicteren: spraak naar schone tekst via AI-opschoning.",
+  "lang": "nl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#17141F",
+  "theme_color": "#FAF6EF",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AppStream metadata. Desktops read this to describe the app in software
+     centres and in the "about" panes of some launchers; appimagetool warns when
+     it is missing. -->
+<component type="desktop-application">
+  <id>io.github.vinceecniv.vito</id>
+  <name>Vito</name>
+  <summary>Voice In, Text Out — dictate anywhere with a hotkey</summary>
+  <summary xml:lang="nl">Voice In, Text Out — overal dicteren met een sneltoets</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-or-later</project_license>
+  <developer id="io.github.vinceecniv">
+    <name>Vincent Blok</name>
+  </developer>
+  <description>
+    <p>
+      Vito turns speech into finished text wherever your cursor is. Press your
+      hotkey, speak, and the transcript is cleaned up and pasted into whatever
+      you were working in — an editor, a chat, a form.
+    </p>
+    <p>
+      It uses your own API keys for speech recognition (AssemblyAI or Soniox)
+      and, optionally, for the AI cleanup pass. Your settings, dictionary and
+      history stay on your own machine.
+    </p>
+  </description>
+  <launchable type="desktop-id">vito.desktop</launchable>
+  <url type="homepage">https://github.com/vinceecniv/vito</url>
+  <url type="bugtracker">https://github.com/vinceecniv/vito/issues</url>
+  <categories>
+    <category>Utility</category>
+    <category>Accessibility</category>
+  </categories>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="2026.7" date="2026-07-22"/>
+  </releases>
+</component>

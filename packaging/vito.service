@@ -1,0 +1,20 @@
+# systemd user service for the vito daemon.
+# Install:
+#   mkdir -p ~/.config/systemd/user
+#   cp packaging/vito.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now vito.service
+# Logs: journalctl --user -u vito -f
+[Unit]
+Description=vito voice dictation daemon
+After=graphical-session.target pipewire.service
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=%h/.local/bin/vito serve
+Restart=on-failure
+RestartSec=2
+# Environment=VITO_DEBUG=1
+
+[Install]
+WantedBy=graphical-session.target

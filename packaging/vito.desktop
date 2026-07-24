@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Name=Vito
+GenericName=Voice dictation
+Comment=Voice In, Text Out — press a hotkey, speak, and your words are pasted as clean text
+Comment[nl]=Voice In, Text Out — druk een sneltoets, spreek, en je woorden worden als schone tekst geplakt
+Comment[de]=Voice In, Text Out — Tastenkürzel drücken, sprechen, und der saubere Text wird eingefügt
+Comment[fr]=Voice In, Text Out — appuyez sur un raccourci, parlez, et votre texte est collé au propre
+Comment[es]=Voice In, Text Out — pulsa un atajo, habla, y tu texto se pega ya limpio
+Exec=vito serve
+Icon=vito
+Terminal=false
+Categories=Utility;Accessibility;AudioVideo;
+Keywords=dictation;speech;transcription;voice;
+StartupNotify=false
+X-GNOME-UsesNotifications=true
