@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="assets/marketing/banner.svg" alt="Vito — Voice In, Text Out" width="100%">
+  <img src="assets/marketing/vito-demo.gif" alt="Vito in action — speak and clean text is pasted at your cursor" width="480">
+</p>
+
+<p align="center">
+  <img src="assets/marketing/banner.png" alt="Vito — Voice In, Text Out" width="100%">
 </p>
 
 <p align="center">
