@@ -195,7 +195,7 @@ Vito is **simple to use, but powerful under the hood.**
 - 🐧 **Linux-friendly** — detects missing utilities/libraries and explains how to bind hotkeys in each desktop environment.
 
 <p align="center">
-  <img src="assets/marketing/app-status.svg" alt="Vito status screen" width="88%">
+  <img src="assets/marketing/app-status.png" alt="Vito status screen" width="88%">
 </p>
 
 ---

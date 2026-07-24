@@ -1,65 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="Vito — Voice In, Text Out">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1B1626"/><stop offset="1" stop-color="#241633"/>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF6B5E"></stop><stop offset="1" stop-color="#7C3AED"></stop>
     </linearGradient>
-    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/>
-    </linearGradient>
-    <linearGradient id="txt" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#FF8A7E"/><stop offset="1" stop-color="#A78BFA"/>
-    </linearGradient>
-    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="26"/>
-    </filter>
+    <radialGradient id="glowC" cx="0.5" cy="1.15" r="0.9">
+      <stop offset="0" stop-color="#FF6B5E" stop-opacity="0.55"></stop>
+      <stop offset="0.45" stop-color="#7C3AED" stop-opacity="0.28"></stop>
+      <stop offset="1" stop-color="#7C3AED" stop-opacity="0"></stop>
+    </radialGradient>
+    <radialGradient id="glowV" cx="0.85" cy="-0.2" r="0.8">
+      <stop offset="0" stop-color="#7C3AED" stop-opacity="0.4"></stop>
+      <stop offset="1" stop-color="#7C3AED" stop-opacity="0"></stop>
+    </radialGradient>
+    <clipPath id="round"><rect width="1200" height="300" rx="20"></rect></clipPath>
   </defs>
-  <rect width="1200" height="360" fill="url(#bg)"/>
-  <circle cx="1010" cy="80" r="150" fill="#7C3AED" opacity="0.28" filter="url(#soft)"/>
-  <circle cx="1120" cy="300" r="130" fill="#FF6B5E" opacity="0.22" filter="url(#soft)"/>
-
-  <!-- logo tile -->
-  <g transform="translate(96 108)">
-    <rect width="120" height="120" rx="30" fill="url(#grad)"/>
-    <g fill="#fff" transform="translate(20 20) scale(0.58)">
-      <rect x="4"  y="22" width="14" height="24" rx="7"/>
-      <rect x="30" y="14" width="14" height="40" rx="7"/>
-      <rect x="56" y="4"  width="14" height="60" rx="7"/>
-      <rect x="82" y="14" width="14" height="40" rx="7"/>
-      <rect x="108" y="22" width="14" height="24" rx="7"/>
+  <g clip-path="url(#round)">
+    <rect width="1200" height="300" fill="#171221"></rect>
+    <rect width="1200" height="300" fill="url(#glowV)"></rect>
+    <rect width="1200" height="300" fill="url(#glowC)"></rect>
+    
+    <g fill="#FFFFFF" opacity="0.05">
+      <rect x="700" y="120" width="14" height="60" rx="7"></rect><rect x="728" y="95" width="14" height="110" rx="7"></rect>
+      <rect x="756" y="70" width="14" height="160" rx="7"></rect><rect x="784" y="40" width="14" height="220" rx="7"></rect>
+      <rect x="812" y="70" width="14" height="160" rx="7"></rect><rect x="840" y="95" width="14" height="110" rx="7"></rect>
+      <rect x="868" y="120" width="14" height="60" rx="7"></rect><rect x="896" y="105" width="14" height="90" rx="7"></rect>
+      <rect x="924" y="80" width="14" height="140" rx="7"></rect><rect x="952" y="55" width="14" height="190" rx="7"></rect>
+      <rect x="980" y="80" width="14" height="140" rx="7"></rect><rect x="1008" y="105" width="14" height="90" rx="7"></rect>
+      <rect x="1036" y="120" width="14" height="60" rx="7"></rect><rect x="1064" y="95" width="14" height="110" rx="7"></rect>
+      <rect x="1092" y="120" width="14" height="60" rx="7"></rect>
     </g>
-  </g>
-
-  <!-- wordmark -->
-  <text x="252" y="176" font-size="86" font-weight="800" fill="#F5F2FB" letter-spacing="-2">Vito</text>
-  <text x="256" y="230" font-size="27" font-weight="700" fill="url(#txt)" letter-spacing="1">Voice In · Text Out</text>
-  <text x="256" y="272" font-size="21" font-weight="500" fill="#B3AAC8">Speak anywhere. Get clean text at your cursor.</text>
-
-  <!-- pills -->
-  <g font-size="16" font-weight="600">
-    <g transform="translate(256 300)">
-      <rect width="200" height="34" rx="17" fill="#ffffff" opacity="0.08"/>
-      <text x="18" y="23" fill="#D9D2E8">Bring Your Own Key</text>
+    
+    <rect x="64" y="86" width="128" height="128" rx="32" fill="url(#brand)"></rect>
+    <rect x="64.75" y="86.75" width="126.5" height="126.5" rx="31.25" fill="none" stroke="#FFFFFF" stroke-opacity="0.22" stroke-width="1.5"></rect>
+    <g fill="#FFFFFF">
+      <rect x="86" y="133" width="9" height="20" rx="4.5"></rect>
+      <rect x="101" y="125" width="9" height="36" rx="4.5"></rect>
+      <rect x="116" y="115" width="9" height="56" rx="4.5"></rect>
+      <rect x="131" y="105" width="9" height="76" rx="4.5"></rect>
+      <rect x="146" y="115" width="9" height="56" rx="4.5"></rect>
+      <rect x="161" y="125" width="9" height="36" rx="4.5"></rect>
+      <rect x="176" y="133" width="9" height="20" rx="4.5"></rect>
     </g>
-    <g transform="translate(468 300)">
-      <rect width="150" height="34" rx="17" fill="#ffffff" opacity="0.08"/>
-      <text x="18" y="23" fill="#D9D2E8">60 languages</text>
+    
+    <g font-family="ui-rounded, &#39;Arial Rounded MT Bold&#39;, &#39;Segoe UI&#39;, Verdana, sans-serif">
+      <text x="228" y="152" font-size="76" font-weight="800" fill="#F3EFFA" letter-spacing="-1">vito</text>
+      <text x="228" y="196" font-size="26" font-weight="700" fill="#FFFFFF" opacity="0.001">.</text>
+      <text x="230" y="192" font-size="23" font-weight="600" fill="#A79FC0">Voice In, Text Out — press a hotkey, speak, and clean text lands at your cursor.</text>
+      
+      <g font-size="16" font-weight="700">
+        <rect x="230" y="216" width="176" height="36" rx="18" fill="none" stroke="#FF6B5E" stroke-opacity="0.65" stroke-width="1.5"></rect>
+        <text x="318" y="239" text-anchor="middle" fill="#FF8A7A">free · open source</text>
+        <rect x="418" y="216" width="156" height="36" rx="18" fill="none" stroke="#A78BFA" stroke-opacity="0.65" stroke-width="1.5"></rect>
+        <text x="496" y="239" text-anchor="middle" fill="#A78BFA">no subscription</text>
+        <rect x="586" y="216" width="140" height="36" rx="18" fill="none" stroke="#FF6B5E" stroke-opacity="0.65" stroke-width="1.5"></rect>
+        <text x="656" y="239" text-anchor="middle" fill="#FF8A7A">60 languages</text>
+        <rect x="738" y="216" width="196" height="36" rx="18" fill="none" stroke="#A78BFA" stroke-opacity="0.65" stroke-width="1.5"></rect>
+        <text x="836" y="239" text-anchor="middle" fill="#A78BFA">bring your own key</text>
+      </g>
     </g>
-    <g transform="translate(630 300)">
-      <rect width="160" height="34" rx="17" fill="#ffffff" opacity="0.08"/>
-      <text x="18" y="23" fill="#D9D2E8">Open source</text>
-    </g>
-  </g>
-
-  <!-- big waveform -->
-  <g transform="translate(880 150)" fill="url(#grad)" opacity="0.92">
-    <rect x="0"   y="20"  width="12" height="40"  rx="6"/>
-    <rect x="24"  y="0"   width="12" height="80"  rx="6"/>
-    <rect x="48"  y="-30" width="12" height="140" rx="6"/>
-    <rect x="72"  y="-52" width="12" height="184" rx="6"/>
-    <rect x="96"  y="-20" width="12" height="120" rx="6"/>
-    <rect x="120" y="10"  width="12" height="60"  rx="6"/>
-    <rect x="144" y="-36" width="12" height="152" rx="6"/>
-    <rect x="168" y="-8"  width="12" height="96"  rx="6"/>
-    <rect x="192" y="24"  width="12" height="32"  rx="6"/>
+    
+    <rect x="0" y="296" width="1200" height="4" fill="url(#brand)"></rect>
   </g>
 </svg>
