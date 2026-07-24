@@ -182,6 +182,11 @@ Vito is **simple to use, but powerful under the hood.**
 - 🌗 **Light & dark mode**, switching automatically with your OS preference.
 - 🌍 **UI translated into 60 languages.**
 - 🪟 **Mini always-on-top overlay** you can place anywhere on screen.
+
+<p align="center">
+  <img src="assets/marketing/vito-overlay.gif" alt="Vito's mini always-on-top overlay you can place anywhere" width="420">
+</p>
+
 - 🧪 **Built-in demo mode** with sample content, so a fresh install has something to show.
 
 ### Organize & improve
