@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="#download"><img alt="Download" src="https://img.shields.io/badge/Download-Windows%20%C2%B7%20Linux-7C3AED?style=for-the-badge"></a>
-  <a href="https://ko-fi.com/"><img alt="Ko-fi" src="https://img.shields.io/badge/Support-Ko--fi-FF6B5E?style=for-the-badge"></a>
+  <a href="https://ko-fi.com/vito_app"><img alt="Ko-fi" src="https://img.shields.io/badge/Support-Ko--fi-FF6B5E?style=for-the-badge"></a>
 </p>
 
 <p align="center">
@@ -338,7 +338,7 @@ welcome and the licence guarantees it — see [CONTRIBUTING.md](CONTRIBUTING.md)
 Vito is free and always will be. If it saves you a subscription — or just some typing — you can say thanks:
 
 <p align="center">
-  <a href="https://ko-fi.com/"><img alt="Support on Ko-fi" src="https://img.shields.io/badge/☕%20Buy%20me%20a%20coffee-Ko--fi-FF6B5E?style=for-the-badge"></a>
+  <a href="https://ko-fi.com/vito_app"><img alt="Support on Ko-fi" src="https://img.shields.io/badge/☕%20Buy%20me%20a%20coffee-Ko--fi-FF6B5E?style=for-the-badge"></a>
 </p>
 
 ---
