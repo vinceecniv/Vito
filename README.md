@@ -24,7 +24,8 @@
 ## What is Vito?
 
 **Vito** is short for **Voice In, Text Out**. It's a small background app that turns your voice into
-polished, ready-to-use text — anywhere you can type.
+polished, ready-to-use text — anywhere you can type. It comes with a friendly, built-in web interface to
+manage everything — settings, history, dictionary and more — shown just below.
 
 <p align="center">
   <img src="assets/marketing/vito-demo.gif" alt="Vito in action — speak and clean text is pasted at your cursor" width="480">
