@@ -19,7 +19,7 @@ jobs:
     env:
       CGO_ENABLED: "1" # miniaudio (malgo) needs cgo; it dlopens ALSA/Pulse at runtime
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-go@v5
         with:
