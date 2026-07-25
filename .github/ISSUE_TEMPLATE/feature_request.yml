@@ -1,0 +1,11 @@
+name: Idea / feature request
+description: Suggest an improvement or a new capability
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+      description: The problem you're running into and what would help. Ideas are welcome even if you're not sure how they'd work.
+    validations:
+      required: true
