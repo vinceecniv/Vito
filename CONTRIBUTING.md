@@ -1,13 +1,16 @@
 # Contributing to Vito
 
-Vito is open source, but not open contribution: **bug reports and ideas are very
-welcome, code is not accepted.**
+Vito is open source. **Bug reports, ideas and translation fixes are very welcome
+right now. Code contributions aren't open yet — but that's a "not yet", not a
+closed door.**
 
-That is not about the quality of anyone's work. Vito is written and maintained by
-one person, and keeping the copyright in one pair of hands is what leaves the
-licence open to change later. Once someone else's code is in the tree, every
-future decision about licensing needs their agreement too — and that is a door
-worth keeping open while the project is young.
+It's not about the quality of anyone's work. Vito is written and maintained by
+one person, and while the project is young, keeping the copyright in one pair of
+hands is what leaves the licence open to change later: once someone else's code
+is in the tree, every future licensing decision needs their agreement too. When
+code does open up, that's handled with a lightweight contributor agreement — you
+keep your copyright, the project keeps the freedom to relicence — so contributing
+won't take that option away. Until then, the ways below help the most.
 
 ## What helps most
 
@@ -31,9 +34,11 @@ takes a minute.
 
 ## Pull requests
 
-They will be closed, with thanks and without judgement. If a change is a good
-idea it may well end up in Vito, written independently — please do not send code
-you would be unhappy to see arrived at that way.
+Not open yet. For now a code PR will be closed with thanks and without judgement —
+but a good idea in it may well end up in Vito, written independently, so please
+don't send code you would be unhappy to see arrived at that way. When code
+contributions open, this page will say so and explain how (a one-click
+contributor agreement, nothing heavy).
 
 ## Forking
 
