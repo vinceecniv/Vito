@@ -4,8 +4,12 @@
 package cleanup
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"strings"
 
 	"github.com/anthropics/anthropic-sdk-go"
@@ -24,6 +28,58 @@ type Usage struct {
 // Cleaner keeps the daemon decoupled from the provider (see design §11).
 type Cleaner interface {
 	Clean(ctx context.Context, text, language string, corrections []config.Correction) (string, Usage, error)
+}
+
+// NewCleaner builds the cleaner for the configured provider: Anthropic, or any
+// OpenAI-compatible chat-completions endpoint (Groq, OpenAI, a local model).
+func NewCleaner(cfg config.Cleanup) Cleaner {
+	if cfg.Provider == "openai" {
+		return NewOpenAICleaner(cfg)
+	}
+	return NewAnthropicCleaner(cfg)
+}
+
+// Configured reports whether the selected provider has what it needs to run: a
+// key for Anthropic, an endpoint for the OpenAI-compatible one (a local model
+// may need no key at all).
+func Configured(cfg config.Cleanup) bool {
+	if cfg.Provider == "openai" {
+		return cfg.OpenAIBaseURL != ""
+	}
+	return cfg.APIKey != ""
+}
+
+// ProviderName is the display name used in the "out of credit" UI and logs.
+func ProviderName(cfg config.Cleanup) string {
+	if cfg.Provider != "openai" {
+		return "Anthropic"
+	}
+	switch b := strings.ToLower(cfg.OpenAIBaseURL); {
+	case strings.Contains(b, "groq.com"):
+		return "Groq"
+	case strings.Contains(b, "openai.com"):
+		return "OpenAI"
+	case strings.Contains(b, "localhost"), strings.Contains(b, "127.0.0.1"), strings.Contains(b, "0.0.0.0"):
+		return "Local model"
+	default:
+		return "AI cleanup"
+	}
+}
+
+// buildUserPrompt assembles the user turn shared by both providers: the language,
+// the dictionary corrections and the raw transcript.
+func buildUserPrompt(text, language string, corrections []config.Correction) string {
+	var user strings.Builder
+	fmt.Fprintf(&user, "Language: %s\n", language)
+	if len(corrections) > 0 {
+		user.WriteString("Corrections (misheard -> intended):\n")
+		for _, corr := range corrections {
+			fmt.Fprintf(&user, "- %q -> %q\n", corr.Wrong, corr.Right)
+		}
+	}
+	user.WriteString("Transcript:\n")
+	user.WriteString(text)
+	return user.String()
 }
 
 const systemPrompt = `You clean up dictated speech transcripts.
@@ -49,24 +105,13 @@ func NewAnthropicCleaner(cfg config.Cleanup) *AnthropicCleaner {
 }
 
 func (c *AnthropicCleaner) Clean(ctx context.Context, text, language string, corrections []config.Correction) (string, Usage, error) {
-	var user strings.Builder
-	fmt.Fprintf(&user, "Language: %s\n", language)
-	if len(corrections) > 0 {
-		user.WriteString("Corrections (misheard -> intended):\n")
-		for _, corr := range corrections {
-			fmt.Fprintf(&user, "- %q -> %q\n", corr.Wrong, corr.Right)
-		}
-	}
-	user.WriteString("Transcript:\n")
-	user.WriteString(text)
-
 	msg, err := c.client.Messages.New(ctx, anthropic.MessageNewParams{
 		Model:       anthropic.Model(c.model),
 		MaxTokens:   maxTokensFor(text),
 		Temperature: anthropic.Float(0),
 		System:      []anthropic.TextBlockParam{{Text: systemPrompt}},
 		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(user.String())),
+			anthropic.NewUserMessage(anthropic.NewTextBlock(buildUserPrompt(text, language, corrections))),
 		},
 	})
 	if err != nil {
@@ -92,6 +137,123 @@ func (c *AnthropicCleaner) Clean(ctx context.Context, text, language string, cor
 		return "", usage, fmt.Errorf("cleanup output truncated (max_tokens)")
 	}
 	return cleaned, usage, nil
+}
+
+// OpenAICleaner talks to any OpenAI-compatible chat-completions endpoint — Groq,
+// OpenAI, or a local model — over plain HTTP, so no per-provider SDK is needed.
+// A local endpoint keeps the transcript entirely on the machine.
+type OpenAICleaner struct {
+	baseURL string
+	key     string
+	model   string
+	name    string // display name for errors/credit (Groq, OpenAI, Local model, …)
+	http    *http.Client
+}
+
+func NewOpenAICleaner(cfg config.Cleanup) *OpenAICleaner {
+	return &OpenAICleaner{
+		baseURL: cfg.OpenAIBaseURL,
+		key:     cfg.OpenAIKey,
+		model:   cfg.OpenAIModel,
+		name:    ProviderName(cfg),
+		http:    &http.Client{}, // the caller's context carries the timeout
+	}
+}
+
+type openAIMessage struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
+type openAIRequest struct {
+	Model       string          `json:"model"`
+	Temperature float64         `json:"temperature"`
+	MaxTokens   int64           `json:"max_tokens"`
+	Messages    []openAIMessage `json:"messages"`
+}
+
+type openAIResponse struct {
+	Choices []struct {
+		Message      openAIMessage `json:"message"`
+		FinishReason string        `json:"finish_reason"`
+	} `json:"choices"`
+	Usage struct {
+		PromptTokens     int64 `json:"prompt_tokens"`
+		CompletionTokens int64 `json:"completion_tokens"`
+	} `json:"usage"`
+	Error *struct {
+		Message string `json:"message"`
+	} `json:"error"`
+}
+
+func (c *OpenAICleaner) Clean(ctx context.Context, text, language string, corrections []config.Correction) (string, Usage, error) {
+	payload, err := json.Marshal(openAIRequest{
+		Model:       c.model,
+		Temperature: 0,
+		MaxTokens:   maxTokensFor(text),
+		Messages: []openAIMessage{
+			{Role: "system", Content: systemPrompt},
+			{Role: "user", Content: buildUserPrompt(text, language, corrections)},
+		},
+	})
+	if err != nil {
+		return "", Usage{}, err
+	}
+	url := strings.TrimRight(c.baseURL, "/") + "/chat/completions"
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(payload))
+	if err != nil {
+		return "", Usage{}, fmt.Errorf("build cleanup request: %w", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	if c.key != "" { // a local model may need no key
+		req.Header.Set("Authorization", "Bearer "+c.key)
+	}
+
+	resp, err := c.http.Do(req)
+	if err != nil {
+		return "", Usage{}, err
+	}
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+
+	if resp.StatusCode != http.StatusOK {
+		// A depleted free tier / balance comes back as 402/429; classify it so the
+		// UI can say "<provider> is out of credit" the same way Anthropic does.
+		if ce := apierr.FromHTTP(c.name, resp.StatusCode, string(body)); ce != nil {
+			return "", Usage{}, ce
+		}
+		return "", Usage{}, fmt.Errorf("%s cleanup: HTTP %d: %s", c.name, resp.StatusCode, errSnippet(body))
+	}
+
+	var out openAIResponse
+	if err := json.Unmarshal(body, &out); err != nil {
+		return "", Usage{}, fmt.Errorf("%s cleanup: bad response: %w", c.name, err)
+	}
+	if out.Error != nil && out.Error.Message != "" {
+		return "", Usage{}, fmt.Errorf("%s cleanup: %s", c.name, out.Error.Message)
+	}
+	if len(out.Choices) == 0 {
+		return "", Usage{}, fmt.Errorf("%s cleanup returned no choices", c.name)
+	}
+	usage := Usage{InputTokens: out.Usage.PromptTokens, OutputTokens: out.Usage.CompletionTokens}
+	cleaned := strings.TrimSpace(out.Choices[0].Message.Content)
+	if cleaned == "" {
+		return "", usage, fmt.Errorf("cleanup returned empty text")
+	}
+	if out.Choices[0].FinishReason == "length" {
+		return "", usage, fmt.Errorf("cleanup output truncated (max_tokens)")
+	}
+	return cleaned, usage, nil
+}
+
+// errSnippet trims a response body to a short, single-line hint for an error.
+func errSnippet(b []byte) string {
+	s := strings.TrimSpace(string(b))
+	s = strings.ReplaceAll(s, "\n", " ")
+	if len(s) > 200 {
+		s = s[:200] + "…"
+	}
+	return s
 }
 
 // maxTokensFor bounds the response: the cleaned text is at most about as long

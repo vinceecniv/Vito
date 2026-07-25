@@ -52,12 +52,24 @@ type STT struct {
 }
 
 type Cleanup struct {
-	Enabled   bool   `json:"enabled"`
-	Provider  string `json:"provider"`
-	APIKey    string `json:"api_key"`
-	Model     string `json:"model"`
-	TimeoutMS int    `json:"timeout_ms"`
-	MinWords  int    `json:"min_words"`
+	Enabled  bool   `json:"enabled"`
+	Provider string `json:"provider"` // anthropic | openai (OpenAI-compatible endpoint)
+	APIKey   string `json:"api_key"`  // Anthropic
+	Model    string `json:"model"`    // Anthropic model
+	// OpenAI-compatible provider (provider="openai"): any endpoint that speaks the
+	// OpenAI chat-completions API — Groq (a free tier that doesn't train on your data), OpenAI
+	// itself, or a local model (Ollama, LM Studio, …), which keeps cleanup fully
+	// on-device so the text never leaves the machine. Kept separate from the
+	// Anthropic fields so switching provider throws neither key away.
+	OpenAIBaseURL string `json:"openai_base_url"` // e.g. https://api.groq.com/openai/v1
+	OpenAIKey     string `json:"openai_key"`
+	OpenAIModel   string `json:"openai_model"`
+	// OpenAIPreset is a UI-only hint (groq | openai | local) so the settings page
+	// can remember "local / custom endpoint" — which isn't derivable from the base
+	// URL alone. The backend ignores it and only looks at the fields above.
+	OpenAIPreset string `json:"openai_preset,omitempty"`
+	TimeoutMS    int    `json:"timeout_ms"`
+	MinWords     int    `json:"min_words"`
 }
 
 type Correction struct {
@@ -205,8 +217,15 @@ func Default() *Config {
 			EUEndpoint: true, // only affects AssemblyAI; harmless for Soniox
 		},
 		Cleanup: Cleanup{
-			Provider: "anthropic",
-			Model:    "claude-haiku-4-5",
+			// A fresh install defaults to Groq (an OpenAI-compatible endpoint): its
+			// free tier — which states it doesn't train on API data — lets a new
+			// user start cleanup for free, alongside AssemblyAI's free STT credit.
+			// The Anthropic model stays filled in case they switch providers.
+			Provider:      "openai",
+			OpenAIBaseURL: "https://api.groq.com/openai/v1",
+			OpenAIModel:   "llama-3.1-8b-instant",
+			OpenAIPreset:  "groq",
+			Model:         "claude-haiku-4-5",
 			// Generous on purpose: hitting the timeout means you pay for the
 			// tokens and still get the raw transcript, so waiting a moment
 			// longer beats giving up on a call that was nearly done.
