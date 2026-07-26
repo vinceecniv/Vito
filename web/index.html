@@ -870,7 +870,8 @@
     padding:10px 13px; font-size:12px; line-height:1.55; box-shadow:0 12px 34px rgba(20,10,40,.36);
     pointer-events:none; opacity:0; transform:translateY(-4px); transition:opacity .14s, transform .14s; }
   #help-tip.show { opacity:1; transform:none; }
-  [data-help], [data-tip-text] { cursor:help; }
+  /* Help-enabled elements keep a normal cursor on hover — no question-mark
+     "help" cursor. Interactive ones keep their own pointer. */
   .h2-btn[data-tip-text] { cursor:pointer; }
   html.no-helptips [data-help], html.no-helptips .card.stat.has-tip { cursor:default; }
 
@@ -895,6 +896,17 @@
   .flagsel-opt { display:flex; align-items:center; gap:9px; padding:8px 10px; border-radius:7px; cursor:pointer; font-size:13.5px; }
   .flagsel-opt:hover { background:var(--nav-active-bg); }
   .flagsel-opt.sel { color:var(--accent); font-weight:600; }
+  /* Editable model combobox (AI-cleanup): input with a left icon + a dropdown
+     whose remembered entries carry a ✕. Reuses .flagsel-list for the panel. */
+  .modelcombo #s-openaimodel { padding-left:34px; }
+  .modelcombo .mdl-ico { position:absolute; left:11px; top:20px; transform:translateY(-50%); color:var(--text3); display:flex; pointer-events:none; }
+  .modelcombo .mdl-ico svg { width:16px; height:16px; }
+  .modelcombo-list { max-height:260px; overflow-y:auto; }
+  .modelcombo-list .mdl-label { padding:6px 10px 3px; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text3); }
+  .modelcombo-list .mdl-opt { justify-content:space-between; }
+  .modelcombo-list .mdl-x { border:0; background:none; color:var(--text3); cursor:pointer; font-size:15px; line-height:1; padding:0 2px; flex:0 0 auto; }
+  .modelcombo-list .mdl-x:hover { color:var(--coral); }
+  .modelcombo-list .mdl-empty { padding:8px 10px; font-size:12.5px; color:var(--text3); }
   /* Speech-model picker: cards you can weigh against each other. */
   .modelcards { display:flex; flex-direction:column; gap:9px; }
   .modelcard { display:flex; flex-direction:column; gap:5px; width:100%; text-align:left; cursor:pointer;
@@ -949,6 +961,10 @@
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
   .modal { width:360px; max-width:92vw; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:20px; box-shadow:0 24px 64px rgba(20,10,40,.45); }
   .modal.relnotes-modal { width:560px; }
+  .keyinfo .ki-guide { margin:2px 0 12px; }
+  .keyinfo .ki-guide a { display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-weight:600; text-decoration:none; }
+  .keyinfo .ki-guide a:hover { text-decoration:underline; }
+  .keyinfo .ki-guide svg { width:14px; height:14px; }
   .modal h3 { margin:0 0 4px; font-family:'Baloo 2','Sora',sans-serif; font-size:17px; }
   .modal-x { position:absolute; top:12px; right:12px; width:28px; height:28px; border:none; background:var(--input-bg); color:var(--text3); border-radius:8px; cursor:pointer; font-size:18px; line-height:1; display:flex; align-items:center; justify-content:center; }
   .modal-x:hover { background:var(--track); color:var(--text); }
@@ -1361,7 +1377,11 @@
               <button type="button" class="mini-btn" id="test-openaikey">Test</button>
             </div>
             <label class="fld" data-help="openaimodel">Model</label>
-            <input type="text" id="s-openaimodel" placeholder="llama-3.1-8b-instant">
+            <div class="flagsel modelcombo" id="modelcombo">
+              <span class="mdl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></span>
+              <input type="text" id="s-openaimodel" placeholder="llama-3.3-70b-versatile" autocomplete="off">
+              <div class="flagsel-list" id="modelcombo-list"></div>
+            </div>
           </div>
         </div>
         <div class="card" data-sec="output" hidden>
@@ -1837,6 +1857,8 @@ const TR = { nl: {
   "Keyterms — improve recognition of proper names and jargon":"Keyterms — verbetert de herkenning van eigen namen en vakjargon",
   "Corrections (misheard → intended)":"Correcties (fout herkend → bedoeld)",
   "Misheard":"Fout herkend",
+  "Suggested":"Voorgesteld","Your models":"Jouw modellen","Type a model name":"Typ een modelnaam","Remove":"Verwijderen",
+  "Complete guide on vito.talk":"Complete uitleg op vito.talk",
   "Intended":"Bedoeld",
   "+ Row":"+ Regel",
   "Export":"Exporteren",
@@ -2639,10 +2661,11 @@ function syncCleanupUI(){
 }
 // A preset prefills the endpoint + a sensible model; "local" leaves them to edit.
 function applyCleanupPreset(v){
-  if (v === "groq")   { $("s-openaibaseurl").value = "https://api.groq.com/openai/v1"; $("s-openaimodel").value = "llama-3.1-8b-instant"; $("s-openaikey").placeholder = "gsk_…"; }
+  if (v === "groq")   { $("s-openaibaseurl").value = "https://api.groq.com/openai/v1"; $("s-openaimodel").value = "llama-3.3-70b-versatile"; $("s-openaikey").placeholder = "gsk_…"; }
   else if (v === "openai") { $("s-openaibaseurl").value = "https://api.openai.com/v1"; $("s-openaimodel").value = "gpt-4o-mini"; $("s-openaikey").placeholder = "sk-…"; }
   else { $("s-openaikey").placeholder = "(often none for a local model)"; } // local: keep what's there
   syncCleanupUI();
+  renderModelCombo();
 }
 // Derive the preset from a base URL (fallback for configs saved before the preset
 // was persisted, and to keep the dropdown honest when the URL is edited by hand).
@@ -2650,6 +2673,49 @@ function presetFromBase(url){
   const b = (url || "").toLowerCase();
   return b.includes("groq.com") ? "groq" : b.includes("openai.com") ? "openai" : b ? "local" : "groq";
 }
+// Editable model combobox: suggest sensible models for the current provider,
+// keep any custom model you type, and remember custom ones (each removable) so
+// you can switch back without retyping.
+const CLEANUP_MODEL_PRESETS = {
+  groq:   ["llama-3.3-70b-versatile", "openai/gpt-oss-120b", "openai/gpt-oss-20b", "moonshotai/kimi-k2-instruct", "llama-3.1-8b-instant"],
+  openai: ["gpt-4o-mini", "gpt-4o", "gpt-4.1-mini"],
+  local:  [],
+};
+function cleanupPreset(){ return $("s-cleanuppreset").value || "groq"; }
+function rememberedModels(){ try { return JSON.parse(localStorage.getItem("vito-cleanup-models") || "{}"); } catch { return {}; } }
+function rememberModel(preset, model){
+  model = (model || "").trim(); if (!model) return;
+  if ((CLEANUP_MODEL_PRESETS[preset] || []).includes(model)) return; // already a preset
+  const all = rememberedModels(), list = all[preset] || [];
+  if (list.includes(model)) return;
+  list.push(model); all[preset] = list;
+  try { localStorage.setItem("vito-cleanup-models", JSON.stringify(all)); } catch {}
+}
+function forgetModel(preset, model){
+  const all = rememberedModels();
+  all[preset] = (all[preset] || []).filter(m => m !== model);
+  try { localStorage.setItem("vito-cleanup-models", JSON.stringify(all)); } catch {}
+}
+// Build the combobox list for the current provider: suggested models (no ✕) and
+// your remembered custom ones (each with a ✕ to forget it), filtered by what's typed.
+function renderModelCombo(q){
+  const list = $("modelcombo-list"); if (!list) return;
+  q = (q || "").trim().toLowerCase();  // only filter while actively typing; open shows all
+  const preset = cleanupPreset();
+  const presets = CLEANUP_MODEL_PRESETS[preset] || [];
+  const remembered = (rememberedModels()[preset] || []).filter(m => !presets.includes(m));
+  const esc = ahEsc, match = m => !q || m.toLowerCase().includes(q);
+  const ps = presets.filter(match), rs = remembered.filter(match);
+  let html = "";
+  if (ps.length) html += `<div class="mdl-label">${t("Suggested")}</div>` +
+    ps.map(m => `<div class="flagsel-opt mdl-opt" data-v="${esc(m)}"><span>${esc(m)}</span></div>`).join("");
+  if (rs.length) html += `<div class="mdl-label">${t("Your models")}</div>` +
+    rs.map(m => `<div class="flagsel-opt mdl-opt" data-v="${esc(m)}"><span>${esc(m)}</span>` +
+      `<button type="button" class="mdl-x" data-rm="${esc(m)}" title="${t("Remove")}" aria-label="${t("Remove")}">×</button></div>`).join("");
+  list.innerHTML = html || `<div class="mdl-empty">${t("Type a model name")}</div>`;
+}
+function openModelCombo(){ renderModelCombo(); const c = $("modelcombo"); if (c) c.classList.add("open"); }
+function closeModelCombo(){ const c = $("modelcombo"); if (c) c.classList.remove("open"); }
 // Per-provider cleanup token prices (USD per million), used by the cost card.
 function cleanupCostRates(){
   if (($("s-cleanupprovider").value || "anthropic") === "openai") {
@@ -3473,7 +3539,7 @@ if (!pipSupported()) { $("side-pip").style.display = "none"; }
 
 /* ---- API-key help popups ---- */
 const KEY_INFO = {
-  assemblyai: { name:"AssemblyAI", url:"https://www.assemblyai.com/dashboard/signup",
+  assemblyai: { name:"AssemblyAI", url:"https://www.assemblyai.com/dashboard/signup", guide:"https://vito.talk/setup/assemblyai/",
     steps:[
       "Open the sign-up page and create a free account (email or Google).",
       "Click the confirmation link in the verification email.",
@@ -3482,7 +3548,7 @@ const KEY_INFO = {
       "Paste the key into Vito above." ],
     keyfmt:"A string of about 32 characters, with no special prefix.",
     billing:"Free starting credit — no credit card needed to begin. For ongoing use you pay per hour of audio." },
-  soniox: { name:"Soniox", url:"https://console.soniox.com/",
+  soniox: { name:"Soniox", url:"https://console.soniox.com/", guide:"https://vito.talk/setup/soniox/",
     steps:[
       "Open de Soniox-console en maak een account.",
       "Bevestig je e-mailadres en log in.",
@@ -3491,7 +3557,7 @@ const KEY_INFO = {
       "Paste the key into Vito above." ],
     keyfmt:"Een lange sleutel die de console je één keer toont — bewaar hem meteen.",
     billing:"Realtime kost $0,12 per uur audio, over alle 60+ talen dezelfde prijs." },
-  anthropic: { name:"Anthropic (Claude)", url:"https://platform.claude.com/settings/keys",
+  anthropic: { name:"Anthropic (Claude)", url:"https://platform.claude.com/settings/keys", guide:"https://vito.talk/setup/anthropic/",
     steps:[
       "Open the console and sign up (email or Google).",
       "Verify your email and log in.",
@@ -3501,7 +3567,7 @@ const KEY_INFO = {
       "Copy the key right away (it's shown only once) and paste it into Vito." ],
     keyfmt:"Starts with \"sk-ant-\", followed by a long string of characters.",
     billing:"Works with prepaid credit — you must add a payment method and buy credit. You can set a monthly limit." },
-  groq: { name:"Groq", url:"https://console.groq.com/keys",
+  groq: { name:"Groq", url:"https://console.groq.com/keys", guide:"https://vito.talk/setup/groq/",
     steps:[
       "Open the Groq console and sign up (email, Google or GitHub).",
       "Verify your email and log in.",
@@ -3522,6 +3588,7 @@ function showKeyInfo(provider){
   const info = KEY_INFO[provider]; if (!info) return;
   const steps = info.steps.map(s => `<li>${t(s)}</li>`).join("");
   const body = `<div class="keyinfo">
+    ${info.guide ? `<p class="ki-guide"><a href="${info.guide}" target="_blank" rel="noopener noreferrer">${t("Complete guide on vito.talk")} ${ICON_EXT}</a></p>` : ""}
     <p><a href="${info.url}" target="_blank" rel="noopener noreferrer">${info.url}</a></p>
     <ol>${steps}</ol>
     <p class="ki-note"><b>${t("What your key looks like:")}</b> ${t(info.keyfmt)}</p>
@@ -3710,7 +3777,7 @@ function renderAboutVersion(){
     // never crowd the version number.
     const act = u.can_apply
       ? `<button class="btn primary small" id="about-apply">${t("Update now")}</button>`
-      : `<button class="btn small" id="about-open">${t("Open release")}</button>`;
+      : `<button class="linkbtn" id="about-open">${t("Open release")}</button>`;
     extra = `<span class="about-upd new">${t("{v} available").replace("{v}", rel.version)}</span>` +
             `<span class="about-upd-actions">${act}` +
             (rel.notes ? `<button class="linkbtn" id="about-notes">${t("What's new")}</button>` : "") +
@@ -3945,7 +4012,7 @@ function updateCardHTML(){
     sub = t("{v} available").replace("{v}", rel.version);
     btns = `<div class="upd-actions">` +
       (u.can_apply ? `<button class="btn primary small" id="upd-apply">${t("Update now")}</button>`
-                   : `<button class="btn small" id="upd-open">${t("Open release")}</button>`) +
+                   : `<button class="linkbtn" id="upd-open">${t("Open release")}</button>`) +
       (rel.notes ? `<button class="linkbtn" id="upd-notes">${t("What's new")}</button>` : "") +
       `</div>`;
   }
@@ -4771,6 +4838,8 @@ async function loadSettings() {
   // configs written before the preset was persisted.
   setCleanupPresetDisplay(cfg.cleanup.openai_preset || presetFromBase(cfg.cleanup.openai_base_url));
   syncCleanupUI();
+  rememberModel(cleanupPreset(), $("s-openaimodel").value); // keep a hand-entered model in the dropdown
+  renderModelCombo();
   setInjectDisplay(cfg.injection.mode || "paste");
   $("s-restore").checked = cfg.injection.restore_clipboard;
   $("s-appendenter").checked = !!cfg.injection.append_enter;
@@ -5286,6 +5355,25 @@ $("s-tray").onchange = () => {
     () => { $("s-tray").checked = true; });
 };
 ["s-svol","s-sttkey","s-sonioxkey","s-cleanupkey","s-cleanupmodel","s-silence","s-autostopms","s-openaibaseurl","s-openaikey","s-openaimodel"].forEach(id => $(id).addEventListener("input", autoSaveSettings));
+// Editable model combobox wiring: open on focus/type, pick a suggestion or a
+// remembered model, ✕ to forget a remembered one; free text stays allowed.
+{
+  const mi = $("s-openaimodel"), mlist = $("modelcombo-list");
+  mi.addEventListener("focus", openModelCombo);
+  mi.addEventListener("click", (e) => { e.stopPropagation(); openModelCombo(); });
+  mi.addEventListener("input", () => { renderModelCombo(mi.value); const c = $("modelcombo"); if (c) c.classList.add("open"); }); // filter as you type
+  mi.addEventListener("change", () => rememberModel(cleanupPreset(), mi.value)); // remember once you finish typing
+  mi.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModelCombo(); });
+  mlist.addEventListener("click", (e) => e.stopPropagation());  // clicks inside never close via the document handler
+  mlist.addEventListener("mousedown", (e) => {                  // mousedown: act before the input blurs
+    const rm = e.target.closest("[data-rm]");
+    if (rm) { e.preventDefault(); forgetModel(cleanupPreset(), rm.dataset.rm); renderModelCombo(); return; }
+    const opt = e.target.closest(".mdl-opt");
+    if (opt) { e.preventDefault(); mi.value = opt.dataset.v; closeModelCombo();
+      rememberModel(cleanupPreset(), mi.value); autoSaveSettings(); }
+  });
+  document.addEventListener("click", closeModelCombo);
+}
 
 /* ---- dictionary ---- */
 function renderCorrections(list) {
@@ -5867,7 +5955,7 @@ const HELP = {
   cleanuppreset:{nl:"Snelle voorinstelling die het endpoint en een passend model invult. 'Groq' gebruikt Groq's gratis tier; 'Lokaal / eigen endpoint' is voor je eigen (bijv. lokaal draaiende) OpenAI-compatibele server.",en:"A quick preset that fills the endpoint and a sensible model. 'Groq' uses Groq's free tier; 'Local / custom endpoint' is for your own (e.g. locally running) OpenAI-compatible server."},
   openaibaseurl:{nl:"De base-URL van het OpenAI-compatibele endpoint, bijv. Groq https://api.groq.com/openai/v1, of een lokaal model op http://localhost:11434/v1. Bij een lokaal endpoint verlaat je opschoning je computer nooit — maximale privacy.",en:"The base URL of the OpenAI-compatible endpoint, e.g. Groq https://api.groq.com/openai/v1, or a local model at http://localhost:11434/v1. With a local endpoint your cleanup never leaves your computer — maximum privacy."},
   openaikey:{nl:"De API-key voor dit endpoint. Een lokaal draaiend model heeft er vaak geen nodig — laat het veld dan leeg.",en:"The API key for this endpoint. A locally running model often needs none — leave it empty in that case."},
-  openaimodel:{nl:"Welk model op dit endpoint de opschoning doet, bijv. llama-3.1-8b-instant.",en:"Which model on this endpoint does the cleanup, e.g. llama-3.1-8b-instant."},
+  openaimodel:{nl:"Welk model op dit endpoint de opschoning doet, bijv. llama-3.3-70b-versatile.",en:"Which model on this endpoint does the cleanup, e.g. llama-3.3-70b-versatile."},
   inject:{nl:"Hoe de tekst in het actieve venster komt: plakken (Ctrl+V), letter voor letter typen, of alleen naar het klembord.",en:"How the text reaches the active window: paste (Ctrl+V), type it out, or clipboard only."},
   restore:{nl:"Zet je vorige klembord-inhoud terug nadat de gedicteerde tekst is geplakt.",en:"Restore your previous clipboard contents after the dictated text is pasted."},
   appendenter:{nl:"Drukt na de tekst automatisch op Enter — handig om invoer meteen te verzenden, bijvoorbeeld in een Claude Code-sessie of chat.",en:"Presses Enter after the text — handy to submit input right away, e.g. in a Claude Code session or chat."},
