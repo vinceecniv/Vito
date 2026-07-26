@@ -210,6 +210,15 @@
   .key-row > .fld-row { grid-area:1/1; }
   .key-row > .key-input { grid-area:2/1; position:relative; min-width:0; }
   .key-row > .mini-btn { grid-area:2/2; height:40px; padding:0 16px; font-size:12.5px; }
+  /* AI-cleanup card: give every labelled control group the same vertical rhythm.
+     flow-root makes each conditional block a BFC so the first control's top margin
+     no longer collapses through (which left it flush under the provider dropdown),
+     and the key-row (0 top margin by default) is spaced like a .fld label. */
+  #cleanup-anthropic, #cleanup-openai { display:flow-root; }
+  #cleanup-anthropic .key-row, #cleanup-openai .key-row { margin-top:20px; }
+  /* These blocks sit mid-card (below the provider picker), so their first label
+     must keep its top margin — override the general first-child reset. */
+  #cleanup-anthropic > .fld:first-child, #cleanup-openai > .fld:first-child { margin-top:20px; }
   .key-input input { width:100%; padding-right:42px; }
   .eye-btn { position:absolute; right:5px; top:50%; transform:translateY(-50%); display:flex; align-items:center;
     justify-content:center; width:30px; height:30px; padding:0; border:none; border-radius:8px; background:none;
@@ -1293,16 +1302,47 @@
         <div class="card" data-sec="cleanup" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z"/><path d="M19 15l.7 1.8L21.5 18l-1.8.7L19 20.5l-.7-1.8L16.5 18l1.8-.5z"/></svg><span>AI cleanup</span></h2>
           <label class="tgl" data-help="cleanup"><input type="checkbox" id="s-cleanup"><span class="tr"></span> Auto-clean dictations</label>
-          <div class="key-row">
-            <div class="fld-row"><label class="fld" data-help="anthropickey">Anthropic API key</label><button type="button" class="info-btn" id="info-anthropickey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
-            <div class="key-input">
-              <input type="password" id="s-cleanupkey" autocomplete="off" placeholder="sk-ant-…">
-              <button type="button" class="eye-btn" data-eye="s-cleanupkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
-            </div>
-            <button type="button" class="mini-btn" id="test-anthropickey">Test</button>
+
+          <label class="fld" data-help="cleanupprovider">Cleanup provider</label>
+          <input type="hidden" id="s-cleanupprovider">
+          <div class="flagsel" id="cleanupprovider-sel">
+            <button type="button" class="flagsel-btn" id="cleanupprovider-btn"></button>
+            <div class="flagsel-list" id="cleanupprovider-list"></div>
           </div>
-          <label class="fld" data-help="cleanupmodel">Model</label>
-          <input type="text" id="s-cleanupmodel" placeholder="claude-haiku-4-5">
+
+          <div id="cleanup-anthropic">
+            <div class="key-row">
+              <div class="fld-row"><label class="fld" data-help="anthropickey">Anthropic API key</label><button type="button" class="info-btn" id="info-anthropickey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+              <div class="key-input">
+                <input type="password" id="s-cleanupkey" autocomplete="off" placeholder="sk-ant-…">
+                <button type="button" class="eye-btn" data-eye="s-cleanupkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
+              </div>
+              <button type="button" class="mini-btn" id="test-anthropickey">Test</button>
+            </div>
+            <label class="fld" data-help="cleanupmodel">Model</label>
+            <input type="text" id="s-cleanupmodel" placeholder="claude-haiku-4-5">
+          </div>
+
+          <div id="cleanup-openai" hidden>
+            <label class="fld" data-help="cleanuppreset">Preset</label>
+            <input type="hidden" id="s-cleanuppreset">
+            <div class="flagsel" id="cleanuppreset-sel">
+              <button type="button" class="flagsel-btn" id="cleanuppreset-btn"></button>
+              <div class="flagsel-list" id="cleanuppreset-list"></div>
+            </div>
+            <label class="fld" data-help="openaibaseurl">Endpoint (base URL)</label>
+            <input type="text" id="s-openaibaseurl" placeholder="https://api.groq.com/openai/v1">
+            <div class="key-row">
+              <div class="fld-row"><label class="fld" data-help="openaikey">API key</label><button type="button" class="info-btn" id="info-openaikey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+              <div class="key-input">
+                <input type="password" id="s-openaikey" autocomplete="off" placeholder="gsk_…">
+                <button type="button" class="eye-btn" data-eye="s-openaikey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
+              </div>
+              <button type="button" class="mini-btn" id="test-openaikey">Test</button>
+            </div>
+            <label class="fld" data-help="openaimodel">Model</label>
+            <input type="text" id="s-openaimodel" placeholder="llama-3.1-8b-instant">
+          </div>
         </div>
         <div class="card" data-sec="output" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg><span>Output</span></h2>
@@ -1706,6 +1746,27 @@ const TR = { nl: {
   "Get a key":"Key aanvragen",
   "Test":"Testen",
   "Enter a key first.":"Vul eerst een key in.",
+  "Enter an endpoint URL first.":"Vul eerst een endpoint-URL in.",
+  "Cleanup provider":"Opschoningsprovider",
+  "Anthropic (Claude)":"Anthropic (Claude)",
+  "OpenAI-compatible":"OpenAI-compatibel",
+  "Preset":"Voorinstelling",
+  "Groq — free tier":"Groq — gratis tier",
+  "OpenAI":"OpenAI",
+  "Local / custom endpoint":"Lokaal / eigen endpoint",
+  "Endpoint (base URL)":"Endpoint (base-URL)",
+  "API key":"API-key",
+  "Open the Groq console and sign up (email, Google or GitHub).":"Open de Groq-console en maak een account (e-mail, Google of GitHub).",
+  "Go to \"API Keys\" and click \"Create API Key\".":"Ga naar \"API Keys\" en klik op \"Create API Key\".",
+  "Copy the key right away and paste it into Vito above.":"Kopieer de key meteen en plak hem hierboven in Vito.",
+  "Starts with \"gsk_\", followed by a long string of characters.":"Begint met \"gsk_\", gevolgd door een lange reeks tekens.",
+  "Groq has a free tier — rate-limited with a daily token limit, and Groq states it does not train on data sent through the API. Enough to start dictating for free; paid tiers lift the limits.":"Groq heeft een gratis tier — met rate-limiting en een dagelijkse tokenlimiet, en Groq geeft aan niet te trainen op data die via de API wordt gestuurd. Genoeg om gratis te beginnen; betaalde tiers verhogen de limieten.",
+  "Open the OpenAI platform and sign up or log in.":"Open het OpenAI-platform en maak een account of log in.",
+  "Add a payment method under \"Billing\".":"Voeg een betaalmethode toe onder \"Billing\".",
+  "Go to \"API keys\" → \"Create new secret key\".":"Ga naar \"API keys\" → \"Create new secret key\".",
+  "Copy the key right away (it's shown only once) and paste it into Vito above.":"Kopieer de key meteen (hij wordt maar één keer getoond) en plak hem hierboven in Vito.",
+  "Starts with \"sk-\", followed by a long string of characters.":"Begint met \"sk-\", gevolgd door een lange reeks tekens.",
+  "Billed per token; add a payment method and optionally set a monthly limit.":"Wordt per token afgerekend; voeg een betaalmethode toe en stel eventueel een maandlimiet in.",
   "Testing key…":"Key testen…",
   "{p} key works":"{p}-key werkt",
   "{p} key is invalid":"{p}-key is ongeldig",
@@ -2510,16 +2571,26 @@ const RETENTION_OPTS = [
   { v:"30", label:"After 30 days", icon:RET_CAL },
   { v:"90", label:"After 90 days", icon:RET_CAL },
 ];
-function buildIconSelect(key, opts){
+const OA_GLOBE = '<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
+const CLEANUP_PROVIDER_OPTS = [
+  { v:"anthropic", label:"Anthropic (Claude)", icon:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z"/></svg>' },
+  { v:"openai",    label:"OpenAI-compatible", icon:OA_GLOBE },
+];
+const CLEANUP_PRESET_OPTS = [
+  { v:"groq",   label:"Groq — free tier", icon:'<svg class="opt-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>' },
+  { v:"openai", label:"OpenAI", icon:OA_GLOBE },
+  { v:"local",  label:"Local / custom endpoint", icon:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>' },
+];
+function buildIconSelect(key, opts, onPick){
   const sel=$(key+"-sel"), btn=$(key+"-btn"), list=$(key+"-list"), hid=$("s-"+key);
   list.innerHTML = opts.map(o=>`<div class="flagsel-opt" data-v="${o.v}">${o.icon}<span>${t(o.label)}</span></div>`).join("");
   const disp=(v)=>{ const o=opts.find(x=>x.v===v)||opts[0]; hid.value=o.v; btn.innerHTML=o.icon+"<span>"+t(o.label)+"</span>"; [...list.children].forEach(c=>c.classList.toggle("sel", c.dataset.v===o.v)); };
-  [...list.children].forEach(c=>c.onclick=()=>{ sel.classList.remove("open"); disp(c.dataset.v); autoSaveSettings(); });
+  [...list.children].forEach(c=>c.onclick=()=>{ sel.classList.remove("open"); disp(c.dataset.v); if(onPick)onPick(c.dataset.v); autoSaveSettings(); });
   btn.onclick=(e)=>{ e.stopPropagation(); sel.classList.toggle("open"); };
   document.addEventListener("click", ()=>sel.classList.remove("open"));
   return disp;
 }
-let setTypespeedDisplay, setNotifyDisplay, setMediaDisplay, setInjectDisplay, setRetentionDisplay;
+let setTypespeedDisplay, setNotifyDisplay, setMediaDisplay, setInjectDisplay, setRetentionDisplay, setCleanupProviderDisplay, setCleanupPresetDisplay;
 function buildIconSelects(){
   const ts = $("s-typespeed").value || "average", nf = $("s-notify").value || "all";
   setTypespeedDisplay = buildIconSelect("typespeed", TYPESPEED_OPTS);
@@ -2528,7 +2599,41 @@ function buildIconSelects(){
   setMediaDisplay = buildIconSelect("mediaaction", MEDIAACTION_OPTS);
   setInjectDisplay = buildIconSelect("inject", INJECT_OPTS);
   setRetentionDisplay = buildIconSelect("retention", RETENTION_OPTS);
-  setTypespeedDisplay(ts); setNotifyDisplay(nf); setMediaDisplay(ma); setInjectDisplay(ij); setRetentionDisplay(rt); // rebuild keeps the current value
+  const cp = $("s-cleanupprovider").value || "anthropic", cpre = $("s-cleanuppreset").value || "groq";
+  setCleanupProviderDisplay = buildIconSelect("cleanupprovider", CLEANUP_PROVIDER_OPTS, () => syncCleanupUI());
+  setCleanupPresetDisplay = buildIconSelect("cleanuppreset", CLEANUP_PRESET_OPTS, applyCleanupPreset);
+  setTypespeedDisplay(ts); setNotifyDisplay(nf); setMediaDisplay(ma); setInjectDisplay(ij); setRetentionDisplay(rt); setCleanupProviderDisplay(cp); setCleanupPresetDisplay(cpre); // rebuild keeps the current value
+}
+// Show the Anthropic vs OpenAI-compatible block, and hide the "Get a key" hint
+// for a local endpoint (which typically needs none).
+function syncCleanupUI(){
+  const openai = ($("s-cleanupprovider").value || "anthropic") === "openai";
+  $("cleanup-anthropic").hidden = openai;
+  $("cleanup-openai").hidden = !openai;
+  const localPreset = ($("s-cleanuppreset").value || "groq") === "local";
+  const info = $("info-openaikey"); if (info) info.style.display = localPreset ? "none" : "";
+}
+// A preset prefills the endpoint + a sensible model; "local" leaves them to edit.
+function applyCleanupPreset(v){
+  if (v === "groq")   { $("s-openaibaseurl").value = "https://api.groq.com/openai/v1"; $("s-openaimodel").value = "llama-3.1-8b-instant"; $("s-openaikey").placeholder = "gsk_…"; }
+  else if (v === "openai") { $("s-openaibaseurl").value = "https://api.openai.com/v1"; $("s-openaimodel").value = "gpt-4o-mini"; $("s-openaikey").placeholder = "sk-…"; }
+  else { $("s-openaikey").placeholder = "(often none for a local model)"; } // local: keep what's there
+  syncCleanupUI();
+}
+// Derive the preset from a base URL (fallback for configs saved before the preset
+// was persisted, and to keep the dropdown honest when the URL is edited by hand).
+function presetFromBase(url){
+  const b = (url || "").toLowerCase();
+  return b.includes("groq.com") ? "groq" : b.includes("openai.com") ? "openai" : b ? "local" : "groq";
+}
+// Per-provider cleanup token prices (USD per million), used by the cost card.
+function cleanupCostRates(){
+  if (($("s-cleanupprovider").value || "anthropic") === "openai") {
+    const b = ($("s-openaibaseurl").value || "").toLowerCase();
+    if (b.includes("openai.com")) return { cleanup_in_per_mtok_usd: 0.15, cleanup_out_per_mtok_usd: 0.60 }; // gpt-4o-mini
+    return { cleanup_in_per_mtok_usd: 0, cleanup_out_per_mtok_usd: 0 }; // Groq free tier / local model
+  }
+  return { cleanup_in_per_mtok_usd: 1.0, cleanup_out_per_mtok_usd: 5.0 }; // Anthropic Haiku
 }
 buildIconSelects();
 
@@ -3371,7 +3476,23 @@ const KEY_INFO = {
       "Click \"API Keys\" → \"Create Key\" on the left and give the key a name.",
       "Copy the key right away (it's shown only once) and paste it into Vito." ],
     keyfmt:"Starts with \"sk-ant-\", followed by a long string of characters.",
-    billing:"Works with prepaid credit — you must add a payment method and buy credit. You can set a monthly limit." }
+    billing:"Works with prepaid credit — you must add a payment method and buy credit. You can set a monthly limit." },
+  groq: { name:"Groq", url:"https://console.groq.com/keys",
+    steps:[
+      "Open the Groq console and sign up (email, Google or GitHub).",
+      "Verify your email and log in.",
+      "Go to \"API Keys\" and click \"Create API Key\".",
+      "Copy the key right away and paste it into Vito above." ],
+    keyfmt:"Starts with \"gsk_\", followed by a long string of characters.",
+    billing:"Groq has a free tier — rate-limited with a daily token limit, and Groq states it does not train on data sent through the API. Enough to start dictating for free; paid tiers lift the limits." },
+  openai: { name:"OpenAI", url:"https://platform.openai.com/api-keys",
+    steps:[
+      "Open the OpenAI platform and sign up or log in.",
+      "Add a payment method under \"Billing\".",
+      "Go to \"API keys\" → \"Create new secret key\".",
+      "Copy the key right away (it's shown only once) and paste it into Vito above." ],
+    keyfmt:"Starts with \"sk-\", followed by a long string of characters.",
+    billing:"Billed per token; add a payment method and optionally set a monthly limit." }
 };
 function showKeyInfo(provider){
   const info = KEY_INFO[provider]; if (!info) return;
@@ -3403,23 +3524,30 @@ document.querySelectorAll(".eye-btn").forEach(b => {
 });
 
 /* ---- test an API key against the provider ---- */
-async function testKey(provider, inputId, btnId){
+async function testKey(provider, inputId, btnId, opts){
+  opts = opts || {};
   const key = $(inputId).value.trim();
-  const name = { assemblyai:"AssemblyAI", soniox:"Soniox", anthropic:"Anthropic" }[provider] || provider;
-  if (!key) { toast(t("Enter a key first."), "info"); return; }
+  const baseURL = opts.baseUrl;
+  const name = opts.name || { assemblyai:"AssemblyAI", soniox:"Soniox", anthropic:"Anthropic", openai:"Endpoint" }[provider] || provider;
+  if (provider === "openai" && !baseURL) { toast(t("Enter an endpoint URL first."), "info"); return; }
+  if (!key && provider !== "openai") { toast(t("Enter a key first."), "info"); return; }
   const btn = btnId && $(btnId); if (btn) btn.disabled = true;
   toast(t("Testing key…"), "info");
   try {
-    const r = await api("/api/test-key", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ provider, key }) });
+    const r = await api("/api/test-key", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ provider, key, baseURL }) });
     if (r.ok) toast("✓ " + t("{p} key works").replace("{p}", name), "ok");
     else if (r.error === "unauthorized") toast("✗ " + t("{p} key is invalid").replace("{p}", name), "err");
     else toast("✗ " + t("Key test failed (network or service)."), "err");
   } catch { toast(t("Key test failed (network or service)."), "err"); }
   finally { if (btn) btn.disabled = false; }
 }
+const openaiName = () => { const b=($("s-openaibaseurl").value||"").toLowerCase(); return b.includes("groq.com")?"Groq":b.includes("openai.com")?"OpenAI":"Endpoint"; };
+const testOpenAI = () => testKey("openai", "s-openaikey", "test-openaikey", { baseUrl: $("s-openaibaseurl").value.trim(), name: openaiName() });
 $("test-sttkey").onclick = () => testKey("assemblyai", "s-sttkey", "test-sttkey");
 $("test-sonioxkey").onclick = () => testKey("soniox", "s-sonioxkey", "test-sonioxkey");
 $("test-anthropickey").onclick = () => testKey("anthropic", "s-cleanupkey", "test-anthropickey");
+$("test-openaikey").onclick = testOpenAI;
+$("info-openaikey").onclick = () => showKeyInfo($("s-cleanuppreset").value === "openai" ? "openai" : "groq");
 // Auto-test shortly after a key is pasted.
 $("s-sttkey").addEventListener("paste", () => setTimeout(() => testKey("assemblyai", "s-sttkey", "test-sttkey"), 250));
 $("s-sonioxkey").addEventListener("paste", () => setTimeout(() => testKey("soniox", "s-sonioxkey", "test-sonioxkey"), 250));
@@ -3428,6 +3556,7 @@ $("s-sonioxkey").addEventListener("paste", () => setTimeout(() => testKey("sonio
   if (cfg) { cfg.stt.api_key = $("s-sttkey").value; cfg.stt.soniox_api_key = $("s-sonioxkey").value; buildModelCards(); }
 }));
 $("s-cleanupkey").addEventListener("paste", () => setTimeout(() => testKey("anthropic", "s-cleanupkey", "test-anthropickey"), 250));
+$("s-openaikey").addEventListener("paste", () => setTimeout(testOpenAI, 250));
 
 /* ---- welcome / onboarding card ---- */
 function dismissWelcome(){
@@ -4528,6 +4657,14 @@ async function loadSettings() {
   $("s-cleanup").checked = cfg.cleanup.enabled;
   $("s-cleanupkey").value = cfg.cleanup.api_key;
   $("s-cleanupmodel").value = cfg.cleanup.model;
+  $("s-openaibaseurl").value = cfg.cleanup.openai_base_url || "";
+  $("s-openaikey").value = cfg.cleanup.openai_key || "";
+  $("s-openaimodel").value = cfg.cleanup.openai_model || "";
+  setCleanupProviderDisplay(cfg.cleanup.provider === "openai" ? "openai" : "anthropic");
+  // Prefer the saved preset; fall back to deriving it from the base URL for
+  // configs written before the preset was persisted.
+  setCleanupPresetDisplay(cfg.cleanup.openai_preset || presetFromBase(cfg.cleanup.openai_base_url));
+  syncCleanupUI();
   setInjectDisplay(cfg.injection.mode || "paste");
   $("s-restore").checked = cfg.injection.restore_clipboard;
   $("s-appendenter").checked = !!cfg.injection.append_enter;
@@ -4837,8 +4974,17 @@ function collectSettings() {
       provider: (SPEECH_MODELS.find(m => m.id === $("s-model").value) || {}).provider || "assemblyai",
     }),
     cleanup: Object.assign(cfg.cleanup, {
-      enabled: $("s-cleanup").checked, api_key: $("s-cleanupkey").value, model: $("s-cleanupmodel").value,
+      enabled: $("s-cleanup").checked,
+      provider: $("s-cleanupprovider").value || "anthropic",
+      api_key: $("s-cleanupkey").value, model: $("s-cleanupmodel").value,
+      openai_base_url: $("s-openaibaseurl").value.trim(),
+      openai_key: $("s-openaikey").value,
+      openai_model: $("s-openaimodel").value.trim(),
+      openai_preset: $("s-cleanuppreset").value || "groq",
     }),
+    // Cleanup pricing follows the provider so the cost card stays truthful — Groq's
+    // free tier and local models read as €0, keeping the "start free" promise real.
+    costs: Object.assign(cfg.costs || {}, cleanupCostRates()),
     injection: Object.assign(cfg.injection, {
       mode: $("s-inject").value, restore_clipboard: $("s-restore").checked,
       append_enter: $("s-appendenter").checked, append_space: $("s-appendspace").checked,
@@ -5030,7 +5176,7 @@ $("s-tray").onchange = () => {
     "Turn off anyway", true,
     () => { $("s-tray").checked = true; });
 };
-["s-svol","s-sttkey","s-sonioxkey","s-cleanupkey","s-cleanupmodel","s-silence","s-autostopms"].forEach(id => $(id).addEventListener("input", autoSaveSettings));
+["s-svol","s-sttkey","s-sonioxkey","s-cleanupkey","s-cleanupmodel","s-silence","s-autostopms","s-openaibaseurl","s-openaikey","s-openaimodel"].forEach(id => $(id).addEventListener("input", autoSaveSettings));
 
 /* ---- dictionary ---- */
 function renderCorrections(list) {
@@ -5600,6 +5746,11 @@ const HELP = {
   cleanup:{nl:"Laat Claude elke dictatie automatisch opschonen: interpunctie, hoofdletters en 'eh/uhm' eruit.",en:"Let Claude automatically clean up every dictation: punctuation, capitals, and removing 'eh/uhm'."},
   anthropickey:{nl:"Je Anthropic-sleutel voor de Claude-opschoning. Zonder key wordt de ruwe tekst geplakt.",en:"Your Anthropic key for the Claude cleanup. Without a key the raw text is pasted."},
   cleanupmodel:{nl:"Welk Claude-model de opschoning doet. Haiku is snel en goedkoop.",en:"Which Claude model does the cleanup. Haiku is fast and cheap."},
+  cleanupprovider:{nl:"Welke dienst de opschoning doet: Anthropic (Claude), of een OpenAI-compatibel endpoint (Groq, OpenAI, of een lokaal model). Groq heeft een gratis tier (rate-limited, dagelijkse tokenlimiet) en traint niet op je data — samen met het gratis startkrediet van de spraakherkenning kun je zo volledig gratis beginnen.",en:"Which service does the cleanup: Anthropic (Claude), or any OpenAI-compatible endpoint (Groq, OpenAI, or a local model). Groq has a free tier (rate-limited, daily token limit) and doesn't train on your data — together with speech recognition's free starting credit you can begin entirely for free."},
+  cleanuppreset:{nl:"Snelle voorinstelling die het endpoint en een passend model invult. 'Groq' gebruikt Groq's gratis tier; 'Lokaal / eigen endpoint' is voor je eigen (bijv. lokaal draaiende) OpenAI-compatibele server.",en:"A quick preset that fills the endpoint and a sensible model. 'Groq' uses Groq's free tier; 'Local / custom endpoint' is for your own (e.g. locally running) OpenAI-compatible server."},
+  openaibaseurl:{nl:"De base-URL van het OpenAI-compatibele endpoint, bijv. Groq https://api.groq.com/openai/v1, of een lokaal model op http://localhost:11434/v1. Bij een lokaal endpoint verlaat je opschoning je computer nooit — maximale privacy.",en:"The base URL of the OpenAI-compatible endpoint, e.g. Groq https://api.groq.com/openai/v1, or a local model at http://localhost:11434/v1. With a local endpoint your cleanup never leaves your computer — maximum privacy."},
+  openaikey:{nl:"De API-key voor dit endpoint. Een lokaal draaiend model heeft er vaak geen nodig — laat het veld dan leeg.",en:"The API key for this endpoint. A locally running model often needs none — leave it empty in that case."},
+  openaimodel:{nl:"Welk model op dit endpoint de opschoning doet, bijv. llama-3.1-8b-instant.",en:"Which model on this endpoint does the cleanup, e.g. llama-3.1-8b-instant."},
   inject:{nl:"Hoe de tekst in het actieve venster komt: plakken (Ctrl+V), letter voor letter typen, of alleen naar het klembord.",en:"How the text reaches the active window: paste (Ctrl+V), type it out, or clipboard only."},
   restore:{nl:"Zet je vorige klembord-inhoud terug nadat de gedicteerde tekst is geplakt.",en:"Restore your previous clipboard contents after the dictated text is pasted."},
   appendenter:{nl:"Drukt na de tekst automatisch op Enter — handig om invoer meteen te verzenden, bijvoorbeeld in een Claude Code-sessie of chat.",en:"Presses Enter after the text — handy to submit input right away, e.g. in a Claude Code session or chat."},

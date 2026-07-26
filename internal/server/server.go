@@ -860,13 +860,15 @@ func (s *Server) usdToEur() float64 {
 // to the provider and reporting the outcome. The key is checked as given (before
 // it is necessarily saved), so the UI can auto-test on paste.
 func (s *Server) handleTestKey(w http.ResponseWriter, r *http.Request) {
-	var body struct{ Provider, Key string }
+	var body struct{ Provider, Key, BaseURL string }
 	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<16)).Decode(&body); err != nil {
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "invalid JSON"})
 		return
 	}
 	key := strings.TrimSpace(body.Key)
-	if key == "" {
+	// A local OpenAI-compatible endpoint may legitimately need no key, so for that
+	// provider an empty key is fine as long as an endpoint is given.
+	if key == "" && body.Provider != "openai" {
 		s.writeJSON(w, http.StatusOK, map[string]any{"ok": false, "error": "empty"})
 		return
 	}
@@ -889,6 +891,17 @@ func (s *Server) handleTestKey(w http.ResponseWriter, r *http.Request) {
 	case "soniox":
 		req, _ = http.NewRequestWithContext(ctx, http.MethodGet, "https://api.soniox.com/v1/models", nil)
 		req.Header.Set("Authorization", "Bearer "+key)
+	case "openai":
+		base := strings.TrimRight(strings.TrimSpace(body.BaseURL), "/")
+		if base == "" {
+			s.writeJSON(w, http.StatusOK, map[string]any{"ok": false, "error": "empty"})
+			return
+		}
+		// Most OpenAI-compatible servers (incl. local ones) expose GET /models.
+		req, _ = http.NewRequestWithContext(ctx, http.MethodGet, base+"/models", nil)
+		if key != "" {
+			req.Header.Set("Authorization", "Bearer "+key)
+		}
 	default:
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "unknown provider"})
 		return

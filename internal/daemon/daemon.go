@@ -802,7 +802,7 @@ func (d *Daemon) SetInputLevel(l float64) error {
 }
 
 func (d *Daemon) cleanupEffective(s *session) bool {
-	return s.cfg.Cleanup.Enabled && s.cfg.Cleanup.APIKey != ""
+	return s.cfg.Cleanup.Enabled && cleanup.Configured(s.cfg.Cleanup)
 }
 
 func (d *Daemon) finish(s *session) {
@@ -883,7 +883,7 @@ func (d *Daemon) finish(s *session) {
 	var cleanUsage cleanup.Usage
 	if d.cleanupEffective(s) && wordCount(raw) >= cfg.Cleanup.MinWords {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.Cleanup.TimeoutMS)*time.Millisecond)
-		out, usage, err := cleanup.NewAnthropicCleaner(cfg.Cleanup).Clean(ctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections)
+		out, usage, err := cleanup.NewCleaner(cfg.Cleanup).Clean(ctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections)
 		cancel()
 		cleanUsage = usage // tokens are billed even if we then reject the output
 		if err != nil {
@@ -897,7 +897,7 @@ func (d *Daemon) finish(s *session) {
 		} else {
 			cleaned = out
 			cleanupUsed = true
-			d.markCredit("Anthropic", false) // a successful pass clears any prior flag
+			d.markCredit(cleanup.ProviderName(cfg.Cleanup), false) // a successful pass clears any prior flag
 		}
 	}
 	cleanupDone := time.Now()
