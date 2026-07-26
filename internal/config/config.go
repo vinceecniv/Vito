@@ -72,6 +72,22 @@ type Cleanup struct {
 	MinWords     int    `json:"min_words"`
 }
 
+// Assist configures the model behind Vito Assist voice commands. By default a
+// command runs through the very same model as AI cleanup; turning that off lets
+// you point Assist at a heavier model (Q&A and transformation are more demanding
+// than tidy-up), configured with the same fields as the cleanup section.
+type Assist struct {
+	// UseCleanupModel, when true (the default — nil counts as true), routes Assist
+	// commands through cfg.Cleanup. When false, the Cleanup config below is used.
+	UseCleanupModel *bool `json:"use_cleanup_model,omitempty"`
+	// Cleanup is Assist's own model config, used only when UseCleanupModel is off.
+	// Reusing the type keeps the settings section identical to AI cleanup.
+	Cleanup Cleanup `json:"cleanup"`
+}
+
+// UsesCleanupModel reports whether Assist should borrow the AI-cleanup model.
+func (a Assist) UsesCleanupModel() bool { return a.UseCleanupModel == nil || *a.UseCleanupModel }
+
 type Correction struct {
 	Wrong string `json:"wrong"`
 	Right string `json:"right"`
@@ -157,6 +173,13 @@ type Costs struct {
 	SttPerHourUSD        float64 `json:"stt_per_hour_usd"`
 	CleanupInPerMTokUSD  float64 `json:"cleanup_in_per_mtok_usd"`
 	CleanupOutPerMTokUSD float64 `json:"cleanup_out_per_mtok_usd"`
+	// Assist token rates, used to price Vito Assist commands when Assist runs on
+	// its own model (a heavier model can cost more). Authoritative in that case —
+	// the settings page fills them from the chosen model, so 0 means genuinely
+	// free (Groq's tier / a local model), not "unset". When Assist borrows the
+	// cleanup model, the cleanup rates above are used instead.
+	AssistInPerMTokUSD  float64 `json:"assist_in_per_mtok_usd,omitempty"`
+	AssistOutPerMTokUSD float64 `json:"assist_out_per_mtok_usd,omitempty"`
 }
 
 type Config struct {
@@ -164,6 +187,7 @@ type Config struct {
 	Audio               Audio      `json:"audio"`
 	STT                 STT        `json:"stt"`
 	Cleanup             Cleanup    `json:"cleanup"`
+	Assist              Assist     `json:"assist"`
 	Dictionary          Dictionary `json:"dictionary"`
 	Injection           Injection  `json:"injection"`
 	HotkeyWindows       string     `json:"hotkey_windows"`        // start/stop dictation

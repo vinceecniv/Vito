@@ -109,7 +109,7 @@ func TestHourlyCostIncludesCleanupTokens(t *testing.T) {
 		}
 	}
 
-	_, _, _, _, inTok, outTok, err := s.HourTotals(at)
+	_, _, _, _, inTok, outTok, _, _, err := s.HourTotals(at)
 	if err != nil {
 		t.Fatalf("HourTotals: %v", err)
 	}

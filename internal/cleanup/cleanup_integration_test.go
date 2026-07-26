@@ -26,7 +26,7 @@ func TestIntegrationClean(t *testing.T) {
 	defer cancel()
 
 	raw := "eh nou ja ik wilde eigenlijk eh zeggen dat het project bij focus goed loopt nieuwe regel groeten vincent"
-	got, _, err := c.Clean(ctx, raw, "nl", []config.Correction{{Wrong: "focus", Right: "Acme"}})
+	got, _, err := c.Clean(ctx, raw, "nl", []config.Correction{{Wrong: "focus", Right: "Acme"}}, "")
 	if err != nil {
 		t.Fatalf("Clean: %v", err)
 	}

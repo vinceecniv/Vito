@@ -189,6 +189,10 @@ func setClipboardText(text string) error {
 	})
 }
 
+// ReadClipboard returns the current clipboard text (best-effort), for voice
+// commands that operate on already-copied text.
+func ReadClipboard() (string, bool) { return getClipboardText() }
+
 func getClipboardText() (string, bool) {
 	if r, _, _ := procIsClipboardFormatAvail.Call(cfUnicodeText); r == 0 {
 		return "", false

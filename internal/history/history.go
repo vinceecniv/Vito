@@ -36,11 +36,22 @@ type Entry struct {
 	SttMS       int64     `json:"stt_ms"`
 	CleanupMS   int64     `json:"cleanup_ms"`
 	InjectedMS  int64     `json:"injected_ms"`
-	Words       int       `json:"words"`     // word count of the injected text
-	Sentences   int       `json:"sentences"` // sentence count of the injected text
-	// Cleanup token usage, for cost estimation (0 when no cleanup ran).
+	Words       int       `json:"words"`                  // word count of the injected text
+	Sentences   int       `json:"sentences"`              // sentence count of the injected text
+	Command     bool      `json:"command,omitempty"`      // a Vito Assist voice command ("Vito, …") drove this dictation
+	CommandText string    `json:"command_text,omitempty"` // the instruction itself ("vertaal naar Duits"), for the history label
+	// ClipboardCommand marks a Vito Assist command that worked on the clipboard
+	// (vs. a spoken follow-up). Not stored per row — only folded into the daily
+	// counter, which is enough to tell the two modes apart for achievements.
+	ClipboardCommand bool `json:"-"`
+	// Cleanup token usage, for cost estimation (0 when no cleanup ran). When a
+	// Vito Assist command drove this dictation the cleaner's tokens go to the
+	// command fields below instead — it's Q&A/transformation, not tidy-up — so
+	// the two cost lines stay honest and never double-count.
 	CleanupInTokens  int64 `json:"cleanup_in_tokens,omitempty"`
 	CleanupOutTokens int64 `json:"cleanup_out_tokens,omitempty"`
+	CommandInTokens  int64 `json:"command_in_tokens,omitempty"`
+	CommandOutTokens int64 `json:"command_out_tokens,omitempty"`
 	// Favorite marks an entry the user starred: it is kept out of the automatic
 	// pruning (the row cap and the age-based auto-delete) and floats to the top of
 	// search results.
@@ -84,17 +95,19 @@ func NewStore(maxEntries, retentionDays int) (*Store, error) {
 		return nil, fmt.Errorf("init schema: %w", err)
 	}
 	// Best-effort migration for day_stats created before these columns existed.
-	for _, col := range []string{"cleanup_in_tokens", "cleanup_out_tokens", "uploads", "upload_duration_ms", "upload_words"} {
+	for _, col := range []string{"cleanup_in_tokens", "cleanup_out_tokens", "uploads", "upload_duration_ms", "upload_words", "commands", "command_in_tokens", "command_out_tokens", "clipboard_commands"} {
 		_, _ = db.Exec("ALTER TABLE day_stats ADD COLUMN " + col + " INTEGER NOT NULL DEFAULT 0")
 	}
 	// Same, for the history table's per-entry token columns (added later than the
 	// table). Rows written before this stay at 0 — the tokens were never kept
 	// per entry back then, only in the daily aggregate.
-	for _, col := range []string{"cleanup_in_tokens", "cleanup_out_tokens"} {
+	for _, col := range []string{"cleanup_in_tokens", "cleanup_out_tokens", "command_in_tokens", "command_out_tokens"} {
 		_, _ = db.Exec("ALTER TABLE history ADD COLUMN " + col + " INTEGER NOT NULL DEFAULT 0")
 	}
 	// Favorite flag (added later than the table); rows written before this stay 0.
 	_, _ = db.Exec("ALTER TABLE history ADD COLUMN favorite INTEGER NOT NULL DEFAULT 0")
+	// The Vito Assist instruction column (added later than the table).
+	_, _ = db.Exec("ALTER TABLE history ADD COLUMN command_text TEXT NOT NULL DEFAULT ''")
 	s := &Store{db: db, maxEntries: maxEntries, retentionDays: retentionDays}
 	s.importLegacy(filepath.Join(base, "history.jsonl"))
 	s.backfillDayStats()
@@ -139,11 +152,18 @@ CREATE TABLE IF NOT EXISTS history (
   injected_ms  INTEGER,
   words        INTEGER,
   sentences    INTEGER,
+  -- The Vito Assist instruction that drove this dictation ('' = a plain
+  -- dictation), so the history can label it and show the original command.
+  command_text TEXT NOT NULL DEFAULT '',
   -- Per-entry cleanup token usage. day_stats keeps the same numbers summed per
   -- day; storing them here too lets the hourly chart cost a single hour the same
   -- way the cost card and the daily bars do, instead of leaving out the AI pass.
   cleanup_in_tokens  INTEGER NOT NULL DEFAULT 0,
   cleanup_out_tokens INTEGER NOT NULL DEFAULT 0,
+  -- Same, but for a Vito Assist command's cleaner call (Q&A/transform tokens),
+  -- kept apart so the cost breakdown can bill "assist" separately from cleanup.
+  command_in_tokens  INTEGER NOT NULL DEFAULT 0,
+  command_out_tokens INTEGER NOT NULL DEFAULT 0,
   -- Starred by the user: kept out of the row cap and the age-based auto-delete,
   -- and floated to the top of search results.
   favorite     INTEGER NOT NULL DEFAULT 0
@@ -168,13 +188,18 @@ CREATE TABLE IF NOT EXISTS day_stats (
   duration_ms       INTEGER NOT NULL DEFAULT 0,
   cleanup_in_tokens  INTEGER NOT NULL DEFAULT 0,
   cleanup_out_tokens INTEGER NOT NULL DEFAULT 0,
+  -- Vito Assist command tokens, billed apart from cleanup (see the history table).
+  command_in_tokens  INTEGER NOT NULL DEFAULT 0,
+  command_out_tokens INTEGER NOT NULL DEFAULT 0,
   -- Transcribed uploads are counted apart from dictations. They are billed the
   -- same way (so the cost card must see them) but they are not something you
   -- spoke, so letting them into "words dictated", "time spoken" or "typing time
   -- saved" would make those numbers mean something else entirely.
   uploads            INTEGER NOT NULL DEFAULT 0,
   upload_duration_ms INTEGER NOT NULL DEFAULT 0,
-  upload_words       INTEGER NOT NULL DEFAULT 0
+  upload_words       INTEGER NOT NULL DEFAULT 0,
+  commands           INTEGER NOT NULL DEFAULT 0,  -- dictations driven by a Vito Assist voice command
+  clipboard_commands INTEGER NOT NULL DEFAULT 0   -- of those, the ones that worked on the clipboard
 );
 `
 
@@ -189,10 +214,10 @@ func (s *Store) Append(e Entry) error {
 	e.fillDefaults()
 	_, err := s.db.Exec(
 		`INSERT OR REPLACE INTO history
-		 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens)
-		 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+		 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text)
+		 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 		e.ID, e.Timestamp.UnixMilli(), e.DurationMS, e.Language, e.Source, e.Raw, e.Cleaned,
-		b2i(e.CleanupUsed), e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, e.CleanupInTokens, e.CleanupOutTokens)
+		b2i(e.CleanupUsed), e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, e.CleanupInTokens, e.CleanupOutTokens, e.CommandInTokens, e.CommandOutTokens, e.CommandText)
 	if err != nil {
 		return err
 	}
@@ -277,15 +302,26 @@ func (e *Entry) fillDefaults() {
 // even when the raw history rows are later pruned or cleared). Caller holds s.mu.
 func (s *Store) foldDayStats(e Entry) {
 	day := e.Timestamp.Local().Format("2006-01-02")
+	cmd, clip := 0, 0
+	if e.Command {
+		cmd = 1
+	}
+	if e.ClipboardCommand {
+		clip = 1
+	}
 	_, _ = s.db.Exec(
-		`INSERT INTO day_stats (day, words, sentences, activations, duration_ms, cleanup_in_tokens, cleanup_out_tokens)
-		 VALUES (?,?,?,1,?,?,?)
+		`INSERT INTO day_stats (day, words, sentences, activations, duration_ms, cleanup_in_tokens, cleanup_out_tokens, commands, command_in_tokens, command_out_tokens, clipboard_commands)
+		 VALUES (?,?,?,1,?,?,?,?,?,?,?)
 		 ON CONFLICT(day) DO UPDATE SET
 		   words=words+excluded.words, sentences=sentences+excluded.sentences,
 		   activations=activations+1, duration_ms=duration_ms+excluded.duration_ms,
 		   cleanup_in_tokens=cleanup_in_tokens+excluded.cleanup_in_tokens,
-		   cleanup_out_tokens=cleanup_out_tokens+excluded.cleanup_out_tokens`,
-		day, e.Words, e.Sentences, e.DurationMS, e.CleanupInTokens, e.CleanupOutTokens)
+		   cleanup_out_tokens=cleanup_out_tokens+excluded.cleanup_out_tokens,
+		   commands=commands+excluded.commands,
+		   command_in_tokens=command_in_tokens+excluded.command_in_tokens,
+		   command_out_tokens=command_out_tokens+excluded.command_out_tokens,
+		   clipboard_commands=clipboard_commands+excluded.clipboard_commands`,
+		day, e.Words, e.Sentences, e.DurationMS, e.CleanupInTokens, e.CleanupOutTokens, cmd, e.CommandInTokens, e.CommandOutTokens, clip)
 }
 
 // FirstDataDay returns the earliest local day (yyyy-mm-dd) with any aggregate
@@ -306,7 +342,7 @@ func (s *Store) FirstDataDay() (string, error) {
 // An empty fromDay means all-time.
 // Uploads are billed at a different (lower) rate than dictations, so their
 // duration comes back separately.
-func (s *Store) CostTotals(fromDay, toDay string) (durationMS, uploadMS, inTokens, outTokens int64, firstDay string, err error) {
+func (s *Store) CostTotals(fromDay, toDay string) (durationMS, uploadMS, inTokens, outTokens, cmdInTokens, cmdOutTokens int64, firstDay string, err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	where := "day <= ?"
@@ -317,10 +353,11 @@ func (s *Store) CostTotals(fromDay, toDay string) (durationMS, uploadMS, inToken
 	}
 	row := s.db.QueryRow(
 		`SELECT COALESCE(SUM(duration_ms),0), COALESCE(SUM(upload_duration_ms),0),
-		        COALESCE(SUM(cleanup_in_tokens),0),
-		        COALESCE(SUM(cleanup_out_tokens),0), COALESCE(MIN(day),'')
+		        COALESCE(SUM(cleanup_in_tokens),0), COALESCE(SUM(cleanup_out_tokens),0),
+		        COALESCE(SUM(command_in_tokens),0), COALESCE(SUM(command_out_tokens),0),
+		        COALESCE(MIN(day),'')
 		 FROM day_stats WHERE `+where, args...)
-	err = row.Scan(&durationMS, &uploadMS, &inTokens, &outTokens, &firstDay)
+	err = row.Scan(&durationMS, &uploadMS, &inTokens, &outTokens, &cmdInTokens, &cmdOutTokens, &firstDay)
 	return
 }
 
@@ -328,20 +365,24 @@ func (s *Store) CostTotals(fromDay, toDay string) (durationMS, uploadMS, inToken
 // (day_stats only keeps daily sums). Only the day currently on screen is ever
 // asked for, so the row cap is not a concern — but note that privacy-mode
 // dictations keep their statistics without an entry, so they are missing here.
-func (s *Store) HourTotals(day time.Time) (words, sentences, activations [24]int, durationMS [24]int64, inTokens, outTokens [24]int64, err error) {
+func (s *Store) HourTotals(day time.Time) (words, sentences, activations [24]int, durationMS [24]int64, inTokens, outTokens, cmdInTokens, cmdOutTokens [24]int64, err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	start := time.Date(day.Year(), day.Month(), day.Day(), 0, 0, 0, 0, day.Location())
-	rows, err := s.db.Query(`SELECT ts, words, sentences, duration_ms, cleanup_in_tokens, cleanup_out_tokens FROM history WHERE ts >= ? AND ts < ?`,
+	// Cleanup and command tokens are kept apart so each hour can be priced at the
+	// right rate (a command may run on Assist's own, heavier model).
+	rows, err := s.db.Query(`SELECT ts, words, sentences, duration_ms,
+		cleanup_in_tokens, cleanup_out_tokens, command_in_tokens, command_out_tokens
+		FROM history WHERE ts >= ? AND ts < ?`,
 		start.UnixMilli(), start.AddDate(0, 0, 1).UnixMilli())
 	if err != nil {
 		return
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var ts, dur, inTok, outTok int64
+		var ts, dur, inTok, outTok, cmdIn, cmdOut int64
 		var w, sn int
-		if err = rows.Scan(&ts, &w, &sn, &dur, &inTok, &outTok); err != nil {
+		if err = rows.Scan(&ts, &w, &sn, &dur, &inTok, &outTok, &cmdIn, &cmdOut); err != nil {
 			return
 		}
 		h := time.UnixMilli(ts).In(day.Location()).Hour()
@@ -351,6 +392,8 @@ func (s *Store) HourTotals(day time.Time) (words, sentences, activations [24]int
 		durationMS[h] += dur
 		inTokens[h] += inTok
 		outTokens[h] += outTok
+		cmdInTokens[h] += cmdIn
+		cmdOutTokens[h] += cmdOut
 	}
 	err = rows.Err()
 	return
@@ -377,6 +420,23 @@ func (s *Store) DayTotals(fromDay, toDay string) (words, sentences, activations 
 	return
 }
 
+// CommandTotal sums Vito Assist commands over an inclusive day range (empty
+// fromDay = everything up to toDay). Kept separate from DayTotals so the chart
+// callers that don't need it aren't disturbed.
+func (s *Store) CommandTotal(fromDay, toDay string) (int, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	where := "day <= ?"
+	args := []any{toDay}
+	if fromDay != "" {
+		where = "day >= ? AND day <= ?"
+		args = []any{fromDay, toDay}
+	}
+	var n int
+	err := s.db.QueryRow(`SELECT COALESCE(SUM(commands),0) FROM day_stats WHERE `+where, args...).Scan(&n)
+	return n, err
+}
+
 // List returns entries newest-first, optionally filtered by a case-insensitive
 // substring query and/or to favorites only, capped at limit (0 = no cap). When a
 // search query is given, favorites are listed before other matches; the plain
@@ -384,7 +444,7 @@ func (s *Store) DayTotals(fromDay, toDay string) (words, sentences, activations 
 func (s *Store) List(query string, favoritesOnly bool, limit, offset int) ([]Entry, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	q := `SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,favorite
+	q := `SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite
 	      FROM history`
 	where, args := listWhere(query, favoritesOnly)
 	q += where
@@ -451,7 +511,7 @@ func (s *Store) Get(id string) (Entry, bool, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	row := s.db.QueryRow(
-		`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,favorite
+		`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite
 		 FROM history WHERE id=?`, id)
 	e, err := scanEntry(row)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -561,11 +621,12 @@ func scanEntry(sc scanner) (Entry, error) {
 	var ts int64
 	var cleanup, favorite int
 	if err := sc.Scan(&e.ID, &ts, &e.DurationMS, &e.Language, &e.Source, &e.Raw, &e.Cleaned,
-		&cleanup, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences, &favorite); err != nil {
+		&cleanup, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences, &e.CommandText, &favorite); err != nil {
 		return Entry{}, err
 	}
 	e.Timestamp = time.UnixMilli(ts)
 	e.CleanupUsed = cleanup != 0
+	e.Command = e.CommandText != ""
 	e.Favorite = favorite != 0
 	return e, nil
 }

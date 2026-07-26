@@ -103,7 +103,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 	if cfg.Cleanup.Enabled && cleanup.Configured(cfg.Cleanup) && wordCount(raw) <= uploadCleanupMaxWords {
 		// A longer window than a dictation gets: there is no cursor waiting on it.
 		cctx, cancel := context.WithTimeout(ctx, 30*time.Second)
-		out, u, err := cleanup.NewCleaner(cfg.Cleanup).Clean(cctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections)
+		out, u, err := cleanup.NewCleaner(cfg.Cleanup).Clean(cctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections, "")
 		cancel()
 		usage = u
 		if err != nil {

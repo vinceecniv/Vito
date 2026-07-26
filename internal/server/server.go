@@ -603,8 +603,20 @@ func (s *Server) costRates() (sttHr, inRate, outRate, fx float64, currency strin
 	return
 }
 
+// assistTokenRates returns the per-Mtok input/output USD rates for Vito Assist
+// command tokens: the cleanup rates when Assist borrows the cleanup model, or
+// its own rates (from the settings page, 0 = free) when it runs a heavier model.
+func (s *Server) assistTokenRates(cleanupIn, cleanupOut float64) (float64, float64) {
+	cfg := s.d.Config()
+	if cfg.Assist.UsesCleanupModel() {
+		return cleanupIn, cleanupOut
+	}
+	return cfg.Costs.AssistInPerMTokUSD, cfg.Costs.AssistOutPerMTokUSD
+}
+
 func (s *Server) handleCosts(w http.ResponseWriter, r *http.Request) {
 	sttHr, inRate, outRate, rate, currency := s.costRates()
+	aInRate, aOutRate := s.assistTokenRates(inRate, outRate)
 
 	sttUSD := func(durMS int64) float64 { return float64(durMS) / 3_600_000.0 * sttHr }
 	// Transcribed uploads are billed at the provider's pre-recorded rate, which
@@ -612,6 +624,8 @@ func (s *Server) handleCosts(w http.ResponseWriter, r *http.Request) {
 	uploadHr := stt.UploadRateUSD(s.d.Config().STT.Provider)
 	uploadUSD := func(durMS int64) float64 { return float64(durMS) / 3_600_000.0 * uploadHr }
 	cleanUSD := func(in, out int64) float64 { return float64(in)/1e6*inRate + float64(out)/1e6*outRate }
+	// Assist commands may run on their own model, so they price at their own rate.
+	assistUSD := func(in, out int64) float64 { return float64(in)/1e6*aInRate + float64(out)/1e6*aOutRate }
 
 	now := time.Now()
 	loc := now.Location()
@@ -621,18 +635,18 @@ func (s *Server) handleCosts(w http.ResponseWriter, r *http.Request) {
 
 	costTotals := s.hist.CostTotals
 	if s.demo() {
-		costTotals = func(from, to string) (int64, int64, int64, int64, string, error) {
+		costTotals = func(from, to string) (int64, int64, int64, int64, int64, int64, string, error) {
 			d, i, o, f := demo.CostTotals(now, from, to)
-			return d, 0, i, o, f, nil
+			return d, 0, i, o, 0, 0, f, nil
 		}
 	}
 
-	mDur, mUp, mIn, mOut, _, err := costTotals(monthStart, today)
+	mDur, mUp, mIn, mOut, mCmdIn, mCmdOut, _, err := costTotals(monthStart, today)
 	if err != nil {
 		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"error": err.Error()})
 		return
 	}
-	mStt, mClean := sttUSD(mDur)+uploadUSD(mUp), cleanUSD(mIn, mOut)
+	mStt, mClean, mCmd := sttUSD(mDur)+uploadUSD(mUp), cleanUSD(mIn, mOut), assistUSD(mCmdIn, mCmdOut)
 
 	// Cost over the window the status page is showing, so the card can name a
 	// second figure next to the month-to-date one. Same day arithmetic as the
@@ -648,18 +662,18 @@ func (s *Server) handleCosts(w http.ResponseWriter, r *http.Request) {
 			if days > 0 {
 				from = anchor.AddDate(0, 0, -(days - 1)).Format("2006-01-02")
 			}
-			if pDur, pUp, pIn, pOut, _, e := costTotals(from, anchor.Format("2006-01-02")); e == nil {
-				periodTotal = sttUSD(pDur) + uploadUSD(pUp) + cleanUSD(pIn, pOut)
+			if pDur, pUp, pIn, pOut, pCmdIn, pCmdOut, _, e := costTotals(from, anchor.Format("2006-01-02")); e == nil {
+				periodTotal = sttUSD(pDur) + uploadUSD(pUp) + cleanUSD(pIn, pOut) + assistUSD(pCmdIn, pCmdOut)
 			}
 		}
 	}
 
-	rDur, rUp, rIn, rOut, rFirst, err := costTotals(day30Start, today)
+	rDur, rUp, rIn, rOut, rCmdIn, rCmdOut, rFirst, err := costTotals(day30Start, today)
 	if err != nil {
 		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"error": err.Error()})
 		return
 	}
-	rTotalUSD := sttUSD(rDur) + uploadUSD(rUp) + cleanUSD(rIn, rOut)
+	rTotalUSD := sttUSD(rDur) + uploadUSD(rUp) + cleanUSD(rIn, rOut) + assistUSD(rCmdIn, rCmdOut)
 	// Project to a full month using the average per active day (days with data
 	// in the window), so a fresh install isn't understated.
 	activeDays := 30
@@ -682,7 +696,8 @@ func (s *Server) handleCosts(w http.ResponseWriter, r *http.Request) {
 		"fx_rate":           rate,
 		"month_stt":         mStt * rate,
 		"month_cleanup":     mClean * rate,
-		"month_total":       (mStt + mClean) * rate,
+		"month_command":     mCmd * rate,
+		"month_total":       (mStt + mClean + mCmd) * rate,
 		"period_total":      periodTotal * rate,
 		"projected_monthly": projMonthlyUSD * rate,
 		// The rates actually used, so the explanation popup can show them
@@ -691,6 +706,8 @@ func (s *Server) handleCosts(w http.ResponseWriter, r *http.Request) {
 		"upload_per_hour_usd":      uploadHr,
 		"cleanup_in_per_mtok_usd":  inRate,
 		"cleanup_out_per_mtok_usd": outRate,
+		"assist_in_per_mtok_usd":   aInRate,
+		"assist_out_per_mtok_usd":  aOutRate,
 	})
 }
 
@@ -715,9 +732,11 @@ func (s *Server) handleAchievements(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	sttHr, inRate, outRate, _, _ := s.costRates()
 	uploadHr := stt.UploadRateUSD(s.d.Config().STT.Provider)
-	dur, up, in, out, first, _ := s.hist.CostTotals("", now.Format("2006-01-02"))
+	aInRate, aOutRate := s.assistTokenRates(inRate, outRate)
+	dur, up, in, out, cmdIn, cmdOut, first, _ := s.hist.CostTotals("", now.Format("2006-01-02"))
 	spent := (float64(dur)/3_600_000.0*sttHr + float64(up)/3_600_000.0*uploadHr +
-		float64(in)/1e6*inRate + float64(out)/1e6*outRate) * fx
+		float64(in)/1e6*inRate + float64(out)/1e6*outRate +
+		float64(cmdIn)/1e6*aInRate + float64(cmdOut)/1e6*aOutRate) * fx
 	months := 0.0
 	if first != "" {
 		if fd, e := time.ParseInLocation("2006-01-02", first, now.Location()); e == nil {
@@ -1054,12 +1073,15 @@ func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
 	// Price each chart day here: the history layer tracks the billable
 	// quantities, the rates and currency live in config.
 	sttHr, inRate, outRate, fx, currency := s.costRates()
+	aInRate, aOutRate := s.assistTokenRates(inRate, outRate)
 	st.Currency = currency
 	for i := range st.Week {
 		d := &st.Week[i]
 		d.Cost = (float64(d.DurationMS)/3_600_000.0*sttHr +
 			float64(d.CleanupInTokens)/1e6*inRate +
-			float64(d.CleanupOutTokens)/1e6*outRate) * fx
+			float64(d.CleanupOutTokens)/1e6*outRate +
+			float64(d.CommandInTokens)/1e6*aInRate +
+			float64(d.CommandOutTokens)/1e6*aOutRate) * fx
 	}
 	s.writeJSON(w, http.StatusOK, st)
 }

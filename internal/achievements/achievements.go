@@ -24,6 +24,7 @@ const (
 	GroupDay         Group = "day"
 	GroupWeek        Group = "week"
 	GroupActivations Group = "activations"
+	GroupCommands    Group = "commands"
 	GroupMoney       Group = "money"
 	GroupSpecial     Group = "special"
 	// GroupSupport holds the honour-system "I donated" badges. They aren't derived
@@ -50,6 +51,7 @@ type Stats struct {
 	Words         int64
 	Sentences     int64
 	Activations   int64
+	Commands      int64 // Vito Assist voice commands run over your lifetime
 	SpokenSeconds int64
 	SavedMinutes  int64
 	Uploads       int64
@@ -65,6 +67,11 @@ type Stats struct {
 	Night               bool // dictated between midnight and 5am
 	Early               bool // dictated between 5am and 7am
 	Comeback            bool // resumed after a gap of 30+ days
+	// Mode-usage flags for the hidden "Vito Wizard" badge: ever dictated plainly,
+	// ever ran a spoken Assist command, and ever ran a clipboard Assist command.
+	UsedDictation       bool
+	UsedAssist          bool
+	UsedClipboardAssist bool
 }
 
 // Value is the current progress figure for a group (used for progress bars).
@@ -84,6 +91,8 @@ func (s Stats) Value(g Group) int64 {
 		return s.BestWeekWords
 	case GroupActivations:
 		return s.Activations
+	case GroupCommands:
+		return s.Commands
 	case GroupMoney:
 		return s.SubscriptionSavings
 	}
@@ -111,6 +120,8 @@ func (d Def) Earned(s Stats) bool {
 			return s.Uploads > 0
 		case "polyglot":
 			return s.Languages >= 3
+		case "wizard":
+			return s.UsedDictation && s.UsedAssist && s.UsedClipboardAssist
 		}
 		return false
 	}
@@ -171,6 +182,12 @@ var List = []Def{
 	{ID: "act-1k", Group: GroupActivations, Icon: "🤖", Name: "Reflex", Desc: "Started {n} dictations", Threshold: 1000},
 	{ID: "act-10k", Group: GroupActivations, Icon: "⌨️", Name: "One with the Hotkey", Desc: "Started {n} dictations", Threshold: 10000},
 
+	{ID: "cmd-1", Group: GroupCommands, Icon: "⚡", Name: "At Your Service", Desc: "Ran your first Vito Assist command", Threshold: 1},
+	{ID: "cmd-10", Group: GroupCommands, Icon: "🪄", Name: "Getting Assisted", Desc: "Ran {n} Vito Assist commands", Threshold: 10},
+	{ID: "cmd-50", Group: GroupCommands, Icon: "🧠", Name: "Second Brain", Desc: "Ran {n} Vito Assist commands", Threshold: 50},
+	{ID: "cmd-250", Group: GroupCommands, Icon: "🦾", Name: "Power User", Desc: "Ran {n} Vito Assist commands", Threshold: 250},
+	{ID: "cmd-1k", Group: GroupCommands, Icon: "🚀", Name: "Assist Machine", Desc: "Ran {n} Vito Assist commands", Threshold: 1000},
+
 	// What you've saved by bringing your own key instead of paying a subscription.
 	// {n} is a money amount; the description leaves the baseline to the UI.
 	{ID: "money-25", Group: GroupMoney, Icon: "💰", Name: "Pocket Change", Desc: "Saved {n} versus a paid subscription", Threshold: 25},
@@ -186,6 +203,7 @@ var List = []Def{
 	{ID: "comeback", Group: GroupSpecial, Icon: "🎗️", Name: "Welcome Back", Desc: "Came back after 30 quiet days", Flag: "comeback", Secret: true},
 	{ID: "upload", Group: GroupSpecial, Icon: "📎", Name: "Bring Your Own Audio", Desc: "Transcribed an audio file", Flag: "upload", Secret: true},
 	{ID: "polyglot", Group: GroupSpecial, Icon: "🌍", Name: "Polyglot", Desc: "Dictated in three languages", Flag: "polyglot", Secret: true},
+	{ID: "vito-wizard", Group: GroupSpecial, Icon: "🧙", Name: "Vito Wizard", Desc: "Used plain dictation, a spoken Vito Assist command, and a clipboard command", Flag: "wizard", Secret: true},
 }
 
 // Evaluate returns the ids currently earned.

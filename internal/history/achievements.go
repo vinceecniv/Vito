@@ -21,12 +21,19 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 	// Lifetime totals and the best single day come straight from the aggregates.
 	row := s.db.QueryRow(`SELECT
 		COALESCE(SUM(words),0), COALESCE(SUM(sentences),0), COALESCE(SUM(activations),0),
-		COALESCE(SUM(duration_ms),0), COALESCE(SUM(uploads),0), COALESCE(MAX(words),0)
+		COALESCE(SUM(duration_ms),0), COALESCE(SUM(uploads),0), COALESCE(MAX(words),0),
+		COALESCE(SUM(commands),0), COALESCE(SUM(clipboard_commands),0)
 		FROM day_stats`)
-	var durationMS int64
-	if err := row.Scan(&st.Words, &st.Sentences, &st.Activations, &durationMS, &st.Uploads, &st.BestDayWords); err != nil {
+	var durationMS, clipCommands int64
+	if err := row.Scan(&st.Words, &st.Sentences, &st.Activations, &durationMS, &st.Uploads, &st.BestDayWords, &st.Commands, &clipCommands); err != nil {
 		return st, err
 	}
+	// Which of the three modes you've used, for the hidden "Vito Wizard" badge:
+	// a plain dictation (an activation that wasn't a command), a spoken Assist
+	// command (a command that wasn't on the clipboard), and a clipboard command.
+	st.UsedDictation = st.Activations > st.Commands
+	st.UsedAssist = st.Commands > clipCommands
+	st.UsedClipboardAssist = clipCommands > 0
 	st.SpokenSeconds = durationMS / 1000
 	if wpm <= 0 {
 		wpm = 40
