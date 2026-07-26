@@ -223,7 +223,7 @@ func Default() *Config {
 			// The Anthropic model stays filled in case they switch providers.
 			Provider:      "openai",
 			OpenAIBaseURL: "https://api.groq.com/openai/v1",
-			OpenAIModel:   "llama-3.1-8b-instant",
+			OpenAIModel:   "llama-3.3-70b-versatile",
 			OpenAIPreset:  "groq",
 			Model:         "claude-haiku-4-5",
 			// Generous on purpose: hitting the timeout means you pay for the
