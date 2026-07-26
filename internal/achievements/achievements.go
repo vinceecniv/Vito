@@ -123,7 +123,7 @@ var List = []Def{
 	// milestones and shown with a little extra sparkle when unlocked.
 	{ID: "donate-once", Group: GroupSupport, Icon: "☕", Name: "Coffee Angel", Desc: "Treated Vito to a coffee", Manual: true},
 	{ID: "donate-monthly", Group: GroupSupport, Icon: "😇", Name: "Guardian Angel", Desc: "A monthly supporter of Vito", Manual: true},
-	{ID: "share-social", Group: GroupSupport, Icon: "📢", Name: "Town Crier", Desc: "Shared Vito on social media", Manual: true},
+	{ID: "share-social", Group: GroupSupport, Icon: "👍", Name: "Signal Boost", Desc: "Shared Vito on social media", Manual: true},
 	{ID: "tell-friend", Group: GroupSupport, Icon: "🤝", Name: "Word of Mouth", Desc: "Told a friend about Vito", Manual: true},
 
 	// Words dictated, over your whole time with Vito.
