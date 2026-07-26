@@ -4722,7 +4722,8 @@ async function loadStats(){
   }
   st.week.forEach((d,i)=>{ const col=cols[i];
     if (isPh(d)) { col.onmouseenter=()=>showPlaceholderTip(col); col.onmouseleave=hideChartTip; }
-    else { col.onmouseenter=()=>showChartTip(d,col); col.onmouseleave=hideChartTip; }
+    else if (d.words > 0) { col.onmouseenter=()=>showChartTip(d,col); col.onmouseleave=hideChartTip; }
+    else { col.onmouseenter=hideChartTip; } // a time unit with 0 words gets no tooltip
   });
 }
 // lastChartKey identifies which set of bars is on screen; when it changes the
