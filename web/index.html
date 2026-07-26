@@ -3683,6 +3683,7 @@ async function loadAbout(){
   let when = "";
   try { if (a.commit_time) when = ` <span style="color:var(--text3); font-weight:400;">(${new Date(a.commit_time).toLocaleDateString(numLoc())})</span>`; } catch {}
   aboutInfo = a;
+  setAssetVer(a.version);
   box.innerHTML =
     row(t("Version"), `<span id="about-version">${a.version || "—"}</span>`) +
     row(t("Git commit"), commit + when) +
@@ -3889,6 +3890,7 @@ let updateState = null;
 async function loadUpdate(force){
   try { updateState = await api("/api/update" + (force ? "?force=1" : "")); }
   catch { updateState = null; }
+  if (updateState && updateState.current) setAssetVer(updateState.current);
   applyStatusLayout();
   if ($("tab-status").classList.contains("active")) loadStats();
   renderAboutVersion();
@@ -4077,9 +4079,23 @@ let achState = null;
 let achImages = new Set();    // ids that ship a medal PNG (else the emoji is used)
 let achAnim = new Set();      // ids that also have a Lottie animation (unlock/hover)
 let achFreshIds = new Set(); // earned this session — get a dot until you visit the page
+// Medal art and animations are static assets cached for a day; bust that cache
+// by the app version so a new release (which is when medals change) always shows
+// fresh art instead of a stale image. Persisted so it's known on the very first
+// render of later visits.
+let ASSET_VER = ""; try { ASSET_VER = localStorage.getItem("vito-asset-ver") || ""; } catch {}
+const assetV = () => ASSET_VER ? "?v=" + encodeURIComponent(ASSET_VER) : "";
+function setAssetVer(v){
+  if (!v || v === "dev" || v === ASSET_VER) return;
+  ASSET_VER = v; try { localStorage.setItem("vito-asset-ver", v); } catch {}
+  // Re-render anything already showing medals so they pick up the new URL.
+  const at = $("tab-achievements"), st = $("tab-status");
+  if (at && at.classList.contains("active")) loadAchievements(true);
+  else if (st && st.classList.contains("active") && typeof loadStats === "function") loadStats();
+}
 // A medal is its shipped image when one exists, otherwise its emoji.
 function achMedalInner(x){
-  if (achImages.has(x.id)) return `<img src="/achievements/${x.id}.png" alt="" loading="lazy">`;
+  if (achImages.has(x.id)) return `<img src="/achievements/${x.id}.png${assetV()}" alt="" loading="lazy">`;
   return ahEsc(x.icon);
 }
 // The medal art is a static PNG; the ones with a Lottie come alive on unlock and
@@ -4103,7 +4119,7 @@ function mountLottie(container, id, loop){
     container.innerHTML = ""; // swap the static PNG for the animation once it's ready
     container._anim = lottie.loadAnimation({
       container, renderer: "svg", loop: !!loop, autoplay: true,
-      path: "/achievements/lottie/" + id + ".json",
+      path: "/achievements/lottie/" + id + ".json" + assetV(),
     });
   }).catch(() => {}); // no player, no problem — the static PNG stays
 }
@@ -4323,7 +4339,7 @@ if ($("ach-content")) {
     if (e.relatedTarget && card.contains(e.relatedTarget)) return; // still inside the card
     const medal = card.querySelector(".ach-medal"); if (!medal || !medal._anim) return;
     unmountLottie(medal);
-    medal.innerHTML = achImages.has(card.dataset.id) ? `<img src="/achievements/${card.dataset.id}.png" alt="" loading="lazy">` : "";
+    medal.innerHTML = achImages.has(card.dataset.id) ? `<img src="/achievements/${card.dataset.id}.png${assetV()}" alt="" loading="lazy">` : "";
   });
   // Claiming / unmarking the honour-system donation badges.
   $("ach-content").addEventListener("click", (e) => {
