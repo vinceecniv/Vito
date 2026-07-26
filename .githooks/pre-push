@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Keep main green: runs before every push (fast lane or PR branch alike).
+# Install once per clone:  git config core.hooksPath .githooks
+set -e
+export CGO_ENABLED=1
+
+gofiles=$(git ls-files '*.go')
+if [ -n "$gofiles" ]; then
+  bad=$(gofmt -l $gofiles)
+  [ -z "$bad" ] || { printf 'gofmt needed on:\n%s\nrun: gofmt -w .\n' "$bad"; exit 1; }
+fi
+
+echo "pre-push: go vet";   go vet ./...
+echo "pre-push: go build"; go build ./...
+echo "pre-push: go test";  go test ./...
+echo "pre-push checks passed"
