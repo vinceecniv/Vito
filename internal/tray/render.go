@@ -8,7 +8,6 @@ import (
 	"image/png"
 	"math"
 	"runtime"
-	"time"
 
 	"vito/internal/daemon"
 )
@@ -16,8 +15,8 @@ import (
 // Tray icons are rendered in-process (no embedded frame files). The base is the
 // Vito app icon — a squircle with the coral→violet brand gradient and the white
 // Waveform-V mark — matching the taskbar/app icon. Recording and processing add
-// a pulsing status dot (coral / violet) in the bottom-right corner, animated by
-// swapping frames (a tray icon has no native animation).
+// a single static status dot (coral / violet) in the bottom-right corner; the
+// dot switches on state change and nothing animates.
 
 const iconSize = 256
 
@@ -36,19 +35,9 @@ var (
 	dotViol  = color.NRGBA{0x8B, 0x5C, 0xF6, 0xFF}
 )
 
-type frameSpec struct {
-	scale, opacity float64
-}
-
-// Ping-pong pulse: full → mid → small → mid (cycling gives 1-2-3-2-1…).
-var pulse = []frameSpec{{1.0, 1.0}, {0.76, 0.8}, {0.50, 0.55}, {0.76, 0.8}}
-
-type stateAnim struct {
-	frames   [][]byte
-	interval time.Duration
-}
-
-func buildFrames(dark bool) map[daemon.State]stateAnim {
+// buildIcons renders one static icon per state: the brand mark alone for idle,
+// and the mark with a coral or violet status dot for recording / processing.
+func buildIcons(dark bool) map[daemon.State][]byte {
 	win := runtime.GOOS == "windows"
 	enc := func(img *image.NRGBA) []byte {
 		p := encodePNG(img)
@@ -58,19 +47,15 @@ func buildFrames(dark bool) map[daemon.State]stateAnim {
 		return p
 	}
 	base := renderBrand(dark)
-	frames := func(col color.NRGBA) [][]byte {
-		out := make([][]byte, len(pulse))
-		for i, f := range pulse {
-			img := cloneImg(base)
-			addDot(img, col, f.scale, f.opacity)
-			out[i] = enc(img)
-		}
-		return out
+	withDot := func(col color.NRGBA) []byte {
+		img := cloneImg(base)
+		addDot(img, col, 1.0, 1.0)
+		return enc(img)
 	}
-	return map[daemon.State]stateAnim{
-		daemon.StateIdle:       {frames: [][]byte{enc(base)}, interval: 400 * time.Millisecond},
-		daemon.StateRecording:  {frames: frames(dotCoral), interval: 150 * time.Millisecond},
-		daemon.StateProcessing: {frames: frames(dotViol), interval: 300 * time.Millisecond},
+	return map[daemon.State][]byte{
+		daemon.StateIdle:       enc(base),
+		daemon.StateRecording:  withDot(dotCoral),
+		daemon.StateProcessing: withDot(dotViol),
 	}
 }
 

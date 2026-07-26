@@ -20,19 +20,17 @@ import (
 	"vito/internal/daemon"
 )
 
-// animator cycles the tray icon frames for the current state. Idle is a single
-// frame (set once); recording and processing loop a pulsing status dot at their
-// own cadence until the state changes.
+// animator holds one static tray icon per state and swaps it on state change —
+// nothing animates. It also rebuilds the set when the OS taskbar theme flips.
 type animator struct {
-	anims map[daemon.State]stateAnim
+	icons map[daemon.State][]byte
 	mu    sync.Mutex
 	state daemon.State
-	idx   int
 	dark  bool
 }
 
 func newAnimator(dark bool) *animator {
-	return &animator{anims: buildFrames(dark), state: daemon.StateIdle, dark: dark}
+	return &animator{icons: buildIcons(dark), state: daemon.StateIdle, dark: dark}
 }
 
 // setDark rebuilds the icon set when the OS taskbar theme changes.
@@ -43,56 +41,35 @@ func (a *animator) setDark(dark bool) {
 		return
 	}
 	a.dark = dark
-	a.anims = buildFrames(dark)
-	a.idx = 0
-	fr := a.anims[a.state].frames
+	a.icons = buildIcons(dark)
+	ic := a.icons[a.state]
 	a.mu.Unlock()
-	if len(fr) > 0 {
-		systray.SetIcon(fr[0])
+	if len(ic) > 0 {
+		systray.SetIcon(ic)
 	}
 }
 
-// setState switches to s and shows its first frame immediately.
+// setState switches to s and shows its icon immediately.
 func (a *animator) setState(s daemon.State) {
 	a.mu.Lock()
-	a.state, a.idx = s, 0
-	fr := a.anims[s].frames
+	a.state = s
+	ic := a.icons[s]
 	a.mu.Unlock()
-	if len(fr) > 0 {
-		systray.SetIcon(fr[0])
-	}
-}
-
-// run advances multi-frame states at their per-state interval; single-frame
-// states just idle so a static icon costs nothing.
-func (a *animator) run() {
-	for {
-		a.mu.Lock()
-		sa := a.anims[a.state]
-		interval := sa.interval
-		if interval <= 0 {
-			interval = 400 * time.Millisecond
-		}
-		if len(sa.frames) > 1 {
-			a.idx = (a.idx + 1) % len(sa.frames)
-			systray.SetIcon(sa.frames[a.idx])
-		}
-		a.mu.Unlock()
-		time.Sleep(interval)
+	if len(ic) > 0 {
+		systray.SetIcon(ic)
 	}
 }
 
 // Run displays the tray icon and blocks until the user selects Quit (or the
 // tray host goes away). onQuit runs after systray tears down; the caller should
 // exit the process there.
-func Run(d *daemon.Daemon, url string, log *slog.Logger, onQuit func()) {
-	systray.Run(func() { onReady(d, url, log) }, onQuit)
+func Run(d *daemon.Daemon, url, version string, log *slog.Logger, onQuit func()) {
+	systray.Run(func() { onReady(d, url, version, log) }, onQuit)
 }
 
-func onReady(d *daemon.Daemon, url string, log *slog.Logger) {
+func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 	anim := newAnimator(wantDark(d))
 	anim.setState(daemon.StateIdle)
-	go anim.run()
 	go func() { // follow OS taskbar theme changes when Vito's theme is "system"
 		for {
 			time.Sleep(3 * time.Second)
@@ -102,6 +79,9 @@ func onReady(d *daemon.Daemon, url string, log *slog.Logger) {
 	systray.SetTitle("Vito Tray")
 	systray.SetTooltip("Vito Tray — idle")
 
+	mVersion := systray.AddMenuItem("Vito "+version, "Versie")
+	mVersion.Disable()
+	systray.AddSeparator()
 	mStatus := systray.AddMenuItem("● Idle", "Huidige status")
 	mStatus.Disable()
 	systray.AddSeparator()

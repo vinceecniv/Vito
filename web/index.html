@@ -987,6 +987,19 @@
   .about-row > span:first-child { color:var(--text3); }
   .about-row > span:last-child { color:var(--text); font-weight:600; text-align:right; }
   .about-row code { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12.5px; background:var(--input-bg); border-radius:5px; padding:2px 6px; }
+  /* Version cell: the number on its own line, any update note/actions stacked
+     below it so a "new version" never sits crowded against the number. */
+  #about-version { display:inline-flex; flex-direction:column; align-items:flex-end; gap:8px; font-weight:600; }
+  .about-upd { font-weight:500; font-size:12.5px; color:var(--text3); }
+  .about-upd.new { color:var(--accent); font-weight:700; }
+  .about-upd-actions { display:flex; align-items:center; gap:14px; margin-top:2px; }
+  /* "You've been updated" bar on the status page — dismissible, notes a click away. */
+  .update-bar { display:flex; align-items:center; gap:12px; padding:12px 14px; margin-bottom:20px; border:1px solid var(--accent); background:var(--accent-soft); border-radius:14px; }
+  .update-bar .ub-ico { flex:0 0 auto; width:22px; height:22px; color:var(--accent); display:flex; }
+  .update-bar .ub-ico svg { width:22px; height:22px; }
+  .update-bar .ub-text { font-weight:600; font-size:13.5px; color:var(--text); }
+  .update-bar .ub-x { margin-left:auto; border:0; background:none; color:var(--text3); font-size:20px; line-height:1; cursor:pointer; padding:0 4px; }
+  .update-bar .ub-x:hover { color:var(--text); }
   .tux-ico { width:16px; height:16px; flex:0 0 auto; vertical-align:-2px; }
   .card > h2 .tux-ico { width:20px; height:20px; }
   .tool-main { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
@@ -1099,6 +1112,8 @@
           <button class="btn ghost" id="welcome-ok">Got it</button>
         </div>
       </div>
+      <div id="update-banner"></div>
+      <div id="linux-banner"></div>
       <div id="pwa-tip"></div>
       <div class="statgrid" id="statgrid" style="margin-bottom:20px;"></div>
       <div class="grid grid-2" id="wide-row" style="align-items:stretch; margin-bottom:20px;">
@@ -1588,10 +1603,12 @@ const TR = { nl: {
   "I did this":"Ik heb dit gedaan",
   "Unmark":"Vinkje weghalen",
   "Did you really support Vito?":"Heb je Vito echt gesteund?",
-  "Only tick this if you actually made the donation — it's on your honour. No need to fool yourself. 🙂":"Vink dit alleen aan als je de donatie echt hebt gedaan — op je erewoord. Hou jezelf niet voor de gek. 🙂",
+  "Only tick this if you actually did it — it's on your honour. No need to fool yourself. 🙂":"Vink dit alleen aan als je het echt hebt gedaan — op je erewoord. Hou jezelf niet voor de gek. 🙂",
   "Yes, I did":"Ja, gedaan",
   "Treated Vito to a coffee":"Vito op een koffie getrakteerd",
   "A monthly supporter of Vito":"Maandelijkse supporter van Vito",
+  "Shared Vito on social media":"Vito gedeeld op social media",
+  "Told a friend about Vito":"Een vriend over Vito verteld",
   // History count
   "{n} dictations":"{n} dictaten",
   "{n} matches":"{n} resultaten",
@@ -1695,7 +1712,9 @@ const TR = { nl: {
   "View on GitHub":"Bekijken op GitHub","Check for updates":"Controleren op updates",
   "When to show this card":"Wanneer deze kaart getoond wordt",
   "Always":"Altijd","Only when there's an update":"Alleen bij een update",
-  "Vito has been updated to {v}.":"Vito is bijgewerkt naar {v}.",
+  "Vito has been updated to {v}.":"Vito is bijgewerkt naar versie {v}.",
+  "Welcome, Linux user! Set Vito up for your desktop in the Linux settings.":"Welkom, Linux-gebruiker! Stel Vito in voor je desktop bij de Linux-instellingen.",
+  "Open Linux settings":"Linux-instellingen openen",
   "Choose which cards to show, and in what order":"Kies welke kaarten je ziet, en in welke volgorde",
   "Edit this page":"Deze pagina aanpassen","Status page layout":"Indeling statuspagina",
   "Show or hide cards, and drag them into the order you want.":"Toon of verberg kaarten, en sleep ze in de volgorde die je wilt.",
@@ -1735,7 +1754,7 @@ const TR = { nl: {
   "Go to settings":"Naar instellingen",
   "Got it":"Begrepen",
   "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:":"Vito luistert naar je stem en plakt de uitgewerkte tekst direct waar je cursor staat. Zo zet je het in gebruik:",
-  "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.":"Maak een AssemblyAI API-key aan (nodig) en vul die in bij Instellingen → Spraakherkenning.",
+  "Create a speech-recognition API key (required) — you only need one, from either AssemblyAI or Soniox — and enter it in Settings → Speech recognition.":"Maak een spraakherkenning-API-key aan (nodig) — je hebt er maar één nodig, van AssemblyAI óf Soniox — en vul die in bij Instellingen → Spraakherkenning.",
   "Want automatic AI cleanup? Then also create an Anthropic API key and enter it.":"Wil je automatische AI-opschoning? Maak dan ook een Anthropic API-key aan en vul die in.",
   "Set your start/stop hotkey under Settings → Activation and review the other settings.":"Stel je start/stop-sneltoets in onder Instellingen → Activering en loop de overige instellingen na.",
   "Press your hotkey, speak, and Vito pastes the text where your cursor is.":"Druk je sneltoets, spreek, en Vito plakt de tekst waar je cursor staat.",
@@ -3581,6 +3600,30 @@ $("welcome-settings").onclick = () => selectTab("settings");
 function maybeShowWelcome(){
   const c = $("welcome-card");
   if (c && cfg && cfg.ui) c.hidden = !!cfg.ui.welcome_done;
+  maybeShowLinuxHint();
+}
+// A one-off status-page bar for Linux users on first run: Vito needs a couple of
+// helper tools and a hotkey binding to work on Linux, so point them at the Linux
+// settings. Dismissible any time (remembered locally). renderLinuxCard supplies
+// the authoritative OS; both it and maybeShowWelcome poke this, so it shows once
+// config and OS are both known, whichever lands last.
+let lastIsLinux = false;
+function maybeShowLinuxHint(){
+  if (!lastIsLinux) return;
+  if (!(cfg && cfg.ui && !cfg.ui.welcome_done)) return; // first-run window only
+  let dismissed = false; try { dismissed = localStorage.getItem("vito-linux-hint") === "1"; } catch {}
+  if (dismissed) return;
+  const slot = $("linux-banner"); if (!slot || slot.firstChild) return;
+  slot.innerHTML =
+    `<div class="update-bar linux-bar">` +
+      `<span class="ub-ico tux-slot"></span>` +
+      `<span class="ub-text">${t("Welcome, Linux user! Set Vito up for your desktop in the Linux settings.")}</span>` +
+      `<button class="linkbtn" id="lx-open">${t("Open Linux settings")}</button>` +
+      `<button class="ub-x" id="lx-dismiss" title="${t("Close")}" aria-label="${t("Close")}">×</button>` +
+    `</div>`;
+  const ic = slot.querySelector(".tux-slot"); if (ic) ic.innerHTML = TUX_SVG;
+  const o = $("lx-open"); if (o) o.onclick = () => { selectTab("settings"); selectSetSection("linux"); };
+  const x = $("lx-dismiss"); if (x) x.onclick = () => { slot.innerHTML = ""; try { localStorage.setItem("vito-linux-hint", "1"); } catch {} };
 }
 
 /* ---- Linux tools report card (status page) ----
@@ -3603,6 +3646,8 @@ async function renderLinuxCard(){
   let info;
   try { info = await api("/api/linux-tools"); } catch { if (tab) tab.hidden = true; return; }
   const isLinux = !!info && info.os === "linux";
+  lastIsLinux = isLinux;
+  maybeShowLinuxHint();
   if (tab) tab.hidden = !isLinux;
   if (!isLinux) { body.innerHTML = ""; return; }
   const present = info.present || {};
@@ -3654,12 +3699,24 @@ function renderAboutVersion(){
   let extra = "";
   if (!u.checking) extra = `<span class="about-upd">${t("checking is off")}</span>`;
   else if (rel && rel.available) {
+    // Same affordance as the status card: install in place where we can, else a
+    // link to the release. The badge and its actions get their own line so they
+    // never crowd the version number.
+    const act = u.can_apply
+      ? `<button class="btn primary small" id="about-apply">${t("Update now")}</button>`
+      : `<button class="btn small" id="about-open">${t("Open release")}</button>`;
     extra = `<span class="about-upd new">${t("{v} available").replace("{v}", rel.version)}</span>` +
-            (rel.notes ? ` <button class="linkbtn" id="about-notes">${t("What's new")}</button>` : "");
+            `<span class="about-upd-actions">${act}` +
+            (rel.notes ? `<button class="linkbtn" id="about-notes">${t("What's new")}</button>` : "") +
+            `</span>`;
   } else if (rel) extra = `<span class="about-upd">${t("up to date")}</span>`;
-  el.innerHTML = (aboutInfo.version || "—") + (extra ? " " + extra : "");
+  el.innerHTML = `<span class="about-ver-num">${aboutInfo.version || "—"}</span>` + extra;
   const n = $("about-notes");
   if (n) n.onclick = () => showReleaseNotes();
+  const ap = $("about-apply");
+  if (ap) ap.onclick = () => applyUpdate(ap);
+  const op = $("about-open");
+  if (op) op.onclick = () => window.open((rel && rel.url) || u.repo_url, "_blank");
   // Keep the GitHub link pointed at whatever update.Repo says — one source of truth.
   const gh = $("about-github");
   if (gh && u.repo) gh.href = u.repo;
@@ -3847,9 +3904,23 @@ function announceUpdated(){
   try { seen = localStorage.getItem("vito-seen-version"); } catch { return; }
   try { localStorage.setItem("vito-seen-version", u.current); } catch {}
   if (!seen || seen === u.current) return;
-  const rel = u.release;
-  toast(t("Vito has been updated to {v}.").replace("{v}", u.current), "ok");
-  if (rel && rel.version === u.current && rel.notes) setTimeout(() => showReleaseNotes(rel), 600);
+  const rel = (u.release && u.release.version === u.current) ? u.release : null;
+  showUpdatedBanner(u.current, rel);
+}
+// A dismissible bar at the top of the status page after an update landed. The
+// release notes stay one click away in the usual popup; the ✕ clears it.
+function showUpdatedBanner(ver, rel){
+  const slot = $("update-banner"); if (!slot) return;
+  const notesBtn = (rel && rel.notes) ? `<button class="linkbtn" id="ub-notes">${t("What's new")}</button>` : "";
+  slot.innerHTML =
+    `<div class="update-bar">` +
+      `<span class="ub-ico">${ICON_UPDATE}</span>` +
+      `<span class="ub-text">${t("Vito has been updated to {v}.").replace("{v}", ver)}</span>` +
+      notesBtn +
+      `<button class="ub-x" id="ub-dismiss" title="${t("Close")}" aria-label="${t("Close")}">×</button>` +
+    `</div>`;
+  const n = $("ub-notes"); if (n) n.onclick = () => showReleaseNotes(rel);
+  const x = $("ub-dismiss"); if (x) x.onclick = () => { slot.innerHTML = ""; };
 }
 const ICON_UPDATE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6m0 0-5 5m5-5 5 5"/></svg>';
 const ICON_CHECKMARK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
@@ -4245,7 +4316,7 @@ if ($("ach-content")) {
     const id = b.dataset.claim, on = b.dataset.on === "1";
     if (on) {
       modal(t("Did you really support Vito?"),
-        `<p class="act-note" style="margin:0;">${t("Only tick this if you actually made the donation — it's on your honour. No need to fool yourself. 🙂")}</p>`,
+        `<p class="act-note" style="margin:0;">${t("Only tick this if you actually did it — it's on your honour. No need to fool yourself. 🙂")}</p>`,
         () => claimAchievement(id, true), "Yes, I did");
     } else {
       claimAchievement(id, false);
