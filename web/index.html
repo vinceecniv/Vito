@@ -317,11 +317,15 @@
     .sidebar .brand .tile { width:38px; height:38px; }
     .sidebar .brand .wordmark { font-size:22px; }
     /* topbar row: brand … status-pill hamburger; nav wraps below when opened */
-    .hamburger { display:flex; order:2; margin-left:10px; }
+    .hamburger { display:flex; order:3; margin-left:10px; }
     .nav-item { display:none; width:100%; order:3; }
-    .side-pip { display:none; width:100%; order:3; margin-top:8px; }
+    /* Detach button: a standalone icon-only button in the topbar, just left of
+       the hamburger, rather than tucked inside the opened menu. */
+    .side-pip { display:flex; order:2; width:40px; height:40px; padding:0; margin:0;
+      gap:0; justify-content:center; flex:0 0 auto; }
+    .side-pip > span:last-child { display:none; }
     .side-bottom { display:flex; order:1; width:auto; margin:0 0 0 auto; padding:0; } /* opname-indicator always visible */
-    .sidebar.open .nav-item, .sidebar.open .side-pip { display:flex; }
+    .sidebar.open .nav-item { display:flex; }
     .content { padding:20px 16px; max-width:100%; }
     .grid-2 { grid-template-columns:1fr; }
     .page-head h1 { line-height:28px; }
@@ -4787,7 +4791,10 @@ async function loadSettings() {
   renderDemoBanner();
   keytermsList = (cfg.dictionary.keyterms || []).slice();
   renderKeyterms();
-  renderCorrections(cfg.dictionary.corrections || []);
+  // Don't wipe the corrections table out from under someone mid-edit: a config
+  // echo (our own auto-save, or a correction added from History) must not rebuild
+  // the rows they're typing in.
+  if (!$("d-corrections").contains(document.activeElement)) renderCorrections(cfg.dictionary.corrections || []);
   if (cfg.ui && cfg.ui.theme) setTheme(cfg.ui.theme, false); // config is source of truth
   const savedLang = cfg.ui && cfg.ui.lang ? cfg.ui.lang : "";
   $("s-uilang").value = savedLang;
@@ -5302,7 +5309,15 @@ let dictSaveTimer;
 function autoSaveDict(){
   if (loadingSettings || !cfg) return;
   clearTimeout(dictSaveTimer);
-  dictSaveTimer = setTimeout(() => saveConfig({ dictionary: collectDictionary() }, "Dictionary saved"), 600);
+  dictSaveTimer = setTimeout(() => {
+    const d = collectDictionary(), cur = cfg.dictionary || {};
+    // A half-typed new row (only one field filled) collects to nothing new, so
+    // don't fire a pointless save + "saved" toast — and no config echo — until
+    // the row is actually complete.
+    if (JSON.stringify(d.corrections) === JSON.stringify(cur.corrections || []) &&
+        JSON.stringify(d.keyterms) === JSON.stringify(cur.keyterms || [])) return;
+    saveConfig({ dictionary: d }, "Dictionary saved");
+  }, 600);
 }
 function collectDictionary() {
   const corrections = [...$("d-corrections").querySelectorAll("tbody tr")].map(tr => {
