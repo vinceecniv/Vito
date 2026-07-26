@@ -944,6 +944,7 @@
   /* modal (keyterm add/edit) */
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
   .modal { width:360px; max-width:92vw; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:20px; box-shadow:0 24px 64px rgba(20,10,40,.45); }
+  .modal.relnotes-modal { width:560px; }
   .modal h3 { margin:0 0 4px; font-family:'Baloo 2','Sora',sans-serif; font-size:17px; }
   .modal-x { position:absolute; top:12px; right:12px; width:28px; height:28px; border:none; background:var(--input-bg); color:var(--text3); border-radius:8px; cursor:pointer; font-size:18px; line-height:1; display:flex; align-items:center; justify-content:center; }
   .modal-x:hover { background:var(--track); color:var(--text); }
@@ -4045,11 +4046,25 @@ function showReleaseNotes(rel){
   if (!rel) return;
   let when = "";
   try { if (rel.published_at) when = new Date(rel.published_at).toLocaleDateString(numLoc(), { day:"numeric", month:"long", year:"numeric" }); } catch {}
-  modal(t("What's new in {v}").replace("{v}", rel.version),
+  const back = modal(t("What's new in {v}").replace("{v}", rel.version),
     (when ? `<p class="sub" style="margin:-4px 0 10px; color:var(--text3);">${when}</p>` : "") +
     `<div class="relnotes">${renderMarkdown(rel.notes) || `<p>${t("This release has no notes.")}</p>`}</div>` +
     `<p class="act-note" style="margin:12px 0 0;"><a href="${rel.url}" target="_blank" rel="noopener">${t("View on GitHub")}</a></p>`,
     () => {}, "Close", false, null, true);
+  // Wider, and lined up over the content column (right of the sidebar) instead
+  // of the whole viewport, so it sits over what you're reading.
+  const box = back.querySelector(".modal"); if (box) box.classList.add("relnotes-modal");
+  centreOverContent(back);
+}
+// Nudge a modal so its centre matches the content column rather than the
+// viewport — the fixed sidebar offsets the two. No-op when they coincide, e.g.
+// on narrow layouts where the sidebar is hidden.
+function centreOverContent(back){
+  const box = back && back.querySelector(".modal"), content = document.querySelector(".content");
+  if (!box || !content) return;
+  const r = content.getBoundingClientRect();
+  const shift = Math.round((r.left + r.width / 2) - window.innerWidth / 2);
+  if (shift) box.style.transform = `translateX(${shift}px)`;
 }
 
 /* ---- achievements ---- */
