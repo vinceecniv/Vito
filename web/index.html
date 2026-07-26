@@ -907,6 +907,15 @@
   .modelcombo-list .mdl-x { border:0; background:none; color:var(--text3); cursor:pointer; font-size:15px; line-height:1; padding:0 2px; flex:0 0 auto; }
   .modelcombo-list .mdl-x:hover { color:var(--coral); }
   .modelcombo-list .mdl-empty { padding:8px 10px; font-size:12.5px; color:var(--text3); }
+  /* Status-page summary tags: active hotkey, speech model, language, cleanup —
+     each a shortcut to its settings section. */
+  .status-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+  .stag { display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border:1px solid var(--card-border); border-radius:999px; background:var(--card); color:var(--text2); font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; }
+  .stag:hover { border-color:var(--accent); color:var(--text); }
+  .stag.muted { color:var(--text3); }
+  .stag-ico { display:inline-flex; align-items:center; width:15px; height:15px; color:var(--accent); flex:0 0 auto; }
+  .stag-ico svg { width:15px; height:15px; }
+  .stag-ico .flag { width:17px; height:12px; border-radius:2px; }
   /* Speech-model picker: cards you can weigh against each other. */
   .modelcards { display:flex; flex-direction:column; gap:9px; }
   .modelcard { display:flex; flex-direction:column; gap:5px; width:100%; text-align:left; cursor:pointer;
@@ -1182,6 +1191,7 @@
         </div>
         <div id="timings"></div>
       </div>
+      <div class="status-tags" id="status-tags"></div>
     </section>
 
     <!-- ACHIEVEMENTS -->
@@ -1859,6 +1869,7 @@ const TR = { nl: {
   "Misheard":"Fout herkend",
   "Suggested":"Voorgesteld","Your models":"Jouw modellen","Type a model name":"Typ een modelnaam","Remove":"Verwijderen",
   "Complete guide on vito.talk":"Complete uitleg op vito.talk",
+  "Hotkey in your desktop":"Sneltoets in je desktop","Cleanup off":"Opschoning uit","Local model":"Lokaal model","Auto":"Auto",
   "Intended":"Bedoeld",
   "+ Row":"+ Regel",
   "Export":"Exporteren",
@@ -4840,6 +4851,7 @@ async function loadSettings() {
   syncCleanupUI();
   rememberModel(cleanupPreset(), $("s-openaimodel").value); // keep a hand-entered model in the dropdown
   renderModelCombo();
+  renderStatusTags();
   setInjectDisplay(cfg.injection.mode || "paste");
   $("s-restore").checked = cfg.injection.restore_clipboard;
   $("s-appendenter").checked = !!cfg.injection.append_enter;
@@ -4881,6 +4893,46 @@ const withWin = (s) => s.replace("{win}", WINKEY);
 async function loadHotkey(){
   try { hkInfo = await api("/api/hotkey"); } catch { return; }
   renderActivation(hkInfo);
+  renderStatusTags();
+}
+// Status-page tags: a compact summary of the active setup — hotkey, speech
+// model + language, and AI-cleanup — each a shortcut to its settings section.
+const ICON_KBD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>';
+const ICON_MIC2 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg>';
+function fmtHotkey(spec){ return (spec || "").split("+").map(p => p ? p[0].toUpperCase() + p.slice(1) : p).join(" + "); }
+function langName(code){
+  code = (code || "").split("-")[0];
+  if (!code || code === "auto") return t("Auto");
+  try { return new Intl.DisplayNames([uiLang || "en"], { type:"language" }).of(code) || code.toUpperCase(); }
+  catch { return code.toUpperCase(); }
+}
+function cleanupProviderLabel(cl){
+  if (cl.provider !== "openai") return "Anthropic";
+  const p = cl.openai_preset || presetFromBase(cl.openai_base_url);
+  return p === "openai" ? "OpenAI" : p === "local" ? t("Local model") : "Groq";
+}
+function renderStatusTags(){
+  const box = $("status-tags"); if (!box || !cfg) return;
+  const hk = hkInfo || {}, tags = [];
+  if (hk.supported) {
+    const spec = (hk.toggle && (hk.toggle.spec || hk.toggle.configured)) || "";
+    tags.push({ ico: ICON_KBD, text: spec ? fmtHotkey(spec) : t("No hotkey set"), sec: "activation" });
+  } else {
+    tags.push({ ico: ICON_KBD, text: t("Hotkey in your desktop"), sec: "activation" });
+  }
+  const sm = SPEECH_MODELS.find(m => m.id === (cfg.stt && cfg.stt.model));
+  tags.push({ ico: ICON_MIC2, text: sm ? sm.name : ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
+  tags.push({ raw: langIcon((cfg.stt && cfg.stt.language) || ""), text: langName(cfg.stt && cfg.stt.language), sec: "stt" });
+  const cl = cfg.cleanup || {};
+  if (!cl.enabled) tags.push({ ico: SPARK_SVG, text: t("Cleanup off"), sec: "cleanup", muted: true });
+  else {
+    const model = cl.provider === "openai" ? cl.openai_model : cl.model;
+    tags.push({ ico: SPARK_SVG, text: cleanupProviderLabel(cl) + (model ? " · " + model : ""), sec: "cleanup" });
+  }
+  box.innerHTML = tags.map(tg =>
+    `<button type="button" class="stag${tg.muted ? " muted" : ""}" data-sec="${tg.sec}">` +
+    `<span class="stag-ico">${tg.raw || tg.ico}</span><span>${ahEsc(tg.text)}</span></button>`).join("");
+  box.querySelectorAll("[data-sec]").forEach(b => b.onclick = () => { selectTab("settings"); selectSetSection(b.dataset.sec); });
 }
 function hkErrText(code){
   if (code === "in_use") return t("This hotkey is already in use by another app. Pick another one.");
