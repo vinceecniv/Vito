@@ -203,7 +203,7 @@ func serve() error {
 
 	if cfg.Tray.Enabled {
 		url := fmt.Sprintf("http://127.0.0.1:%d", cfg.Server.Port)
-		tray.Run(d, url, log, func() {
+		tray.Run(d, url, version, log, func() {
 			log.Info("shutting down (tray quit)")
 			d.Shutdown() // restore any ducked/paused media before exiting
 			os.Exit(0)
