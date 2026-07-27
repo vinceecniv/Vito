@@ -12,18 +12,26 @@ import (
 	"vito/internal/config"
 )
 
-// Linux has two ways to press keys in another application, and Vito keeps both:
+// Linux has three ways to press keys in another application, and Vito keeps all
+// three because no single one covers the field (see docs/linux-portals.md):
 //
-//	portal   the XDG RemoteDesktop portal over D-Bus — Wayland-native, needs no
-//	         ydotoold and no /dev/uinput rule, and is the only route that works
-//	         inside a Flatpak (see docs/linux-portals.md).
-//	ydotool  the original uinput path, for X11 and for compositors that don't
-//	         implement the portal.
+//	wayland  wtype over the virtual-keyboard protocol. No daemon, no udev rule,
+//	         no permission prompt — only the Wayland socket, which a Flatpak
+//	         already has. Works on niri/wlroots/KDE; Mutter refuses it.
+//	portal   the XDG RemoteDesktop portal over D-Bus. Asks permission once, and
+//	         is the route that works on GNOME. Also sandbox-friendly.
+//	ydotool  the original uinput path: needs ydotoold plus a /dev/uinput rule,
+//	         and cannot work from inside a sandbox. The last resort — X11, or a
+//	         compositor that offers neither of the above.
+//
+// "auto" tries them in that order, from least to most intrusive. The first two
+// are exact complements: where one is unavailable the other generally isn't.
 //
 // The mode (paste/type/clipboard_only) is orthogonal: it says *what* to deliver,
 // the backend says *how*.
 const (
 	backendAuto    = "auto"
+	backendWayland = "wayland"
 	backendPortal  = "portal"
 	backendYdotool = "ydotool"
 )
@@ -41,8 +49,11 @@ var lastBackend struct {
 // through the other backend, or the text would land twice.
 func resolveBackend(cfg config.Injection) string {
 	switch cfg.Backend {
-	case backendPortal, backendYdotool:
+	case backendWayland, backendPortal, backendYdotool:
 		return cfg.Backend
+	}
+	if wtypeUsable() {
+		return backendWayland
 	}
 	if portalUsable() {
 		return backendPortal
@@ -58,7 +69,10 @@ func injectPlatform(cfg config.Injection, mode Mode, text string) error {
 	backend := resolveBackend(cfg)
 	setLastBackend(backend)
 
-	if backend == backendPortal {
+	switch backend {
+	case backendWayland:
+		return wtypeInject(cfg, mode, text)
+	case backendPortal:
 		err := portalInject(cfg, mode, text)
 		// errPortalUnavailable is only returned before any key was sent (no
 		// portal, permission refused, timed out), so falling back cannot deliver
@@ -84,7 +98,10 @@ func pressEnter() error {
 	lastBackend.Lock()
 	backend := lastBackend.name
 	lastBackend.Unlock()
-	if backend == backendPortal {
+	switch backend {
+	case backendWayland:
+		return wtypePressEnter()
+	case backendPortal:
 		return portalPressEnter()
 	}
 	return ydotoolPressEnter()
