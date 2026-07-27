@@ -909,7 +909,10 @@
   .modelcombo-list .mdl-empty { padding:8px 10px; font-size:12.5px; color:var(--text3); }
   /* The global shortcut the desktop bound for us, shown instead of "bind it yourself". */
   .hk-portal { border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; background:var(--card); }
-  .hk-portal-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .hk-portal-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:7px; }
+  .hk-portal-row:last-of-type { margin-bottom:0; }
+  .hk-portal-label { font-size:13px; color:var(--text2); min-width:150px; }
+  .hk-portal-key.none { font-family:inherit; font-weight:500; color:var(--text3); background:none; border-style:dashed; }
   .hk-portal-key { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:14px; font-weight:700;
     color:var(--text); background:var(--input-bg); border:1px solid var(--card-border); border-radius:8px; padding:5px 11px; }
   /* Vito Assist settings: example groups + the "requires cleanup" callout. */
@@ -2016,8 +2019,9 @@ const TR = { nl: {
   "Command":"Opdracht","speak your text…":"spreek je tekst…",
   "Vito Assist":"Vito Assist","result is on your clipboard":"resultaat staat op je klembord",
   "Text delivery":"Tekstaflevering",
-  "Change shortcut":"Sneltoets wijzigen",
-  "Your desktop owns this shortcut — Vito asked for it through the shortcuts portal, so you can also change it in your desktop's keyboard settings.":"Deze sneltoets is van je bureaublad — Vito heeft 'm via de sneltoets-portal aangevraagd, dus je kunt 'm ook in je toetsenbordinstellingen wijzigen.",
+  "Change shortcut":"Sneltoets wijzigen","Not set":"Niet ingesteld",
+  "Your desktop owns this shortcut — Vito asked for it through the shortcuts portal. On GNOME you change it under Settings → Apps → Vito → Global Shortcuts.":"Deze sneltoets is van je bureaublad — Vito heeft 'm via de sneltoets-portal aangevraagd. In GNOME wijzig je 'm via Instellingen → Toepassingen → Vito → Globale sneltoetsen.",
+  "Your desktop owns this shortcut — Vito asked for it through the shortcuts portal, so you can also change it in your desktop's own settings.":"Deze sneltoets is van je bureaublad — Vito heeft 'm via de sneltoets-portal aangevraagd, dus je kunt 'm ook in de instellingen van je bureaublad wijzigen.",
   "Prefer to bind it yourself, or on a desktop without the shortcuts portal? These commands drive the running daemon:":"Liever zelf binden, of op een bureaublad zonder sneltoets-portal? Deze commando's bedienen de draaiende daemon:",
   "Bind it manually instead":"Zelf handmatig binden",
   "Vito uses the first delivery route your desktop supports, so helpers the other routes would need are optional here.":"Vito gebruikt de eerste afleverroute die je bureaublad ondersteunt; helpers die de andere routes nodig zouden hebben, zijn hier optioneel.",
@@ -5399,12 +5403,19 @@ function linuxActivationHTML(info){
   // and offer the desktop's own editor to change it. The signal bindings below
   // then become the fallback story rather than the main instruction.
   const spec = info && info.supported && info.toggle ? info.toggle.spec : "";
+  // Both shortcuts are registered with the desktop, so show both — a cancel key
+  // that was never given a combination is worth seeing, not hiding.
+  const row = (label, s) => `<div class="hk-portal-row">
+        <span class="hk-portal-label">${label}</span>
+        <span class="hk-portal-key${s ? "" : " none"}">${s ? ahEsc(fmtPortalShortcut(s)) : t("Not set")}</span>
+      </div>`;
   const portal = !spec ? "" : `<div class="hk-portal">
-      <div class="hk-portal-row">
-        <span class="hk-portal-key">${ahEsc(fmtPortalShortcut(spec))}</span>
-        ${info.configurable ? `<button type="button" class="btn ghost small" id="hk-configure">${t("Change shortcut")}</button>` : ""}
-      </div>
-      <p class="act-note" style="margin:8px 0 0;">${t("Your desktop owns this shortcut — Vito asked for it through the shortcuts portal, so you can also change it in your desktop's keyboard settings.")}</p>
+      ${row(t("Hotkey — start / stop"), spec)}
+      ${row(t("Hotkey — cancel"), info.cancel && info.cancel.spec)}
+      ${info.configurable ? `<div class="hk-portal-row"><button type="button" class="btn ghost small" id="hk-configure">${t("Change shortcut")}</button></div>` : ""}
+      <p class="act-note" style="margin:8px 0 0;">${info.configurable
+          ? t("Your desktop owns this shortcut — Vito asked for it through the shortcuts portal, so you can also change it in your desktop's own settings.")
+          : t("Your desktop owns this shortcut — Vito asked for it through the shortcuts portal. On GNOME you change it under Settings → Apps → Vito → Global Shortcuts.")}</p>
     </div>`;
   // Signal-based bindings: they send SIGUSR2/USR1 to the running daemon, so they
   // launch no process, need no binary path (works the same whether Vito is an

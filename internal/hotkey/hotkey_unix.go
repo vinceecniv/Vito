@@ -37,3 +37,6 @@ func (m *Manager) Status() (toggle, cancel BindInfo, supported bool) {
 
 // Configure is unsupported here: there is no portal to ask.
 func (m *Manager) Configure() error { return errors.New("not supported on this platform") }
+
+// CanConfigure is false: there is no portal to open an editor.
+func (m *Manager) CanConfigure() bool { return false }

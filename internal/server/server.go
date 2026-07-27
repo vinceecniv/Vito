@@ -516,9 +516,11 @@ func (s *Server) handleGetHotkey(w http.ResponseWriter, r *http.Request) {
 		"exe":       exe,
 		"toggle":    bind(toggle, cfg.HotkeyWindows),
 		"cancel":    bind(cancel, cfg.HotkeyCancelWindows),
-		// Whether the desktop can open its own shortcut editor for Vito. Only
-		// the portal offers that, so it tracks "are the shortcuts portal-bound".
-		"configurable": runtime.GOOS == "linux" && supported,
+		// Whether the desktop can actually open its own shortcut editor for Vito.
+		// Only GlobalShortcuts v2 has ConfigureShortcuts, and the portal frontend
+		// lists the method whatever the backend supports — so ask the manager,
+		// which knows the version, rather than assuming.
+		"configurable": s.hk.CanConfigure(),
 	})
 }
 

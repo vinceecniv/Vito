@@ -42,6 +42,11 @@ modules:
   # Vito Assist's clipboard commands.
   - name: wl-clipboard
     buildsystem: meson
+    # fish resolves its completion directory through pkg-config, which points at
+    # /usr/share/fish — read-only inside the build sandbox, so the install step
+    # fails there. The zsh and bash completions land under /app and are harmless.
+    config-opts:
+      - -Dfishcompletiondir=no
     sources:
       - type: git
         url: https://github.com/bugaevc/wl-clipboard.git
@@ -72,10 +77,10 @@ modules:
       build-args:
         - --share=network
     build-commands:
-      # @VITO_VERSION@ is substituted by the workflow before building:
+      # 2026.7.3-dev is substituted by the workflow before building:
       # flatpak-builder does not pass the outer environment into the build
       # sandbox, so the version has to be baked into the manifest.
-      - go build -ldflags "-X main.version=@VITO_VERSION@" -o vito ./cmd/vito
+      - go build -ldflags "-X main.version=2026.7.3-dev" -o vito ./cmd/vito
       - install -Dm755 vito /app/bin/vito
       # The desktop file, icon and AppStream metadata must all be named after the
       # app id for the desktop to associate them.
@@ -83,7 +88,13 @@ modules:
           /app/share/applications/io.github.vinceecniv.vito.desktop
       - install -Dm644 web/icon-512.png
           /app/share/icons/hicolor/512x512/apps/io.github.vinceecniv.vito.png
+      # The shared metainfo names the AppImage's desktop file; inside the Flatpak
+      # everything is app-id-named, and appstreamcli refuses a GUI app whose
+      # component it cannot link to an icon through its launchable.
       - install -Dm644 packaging/io.github.vinceecniv.vito.metainfo.xml
+          /app/share/metainfo/io.github.vinceecniv.vito.metainfo.xml
+      - sed -i 's|<launchable type="desktop-id">vito.desktop</launchable>|<launchable
+          type="desktop-id">io.github.vinceecniv.vito.desktop</launchable>|'
           /app/share/metainfo/io.github.vinceecniv.vito.metainfo.xml
     sources:
       - type: dir

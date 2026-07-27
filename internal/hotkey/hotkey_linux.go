@@ -39,6 +39,10 @@ const (
 	// value as the Windows hook, so the two platforms feel identical.
 	holdThreshold = 350 * time.Millisecond
 
+	// configureMinVersion is the GlobalShortcuts version that introduced
+	// ConfigureShortcuts.
+	configureMinVersion = 2
+
 	// repeatGap tells a key-repeat Activated from a genuinely new press. Repeats
 	// arrive ~30ms apart; this only has to catch the case where a Deactivated
 	// never arrives, so it can afford to be generous.
@@ -72,6 +76,10 @@ type Manager struct {
 	conn      *dbus.Conn
 	session   dbus.ObjectPath
 	supported bool
+	// gsVersion is the GlobalShortcuts portal version. ConfigureShortcuts only
+	// exists from version 2 — and the frontend lists the method regardless of
+	// what the backend implements, so the version is the only honest signal.
+	gsVersion uint32
 	toggle    BindInfo
 	cancel    BindInfo
 	started   bool
@@ -117,6 +125,15 @@ func (m *Manager) Start(toggle, cancel string) {
 // which is how Vito offers that without pretending to own the key.
 func (m *Manager) Rebind(toggle, cancel string) {}
 
+// CanConfigure reports whether this desktop can open a shortcut editor for us.
+// GNOME's portal is still at version 1 and cannot, so the button is hidden there
+// rather than offered and then failing.
+func (m *Manager) CanConfigure() bool {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	return m.supported && m.gsVersion >= configureMinVersion
+}
+
 // Configure asks the desktop to open its own shortcut editor for Vito.
 //
 // An application cannot simply take a key on Wayland, and shouldn't: the user
@@ -126,10 +143,13 @@ func (m *Manager) Rebind(toggle, cancel string) {}
 // key-capture UI.
 func (m *Manager) Configure() error {
 	m.mu.Lock()
-	conn, session := m.conn, m.session
+	conn, session, ver := m.conn, m.session, m.gsVersion
 	m.mu.Unlock()
 	if conn == nil || session == "" {
 		return fmt.Errorf("no global shortcuts session")
+	}
+	if ver < configureMinVersion {
+		return fmt.Errorf("this desktop's shortcuts portal has no editor to open")
 	}
 	obj := conn.Object(xdgportal.Dest, dbus.ObjectPath(xdgportal.Path))
 	// Fire and forget: the dialog is the desktop's, and it may sit open for as
@@ -157,9 +177,13 @@ func (m *Manager) bind(toggleSpec, cancelSpec string) error {
 	if err != nil {
 		return err
 	}
-	if _, ok := xdgportal.Version(conn, ifaceGS); !ok {
+	ver, ok := xdgportal.Version(conn, ifaceGS)
+	if !ok {
 		return fmt.Errorf("no GlobalShortcuts portal")
 	}
+	m.mu.Lock()
+	m.gsVersion = ver
+	m.mu.Unlock()
 	obj := conn.Object(xdgportal.Dest, dbus.ObjectPath(xdgportal.Path))
 
 	sessionToken := xdgportal.NewToken()
