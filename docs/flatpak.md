@@ -45,9 +45,21 @@ names the delivery route actually in use.
 Bundled: `wl-clipboard` (the clipboard is used by paste mode, clipboard-only mode
 and Vito Assist's clipboard commands) and `wtype`.
 
-Not yet handled: `pactl` and `playerctl` are not bundled, so ducking or pausing
-media while recording is unavailable in the Flatpak for now. Both are D-Bus/MPRIS
-work that would be better done natively than by shipping two more binaries.
+`notify-send` and `pactl` turn out to ship in the freedesktop runtime already, so
+notifications and the microphone-level control work without bundling anything —
+and pausing media needs no binary at all since it speaks MPRIS directly. Nothing
+is missing in the sandbox except ydotool, which cannot work there by definition.
+
+### Verified in the sandbox
+
+Running the built Flatpak on GNOME 50:
+
+* the GlobalShortcuts portal binds the hotkey — and unlike the host build, it
+  needs no systemd-scope trick, because a Flatpak's app id is intrinsic;
+* the delivery route resolves to `portal`, with `wtype` present but refused by
+  Mutter, exactly as on the host;
+* `wl-copy` sets the real clipboard from inside the sandbox;
+* config lands in `~/.var/app/io.github.vinceecniv.vito/config/vito/`.
 
 ## Config lives somewhere else
 
@@ -65,12 +77,14 @@ flatpak install flathub org.freedesktop.Sdk//25.08 \
                         org.freedesktop.Sdk.Extension.golang//25.08
 
 # Substitute the version into a copy, so the placeholder survives in git —
-# committing the substituted manifest would freeze that version into every
-# later CI build.
+# committing the substituted manifest would freeze that version into every later
+# CI build. The copy must sit beside the original: the vito module's source is
+# `path: ../..`, which is resolved relative to the manifest.
 sed "s/@VITO_VERSION@/2026.7.3/" packaging/flatpak/io.github.vinceecniv.vito.yml \
-  > /tmp/vito-flatpak.yml
+  > packaging/flatpak/build.yml
 flatpak-builder --user --install --force-clean --disable-rofiles-fuse build \
-  /tmp/vito-flatpak.yml
+  packaging/flatpak/build.yml
+rm packaging/flatpak/build.yml
 ```
 
 `@VITO_VERSION@` is a placeholder rather than an environment variable on purpose:
