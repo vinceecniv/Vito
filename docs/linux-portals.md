@@ -102,16 +102,23 @@ cost nothing and remain the documented route for scripts and older setups).
    `ydotool` backend, add portal detection. No behaviour change yet.
 2. **RemoteDesktop injection** — session + `NotifyKeyboardKeycode` for paste,
    `NotifyKeyboardKeysym` for type mode; wire persistence of the permission.
-   *Implemented; still unverified against a real compositor* — see the caveat
-   above. `VITO_PORTAL_TEST=1 go test ./internal/inject/ -run TestPortalSession -v`
+   **Verified on GNOME 50 (Fedora 44, Mutter).** The grant persists: the user is
+   offered a "remember" choice — which only appears because we ask for
+   `persist_mode=2` — and the second run reuses the stored restore token in
+   0.02s with no dialog. Injection itself is comparable to ydotool: the first
+   dictation costs ~5s while the session is established, subsequent ones ~850ms.
+   `VITO_PORTAL_TEST=1 go test ./internal/inject/ -run TestPortalSession -v`
    answers "does it work here, and is the grant remembered" on any desktop.
 3. **GlobalShortcuts hotkey** — bind toggle + cancel, handle `Activated` /
    `Deactivated` (push-to-talk), surface the binding in the settings UI.
-   *Implemented; unverified end to end* — the same "advertised, not implemented"
-   trap applies. Under niri the GNOME backend exports
-   `org.freedesktop.impl.portal.GlobalShortcuts`, and `CreateSession` succeeds,
-   but `BindShortcuts` ends immediately (code 2, no dialog): registering keys
-   needs gnome-shell, which isn't running. Verify on GNOME or KDE with
+   **Verified on GNOME 50**: the binding is confirmed by the user once, appears
+   in Settings → Keyboard, and drives dictation from then on.
+
+   It does *not* work under niri, and the reason is the same
+   "advertised, not implemented" trap: the GNOME backend exports
+   `org.freedesktop.impl.portal.GlobalShortcuts` and `CreateSession` succeeds,
+   but `BindShortcuts` ends immediately (code 2, no dialog) because registering
+   keys needs gnome-shell. Check any desktop with
    `VITO_GS_TEST=1 go test ./internal/hotkey/ -run TestGlobalShortcutsSession -v`.
 
    **The app-id requirement.** GlobalShortcuts refuses callers it cannot
