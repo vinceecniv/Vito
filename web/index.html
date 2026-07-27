@@ -907,6 +907,11 @@
   .modelcombo-list .mdl-x { border:0; background:none; color:var(--text3); cursor:pointer; font-size:15px; line-height:1; padding:0 2px; flex:0 0 auto; }
   .modelcombo-list .mdl-x:hover { color:var(--coral); }
   .modelcombo-list .mdl-empty { padding:8px 10px; font-size:12.5px; color:var(--text3); }
+  /* The global shortcut the desktop bound for us, shown instead of "bind it yourself". */
+  .hk-portal { border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; background:var(--card); }
+  .hk-portal-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .hk-portal-key { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:14px; font-weight:700;
+    color:var(--text); background:var(--input-bg); border:1px solid var(--card-border); border-radius:8px; padding:5px 11px; }
   /* Vito Assist settings: example groups + the "requires cleanup" callout. */
   .assist-flow { margin:4px 0 8px; padding-left:22px; }
   .assist-flow li { font-size:13px; color:var(--text2); line-height:1.5; padding:3px 0; }
@@ -2011,6 +2016,10 @@ const TR = { nl: {
   "Command":"Opdracht","speak your text…":"spreek je tekst…",
   "Vito Assist":"Vito Assist","result is on your clipboard":"resultaat staat op je klembord",
   "Text delivery":"Tekstaflevering",
+  "Change shortcut":"Sneltoets wijzigen",
+  "Your desktop owns this shortcut — Vito asked for it through the shortcuts portal, so you can also change it in your desktop's keyboard settings.":"Deze sneltoets is van je bureaublad — Vito heeft 'm via de sneltoets-portal aangevraagd, dus je kunt 'm ook in je toetsenbordinstellingen wijzigen.",
+  "Prefer to bind it yourself, or on a desktop without the shortcuts portal? These commands drive the running daemon:":"Liever zelf binden, of op een bureaublad zonder sneltoets-portal? Deze commando's bedienen de draaiende daemon:",
+  "Bind it manually instead":"Zelf handmatig binden",
   "Vito uses the first delivery route your desktop supports, so helpers the other routes would need are optional here.":"Vito gebruikt de eerste afleverroute die je bureaublad ondersteunt; helpers die de andere routes nodig zouden hebben, zijn hier optioneel.",
   "A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.":"Er ontbreekt een helper die de actieve afleverroute nodig heeft — plakken werkt nog niet. Zie de README voor de installatie.",
   "Vito Assist commands":"Vito Assist-opdrachten",
@@ -5250,9 +5259,12 @@ function cleanupProviderLabel(cl){
 function renderStatusTags(){
   const box = $("status-tags"); if (!box || !cfg) return;
   const hk = hkInfo || {}, tags = [];
-  if (hk.supported) {
+  const portalSpec = hk.os !== "windows" && hk.supported && hk.toggle ? hk.toggle.spec : "";
+  if (hk.os === "windows") {
     const spec = (hk.toggle && (hk.toggle.spec || hk.toggle.configured)) || "";
     tags.push({ ico: ICON_KBD, text: spec ? fmtHotkey(spec) : t("No hotkey set"), sec: "activation" });
+  } else if (portalSpec) {
+    tags.push({ ico: ICON_KBD, text: fmtPortalShortcut(portalSpec), sec: "activation" });
   } else {
     tags.push({ ico: ICON_KBD, text: t("Hotkey in your desktop"), sec: "activation" });
   }
@@ -5292,7 +5304,9 @@ function hkFieldHTML(kind, label){
 }
 function renderActivation(info){
   const body = $("activation-body"); if (!body) return;
-  if (info.supported) { // Windows: configurable global hotkeys
+  // "supported" now also means "the portal bound our shortcut", so branch on the
+  // platform rather than on that flag: only Windows has Vito-owned key capture.
+  if (info.os === "windows") { // Windows: configurable global hotkeys
     body.innerHTML =
       hkFieldHTML("toggle", t("Hotkey — start / stop")) +
       hkFieldHTML("cancel", t("Hotkey — cancel")) +
@@ -5313,13 +5327,17 @@ function renderActivation(info){
       ptt.addEventListener("change", autoSaveSettings);
     }
   } else { // Linux / other: no global hotkeys — bind pkill signals to keys
-    const html = linuxActivationHTML();
+    const html = linuxActivationHTML(info);
     // Activation section: the instructions + a jump to the dedicated Linux section.
     body.innerHTML = html +
       `<div class="rowflex" style="justify-content:flex-end; margin-top:14px;"><button class="btn ghost small" id="act-to-linux">${TUX_SVG} ${t("All Linux info & tools")}</button></div>`;
     const jump = $("act-to-linux"); if (jump) jump.onclick = () => selectSetSection("linux");
     // The Linux section repeats the same activation info so it's one complete story.
     const la = $("linux-activation-body"); if (la) la.innerHTML = html;
+    // Both copies carry the same id, so wire every one of them.
+    document.querySelectorAll("#activation-body #hk-configure, #linux-activation-body #hk-configure")
+      .forEach(b => b.onclick = () => api("/api/hotkey/configure", { method: "POST" })
+        .catch(e => toast(e.message, "err")));
   }
 }
 // Map a KeyboardEvent.code to Vito's hotkey vocabulary; null for modifier keys.
@@ -5358,12 +5376,41 @@ async function setHotkey(kind, spec){
   await saveConfig(patch, spec ? "Hotkey saved" : "Hotkey cleared");
   setTimeout(loadHotkey, 350); // the daemon re-registers async; re-read live status
 }
-function linuxActivationHTML(){
+// Turn the portal's trigger description into something that reads like a
+// shortcut. Desktops phrase it in prose and in the user's own language —
+// GNOME says "Druk op <Control><Alt>space" — so keep only the key part and
+// render it the way a keyboard shortcut is normally written. Anything that
+// doesn't look like that is shown untouched rather than mangled.
+function fmtPortalShortcut(desc){
+  if (!desc) return "";
+  const at = desc.indexOf("<");
+  if (at < 0) return desc;
+  const NAMES = { control:"Ctrl", ctrl:"Ctrl", primary:"Ctrl", alt:"Alt", shift:"Shift", super:"Super", meta:"Super", logo:"Super" };
+  const mods = [];
+  const key = desc.slice(at).replace(/<([^>]+)>/g, (_, m) => {
+    mods.push(NAMES[m.toLowerCase()] || m);
+    return "";
+  }).trim();
+  const parts = mods.concat(key ? key.charAt(0).toUpperCase() + key.slice(1) : []);
+  return parts.length ? parts.join(" + ") : desc;
+}
+function linuxActivationHTML(info){
+  // When the GlobalShortcuts portal bound a key, that is the answer — show it,
+  // and offer the desktop's own editor to change it. The signal bindings below
+  // then become the fallback story rather than the main instruction.
+  const spec = info && info.supported && info.toggle ? info.toggle.spec : "";
+  const portal = !spec ? "" : `<div class="hk-portal">
+      <div class="hk-portal-row">
+        <span class="hk-portal-key">${ahEsc(fmtPortalShortcut(spec))}</span>
+        ${info.configurable ? `<button type="button" class="btn ghost small" id="hk-configure">${t("Change shortcut")}</button>` : ""}
+      </div>
+      <p class="act-note" style="margin:8px 0 0;">${t("Your desktop owns this shortcut — Vito asked for it through the shortcuts portal, so you can also change it in your desktop's keyboard settings.")}</p>
+    </div>`;
   // Signal-based bindings: they send SIGUSR2/USR1 to the running daemon, so they
   // launch no process, need no binary path (works the same whether Vito is an
   // AppImage, a package or a plain binary), and never wait for a squashfs mount.
-  return `<div class="linux-act">
-    <p>${t("On Linux (Wayland especially) apps can't claim global hotkeys themselves. Instead, bind these commands to keys in your desktop or compositor:")}</p>
+  const manual = `<div class="linux-act">
+    <p>${spec ? t("Prefer to bind it yourself, or on a desktop without the shortcuts portal? These commands drive the running daemon:") : t("On Linux (Wayland especially) apps can't claim global hotkeys themselves. Instead, bind these commands to keys in your desktop or compositor:")}</p>
     <pre>pkill -USR2 -f 'vito serve'   <span style="color:var(--text3)"># ${t("start / stop")}</span>\npkill -USR1 -f 'vito serve'   <span style="color:var(--text3)"># ${t("cancel")}</span></pre>
     <h4>KDE Plasma</h4>
     <p>${t("System Settings → Shortcuts → Custom Shortcuts → a new command per command, paste it and assign a key.")}</p>
@@ -5382,6 +5429,8 @@ function linuxActivationHTML(){
     <h4>DMS / ${t("other Wayland shells")}</h4>
     <p>${t("Add keybinds to your shell or compositor config that run these commands.")}</p>
   </div>`;
+  if (!spec) return manual;
+  return portal + `<details style="margin-top:12px;"><summary>${t("Bind it manually instead")}</summary>${manual}</details>`;
 }
 
 async function loadAutostart() {

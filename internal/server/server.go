@@ -117,6 +117,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/config", s.auth(s.handleGetConfig))
 	mux.HandleFunc("PUT /api/config", s.auth(s.handlePutConfig))
 	mux.HandleFunc("GET /api/hotkey", s.auth(s.handleGetHotkey))
+	mux.HandleFunc("POST /api/hotkey/configure", s.auth(s.handleConfigureHotkey))
 	mux.HandleFunc("POST /api/test-key", s.auth(s.handleTestKey))
 	mux.HandleFunc("GET /api/costs", s.auth(s.handleCosts))
 	mux.HandleFunc("GET /api/achievements", s.auth(s.handleAchievements))
@@ -515,7 +516,21 @@ func (s *Server) handleGetHotkey(w http.ResponseWriter, r *http.Request) {
 		"exe":       exe,
 		"toggle":    bind(toggle, cfg.HotkeyWindows),
 		"cancel":    bind(cancel, cfg.HotkeyCancelWindows),
+		// Whether the desktop can open its own shortcut editor for Vito. Only
+		// the portal offers that, so it tracks "are the shortcuts portal-bound".
+		"configurable": runtime.GOOS == "linux" && supported,
 	})
+}
+
+// handleConfigureHotkey asks the desktop to open its shortcut editor for Vito.
+// On Wayland the binding belongs to the user, not the app, so this is how the
+// settings page offers to change it without inventing a key-capture UI.
+func (s *Server) handleConfigureHotkey(w http.ResponseWriter, r *http.Request) {
+	if err := s.hk.Configure(); err != nil {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
 // handleLinuxTools reports which optional external helpers Vito relies on are

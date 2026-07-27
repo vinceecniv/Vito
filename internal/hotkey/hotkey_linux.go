@@ -69,6 +69,8 @@ type Manager struct {
 	events chan event
 
 	mu        sync.Mutex
+	conn      *dbus.Conn
+	session   dbus.ObjectPath
 	supported bool
 	toggle    BindInfo
 	cancel    BindInfo
@@ -111,9 +113,32 @@ func (m *Manager) Start(toggle, cancel string) {
 }
 
 // Rebind is a no-op: with the portal, the binding belongs to the desktop, not
-// to Vito. The user changes it in their own shortcut settings, which is rather
-// the point.
+// to Vito. The user changes it in their own shortcut settings — see Configure,
+// which is how Vito offers that without pretending to own the key.
 func (m *Manager) Rebind(toggle, cancel string) {}
+
+// Configure asks the desktop to open its own shortcut editor for Vito.
+//
+// An application cannot simply take a key on Wayland, and shouldn't: the user
+// decides, and they need to see conflicts with everything else they have bound.
+// ConfigureShortcuts is the portal's answer — Vito's settings page gets a button,
+// and the desktop shows its familiar dialog rather than Vito inventing its own
+// key-capture UI.
+func (m *Manager) Configure() error {
+	m.mu.Lock()
+	conn, session := m.conn, m.session
+	m.mu.Unlock()
+	if conn == nil || session == "" {
+		return fmt.Errorf("no global shortcuts session")
+	}
+	obj := conn.Object(xdgportal.Dest, dbus.ObjectPath(xdgportal.Path))
+	// Fire and forget: the dialog is the desktop's, and it may sit open for as
+	// long as the user likes.
+	if call := obj.Call(ifaceGS+".ConfigureShortcuts", 0, session, "", map[string]dbus.Variant{}); call.Err != nil {
+		return call.Err
+	}
+	return nil
+}
 
 func (m *Manager) Status() (toggle, cancel BindInfo, supported bool) {
 	m.mu.Lock()
@@ -154,6 +179,9 @@ func (m *Manager) bind(toggleSpec, cancelSpec string) error {
 	if err := m.listen(conn, session); err != nil {
 		return err
 	}
+	m.mu.Lock()
+	m.conn, m.session = conn, session
+	m.mu.Unlock()
 
 	shortcuts := []shortcut{
 		{ID: shortcutToggle, Props: props("Start / stop dictation", toggleSpec)},
