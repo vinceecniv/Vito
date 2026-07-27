@@ -2019,6 +2019,8 @@ const TR = { nl: {
   "Command":"Opdracht","speak your text…":"spreek je tekst…",
   "Vito Assist":"Vito Assist","result is on your clipboard":"resultaat staat op je klembord",
   "Text delivery":"Tekstaflevering",
+  "Clipboard only — no way to type here":"Alleen klembord — hier kan niets getypt worden",
+  "Nothing on this system can press a key for you, so dictations are put on the clipboard and you paste them yourself. Inside a Flatpak that happens on compositors without a RemoteDesktop portal: the sandbox filters out the virtual-keyboard protocol.":"Niets op dit systeem kan een toets voor je indrukken, dus dictaten komen op het klembord en plak je zelf. In een Flatpak gebeurt dat op compositors zonder RemoteDesktop-portal: de sandbox filtert het virtual-keyboard-protocol eruit.",
   "Change shortcut":"Sneltoets wijzigen","Not set":"Niet ingesteld",
   "Your desktop owns this shortcut — Vito asked for it through the shortcuts portal. On GNOME you change it under Settings → Apps → Vito → Global Shortcuts.":"Deze sneltoets is van je bureaublad — Vito heeft 'm via de sneltoets-portal aangevraagd. In GNOME wijzig je 'm via Instellingen → Toepassingen → Vito → Globale sneltoetsen.",
   "Your desktop owns this shortcut — Vito asked for it through the shortcuts portal, so you can also change it in your desktop's own settings.":"Deze sneltoets is van je bureaublad — Vito heeft 'm via de sneltoets-portal aangevraagd, dus je kunt 'm ook in de instellingen van je bureaublad wijzigen.",
@@ -4011,6 +4013,7 @@ const BACKEND_LABELS = {
   wayland:   "Wayland virtual-keyboard (wtype)",
   portal:    "RemoteDesktop portal",
   ydotool:   "ydotool (uinput)",
+  clipboard: "Clipboard only — no way to type here",
   sendinput: "SendInput",
 };
 // Which helpers the *current* route actually depends on. Vito tries wtype, then
@@ -4018,6 +4021,7 @@ const BACKEND_LABELS = {
 // where that search landed, and marking all of them required would be a lie.
 function linuxRequired(backend){
   const req = new Set(["wl-copy"]);
+  if (backend === "clipboard") return req; // nothing can type; only the clipboard matters
   if (backend === "wayland") req.add("wtype");
   else if (backend === "ydotool") { req.add("ydotool"); req.add("ydotoold"); }
   return req; // the portal route needs no external helper at all
@@ -4054,7 +4058,8 @@ async function renderLinuxCard(){
     ${backendRow}
     <p class="act-note" style="margin:0 0 8px;">${t("Vito uses the first delivery route your desktop supports, so helpers the other routes would need are optional here.")}</p>
     <div class="toollist">${rows}</div>
-    ${missingReq ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.")}</p>` : ""}
+    ${backend === "clipboard" ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("Nothing on this system can press a key for you, so dictations are put on the clipboard and you paste them yourself. Inside a Flatpak that happens on compositors without a RemoteDesktop portal: the sandbox filters out the virtual-keyboard protocol.")}</p>`
+      : missingReq ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.")}</p>` : ""}
     <p class="act-note" style="margin-top:10px;">${t("On Wayland no app can claim global hotkeys itself — you bind your start/stop key in your compositor. That's explained under Settings → Activation.")}</p>
     <div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;">
       <button class="btn ghost small" id="linux-activation">${t("Go to Activation")}</button>

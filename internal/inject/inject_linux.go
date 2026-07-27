@@ -34,6 +34,9 @@ const (
 	backendWayland = "wayland"
 	backendPortal  = "portal"
 	backendYdotool = "ydotool"
+	// backendClipboard is not a way of typing but the absence of one: nothing on
+	// this system can press a key, so the text is left on the clipboard.
+	backendClipboard = "clipboard"
 )
 
 // lastBackend remembers what the most recent injection used, so the optional
@@ -59,6 +62,29 @@ func resolveBackend(cfg config.Injection) string {
 		return backendPortal
 	}
 	return backendYdotool
+}
+
+// canType reports whether any backend can actually deliver keystrokes. Inside a
+// Flatpak on a compositor with no RemoteDesktop portal there is none: the
+// portal is missing, ydotool cannot work in a sandbox, and Flatpak's managed
+// Wayland socket filters out the virtual-keyboard protocol — deliberately, since
+// injecting input into other windows is exactly what a sandbox restricts.
+func canType(cfg config.Injection) bool {
+	if resolveBackend(cfg) != backendYdotool {
+		return true
+	}
+	_, err := exec.LookPath("ydotool")
+	return err == nil
+}
+
+// adjustMode downgrades paste/type to clipboard-only when nothing here can press
+// a key. Failing with "ydotool not found" would point the user at something they
+// cannot fix — and would throw away a perfectly good transcript.
+func adjustMode(cfg config.Injection, mode Mode) Mode {
+	if mode == ModeClipboardOnly || canType(cfg) {
+		return mode
+	}
+	return ModeClipboardOnly
 }
 
 func injectPlatform(cfg config.Injection, mode Mode, text string) error {
@@ -157,4 +183,9 @@ func checkTool(name string) error {
 // log line and the Linux diagnostics panel. Now that there are three of them,
 // "which one am I actually on?" is the first question worth answering when
 // delivery misbehaves.
-func ActiveBackend(cfg config.Injection) string { return resolveBackend(cfg) }
+func ActiveBackend(cfg config.Injection) string {
+	if !canType(cfg) {
+		return backendClipboard
+	}
+	return resolveBackend(cfg)
+}

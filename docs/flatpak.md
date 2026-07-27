@@ -36,11 +36,26 @@ No `--device=all`, no uinput, no broad filesystem access. Text delivery goes
 through the RemoteDesktop portal (GNOME, KDE) or the bundled `wtype` over the
 virtual-keyboard protocol (niri, wlroots); the hotkey through GlobalShortcuts.
 
-**The ydotool fallback is absent by design.** It needs a daemon and a udev rule
-outside the sandbox, so it cannot work here. On a desktop that offers neither
-portal nor virtual-keyboard protocol, the Flatpak can still transcribe and copy
-to the clipboard — it just cannot press Ctrl+V for you. Settings → Linux always
-names the delivery route actually in use.
+**The sandbox can only type where the RemoteDesktop portal exists.** This turned
+out to be a stronger limit than expected, and it corrects an assumption made
+earlier in this file: `--socket=wayland` does *not* hand the app the compositor's
+own socket. Flatpak passes a managed one, and the virtual-keyboard protocol is
+filtered out of it — deliberately, since injecting input into other windows is
+precisely what a sandbox exists to restrict. So the bundled `wtype` works on the
+host and not in the Flatpak, and `ydotool` cannot work in a sandbox at all.
+
+The practical shape of that:
+
+| Compositor | Flatpak | AppImage / host build |
+|---|---|---|
+| GNOME, KDE (RemoteDesktop portal) | types normally | types normally |
+| niri, wlroots (no such portal) | **clipboard only** — you press Ctrl+V | types via wtype |
+
+On a clipboard-only desktop Vito still records, transcribes, cleans up and runs
+Vito Assist; it just leaves the result on the clipboard. Settings → Linux says so
+in as many words rather than reporting a missing ydotool, which would point the
+user at something they cannot fix. Users on those compositors are better served
+by the AppImage until their compositor implements the portal.
 
 Bundled: `wl-clipboard` (the clipboard is used by paste mode, clipboard-only mode
 and Vito Assist's clipboard commands) and `wtype`.

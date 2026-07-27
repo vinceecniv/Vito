@@ -224,6 +224,9 @@ func getClipboardText() (string, bool) {
 	return out, ok
 }
 
+// adjustMode is a no-op on Windows: SendInput is always available.
+func adjustMode(cfg config.Injection, mode Mode) Mode { return mode }
+
 // ActiveBackend names the backend an injection would use. Windows has exactly
 // one way to do this, so there is nothing to choose.
 func ActiveBackend(cfg config.Injection) string { return "sendinput" }
