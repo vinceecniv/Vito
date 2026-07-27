@@ -139,8 +139,20 @@ cost nothing and remain the documented route for scripts and older setups).
    type systemd-run. It fails open: no systemd, a Flatpak, or an already-scoped
    launch all skip it, and a failed exec still leaves a working Vito on the
    signal fallback.
-4. **Clipboard without `wl-copy`** — either the Clipboard portal or bundling
-   `wl-clipboard` in the Flatpak; decide once 2 and 3 are proven.
+4. **Clipboard** — smaller than it looked. `wl-copy` turns out to work on GNOME
+   too (it speaks `ext_data_control_manager_v1`, which Mutter implements, as well
+   as the wlroots and core protocols), so there is no functional gap to close —
+   only the sandbox, where the binary isn't present. Bundling `wl-clipboard` in
+   the Flatpak covers that, which makes this part of phase 5 rather than work of
+   its own. The Clipboard portal remains an option if the bundled binary ever
+   proves awkward, but it would only work where RemoteDesktop does, so it cannot
+   replace `wl-copy` outright.
+
+   One real bug did come out of this: Vito leaked `DESKTOP_STARTUP_ID` to its
+   children, so `wl-copy` completed the startup notification under its own
+   identity and GNOME announced "wl-clipboard is ready" after a dictation. The
+   startup-notification spec says to remove the token from the environment; Vito
+   now does.
 5. **Flatpak** — `flatpak-builder` manifest (Go SDK extension or vendored deps),
    AppStream metainfo, desktop file, no `--device=all`; then Flathub submission.
 

@@ -117,6 +117,15 @@ func serve() error {
 	log := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: level}))
 	slog.SetDefault(log)
 
+	// A startup-notification token belongs to the launch of *this* process and
+	// must not be inherited: the startup-notification spec says to remove it from
+	// the environment so children don't see it. Vito spawns wl-copy, wtype and
+	// friends constantly, and a child that finds the token completes the launch
+	// under its own name — which is why a dictation could pop up a stray
+	// "wl-clipboard is ready" notification on GNOME.
+	os.Unsetenv("DESKTOP_STARTUP_ID")
+	os.Unsetenv("XDG_ACTIVATION_TOKEN")
+
 	// On Linux, make sure we run inside a systemd app scope: that is how the XDG
 	// portals identify a host application, and without it global shortcuts are
 	// refused outright. Replaces this process when it acts, so it must happen
