@@ -3,76 +3,85 @@
 package inject
 
 import (
-	"context"
 	"fmt"
-	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
-	"time"
+	"sync"
 
 	"vito/internal/config"
 )
 
-// injectPlatform implements clipboard+paste on Wayland: wl-copy for the
-// clipboard, ydotool (uinput) for the Ctrl+V keystroke — wtype does not work
-// on GNOME/Mutter, ydotool works on both GNOME and niri.
+// Linux has two ways to press keys in another application, and Vito keeps both:
+//
+//	portal   the XDG RemoteDesktop portal over D-Bus — Wayland-native, needs no
+//	         ydotoold and no /dev/uinput rule, and is the only route that works
+//	         inside a Flatpak (see docs/linux-portals.md).
+//	ydotool  the original uinput path, for X11 and for compositors that don't
+//	         implement the portal.
+//
+// The mode (paste/type/clipboard_only) is orthogonal: it says *what* to deliver,
+// the backend says *how*.
+const (
+	backendAuto    = "auto"
+	backendPortal  = "portal"
+	backendYdotool = "ydotool"
+)
+
+// lastBackend remembers what the most recent injection used, so the optional
+// trailing Enter is pressed the same way the text was. pressEnter takes no
+// config of its own (it is shared with Windows, which has only one backend).
+var lastBackend struct {
+	sync.Mutex
+	name string
+}
+
+// resolveBackend decides the backend up front rather than trying one and
+// falling back on error: a half-delivered injection must never be retried
+// through the other backend, or the text would land twice.
+func resolveBackend(cfg config.Injection) string {
+	switch cfg.Backend {
+	case backendPortal, backendYdotool:
+		return cfg.Backend
+	}
+	if portalUsable() {
+		return backendPortal
+	}
+	return backendYdotool
+}
+
 func injectPlatform(cfg config.Injection, mode Mode, text string) error {
-	switch mode {
-	case ModeClipboardOnly:
+	// Clipboard-only types nothing, so it is the same either way.
+	if mode == ModeClipboardOnly {
 		return copyText(text)
-
-	case ModeType:
-		if err := checkTool("ydotool"); err != nil {
-			return err
-		}
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-		defer cancel()
-		cmd := ydotoolCmd(ctx, "type", "--file=-")
-		cmd.Stdin = strings.NewReader(text)
-		if out, err := cmd.CombinedOutput(); err != nil {
-			return fmt.Errorf("ydotool type: %w: %s", err, strings.TrimSpace(string(out)))
-		}
-		return nil
-
-	case ModePaste:
-		if err := checkTool("ydotool"); err != nil {
-			return err
-		}
-		prev, prevOK := readClipboardText()
-		if err := copyText(text); err != nil {
-			return err
-		}
-		time.Sleep(time.Duration(cfg.PasteDelayMS) * time.Millisecond)
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-		// key codes: 29 = LEFTCTRL, 47 = V
-		if out, err := ydotoolCmd(ctx, "key", "29:1", "47:1", "47:0", "29:0").CombinedOutput(); err != nil {
-			return fmt.Errorf("ydotool key (is ydotoold running?): %w: %s", err, strings.TrimSpace(string(out)))
-		}
-		if cfg.RestoreClipboard && prevOK {
-			time.Sleep(time.Duration(cfg.RestoreDelayMS) * time.Millisecond)
-			_ = copyText(prev) // best effort
-		}
-		return nil
 	}
-	return fmt.Errorf("unknown injection mode %q", mode)
+	backend := resolveBackend(cfg)
+	lastBackend.Lock()
+	lastBackend.name = backend
+	lastBackend.Unlock()
+
+	if backend == backendPortal {
+		return portalInject(cfg, mode, text)
+	}
+	return ydotoolInject(cfg, mode, text)
 }
 
-// pressEnter presses Return via ydotool, used to auto-submit after injection.
+// pressEnter submits the just-injected text, through whichever backend
+// delivered it.
 func pressEnter() error {
-	if err := checkTool("ydotool"); err != nil {
-		return err
+	lastBackend.Lock()
+	backend := lastBackend.name
+	lastBackend.Unlock()
+	if backend == backendPortal {
+		return portalPressEnter()
 	}
-	time.Sleep(40 * time.Millisecond) // let the paste settle before submitting
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	// key code 28 = KEY_ENTER
-	if out, err := ydotoolCmd(ctx, "key", "28:1", "28:0").CombinedOutput(); err != nil {
-		return fmt.Errorf("ydotool enter: %w: %s", err, strings.TrimSpace(string(out)))
-	}
-	return nil
+	return ydotoolPressEnter()
 }
+
+// --- clipboard (shared by both backends) ---------------------------------
+//
+// wl-copy/wl-paste serve both backends today. Inside a Flatpak they are not on
+// PATH unless bundled; the Clipboard portal is the alternative once injection
+// lands (phase 4 in docs/linux-portals.md).
 
 func copyText(text string) error {
 	if err := checkTool("wl-copy"); err != nil {
@@ -106,23 +115,6 @@ func readClipboardText() (string, bool) {
 // ReadClipboard returns the current clipboard text (best-effort), for voice
 // commands that operate on already-copied text.
 func ReadClipboard() (string, bool) { return readClipboardText() }
-
-// ydotoolCmd builds a ydotool invocation that finds the ydotoold socket in
-// either location: the client defaults to $XDG_RUNTIME_DIR/.ydotool_socket,
-// but Fedora's system service creates /tmp/.ydotool_socket. Point the client
-// at whichever exists so no environment setup is required.
-func ydotoolCmd(ctx context.Context, args ...string) *exec.Cmd {
-	cmd := exec.CommandContext(ctx, "ydotool", args...)
-	if os.Getenv("YDOTOOL_SOCKET") == "" {
-		userSock := filepath.Join(os.Getenv("XDG_RUNTIME_DIR"), ".ydotool_socket")
-		if _, err := os.Stat(userSock); err != nil {
-			if _, err := os.Stat("/tmp/.ydotool_socket"); err == nil {
-				cmd.Env = append(os.Environ(), "YDOTOOL_SOCKET=/tmp/.ydotool_socket")
-			}
-		}
-	}
-	return cmd
-}
 
 func checkTool(name string) error {
 	if _, err := exec.LookPath(name); err != nil {
