@@ -989,6 +989,9 @@ func (s *Server) handlePutAutostart(w http.ResponseWriter, r *http.Request) {
 		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}
+	// Autostart lives in the OS, not the config file, so nothing else would tell
+	// the tray its checkbox is now stale.
+	s.d.NotifySettingsChanged()
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "enabled": body.Enabled})
 }
 
