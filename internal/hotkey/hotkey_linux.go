@@ -38,6 +38,11 @@ const (
 	// holdThreshold separates a tap (toggle) from a hold (push-to-talk). Same
 	// value as the Windows hook, so the two platforms feel identical.
 	holdThreshold = 350 * time.Millisecond
+
+	// repeatGap tells a key-repeat Activated from a genuinely new press. Repeats
+	// arrive ~30ms apart; this only has to catch the case where a Deactivated
+	// never arrives, so it can afford to be generous.
+	repeatGap = time.Second
 )
 
 // BindInfo mirrors the Windows type so callers are platform-agnostic.
@@ -234,6 +239,7 @@ func (m *Manager) listen(conn *dbus.Conn, session dbus.ObjectPath) error {
 				continue
 			}
 			id, _ := sig.Body[1].(string)
+			m.log.Debug("global shortcut signal", "signal", sig.Name, "id", id)
 			switch {
 			case strings.HasSuffix(sig.Name, ".Activated") && id == shortcutToggle:
 				m.events <- evToggleDown
@@ -254,19 +260,29 @@ func (m *Manager) listen(conn *dbus.Conn, session dbus.ObjectPath) error {
 // a hold; the release stops it only if the key was held past the threshold. A
 // quick tap therefore leaves recording running, and the next tap stops it.
 func (m *Manager) worker() {
-	var armed bool
-	var downAt time.Time
+	var armed, held bool
+	var downAt, lastDown time.Time
 	for ev := range m.events {
 		ptt := m.d.Config().PushToTalkEnabled()
 		switch ev {
 		case evToggleDown:
+			// The portal repeats Activated for as long as the key is held —
+			// GNOME sends one roughly every 30ms — and only reports Deactivated
+			// on release. Without this guard a hold reads as a stream of taps,
+			// which starts and stops the recording over and over.
+			now := time.Now()
+			if held && now.Sub(lastDown) < repeatGap {
+				lastDown = now
+				continue
+			}
+			held, lastDown = true, now
 			if !ptt {
 				if _, err := m.d.Toggle(); err != nil {
 					m.log.Warn("hotkey toggle rejected", "err", err)
 				}
 				continue
 			}
-			downAt = time.Now()
+			downAt = now
 			if m.d.Status().State == daemon.StateRecording {
 				if err := m.d.Stop(); err != nil {
 					m.log.Debug("hotkey stop rejected", "err", err)
@@ -279,6 +295,7 @@ func (m *Manager) worker() {
 				armed = true
 			}
 		case evToggleUp:
+			held = false
 			if ptt && armed && time.Since(downAt) >= holdThreshold {
 				if err := m.d.Stop(); err != nil {
 					m.log.Debug("hotkey release stop rejected", "err", err)
