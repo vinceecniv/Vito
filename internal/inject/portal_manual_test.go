@@ -5,6 +5,8 @@ package inject
 import (
 	"os"
 	"testing"
+
+	"vito/internal/xdgportal"
 )
 
 // TestPortalSession establishes a real RemoteDesktop portal session — the
@@ -30,7 +32,7 @@ func TestPortalSession(t *testing.T) {
 	if err != nil {
 		t.Fatalf("no usable portal on this desktop: %v", err)
 	}
-	t.Logf("session established: %s (sender %s)", session, senderPart(conn))
+	t.Logf("session established: %s (sender %s)", session, xdgportal.SenderPart(conn))
 
 	tok := loadRestoreToken()
 	t.Logf("restore token after: %q", tok)

@@ -1,6 +1,5 @@
-//go:build !windows
+//go:build !windows && !linux
 
-// Package hotkey registers global hotkeys where the OS allows it.
 package hotkey
 
 import (

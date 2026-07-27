@@ -107,6 +107,23 @@ cost nothing and remain the documented route for scripts and older setups).
    answers "does it work here, and is the grant remembered" on any desktop.
 3. **GlobalShortcuts hotkey** — bind toggle + cancel, handle `Activated` /
    `Deactivated` (push-to-talk), surface the binding in the settings UI.
+   *Implemented; unverified end to end* — the same "advertised, not implemented"
+   trap applies. Under niri the GNOME backend exports
+   `org.freedesktop.impl.portal.GlobalShortcuts`, and `CreateSession` succeeds,
+   but `BindShortcuts` ends immediately (code 2, no dialog): registering keys
+   needs gnome-shell, which isn't running. Verify on GNOME or KDE with
+   `VITO_GS_TEST=1 go test ./internal/hotkey/ -run TestGlobalShortcutsSession -v`.
+
+   **The app-id requirement.** GlobalShortcuts refuses callers it cannot
+   identify — `CreateSession` fails outright with *"An app id is required"*. For
+   a host application the portal derives that id from the systemd scope the
+   process sits in, so a binary launched from a terminal has no identity, while
+   one launched through its `.desktop` entry (or any `app-<id>-<rnd>.scope`)
+   does. Proven both ways here: from a shell it fails, and under
+   `systemd-run --user --scope --unit=app-vito-N` the session is created. Inside
+   a Flatpak the id comes for free — one more way the sandbox is the easier
+   target. If Vito is to have portal hotkeys as a plain binary or AppImage, it
+   must be started from its desktop entry, or re-exec itself into a scope.
 4. **Clipboard without `wl-copy`** — either the Clipboard portal or bundling
    `wl-clipboard` in the Flatpak; decide once 2 and 3 are proven.
 5. **Flatpak** — `flatpak-builder` manifest (Go SDK extension or vendored deps),

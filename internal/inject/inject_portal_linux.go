@@ -3,7 +3,6 @@
 package inject
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -16,25 +15,22 @@ import (
 	"github.com/godbus/dbus/v5"
 
 	"vito/internal/config"
+	"vito/internal/xdgportal"
 )
 
 // The XDG RemoteDesktop portal backend. See docs/linux-portals.md for why this
 // exists: it is the Wayland-native way to press a key in another application —
-// no ydotoold, no /dev/uinput rule — and the only one a Flatpak can use.
+// no ydotoold, no /dev/uinput rule — and it works inside a Flatpak.
 //
 // Injection goes over plain D-Bus (NotifyKeyboardKeycode / NotifyKeyboardKeysym)
 // rather than libei, so this stays pure Go with no cgo.
 
 const (
-	portalDest    = "org.freedesktop.portal.Desktop"
-	portalPath    = "/org/freedesktop/portal/desktop"
 	ifaceRD       = "org.freedesktop.portal.RemoteDesktop"
-	ifaceRequest  = "org.freedesktop.portal.Request"
-	ifaceSession  = "org.freedesktop.portal.Session"
 	deviceTypeKbd = uint32(1) // RemoteDesktop device bitmask: 1 = keyboard
 
-	// persistMode 2 = "persist until explicitly revoked": the whole point, so the
-	// user grants remote control once instead of once per dictation.
+	// persist mode 2 = "until explicitly revoked": the whole point, so the user
+	// grants remote control once instead of once per dictation.
 	persistPersistent = uint32(2)
 
 	// evdev keycodes — the same numbers the ydotool backend uses.
@@ -57,21 +53,14 @@ var portalProbe struct {
 	version uint32
 }
 
-// portalPresent reports whether the RemoteDesktop portal is on the session bus,
-// and caches the answer: the portal cannot appear and disappear mid-session in
-// any way that matters here.
+// portalPresent reports whether the RemoteDesktop portal is on the session bus.
 func portalPresent() bool {
 	portalProbe.Do(func() {
-		conn, err := dbus.SessionBus() // shared connection; do not close
+		conn, err := xdgportal.Bus()
 		if err != nil {
 			return
 		}
-		v, err := conn.Object(portalDest, dbus.ObjectPath(portalPath)).
-			GetProperty(ifaceRD + ".version")
-		if err != nil {
-			return
-		}
-		if ver, ok := v.Value().(uint32); ok {
+		if ver, ok := xdgportal.Version(conn, ifaceRD); ok {
 			portalProbe.present, portalProbe.version = true, ver
 		}
 	})
@@ -90,21 +79,16 @@ func PortalVersion() uint32 {
 //
 // This matters more than it looks. xdg-desktop-portal *always* advertises
 // RemoteDesktop — the version property says 2 even when no backend implements
-// org.freedesktop.impl.portal.RemoteDesktop behind it (any compositor without a
-// RemoteDesktop-capable portal backend: niri, wlroots-based ones, a GNOME
-// backend running under a different compositor). The interface being present is
-// therefore not proof that it works; only a session attempt is. And if the user
-// simply refuses the permission, re-asking on every dictation would be worse
-// than falling back quietly.
+// org.freedesktop.impl.portal.RemoteDesktop behind it (niri here: the GNOME
+// backend delegates to Mutter, which isn't running). The interface being present
+// is therefore not proof that it works; only a session attempt is. And if the
+// user simply refuses the permission, re-asking on every dictation would be
+// worse than falling back quietly.
 var portalFailed atomic.Bool
 
-// PortalWorking reports whether the portal has been shown to work in this run:
-// present, and not latched as failed. Meant for the Linux diagnostics panel.
+// PortalWorking reports whether the portal looks usable in this run.
 func PortalWorking() bool { return portalUsable() }
 
-// portalUsable says whether "auto" should pick the portal. Establishing the
-// session may still fail (the user can refuse), which is why portalInject can
-// hand back errPortalUnavailable and let the caller fall back.
 func portalUsable() bool { return portalPresent() && !portalFailed.Load() }
 
 // --- the session ---------------------------------------------------------
@@ -119,7 +103,6 @@ var portal struct {
 	session dbus.ObjectPath
 }
 
-// ensureSession returns a live RemoteDesktop session, creating it on first use.
 func ensureSession() (*dbus.Conn, dbus.ObjectPath, error) {
 	portal.mu.Lock()
 	defer portal.mu.Unlock()
@@ -129,7 +112,7 @@ func ensureSession() (*dbus.Conn, dbus.ObjectPath, error) {
 	if !portalPresent() {
 		return nil, "", errPortalUnavailable
 	}
-	conn, err := dbus.SessionBus()
+	conn, err := xdgportal.Bus()
 	if err != nil {
 		portalFailed.Store(true)
 		return nil, "", fmt.Errorf("%w: session bus: %v", errPortalUnavailable, err)
@@ -157,24 +140,24 @@ func dropSession() {
 // SelectDevices (asking for a keyboard and for the grant to be remembered),
 // then Start — which is where the user sees the permission dialog.
 func startSession(conn *dbus.Conn) (dbus.ObjectPath, error) {
-	obj := conn.Object(portalDest, dbus.ObjectPath(portalPath))
+	obj := conn.Object(xdgportal.Dest, dbus.ObjectPath(xdgportal.Path))
 
-	sessionToken := newToken()
-	res, err := portalRequest(conn, 30*time.Second, func(opts map[string]dbus.Variant) *dbus.Call {
+	sessionToken := xdgportal.NewToken()
+	res, err := xdgportal.Request(conn, 30*time.Second, func(opts map[string]dbus.Variant) *dbus.Call {
 		opts["session_handle_token"] = dbus.MakeVariant(sessionToken)
 		return obj.Call(ifaceRD+".CreateSession", 0, opts)
 	})
 	if err != nil {
 		return "", fmt.Errorf("%w: CreateSession: %v", errPortalUnavailable, err)
 	}
-	session, ok := sessionHandle(res)
+	session, ok := xdgportal.SessionHandle(res)
 	if !ok {
 		return "", fmt.Errorf("%w: CreateSession returned no session handle", errPortalUnavailable)
 	}
 
 	// Ask for a keyboard, and for the permission to be remembered. A saved
 	// restore token turns the next Start into a no-prompt grant.
-	_, err = portalRequest(conn, 30*time.Second, func(opts map[string]dbus.Variant) *dbus.Call {
+	_, err = xdgportal.Request(conn, 30*time.Second, func(opts map[string]dbus.Variant) *dbus.Call {
 		opts["types"] = dbus.MakeVariant(deviceTypeKbd)
 		opts["persist_mode"] = dbus.MakeVariant(persistPersistent)
 		if tok := loadRestoreToken(); tok != "" {
@@ -187,7 +170,7 @@ func startSession(conn *dbus.Conn) (dbus.ObjectPath, error) {
 	}
 
 	// Start shows the dialog on first run. Give the user time to answer it.
-	res, err = portalRequest(conn, 3*time.Minute, func(opts map[string]dbus.Variant) *dbus.Call {
+	res, err = xdgportal.Request(conn, 3*time.Minute, func(opts map[string]dbus.Variant) *dbus.Call {
 		return obj.Call(ifaceRD+".Start", 0, session, "", opts)
 	})
 	if err != nil {
@@ -200,95 +183,6 @@ func startSession(conn *dbus.Conn) (dbus.ObjectPath, error) {
 		}
 	}
 	return session, nil
-}
-
-// portalRequest performs one portal call and waits for its Response signal.
-//
-// Every portal method returns immediately with a Request object path and
-// answers later over a signal. The path is derived from our bus name plus the
-// handle_token we pass in, which lets us subscribe *before* making the call —
-// otherwise a fast reply could arrive before we were listening.
-func portalRequest(conn *dbus.Conn, timeout time.Duration, call func(map[string]dbus.Variant) *dbus.Call) (map[string]dbus.Variant, error) {
-	token := newToken()
-	reqPath := dbus.ObjectPath("/org/freedesktop/portal/desktop/request/" + senderPart(conn) + "/" + token)
-
-	match := []dbus.MatchOption{
-		dbus.WithMatchObjectPath(reqPath),
-		dbus.WithMatchInterface(ifaceRequest),
-		dbus.WithMatchMember("Response"),
-	}
-	if err := conn.AddMatchSignal(match...); err != nil {
-		return nil, err
-	}
-	defer conn.RemoveMatchSignal(match...)
-
-	ch := make(chan *dbus.Signal, 4)
-	conn.Signal(ch)
-	defer conn.RemoveSignal(ch)
-
-	opts := map[string]dbus.Variant{"handle_token": dbus.MakeVariant(token)}
-	if c := call(opts); c.Err != nil {
-		return nil, c.Err
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-	for {
-		select {
-		case sig := <-ch:
-			if sig.Path != reqPath || len(sig.Body) < 2 {
-				continue
-			}
-			code, _ := sig.Body[0].(uint32)
-			results, _ := sig.Body[1].(map[string]dbus.Variant)
-			switch code {
-			case 0:
-				return results, nil
-			case 1:
-				return nil, errors.New("cancelled by the user")
-			default:
-				return nil, fmt.Errorf("portal request ended (code %d)", code)
-			}
-		case <-ctx.Done():
-			return nil, errors.New("timed out waiting for the portal")
-		}
-	}
-}
-
-// senderPart is our unique bus name in the form the portal uses to build
-// request/session paths: ":1.42" becomes "1_42".
-func senderPart(conn *dbus.Conn) string {
-	return strings.ReplaceAll(strings.TrimPrefix(conn.Names()[0], ":"), ".", "_")
-}
-
-func sessionHandle(res map[string]dbus.Variant) (dbus.ObjectPath, bool) {
-	v, ok := res["session_handle"]
-	if !ok {
-		return "", false
-	}
-	switch h := v.Value().(type) {
-	case dbus.ObjectPath:
-		return h, true
-	case string:
-		return dbus.ObjectPath(h), true
-	}
-	return "", false
-}
-
-var tokenSeq struct {
-	sync.Mutex
-	n int
-}
-
-// newToken returns a handle token unique within this process. It only has to be
-// unique per connection, so a counter is enough — and unlike a random value it
-// keeps the derived object paths predictable while debugging.
-func newToken() string {
-	tokenSeq.Lock()
-	tokenSeq.n++
-	n := tokenSeq.n
-	tokenSeq.Unlock()
-	return fmt.Sprintf("vito%d_%d", os.Getpid(), n)
 }
 
 // --- the remembered grant ------------------------------------------------
@@ -386,7 +280,7 @@ func tapKeycode(conn *dbus.Conn, session dbus.ObjectPath, code int32) error {
 }
 
 func notifyKeycode(conn *dbus.Conn, session dbus.ObjectPath, code int32, state uint32) error {
-	call := conn.Object(portalDest, dbus.ObjectPath(portalPath)).
+	call := conn.Object(xdgportal.Dest, dbus.ObjectPath(xdgportal.Path)).
 		Call(ifaceRD+".NotifyKeyboardKeycode", 0, session, map[string]dbus.Variant{}, code, state)
 	if call.Err != nil {
 		// The compositor may have closed the session; force a rebuild next time.
@@ -400,14 +294,14 @@ func notifyKeycode(conn *dbus.Conn, session dbus.ObjectPath, code int32, state u
 // keysyms with the 0x01000000 offset, which is how you say "this character"
 // without caring about the user's keyboard layout.
 func typeKeysyms(conn *dbus.Conn, session dbus.ObjectPath, text string) error {
-	obj := conn.Object(portalDest, dbus.ObjectPath(portalPath))
+	obj := conn.Object(xdgportal.Dest, dbus.ObjectPath(xdgportal.Path))
 	for _, r := range text {
 		keysym := int32(r)
-		if r > 0x7f || r == '\n' {
-			keysym = int32(0x01000000 + int32(r))
-		}
-		if r == '\n' {
-			keysym = int32(0xff0d) // XK_Return
+		switch {
+		case r == '\n':
+			keysym = 0xff0d // XK_Return
+		case r > 0x7f:
+			keysym = 0x01000000 + int32(r)
 		}
 		for _, state := range []uint32{keyPressed, keyReleased} {
 			call := obj.Call(ifaceRD+".NotifyKeyboardKeysym", 0, session, map[string]dbus.Variant{}, keysym, state)
