@@ -10,6 +10,9 @@
 //
 // Ducking is the default because it is seamless (no play/pause toggle to get
 // wrong) and reaches apps that expose no media controls, such as browser video.
+// It is Windows-only: on Linux it would mean driving PulseAudio's own protocol,
+// and the pactl-based attempt that used to live there never worked reliably, so
+// "duck" degrades to "pause" on that platform rather than doing nothing.
 //
 // Everything here is strictly best-effort: media control must never delay or
 // break a dictation. Start() runs the platform work in a goroutine so the
@@ -17,7 +20,7 @@
 // finish and then undoes exactly what Start() did. When nothing was playing (or
 // the platform has no backend) both calls are no-ops.
 //
-// The OS-specific backends live in the platform files: playerctl/pactl on
+// The OS-specific backends live in the platform files: MPRIS over D-Bus on
 // Linux, the media transport key / WASAPI session volume on Windows, and a
 // no-op elsewhere.
 package media

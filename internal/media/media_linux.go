@@ -5,159 +5,117 @@ package media
 import (
 	"context"
 	"log/slog"
-	"os/exec"
-	"strconv"
 	"strings"
 	"time"
+
+	"github.com/godbus/dbus/v5"
 )
 
-// Linux backends:
+// Linux pauses media over MPRIS, spoken directly on the session bus.
 //
-//   - pause: playerctl (MPRIS). Pause only the players actually Playing and
-//     remember them so Restore plays back exactly those.
-//   - duck:  pactl (PulseAudio/PipeWire). Lower the volume of every non-corked
-//     sink-input and remember each one's original volume to restore it. This
-//     reaches apps that expose no MPRIS controls (browser video, games).
+// This used to shell out to playerctl, which is only an MPRIS client itself —
+// so talking to the bus removes an external dependency without losing anything.
+// It also matters for the Flatpak: a bundled binary would be one more thing to
+// build and ship, whereas `--talk-name=org.mpris.MediaPlayer2.*` is a line in
+// the manifest.
 //
-// Every external call has a short timeout: a hung media stack must never stall
-// a dictation.
+// **Ducking is gone on Linux.** It used to lower each stream's volume through
+// pactl, which meant parsing pactl's text output, and it never worked reliably.
+// PulseAudio speaks its own binary protocol rather than D-Bus, so doing it
+// properly would be a project of its own for a feature that was already the
+// weakest part of this package. Since "duck" is the default action, it now falls
+// back to pausing rather than silently doing nothing — otherwise upgrading would
+// quietly leave music blaring through every dictation.
+//
+// Everything here stays best-effort with a short timeout: a hung media player
+// must never stall a dictation.
 
 const (
-	cmdTimeout = 800 * time.Millisecond
-	duckVolume = 25 // percent to duck playing streams down to
-)
+	callTimeout = 800 * time.Millisecond
 
-// duckedInput remembers a sink-input's index and original volume percentage.
-type duckedInput struct {
-	index  string
-	volPct string
-}
+	mprisPrefix = "org.mpris.MediaPlayer2."
+	mprisPath   = "/org/mpris/MediaPlayer2"
+	mprisPlayer = "org.mpris.MediaPlayer2.Player"
+)
 
 func suppressPlatform(a Action, log *slog.Logger) any {
 	switch a {
-	case ActionPause:
+	case ActionPause, ActionDuck: // see the note above: duck degrades to pause
 		if players := pausePlayers(log); len(players) > 0 {
 			log.Info("paused media for dictation", "players", players)
 			return players
-		}
-	case ActionDuck:
-		if ducked := duckInputs(log); len(ducked) > 0 {
-			log.Info("ducked media for dictation", "streams", len(ducked))
-			return ducked
 		}
 	}
 	return nil
 }
 
 func restorePlatform(a Action, token any, log *slog.Logger) {
-	switch a {
-	case ActionPause:
-		players, _ := token.([]string)
-		for _, p := range players {
-			run(log, "playerctl", "-p", p, "play")
-		}
-		if len(players) > 0 {
-			log.Info("resumed media after dictation", "players", players)
-		}
-	case ActionDuck:
-		ducked, _ := token.([]duckedInput)
-		for _, d := range ducked {
-			run(log, "pactl", "set-sink-input-volume", d.index, d.volPct+"%")
-		}
-		if len(ducked) > 0 {
-			log.Info("restored media volume after dictation", "streams", len(ducked))
+	players, _ := token.([]string)
+	if len(players) == 0 {
+		return
+	}
+	conn, err := dbus.SessionBus()
+	if err != nil {
+		return
+	}
+	for _, name := range players {
+		ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+		call := conn.Object(name, mprisPath).CallWithContext(ctx, mprisPlayer+".Play", 0)
+		cancel()
+		if call.Err != nil {
+			log.Debug("could not resume player", "player", name, "err", call.Err)
 		}
 	}
+	log.Info("resumed media after dictation", "players", players)
 }
 
-// --- pause (playerctl) ---------------------------------------------------
-
+// pausePlayers pauses every MPRIS player that is actually playing, and returns
+// their bus names so Restore resumes exactly those — not whatever happens to be
+// paused by the time the dictation ends.
 func pausePlayers(log *slog.Logger) []string {
-	if _, err := exec.LookPath("playerctl"); err != nil {
+	conn, err := dbus.SessionBus()
+	if err != nil {
 		return nil
 	}
-	out := output(nil, "playerctl", "-l")
-	if out == "" || strings.Contains(out, "No players found") {
+	var names []string
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+	err = conn.BusObject().CallWithContext(ctx, "org.freedesktop.DBus.ListNames", 0).Store(&names)
+	cancel()
+	if err != nil {
+		log.Debug("could not list bus names", "err", err)
 		return nil
 	}
+
 	var paused []string
-	for _, p := range strings.Fields(out) {
-		if output(log, "playerctl", "-p", p, "status") == "Playing" {
-			if run(log, "playerctl", "-p", p, "pause") {
-				paused = append(paused, p)
-			}
+	for _, name := range names {
+		if !strings.HasPrefix(name, mprisPrefix) {
+			continue
 		}
+		obj := conn.Object(name, mprisPath)
+		if playbackStatus(obj) != "Playing" {
+			continue
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+		call := obj.CallWithContext(ctx, mprisPlayer+".Pause", 0)
+		cancel()
+		if call.Err != nil {
+			log.Debug("could not pause player", "player", name, "err", call.Err)
+			continue
+		}
+		paused = append(paused, name)
 	}
 	return paused
 }
 
-// --- duck (pactl) --------------------------------------------------------
-
-func duckInputs(log *slog.Logger) []duckedInput {
-	if _, err := exec.LookPath("pactl"); err != nil {
-		return nil
-	}
-	blocks := strings.Split(output(log, "pactl", "list", "sink-inputs"), "Sink Input #")
-	var ducked []duckedInput
-	for _, b := range blocks[1:] {
-		idx := strings.TrimSpace(strings.SplitN(b, "\n", 2)[0])
-		if idx == "" || strings.Contains(b, "Corked: yes") {
-			continue // no index or not actively playing
-		}
-		vol := firstVolumePct(b)
-		if vol == "" || vol == "0" {
-			continue
-		}
-		if run(log, "pactl", "set-sink-input-volume", idx, strconv.Itoa(duckVolume)+"%") {
-			ducked = append(ducked, duckedInput{index: idx, volPct: vol})
-		}
-	}
-	return ducked
-}
-
-// firstVolumePct extracts the first "NN%" from a sink-input's Volume: line.
-func firstVolumePct(block string) string {
-	for _, line := range strings.Split(block, "\n") {
-		line = strings.TrimSpace(line)
-		if !strings.HasPrefix(line, "Volume:") {
-			continue
-		}
-		if i := strings.IndexByte(line, '%'); i > 0 {
-			j := i
-			for j > 0 && (line[j-1] >= '0' && line[j-1] <= '9') {
-				j--
-			}
-			return line[j:i]
-		}
-	}
-	return ""
-}
-
-// --- helpers -------------------------------------------------------------
-
-// output runs a command and returns trimmed stdout ("" on any error).
-func output(log *slog.Logger, name string, args ...string) string {
-	ctx, cancel := context.WithTimeout(context.Background(), cmdTimeout)
+func playbackStatus(obj dbus.BusObject) string {
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
 	defer cancel()
-	out, err := exec.CommandContext(ctx, name, args...).Output()
+	var v dbus.Variant
+	err := obj.CallWithContext(ctx, "org.freedesktop.DBus.Properties.Get", 0,
+		mprisPlayer, "PlaybackStatus").Store(&v)
 	if err != nil {
-		if log != nil {
-			log.Debug("command failed", "cmd", name, "args", args, "err", err)
-		}
 		return ""
 	}
-	return strings.TrimSpace(string(out))
-}
-
-// run runs a command and reports whether it succeeded.
-func run(log *slog.Logger, name string, args ...string) bool {
-	ctx, cancel := context.WithTimeout(context.Background(), cmdTimeout)
-	defer cancel()
-	if err := exec.CommandContext(ctx, name, args...).Run(); err != nil {
-		if log != nil {
-			log.Debug("command failed", "cmd", name, "args", args, "err", err)
-		}
-		return false
-	}
-	return true
+	s, _ := v.Value().(string)
+	return s
 }

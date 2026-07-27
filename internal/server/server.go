@@ -527,7 +527,7 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 		s.writeJSON(w, http.StatusOK, map[string]any{"os": runtime.GOOS, "present": map[string]bool{}})
 		return
 	}
-	names := []string{"wl-copy", "wl-paste", "wtype", "ydotool", "notify-send", "pactl", "playerctl"}
+	names := []string{"wl-copy", "wl-paste", "wtype", "ydotool", "notify-send", "pactl"}
 	present := make(map[string]bool, len(names))
 	for _, n := range names {
 		_, err := exec.LookPath(n)
