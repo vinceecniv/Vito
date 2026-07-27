@@ -1,0 +1,84 @@
+# Builds the Flatpak and publishes a self-hosted repository to GitHub Pages.
+#
+# Vito is not on Flathub, so the repository is served from Pages instead. Users
+# add the remote once and then get `flatpak update` like any other application —
+# which was the point of packaging it at all; the store listing is what we give
+# up, not the installation or the updates.
+#
+# Publishing an ostree repo (rather than a single .flatpak bundle attached to a
+# release) is what makes updates work: `flatpak update` pulls deltas from this
+# repo. A bundle would have to be downloaded and reinstalled by hand every time.
+name: Flatpak
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: flatpak-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the Flatpak into a repository
+        env:
+          # Stamped into the binary the same way the other builds do it, so
+          # `vito version` and the About page agree with the tag.
+          VITO_VERSION: ${{ github.ref_type == 'tag' && github.ref_name || 'dev' }}
+        run: |
+          set -eux
+          # Strip the leading v from the tag: v2026.7.3 -> 2026.7.3
+          VITO_VERSION="${VITO_VERSION#v}"
+          sed -i "s/@VITO_VERSION@/${VITO_VERSION}/" \
+            packaging/flatpak/io.github.vinceecniv.vito.yml
+          flatpak-builder --disable-rofiles-fuse --force-clean \
+            --repo=repo --default-branch=stable \
+            build packaging/flatpak/io.github.vinceecniv.vito.yml
+
+      - name: Sign the repository
+        # Optional: without a key, users add the remote with --no-gpg-verify.
+        # With one, flatpak verifies every update against it.
+        if: ${{ secrets.FLATPAK_GPG_KEY != '' }}
+        env:
+          GPG_KEY: ${{ secrets.FLATPAK_GPG_KEY }}
+          GPG_ID: ${{ secrets.FLATPAK_GPG_ID }}
+        run: |
+          set -eu
+          printf '%s' "$GPG_KEY" | gpg --batch --import
+          flatpak build-sign repo --gpg-sign="$GPG_ID"
+          flatpak build-update-repo repo --gpg-sign="$GPG_ID" --generate-static-deltas
+          gpg --batch --export "$GPG_ID" > repo/vito.gpg
+
+      - name: Finish the repository
+        if: ${{ secrets.FLATPAK_GPG_KEY == '' }}
+        run: flatpak build-update-repo repo --generate-static-deltas
+
+      - name: Add the .flatpakrepo users point at
+        run: cp packaging/flatpak/vito.flatpakrepo repo/vito.flatpakrepo
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: repo
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

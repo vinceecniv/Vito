@@ -1,0 +1,7 @@
+[Flatpak Repo]
+Title=Vito
+Url=https://vinceecniv.github.io/Vito/
+Homepage=https://vito.talk
+Comment=Voice In, Text Out — dictate anywhere with a hotkey
+Description=Free, open-source voice dictation. Press a hotkey, speak, and clean text is pasted where your cursor is. Bring your own API key; no subscription.
+Icon=https://vito.talk/icon-512.png

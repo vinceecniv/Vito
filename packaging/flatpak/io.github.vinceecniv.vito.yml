@@ -1,0 +1,90 @@
+# Flatpak manifest for Vito.
+#
+# Vito is not on Flathub — the repository is self-hosted from GitHub Pages, so
+# users add one remote and then get `flatpak update` like any other app. See
+# docs/linux-portals.md for why a Flatpak is worth having at all: inside the
+# sandbox the XDG portals are the only way to press a key in another window, and
+# building against them removed the ydotoold + udev setup on ordinary installs
+# too.
+#
+# What deliberately is NOT here: `--device=all`, uinput, or any broad filesystem
+# access. Text delivery goes through the RemoteDesktop portal (GNOME/KDE) or the
+# Wayland virtual-keyboard protocol via the bundled wtype (niri/wlroots), and the
+# hotkey through the GlobalShortcuts portal. The ydotool fallback cannot work in
+# a sandbox and is simply absent here; Vito already reports which delivery route
+# it is on under Settings → Linux.
+app-id: io.github.vinceecniv.vito
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.golang
+command: vito
+
+finish-args:
+  # The Wayland socket is all the virtual-keyboard backend needs — no extra
+  # permission, no daemon. The portals need no finish-arg at all.
+  - --socket=wayland
+  # Microphone capture. PipeWire serves this through its PulseAudio compatibility.
+  - --socket=pulseaudio
+  # Speech-to-text and AI cleanup are network calls to the user's own providers,
+  # and the settings UI is a local HTTP server the browser connects to.
+  - --share=network
+  # Desktop notifications and the tray icon.
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.kde.StatusNotifierWatcher
+  # Pausing or ducking media while recording, over MPRIS.
+  - --talk-name=org.mpris.MediaPlayer2.*
+
+modules:
+  # The clipboard tools. Vito copies the text and then presses Ctrl+V, so this is
+  # needed for the default paste mode as well as for clipboard-only mode and for
+  # Vito Assist's clipboard commands.
+  - name: wl-clipboard
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://github.com/bugaevc/wl-clipboard.git
+        tag: v2.2.1
+
+  # The virtual-keyboard backend, for compositors that implement
+  # zwp_virtual_keyboard_v1 but have no RemoteDesktop portal (niri, wlroots).
+  - name: wtype
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://github.com/atx/wtype.git
+        tag: v0.4
+
+  - name: vito
+    buildsystem: simple
+    # The Go toolchain arrives as an SDK extension rather than in the SDK itself.
+    build-options:
+      append-path: /usr/lib/sdk/golang/bin
+      env:
+        GOFLAGS: -mod=mod
+        # cgo is required: the audio layer (miniaudio) is C.
+        CGO_ENABLED: '1'
+      # Self-hosting means we are not bound by Flathub's offline-build rule, so
+      # modules are fetched at build time instead of being vendored into the
+      # repository. If this ever moves to a stricter builder, run `go mod vendor`
+      # and drop this.
+      build-args:
+        - --share=network
+    build-commands:
+      # @VITO_VERSION@ is substituted by the workflow before building:
+      # flatpak-builder does not pass the outer environment into the build
+      # sandbox, so the version has to be baked into the manifest.
+      - go build -ldflags "-X main.version=@VITO_VERSION@" -o vito ./cmd/vito
+      - install -Dm755 vito /app/bin/vito
+      # The desktop file, icon and AppStream metadata must all be named after the
+      # app id for the desktop to associate them.
+      - install -Dm644 packaging/flatpak/io.github.vinceecniv.vito.desktop
+          /app/share/applications/io.github.vinceecniv.vito.desktop
+      - install -Dm644 web/icon-512.png
+          /app/share/icons/hicolor/512x512/apps/io.github.vinceecniv.vito.png
+      - install -Dm644 packaging/io.github.vinceecniv.vito.metainfo.xml
+          /app/share/metainfo/io.github.vinceecniv.vito.metainfo.xml
+    sources:
+      - type: dir
+        path: ../..
