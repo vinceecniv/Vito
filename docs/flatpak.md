@@ -59,7 +59,15 @@ Running the built Flatpak on GNOME 50:
 * the delivery route resolves to `portal`, with `wtype` present but refused by
   Mutter, exactly as on the host;
 * `wl-copy` sets the real clipboard from inside the sandbox;
-* config lands in `~/.var/app/io.github.vinceecniv.vito/config/vito/`.
+* config lands in `~/.var/app/io.github.vinceecniv.vito/config/vito/`;
+* a full dictation works end to end — microphone, the user's STT and AI
+  providers over the network, and injection through the portal. The first one
+  costs ~6s while the RemoteDesktop session is established, the next ~900ms,
+  which is what the host build does too.
+
+The RemoteDesktop permission is asked once more after switching from the
+AppImage: to the portal the Flatpak is a different application, so it does not
+inherit the host build's grant.
 
 ## Config lives somewhere else
 
