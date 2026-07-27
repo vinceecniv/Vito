@@ -39,6 +39,7 @@ import (
 	"vito/internal/demo"
 	"vito/internal/history"
 	"vito/internal/hotkey"
+	"vito/internal/inject"
 	"vito/internal/selfexe"
 	"vito/internal/stt"
 	"vito/internal/update"
@@ -526,7 +527,7 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 		s.writeJSON(w, http.StatusOK, map[string]any{"os": runtime.GOOS, "present": map[string]bool{}})
 		return
 	}
-	names := []string{"wl-copy", "wl-paste", "ydotool", "notify-send", "pactl", "playerctl"}
+	names := []string{"wl-copy", "wl-paste", "wtype", "ydotool", "notify-send", "pactl", "playerctl"}
 	present := make(map[string]bool, len(names))
 	for _, n := range names {
 		_, err := exec.LookPath(n)
@@ -548,10 +549,14 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	present["ydotoold"] = socket != ""
+	// Which of the three delivery routes is actually in play. With a fallback
+	// chain, "it works" and "it works the way you think" are different claims —
+	// this is the first thing worth knowing when delivery misbehaves.
 	s.writeJSON(w, http.StatusOK, map[string]any{
 		"os":             runtime.GOOS,
 		"present":        present,
 		"ydotool_socket": socket,
+		"backend":        inject.ActiveBackend(s.d.Config().Injection),
 	})
 }
 

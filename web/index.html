@@ -2010,6 +2010,9 @@ const TR = { nl: {
   "Hotkey in your desktop":"Sneltoets in je desktop","Cleanup off":"Opschoning uit","Local model":"Lokaal model","Auto":"Auto",
   "Command":"Opdracht","speak your text…":"spreek je tekst…",
   "Vito Assist":"Vito Assist","result is on your clipboard":"resultaat staat op je klembord",
+  "Text delivery":"Tekstaflevering",
+  "Vito uses the first delivery route your desktop supports, so helpers the other routes would need are optional here.":"Vito gebruikt de eerste afleverroute die je bureaublad ondersteunt; helpers die de andere routes nodig zouden hebben, zijn hier optioneel.",
+  "A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.":"Er ontbreekt een helper die de actieve afleverroute nodig heeft — plakken werkt nog niet. Zie de README voor de installatie.",
   "Vito Assist commands":"Vito Assist-opdrachten",
   "Examples":"Voorbeelden",
   "Say “Vito, …” and a short instruction. It isn't typed out — it's applied to your next dictation, or to the text already on your clipboard.":"Zeg “Vito, …” en een korte opdracht. Die wordt niet uitgetypt — hij wordt toegepast op je volgende dictaat, of op de tekst die al op je klembord staat.",
@@ -3982,14 +3985,31 @@ function maybeShowLinuxHint(){
    Detects the optional helpers Vito shells out to and reports what's present so
    Linux users know what still needs installing. Re-testable and dismissable. */
 const LINUX_TOOLS = [
-  { name:"wl-copy",     req:true,  nl:"Klembord — kopieert de tekst",                en:"Clipboard — copies the text" },
-  { name:"ydotool",     req:true,  nl:"Plakken & typen — stuurt de Ctrl+V-toets",    en:"Paste & type — sends the Ctrl+V keystroke" },
-  { name:"ydotoold",    req:true,  nl:"ydotool-daemon — socket moet actief zijn",    en:"ydotool daemon — its socket must be running" },
-  { name:"wl-paste",    req:false, nl:"Klembord — herstelt de vorige inhoud",        en:"Clipboard — restores the previous contents" },
-  { name:"notify-send", req:false, nl:"Bureaubladmeldingen",                          en:"Desktop notifications" },
-  { name:"pactl",       req:false, nl:"Media dempen (duck) tijdens opname",           en:"Duck media volume while recording" },
-  { name:"playerctl",   req:false, nl:"Media pauzeren tijdens opname",                en:"Pause media while recording" },
+  { name:"wl-copy",     nl:"Klembord — kopieert de tekst",                en:"Clipboard — copies the text" },
+  { name:"wtype",       nl:"Plakken & typen — Wayland virtual-keyboard-protocol, geen installatie nodig", en:"Paste & type — Wayland virtual-keyboard protocol, no setup" },
+  { name:"ydotool",     nl:"Plakken & typen — uinput-terugval",           en:"Paste & type — uinput fallback" },
+  { name:"ydotoold",    nl:"ydotool-daemon — alleen nodig voor de uinput-terugval", en:"ydotool daemon — only needed for the uinput fallback" },
+  { name:"wl-paste",    nl:"Klembord — herstelt de vorige inhoud",        en:"Clipboard — restores the previous contents" },
+  { name:"notify-send", nl:"Bureaubladmeldingen",                          en:"Desktop notifications" },
+  { name:"pactl",       nl:"Media dempen (duck) tijdens opname",           en:"Duck media volume while recording" },
+  { name:"playerctl",   nl:"Media pauzeren tijdens opname",                en:"Pause media while recording" },
 ];
+// How the active delivery route is named in the UI.
+const BACKEND_LABELS = {
+  wayland:   "Wayland virtual-keyboard (wtype)",
+  portal:    "RemoteDesktop portal",
+  ydotool:   "ydotool (uinput)",
+  sendinput: "SendInput",
+};
+// Which helpers the *current* route actually depends on. Vito tries wtype, then
+// the portal, then ydotool — so which tools are genuinely required depends on
+// where that search landed, and marking all of them required would be a lie.
+function linuxRequired(backend){
+  const req = new Set(["wl-copy"]);
+  if (backend === "wayland") req.add("wtype");
+  else if (backend === "ydotool") { req.add("ydotool"); req.add("ydotoold"); }
+  return req; // the portal route needs no external helper at all
+}
 // Fills the Linux settings section with a live tool report and reveals its tab
 // only on Linux. Re-testable; no longer dismissable (it's a settings section).
 async function renderLinuxCard(){
@@ -4003,18 +4023,26 @@ async function renderLinuxCard(){
   if (tab) tab.hidden = !isLinux;
   if (!isLinux) { body.innerHTML = ""; return; }
   const present = info.present || {};
+  const backend = info.backend || "";
+  const required = linuxRequired(backend);
   const rows = LINUX_TOOLS.map(tl => {
     const ok = !!present[tl.name];
+    const req = required.has(tl.name);
     const purpose = (uiLang === "nl" ? tl.nl : tl.en);
     return `<div class="tool-row"><span class="tool-badge ${ok?"ok":"no"}">${ok?"✓":"✗"}</span>` +
-      `<span class="tool-main"><span class="tool-name">${tl.name}${tl.req?`<span class="req">${t("required")}</span>`:""}</span>` +
+      `<span class="tool-main"><span class="tool-name">${tl.name}${req?`<span class="req">${t("required")}</span>`:""}</span>` +
       `<span class="tool-purpose">${purpose}</span></span></div>`;
   }).join("");
-  const missingReq = LINUX_TOOLS.some(tl => tl.req && !present[tl.name]);
+  const missingReq = LINUX_TOOLS.some(tl => required.has(tl.name) && !present[tl.name]);
+  const backendRow = backend
+    ? `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(BACKEND_LABELS[backend] || backend)}</p>`
+    : "";
   body.innerHTML =
     `<p class="act-note" style="margin:0 0 8px;">${t("On Linux, Vito depends on your distribution and desktop environment: some external helpers must be installed, and extra steps are sometimes needed. Below is what Vito found on this system.")}</p>
+    ${backendRow}
+    <p class="act-note" style="margin:0 0 8px;">${t("Vito uses the first delivery route your desktop supports, so helpers the other routes would need are optional here.")}</p>
     <div class="toollist">${rows}</div>
-    ${missingReq ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("A required helper is missing — pasting won't work yet. See the README for installation (e.g. ydotool + ydotoold).")}</p>` : ""}
+    ${missingReq ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.")}</p>` : ""}
     <p class="act-note" style="margin-top:10px;">${t("On Wayland no app can claim global hotkeys itself — you bind your start/stop key in your compositor. That's explained under Settings → Activation.")}</p>
     <div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;">
       <button class="btn ghost small" id="linux-activation">${t("Go to Activation")}</button>

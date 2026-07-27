@@ -223,3 +223,7 @@ func getClipboardText() (string, bool) {
 	})
 	return out, ok
 }
+
+// ActiveBackend names the backend an injection would use. Windows has exactly
+// one way to do this, so there is nothing to choose.
+func ActiveBackend(cfg config.Injection) string { return "sendinput" }

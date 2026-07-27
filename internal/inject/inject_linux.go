@@ -152,3 +152,9 @@ func checkTool(name string) error {
 	}
 	return nil
 }
+
+// ActiveBackend names the backend an injection would use right now, for the
+// log line and the Linux diagnostics panel. Now that there are three of them,
+// "which one am I actually on?" is the first question worth answering when
+// delivery misbehaves.
+func ActiveBackend(cfg config.Injection) string { return resolveBackend(cfg) }

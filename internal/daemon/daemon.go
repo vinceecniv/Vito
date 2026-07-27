@@ -1160,6 +1160,7 @@ func (d *Daemon) finish(s *session) {
 		"duration", duration.Round(10*time.Millisecond),
 		"source", source,
 		"cleanup", cleanupUsed,
+		"backend", inject.ActiveBackend(cfg.Injection),
 		"stt_final", timings.SttFinal.Round(time.Millisecond),
 		"cleanup_ms", timings.Cleanup.Round(time.Millisecond),
 		"injected", timings.Injected.Round(time.Millisecond),
