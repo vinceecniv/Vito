@@ -129,8 +129,16 @@ cost nothing and remain the documented route for scripts and older setups).
    does. Proven both ways here: from a shell it fails, and under
    `systemd-run --user --scope --unit=app-vito-N` the session is created. Inside
    a Flatpak the id comes for free — one more way the sandbox is the easier
-   target. If Vito is to have portal hotkeys as a plain binary or AppImage, it
-   must be started from its desktop entry, or re-exec itself into a scope.
+   target.
+
+   **Handled automatically** (`cmd/vito/scope_linux.go`): before serving, Vito
+   checks whether it already sits in an `app-*.scope` and, if not, re-executes
+   itself through `systemd-run --user --scope`. That covers the ways Vito is
+   actually started — from a terminal, or from an XDG autostart entry, neither
+   of which scopes anything — instead of only working for someone who knew to
+   type systemd-run. It fails open: no systemd, a Flatpak, or an already-scoped
+   launch all skip it, and a failed exec still leaves a working Vito on the
+   signal fallback.
 4. **Clipboard without `wl-copy`** — either the Clipboard portal or bundling
    `wl-clipboard` in the Flatpak; decide once 2 and 3 are proven.
 5. **Flatpak** — `flatpak-builder` manifest (Go SDK extension or vendored deps),

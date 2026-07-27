@@ -117,6 +117,13 @@ func serve() error {
 	log := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: level}))
 	slog.SetDefault(log)
 
+	// On Linux, make sure we run inside a systemd app scope: that is how the XDG
+	// portals identify a host application, and without it global shortcuts are
+	// refused outright. Replaces this process when it acts, so it must happen
+	// before anything is opened. No-op on other platforms, and on any Linux where
+	// it isn't needed or isn't possible.
+	ensureAppScope(log)
+
 	firstRun := !config.Exists() // capture before Load, which creates the file
 	cfg, err := config.Load()
 	if err != nil {
