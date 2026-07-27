@@ -77,7 +77,7 @@ modules:
       build-args:
         - --share=network
     build-commands:
-      # 2026.7.3-dev is substituted by the workflow before building:
+      # @VITO_VERSION@ is substituted by the workflow before building:
       # flatpak-builder does not pass the outer environment into the build
       # sandbox, so the version has to be baked into the manifest.
       - go build -ldflags "-X main.version=@VITO_VERSION@" -o vito ./cmd/vito
