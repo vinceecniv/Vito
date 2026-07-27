@@ -20,8 +20,12 @@ func desktopPath() (string, error) {
 	return filepath.Join(dir, "autostart", "vito.desktop"), nil
 }
 
-// Enabled reports whether the XDG autostart entry exists.
+// Enabled reports whether autostart is on: what the Background portal granted
+// inside a Flatpak, or whether the XDG autostart entry exists outside one.
 func Enabled() (bool, error) {
+	if inFlatpak() {
+		return portalEnabled()
+	}
 	p, err := desktopPath()
 	if err != nil {
 		return false, err
@@ -33,10 +37,19 @@ func Enabled() (bool, error) {
 	return err == nil, err
 }
 
-// Set writes or removes the XDG autostart .desktop entry that launches
-// `vito serve` at login. Recognised by most desktops; some Wayland compositors
-// (e.g. niri) need xdg-desktop-autostart wired up to honour it.
+// Set turns autostart on or off.
+//
+// Inside a Flatpak this goes through the Background portal: the sandbox
+// redirects ~/.config, so writing the entry ourselves would put it where no
+// desktop looks and the setting would silently do nothing.
+//
+// Outside a sandbox it writes the XDG autostart .desktop entry directly, which
+// is recognised by most desktops; some Wayland compositors (e.g. niri) need
+// xdg-desktop-autostart wired up to honour it.
 func Set(enable bool) error {
+	if inFlatpak() {
+		return portalSet(enable)
+	}
 	p, err := desktopPath()
 	if err != nil {
 		return err
