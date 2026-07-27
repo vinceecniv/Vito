@@ -158,6 +158,29 @@ cost nothing and remain the documented route for scripts and older setups).
 
 Phases 1–3 are worth doing on their own merit even if Flathub never happens.
 
+## Testing this on another machine
+
+Two environmental gotchas cost real debugging time here, both worth knowing
+before concluding that something is broken in Vito:
+
+**The session must identify itself.** `xdg-desktop-portal` picks its backend
+from `XDG_CURRENT_DESKTOP`. A display manager is supposed to set that from the
+session file's `DesktopNames=`; GDM and SDDM do, but greetd (with dms-greeter)
+does not — so under greetd a GNOME session leaves it empty and *every* portal
+silently disappears, inside and outside a sandbox. Check with
+`echo $XDG_CURRENT_DESKTOP` before anything else. A wrapper session that exports
+it and runs `systemctl --user import-environment XDG_CURRENT_DESKTOP` fixes it;
+note that greetd searches `/usr/share/wayland-sessions` *before*
+`/usr/local/share`, the reverse of XDG order, so an override needs its own
+filename rather than shadowing the original.
+
+**Advertised is not implemented.** The portal frontend lists interfaces and
+methods its backend may not provide — `RemoteDesktop` reports version 2 with no
+backend behind it, `GlobalShortcuts` accepts `CreateSession` and then fails
+`BindShortcuts`, and `ConfigureShortcuts` appears in introspection while only
+existing from version 2. This caught the analysis three times. Trust a real
+attempt, or the interface version; never the method list.
+
 ## Open risks
 
 * **Compositor variance.** GNOME, KDE and wlroots-based compositors implement
