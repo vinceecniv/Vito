@@ -27,7 +27,9 @@ type Usage struct {
 
 // Cleaner keeps the daemon decoupled from the provider (see design §11).
 type Cleaner interface {
-	Clean(ctx context.Context, text, language string, corrections []config.Correction) (string, Usage, error)
+	// instruction is an optional one-off spoken command ("Vito, translate to
+	// German") applied to this call only; empty for a normal cleanup.
+	Clean(ctx context.Context, text, language string, corrections []config.Correction, instruction string) (string, Usage, error)
 }
 
 // NewCleaner builds the cleaner for the configured provider: Anthropic, or any
@@ -92,6 +94,26 @@ const systemPrompt = `You clean up dictated speech transcripts.
 - Keep the language of the transcript; do not translate.
 Output ONLY the cleaned text. No commentary, no quotes, no markdown fences.`
 
+// systemPromptWith appends a one-off spoken command (e.g. "translate to German",
+// from "Vito, vertaal naar Duits") to the base rules for a single call. The
+// command may override those rules — including keeping the language or not
+// rephrasing — because the user asked for it explicitly.
+func systemPromptWith(instruction string) string {
+	instruction = strings.TrimSpace(instruction)
+	if instruction == "" {
+		return systemPrompt
+	}
+	// Command mode: the instruction is the primary task, not cleanup — so it is
+	// instruction-first, not the cleanup prompt with a note bolted on. That lets
+	// big transforms and outright actions (translate, summarise, answer a
+	// question, draft a reply) win over the plain "just tidy, don't change" rules.
+	return `You are given a spoken instruction and a dictated transcript. First silently tidy the transcript (punctuation, spelling, remove filler words). Then carry out the instruction on that text and output ONLY the result — no commentary, no quotes, no markdown fences.
+
+The instruction may be a transformation (translate, summarise, turn into bullet points, reformat) or a request to act on the text (answer a question, draft a reply, explain). Do exactly what it asks, in the language it implies. If the instruction is terse (e.g. "vraag" / "question"), treat the transcript as that kind of request and respond accordingly.
+
+Instruction: ` + instruction
+}
+
 type AnthropicCleaner struct {
 	client anthropic.Client
 	model  string
@@ -104,12 +126,12 @@ func NewAnthropicCleaner(cfg config.Cleanup) *AnthropicCleaner {
 	}
 }
 
-func (c *AnthropicCleaner) Clean(ctx context.Context, text, language string, corrections []config.Correction) (string, Usage, error) {
+func (c *AnthropicCleaner) Clean(ctx context.Context, text, language string, corrections []config.Correction, instruction string) (string, Usage, error) {
 	msg, err := c.client.Messages.New(ctx, anthropic.MessageNewParams{
 		Model:       anthropic.Model(c.model),
 		MaxTokens:   maxTokensFor(text),
 		Temperature: anthropic.Float(0),
-		System:      []anthropic.TextBlockParam{{Text: systemPrompt}},
+		System:      []anthropic.TextBlockParam{{Text: systemPromptWith(instruction)}},
 		Messages: []anthropic.MessageParam{
 			anthropic.NewUserMessage(anthropic.NewTextBlock(buildUserPrompt(text, language, corrections))),
 		},
@@ -186,13 +208,13 @@ type openAIResponse struct {
 	} `json:"error"`
 }
 
-func (c *OpenAICleaner) Clean(ctx context.Context, text, language string, corrections []config.Correction) (string, Usage, error) {
+func (c *OpenAICleaner) Clean(ctx context.Context, text, language string, corrections []config.Correction, instruction string) (string, Usage, error) {
 	payload, err := json.Marshal(openAIRequest{
 		Model:       c.model,
 		Temperature: 0,
 		MaxTokens:   maxTokensFor(text),
 		Messages: []openAIMessage{
-			{Role: "system", Content: systemPrompt},
+			{Role: "system", Content: systemPromptWith(instruction)},
 			{Role: "user", Content: buildUserPrompt(text, language, corrections)},
 		},
 	})

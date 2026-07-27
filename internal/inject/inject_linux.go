@@ -103,6 +103,10 @@ func readClipboardText() (string, bool) {
 	return string(out), true
 }
 
+// ReadClipboard returns the current clipboard text (best-effort), for voice
+// commands that operate on already-copied text.
+func ReadClipboard() (string, bool) { return readClipboardText() }
+
 // ydotoolCmd builds a ydotool invocation that finds the ydotoold socket in
 // either location: the client defaults to $XDG_RUNTIME_DIR/.ydotool_socket,
 // but Fedora's system service creates /tmp/.ydotool_socket. Point the client

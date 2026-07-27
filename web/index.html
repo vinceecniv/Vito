@@ -907,6 +907,40 @@
   .modelcombo-list .mdl-x { border:0; background:none; color:var(--text3); cursor:pointer; font-size:15px; line-height:1; padding:0 2px; flex:0 0 auto; }
   .modelcombo-list .mdl-x:hover { color:var(--coral); }
   .modelcombo-list .mdl-empty { padding:8px 10px; font-size:12.5px; color:var(--text3); }
+  /* Vito Assist settings: example groups + the "requires cleanup" callout. */
+  .assist-flow { margin:4px 0 8px; padding-left:22px; }
+  .assist-flow li { font-size:13px; color:var(--text2); line-height:1.5; padding:3px 0; }
+  .assist-ex { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin:4px 0 6px; }
+  .assist-ex-g { border:1px solid var(--card-border); border-radius:12px; padding:11px 13px; background:var(--card); }
+  .assist-ex-h { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--text3); margin-bottom:7px; }
+  .assist-ex-i { font-size:13px; color:var(--text); padding:3px 0; }
+  .assist-ex-note { font-size:12px; color:var(--text3); margin-top:6px; font-style:italic; }
+  .assist-req { display:flex; align-items:flex-start; gap:9px; margin:8px 0 4px; padding:11px 13px; border-radius:12px;
+    background:color-mix(in srgb, var(--accent) 12%, transparent); border:1px solid color-mix(in srgb, var(--accent) 30%, transparent); font-size:13px; color:var(--text2); line-height:1.45; }
+  .assist-req svg { width:17px; height:17px; flex:0 0 auto; margin-top:1px; color:var(--accent); }
+  /* Command mode: a glowing accent bar in the live transcript while a spoken
+     command is armed for the next dictation. */
+  .cmd-mode { display:flex; align-items:center; gap:10px; margin-bottom:12px; padding:10px 14px; border-radius:12px; color:#fff;
+    background:linear-gradient(135deg,var(--coral),var(--violet)); box-shadow:0 8px 22px var(--accent-soft); animation:cmdGlow 1.8s ease-in-out infinite; }
+  .cmd-mode .cmd-ico { display:inline-flex; width:20px; height:20px; flex:0 0 auto; }
+  .cmd-mode .cmd-ico svg { width:20px; height:20px; }
+  /* The Vito mark animated like a live equaliser — a "listening assistant" feel. */
+  .cmd-mode .cmd-ico rect { transform-box:fill-box; transform-origin:center; animation:cmdBar 1s ease-in-out infinite; }
+  .cmd-mode .cmd-ico rect:nth-child(1){ animation-delay:0s; }
+  .cmd-mode .cmd-ico rect:nth-child(2){ animation-delay:.13s; }
+  .cmd-mode .cmd-ico rect:nth-child(3){ animation-delay:.26s; }
+  .cmd-mode .cmd-ico rect:nth-child(4){ animation-delay:.39s; }
+  .cmd-mode .cmd-ico rect:nth-child(5){ animation-delay:.52s; }
+  @keyframes cmdBar { 0%,100%{ transform:scaleY(.45); } 50%{ transform:scaleY(1); } }
+  .cmd-mode .cmd-txt { font-size:13.5px; font-weight:700; }
+  .cmd-mode .cmd-hint { margin-left:auto; font-size:12px; font-weight:500; opacity:.9; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; }
+  .cmd-mode .cmd-hint svg { width:13px; height:13px; flex:0 0 auto; }
+  @keyframes cmdGlow { 0%,100% { box-shadow:0 8px 22px var(--accent-soft); } 50% { box-shadow:0 10px 34px color-mix(in srgb, var(--violet) 55%, transparent); } }
+  /* Received: the text is in — stop pulsing, glow down over a couple of seconds, then sit still; the bars settle upright. */
+  .cmd-mode.received { animation:cmdAfterglow 2.4s ease-out forwards; }
+  .cmd-mode.received .cmd-ico rect { animation:none; transform:scaleY(1); }
+  @keyframes cmdAfterglow { 0% { box-shadow:0 10px 34px color-mix(in srgb, var(--violet) 55%, transparent); } 100% { box-shadow:0 6px 16px var(--accent-soft); } }
+  @media (prefers-reduced-motion:reduce){ .cmd-mode, .cmd-mode.received { animation:none; } .cmd-mode .cmd-ico rect { animation:none; transform:scaleY(1); } }
   /* Status-page summary tags: active hotkey, speech model, language, cleanup —
      each a shortcut to its settings section. */
   .status-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
@@ -970,6 +1004,7 @@
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
   .modal { width:360px; max-width:92vw; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:20px; box-shadow:0 24px 64px rgba(20,10,40,.45); }
   .modal.relnotes-modal { width:560px; }
+  .modal.layout-modal { width:600px; }
   .keyinfo .ki-guide { margin:2px 0 12px; }
   .keyinfo .ki-guide a { display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-weight:600; text-decoration:none; }
   .keyinfo .ki-guide a:hover { text-decoration:underline; }
@@ -1160,6 +1195,7 @@
             <div class="cost-break">
               <div><span>Speech recognition</span><span id="cost-stt">–</span></div>
               <div><span>AI cleanup</span><span id="cost-cleanup">–</span></div>
+              <div id="cost-command-row" hidden><span>Vito Assist</span><span id="cost-command">–</span></div>
               <div class="cost-period"><span id="cost-period-lbl">–</span><span id="cost-period">–</span></div>
             </div>
           </div>
@@ -1178,6 +1214,7 @@
             <button class="h2-btn hover-only" id="btn-dl-audio" data-tip-text="Download the recording of this dictation (.wav)" aria-label="Download recording" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg></button>
             <button class="h2-btn" id="btn-copy" data-tip-text="Copy text" aria-label="Copy text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></button>
           </span></h2>
+        <div id="cmd-banner"></div>
         <div class="tr-row">
           <div class="tr-field">
             <div id="transcript"><span class="partial">Live transcript appears here while dictating.</span></div>
@@ -1223,6 +1260,7 @@
         <button type="button" data-sec="audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg><span>Audio</span></button>
         <button type="button" data-sec="stt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg><span>Speech recognition</span></button>
         <button type="button" data-sec="cleanup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z"/><path d="M19 15l.7 1.8L21.5 18l-1.8.7L19 20.5l-.7-1.8L16.5 18l1.8-.5z"/></svg><span>AI cleanup</span></button>
+        <button type="button" data-sec="assist"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg><span>Vito Assist</span></button>
         <button type="button" data-sec="output"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg><span>Output</span></button>
         <button type="button" data-sec="backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z"/><path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><span>Backup</span></button>
         <button type="button" data-sec="linux" id="settab-linux" hidden><span class="tux-slot" aria-hidden="true"></span><span>Linux</span></button>
@@ -1306,6 +1344,7 @@
             <button type="button" class="tag" data-sound="start"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Start</button>
             <button type="button" class="tag" data-sound="done"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Done</button>
             <button type="button" class="tag" data-sound="cancel"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Cancel</button>
+            <button type="button" class="tag" data-sound="command"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Vito Assist</button>
           </div>
           <label class="fld" data-help="svol">Feedback sound volume <span class="val" id="s-svolval">100%</span></label>
           <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-svol" min="0" max="2" step="0.05"><span class="slider-mark" title="Standaard 100%" aria-hidden="true"></span></div>
@@ -1391,6 +1430,105 @@
               <span class="mdl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></span>
               <input type="text" id="s-openaimodel" placeholder="llama-3.3-70b-versatile" autocomplete="off">
               <div class="flagsel-list" id="modelcombo-list"></div>
+            </div>
+          </div>
+
+          <div class="subhead" data-help="cleanuprate">Token cost estimate</div>
+          <div class="rowflex" style="gap:10px;">
+            <div style="flex:1;min-width:0;"><label class="fld" data-help="cleanuprate">Input · $/Mtok</label><input type="number" id="s-cleanupinrate" min="0" step="0.01" placeholder="0"></div>
+            <div style="flex:1;min-width:0;"><label class="fld" data-help="cleanuprate">Output · $/Mtok</label><input type="number" id="s-cleanupoutrate" min="0" step="0.01" placeholder="0"></div>
+          </div>
+        </div>
+        <div class="card" data-sec="assist" hidden>
+          <h2><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg><span>Vito Assist</span></h2>
+          <p class="act-note" style="margin:0 0 10px;">Say “Vito, …” and a short instruction. It isn't typed out — it's applied to your next dictation, or to the text already on your clipboard.</p>
+
+          <div class="subhead">How it works</div>
+          <ol class="assist-flow">
+            <li>Say “Vito, …” with your instruction (e.g. “Vito, translate to English”), then stop as usual — with the hotkey, or by pausing so it auto-stops.</li>
+            <li>You hear the Vito Assist tone, and the microphone reopens on its own.</li>
+            <li>Now speak your text.</li>
+            <li>Stop with the hotkey as usual, or just wait for the automatic submit.</li>
+          </ol>
+          <p class="act-note" style="margin-top:0;">The instruction is applied to that dictation, so what gets pasted is the result — not the command. A clipboard command needs no second step: it runs right away.</p>
+
+          <div class="subhead">Examples</div>
+          <div class="assist-ex">
+            <div class="assist-ex-g">
+              <div class="assist-ex-h">Reshape your dictation</div>
+              <div class="assist-ex-i">“Vito, translate to English”</div>
+              <div class="assist-ex-i">“Vito, summarise this”</div>
+              <div class="assist-ex-i">“Vito, turn this into bullet points”</div>
+              <div class="assist-ex-i">“Vito, make it more formal”</div>
+            </div>
+            <div class="assist-ex-g">
+              <div class="assist-ex-h">Ask it something</div>
+              <div class="assist-ex-i">“Vito, question” — then ask</div>
+              <div class="assist-ex-i">“Vito, reply to this”</div>
+              <div class="assist-ex-i">“Vito, what does ‘decimated’ mean”</div>
+            </div>
+            <div class="assist-ex-g">
+              <div class="assist-ex-h">Work on your clipboard</div>
+              <div class="assist-ex-i">“Vito, summarise the text on the clipboard”</div>
+              <div class="assist-ex-i">“Vito, translate the clipboard to Dutch”</div>
+              <div class="assist-ex-note">The result goes back to your clipboard, ready to paste.</div>
+            </div>
+          </div>
+
+          <div class="subhead">What it can't do</div>
+          <p class="act-note">Vito Assist is text in, text out. It can't generate images, search the internet, or perform actions (open apps, send mail) — so “Vito, draw a dancing horse” won't work.</p>
+
+          <div class="assist-req"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Vito Assist only works when AI cleanup is on — that pass is what carries out the command.</span></div>
+
+          <div class="subhead">Model</div>
+          <label class="tgl" data-help="assistmodel"><input type="checkbox" id="s-assist-usecleanup"><span class="tr"></span> Use the AI cleanup model</label>
+          <p class="act-note" id="assist-model-active" style="margin:6px 0 0;"></p>
+
+          <div id="assist-model-cfg" hidden style="margin-top:12px;">
+            <p class="act-note" style="margin-top:0;">Give Vito Assist its own, heavier model — answering and transforming ask more of a model than tidy-up does.</p>
+            <label class="fld" data-help="cleanupprovider">Provider</label>
+            <input type="hidden" id="s-assistprovider">
+            <div class="flagsel" id="assistprovider-sel">
+              <button type="button" class="flagsel-btn" id="assistprovider-btn"></button>
+              <div class="flagsel-list" id="assistprovider-list"></div>
+            </div>
+
+            <div id="assist-anthropic">
+              <div class="key-row">
+                <div class="fld-row"><label class="fld" data-help="anthropickey">Anthropic API key</label></div>
+                <div class="key-input">
+                  <input type="password" id="s-assistkey" autocomplete="off" placeholder="sk-ant-…">
+                  <button type="button" class="eye-btn" data-eye="s-assistkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
+                </div>
+              </div>
+              <label class="fld" data-help="cleanupmodel">Model</label>
+              <input type="text" id="s-assistmodel" placeholder="claude-sonnet-4-5">
+            </div>
+
+            <div id="assist-openai" hidden>
+              <label class="fld" data-help="cleanuppreset">Preset</label>
+              <input type="hidden" id="s-assistpreset">
+              <div class="flagsel" id="assistpreset-sel">
+                <button type="button" class="flagsel-btn" id="assistpreset-btn"></button>
+                <div class="flagsel-list" id="assistpreset-list"></div>
+              </div>
+              <label class="fld" data-help="openaibaseurl">Endpoint (base URL)</label>
+              <input type="text" id="s-assistbaseurl" placeholder="https://api.groq.com/openai/v1">
+              <div class="key-row">
+                <div class="fld-row"><label class="fld" data-help="openaikey">API key</label></div>
+                <div class="key-input">
+                  <input type="password" id="s-assistopenaikey" autocomplete="off" placeholder="gsk_…">
+                  <button type="button" class="eye-btn" data-eye="s-assistopenaikey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
+                </div>
+              </div>
+              <label class="fld" data-help="openaimodel">Model</label>
+              <input type="text" id="s-assistopenaimodel" placeholder="openai/gpt-oss-120b">
+            </div>
+
+            <div class="subhead" data-help="cleanuprate">Token cost estimate</div>
+            <div class="rowflex" style="gap:10px;">
+              <div style="flex:1;min-width:0;"><label class="fld" data-help="cleanuprate">Input · $/Mtok</label><input type="number" id="s-assistinrate" min="0" step="0.01" placeholder="0"></div>
+              <div style="flex:1;min-width:0;"><label class="fld" data-help="cleanuprate">Output · $/Mtok</label><input type="number" id="s-assistoutrate" min="0" step="0.01" placeholder="0"></div>
             </div>
           </div>
         </div>
@@ -1870,6 +2008,41 @@ const TR = { nl: {
   "Suggested":"Voorgesteld","Your models":"Jouw modellen","Type a model name":"Typ een modelnaam","Remove":"Verwijderen",
   "Complete guide on vito.talk":"Complete uitleg op vito.talk",
   "Hotkey in your desktop":"Sneltoets in je desktop","Cleanup off":"Opschoning uit","Local model":"Lokaal model","Auto":"Auto",
+  "Command":"Opdracht","speak your text…":"spreek je tekst…",
+  "Vito Assist":"Vito Assist","result is on your clipboard":"resultaat staat op je klembord",
+  "Vito Assist commands":"Vito Assist-opdrachten",
+  "Examples":"Voorbeelden",
+  "Say “Vito, …” and a short instruction. It isn't typed out — it's applied to your next dictation, or to the text already on your clipboard.":"Zeg “Vito, …” en een korte opdracht. Die wordt niet uitgetypt — hij wordt toegepast op je volgende dictaat, of op de tekst die al op je klembord staat.",
+  "How it works":"Hoe het werkt",
+  "Say “Vito, …” with your instruction (e.g. “Vito, translate to English”), then stop as usual — with the hotkey, or by pausing so it auto-stops.":"Zeg “Vito, …” met je opdracht (bijv. “Vito, vertaal naar het Engels”) en stop zoals gewoonlijk — met de sneltoets, of door te pauzeren (auto-stop).",
+  "You hear the Vito Assist tone, and the microphone reopens on its own.":"Je hoort het Vito Assist-toontje en de microfoon gaat vanzelf weer open.",
+  "Now speak your text.":"Spreek nu je tekst in.",
+  "Stop with the hotkey as usual, or just wait for the automatic submit.":"Stop met de sneltoets zoals gebruikelijk, of wacht gewoon op de automatische submit.",
+  "The instruction is applied to that dictation, so what gets pasted is the result — not the command. A clipboard command needs no second step: it runs right away.":"De opdracht wordt op dat dictaat toegepast, dus wat geplakt wordt is het resultaat — niet het commando. Een klembord-opdracht heeft geen tweede stap: die wordt meteen uitgevoerd.",
+  "Reshape your dictation":"Je dictaat omvormen",
+  "Ask it something":"Stel een vraag",
+  "Work on your clipboard":"Werk op je klembord",
+  "“Vito, translate to English”":"“Vito, vertaal naar het Engels”",
+  "“Vito, summarise this”":"“Vito, vat dit samen”",
+  "“Vito, turn this into bullet points”":"“Vito, maak er bullet points van”",
+  "“Vito, make it more formal”":"“Vito, maak het formeler”",
+  "“Vito, question” — then ask":"“Vito, vraag” — stel daarna je vraag",
+  "“Vito, reply to this”":"“Vito, reageer hierop”",
+  "“Vito, what does ‘decimated’ mean”":"“Vito, wat betekent ‘gedecimeerd’”",
+  "“Vito, summarise the text on the clipboard”":"“Vito, vat de tekst op het klembord samen”",
+  "“Vito, translate the clipboard to Dutch”":"“Vito, vertaal het klembord naar het Nederlands”",
+  "The result goes back to your clipboard, ready to paste.":"Het resultaat komt terug op je klembord, klaar om te plakken.",
+  "What it can't do":"Wat het niet kan",
+  "Vito Assist is text in, text out. It can't generate images, search the internet, or perform actions (open apps, send mail) — so “Vito, draw a dancing horse” won't work.":"Vito Assist is tekst in, tekst uit. Het kan geen afbeeldingen maken, niets op internet opzoeken en geen acties uitvoeren (apps openen, mail sturen) — dus “Vito, teken een dansend paard” werkt niet.",
+  "Vito Assist only works when AI cleanup is on — that pass is what carries out the command.":"Vito Assist werkt alleen als AI-opschoning aanstaat — die stap voert de opdracht uit.",
+  "Use the AI cleanup model":"Gebruik het model van AI-opschoning",
+  "Uses the AI cleanup model:":"Gebruikt het model van AI-opschoning:",
+  "Uses its own model, set below.":"Gebruikt een eigen model, hieronder ingesteld.",
+  "Give Vito Assist its own, heavier model — answering and transforming ask more of a model than tidy-up does.":"Geef Vito Assist een eigen, zwaarder model — beantwoorden en omvormen vragen meer van een model dan opschonen.",
+  "Token cost estimate":"Geschatte tokenkosten",
+  "Input · $/Mtok":"Invoer · $/Mtok",
+  "Output · $/Mtok":"Uitvoer · $/Mtok",
+  "How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.":"Hoeveel Vito Assist-spraakopdrachten je in deze periode uitvoerde — de 'Vito, …'-instructies die je dictaat vertalen, samenvatten, beantwoorden of omvormen.",
   "Intended":"Bedoeld",
   "+ Row":"+ Regel",
   "Export":"Exporteren",
@@ -2647,7 +2820,7 @@ function buildIconSelect(key, opts, onPick){
   document.addEventListener("click", ()=>sel.classList.remove("open"));
   return disp;
 }
-let setTypespeedDisplay, setNotifyDisplay, setMediaDisplay, setInjectDisplay, setRetentionDisplay, setCleanupProviderDisplay, setCleanupPresetDisplay;
+let setTypespeedDisplay, setNotifyDisplay, setMediaDisplay, setInjectDisplay, setRetentionDisplay, setCleanupProviderDisplay, setCleanupPresetDisplay, setAssistProviderDisplay, setAssistPresetDisplay;
 function buildIconSelects(){
   const ts = $("s-typespeed").value || "average", nf = $("s-notify").value || "all";
   setTypespeedDisplay = buildIconSelect("typespeed", TYPESPEED_OPTS);
@@ -2657,9 +2830,12 @@ function buildIconSelects(){
   setInjectDisplay = buildIconSelect("inject", INJECT_OPTS);
   setRetentionDisplay = buildIconSelect("retention", RETENTION_OPTS);
   const cp = $("s-cleanupprovider").value || "anthropic", cpre = $("s-cleanuppreset").value || "groq";
-  setCleanupProviderDisplay = buildIconSelect("cleanupprovider", CLEANUP_PROVIDER_OPTS, () => syncCleanupUI());
-  setCleanupPresetDisplay = buildIconSelect("cleanuppreset", CLEANUP_PRESET_OPTS, applyCleanupPreset);
-  setTypespeedDisplay(ts); setNotifyDisplay(nf); setMediaDisplay(ma); setInjectDisplay(ij); setRetentionDisplay(rt); setCleanupProviderDisplay(cp); setCleanupPresetDisplay(cpre); // rebuild keeps the current value
+  setCleanupProviderDisplay = buildIconSelect("cleanupprovider", CLEANUP_PROVIDER_OPTS, () => { syncCleanupUI(); fillCleanupRates(); });
+  setCleanupPresetDisplay = buildIconSelect("cleanuppreset", CLEANUP_PRESET_OPTS, (v) => { applyCleanupPreset(v); fillCleanupRates(); });
+  const ap = $("s-assistprovider").value || "anthropic", apre = $("s-assistpreset").value || "groq";
+  setAssistProviderDisplay = buildIconSelect("assistprovider", CLEANUP_PROVIDER_OPTS, () => { syncAssistUI(); syncAssistMode(); fillAssistRates(); });
+  setAssistPresetDisplay = buildIconSelect("assistpreset", CLEANUP_PRESET_OPTS, (v) => { applyAssistPreset(v); fillAssistRates(); });
+  setTypespeedDisplay(ts); setNotifyDisplay(nf); setMediaDisplay(ma); setInjectDisplay(ij); setRetentionDisplay(rt); setCleanupProviderDisplay(cp); setCleanupPresetDisplay(cpre); setAssistProviderDisplay(ap); setAssistPresetDisplay(apre); // rebuild keeps the current value
 }
 // Show the Anthropic vs OpenAI-compatible block, and hide the "Get a key" hint
 // for a local endpoint (which typically needs none).
@@ -2677,6 +2853,58 @@ function applyCleanupPreset(v){
   else { $("s-openaikey").placeholder = "(often none for a local model)"; } // local: keep what's there
   syncCleanupUI();
   renderModelCombo();
+}
+// Vito Assist mirrors the cleanup provider/preset UI with its own set of fields,
+// used only when it runs on its own (heavier) model.
+function syncAssistUI(){
+  const openai = ($("s-assistprovider").value || "anthropic") === "openai";
+  $("assist-anthropic").hidden = openai;
+  $("assist-openai").hidden = !openai;
+}
+function applyAssistPreset(v){
+  if (v === "groq")   { $("s-assistbaseurl").value = "https://api.groq.com/openai/v1"; $("s-assistopenaimodel").value = "openai/gpt-oss-120b"; $("s-assistopenaikey").placeholder = "gsk_…"; }
+  else if (v === "openai") { $("s-assistbaseurl").value = "https://api.openai.com/v1"; $("s-assistopenaimodel").value = "gpt-4o"; $("s-assistopenaikey").placeholder = "sk-…"; }
+  else { $("s-assistopenaikey").placeholder = "(often none for a local model)"; }
+  syncAssistUI();
+}
+// The name of the model the cleanup section is set to, shown when Assist borrows it.
+function currentCleanupModelName(){
+  return (($("s-cleanupprovider").value || "anthropic") === "openai") ? ($("s-openaimodel").value || "—") : ($("s-cleanupmodel").value || "—");
+}
+// Show/hide the Assist model config and the "which model" note, per the toggle.
+function syncAssistMode(){
+  const useCleanup = $("s-assist-usecleanup").checked;
+  const box = $("assist-model-cfg"); if (box) box.hidden = useCleanup;
+  const note = $("assist-model-active");
+  if (note) note.textContent = useCleanup
+    ? t("Uses the AI cleanup model:") + " " + currentCleanupModelName()
+    : t("Uses its own model, set below.");
+}
+// Default token rates per provider — the same table the cost card trusts, so the
+// visible fields start from a sensible assumption you can then override.
+function ratesForProvider(provider, baseURL){
+  if ((provider || "anthropic") === "openai") {
+    const b = (baseURL || "").toLowerCase();
+    if (b.includes("openai.com")) return { in: 0.15, out: 0.60 }; // gpt-4o-mini
+    return { in: 0, out: 0 }; // Groq free tier / local model
+  }
+  return { in: 1.0, out: 5.0 }; // Anthropic Haiku
+}
+function fillCleanupRates(){
+  const r = ratesForProvider($("s-cleanupprovider").value, $("s-openaibaseurl").value);
+  $("s-cleanupinrate").value = r.in; $("s-cleanupoutrate").value = r.out;
+}
+function fillAssistRates(){
+  const r = ratesForProvider($("s-assistprovider").value, $("s-assistbaseurl").value);
+  $("s-assistinrate").value = r.in; $("s-assistoutrate").value = r.out;
+}
+// The four token rates read from their (editable) fields, for saving into costs.
+function readCostRates(){
+  const num = (id) => { const v = parseFloat(($(id) || {}).value); return isFinite(v) && v >= 0 ? v : 0; };
+  return {
+    cleanup_in_per_mtok_usd: num("s-cleanupinrate"), cleanup_out_per_mtok_usd: num("s-cleanupoutrate"),
+    assist_in_per_mtok_usd: num("s-assistinrate"), assist_out_per_mtok_usd: num("s-assistoutrate"),
+  };
 }
 // Derive the preset from a base URL (fallback for configs saved before the preset
 // was persisted, and to keep the dropdown honest when the URL is edited by hand).
@@ -2787,7 +3015,7 @@ $("hamburger").onclick = (e) => { e.stopPropagation(); $("sidebar").classList.to
 // One category visible at a time; the choice sticks across reloads so you come
 // back where you left off. Cards stay in the DOM (just hidden) — every settings
 // field is collected on save regardless of which section is showing.
-const SET_SECTIONS = ["general", "activation", "audio", "stt", "cleanup", "output", "backup", "linux", "about"];
+const SET_SECTIONS = ["general", "activation", "audio", "stt", "cleanup", "assist", "output", "backup", "linux", "about"];
 function selectSetSection(sec){
   if (!SET_SECTIONS.includes(sec)) sec = "general";
   // A hidden tab is one that doesn't apply to this OS; a remembered choice
@@ -2828,6 +3056,7 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
 
 /* ---- live state ---- */
 function setState(state) {
+  if (state === "processing") markCommandReceived();
   const pill = $("statuspill"), lbl = $("statuslbl");
   lbl.textContent = t({ idle: "idle", recording: "recording", processing: "processing" }[state] || state);
   pill.className = "pill " + (state === "recording" || state === "processing" ? state : "");
@@ -2855,12 +3084,15 @@ function renderTimings(tm){
   const r = (x)=>Math.round(x);
   const secs = (ms)=> (ms/1000).toLocaleString(numLoc(), { minimumFractionDigits:2, maximumFractionDigits:2 }) + " s";
   const seg = (ms,cls,label)=> ms>0 ? `<div class="tseg ${cls}" style="flex-grow:${ms}" title="${label}: ${r(ms)} ms"></div>` : "";
+  // The cleanup pass is also what runs a Vito Assist command, so label it as such
+  // when this dictation carried one (the command banner is still up at this point).
+  const clnLabel = activeCommand ? t("Vito Assist") : t("cleanup");
   $("timings").innerHTML =
-    `<div class="tbar">${seg(rec,"spk",t("speaking"))}${seg(stt,"stt","STT")}${seg(cln,"cln",t("cleanup"))}${seg(inj,"inj",t("Injection"))}</div>
+    `<div class="tbar">${seg(rec,"spk",t("speaking"))}${seg(stt,"stt","STT")}${seg(cln,"cln",clnLabel)}${seg(inj,"inj",t("Injection"))}</div>
      <div class="tlegend">
        <span><i class="spk"></i>${t("speaking")} ${r(rec)} ms</span>
        <span><i class="stt"></i>STT ${r(stt)} ms</span>
-       <span><i class="cln"></i>${t("cleanup")} ${r(cln)} ms</span>
+       <span><i class="cln"></i>${clnLabel} ${r(cln)} ms</span>
        <span><i class="inj"></i>${t("Injection")} ${r(inj)} ms</span>
        <span class="twait">${t("wait after speaking")} ${secs(wait)}</span>
        <span class="ttot">${t("total")} ${secs(total)}</span>
@@ -2956,6 +3188,8 @@ function connectWS() {
       syncPip();
     } else if (e.type === "credit") {
       refreshCredit();
+    } else if (e.type === "command") {
+      setActiveCommand(e.command || "", e.command_received);
     } else if (e.type === "pip") {
       togglePip(true); // requested from the tray
     } else if (e.type === "config") {
@@ -3289,6 +3523,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif}
    under the header and the buttons (4), so the controls keep their own colours
    while the text catches the light. */
 .pip-body{position:relative;z-index:2}
+.pip-cmd:empty{display:none}
+.pip-cmd{display:flex;align-items:center;gap:8px;margin:8px 12px 0;padding:7px 11px;border-radius:10px;color:#fff;font-size:12.5px;font-weight:700;background:linear-gradient(135deg,#FF6B5E,#7C3AED);position:relative;z-index:2}
+.pip-cmd svg{width:15px;height:15px;flex:0 0 auto}
 .pip-bursts{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:3}
 .pip-top,.pip-ctrl{position:relative;z-index:4}
 /* One full-width gradient dome rooted on the bottom edge: the top half of an
@@ -3360,6 +3597,35 @@ function updatePipBtn(){
 // `type` marks the rows that are typed out character by character: only the
 // live partial. A finished result is an answer, not something being spoken, so
 // it fades in as a whole.
+// Command mode: while a spoken command ("Vito, vertaal naar Duits") is armed,
+// show it prominently in the live transcript and the PiP, so it's clear the next
+// dictation gets transformed.
+let activeCommand = "", commandReceived = false, commandClipboard = false;
+// The Vito mark (equaliser bars), animated in the command bar for a live-assistant feel.
+const MARK_CMD = '<svg viewBox="0 0 100 100" fill="#fff" aria-hidden="true"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>';
+const ICON_CMD = MARK_CMD; // used by the PiP command chip too
+const ICON_CLIP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3.5" width="8" height="4" rx="1.2"/><path d="M9 5.5H6.5A2 2 0 0 0 4.5 7.5v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-12a2 2 0 0 0-2-2H15"/></svg>';
+// The hint at the right of the banner: what to do next, or (for a clipboard
+// command, whose result is easy to miss) where the result landed.
+function cmdHint(received, clipboard){
+  if (clipboard) return ICON_CLIP + t("result is on your clipboard");
+  if (!received) return t("speak your text…");
+  return "";
+}
+function cmdBannerHTML(cmd, received, clipboard){
+  const hint = cmdHint(received, clipboard);
+  return `<div class="cmd-mode${received ? " received" : ""}"><span class="cmd-ico">${MARK_CMD}</span>` +
+    `<span class="cmd-txt">${t("Vito Assist")} · ${ahEsc(cmd)}</span>` +
+    (hint ? `<span class="cmd-hint">${hint}</span>` : "") +
+    `</div>`;
+}
+function renderCommandBanner(){ const el = $("cmd-banner"); if (el) el.innerHTML = activeCommand ? cmdBannerHTML(activeCommand, commandReceived, commandClipboard) : ""; }
+// A server-sent received flag means a clipboard command (its input is already in);
+// a two-step command arrives armed and is marked received on the client instead.
+function setActiveCommand(cmd, received){ activeCommand = cmd || ""; commandReceived = !!received; commandClipboard = !!received; renderCommandBanner(); syncPip(); }
+// Once your text is in (recording → processing) the command is "received": drop
+// the "speak your text" hint and let the glow settle.
+function markCommandReceived(){ if (activeCommand && !commandReceived) { commandReceived = true; renderCommandBanner(); syncPip(); } }
 function pipBodyRows(){
   if (uiState === "recording") return [{ cls:"partial", text: curPartial || LISTENING_HINT, type:true }];
   if (uiState === "processing") return [{ cls:"partial", text: t("Processing…") }];
@@ -3392,6 +3658,8 @@ function syncPip(){
       el.classList.remove("fadein"); void el.offsetWidth; el.classList.add("fadein"); // restart
     });
   }
+  const pcmd = d.getElementById("pip-cmd");
+  if (pcmd) pcmd.innerHTML = activeCommand ? ICON_CMD + "<span>" + ahEsc(activeCommand) + "</span>" : "";
   const dot = d.getElementById("pip-state"); if (dot) dot.className = "pip-state " + (uiState || "idle");
   const tb = d.getElementById("pip-toggle");
   if (tb) {
@@ -3448,6 +3716,7 @@ async function togglePip(fromTray){
         swRow("pip-set-viz", t("Audio visualisation")) +
       `</div>` +
       `<div class="pip-bursts" id="pip-bursts"><div class="pip-wave" id="pip-wave"></div></div>` +
+      `<div class="pip-cmd" id="pip-cmd"></div>` +
       `<div class="pip-body" id="pip-body"></div>` +
       `<div class="pip-ctrl">` +
         `<button class="pip-btn primary" id="pip-toggle">${ICON_REC + " " + t("Start recording")}</button>` +
@@ -3812,11 +4081,11 @@ loadAbout();
 // small statistic cards share one grid, the two wide cards another. Dragging
 // stays inside a group — a card can't move to a row it doesn't fit in.
 const LAYOUT_GROUPS = [
-  { id:"stats", label:"Statistics", keys:["credit","words","sentences","activations","spoken","saved","achievements","update"] },
+  { id:"stats", label:"Statistics", keys:["credit","words","sentences","activations","spoken","saved","commands","achievements","update"] },
   { id:"wide",  label:"Cards",      keys:["cost","chart"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences:"sentences cleaned", activations:"activations",
-  spoken:"spoken time", saved:"saved typing time", achievements:"Achievements", update:"Version", cost:"Costs", chart:"Words per day" };
+  spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version", cost:"Costs", chart:"Words per day" };
 const LAYOUT_DEFAULT = LAYOUT_GROUPS.flatMap(g => g.keys);
 let statusLayout = null;
 function loadLayout(){
@@ -3825,8 +4094,17 @@ function loadLayout(){
   try { saved = JSON.parse(localStorage.getItem("vito-status-layout") || "null"); } catch {}
   const order = Array.isArray(saved && saved.order) ? saved.order.filter(k => LAYOUT_DEFAULT.includes(k)) : [];
   // Anything the stored order doesn't mention is new since it was saved, and
-  // belongs at its default position rather than nowhere.
-  LAYOUT_DEFAULT.forEach(k => { if (!order.includes(k)) order.push(k); });
+  // belongs at its default position — right after its default predecessor that
+  // the saved order already has — rather than tacked on at the very end.
+  LAYOUT_DEFAULT.forEach((k, idx) => {
+    if (order.includes(k)) return;
+    let insertAt = order.length;
+    for (let j = idx - 1; j >= 0; j--) {
+      const p = order.indexOf(LAYOUT_DEFAULT[j]);
+      if (p >= 0) { insertAt = p + 1; break; }
+    }
+    order.splice(insertAt, 0, k);
+  });
   const hidden = Array.isArray(saved && saved.hidden) ? saved.hidden.filter(k => LAYOUT_DEFAULT.includes(k)) : [];
   // The version card is on by default but keeps quiet: it appears when there is
   // something to say. Set updateAlways to keep it there permanently.
@@ -3879,6 +4157,9 @@ function openLayoutDialog(){
      <div class="laylist" id="laylist">${rows}</div>`,
     () => { saveLayout(); applyStatusLayout(); loadStats(); },
     "Save");
+  // Wider, and lined up over the content column instead of the whole viewport.
+  const lbox = m.querySelector(".modal"); if (lbox) lbox.classList.add("layout-modal");
+  centreOverContent(m);
   const list = m.querySelector("#laylist");
   list.querySelectorAll(".lay-eye").forEach(b => b.onclick = () => {
     const k = b.closest(".lay-row").dataset.key;
@@ -3936,8 +4217,10 @@ function wireLayoutDrag(list, l){
       if (mid > r.top && mid < r.bottom) {
         const before = other.compareDocumentPosition(row) & Node.DOCUMENT_POSITION_FOLLOWING;
         group.insertBefore(row, before ? other : other.nextSibling);
-        // The row moved under the pointer, so re-anchor the drag to where it is.
-        offset += (before ? -1 : 1) * (r.height / z + 8);
+        // The reorder shifts the row's natural position by one slot; compensate in
+        // the opposite direction so it stays visually under the pointer instead of
+        // jumping a slot (which would re-trigger the swap and shoot to the end).
+        offset += (before ? 1 : -1) * (r.height / z + 8);
         row.style.transform = `translateY(${dy + offset}px)`;
         break;
       }
@@ -4215,9 +4498,9 @@ const ICON_KOFI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const ICON_SPK_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 0 1 0 7M18.5 6a7 7 0 0 1 0 12"/></svg>';
 const ICON_SPK_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9.5l4 5M21 9.5l-4 5"/></svg>';
 
-const ACH_GROUP_ORDER = ["support","special","words","spoken","saved","streak","day","week","activations","money"];
+const ACH_GROUP_ORDER = ["support","special","words","spoken","saved","streak","day","week","activations","commands","money"];
 const ACH_GROUP_LABELS = { support:"Support Vito", words:"Words", spoken:"Speaking time", saved:"Time saved", streak:"Streaks",
-  day:"Best day", week:"Best week", activations:"Activations", money:"Savings", special:"Milestones" };
+  day:"Best day", week:"Best week", activations:"Activations", commands:"Vito Assist", money:"Savings", special:"Milestones" };
 const ahEsc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
 // The {n} in a description (and the progress read-out) is formatted the way its
 // group is measured: a duration, a money amount, or a plain count.
@@ -4583,6 +4866,13 @@ async function loadCosts(){
   $("cost-month-total").textContent = fmtMoney(c.month_total, cur, 2);
   $("cost-stt").textContent = fmtMoney(c.month_stt, cur, 2);
   $("cost-cleanup").textContent = fmtMoney(c.month_cleanup, cur, 2);
+  // The Vito Assist line only appears once it has actually cost something (a
+  // command on a paid model); on the free tier it stays hidden.
+  const cmdRow = $("cost-command-row");
+  if (cmdRow) {
+    if (c.month_command > 0) { cmdRow.hidden = false; $("cost-command").textContent = fmtMoney(c.month_command, cur, 2); }
+    else cmdRow.hidden = true;
+  }
   $("cost-proj").textContent = fmtMoney(c.projected_monthly, cur, 2);
   document.querySelectorAll("#cost-card .cur-toggle button").forEach(b => b.classList.toggle("active", b.dataset.cur === cur));
   if (typeof buildModelCards === "function" && $("model-cards")) buildModelCards(); // re-price in the chosen currency
@@ -4663,6 +4953,8 @@ async function loadStats(){
     { key:"saved", cls:"violet", icon:I.time,  value:st.saved_minutes,  format:fmtDuration, lbl:t("saved typing time"),
       tip:t("based on {n} wpm").replace("{n}", st.typing_wpm) + " — " +
           t("What you save compared with typing it yourself: your words divided by your typing speed, minus the time you spent speaking. Set your typing speed under Settings → General.") },
+    { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:st.commands, format:nf, lbl:t("Vito Assist commands"),
+      tip:t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.") },
     // A compact medal counter that opens the full Achievements page.
     { key:"achievements", custom:true, cardClass:"ach-mini", html:achMiniCardHTML, wire:wireAchMiniCard },
     // Not a statistic, but it lives in the same row: which version you run, and
@@ -4852,6 +5144,22 @@ async function loadSettings() {
   syncCleanupUI();
   rememberModel(cleanupPreset(), $("s-openaimodel").value); // keep a hand-entered model in the dropdown
   renderModelCombo();
+  // Vito Assist model config + the editable token-rate fields (both sections).
+  const asst = cfg.assist || {}, acl = asst.cleanup || {}, costs = cfg.costs || {};
+  $("s-assist-usecleanup").checked = asst.use_cleanup_model !== false; // unset → borrow cleanup model
+  $("s-assistkey").value = acl.api_key || "";
+  $("s-assistmodel").value = acl.model || "";
+  $("s-assistbaseurl").value = acl.openai_base_url || "";
+  $("s-assistopenaikey").value = acl.openai_key || "";
+  $("s-assistopenaimodel").value = acl.openai_model || "";
+  setAssistProviderDisplay(acl.provider === "openai" ? "openai" : "anthropic");
+  setAssistPresetDisplay(acl.openai_preset || presetFromBase(acl.openai_base_url));
+  $("s-cleanupinrate").value = costs.cleanup_in_per_mtok_usd ?? "";
+  $("s-cleanupoutrate").value = costs.cleanup_out_per_mtok_usd ?? "";
+  $("s-assistinrate").value = costs.assist_in_per_mtok_usd ?? "";
+  $("s-assistoutrate").value = costs.assist_out_per_mtok_usd ?? "";
+  syncAssistUI();
+  syncAssistMode();
   renderStatusTags();
   setInjectDisplay(cfg.injection.mode || "paste");
   $("s-restore").checked = cfg.injection.restore_clipboard;
@@ -5213,9 +5521,21 @@ function collectSettings() {
       openai_model: $("s-openaimodel").value.trim(),
       openai_preset: $("s-cleanuppreset").value || "groq",
     }),
-    // Cleanup pricing follows the provider so the cost card stays truthful — Groq's
-    // free tier and local models read as €0, keeping the "start free" promise real.
-    costs: Object.assign(cfg.costs || {}, cleanupCostRates()),
+    // Vito Assist: borrow the cleanup model, or run its own (heavier) one.
+    assist: Object.assign(cfg.assist || {}, {
+      use_cleanup_model: $("s-assist-usecleanup").checked,
+      cleanup: Object.assign((cfg.assist && cfg.assist.cleanup) || {}, {
+        provider: $("s-assistprovider").value || "anthropic",
+        api_key: $("s-assistkey").value, model: $("s-assistmodel").value.trim(),
+        openai_base_url: $("s-assistbaseurl").value.trim(),
+        openai_key: $("s-assistopenaikey").value,
+        openai_model: $("s-assistopenaimodel").value.trim(),
+        openai_preset: $("s-assistpreset").value || "groq",
+      }),
+    }),
+    // Token pricing comes straight from the (editable) rate fields, which start
+    // from the provider's default — Groq's free tier and local models read as €0.
+    costs: Object.assign(cfg.costs || {}, readCostRates()),
     injection: Object.assign(cfg.injection, {
       mode: $("s-inject").value, restore_clipboard: $("s-restore").checked,
       append_enter: $("s-appendenter").checked, append_space: $("s-appendspace").checked,
@@ -5240,6 +5560,8 @@ function autoSaveSettings() {
 // autoSaveSettings() themselves on pick, so they're not in this change list.
 ["s-input","s-output","s-model","s-sounds","s-eu","s-keyterms","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-demo"]
   .forEach(id => $(id).addEventListener("change", autoSaveSettings));
+// The Assist toggle also flips its model section and refreshes the "which model" note.
+$("s-assist-usecleanup").addEventListener("change", () => { syncAssistMode(); autoSaveSettings(); });
 // The auto-backup toggle saves like the rest, and refreshes its own note.
 $("s-autobackup").addEventListener("change", () => { autoSaveSettings(); renderBackupAutoNote(); });
 
@@ -5407,7 +5729,8 @@ $("s-tray").onchange = () => {
     "Turn off anyway", true,
     () => { $("s-tray").checked = true; });
 };
-["s-svol","s-sttkey","s-sonioxkey","s-cleanupkey","s-cleanupmodel","s-silence","s-autostopms","s-openaibaseurl","s-openaikey","s-openaimodel"].forEach(id => $(id).addEventListener("input", autoSaveSettings));
+["s-svol","s-sttkey","s-sonioxkey","s-cleanupkey","s-cleanupmodel","s-silence","s-autostopms","s-openaibaseurl","s-openaikey","s-openaimodel",
+ "s-assistkey","s-assistmodel","s-assistbaseurl","s-assistopenaikey","s-assistopenaimodel","s-cleanupinrate","s-cleanupoutrate","s-assistinrate","s-assistoutrate"].forEach(id => $(id).addEventListener("input", autoSaveSettings));
 // Editable model combobox wiring: open on focus/type, pick a suggestion or a
 // remembered model, ✕ to forget a remembered one; free text stays allowed.
 {
@@ -5781,7 +6104,12 @@ function starSVG(on){
 function historyEntryEl(e){
   const div = document.createElement("div"); div.className = "hentry" + (e.favorite ? " fav" : "");
   const meta = document.createElement("div"); meta.className = "meta";
-  meta.innerHTML = `${new Date(e.timestamp).toLocaleString(numLoc())} · ${(e.duration_ms / 1000).toFixed(1)}s · ${langIcon(e.language || "auto")} · ${e.source}${e.cleanup_used ? " · " + SPARK_SVG + t("cleanup") : ""}`;
+  // A Vito Assist command shows the instruction it ran instead of the plain
+  // "cleanup" tag — the cleanup pass is what carried the command out.
+  const aiTag = e.command_text
+    ? " · " + SPARK_SVG + t("Vito Assist") + ": " + ahEsc(e.command_text)
+    : (e.cleanup_used ? " · " + SPARK_SVG + t("cleanup") : "");
+  meta.innerHTML = `${new Date(e.timestamp).toLocaleString(numLoc())} · ${(e.duration_ms / 1000).toFixed(1)}s · ${langIcon(e.language || "auto")} · ${e.source}${aiTag}`;
   const main = document.createElement("div"); main.className = "htext";
   renderWords(main, e.cleanup_used && e.cleaned ? e.cleaned : e.raw);
   div.appendChild(meta); div.appendChild(main);
@@ -6004,6 +6332,8 @@ const HELP = {
   cleanup:{nl:"Laat Claude elke dictatie automatisch opschonen: interpunctie, hoofdletters en 'eh/uhm' eruit.",en:"Let Claude automatically clean up every dictation: punctuation, capitals, and removing 'eh/uhm'."},
   anthropickey:{nl:"Je Anthropic-sleutel voor de Claude-opschoning. Zonder key wordt de ruwe tekst geplakt.",en:"Your Anthropic key for the Claude cleanup. Without a key the raw text is pasted."},
   cleanupmodel:{nl:"Welk Claude-model de opschoning doet. Haiku is snel en goedkoop.",en:"Which Claude model does the cleanup. Haiku is fast and cheap."},
+  cleanuprate:{nl:"Waarmee de kosten worden geschat: de prijs per miljoen tokens van je model. Dit is een aanname, ingevuld op basis van je provider (Groq's gratis tier en lokale modellen = €0). Weet je de exacte prijs? Pas 'm gerust aan voor preciezere kostenregistratie.",en:"Used to estimate cost: your model's price per million tokens. This is an assumption, filled from your provider (Groq's free tier and local models = €0). Know the exact price? Adjust it for precise cost tracking."},
+  assistmodel:{nl:"Standaard gebruikt Vito Assist hetzelfde model als AI-opschoning. Zet dit uit om Assist een eigen, zwaarder model te geven — beantwoorden en omvormen zijn zwaarder dan opschonen.",en:"By default Vito Assist uses the same model as AI cleanup. Turn this off to give Assist its own, heavier model — answering and transforming are more demanding than tidy-up."},
   cleanupprovider:{nl:"Welke dienst de opschoning doet: Anthropic (Claude), of een OpenAI-compatibel endpoint (Groq, OpenAI, of een lokaal model). Groq heeft een gratis tier (rate-limited, dagelijkse tokenlimiet) en traint niet op je data — samen met het gratis startkrediet van de spraakherkenning kun je zo volledig gratis beginnen.",en:"Which service does the cleanup: Anthropic (Claude), or any OpenAI-compatible endpoint (Groq, OpenAI, or a local model). Groq has a free tier (rate-limited, daily token limit) and doesn't train on your data — together with speech recognition's free starting credit you can begin entirely for free."},
   cleanuppreset:{nl:"Snelle voorinstelling die het endpoint en een passend model invult. 'Groq' gebruikt Groq's gratis tier; 'Lokaal / eigen endpoint' is voor je eigen (bijv. lokaal draaiende) OpenAI-compatibele server.",en:"A quick preset that fills the endpoint and a sensible model. 'Groq' uses Groq's free tier; 'Local / custom endpoint' is for your own (e.g. locally running) OpenAI-compatible server."},
   openaibaseurl:{nl:"De base-URL van het OpenAI-compatibele endpoint, bijv. Groq https://api.groq.com/openai/v1, of een lokaal model op http://localhost:11434/v1. Bij een lokaal endpoint verlaat je opschoning je computer nooit — maximale privacy.",en:"The base URL of the OpenAI-compatible endpoint, e.g. Groq https://api.groq.com/openai/v1, or a local model at http://localhost:11434/v1. With a local endpoint your cleanup never leaves your computer — maximum privacy."},
@@ -6117,7 +6447,7 @@ $("s-zoom-reset").addEventListener("click", () => { applyZoom(1); try { localSto
 /* ---- init ---- */
 applyI18n(); // translate static UI for first paint (config refines it after load)
 applyStatusLayout();
-api("/api/status").then(s => { setState(s.state); setLastRecording(s.last_recording_id); creditState = Array.isArray(s.credit) ? s.credit : []; applyStatusLayout(); }).catch(() => setState("idle"));
+api("/api/status").then(s => { setState(s.state); setLastRecording(s.last_recording_id); creditState = Array.isArray(s.credit) ? s.credit : []; setActiveCommand(s.command || ""); applyStatusLayout(); }).catch(() => setState("idle"));
 loadSettings().catch(err => toast(t("Loading settings failed: ") + err.message, "err"));
 loadStats();
 loadPrivacy();

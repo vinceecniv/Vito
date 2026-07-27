@@ -58,6 +58,8 @@ type Status struct {
 	// Credit lists providers (display names) currently known to be out of credit,
 	// each cleared the next time that provider is used successfully.
 	Credit []string `json:"credit,omitempty"`
+	// Command is the armed one-off spoken command, or "" when none is pending.
+	Command string `json:"command,omitempty"`
 }
 
 // Event is broadcast to the web UI over WebSocket via the OnEvent callback.
@@ -71,6 +73,12 @@ type Event struct {
 	Clip    bool   `json:"clip,omitempty"`
 	Timings any    `json:"timings,omitempty"`
 	Error   string `json:"error,omitempty"`
+	// Command is the armed one-off spoken command ("vertaal naar Duits"), or ""
+	// when it's cleared. Drives the command-mode indicator in the UI.
+	Command string `json:"command,omitempty"`
+	// CommandReceived marks a command whose input is already in (a clipboard
+	// command), so the indicator skips the "speak your text" waiting state.
+	CommandReceived bool `json:"command_received,omitempty"`
 	// RecordingID names the kept audio of this dictation, when there is any.
 	RecordingID string `json:"recording_id,omitempty"`
 	// Playback carries the play head of a recording being played back.
@@ -138,6 +146,9 @@ type Daemon struct {
 
 	creditMu  sync.Mutex
 	creditOut map[string]bool // provider display name → known out of credit
+
+	cmdMu      sync.Mutex
+	pendingCmd string // one-off spoken command ("Vito, …") armed for the next dictation
 }
 
 // sttProviderName is the display name of the configured speech-recognition
@@ -489,6 +500,14 @@ func (d *Daemon) RequestPip() { d.emit(Event{Type: "pip"}) }
 func (d *Daemon) Start() error { return d.start() }
 
 func (d *Daemon) start() error {
+	// A fresh dictation that isn't carrying an armed command clears the leftover
+	// command indicator (kept visible through the command's own dictation above).
+	d.cmdMu.Lock()
+	pending := d.pendingCmd
+	d.cmdMu.Unlock()
+	if pending == "" {
+		d.clearCommandDisplay()
+	}
 	d.mu.Lock()
 	if d.state != StateIdle {
 		d.mu.Unlock()
@@ -805,6 +824,72 @@ func (d *Daemon) cleanupEffective(s *session) bool {
 	return s.cfg.Cleanup.Enabled && cleanup.Configured(s.cfg.Cleanup)
 }
 
+// setPendingCmd / takePendingCmd hold the one-off spoken command ("Vito, vertaal
+// naar Duits") between the command utterance and the dictation it applies to.
+func (d *Daemon) setStatusCommand(c string) { d.mu.Lock(); d.status.Command = c; d.mu.Unlock() }
+func (d *Daemon) setPendingCmd(c string) {
+	d.cmdMu.Lock()
+	d.pendingCmd = c
+	d.cmdMu.Unlock()
+	d.setStatusCommand(c)
+	d.emit(Event{Type: "command", Command: c})
+}
+func (d *Daemon) takePendingCmd() string {
+	d.cmdMu.Lock()
+	c := d.pendingCmd
+	d.pendingCmd = ""
+	d.cmdMu.Unlock()
+	return c
+}
+
+// clearCommandDisplay hides the command indicator. Kept separate from consuming
+// the command so the banner lingers through the command's own dictation (and its
+// result) and only clears when the next fresh dictation starts.
+func (d *Daemon) clearCommandDisplay() {
+	d.mu.Lock()
+	had := d.status.Command != ""
+	d.status.Command = ""
+	d.mu.Unlock()
+	if had {
+		d.emit(Event{Type: "command", Command: ""})
+	}
+}
+
+// parseCommand recognises a short spoken command that starts with the wake word,
+// e.g. "Vito, vertaal naar Duits", and returns the instruction after it. Kept
+// strict — wake-word-first and short — so ordinary dictation is never mistaken
+// for a command. The wake word is matched loosely since the recogniser may hear
+// "Vido"/"Fito".
+func parseCommand(raw string) (string, bool) {
+	s := strings.TrimSpace(raw)
+	low := strings.ToLower(s)
+	for _, w := range []string{"vito", "vido", "fito", "veto"} {
+		if !strings.HasPrefix(low, w) || len(s) <= len(w) {
+			continue
+		}
+		if !strings.ContainsRune(" ,:.!-\t", rune(s[len(w)])) { // a boundary, not "vitowski"
+			continue
+		}
+		instr := strings.TrimSpace(strings.TrimLeft(s[len(w):], " ,:.!-\t"))
+		if instr == "" || len(strings.Fields(instr)) > 15 { // longer than a short command = real text
+			return "", false
+		}
+		return instr, true
+	}
+	return "", false
+}
+
+// clipboardInput reports whether a command works on the clipboard ("Vito, vat de
+// tekst op het klembord samen") and, if so, returns its current contents.
+func clipboardInput(instr string) (string, bool) {
+	l := strings.ToLower(instr)
+	if !strings.Contains(l, "klembord") && !strings.Contains(l, "clipboard") {
+		return "", false
+	}
+	clip, _ := inject.ReadClipboard()
+	return strings.TrimSpace(clip), true
+}
+
 func (d *Daemon) finish(s *session) {
 	cfg := s.cfg
 	stopAt := time.Now()
@@ -864,6 +949,7 @@ func (d *Daemon) finish(s *session) {
 
 	raw := strings.TrimSpace(text)
 	if raw == "" {
+		d.takePendingCmd() // an empty follow-up drops any command that was armed
 		d.setIdle(func(st *Status) { st.LastPreview = "" })
 		d.emit(Event{Type: "state", State: StateIdle})
 		s.spool.Remove()
@@ -876,14 +962,82 @@ func (d *Daemon) finish(s *session) {
 	// Deterministic corrections run always, so raw mode benefits too.
 	raw = dictionary.Apply(raw, cfg.Dictionary.Corrections)
 
+	// A spoken command ("Vito, vertaal naar Duits") arms the next dictation and is
+	// not itself pasted; the following dictation carries it into the cleanup pass.
+	var instruction string
+	clipboardOut := false // a clipboard command returns its result to the clipboard, not the focused field
+	if instr, ok := parseCommand(raw); ok {
+		if !d.cleanupEffective(s) { // the cleanup pass is what runs the command, so it must be on
+			d.playSound(cfg, assets.SoundCancel)
+			d.note("vito: opdracht genegeerd", "AI-opschoning staat uit — zet die aan voor spraakopdrachten")
+			d.setIdle(func(st *Status) { st.LastPreview = "" })
+			d.emit(Event{Type: "state", State: StateIdle})
+			s.spool.Remove()
+			d.log.Info("command ignored, cleanup disabled", "instruction", instr)
+			return
+		}
+		if clip, isClip := clipboardInput(instr); isClip {
+			// The command works on the clipboard ("vat de tekst op het klembord
+			// samen"): run it on that text right away — no follow-up dictation.
+			if clip == "" {
+				d.playSound(cfg, assets.SoundCancel)
+				d.note("vito: klembord leeg", "geen tekst op het klembord voor deze opdracht")
+				d.setIdle(func(st *Status) { st.LastPreview = "" })
+				d.emit(Event{Type: "state", State: StateIdle})
+				s.spool.Remove()
+				return
+			}
+			d.playSound(cfg, assets.SoundCommand)
+			d.note("vito: opdracht op klembord — "+instr, "")
+			d.setStatusCommand(instr)
+			d.emit(Event{Type: "command", Command: instr, CommandReceived: true}) // input is the clipboard → no "speak your text" state
+			raw = clip
+			instruction = instr
+			clipboardOut = true
+			// fall through to the cleanup + inject path below
+		} else {
+			d.setPendingCmd(instr)
+			d.playSound(cfg, assets.SoundCommand)
+			d.note("vito: opdracht — "+instr, "")
+			d.setIdle(func(st *Status) { st.LastPreview = "" })
+			d.emit(Event{Type: "state", State: StateIdle})
+			s.spool.Remove()
+			d.log.Info("command armed", "instruction", instr)
+			// Re-open the mic right away so you can dictate the target text without
+			// pressing the hotkey again — one continuous flow.
+			go func() {
+				time.Sleep(350 * time.Millisecond) // let the ack sound play and the session tear down
+				if err := d.start(); err != nil {
+					d.log.Warn("auto-restart after command failed", "err", err)
+				}
+			}()
+			return
+		}
+	} else {
+		instruction = d.takePendingCmd()
+	}
+
 	cleaned := ""
 	cleanupUsed := false
 	cleanupFailed := false
 	cleanupCredit := ""
 	var cleanUsage cleanup.Usage
-	if d.cleanupEffective(s) && wordCount(raw) >= cfg.Cleanup.MinWords {
-		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.Cleanup.TimeoutMS)*time.Millisecond)
-		out, usage, err := cleanup.NewCleaner(cfg.Cleanup).Clean(ctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections)
+	// A Vito Assist command may run on its own (heavier) model; a plain dictation
+	// always uses the cleanup model. The master on/off switch stays cfg.Cleanup —
+	// gated by cleanupEffective below — so Assist still requires AI cleanup to be on.
+	cleanCfg := cfg.Cleanup
+	if instruction != "" && !cfg.Assist.UsesCleanupModel() {
+		cleanCfg = cfg.Assist.Cleanup
+		cleanCfg.Enabled = true
+		if cleanCfg.TimeoutMS <= 0 {
+			cleanCfg.TimeoutMS = cfg.Cleanup.TimeoutMS
+		}
+	}
+	// Cleanup must be on. A pending command then forces a pass even below the
+	// min-words threshold (that's how the command is applied).
+	if d.cleanupEffective(s) && (instruction != "" || wordCount(raw) >= cfg.Cleanup.MinWords) {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cleanCfg.TimeoutMS)*time.Millisecond)
+		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
 		cancel()
 		cleanUsage = usage // tokens are billed even if we then reject the output
 		if err != nil {
@@ -897,7 +1051,7 @@ func (d *Daemon) finish(s *session) {
 		} else {
 			cleaned = out
 			cleanupUsed = true
-			d.markCredit(cleanup.ProviderName(cfg.Cleanup), false) // a successful pass clears any prior flag
+			d.markCredit(cleanup.ProviderName(cleanCfg), false) // a successful pass clears any prior flag
 		}
 	}
 	cleanupDone := time.Now()
@@ -907,7 +1061,15 @@ func (d *Daemon) finish(s *session) {
 		final = cleaned
 	}
 
-	mode, err := inject.Inject(cfg.Injection, final)
+	// A clipboard command is clipboard-in, clipboard-out: put the result back on
+	// the clipboard for you to paste yourself, rather than pasting into whatever
+	// happens to be focused (which the restore step would then overwrite with the
+	// original input).
+	injCfg := cfg.Injection
+	if clipboardOut {
+		injCfg = config.Injection{Mode: "clipboard_only"}
+	}
+	mode, err := inject.Inject(injCfg, final)
 	if err != nil {
 		// The text exists; never lose it. Fall back to clipboard only.
 		if _, cbErr := inject.Inject(config.Injection{Mode: "clipboard_only"}, final); cbErr == nil {
@@ -950,20 +1112,28 @@ func (d *Daemon) finish(s *session) {
 
 	if cfg.History.Enabled && d.hist != nil {
 		entry := history.Entry{
-			ID:          entryID,
-			Timestamp:   s.started,
-			DurationMS:  duration.Milliseconds(),
-			Language:    entryLang,
-			Source:      source,
-			Raw:         raw,
-			Cleaned:     cleaned,
-			CleanupUsed: cleanupUsed,
-			SttMS:       timings.SttFinal.Milliseconds(),
-			CleanupMS:   timings.Cleanup.Milliseconds(),
-			InjectedMS:  timings.Injected.Milliseconds(),
-
-			CleanupInTokens:  cleanUsage.InputTokens,
-			CleanupOutTokens: cleanUsage.OutputTokens,
+			ID:               entryID,
+			Timestamp:        s.started,
+			DurationMS:       duration.Milliseconds(),
+			Language:         entryLang,
+			Source:           source,
+			Raw:              raw,
+			Cleaned:          cleaned,
+			CleanupUsed:      cleanupUsed,
+			Command:          instruction != "",
+			CommandText:      instruction,
+			ClipboardCommand: clipboardOut,
+			SttMS:            timings.SttFinal.Milliseconds(),
+			CleanupMS:        timings.Cleanup.Milliseconds(),
+			InjectedMS:       timings.Injected.Milliseconds(),
+		}
+		// A Vito Assist command runs through the same cleaner, but its tokens are
+		// question-answering / transformation, not tidy-up — bill them to the
+		// command bucket so the cost breakdown keeps the two lines apart.
+		if instruction != "" {
+			entry.CommandInTokens, entry.CommandOutTokens = cleanUsage.InputTokens, cleanUsage.OutputTokens
+		} else {
+			entry.CleanupInTokens, entry.CleanupOutTokens = cleanUsage.InputTokens, cleanUsage.OutputTokens
 		}
 		// Privacy mode keeps the usage statistics but never writes the transcript
 		// text to disk; otherwise store the full entry.
@@ -1053,6 +1223,8 @@ func (d *Daemon) PlaySound(name string, volume float64) error {
 		wav = assets.SoundCancel
 	case "achievement":
 		wav = assets.SoundAchievement
+	case "command":
+		wav = assets.SoundCommand
 	default:
 		return fmt.Errorf("unknown sound %q", name)
 	}

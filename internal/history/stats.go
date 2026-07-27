@@ -24,6 +24,8 @@ type DayWords struct {
 	DurationMS       int64   `json:"-"`
 	CleanupInTokens  int64   `json:"-"`
 	CleanupOutTokens int64   `json:"-"`
+	CommandInTokens  int64   `json:"-"` // Vito Assist tokens, priced at the assist rate
+	CommandOutTokens int64   `json:"-"`
 	Cost             float64 `json:"cost"` // in Stats.Currency, filled by the server
 }
 
@@ -34,6 +36,7 @@ type Stats struct {
 	Words             int        `json:"words"`
 	Sentences         int        `json:"sentences"`
 	Activations       int        `json:"activations"`
+	Commands          int        `json:"commands"` // Vito Assist commands in the period
 	ActivationsPerDay float64    `json:"activations_per_day"`
 	SavedMinutes      int        `json:"saved_minutes"`
 	SpokenSeconds     int        `json:"spoken_seconds"` // total dictation time in the period
@@ -72,6 +75,10 @@ func (s *Store) Stats(now time.Time, wpm float64, days int) (Stats, error) {
 	}
 
 	words, sent, act, durMS, firstDay, err := s.DayTotals(fromDay, toDay)
+	if err != nil {
+		return Stats{}, err
+	}
+	commands, err := s.CommandTotal(fromDay, toDay)
 	if err != nil {
 		return Stats{}, err
 	}
@@ -115,6 +122,7 @@ func (s *Store) Stats(now time.Time, wpm float64, days int) (Stats, error) {
 		Words:             words,
 		Sentences:         sent,
 		Activations:       act,
+		Commands:          commands,
 		ActivationsPerDay: float64(act) / float64(divisor),
 		SavedMinutes:      int(saved + 0.5),
 		SpokenSeconds:     int(durMS / 1000),
@@ -126,7 +134,7 @@ func (s *Store) Stats(now time.Time, wpm float64, days int) (Stats, error) {
 	// "Today" gets an hourly breakdown — a single day bar says nothing, and the
 	// hours show when you actually dictate.
 	if days == 1 {
-		w, sn, ac, dur, inTok, outTok, err := s.HourTotals(anchor)
+		w, sn, ac, dur, inTok, outTok, cmdIn, cmdOut, err := s.HourTotals(anchor)
 		if err != nil {
 			return Stats{}, err
 		}
@@ -149,6 +157,8 @@ func (s *Store) Stats(now time.Time, wpm float64, days int) (Stats, error) {
 				DurationMS:       dur[h],
 				CleanupInTokens:  inTok[h],
 				CleanupOutTokens: outTok[h],
+				CommandInTokens:  cmdIn[h],
+				CommandOutTokens: cmdOut[h],
 			})
 			if w[h] > peak {
 				peak, st.WeekPeakIndex = w[h], h
@@ -171,7 +181,7 @@ func (s *Store) Stats(now time.Time, wpm float64, days int) (Stats, error) {
 		if err != nil {
 			return Stats{}, err
 		}
-		_, _, inTok, outTok, _, err := s.CostTotals(b.From, b.To)
+		_, _, inTok, outTok, cmdIn, cmdOut, _, err := s.CostTotals(b.From, b.To)
 		if err != nil {
 			return Stats{}, err
 		}
@@ -192,6 +202,8 @@ func (s *Store) Stats(now time.Time, wpm float64, days int) (Stats, error) {
 			DurationMS:       dur,
 			CleanupInTokens:  inTok,
 			CleanupOutTokens: outTok,
+			CommandInTokens:  cmdIn,
+			CommandOutTokens: cmdOut,
 		})
 		if w > peak {
 			peak, st.WeekPeakIndex = w, i

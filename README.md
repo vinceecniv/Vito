@@ -9,6 +9,7 @@
 
 <p align="center">
   <a href="#download"><img alt="Download" src="https://img.shields.io/badge/Download-Windows%20%C2%B7%20Linux-7C3AED?style=for-the-badge"></a>
+  <a href="https://vito.talk"><img alt="Website" src="https://img.shields.io/badge/Website-vito.talk-2B2440?style=for-the-badge"></a>
   <a href="https://ko-fi.com/vito_app"><img alt="Ko-fi" src="https://img.shields.io/badge/Support-Ko--fi-FF6B5E?style=for-the-badge"></a>
 </p>
 
@@ -47,9 +48,11 @@ No window to switch to, no copy-paste dance. Talk, and the text appears where yo
 
 ## Why Vito?
 
-Dictation apps like **Wispr Flow**, **Superwhisper**, **Aqua Voice**, **Willow** and **Talon**
+Dictation apps like [**Wispr Flow**](https://vito.talk/compare/wispr-flow/),
+[**Superwhisper**](https://vito.talk/compare/superwhisper/),
+[**Aqua Voice**](https://vito.talk/compare/aqua-voice/) and [**Willow**](https://vito.talk/compare/willow/)
 are excellent — but most of them charge **a monthly subscription**, typically **€12–€30 a month**, whether
-you use them a little or a lot.
+you use them a little or a lot. (Side-by-side [comparisons on vito.talk](https://vito.talk/compare/).)
 
 Vito flips that model:
 
@@ -99,6 +102,10 @@ of continuous talking** — and almost nobody dictates non-stop.
 To spend €15 in a month — a typical *monthly* subscription price elsewhere — you'd have to speak
 **one hundred hours** without pausing. Even heavy, everyday users usually land at **just a few euros a month.**
 
+> **Start free — no credit card.** Pair **[AssemblyAI](https://vito.talk/setup/assemblyai/)** (speech-to-text,
+> free starting credit) with **[Groq](https://vito.talk/setup/groq/)** (AI cleanup, free tier) and you can set
+> Vito up and start dictating without paying anything or entering a card.
+
 ---
 
 ## AI cleanup — from spoken to polished
@@ -111,9 +118,25 @@ you'd actually send:
 - **Understands spoken commands** — say "new line" / "new paragraph" and it becomes real formatting.
 - **Turns named emoji into emoji** — "thumbs up emoji" → 👍 — but only when you're clearly naming one.
 - **Applies your dictionary** — names and jargon come out spelled the way you want.
+- **Runs on the model you choose** — [Claude](https://www.anthropic.com), any **OpenAI-compatible** endpoint like [Groq](https://groq.com) (with a **free tier**), or a fully **local model** (Ollama, LM Studio) so the text never leaves your machine.
 
 If cleanup ever errors or times out, Vito pastes the raw transcript instead — **a dictation is never lost.**
 Both the raw and cleaned versions are kept in your history.
+
+---
+
+## Vito Assist — say "Vito, …" and it acts on your words
+
+Beyond cleaning up, Vito can take a **spoken command**. Start a dictation with **"Vito, …"** and a short
+instruction — it isn't typed out, it's carried out on your next dictation, or on the text already on your
+clipboard:
+
+- **Reshape** — *"Vito, translate to English"*, *"Vito, summarise this"*, *"Vito, turn this into bullet points"*.
+- **Answer** — *"Vito, question"* then ask it, or *"Vito, reply to this"*.
+- **Clipboard** — *"Vito, summarise the text on the clipboard"* — the result goes back to your clipboard, ready to paste.
+
+It runs through the AI-cleanup pass, so it needs cleanup on — and you can point it at its own, heavier model
+when you want. Usage gets its own statistics and achievements.
 
 ---
 
@@ -152,7 +175,8 @@ Vito in a language they understand.
 - Your **history, statistics and settings stay on your own device.**
 - The only thing that leaves your computer is the **audio you dictate**, sent **directly** to the
   speech-to-text provider, and — if cleanup is on — the **transcript**, sent directly to the AI provider.
-  Nothing more, and only when you're actively dictating.
+  Nothing more, and only when you're actively dictating. Run cleanup on a **local model** and even the
+  transcript never leaves your machine.
 - Because it's **Bring Your Own Key**, that data flows through **your own accounts**, not ours. There is no
   Vito server in the middle.
 
@@ -161,10 +185,15 @@ Vito in a language they understand.
 | Purpose | Providers |
 |---|---|
 | **Speech-to-text** | [Soniox](https://soniox.com) · [AssemblyAI](https://www.assemblyai.com) |
-| **AI cleanup** | [Anthropic](https://www.anthropic.com) (Claude) |
+| **AI cleanup** | [Anthropic](https://www.anthropic.com) (Claude), or any **OpenAI-compatible** endpoint — [Groq](https://groq.com) (free tier), [OpenAI](https://openai.com), or a **local model** (Ollama, LM Studio) that keeps cleanup fully on-device |
 
 You only need a key for the speech-to-text provider to get started; the AI-cleanup key is optional but
 recommended.
+
+**Step-by-step setup guides**, one per provider:
+[Soniox](https://vito.talk/setup/soniox/) · [AssemblyAI](https://vito.talk/setup/assemblyai/) ·
+[Anthropic](https://vito.talk/setup/anthropic/) · [Groq](https://vito.talk/setup/groq/) (a free-tier option
+for AI cleanup) — or browse [all setup guides on vito.talk](https://vito.talk/setup/).
 
 ---
 
@@ -175,6 +204,7 @@ Vito is **simple to use, but powerful under the hood.**
 ### Dictation & text
 - 🎙️ **Press-to-talk or push-to-talk** — quick tap to toggle, or hold to talk and release to stop.
 - ✨ **AI cleanup** of every dictation (fillers, punctuation, new lines, spoken emoji).
+- 🪄 **[Vito Assist](https://vito.talk)** — say "Vito, …" with a command to translate, summarise, answer or reshape your dictation (or your clipboard), instead of typing it out.
 - ⏸️ **Auto-stop on pause** — Vito can stop by itself when you stop speaking.
 - 📋 **Paste, type or clipboard-only** injection modes for maximum app compatibility.
 - 📁 **Upload an audio file** to have it transcribed to text.

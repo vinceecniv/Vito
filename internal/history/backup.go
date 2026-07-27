@@ -10,16 +10,20 @@ import "time"
 
 // DayStat is one row of the permanent per-day aggregate table.
 type DayStat struct {
-	Day              string `json:"day"`
-	Words            int64  `json:"words"`
-	Sentences        int64  `json:"sentences"`
-	Activations      int64  `json:"activations"`
-	DurationMS       int64  `json:"duration_ms"`
-	CleanupInTokens  int64  `json:"cleanup_in_tokens"`
-	CleanupOutTokens int64  `json:"cleanup_out_tokens"`
-	Uploads          int64  `json:"uploads"`
-	UploadDurationMS int64  `json:"upload_duration_ms"`
-	UploadWords      int64  `json:"upload_words"`
+	Day               string `json:"day"`
+	Words             int64  `json:"words"`
+	Sentences         int64  `json:"sentences"`
+	Activations       int64  `json:"activations"`
+	DurationMS        int64  `json:"duration_ms"`
+	CleanupInTokens   int64  `json:"cleanup_in_tokens"`
+	CleanupOutTokens  int64  `json:"cleanup_out_tokens"`
+	Uploads           int64  `json:"uploads"`
+	UploadDurationMS  int64  `json:"upload_duration_ms"`
+	UploadWords       int64  `json:"upload_words"`
+	Commands          int64  `json:"commands"`
+	CommandInTokens   int64  `json:"command_in_tokens"`
+	CommandOutTokens  int64  `json:"command_out_tokens"`
+	ClipboardCommands int64  `json:"clipboard_commands"`
 }
 
 // Unlock is one earned achievement with the millis it was first recorded.
@@ -43,7 +47,8 @@ func (s *Store) Snapshot() (BackupData, error) {
 	var b BackupData
 
 	rows, err := s.db.Query(`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,
-		stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,favorite
+		stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,
+		command_in_tokens,command_out_tokens,command_text,favorite
 		FROM history ORDER BY ts`)
 	if err != nil {
 		return b, err
@@ -54,7 +59,7 @@ func (s *Store) Snapshot() (BackupData, error) {
 		var used, favorite int
 		if err := rows.Scan(&e.ID, &ts, &e.DurationMS, &e.Language, &e.Source, &e.Raw, &e.Cleaned,
 			&used, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences,
-			&e.CleanupInTokens, &e.CleanupOutTokens, &favorite); err != nil {
+			&e.CleanupInTokens, &e.CleanupOutTokens, &e.CommandInTokens, &e.CommandOutTokens, &e.CommandText, &favorite); err != nil {
 			rows.Close()
 			return b, err
 		}
@@ -69,7 +74,8 @@ func (s *Store) Snapshot() (BackupData, error) {
 	}
 
 	drows, err := s.db.Query(`SELECT day,words,sentences,activations,duration_ms,
-		cleanup_in_tokens,cleanup_out_tokens,uploads,upload_duration_ms,upload_words
+		cleanup_in_tokens,cleanup_out_tokens,uploads,upload_duration_ms,upload_words,
+		commands,command_in_tokens,command_out_tokens,clipboard_commands
 		FROM day_stats ORDER BY day`)
 	if err != nil {
 		return b, err
@@ -77,7 +83,8 @@ func (s *Store) Snapshot() (BackupData, error) {
 	for drows.Next() {
 		var d DayStat
 		if err := drows.Scan(&d.Day, &d.Words, &d.Sentences, &d.Activations, &d.DurationMS,
-			&d.CleanupInTokens, &d.CleanupOutTokens, &d.Uploads, &d.UploadDurationMS, &d.UploadWords); err != nil {
+			&d.CleanupInTokens, &d.CleanupOutTokens, &d.Uploads, &d.UploadDurationMS, &d.UploadWords,
+			&d.Commands, &d.CommandInTokens, &d.CommandOutTokens, &d.ClipboardCommands); err != nil {
 			drows.Close()
 			return b, err
 		}
@@ -124,21 +131,22 @@ func (s *Store) Restore(b BackupData) error {
 	for _, e := range b.History {
 		if _, err := tx.Exec(
 			`INSERT OR REPLACE INTO history
-			 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,favorite)
-			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+			 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text,favorite)
+			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 			e.ID, e.Timestamp.UnixMilli(), e.DurationMS, e.Language, e.Source, e.Raw, e.Cleaned,
 			b2i(e.CleanupUsed), e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences,
-			e.CleanupInTokens, e.CleanupOutTokens, b2i(e.Favorite)); err != nil {
+			e.CleanupInTokens, e.CleanupOutTokens, e.CommandInTokens, e.CommandOutTokens, e.CommandText, b2i(e.Favorite)); err != nil {
 			return err
 		}
 	}
 	for _, d := range b.DayStats {
 		if _, err := tx.Exec(
 			`INSERT OR REPLACE INTO day_stats
-			 (day,words,sentences,activations,duration_ms,cleanup_in_tokens,cleanup_out_tokens,uploads,upload_duration_ms,upload_words)
-			 VALUES (?,?,?,?,?,?,?,?,?,?)`,
+			 (day,words,sentences,activations,duration_ms,cleanup_in_tokens,cleanup_out_tokens,uploads,upload_duration_ms,upload_words,commands,command_in_tokens,command_out_tokens,clipboard_commands)
+			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 			d.Day, d.Words, d.Sentences, d.Activations, d.DurationMS,
-			d.CleanupInTokens, d.CleanupOutTokens, d.Uploads, d.UploadDurationMS, d.UploadWords); err != nil {
+			d.CleanupInTokens, d.CleanupOutTokens, d.Uploads, d.UploadDurationMS, d.UploadWords,
+			d.Commands, d.CommandInTokens, d.CommandOutTokens, d.ClipboardCommands); err != nil {
 			return err
 		}
 	}
