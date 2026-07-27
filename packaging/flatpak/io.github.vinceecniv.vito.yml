@@ -80,7 +80,7 @@ modules:
       # 2026.7.3-dev is substituted by the workflow before building:
       # flatpak-builder does not pass the outer environment into the build
       # sandbox, so the version has to be baked into the manifest.
-      - go build -ldflags "-X main.version=2026.7.3-dev" -o vito ./cmd/vito
+      - go build -ldflags "-X main.version=@VITO_VERSION@" -o vito ./cmd/vito
       - install -Dm755 vito /app/bin/vito
       # The desktop file, icon and AppStream metadata must all be named after the
       # app id for the desktop to associate them.

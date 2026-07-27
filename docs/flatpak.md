@@ -64,9 +64,13 @@ flatpak install flathub org.freedesktop.Sdk//25.08 \
                         org.freedesktop.Platform//25.08 \
                         org.freedesktop.Sdk.Extension.golang//25.08
 
-sed -i "s/@VITO_VERSION@/2026.7.3/" packaging/flatpak/io.github.vinceecniv.vito.yml
-flatpak-builder --user --install --force-clean build \
-  packaging/flatpak/io.github.vinceecniv.vito.yml
+# Substitute the version into a copy, so the placeholder survives in git —
+# committing the substituted manifest would freeze that version into every
+# later CI build.
+sed "s/@VITO_VERSION@/2026.7.3/" packaging/flatpak/io.github.vinceecniv.vito.yml \
+  > /tmp/vito-flatpak.yml
+flatpak-builder --user --install --force-clean --disable-rofiles-fuse build \
+  /tmp/vito-flatpak.yml
 ```
 
 `@VITO_VERSION@` is a placeholder rather than an environment variable on purpose:
