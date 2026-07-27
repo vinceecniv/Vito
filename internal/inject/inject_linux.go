@@ -3,6 +3,7 @@
 package inject
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -55,14 +56,26 @@ func injectPlatform(cfg config.Injection, mode Mode, text string) error {
 		return copyText(text)
 	}
 	backend := resolveBackend(cfg)
-	lastBackend.Lock()
-	lastBackend.name = backend
-	lastBackend.Unlock()
+	setLastBackend(backend)
 
 	if backend == backendPortal {
-		return portalInject(cfg, mode, text)
+		err := portalInject(cfg, mode, text)
+		// errPortalUnavailable is only returned before any key was sent (no
+		// portal, permission refused, timed out), so falling back cannot deliver
+		// the text twice. Any other error means keys were already in flight.
+		if err != nil && errors.Is(err, errPortalUnavailable) && cfg.Backend != backendPortal {
+			setLastBackend(backendYdotool)
+			return ydotoolInject(cfg, mode, text)
+		}
+		return err
 	}
 	return ydotoolInject(cfg, mode, text)
+}
+
+func setLastBackend(name string) {
+	lastBackend.Lock()
+	lastBackend.name = name
+	lastBackend.Unlock()
 }
 
 // pressEnter submits the just-injected text, through whichever backend

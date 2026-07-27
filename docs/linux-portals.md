@@ -28,7 +28,24 @@ with `xdg-desktop-portal-gnome` 50):
 | `org.freedesktop.portal.GlobalShortcuts` | 1 | `CreateSession`, `BindShortcuts`, `ListShortcuts`, signals **`Activated`** / **`Deactivated`** |
 | `org.freedesktop.portal.Clipboard` | 1 | `RequestClipboard`, `SetSelection`, `SelectionWrite` (tied to a RemoteDesktop session) |
 
-Two consequences worth stating plainly:
+**A caveat learned the hard way:** that table says what is *advertised*, not what
+works. `xdg-desktop-portal` always exports the `RemoteDesktop` interface and
+reports `version = 2` — even when no backend implements
+`org.freedesktop.impl.portal.RemoteDesktop` behind it. On the development
+machine (niri) the session dies immediately:
+
+```
+A backend call failed: Interface 'org.freedesktop.impl.portal.RemoteDesktop'
+does not exist at path /org/freedesktop/portal/desktop
+```
+
+because `xdg-desktop-portal-gnome` implements RemoteDesktop by delegating to
+Mutter, which isn't running under niri. So **the only reliable probe is trying to
+create a session**, and phase 2 must be tested on GNOME or KDE. Compositors
+without a RemoteDesktop backend (niri today, wlroots-based ones) keep using
+ydotool — which is precisely why the fallback is not optional.
+
+Two further consequences worth stating plainly:
 
 1. **No libei, no CGO.** `NotifyKeyboardKeycode` is a plain D-Bus call, so the
    whole injection path can be written in pure Go. libei/`ConnectToEIS` is the
@@ -85,6 +102,9 @@ cost nothing and remain the documented route for scripts and older setups).
    `ydotool` backend, add portal detection. No behaviour change yet.
 2. **RemoteDesktop injection** — session + `NotifyKeyboardKeycode` for paste,
    `NotifyKeyboardKeysym` for type mode; wire persistence of the permission.
+   *Implemented; still unverified against a real compositor* — see the caveat
+   above. `VITO_PORTAL_TEST=1 go test ./internal/inject/ -run TestPortalSession -v`
+   answers "does it work here, and is the grant remembered" on any desktop.
 3. **GlobalShortcuts hotkey** — bind toggle + cancel, handle `Activated` /
    `Deactivated` (push-to-talk), surface the binding in the settings UI.
 4. **Clipboard without `wl-copy`** — either the Clipboard portal or bundling
