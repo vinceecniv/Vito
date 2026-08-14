@@ -10,7 +10,9 @@ package tray
 
 import (
 	"log/slog"
+	"runtime"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"fyne.io/systray"
@@ -60,11 +62,24 @@ func (a *animator) setState(s daemon.State) {
 	}
 }
 
-// Run displays the tray icon and blocks until the user selects Quit (or the
-// tray host goes away). onQuit runs after systray tears down; the caller should
-// exit the process there.
-func Run(d *daemon.Daemon, url, version string, log *slog.Logger, onQuit func()) {
-	systray.Run(func() { onReady(d, url, version, log) }, onQuit)
+// quitChosen records that the user picked Quit from the menu. There is only
+// ever one tray, so one package-level flag covers it.
+var quitChosen atomic.Bool
+
+// Run displays the tray icon and blocks until the user selects Quit or the tray
+// host goes away, and reports which of the two happened. The caller has to tell
+// them apart — "the user wants out" and "there is no tray on this system" both
+// end up here, and only the first should stop the daemon.
+//
+// The answer deliberately comes from our own flag rather than systray's onExit
+// callback: on macOS, Quit stops the app event loop with [NSApp stop:], which
+// never fires applicationWillTerminate:, so onExit is not called at all there.
+// Relying on it left the process alive with a dead Cocoa run loop — a menu bar
+// icon that had vanished and an app macOS reported as "not responding".
+func Run(d *daemon.Daemon, url, version string, log *slog.Logger) (userQuit bool) {
+	quitChosen.Store(false)
+	systray.Run(func() { onReady(d, url, version, log) }, func() {})
+	return quitChosen.Load()
 }
 
 func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
@@ -76,7 +91,13 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 			anim.setDark(wantDark(d))
 		}
 	}()
-	systray.SetTitle("Vito Tray")
+	// macOS renders the title as text beside the menu-bar icon, which doubles
+	// the width of the status item to repeat what the icon already says. Other
+	// hosts use it as a label where the icon may not be shown at all, so it is
+	// only dropped here.
+	if runtime.GOOS != "darwin" {
+		systray.SetTitle("Vito Tray")
+	}
 	systray.SetTooltip("Vito Tray — idle")
 
 	mVersion := systray.AddMenuItem("Vito "+version, "Versie")
@@ -186,6 +207,7 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 				}
 				refresh()
 			case <-mQuit.ClickedCh:
+				quitChosen.Store(true)
 				systray.Quit()
 				return
 			}
