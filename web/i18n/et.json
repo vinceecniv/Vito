@@ -81,7 +81,6 @@
 "Got it": "Selge",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito kuulab su häält ja kleebib valmis teksti otse sinna, kus kursor asub. Nii alustad:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Loo AssemblyAI API-võti (vajalik) ja sisesta see jaotisesse Seaded → Kõnetuvastus.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Kas soovid automaatset AI-puhastust? Siis loo ka Anthropic API-võti ja sisesta see.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Määra oma alusta/peata kiirklahv jaotises Seaded → Aktiveerimine ja vaata ülejäänud seaded üle.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Vajuta kiirklahvi, räägi ja Vito kleebib teksti sinna, kus kursor asub.",
 "Close the welcome card?": "Kas sulgeda tervituskaart?",
@@ -262,7 +261,6 @@
 "Display": "Kuva",
 "System": "Süsteem",
 "Other": "Muu",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito töötab „Bring Your Own Key“ (BYOK) mudeli alusel: kasutad oma API-võtmeid (AssemblyAI või Soniox kõnetuvastuseks, Anthropic AI-puhastuseks). Vito ise ei võta tasu ega saada su heli või teksti kuhugi mujale peale nende teenusepakkujate, kellele võtmed kuuluvad.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Nende võtmete hankimine, haldamine ja turvamine — ning kõik kulud, mida nende kasutamine teenusepakkujate juures kaasa toob — on täielikult sinu enda vastutusel.",
 "Privacy & data": "Privaatsus ja andmed",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito ei kogu mingil viisil kasutajaandmeid nende edastamiseks ning rakendusse pole sisse ehitatud mingit jälgimist ega analüütikat. Sinu seaded, sõnastik ja ajalugu jäävad kohalikult sinu enda arvutisse.",
@@ -330,7 +328,6 @@
 "Vietnamese": "vietnami",
 "About these costs": "Nende kulude kohta",
 "How do these costs work?": "Kuidas need kulud toimivad?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito ise ei võta tasu. Kõik kulud on välised: maksad need otse API-teenusepakkujatele, kellele su enda võtmed kuuluvad — AssemblyAI kõnetuvastuse ja Anthropic AI-puhastuse eest.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "See summa on hinnang. Vito korrutab su mõõdetud kasutuse allpool olevate tariifidega; see pole arve. Tegelik arveldus on su teenusepakkuja töölaual ja võib erineda hinnamuutuste, tasuta krediidi, allahindluste või maksude tõttu.",
 "Calculated with:": "Arvestatakse järgnevaga:",
 "per hour of recorded audio": "salvestatud heli tunni kohta",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Tokenikulu hinnang",
 "Input · $/Mtok": "Sisend · $/Mtok",
 "Output · $/Mtok": "Väljund · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Mitu Vito Assisti häälkäsku sa selles perioodis käivitasid — need „Vito, …“ juhised, mis tõlgivad, teevad kokkuvõtte, vastavad või kujundavad su dikteeringu ümber."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Mitu Vito Assisti häälkäsku sa selles perioodis käivitasid — need „Vito, …“ juhised, mis tõlgivad, teevad kokkuvõtte, vastavad või kujundavad su dikteeringu ümber.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Vajuta neid kombinatsioone kus tahes macOS-is. Kasuta vähemalt Control, Option või Command. Vajuta väljal Esc, et see tühjendada.",
+"Choose a combination with at least Control, Option or Command.": "Vali kombinatsioon, milles on vähemalt Control, Option või Command.",
+"Grant Accessibility permission": "Anna juurdepääsu luba",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Vito vajab globaalsete kiirklahvide jaoks juurdepääsu luba. Anna see jaotises Süsteemi sätted → Privaatsus ja turvalisus → Juurdepääs.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Märgi Vito Süsteemi sätetes — kiirklahv hakkab paari sekundi pärast tööle."
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

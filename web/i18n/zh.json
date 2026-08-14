@@ -81,7 +81,6 @@
 "Got it": "明白了",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito 聆听你的声音，并将处理后的文本直接粘贴到光标所在处。使用方法如下：",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "创建 AssemblyAI API 密钥（必需），并在“设置 → 语音识别”中填入。",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "想要自动 AI 清理？那也请创建 Anthropic API 密钥并填入。",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "在“设置 → 激活”中设置你的开始/停止快捷键，并检查其余设置。",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "按下快捷键，说话，Vito 便将文本粘贴到光标所在处。",
 "Close the welcome card?": "关闭欢迎卡片？",
@@ -262,7 +261,6 @@
 "Display": "显示",
 "System": "系统",
 "Other": "其他",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito 采用“自带密钥”（BYOK）模式：你使用自己的 API 密钥（AssemblyAI 或 Soniox 用于语音识别，Anthropic 用于 AI 清理）。Vito 本身不收取任何费用，也不会将你的音频或文本发送到密钥所属提供商以外的任何地方。",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "提供、管理和保护这些密钥 — 以及在提供商处使用它们产生的所有费用 — 完全由你自行负责。",
 "Privacy & data": "隐私与数据",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito 不会以任何方式收集用户数据用于转发，应用中也没有内置任何形式的跟踪或分析。你的设置、词典和历史记录都保留在你自己的电脑本地。",
@@ -330,7 +328,6 @@
 "Vietnamese": "越南语",
 "About these costs": "关于这些费用",
 "How do these costs work?": "这些费用是怎么回事？",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito 本身不收取任何费用。所有费用都是外部产生的：你直接支付给你自己密钥所属的 API 提供商 — AssemblyAI 用于语音识别，Anthropic 用于 AI 清理。",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "此金额为估算值。Vito 用你的实测用量乘以下方费率；这不是账单。真实费用在提供商的仪表板中，可能因价格变动、免费额度、折扣或税费而有所不同。",
 "Calculated with:": "计算依据：",
 "per hour of recorded audio": "每小时录制音频",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Token 成本估算",
 "Input · $/Mtok": "输入 · $/Mtok",
 "Output · $/Mtok": "输出 · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "本时段内你运行了多少条 Vito Assist 语音命令 — 那些用来翻译、总结、回答或重塑你听写的 'Vito, …' 指令。"
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "本时段内你运行了多少条 Vito Assist 语音命令 — 那些用来翻译、总结、回答或重塑你听写的 'Vito, …' 指令。",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "在 macOS 中的任何地方都可以按这些组合键。至少包含 Control、Option 或 Command。在输入框中按 Esc 可清除。",
+"Choose a combination with at least Control, Option or Command.": "请选择至少包含 Control、Option 或 Command 的组合。",
+"Grant Accessibility permission": "授予辅助功能权限",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "全局快捷键需要“辅助功能”权限。请在系统设置 → 隐私与安全性 → 辅助功能中授予。",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "在系统设置中勾选 Vito — 快捷键会在几秒后开始生效。"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

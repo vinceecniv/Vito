@@ -81,7 +81,6 @@
 "Got it": "સમજાયું",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito તમારો અવાજ સાંભળે છે અને તૈયાર લખાણ સીધું તમારા કર્સર જ્યાં હોય ત્યાં ચોંટાડે છે. તેને આ રીતે વાપરવાનું શરૂ કરો:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "એક AssemblyAI API કી બનાવો (જરૂરી) અને તેને સેટિંગ્સ → વાણી ઓળખ માં ભરો.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "આપમેળે AI સફાઈ જોઈએ છે? તો એક Anthropic API કી પણ બનાવો અને ભરો.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "તમારો શરૂ/બંધ શોર્ટકટ સેટિંગ્સ → સક્રિયકરણ હેઠળ સેટ કરો અને બાકીની સેટિંગ્સ તપાસો.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "તમારો શોર્ટકટ દબાવો, બોલો, અને Vito લખાણ તમારા કર્સર જ્યાં હોય ત્યાં ચોંટાડે છે.",
 "Close the welcome card?": "સ્વાગત કાર્ડ બંધ કરવું છે?",
@@ -262,7 +261,6 @@
 "Display": "દેખાવ",
 "System": "સિસ્ટમ",
 "Other": "અન્ય",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito \"Bring Your Own Key\" (BYOK) મોડેલ પર કામ કરે છે: તમે તમારી પોતાની API કી વાપરો છો (વાણી ઓળખ માટે AssemblyAI અથવા Soniox, AI સફાઈ માટે Anthropic). Vito પોતે કંઈ ચાર્જ કરતું નથી અને તમારો ઓડિયો કે લખાણ જે પ્રોવાઇડરની કી છે તેમના સિવાય બીજે ક્યાંય મોકલતું નથી.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "તે કી પૂરી પાડવી, સંચાલિત કરવી અને સુરક્ષિત રાખવી — અને પ્રોવાઇડર પાસે તેમના ઉપયોગથી થતો બધો ખર્ચ — સંપૂર્ણપણે તમારી પોતાની જવાબદારી છે.",
 "Privacy & data": "ગોપનીયતા અને ડેટા",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito આગળ મોકલવા માટે કોઈપણ રીતે વપરાશકર્તા ડેટા એકત્ર કરતું નથી, અને એપમાં કોઈપણ પ્રકારનું ટ્રેકિંગ કે એનાલિટિક્સ બનેલું નથી. તમારી સેટિંગ્સ, શબ્દકોશ અને ઇતિહાસ તમારા પોતાના કમ્પ્યુટર પર સ્થાનિક રહે છે.",
@@ -330,7 +328,6 @@
 "Vietnamese": "વિયેતનામી",
 "About these costs": "આ ખર્ચ વિશે",
 "How do these costs work?": "આ ખર્ચ કેવી રીતે કામ કરે છે?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito પોતે ક્યારેય તમને કંઈ ચાર્જ કરતું નથી. બધો ખર્ચ બાહ્ય છે: તમે તે સીધો તમારી પોતાની કી જેમની છે તે API પ્રોવાઇડરને ચૂકવો છો — વાણી ઓળખ માટે AssemblyAI અને AI સફાઈ માટે Anthropic.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "આ રકમ એક અંદાજ છે. Vito તમારા માપેલા ઉપયોગને નીચેના દરો સાથે ગુણે છે; તે બિલ નથી. ખરો ચાર્જ તમારા પ્રોવાઇડરના ડૅશબોર્ડમાં હોય છે અને ભાવ ફેરફાર, મફત ક્રેડિટ, ડિસ્કાઉન્ટ કે કરને લીધે અલગ હોઈ શકે છે.",
 "Calculated with:": "આ સાથે ગણતરી થાય છે:",
 "per hour of recorded audio": "પ્રતિ કલાક રેકોર્ડ કરેલ ઓડિયો",
@@ -646,7 +643,12 @@
 "Token cost estimate": "ટોકન ખર્ચ અંદાજ",
 "Input · $/Mtok": "ઇનપુટ · $/Mtok",
 "Output · $/Mtok": "આઉટપુટ · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "આ સમયગાળામાં તમે કેટલા Vito Assist વૉઇસ આદેશો ચલાવ્યા — એ 'Vito, …' સૂચનાઓ જે તમારા શ્રુતલેખનનું અનુવાદ, સારાંશ, જવાબ કે પુનઃઆકાર કરે છે."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "આ સમયગાળામાં તમે કેટલા Vito Assist વૉઇસ આદેશો ચલાવ્યા — એ 'Vito, …' સૂચનાઓ જે તમારા શ્રુતલેખનનું અનુવાદ, સારાંશ, જવાબ કે પુનઃઆકાર કરે છે.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "macOS માં ક્યાંય પણ આ કોમ્બિનેશન દબાવો. ઓછામાં ઓછા Control, Option કે Command વાપરો. ફીલ્ડ સાફ કરવા Esc દબાવો.",
+"Choose a combination with at least Control, Option or Command.": "ઓછામાં ઓછા Control, Option કે Command વાળું કોમ્બિનેશન પસંદ કરો.",
+"Grant Accessibility permission": "Accessibility પરવાનગી આપો",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "ગ્લોબલ શૉર્ટકટ માટે Vito ને Accessibility પરવાનગી જરૂરી છે. System Settings → Privacy & Security → Accessibility માં આપો.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "System Settings માં Vito ટિક કરો — શૉર્ટકટ થોડી સેકન્ડ પછી કામ કરવા લાગશે."
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",

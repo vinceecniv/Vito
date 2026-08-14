@@ -81,7 +81,6 @@
 "Got it": "ಅರ್ಥವಾಯಿತು",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito ನಿಮ್ಮ ಧ್ವನಿಯನ್ನು ಆಲಿಸುತ್ತದೆ ಮತ್ತು ಸಿದ್ಧಪಡಿಸಿದ ಪಠ್ಯವನ್ನು ನೇರವಾಗಿ ನಿಮ್ಮ ಕರ್ಸರ್ ಇರುವಲ್ಲಿ ಅಂಟಿಸುತ್ತದೆ. ಪ್ರಾರಂಭಿಸುವ ವಿಧಾನ ಇಲ್ಲಿದೆ:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "AssemblyAI API ಕೀ ರಚಿಸಿ (ಅಗತ್ಯ) ಮತ್ತು ಅದನ್ನು ಸೆಟ್ಟಿಂಗ್‌ಗಳು → ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ ಯಲ್ಲಿ ನಮೂದಿಸಿ.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "ಸ್ವಯಂ AI ಶುದ್ಧೀಕರಣ ಬೇಕೇ? ಹಾಗಾದರೆ Anthropic API ಕೀ ಸಹ ರಚಿಸಿ ಮತ್ತು ನಮೂದಿಸಿ.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು → ಸಕ್ರಿಯಗೊಳಿಸುವಿಕೆ ಯಲ್ಲಿ ನಿಮ್ಮ ಪ್ರಾರಂಭ/ನಿಲ್ಲಿಸಿ ಶಾರ್ಟ್‌ಕಟ್ ಹೊಂದಿಸಿ ಮತ್ತು ಉಳಿದ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "ನಿಮ್ಮ ಶಾರ್ಟ್‌ಕಟ್ ಒತ್ತಿ, ಮಾತನಾಡಿ, ಮತ್ತು Vito ನಿಮ್ಮ ಕರ್ಸರ್ ಇರುವಲ್ಲಿ ಪಠ್ಯ ಅಂಟಿಸುತ್ತದೆ.",
 "Close the welcome card?": "ಸ್ವಾಗತ ಕಾರ್ಡ್ ಮುಚ್ಚುವುದೇ?",
@@ -262,7 +261,6 @@
 "Display": "ಪ್ರದರ್ಶನ",
 "System": "ಸಿಸ್ಟಂ",
 "Other": "ಇತರೆ",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito \"Bring Your Own Key\" (BYOK) ಮಾದರಿಯಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತದೆ: ನೀವು ನಿಮ್ಮ ಸ್ವಂತ API ಕೀಗಳನ್ನು ಬಳಸುತ್ತೀರಿ (ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆಗೆ AssemblyAI ಅಥವಾ Soniox, AI ಶುದ್ಧೀಕರಣಕ್ಕೆ Anthropic). Vito ಸ್ವತಃ ಏನನ್ನೂ ವಿಧಿಸುವುದಿಲ್ಲ ಮತ್ತು ನಿಮ್ಮ ಆಡಿಯೊ ಅಥವಾ ಪಠ್ಯವನ್ನು ಕೀಗಳು ಸೇರಿದ ಪೂರೈಕೆದಾರರ ಹೊರತು ಬೇರೆಡೆಗೆ ಕಳುಹಿಸುವುದಿಲ್ಲ.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "ಆ ಕೀಗಳನ್ನು ಒದಗಿಸುವುದು, ನಿರ್ವಹಿಸುವುದು ಮತ್ತು ಸುರಕ್ಷಿತಗೊಳಿಸುವುದು — ಮತ್ತು ಪೂರೈಕೆದಾರರಲ್ಲಿ ಅವುಗಳ ಬಳಕೆಯಿಂದ ಆಗುವ ಎಲ್ಲಾ ವೆಚ್ಚಗಳು — ಸಂಪೂರ್ಣವಾಗಿ ನಿಮ್ಮ ಸ್ವಂತ ಜವಾಬ್ದಾರಿ.",
 "Privacy & data": "ಗೌಪ್ಯತೆ ಮತ್ತು ಡೇಟಾ",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito ಬಳಕೆದಾರ ಡೇಟಾವನ್ನು ಕಳುಹಿಸಲು ಯಾವುದೇ ರೀತಿಯಲ್ಲಿ ಸಂಗ್ರಹಿಸುವುದಿಲ್ಲ, ಮತ್ತು ಆಪ್‌ನಲ್ಲಿ ಯಾವುದೇ ರೀತಿಯ ಟ್ರ್ಯಾಕಿಂಗ್ ಅಥವಾ ಅನಾಲಿಟಿಕ್ಸ್ ನಿರ್ಮಿಸಲಾಗಿಲ್ಲ. ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳು, ಶಬ್ದಕೋಶ ಮತ್ತು ಇತಿಹಾಸ ನಿಮ್ಮ ಸ್ವಂತ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಸ್ಥಳೀಯವಾಗಿ ಉಳಿಯುತ್ತವೆ.",
@@ -330,7 +328,6 @@
 "Vietnamese": "ವಿಯೆಟ್ನಾಮೀಸ್",
 "About these costs": "ಈ ವೆಚ್ಚಗಳ ಬಗ್ಗೆ",
 "How do these costs work?": "ಈ ವೆಚ್ಚಗಳು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತವೆ?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito ಸ್ವತಃ ಏನನ್ನೂ ವಿಧಿಸುವುದಿಲ್ಲ. ಎಲ್ಲಾ ವೆಚ್ಚಗಳು ಬಾಹ್ಯ: ನಿಮ್ಮ ಸ್ವಂತ ಕೀಗಳು ಸೇರಿದ API ಪೂರೈಕೆದಾರರಿಗೆ ನೀವು ನೇರವಾಗಿ ಪಾವತಿಸುತ್ತೀರಿ — ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆಗೆ AssemblyAI ಮತ್ತು AI ಶುದ್ಧೀಕರಣಕ್ಕೆ Anthropic.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "ಈ ಮೊತ್ತ ಒಂದು ಅಂದಾಜು. Vito ನಿಮ್ಮ ಅಳೆದ ಬಳಕೆಯನ್ನು ಕೆಳಗಿನ ದರಗಳಿಂದ ಗುಣಿಸುತ್ತದೆ; ಇದು ಇನ್‌ವಾಯ್ಸ್ ಅಲ್ಲ. ನಿಜವಾದ ಶುಲ್ಕ ನಿಮ್ಮ ಪೂರೈಕೆದಾರರ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿ ಇರುತ್ತದೆ ಮತ್ತು ಬೆಲೆ ಬದಲಾವಣೆಗಳು, ಉಚಿತ ಕ್ರೆಡಿಟ್, ರಿಯಾಯಿತಿಗಳು ಅಥವಾ ತೆರಿಗೆಗಳ ಕಾರಣ ಭಿನ್ನವಾಗಿರಬಹುದು.",
 "Calculated with:": "ಇದರೊಂದಿಗೆ ಲೆಕ್ಕ ಹಾಕಲಾಗಿದೆ:",
 "per hour of recorded audio": "ಗಂಟೆಗೆ ರೆಕಾರ್ಡ್ ಮಾಡಿದ ಆಡಿಯೊ",
@@ -646,7 +643,12 @@
 "Token cost estimate": "ಟೋಕನ್ ವೆಚ್ಚದ ಅಂದಾಜು",
 "Input · $/Mtok": "ಇನ್‌ಪುಟ್ · $/Mtok",
 "Output · $/Mtok": "ಔಟ್‌ಪುಟ್ · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "ಈ ಅವಧಿಯಲ್ಲಿ ನೀವು ಎಷ್ಟು Vito Assist ಧ್ವನಿ ಆದೇಶಗಳನ್ನು ಚಲಾಯಿಸಿದ್ದೀರಿ — ನಿಮ್ಮ ಡಿಕ್ಟೇಶನ್ ಅನ್ನು ಅನುವಾದಿಸುವ, ಸಂಕ್ಷೇಪಿಸುವ, ಉತ್ತರಿಸುವ ಅಥವಾ ಮರುರೂಪಿಸುವ 'Vito, …' ಸೂಚನೆಗಳು."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "ಈ ಅವಧಿಯಲ್ಲಿ ನೀವು ಎಷ್ಟು Vito Assist ಧ್ವನಿ ಆದೇಶಗಳನ್ನು ಚಲಾಯಿಸಿದ್ದೀರಿ — ನಿಮ್ಮ ಡಿಕ್ಟೇಶನ್ ಅನ್ನು ಅನುವಾದಿಸುವ, ಸಂಕ್ಷೇಪಿಸುವ, ಉತ್ತರಿಸುವ ಅಥವಾ ಮರುರೂಪಿಸುವ 'Vito, …' ಸೂಚನೆಗಳು.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "macOS ನಲ್ಲಿ ಎಲ್ಲಿಯಾದರೂ ಈ ಸಂಯೋಜನಗಳನ್ನು ಒತ್ತಿರಿ. ಕನಿಷ್ಠ Control, Option ಅಥವಾ Command ಬಳಸಿ. ಕ್ಷೇತ್ರವನ್ನು ತೆರವುಗೊಳಿಸಲು Esc ಒತ್ತಿ.",
+"Choose a combination with at least Control, Option or Command.": "ಕನಿಷ್ಠ Control, Option ಅಥವಾ Command ಇರುವ ಸಂಯೋಜನವನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+"Grant Accessibility permission": "Accessibility ಅನುಮತಿ ನೀಡಿ",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "ಜಾಗತಿಕ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳಿಗಾಗಿ Vito ಗೆ Accessibility ಅನುಮತಿ ಬೇಕು. System Settings → Privacy & Security → Accessibility ನಲ್ಲಿ ನೀಡಿ.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "System Settings ನಲ್ಲಿ Vito ಗೆ ಟಿಕ್ ಮಾಡಿ — ಶಾರ್ಟ್‌ಕಟ್ ಕೆಲವು ಸೆಕೆಂಡುಗಳ ನಂತರ ಕೆಲಸ ಮಾಡಲು ಪ್ರಾರಂಭಿಸುತ್ತದೆ."
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

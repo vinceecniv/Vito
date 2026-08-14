@@ -81,7 +81,6 @@
 "Got it": "הבנתי",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito מקשיב לקול שלך ומדביק את הטקסט המוגמר ישירות במקום שבו הסמן נמצא. כך מתחילים:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "צור מפתח API של AssemblyAI (נדרש) והזן אותו בהגדרות → זיהוי דיבור.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "רוצה ניקוי AI אוטומטי? צור גם מפתח API של Anthropic והזן אותו.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "הגדר את קיצור ההתחלה/עצירה תחת הגדרות → הפעלה ועבור על שאר ההגדרות.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "לחץ על קיצור המקשים, דבר, ו-Vito ידביק את הטקסט במקום שבו הסמן נמצא.",
 "Close the welcome card?": "לסגור את כרטיס הפתיחה?",
@@ -262,7 +261,6 @@
 "Display": "תצוגה",
 "System": "מערכת",
 "Other": "אחר",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito פועל לפי מודל \"Bring Your Own Key\" (BYOK): אתה משתמש במפתחות API משלך (AssemblyAI או Soniox לזיהוי דיבור, Anthropic לניקוי ה-AI). Vito אינו גובה דבר בעצמו ואינו שולח את האודיו או הטקסט שלך לשום מקום מלבד הספקים שהמפתחות שייכים להם.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "אספקת המפתחות הללו, ניהולם ואבטחתם — וכל העלויות שהשימוש בהם גורר אצל הספקים — הם באחריותך המלאה.",
 "Privacy & data": "פרטיות ונתונים",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito אינו אוסף בשום צורה נתוני משתמש כדי להעבירם הלאה, ואין כל צורה של מעקב או ניתוח נתונים מובנית באפליקציה. ההגדרות, המילון וההיסטוריה שלך נשארים מקומית במחשב שלך.",
@@ -330,7 +328,6 @@
 "Vietnamese": "וייטנאמית",
 "About these costs": "אודות עלויות אלו",
 "How do these costs work?": "כיצד פועלות עלויות אלו?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito אינו גובה דבר בעצמו. כל העלויות חיצוניות: אתה משלם אותן ישירות לספקי ה-API שהמפתחות שלך שייכים להם — AssemblyAI לזיהוי דיבור ו-Anthropic לניקוי ה-AI.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "סכום זה הוא הערכה. Vito מכפיל את השימוש הנמדד שלך בתעריפים שלהלן; זו אינה חשבונית. החיוב האמיתי מופיע בלוח הבקרה של הספק שלך ועשוי להשתנות בשל שינויי מחיר, קרדיט חינם, הנחות או מיסים.",
 "Calculated with:": "החישוב מבוסס על:",
 "per hour of recorded audio": "לשעת אודיו מוקלט",
@@ -646,7 +643,12 @@
 "Token cost estimate": "אומדן עלות טוקנים",
 "Input · $/Mtok": "קלט · $/Mtok",
 "Output · $/Mtok": "פלט · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "כמה פקודות קוליות של Vito Assist הפעלת בתקופה זו — ההוראות 'Vito, …' שמתרגמות, מסכמות, עונות או מעצבות מחדש את ההכתבה שלך."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "כמה פקודות קוליות של Vito Assist הפעלת בתקופה זו — ההוראות 'Vito, …' שמתרגמות, מסכמות, עונות או מעצבות מחדש את ההכתבה שלך.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "לחץ על צירופים אלו בכל מקום ב-macOS. השתמש לפחות ב-Control‏, Option או Command. לחץ Esc בשדה כדי לנקות אותו.",
+"Choose a combination with at least Control, Option or Command.": "בחר צירוף עם לפחות Control‏, Option או Command.",
+"Grant Accessibility permission": "הענק הרשאת נגישות",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "ל-Vito דרושה הרשאת נגישות עבור קיצורי מקלדת גלובליים. הענק אותה בהגדרות המערכת → פרטיות ואבטחה → נגישות.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "סמן את Vito בהגדרות המערכת — הקיצור יתחיל לעבוד כעבור כמה שניות."
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

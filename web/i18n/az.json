@@ -81,7 +81,6 @@
 "Got it": "Başa düşdüm",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito səsinizi dinləyir və hazır mətni birbaşa kursorunuzun olduğu yerə yapışdırır. Necə başlamaq olar:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "AssemblyAI API açarı yaradın (lazımdır) və onu Parametrlər → Nitq tanıma bölməsində daxil edin.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Avtomatik AI təmizləmə istəyirsiniz? Onda Anthropic API açarı da yaradın və daxil edin.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Başlat/dayandır qısayolunuzu Parametrlər → Aktivləşdirmə bölməsində təyin edin və qalan parametrləri nəzərdən keçirin.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Qısayolunuzu basın, danışın və Vito mətni kursorunuzun olduğu yerə yapışdırır.",
 "Close the welcome card?": "Xoş gəldin kartını bağlamaq?",
@@ -262,7 +261,6 @@
 "Display": "Ekran",
 "System": "Sistem",
 "Other": "Digər",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito \"Bring Your Own Key\" (BYOK) modeli ilə işləyir: öz API açarlarınızı istifadə edirsiniz (nitq tanıma üçün AssemblyAI və ya Soniox, AI təmizləmə üçün Anthropic). Vito özü heç bir haqq almır və audionuzu və ya mətninizi açarların aid olduğu provayderlərdən başqa heç yerə göndərmir.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Həmin açarların təmin edilməsi, idarə olunması və qorunması — və onların provayderlərdə istifadəsindən yaranan bütün xərclər — tamamilə sizin öz məsuliyyətinizdədir.",
 "Privacy & data": "Məxfilik və məlumatlar",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito heç bir şəkildə göndərmək üçün istifadəçi məlumatı toplamır və tətbiqə heç bir izləmə və ya analitika daxil edilməyib. Parametrləriniz, lüğətiniz və tarixçəniz öz kompüterinizdə lokal olaraq qalır.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Vyetnam dili",
 "About these costs": "Bu xərclər haqqında",
 "How do these costs work?": "Bu xərclər necə işləyir?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito özü heç bir haqq almır. Bütün xərclər xaricidir: onları öz açarlarınızın aid olduğu API provayderlərinə birbaşa ödəyirsiniz — nitq tanıma üçün AssemblyAI və AI təmizləmə üçün Anthropic.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Bu məbləğ təxminidir. Vito ölçülən istifadənizi aşağıdakı tariflərə vurur; bu, hesab-faktura deyil. Əsl ödəniş provayderinizin idarə panelindədir və qiymət dəyişiklikləri, pulsuz kredit, endirimlər və ya vergilər səbəbindən fərqlənə bilər.",
 "Calculated with:": "Hesablamada istifadə olunur:",
 "per hour of recorded audio": "qeyd olunan audionun saatı başına",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Token xərci təxmini",
 "Input · $/Mtok": "Giriş · $/Mtok",
 "Output · $/Mtok": "Çıxış · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Bu dövrdə neçə Vito Assist səsli əmri işlətdiyiniz — diktənizi tərcümə edən, xülasə edən, cavablandıran və ya yenidən formalaşdıran 'Vito, …' təlimatları."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Bu dövrdə neçə Vito Assist səsli əmri işlətdiyiniz — diktənizi tərcümə edən, xülasə edən, cavablandıran və ya yenidən formalaşdıran 'Vito, …' təlimatları.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Bu kombinasiyaları macOS-da istinilən yerdə basın. Ən azı Control, Option və ya Command istifadə edin. Sahədə təmizləmək üçün Esc basın.",
+"Choose a combination with at least Control, Option or Command.": "Ən azı Control, Option və ya Command olan kombinasiya seçin.",
+"Grant Accessibility permission": "Əlçatanlıq icazəsi ver",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Qlobal qısayollar üçün Vito-ya Əlçatanlıq icazəsi lazımdır. Onu Sistem Parametrləri → Məxfilik və Təhlükəsizlik → Əlçatanlıq bölməsində verin.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Sistem Parametrlərində Vito-nu işarələyin — qısayol bir neçə saniyə sonra işləməyə başlayır."
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

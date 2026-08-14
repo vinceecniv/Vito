@@ -81,7 +81,6 @@
 "Got it": "了解",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vitoはあなたの声を聞き取り、完成したテキストをカーソルの位置に直接貼り付けます。使い始め方は次のとおりです。",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "AssemblyAI APIキーを作成し（必須）、設定 → 音声認識に入力してください。",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "自動AIクリーンアップをご希望ですか？その場合はAnthropic APIキーも作成して入力してください。",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "設定 → 起動で開始／停止ショートカットを設定し、その他の設定も確認してください。",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "ショートカットを押して話すと、Vitoがカーソルの位置にテキストを貼り付けます。",
 "Close the welcome card?": "ようこそカードを閉じますか？",
@@ -262,7 +261,6 @@
 "Display": "表示",
 "System": "システム",
 "Other": "その他",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vitoは「Bring Your Own Key」（BYOK）モデルで動作します：ご自身のAPIキーを使用します（音声認識にはAssemblyAIまたはSoniox、AIクリーンアップにはAnthropic）。Vito自体は一切課金せず、音声やテキストをキーの提供元以外のどこにも送信しません。",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "それらのキーの提供、管理、保護、そしてプロバイダーでの使用に伴うすべての費用は、完全にご自身の責任となります。",
 "Privacy & data": "プライバシーとデータ",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vitoは送信目的でユーザーデータを一切収集せず、アプリにはいかなる形式のトラッキングや分析も組み込まれていません。設定、辞書、履歴はご自身のコンピュータ内にローカルで保持されます。",
@@ -330,7 +328,6 @@
 "Vietnamese": "ベトナム語",
 "About these costs": "このコストについて",
 "How do these costs work?": "このコストの仕組みは？",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito自体は一切課金しません。すべての費用は外部で発生します：ご自身のキーの提供元であるAPIプロバイダー（音声認識のAssemblyAI、AIクリーンアップのAnthropic）に直接支払います。",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "この金額は概算です。Vitoは測定した使用量に下記の料金を掛けたもので、請求書ではありません。実際の請求はプロバイダーのダッシュボードに表示され、価格変更、無料クレジット、割引、税金などにより異なる場合があります。",
 "Calculated with:": "計算に使用する料金：",
 "per hour of recorded audio": "録音音声1時間あたり",
@@ -646,7 +643,12 @@
 "Token cost estimate": "トークンコストの見積もり",
 "Input · $/Mtok": "入力 · $/Mtok",
 "Output · $/Mtok": "出力 · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "この期間に実行した Vito Assist 音声コマンドの数 — 口述を翻訳、要約、回答、または作り直す「Vito、…」の指示です。"
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "この期間に実行した Vito Assist 音声コマンドの数 — 口述を翻訳、要約、回答、または作り直す「Vito、…」の指示です。",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "これらの組み合わせはmacOSのどこでも使えます。Control、Option、Command のいずれかを必ず含めてください。フィールドで Esc を押すと消去できます。",
+"Choose a combination with at least Control, Option or Command.": "Control、Option、Command のいずれかを含む組み合わせを選んでください。",
+"Grant Accessibility permission": "アクセシビリティを許可",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "グローバルショートカットにはアクセシビリティの許可が必要です。システム設定 → プライバシーとセキュリティ → アクセシビリティ で許可してください。",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "システム設定で Vito にチェックを入れてください。数秒後にショートカットが有効になります。"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",

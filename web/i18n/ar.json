@@ -81,7 +81,6 @@
 "Got it": "فهمت",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "يستمع Vito إلى صوتك ويلصق النص النهائي مباشرةً عند موضع المؤشر. إليك كيف تبدأ:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "أنشئ مفتاح AssemblyAI API (مطلوب) وأدخله في الإعدادات → التعرّف على الكلام.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "تريد تنقيحًا تلقائيًا بالذكاء الاصطناعي؟ أنشئ أيضًا مفتاح Anthropic API وأدخله.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "اضبط اختصار البدء/الإيقاف في الإعدادات → التفعيل وراجع بقية الإعدادات.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "اضغط اختصارك وتحدّث، وسيلصق Vito النص عند موضع المؤشر.",
 "Close the welcome card?": "إغلاق بطاقة الترحيب؟",
@@ -262,7 +261,6 @@
 "Display": "العرض",
 "System": "النظام",
 "Other": "أخرى",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "يعمل Vito وفق نموذج \"Bring Your Own Key\" (BYOK): تستخدم مفاتيح API الخاصة بك (AssemblyAI أو Soniox للتعرّف على الكلام، وAnthropic للتنقيح بالذكاء الاصطناعي). لا يفرض Vito أي رسوم بنفسه ولا يرسل صوتك أو نصك إلى أي جهة سوى المزودين الذين تعود إليهم المفاتيح.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "توفير هذه المفاتيح وإدارتها وتأمينها — وكل التكاليف الناتجة عن استخدامها لدى المزودين — هي مسؤوليتك الكاملة وحدك.",
 "Privacy & data": "الخصوصية والبيانات",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "لا يجمع Vito بيانات المستخدمين بأي شكل لإرسالها، ولا يوجد أي نوع من التتبع أو التحليلات مدمج في التطبيق. تبقى إعداداتك وقاموسك وسجلك محليًا على حاسوبك.",
@@ -330,7 +328,6 @@
 "Vietnamese": "الفيتنامية",
 "About these costs": "حول هذه التكاليف",
 "How do these costs work?": "كيف تُحسب هذه التكاليف؟",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "لا يفرض Vito أي رسوم بنفسه. كل التكاليف خارجية: تدفعها مباشرةً لمزودي API الذين تعود إليهم مفاتيحك — AssemblyAI للتعرّف على الكلام وAnthropic للتنقيح بالذكاء الاصطناعي.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "هذا المبلغ تقديري. يضرب Vito استخدامك المقاس بالأسعار أدناه؛ وهو ليس فاتورة. الفاتورة الفعلية موجودة في لوحة تحكم المزود وقد تختلف بسبب تغيّرات الأسعار أو الرصيد المجاني أو الخصومات أو الضرائب.",
 "Calculated with:": "يُحسب باستخدام:",
 "per hour of recorded audio": "لكل ساعة صوت مسجّل",
@@ -646,7 +643,12 @@
 "Token cost estimate": "تقدير تكلفة الرموز",
 "Input · $/Mtok": "الإدخال · $/Mtok",
 "Output · $/Mtok": "الإخراج · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "عدد أوامر Vito Assist الصوتية التي نفّذتها في هذه الفترة — تعليمات 'Vito، …' التي تترجم أو تلخّص أو تجيب أو تعيد تشكيل إملائك."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "عدد أوامر Vito Assist الصوتية التي نفّذتها في هذه الفترة — تعليمات 'Vito، …' التي تترجم أو تلخّص أو تجيب أو تعيد تشكيل إملائك.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "اضغط هذه الاختصارات في أي مكان في macOS. استخدم Control أو Option أو Command على الأقل. اضغط Esc في الحقل لمسحه.",
+"Choose a combination with at least Control, Option or Command.": "اختر اختصارًا يتضمن Control أو Option أو Command على الأقل.",
+"Grant Accessibility permission": "منح إذن تسهيلات الاستخدام",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "يحتاج Vito إلى إذن تسهيلات الاستخدام للاختصارات العامة. امنحه من إعدادات النظام → الخصوصية والأمان → تسهيلات الاستخدام.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "حدد Vito في إعدادات النظام — سيبدأ الاختصار بالعمل بعد ثوانٍ قليلة."
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

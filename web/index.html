@@ -1167,7 +1167,7 @@
         <p class="welcome-intro">Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:</p>
         <ol class="welcome-steps">
           <li>Create a speech-recognition API key (required) — you only need one, from either AssemblyAI or Soniox — and enter it in Settings → Speech recognition.</li>
-          <li>Want automatic AI cleanup? Then also create an Anthropic API key and enter it.</li>
+          <li>Want automatic AI cleanup? Add a key for Anthropic (Claude) or any OpenAI-compatible endpoint — Groq has a free tier, or point Vito at a local model.</li>
           <li>Set your start/stop hotkey under Settings → Activation and review the other settings.</li>
           <li>Press your hotkey, speak, and Vito pastes the text where your cursor is.</li>
         </ol>
@@ -1345,6 +1345,7 @@
             <button type="button" class="tag" data-sound="done"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Done</button>
             <button type="button" class="tag" data-sound="cancel"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Cancel</button>
             <button type="button" class="tag" data-sound="command"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Vito Assist</button>
+            <button type="button" class="tag" data-sound="warn"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Cleanup failed</button>
           </div>
           <label class="fld" data-help="svol">Feedback sound volume <span class="val" id="s-svolval">100%</span></label>
           <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-svol" min="0" max="2" step="0.05"><span class="slider-mark" title="Standaard 100%" aria-hidden="true"></span></div>
@@ -1608,7 +1609,7 @@
           </div>
           <div class="about-rows" id="about-rows"></div>
           <div class="subhead">Bring Your Own Key (BYOK) <span class="about-gloss">(Bring your own key)</span></div>
-          <p class="act-note" style="margin:0;">Vito uses a "Bring Your Own Key" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.</p>
+          <p class="act-note" style="margin:0;">Vito uses a "Bring Your Own Key" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic or an OpenAI-compatible endpoint for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.</p>
           <p class="act-note" style="margin:8px 0 0;">Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.</p>
           <div class="subhead">Privacy &amp; data</div>
           <p class="act-note" style="margin:0;">Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.</p>
@@ -1928,6 +1929,7 @@ const TR = { nl: {
   "Got it":"Begrepen",
   "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:":"Vito luistert naar je stem en plakt de uitgewerkte tekst direct waar je cursor staat. Zo zet je het in gebruik:",
   "Create a speech-recognition API key (required) — you only need one, from either AssemblyAI or Soniox — and enter it in Settings → Speech recognition.":"Maak een spraakherkenning-API-key aan (nodig) — je hebt er maar één nodig, van AssemblyAI óf Soniox — en vul die in bij Instellingen → Spraakherkenning.",
+  "Want automatic AI cleanup? Add a key for Anthropic (Claude) or any OpenAI-compatible endpoint — Groq has a free tier, or point Vito at a local model.":"Automatische AI-opschoning erbij? Voeg een key toe voor Anthropic (Claude) of een OpenAI-compatibel endpoint — Groq heeft een gratis tier, of wijs Vito naar een lokaal model.",
   "Want automatic AI cleanup? Then also create an Anthropic API key and enter it.":"Wil je automatische AI-opschoning? Maak dan ook een Anthropic API-key aan en vul die in.",
   "Set your start/stop hotkey under Settings → Activation and review the other settings.":"Stel je start/stop-sneltoets in onder Instellingen → Activering en loop de overige instellingen na.",
   "Press your hotkey, speak, and Vito pastes the text where your cursor is.":"Druk je sneltoets, spreek, en Vito plakt de tekst waar je cursor staat.",
@@ -2190,7 +2192,7 @@ const TR = { nl: {
   "Display":"Weergave",
   "System":"Systeem",
   "Other":"Overig",
-  "Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.":"Vito werkt volgens het \"Bring Your Own Key\" (BYOK)-model: je gebruikt je eigen API-keys (AssemblyAI of Soniox voor spraakherkenning, Anthropic voor de AI-opschoning). Vito rekent zelf niets af en stuurt je audio of tekst nergens anders heen dan naar de providers waarvan de keys zijn.",
+  "Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic or an OpenAI-compatible endpoint for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.":"Vito werkt volgens het \"Bring Your Own Key\" (BYOK)-model: je gebruikt je eigen API-keys (AssemblyAI of Soniox voor spraakherkenning, Anthropic of een OpenAI-compatibel endpoint voor de AI-opschoning). Vito rekent zelf niets af en stuurt je audio of tekst nergens anders heen dan naar de providers waarvan de keys zijn.",
   "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.":"Het aanleveren, beheren en beveiligen van die keys — en alle kosten die het gebruik ervan bij de providers met zich meebrengt — zijn volledig je eigen verantwoordelijkheid.",
   "Privacy & data":"Privacy & gegevens",
   "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.":"Vito verzamelt op geen enkele manier gebruikersgegevens om die door te sturen, en er is geen enkele vorm van tracking of analytics in de app ingebouwd. Je instellingen, woordenboek en geschiedenis blijven lokaal op je eigen computer.",
@@ -2260,7 +2262,7 @@ const TR = { nl: {
   "Vietnamese":"Vietnamees",
   "About these costs":"Over deze kosten",
   "How do these costs work?":"Hoe zit het met deze kosten?",
-  "Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.":"Vito rekent zelf niets af. Alle kosten zijn extern: je betaalt ze rechtstreeks aan de API-providers waar je eigen keys van zijn — AssemblyAI voor de spraakherkenning en Anthropic voor de AI-opschoning.",
+  "Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI or Soniox for speech recognition, and Anthropic or an OpenAI-compatible endpoint for AI cleanup.":"Vito rekent zelf niets af. Alle kosten zijn extern: je betaalt ze rechtstreeks aan de API-providers waar je eigen keys van zijn — AssemblyAI of Soniox voor de spraakherkenning, en Anthropic of een OpenAI-compatibel endpoint voor de AI-opschoning.",
   "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.":"Dit bedrag is een schatting. Vito vermenigvuldigt je gemeten gebruik met onderstaande tarieven; het is geen factuur. De echte afrekening staat in je dashboard bij de provider en kan afwijken door prijswijzigingen, gratis tegoed, kortingen of belastingen.",
   "Calculated with:":"Gerekend wordt met:",
   "per hour of recorded audio":"per uur opgenomen audio",
@@ -2283,6 +2285,7 @@ const TR = { nl: {
   "start / stop":"start / stop",
   "cancel":"annuleren",
   "Press these combinations anywhere in Windows. Use at least Ctrl, Alt or {win}. Press Esc in a field to clear it.":"Druk deze combinaties waar dan ook in Windows. Kies een combinatie met minstens Ctrl, Alt of {win}. Druk Esc in een veld om het te wissen.",
+  "Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.":"Druk deze combinaties waar dan ook in macOS. Kies een combinatie met minstens Control, Option of Command. Druk Esc in een veld om het te wissen.",
   "On Linux (Wayland especially) apps can't claim global hotkeys themselves. Instead, bind these commands to keys in your desktop or compositor:":"Op Linux (met name Wayland) zijn er geen globale sneltoetsen die een app zelf kan claimen. Koppel in plaats daarvan deze commando's aan toetsen in je desktop of compositor:",
   "System Settings → Shortcuts → Custom Shortcuts → a new command per command, paste it and assign a key.":"Systeeminstellingen → Sneltoetsen → Aangepaste sneltoetsen → nieuwe opdracht per commando, plak het en wijs een toets toe.",
   "Settings → Keyboard → Custom Shortcuts → +, enter a command and press your key combination (repeat for cancel).":"Instellingen → Toetsenbord → Aangepaste sneltoetsen → +, vul een commando in en druk je toetscombinatie (herhaal voor cancel).",
@@ -2291,7 +2294,11 @@ const TR = { nl: {
   "Add keybinds to your shell or compositor config that run these commands.":"Voeg in je shell- of compositor-config keybinds toe die deze commando's uitvoeren.",
   "This hotkey is already in use by another app. Pick another one.":"Deze sneltoets is al in gebruik door een andere app. Kies een andere.",
   "Invalid hotkey.":"Ongeldige sneltoets.",
+  "Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.":"Vito heeft het recht Toegankelijkheid nodig voor globale sneltoetsen. Geef dat bij Systeeminstellingen → Privacy en beveiliging → Toegankelijkheid.",
+  "Grant Accessibility permission":"Geef het recht Toegankelijkheid",
+  "Tick Vito in System Settings — the hotkey starts working a few seconds later.":"Vink Vito aan in Systeeminstellingen — de sneltoets werkt een paar seconden later vanzelf.",
   "Choose a combination with at least Ctrl, Alt or {win}.":"Kies een combinatie met minstens Ctrl, Alt of {win}.",
+  "Choose a combination with at least Control, Option or Command.":"Kies een combinatie met minstens Control, Option of Command.",
   "Press this combination anywhere in Windows to start or stop a dictation. Use at least Ctrl, Alt or {win}.":"Druk deze combinatie waar dan ook in Windows om een dictaat te starten of te stoppen. Kies een combinatie met minstens Ctrl, Alt of {win}.",
   "On Linux (Wayland especially) apps can't claim global hotkeys themselves. Instead, bind this command to a key in your desktop or compositor:":"Op Linux (met name Wayland) zijn er geen globale sneltoetsen die een app zelf kan claimen. Koppel in plaats daarvan dit commando aan een toets in je desktop of compositor:",
   "System Settings → Shortcuts → Custom Shortcuts → new command, paste the command and assign a key.":"Systeeminstellingen → Sneltoetsen → Aangepaste sneltoetsen → nieuwe opdracht, plak het commando en wijs een toets toe.",
@@ -4900,7 +4907,7 @@ function showCostInfo(){
     ? `<p class="ki-note">${t("Converted to euros at")} <b>1 USD = ${Number(c.fx_rate).toFixed(4).replace(".", numLoc()==="nl-NL" ? "," : ".")} EUR</b>.</p>` : "";
   modal(t("About these costs"),
     `<div class="keyinfo">
-      <p class="ki-note">${t("Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.")}</p>
+      <p class="ki-note">${t("Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI or Soniox for speech recognition, and Anthropic or an OpenAI-compatible endpoint for AI cleanup.")}</p>
       <p class="ki-note">${t("This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.")}</p>
       <div class="ki-warn">
         <b>${t("Calculated with:")}</b>
@@ -5199,6 +5206,10 @@ async function loadSettings() {
 let hkInfo = null;
 const WINKEY = '<svg class="winkey" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Windows"><rect x="3" y="3" width="8.4" height="8.4" rx="1"/><rect x="12.6" y="3" width="8.4" height="8.4" rx="1"/><rect x="3" y="12.6" width="8.4" height="8.4" rx="1"/><rect x="12.6" y="12.6" width="8.4" height="8.4" rx="1"/></svg>';
 const withWin = (s) => s.replace("{win}", WINKEY);
+// Set from the hotkey endpoint's os field. macOS supports global hotkeys like
+// Windows does, but names its modifiers differently and needs a permission
+// Windows doesn't, so the activation copy differs on those two points only.
+let hkIsMac = false;
 async function loadHotkey(){
   try { hkInfo = await api("/api/hotkey"); } catch { return; }
   renderActivation(hkInfo);
@@ -5245,10 +5256,28 @@ function renderStatusTags(){
 }
 function hkErrText(code){
   if (code === "in_use") return t("This hotkey is already in use by another app. Pick another one.");
+  if (code === "denied") return t("Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.");
   if (code === "invalid") return t("Invalid hotkey.");
   return "";
 }
-function setHkDisplay(kind, spec){ const el = $("hk-disp-"+kind); if (el) el.textContent = spec || "—"; }
+// Hotkey specs are stored in one cross-platform vocabulary (ctrl/alt/shift/win)
+// so the same config file means the same combination everywhere. Only the way
+// it is shown differs: on a Mac keyboard those keys are labelled Control,
+// Option and Command, and "ctrl+alt+space" names two keys that are not on it.
+const MAC_KEY_NAMES = {
+  ctrl:"Control", control:"Control",
+  alt:"Option", opt:"Option", option:"Option",
+  shift:"Shift",
+  win:"Command", super:"Command", meta:"Command", cmd:"Command", command:"Command",
+};
+function hkDisplaySpec(spec){
+  if (!spec || !hkIsMac) return spec || "";
+  return spec.split("+")
+    .map(p => p.trim())
+    .map(p => MAC_KEY_NAMES[p] || (p.charAt(0).toUpperCase() + p.slice(1)))
+    .join(" + ");
+}
+function setHkDisplay(kind, spec){ const el = $("hk-disp-"+kind); if (el) el.textContent = hkDisplaySpec(spec) || "—"; }
 function renderHkStatus(kind, b){
   const el = $("hk-status-"+kind); if (!el) return;
   if (b.registered) { el.className = "hk-badge ok"; el.textContent = "✓ " + t("Active"); }
@@ -5265,11 +5294,20 @@ function hkFieldHTML(kind, label){
 }
 function renderActivation(info){
   const body = $("activation-body"); if (!body) return;
-  if (info.supported) { // Windows: configurable global hotkeys
+  hkIsMac = info.os === "darwin";
+  if (info.supported) { // Windows and macOS: configurable global hotkeys
     body.innerHTML =
       hkFieldHTML("toggle", t("Hotkey — start / stop")) +
       hkFieldHTML("cancel", t("Hotkey — cancel")) +
-      `<p class="act-note">${withWin(t("Press these combinations anywhere in Windows. Use at least Ctrl, Alt or {win}. Press Esc in a field to clear it."))}</p>` +
+      `<p class="act-note">${hkIsMac
+        ? t("Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.")
+        : withWin(t("Press these combinations anywhere in Windows. Use at least Ctrl, Alt or {win}. Press Esc in a field to clear it."))}</p>` +
+      // macOS only, and only while the right is missing: one click opens the
+      // system prompt, which is the whole reason this button exists — the
+      // permission cannot be granted from inside Vito.
+      (hkIsMac && info.accessibility === false
+        ? `<p class="act-note" style="margin-top:12px;"><button class="btn ghost small" id="ax-grant">${t("Grant Accessibility permission")}</button><br>${t("Tick Vito in System Settings — the hotkey starts working a few seconds later.")}</p>`
+        : "") +
       `<div class="subhead" style="margin-top:20px;">${t("Push to talk")}</div>` +
       `<label class="tgl"><input type="checkbox" id="s-ptt"><span class="tr"></span> ${t("Hold the hotkey to talk, release to stop")}</label>` +
       `<p class="act-note" style="margin:6px 0 0;">${t("A quick tap still toggles start/stop as before; holding the hotkey longer records only while you keep it down, and stops the moment you let go.")}</p>`;
@@ -5280,6 +5318,13 @@ function renderActivation(info){
     });
     document.querySelectorAll("#activation-body .hk-clear").forEach(b =>
       b.onclick = (e) => { e.stopPropagation(); setHotkey(b.dataset.kind, ""); });
+    const ax = $("ax-grant");
+    if (ax) ax.onclick = async () => {
+      // The prompt is the point; a refusal is reported by the status badge on
+      // the next poll, so there is nothing useful to do with an error here.
+      try { await api("/api/accessibility", { method: "POST" }); } catch { /* ignore */ }
+      setTimeout(loadHotkey, 800);
+    };
     const ptt = $("s-ptt");
     if (ptt) {
       ptt.checked = !(cfg && cfg.push_to_talk === false); // default on
@@ -5320,7 +5365,9 @@ function wireHotkeyCapture(kind){
     if (e.altKey) mods.push("alt");
     if (e.shiftKey) mods.push("shift");
     if (e.metaKey) mods.push("win");
-    if (!mods.length) { const s=$("hk-status-"+kind); if(s){ s.className="hk-badge warn"; s.innerHTML="⚠ "+withWin(t("Choose a combination with at least Ctrl, Alt or {win}.")); } return; }
+    if (!mods.length) { const s=$("hk-status-"+kind); if(s){ s.className="hk-badge warn"; s.innerHTML="⚠ "+(hkIsMac
+      ? t("Choose a combination with at least Control, Option or Command.")
+      : withWin(t("Choose a combination with at least Ctrl, Alt or {win}."))); } return; }
     setHotkey(kind, [...mods, key].join("+"));
     cap.blur();
   });
