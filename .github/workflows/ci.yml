@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-test:
+  checks:
     # The platform files are cgo, so each one only ever compiles on its own OS —
     # a Linux-only job cannot tell you whether the macOS build still works.
     runs-on: ${{ matrix.os }}
@@ -48,3 +48,14 @@ jobs:
 
       - name: test
         run: go test ./...
+
+  # The branch ruleset requires a status check named exactly "build-test". A
+  # matrix job cannot provide it: GitHub reports one check per entry, named
+  # "checks (ubuntu-latest)" and "checks (macos-latest)", so the required name
+  # would never appear and no pull request could ever merge. This gate carries
+  # that name and passes only when every platform did.
+  build-test:
+    needs: checks
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "all platform checks passed"
