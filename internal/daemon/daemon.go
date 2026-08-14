@@ -1150,10 +1150,22 @@ func (d *Daemon) finish(s *session) {
 
 	d.emit(Event{Type: "final", Raw: raw, Cleaned: cleaned, Timings: timings, RecordingID: recordingID, CleanupFailed: cleanupFailed, CleanupCredit: cleanupCredit})
 	d.emit(Event{Type: "state", State: StateIdle})
-	// The "done" chime already played when recording stopped (see Stop).
-	if mode == inject.ModeClipboardOnly {
+	// The "done" chime already played when recording stopped (see Stop). It
+	// promised a finished dictation, so when the cleanup then failed and the raw
+	// transcript went in instead, say so out loud — otherwise the only clue is a
+	// toast in a window you are probably not looking at, and unpolished text
+	// reads as Vito having done its job badly rather than not at all.
+	if cleanupFailed {
+		d.playSound(cfg, assets.SoundWarn)
+	}
+	switch {
+	case cleanupFailed && mode == inject.ModeClipboardOnly:
+		d.noteErr("vito: opschoning mislukt", "ruwe tekst in klembord — "+preview(final))
+	case cleanupFailed:
+		d.noteErr("vito: opschoning mislukt", "ruwe tekst geplakt — "+preview(final))
+	case mode == inject.ModeClipboardOnly:
 		d.note("vito: in klembord", preview(final))
-	} else {
+	default:
 		d.note("vito: klaar", preview(final))
 	}
 	d.log.Info("dictation done",
@@ -1225,6 +1237,8 @@ func (d *Daemon) PlaySound(name string, volume float64) error {
 		wav = assets.SoundAchievement
 	case "command":
 		wav = assets.SoundCommand
+	case "warn":
+		wav = assets.SoundWarn
 	default:
 		return fmt.Errorf("unknown sound %q", name)
 	}
