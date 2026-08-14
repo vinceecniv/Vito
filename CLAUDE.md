@@ -93,6 +93,107 @@ handler that relaunches the daemon for the PWA — use `internal/selfexe`, which
 prefers `$APPIMAGE` over `os.Executable()`; the latter points into the throwaway
 `/tmp/.mount_*` squashfs and would break after a reboot.
 
+## Releases (macOS)
+
+```sh
+bash packaging/build-macos.sh 2026.8    # -> dist/Vito-2026.8.dmg (+ .sha256)
+```
+
+Must run on macOS; only the Xcode Command Line Tools are needed. The script
+builds both architectures and merges them with `lipo`, so one download is
+native on Apple Silicon and Intel.
+
+Two `Info.plist` keys carry the behaviour the binary cannot have on its own:
+`NSMicrophoneUsageDescription` (without it macOS denies the microphone outright
+instead of asking, and dictation records silence) and `LSUIElement` (keeps Vito
+out of the Dock — it lives in the menu bar).
+
+The DMG opens as a styled installer window — app on the left, Applications on
+the right, arrow between them. That layout is not a property of the image but
+of the volume's `.DS_Store`, so the build mounts a read-write image, has Finder
+arrange it (`packaging/dmg-layout.applescript`), and only then compresses it.
+The artwork comes from `go run ./packaging/mkdmgbg`, alongside `mkicon`.
+
+Two ordering traps live in that step, both already worked around:
+`hdiutil create -srcfolder` silently drops a staged `.VolumeIcon.icns`, and
+applying the window settings makes Finder rewrite the volume's Finder info —
+which deletes that file and clears its custom-icon flag. So the volume icon is
+written *after* the Finder step, directly onto the mounted image. Moving it
+earlier looks tidier and silently loses the icon.
+
+The build is signed with a **self-signed certificate**, created once per machine
+by `packaging/make-signing-cert.sh` and picked up automatically; without it the
+build falls back to ad-hoc and says so. The certificate is not a Developer ID
+and changes nothing about Gatekeeper. What it changes is what the permissions
+macOS stores are tied to:
+
+    ad-hoc     designated => cdhash H"…"
+    this cert  designated => identifier "io.github.vinceecniv.vito"
+                             and certificate root = H"…"
+
+The ad-hoc form names one exact binary, so every rebuild silently invalidated
+the user's Accessibility grant. The certificate form survives it — verified by
+granting the permission, rebuilding under a new version number, reinstalling,
+and finding the hotkey still registered without re-granting. Sign every release
+with the same certificate or that guarantee is gone.
+
+If a build asks for the keychain password — twice, once per architecture slice
+of the universal binary — the key's **partition list** is the reason.
+`security import -T /usr/bin/codesign` only sets the access list, and macOS
+gates on both. `make-signing-cert.sh` fixes it, asking for the login keychain
+password because `security set-key-partition-list` cannot be run without it.
+Re-run the script any time; it repeats that step even when the certificate
+already exists.
+
+Gatekeeper is untouched by this: `spctl -a` still rejects the app, the first
+launch still needs Open Anyway, and Finder still draws a ⌛ after "Vito".
+
+Do not go hunting for that badge in the packaging; it was measured. A notarised
+app placed in the same disk image gets no badge and Vito does; the badge follows
+the app when copied out to a local disk, so it is not about the image; and it is
+unaffected by `com.apple.quarantine`, present or removed — so approving the app
+(right-click → Open) does not clear it either. Only notarisation does. Note it
+only shows in Finder's *icon* view, which makes column view a misleading place
+to check. A Developer ID certificate plus
+`notarytool` fixes both at once; nothing in the code can.
+
+Two permissions gate the platform code, and they fail differently:
+
+- **Microphone** — asked for automatically the first time Vito records.
+- **Accessibility, when the toggle is on but Vito still says denied** — the
+  stored approval is a *code signing requirement*, and for an ad-hoc signature
+  that requirement is the exact cdhash, which changes with every build. The
+  switch stays on while pointing at a binary that no longer exists, and running
+  the same app from a second path (a mounted DMG, the build tree) adds its own
+  entry. Restarting does not help; clearing it does:
+
+  ```sh
+  tccutil reset Accessibility io.github.vinceecniv.vito
+  ```
+
+  Then let Vito ask again (Settings → Activation → Grant Accessibility
+  permission) so the approval attaches to the copy actually running.
+
+- **Accessibility** — never asked for automatically. It gates both the
+  CGEventTap in `internal/hotkey` (no hotkey without it) and CGEventPost in
+  `internal/inject` (paste and type modes; clipboard-only still works). The
+  hotkey status reports `ErrCode: "denied"` so the settings page can explain
+  it. `inject.RequestAccessibility()` triggers the system prompt, but macOS
+  shows it once per app per login — spend it on a user action, not a startup
+  check.
+
+`cmd/vito/launch_darwin.go` is why double-clicking the app works at all: with no
+arguments Vito prints its usage, which is useless for a bundle, so inside
+`.app/Contents/MacOS/` the default command becomes `serve`.
+
+The two remaining backends are deliberately unalike. `internal/audio/level_darwin`
+is cgo against the CoreAudio HAL, because there is no shell tool that reads a
+specific capture device's volume. `internal/media/media_darwin` shells out to
+`osascript` instead, mirroring how the Linux backend uses pactl/playerctl —
+macOS has no public per-app volume, so duck lowers the one system slider, and
+pause drives only the scriptable players. Never talk to a player without
+checking `is running` first: telling a stopped app to pause *launches* it.
+
 ## Language
 
 The user writes in Dutch and the UI's source strings are Dutch. Answer in Dutch.

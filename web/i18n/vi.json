@@ -81,7 +81,6 @@
 "Got it": "Đã hiểu",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito lắng nghe giọng nói của bạn và dán văn bản hoàn chỉnh ngay tại vị trí con trỏ. Cách bắt đầu:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Tạo một khóa API AssemblyAI (bắt buộc) và nhập vào Cài đặt → Nhận dạng giọng nói.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Muốn tự động dọn dẹp bằng AI? Hãy tạo thêm khóa API Anthropic và nhập vào.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Đặt phím tắt bắt đầu/dừng ở Cài đặt → Kích hoạt và xem lại các cài đặt khác.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Nhấn phím tắt, nói, và Vito sẽ dán văn bản tại vị trí con trỏ.",
 "Close the welcome card?": "Đóng thẻ chào mừng?",
@@ -262,7 +261,6 @@
 "Display": "Hiển thị",
 "System": "Hệ thống",
 "Other": "Khác",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito hoạt động theo mô hình \"Bring Your Own Key\" (BYOK): bạn dùng khóa API của riêng mình (AssemblyAI hoặc Soniox để nhận dạng giọng nói, Anthropic để dọn dẹp bằng AI). Vito không tính phí gì và không gửi audio hay văn bản của bạn đến bất kỳ đâu ngoài các nhà cung cấp mà khóa thuộc về.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Việc cung cấp, quản lý và bảo mật những khóa đó — cùng mọi chi phí phát sinh khi sử dụng chúng tại các nhà cung cấp — hoàn toàn là trách nhiệm của riêng bạn.",
 "Privacy & data": "Riêng tư & dữ liệu",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito không thu thập dữ liệu người dùng theo bất kỳ cách nào để gửi đi, và không có bất kỳ hình thức theo dõi hay phân tích nào được tích hợp trong ứng dụng. Cài đặt, từ điển và lịch sử của bạn vẫn nằm cục bộ trên máy tính của bạn.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Tiếng Việt",
 "About these costs": "Về các chi phí này",
 "How do these costs work?": "Các chi phí này hoạt động thế nào?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito không tính phí gì. Mọi chi phí đều là bên ngoài: bạn trả trực tiếp cho các nhà cung cấp API mà khóa của bạn thuộc về — AssemblyAI cho nhận dạng giọng nói và Anthropic cho dọn dẹp bằng AI.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Số tiền này là ước tính. Vito nhân mức sử dụng đo được với các mức giá bên dưới; đây không phải hóa đơn. Khoản tính phí thực nằm trong bảng điều khiển của nhà cung cấp và có thể khác do thay đổi giá, tín dụng miễn phí, giảm giá hoặc thuế.",
 "Calculated with:": "Được tính với:",
 "per hour of recorded audio": "mỗi giờ audio đã ghi",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Ước tính chi phí token",
 "Input · $/Mtok": "Đầu vào · $/Mtok",
 "Output · $/Mtok": "Đầu ra · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Số lệnh giọng nói Vito Assist bạn đã chạy trong khoảng thời gian này — các chỉ dẫn 'Vito, …' dùng để dịch, tóm tắt, trả lời hoặc định hình lại bản đọc của bạn."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Số lệnh giọng nói Vito Assist bạn đã chạy trong khoảng thời gian này — các chỉ dẫn 'Vito, …' dùng để dịch, tóm tắt, trả lời hoặc định hình lại bản đọc của bạn.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Nhấn các tổ hợp này ở bất kỳ đâu trong macOS. Dùng ít nhất Control, Option hoặc Command. Nhấn Esc trong ô để xóa.",
+"Choose a combination with at least Control, Option or Command.": "Chọn tổ hợp có ít nhất Control, Option hoặc Command.",
+"Grant Accessibility permission": "Cấp quyền Trợ năng",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Vito cần quyền Trợ năng cho phím tắt toàn cục. Hãy cấp trong Cài đặt Hệ thống → Quyền riêng tư & Bảo mật → Trợ năng.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Đánh dấu Vito trong Cài đặt Hệ thống — phím tắt bắt đầu hoạt động vài giây sau đó."
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",

@@ -81,7 +81,6 @@
 "Got it": "Mengerti",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito mendengarkan suara Anda dan menempel teks jadi tepat di posisi kursor. Begini cara memulainya:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Buat kunci API AssemblyAI (wajib) dan masukkan di Pengaturan → Pengenalan suara.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Ingin pembersihan AI otomatis? Buat juga kunci API Anthropic dan masukkan.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Atur pintasan mulai/berhenti Anda di Pengaturan → Aktivasi dan periksa pengaturan lainnya.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Tekan pintasan, bicara, dan Vito menempel teks di posisi kursor Anda.",
 "Close the welcome card?": "Tutup kartu selamat datang?",
@@ -262,7 +261,6 @@
 "Display": "Tampilan",
 "System": "Sistem",
 "Other": "Lainnya",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito bekerja dengan model \"Bring Your Own Key\" (BYOK): Anda memakai kunci API sendiri (AssemblyAI atau Soniox untuk pengenalan suara, Anthropic untuk pembersihan AI). Vito tidak menagih apa pun dan tidak mengirim audio atau teks Anda ke mana pun selain ke penyedia pemilik kunci tersebut.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Menyediakan, mengelola, dan mengamankan kunci-kunci itu — serta semua biaya yang timbul dari pemakaiannya di penyedia — sepenuhnya menjadi tanggung jawab Anda.",
 "Privacy & data": "Privasi & data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito sama sekali tidak mengumpulkan data pengguna untuk diteruskan, dan tidak ada bentuk pelacakan atau analitik apa pun di dalam aplikasi. Pengaturan, kamus, dan riwayat Anda tetap lokal di komputer Anda sendiri.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Vietnam",
 "About these costs": "Tentang biaya ini",
 "How do these costs work?": "Bagaimana biaya ini bekerja?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito tidak pernah menagih Anda. Semua biaya bersifat eksternal: Anda membayarnya langsung ke penyedia API pemilik kunci Anda sendiri — AssemblyAI untuk pengenalan suara dan Anthropic untuk pembersihan AI.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Jumlah ini adalah perkiraan. Vito mengalikan pemakaian terukur Anda dengan tarif di bawah; ini bukan tagihan. Tagihan sebenarnya ada di dasbor penyedia Anda dan bisa berbeda karena perubahan harga, saldo gratis, diskon, atau pajak.",
 "Calculated with:": "Dihitung dengan:",
 "per hour of recorded audio": "per jam audio yang direkam",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Perkiraan biaya token",
 "Input · $/Mtok": "Masukan · $/Mtok",
 "Output · $/Mtok": "Keluaran · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Berapa banyak perintah suara Vito Assist yang Anda jalankan dalam periode ini — instruksi 'Vito, …' yang menerjemahkan, meringkas, menjawab, atau mengubah bentuk dikte Anda."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Berapa banyak perintah suara Vito Assist yang Anda jalankan dalam periode ini — instruksi 'Vito, …' yang menerjemahkan, meringkas, menjawab, atau mengubah bentuk dikte Anda.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Tekan kombinasi ini di mana saja di macOS. Gunakan setidaknya Control, Option, atau Command. Tekan Esc di kolom untuk menghapusnya.",
+"Choose a combination with at least Control, Option or Command.": "Pilih kombinasi dengan setidaknya Control, Option, atau Command.",
+"Grant Accessibility permission": "Berikan izin Aksesibilitas",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Vito memerlukan izin Aksesibilitas untuk pintasan global. Berikan di Pengaturan Sistem → Privasi & Keamanan → Aksesibilitas.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Centang Vito di Pengaturan Sistem — pintasan mulai berfungsi beberapa detik kemudian."
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",

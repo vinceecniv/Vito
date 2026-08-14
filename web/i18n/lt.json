@@ -81,7 +81,6 @@
 "Got it": "Supratau",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito klausosi jūsų balso ir įklijuoja parengtą tekstą tiesiai ten, kur yra žymeklis. Kaip pradėti:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Susikurkite AssemblyAI API raktą (būtinas) ir įveskite jį Nustatymai → Kalbos atpažinimas.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Norite automatinio DI valymo? Tada susikurkite ir įveskite Anthropic API raktą.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Nustatykite pradžios/stabdymo spartųjį klavišą skiltyje Nustatymai → Aktyvinimas ir peržiūrėkite likusius nustatymus.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Paspauskite spartųjį klavišą, kalbėkite, ir Vito įklijuos tekstą ten, kur yra žymeklis.",
 "Close the welcome card?": "Uždaryti pasveikinimo kortelę?",
@@ -262,7 +261,6 @@
 "Display": "Rodymas",
 "System": "Sistema",
 "Other": "Kita",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito veikia pagal „Bring Your Own Key“ (BYOK) modelį: naudojate savo pačių API raktus (AssemblyAI arba Soniox kalbos atpažinimui, Anthropic DI valymui). Vito pati nieko neapmokestina ir nesiunčia jūsų garso ar teksto niekur kitur, tik tiems tiekėjams, kuriems priklauso raktai.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Tų raktų pateikimas, valdymas ir apsauga — bei visos naudojimo tiekėjams patiriamos išlaidos — yra visiškai jūsų pačių atsakomybė.",
 "Privacy & data": "Privatumas ir duomenys",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito jokiu būdu nerenka naudotojo duomenų, kad juos persiųstų, ir programoje nėra jokios sekimo ar analitikos formos. Jūsų nustatymai, žodynas ir istorija lieka lokaliai jūsų kompiuteryje.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Vietnamiečių",
 "About these costs": "Apie šias išlaidas",
 "How do these costs work?": "Kaip veikia šios išlaidos?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito pati nieko neapmokestina. Visos išlaidos yra išorinės: mokate jas tiesiogiai API tiekėjams, kuriems priklauso jūsų raktai — AssemblyAI už kalbos atpažinimą ir Anthropic už DI valymą.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Ši suma yra apytikrė. Vito padaugina jūsų išmatuotą naudojimą iš žemiau nurodytų tarifų; tai nėra sąskaita. Tikroji suma yra jūsų tiekėjo skydelyje ir gali skirtis dėl kainų pokyčių, nemokamo kredito, nuolaidų ar mokesčių.",
 "Calculated with:": "Skaičiuojama pagal:",
 "per hour of recorded audio": "už įrašyto garso valandą",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Žetonų kainos įvertis",
 "Input · $/Mtok": "Įvestis · $/Mtok",
 "Output · $/Mtok": "Išvestis · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Kiek Vito Assist balso komandų įvykdėte per šį laikotarpį — „Vito, …“ nurodymai, kurie išverčia, apibendrina, atsako arba perkuria jūsų diktavimą."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Kiek Vito Assist balso komandų įvykdėte per šį laikotarpį — „Vito, …“ nurodymai, kurie išverčia, apibendrina, atsako arba perkuria jūsų diktavimą.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Spauskite šiuos derinius bet kur macOS. Naudokite bent Control, Option arba Command. Lauke paspauskite Esc, kad jį išvalytumėte.",
+"Choose a combination with at least Control, Option or Command.": "Pasirinkite derinį bent su Control, Option arba Command.",
+"Grant Accessibility permission": "Suteikti Pritaikymo neįgaliesiems leidimą",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Vito reikia Pritaikymo neįgaliesiems leidimo globaliems sparčiesiems klavišams. Suteikite jį Sistemos nuostatos → Privatumas ir saugumas → Pritaikymas neįgaliesiems.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Pažymėkite Vito Sistemos nuostatose — spartusis klavišas pradės veikti po kelių sekundžių."
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

@@ -3,6 +3,7 @@
 //
 //   - Windows: the HKCU\...\CurrentVersion\Run registry value
 //   - Linux:   an XDG autostart .desktop entry (~/.config/autostart/vito.desktop)
+//   - macOS:   a LaunchAgent plist (~/Library/LaunchAgents/…vito.plist)
 //   - other:   unsupported (Set returns an error, Supported reports false)
 //
 // The command registered is the current executable followed by `serve`, so an

@@ -81,7 +81,6 @@
 "Got it": "Nimeelewa",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito husikiliza sauti yako na kubandika maandishi yaliyokamilika pale kishale kilipo. Hivi ndivyo unavyoanza:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Tengeneza ufunguo wa API wa AssemblyAI (unahitajika) na uujaze katika Mipangilio → Utambuzi wa sauti.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Unataka usafishaji wa AI kiotomatiki? Basi tengeneza pia ufunguo wa API wa Anthropic na uujaze.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Weka njia yako ya mkato ya anza/simamisha katika Mipangilio → Uwezeshaji na upitie mipangilio mingine.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Bonyeza njia yako ya mkato, ongea, na Vito hubandika maandishi pale kishale kilipo.",
 "Close the welcome card?": "Funga kadi ya karibu?",
@@ -262,7 +261,6 @@
 "Display": "Muonekano",
 "System": "Mfumo",
 "Other": "Nyingine",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito hufanya kazi kwa mtindo wa \"Bring Your Own Key\" (BYOK): unatumia funguo zako mwenyewe za API (AssemblyAI au Soniox kwa utambuzi wa sauti, Anthropic kwa usafishaji wa AI). Vito yenyewe haikutozi chochote na haitumi sauti au maandishi yako mahali pengine isipokuwa kwa watoa huduma ambao funguo ni zao.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Kutoa, kusimamia na kulinda funguo hizo — na gharama zozote zinazotokana na matumizi yake kwa watoa huduma — ni jukumu lako mwenyewe kabisa.",
 "Privacy & data": "Faragha na data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito haikusanyi data ya mtumiaji kwa njia yoyote ili kuituma popote, na hakuna aina yoyote ya ufuatiliaji au uchanganuzi iliyojengwa ndani ya programu. Mipangilio yako, kamusi na historia hubaki ndani ya kompyuta yako mwenyewe.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Kivietinamu",
 "About these costs": "Kuhusu gharama hizi",
 "How do these costs work?": "Gharama hizi zinafanyaje kazi?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito yenyewe haikutozi chochote. Gharama zote ni za nje: unazilipa moja kwa moja kwa watoa huduma wa API ambao funguo zako ni zao — AssemblyAI kwa utambuzi wa sauti na Anthropic kwa usafishaji wa AI.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Kiasi hiki ni makadirio. Vito huzidisha matumizi yako yaliyopimwa kwa viwango vilivyo hapa chini; si ankara. Malipo halisi yapo kwenye dashibodi ya mtoa huduma wako na yanaweza kutofautiana kutokana na mabadiliko ya bei, salio la bure, punguzo au kodi.",
 "Calculated with:": "Imehesabiwa kwa:",
 "per hour of recorded audio": "kwa saa ya sauti iliyorekodiwa",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Makadirio ya gharama ya vitufe",
 "Input · $/Mtok": "Ingizo · $/Mtok",
 "Output · $/Mtok": "Matokeo · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Amri ngapi za sauti za Vito Assist ulizoendesha katika kipindi hiki — maelekezo ya 'Vito, …' yanayotafsiri, yanayofanya muhtasari, yanayojibu au yanayoumba upya uandishi wako."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Amri ngapi za sauti za Vito Assist ulizoendesha katika kipindi hiki — maelekezo ya 'Vito, …' yanayotafsiri, yanayofanya muhtasari, yanayojibu au yanayoumba upya uandishi wako.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Bonyeza michanganyiko hii popote katika macOS. Tumia angalau Control, Option au Command. Bonyeza Esc katika sehemu ili kuifuta.",
+"Choose a combination with at least Control, Option or Command.": "Chagua mchanganyiko wenye angalau Control, Option au Command.",
+"Grant Accessibility permission": "Toa ruhusa ya Ufikivu",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Vito inahitaji ruhusa ya Ufikivu kwa njia za mkato za kimataifa. Itoe katika Mipangilio ya Mfumo → Faragha na Usalama → Ufikivu.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Weka alama kwenye Vito katika Mipangilio ya Mfumo — njia ya mkato itaanza kufanya kazi baada ya sekunde chache."
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

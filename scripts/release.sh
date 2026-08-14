@@ -24,16 +24,31 @@ go test ./...
 git tag -a "v$V" -m "Vito $V"
 git push origin "v$V"
 
-# 4. build the Linux artifact
-bash packaging/build-appimage.sh "$V"
+# 4. build this host's artifact. Each platform's package can only be built on
+#    that platform — cgo needs its SDK, and the packagers (appimagetool, Inno
+#    Setup, hdiutil) exist nowhere else — so a release is assembled from runs on
+#    each OS, not from one machine.
+case "$(uname -s)" in
+  Darwin)
+    bash packaging/build-macos.sh "$V"
+    built="macOS artifact:  dist/Vito-$V.dmg (+ .sha256)"
+    todo="  * Linux:    bash packaging/build-appimage.sh $V"
+    ;;
+  *)
+    bash packaging/build-appimage.sh "$V"
+    built="Linux artifact:  dist/Vito-$V-x86_64.AppImage (+ .sha256)"
+    todo="  * macOS:    bash packaging/build-macos.sh $V"
+    ;;
+esac
 
 cat <<EOF
 
 Release v$V prepared.
-  Linux artifact: dist/Vito-$V-x86_64.AppImage (+ .sha256)
+  $built
 
 Next:
+$todo
   * Windows:  pwsh -File packaging/build-installer.ps1 -Version $V
   * GitHub:   Releases -> Draft a new release -> choose tag v$V ->
-              "Generate release notes" -> attach the 4 files -> Publish
+              "Generate release notes" -> attach the 6 files -> Publish
 EOF

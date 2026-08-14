@@ -128,12 +128,22 @@ func parseWAV(data []byte) (pcm []byte, sampleRate uint32, channels uint16, err 
 			channels = binary.LittleEndian.Uint16(data[body+2:])
 			sampleRate = binary.LittleEndian.Uint32(data[body+4:])
 		case "data":
+			// A writer that streams the audio and never seeks back to patch the
+			// header leaves this at 0 while the samples are right there. Taking
+			// the declared length at face value plays silence and reports
+			// success, which is the hardest kind of bug to notice.
+			if size == 0 && body < len(data) {
+				size = len(data) - body
+			}
 			pcm = data[body : body+size]
 		}
 		off = body + size + size%2
 	}
-	if pcm == nil || sampleRate == 0 {
-		return nil, 0, 0, errors.New("missing fmt or data chunk")
+	if sampleRate == 0 {
+		return nil, 0, 0, errors.New("missing fmt chunk")
+	}
+	if len(pcm) == 0 {
+		return nil, 0, 0, errors.New("missing or empty data chunk")
 	}
 	return pcm, sampleRate, channels, nil
 }

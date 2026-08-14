@@ -39,6 +39,7 @@ import (
 	"vito/internal/demo"
 	"vito/internal/history"
 	"vito/internal/hotkey"
+	"vito/internal/inject"
 	"vito/internal/selfexe"
 	"vito/internal/stt"
 	"vito/internal/update"
@@ -116,6 +117,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/config", s.auth(s.handleGetConfig))
 	mux.HandleFunc("PUT /api/config", s.auth(s.handlePutConfig))
 	mux.HandleFunc("GET /api/hotkey", s.auth(s.handleGetHotkey))
+	mux.HandleFunc("POST /api/accessibility", s.auth(s.handleRequestAccessibility))
 	mux.HandleFunc("POST /api/test-key", s.auth(s.handleTestKey))
 	mux.HandleFunc("GET /api/costs", s.auth(s.handleCosts))
 	mux.HandleFunc("GET /api/achievements", s.auth(s.handleAchievements))
@@ -514,6 +516,25 @@ func (s *Server) handleGetHotkey(w http.ResponseWriter, r *http.Request) {
 		"exe":       exe,
 		"toggle":    bind(toggle, cfg.HotkeyWindows),
 		"cancel":    bind(cancel, cfg.HotkeyCancelWindows),
+		// macOS gates both the hotkey and pasting behind one permission; the
+		// settings page offers to ask for it when this is false. Always true
+		// elsewhere, so the UI can read it without checking the OS first.
+		"accessibility": inject.Accessible(),
+	})
+}
+
+// handleRequestAccessibility triggers the OS permission prompt for synthesising
+// keystrokes and reports whether the right is held afterwards.
+//
+// It is deliberately a user action rather than a startup check: macOS shows its
+// prompt only once per app per login, so asking in the background would burn it
+// at a moment nobody is looking at the screen. "false" is the normal answer even
+// on success — the user still has to tick the box in System Settings, and macOS
+// only reports the new state to a fresh process.
+func (s *Server) handleRequestAccessibility(w http.ResponseWriter, r *http.Request) {
+	s.writeJSON(w, http.StatusOK, map[string]any{
+		"ok":      true,
+		"granted": inject.RequestAccessibility(),
 	})
 }
 

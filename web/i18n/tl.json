@@ -81,7 +81,6 @@
 "Got it": "Nauunawaan",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Nakikinig ang Vito sa boses mo at agad na ipina-paste ang tapos na teksto kung nasaan ang cursor mo. Ganito magsimula:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Gumawa ng AssemblyAI API key (kailangan) at ilagay ito sa Mga Setting → Speech recognition.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Gusto mo ng awtomatikong AI cleanup? Gumawa rin ng Anthropic API key at ilagay ito.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Itakda ang iyong start/stop hotkey sa Mga Setting → Activation at suriin ang iba pang setting.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Pindutin ang hotkey mo, magsalita, at ipina-paste ng Vito ang teksto kung nasaan ang cursor mo.",
 "Close the welcome card?": "Isara ang welcome card?",
@@ -262,7 +261,6 @@
 "Display": "Display",
 "System": "System",
 "Other": "Iba pa",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Gumagana ang Vito sa \"Bring Your Own Key\" (BYOK) na modelo: ginagamit mo ang sarili mong API keys (AssemblyAI o Soniox para sa speech recognition, Anthropic para sa AI cleanup). Wala mismong sinisingil ang Vito at hindi ipinapadala ang audio o teksto mo kahit saan maliban sa mga provider na pag-aari ng iyong keys.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Ang pagbibigay, pamamahala at pag-secure ng mga key na iyon — at lahat ng gastos na dulot ng paggamit ng mga ito sa mga provider — ay ganap na sariling responsibilidad mo.",
 "Privacy & data": "Privacy at datos",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Hindi kumukolekta ang Vito ng anumang datos ng user para ipadala kahit saan, at walang anumang uri ng tracking o analytics na nakapaloob sa app. Ang mga setting, diksyunaryo at kasaysayan mo ay nananatiling lokal sa sarili mong computer.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Vietnamese",
 "About these costs": "Tungkol sa mga gastos na ito",
 "How do these costs work?": "Paano gumagana ang mga gastos na ito?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Wala mismong sinisingil ang Vito. Lahat ng gastos ay panlabas: binabayaran mo ang mga ito nang direkta sa mga API provider na pag-aari ng sarili mong keys — AssemblyAI para sa speech recognition at Anthropic para sa AI cleanup.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Ang halagang ito ay tantiya. Pinaparami ng Vito ang nasukat na paggamit mo sa mga rate sa ibaba; hindi ito invoice. Ang tunay na singil ay nasa dashboard ng iyong provider at maaaring mag-iba dahil sa mga pagbabago sa presyo, libreng kredito, diskwento o buwis.",
 "Calculated with:": "Kinalkula gamit ang:",
 "per hour of recorded audio": "kada oras ng na-record na audio",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Tantiyang gastos sa token",
 "Input · $/Mtok": "Input · $/Mtok",
 "Output · $/Mtok": "Output · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Kung ilang Vito Assist voice command ang pinatakbo mo sa panahong ito — ang mga 'Vito, …' na tagubilin na nag-i-translate, nag-bu-buod, sumasagot o muling humuhubog sa iyong diktasyon."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Kung ilang Vito Assist voice command ang pinatakbo mo sa panahong ito — ang mga 'Vito, …' na tagubilin na nag-i-translate, nag-bu-buod, sumasagot o muling humuhubog sa iyong diktasyon.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Pindutin ang mga kombinasyong ito kahit saan sa macOS. Gumamit ng hindi bababa sa Control, Option o Command. Pindutin ang Esc sa isang field para burahin ito.",
+"Choose a combination with at least Control, Option or Command.": "Pumili ng kombinasyong may hindi bababa sa Control, Option o Command.",
+"Grant Accessibility permission": "Ibigay ang pahintulot sa Accessibility",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Kailangan ng Vito ng pahintulot sa Accessibility para sa mga global na shortcut. Ibigay ito sa System Settings → Privacy & Security → Accessibility.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Lagyan ng tsek ang Vito sa System Settings — gagana ang shortcut makalipas ang ilang segundo."
 },
 "help": {
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",

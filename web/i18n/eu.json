@@ -100,7 +100,6 @@
 "Got it": "Ulertuta",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vitok zure ahotsa entzuten du eta amaitutako testua zure kurtsorea dagoen tokian bertan itsasten du. Horrela hasten zara:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Sortu AssemblyAI API-gako bat (beharrezkoa) eta idatzi Ezarpenak → Ahots-ezagutza atalean.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "AI garbiketa automatikoa nahi duzu? Orduan sortu Anthropic API-gako bat ere eta idatzi hura.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Ezarri zure hasi/gelditu laster-tekla Ezarpenak → Aktibazioa atalean eta berrikusi gainerako ezarpenak.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Sakatu laster-tekla, hitz egin, eta Vitok testua zure kurtsorea dagoen tokian itsatsiko du.",
 "Close the welcome card?": "Ongietorri-txartela itxi?",
@@ -281,7 +280,6 @@
 "Display": "Bistaratzea",
 "System": "Sistema",
 "Other": "Bestelakoak",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vitok \"Bring Your Own Key\" (BYOK) eredua darabil: zure API-gako propioak erabiltzen dituzu (AssemblyAI edo Soniox ahots-ezagutzarako, Anthropic AI garbiketarako). Vitok berak ez dizu ezer kobratzen eta zure audioa edo testua ez du beste inora bidaltzen, gakoak dituzten hornitzaileetara baino.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Gako horiek eskaintzea, kudeatzea eta babestea — eta horiek hornitzaileetan erabiltzeak sortzen dituen kostu guztiak — erabat zure erantzukizuna dira.",
 "Privacy & data": "Pribatutasuna eta datuak",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vitok ez du inolako erabiltzaile-daturik biltzen inora bidaltzeko, eta ez dago inolako jarraipen edo analitikarik appan integratuta. Zure ezarpenak, hiztegia eta historia zure ordenagailuan bertan geratzen dira.",
@@ -349,7 +347,6 @@
 "Vietnamese": "Vietnamera",
 "About these costs": "Kostu hauei buruz",
 "How do these costs work?": "Nola funtzionatzen dute kostu hauek?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vitok berak ez dizu ezer kobratzen. Kostu guztiak kanpokoak dira: zuzenean ordaintzen dizkiezu zure gako propioak dituzten API-hornitzaileei — AssemblyAI ahots-ezagutzarako eta Anthropic AI garbiketarako.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Zenbateko hau zenbatespen bat da. Vitok zure neurtutako erabilera beheko tarifekin biderkatzen du; ez da faktura bat. Benetako karga zure hornitzailearen aginte-panelean dago eta desberdina izan daiteke prezio-aldaketen, doako kredituaren, deskontuen edo zergen ondorioz.",
 "Calculated with:": "Kalkuluan erabilitakoa:",
 "per hour of recorded audio": "grabatutako audio-orduko",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Token-kostuaren zenbatespena",
 "Input · $/Mtok": "Sarrera · $/Mtok",
 "Output · $/Mtok": "Irteera · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Epealdi honetan zenbat Vito Assist ahots-komando exekutatu dituzun — zure diktaketa itzuli, laburtu, erantzun edo berreraldatzen duten 'Vito, …' jarraibideak."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Epealdi honetan zenbat Vito Assist ahots-komando exekutatu dituzun — zure diktaketa itzuli, laburtu, erantzun edo berreraldatzen duten 'Vito, …' jarraibideak.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Sakatu konbinazio hauek macOS-eko edozein lekutan. Erabili gutxienez Control, Option edo Command. Sakatu Esc eremu batean hura garbitzeko.",
+"Choose a combination with at least Control, Option or Command.": "Aukeratu gutxienez Control, Option edo Command duen konbinazioa.",
+"Grant Accessibility permission": "Eman Erabilerraztasuna baimena",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Vitok Erabilerraztasuna baimena behar du lasterbide globaletarako. Eman ezazu Sistemaren Ezarpenak → Pribatutasuna eta segurtasuna → Erabilerraztasuna atalean.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Markatu Vito Sistemaren Ezarpenetan — lasterbideak segundo gutxi barru funtzionatuko du."
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

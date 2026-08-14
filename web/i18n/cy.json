@@ -81,7 +81,6 @@
 "Got it": "Deall",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Mae Vito'n gwrando ar dy lais ac yn gludo'r testun gorffenedig yn syth lle mae dy gyrchwr. Dyma sut i ddechrau:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Creu allwedd API AssemblyAI (angenrheidiol) a'i rhoi yn Gosodiadau → Adnabod lleferydd.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Eisiau glanhau AI awtomatig? Creu allwedd API Anthropic hefyd a'i rhoi i mewn.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Gosod dy fysell brys cychwyn/stopio dan Gosodiadau → Actifadu ac adolygu'r gosodiadau eraill.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Gwasga dy fysell brys, siarad, a bydd Vito'n gludo'r testun lle mae dy gyrchwr.",
 "Close the welcome card?": "Cau'r cerdyn croeso?",
@@ -262,7 +261,6 @@
 "Display": "Arddangos",
 "System": "System",
 "Other": "Arall",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Mae Vito'n gweithio yn ôl y model \"Bring Your Own Key\" (BYOK): rwyt ti'n defnyddio dy allweddi API dy hun (AssemblyAI neu Soniox ar gyfer adnabod lleferydd, Anthropic ar gyfer glanhau AI). Nid yw Vito'n codi dim ei hun ac nid yw'n anfon dy sain na thestun i unman heblaw at y darparwyr y mae'r allweddi'n perthyn iddynt.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Darparu, rheoli a diogelu'r allweddi hynny — a phob cost a ddaw yn sgil eu defnydd gyda'r darparwyr — sy'n gwbl gyfrifoldeb i ti dy hun.",
 "Privacy & data": "Preifatrwydd a data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Nid yw Vito'n casglu data defnyddwyr mewn unrhyw fodd i'w anfon ymlaen, ac nid oes unrhyw fath o dracio nac dadansoddeg wedi'i adeiladu i'r ap. Mae dy osodiadau, geiriadur a hanes yn aros yn lleol ar dy gyfrifiadur dy hun.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Fietnameeg",
 "About these costs": "Ynghylch y costau hyn",
 "How do these costs work?": "Sut mae'r costau hyn yn gweithio?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Nid yw Vito byth yn codi dim arnat. Mae pob cost yn allanol: rwyt ti'n eu talu'n uniongyrchol i'r darparwyr API y mae dy allweddi dy hun yn perthyn iddynt — AssemblyAI ar gyfer adnabod lleferydd ac Anthropic ar gyfer glanhau AI.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Amcangyfrif yw'r swm hwn. Mae Vito'n lluosi dy ddefnydd mesuredig â'r cyfraddau isod; nid anfoneb mohono. Mae'r tâl gwirioneddol yn nangosfwrdd dy ddarparwr a gall wahaniaethu oherwydd newidiadau prisiau, credyd am ddim, gostyngiadau neu drethi.",
 "Calculated with:": "Cyfrifir gyda:",
 "per hour of recorded audio": "fesul awr o sain a recordiwyd",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Amcangyfrif cost tocynnau",
 "Input · $/Mtok": "Mewnbwn · $/Mtok",
 "Output · $/Mtok": "Allbwn · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Faint o orchmynion llais Vito Assist a redaist ti yn y cyfnod hwn — y cyfarwyddiadau 'Vito, …' sy'n cyfieithu, crynhoi, ateb neu ail-lunio dy arddywediad."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Faint o orchmynion llais Vito Assist a redaist ti yn y cyfnod hwn — y cyfarwyddiadau 'Vito, …' sy'n cyfieithu, crynhoi, ateb neu ail-lunio dy arddywediad.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Pwyswch y cyfuniadau hyn unrhyw le yn macOS. Defnyddiwch o leiaf Control, Option neu Command. Pwyswch Esc mewn maes i’w glirio.",
+"Choose a combination with at least Control, Option or Command.": "Dewiswch gyfuniad gydag o leiaf Control, Option neu Command.",
+"Grant Accessibility permission": "Rhoi caniatâd Hygyrchedd",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Mae angen caniatâd Hygyrchedd ar Vito ar gyfer bysellau byr byd-eang. Rhowch hynny yn Gosodiadau’r System → Preifatrwydd a Diogelwch → Hygyrchedd.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Ticiwch Vito yn Gosodiadau’r System — bydd y fysell fer yn dechrau gweithio ymhen ychydig eiliadau."
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

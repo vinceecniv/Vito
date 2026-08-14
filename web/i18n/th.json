@@ -81,7 +81,6 @@
 "Got it": "เข้าใจแล้ว",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito ฟังเสียงของคุณและวางข้อความที่เสร็จแล้วตรงตำแหน่งเคอร์เซอร์ วิธีเริ่มต้นใช้งาน:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "สร้างคีย์ API ของ AssemblyAI (จำเป็น) แล้วกรอกที่ การตั้งค่า → การรู้จำเสียงพูด",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "ต้องการปรับข้อความด้วย AI อัตโนมัติไหม? ให้สร้างคีย์ API ของ Anthropic แล้วกรอกด้วย",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "ตั้งปุ่มลัดเริ่ม/หยุดที่ การตั้งค่า → การเปิดใช้งาน แล้วตรวจดูการตั้งค่าอื่น ๆ",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "กดปุ่มลัด พูด แล้ว Vito จะวางข้อความตรงตำแหน่งเคอร์เซอร์",
 "Close the welcome card?": "ปิดการ์ดต้อนรับ?",
@@ -262,7 +261,6 @@
 "Display": "การแสดงผล",
 "System": "ระบบ",
 "Other": "อื่น ๆ",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito ทำงานตามโมเดล \"Bring Your Own Key\" (BYOK): คุณใช้คีย์ API ของตัวเอง (AssemblyAI หรือ Soniox สำหรับการรู้จำเสียงพูด, Anthropic สำหรับการปรับข้อความด้วย AI) Vito ไม่คิดค่าใช้จ่ายใด ๆ และไม่ส่งเสียงหรือข้อความของคุณไปที่ใดนอกจากผู้ให้บริการที่คีย์เป็นของเขา",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "การจัดหา จัดการ และรักษาความปลอดภัยของคีย์เหล่านั้น — และค่าใช้จ่ายทั้งหมดที่เกิดจากการใช้งานกับผู้ให้บริการ — เป็นความรับผิดชอบของคุณเองทั้งหมด",
 "Privacy & data": "ความเป็นส่วนตัวและข้อมูล",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito ไม่เก็บข้อมูลผู้ใช้เพื่อส่งต่อไม่ว่าด้วยวิธีใด และไม่มีการติดตามหรือวิเคราะห์ใด ๆ ในแอป การตั้งค่า พจนานุกรม และประวัติของคุณยังคงอยู่ในเครื่องของคุณเอง",
@@ -330,7 +328,6 @@
 "Vietnamese": "เวียดนาม",
 "About these costs": "เกี่ยวกับค่าใช้จ่ายนี้",
 "How do these costs work?": "ค่าใช้จ่ายนี้ทำงานอย่างไร?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito ไม่คิดค่าใช้จ่ายใด ๆ เอง ค่าใช้จ่ายทั้งหมดเป็นภายนอก: คุณจ่ายตรงให้ผู้ให้บริการ API ที่คีย์ของคุณเป็นของเขา — AssemblyAI สำหรับการรู้จำเสียงพูด และ Anthropic สำหรับการปรับข้อความด้วย AI",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "จำนวนนี้เป็นการประมาณการ Vito นำการใช้งานที่วัดได้คูณกับอัตราด้านล่าง ไม่ใช่ใบแจ้งหนี้ ยอดจริงอยู่ในแดชบอร์ดของผู้ให้บริการและอาจต่างกันเนื่องจากการเปลี่ยนราคา เครดิตฟรี ส่วนลด หรือภาษี",
 "Calculated with:": "คำนวณด้วย:",
 "per hour of recorded audio": "ต่อชั่วโมงของเสียงที่บันทึก",
@@ -646,7 +643,12 @@
 "Token cost estimate": "ประมาณการค่าใช้จ่ายโทเค็น",
 "Input · $/Mtok": "อินพุต · $/Mtok",
 "Output · $/Mtok": "เอาต์พุต · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "จำนวนคำสั่งเสียง Vito Assist ที่คุณใช้ในช่วงเวลานี้ — คำสั่ง 'Vito, …' ที่แปล สรุป ตอบ หรือปรับรูปแบบคำบอกของคุณ"
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "จำนวนคำสั่งเสียง Vito Assist ที่คุณใช้ในช่วงเวลานี้ — คำสั่ง 'Vito, …' ที่แปล สรุป ตอบ หรือปรับรูปแบบคำบอกของคุณ",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "กดคอมบิเนชันเหล่านี้ที่ใดก็ได้ใน macOS ใช้อย่างน้อย Control, Option หรือ Command กด Esc ในช่องเพื่อล้าง",
+"Choose a combination with at least Control, Option or Command.": "เลือกคอมบิเนชันที่มี Control, Option หรือ Command อย่างน้อยหนึ่งอย่าง",
+"Grant Accessibility permission": "ให้สิทธิ์การช่วยการเข้าถึง",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Vito ต้องการสิทธิ์การช่วยการเข้าถึงสำหรับปุ่มลัดทั่วระบบ ให้สิทธิ์ที่ การตั้งค่าระบบ → ความเป็นส่วนตัวและความปลอดภัย → การช่วยการเข้าถึง",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "ทำเครื่องหมายที่ Vito ในการตั้งค่าระบบ — ปุ่มลัดจะเริ่มทำงานในอีกไม่กี่วินาที"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",
