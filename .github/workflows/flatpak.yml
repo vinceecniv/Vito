@@ -49,8 +49,11 @@ jobs:
             build packaging/flatpak/io.github.vinceecniv.vito.yml
 
       - name: Sign the repository
-        # Optional: without a key, users add the remote with --no-gpg-verify.
-        # With one, flatpak verifies every update against it.
+        # Not optional any more. vito.flatpakrepo publishes the public key, so
+        # every remote already added expects a signature — publishing unsigned
+        # would break `flatpak update` for existing installations rather than
+        # merely weakening it. The condition stays so a fork without the secret
+        # still gets a working (unsigned) build.
         if: ${{ secrets.FLATPAK_GPG_KEY != '' }}
         env:
           GPG_KEY: ${{ secrets.FLATPAK_GPG_KEY }}
