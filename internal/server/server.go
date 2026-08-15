@@ -117,6 +117,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/config", s.auth(s.handleGetConfig))
 	mux.HandleFunc("PUT /api/config", s.auth(s.handlePutConfig))
 	mux.HandleFunc("GET /api/hotkey", s.auth(s.handleGetHotkey))
+	mux.HandleFunc("POST /api/accessibility", s.auth(s.handleRequestAccessibility))
 	mux.HandleFunc("POST /api/hotkey/configure", s.auth(s.handleConfigureHotkey))
 	mux.HandleFunc("POST /api/test-key", s.auth(s.handleTestKey))
 	mux.HandleFunc("GET /api/costs", s.auth(s.handleCosts))
@@ -521,6 +522,25 @@ func (s *Server) handleGetHotkey(w http.ResponseWriter, r *http.Request) {
 		// lists the method whatever the backend supports — so ask the manager,
 		// which knows the version, rather than assuming.
 		"configurable": s.hk.CanConfigure(),
+		// macOS gates both the hotkey and pasting behind one permission; the
+		// settings page offers to ask for it when this is false. Always true
+		// elsewhere, so the UI can read it without checking the OS first.
+		"accessibility": inject.Accessible(),
+	})
+}
+
+// handleRequestAccessibility triggers the OS permission prompt for synthesising
+// keystrokes and reports whether the right is held afterwards.
+//
+// It is deliberately a user action rather than a startup check: macOS shows its
+// prompt only once per app per login, so asking in the background would burn it
+// at a moment nobody is looking at the screen. "false" is the normal answer even
+// on success — the user still has to tick the box in System Settings, and macOS
+// only reports the new state to a fresh process.
+func (s *Server) handleRequestAccessibility(w http.ResponseWriter, r *http.Request) {
+	s.writeJSON(w, http.StatusOK, map[string]any{
+		"ok":      true,
+		"granted": inject.RequestAccessibility(),
 	})
 }
 

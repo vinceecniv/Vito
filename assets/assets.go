@@ -1,4 +1,9 @@
-// Package assets embeds the feedback sounds (16-bit PCM WAV, < 150 ms each).
+// Package assets embeds the feedback sounds: 48 kHz mono 16-bit PCM WAV, around
+// 150 ms for the status blips and up to a second for the celebratory ones.
+//
+// internal/audio's TestEmbeddedSoundsParse checks every clip here actually
+// carries audio. That is not paranoia: achievement.wav once shipped as a valid
+// container wrapped around pure silence, and nothing anywhere reported a fault.
 package assets
 
 import _ "embed"
@@ -25,3 +30,12 @@ var SoundCommand []byte
 //
 //go:embed sounds/achievement.wav
 var SoundAchievement []byte
+
+// SoundWarn is two falling notes for a dictation that finished but not as
+// asked — the AI cleanup failed and the raw transcript went in instead.
+// Deliberately not SoundCancel: that one means nothing was delivered, while
+// here you did get your text, just unpolished. Longer and lower than the status
+// blips so it stands out from the "done" chime it follows.
+//
+//go:embed sounds/warn.wav
+var SoundWarn []byte

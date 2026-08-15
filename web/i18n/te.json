@@ -81,7 +81,6 @@
 "Got it": "అర్థమైంది",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito మీ స్వరాన్ని వింటుంది మరియు తయారైన టెక్స్ట్‌ను మీ కర్సర్ ఉన్న చోటే అతికిస్తుంది. దీన్ని ఇలా ఉపయోగించడం మొదలుపెట్టండి:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "AssemblyAI API కీ సృష్టించండి (అవసరం) మరియు దానిని సెట్టింగ్‌లు → స్పీచ్ రికగ్నిషన్ లో నమోదు చేయండి.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "స్వయంచాలక AI శుద్ధీకరణ కావాలా? అయితే Anthropic API కీ కూడా సృష్టించి నమోదు చేయండి.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "మీ start/stop షార్ట్‌కట్‌ను సెట్టింగ్‌లు → యాక్టివేషన్ లో సెట్ చేసి, మిగతా సెట్టింగ్‌లను పరిశీలించండి.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "మీ షార్ట్‌కట్ నొక్కండి, మాట్లాడండి, Vito మీ కర్సర్ ఉన్న చోట టెక్స్ట్ అతికిస్తుంది.",
 "Close the welcome card?": "స్వాగత కార్డు మూసివేయాలా?",
@@ -262,7 +261,6 @@
 "Display": "ప్రదర్శన",
 "System": "సిస్టమ్",
 "Other": "ఇతర",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito \"Bring Your Own Key\" (BYOK) మోడల్ ప్రకారం పని చేస్తుంది: మీరు మీ స్వంత API కీలను వాడతారు (స్పీచ్ రికగ్నిషన్ కోసం AssemblyAI లేదా Soniox, AI శుద్ధీకరణ కోసం Anthropic). Vito తనంతట తానుగా ఎలాంటి ఛార్జ్ చేయదు మరియు మీ ఆడియో లేదా టెక్స్ట్‌ను కీలు ఎవరివో ఆ ప్రొవైడర్‌లకు తప్ప మరెక్కడికీ పంపదు.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "ఆ కీలను అందించడం, నిర్వహించడం, భద్రపరచడం — మరియు ప్రొవైడర్‌ల వద్ద వాటి వాడకంతో అయ్యే ఖర్చులన్నీ — పూర్తిగా మీ స్వంత బాధ్యత.",
 "Privacy & data": "గోప్యత & డేటా",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito పంపడానికి ఎలాంటి వినియోగదారు డేటాను సేకరించదు, మరియు యాప్‌లో ఏ రకమైన ట్రాకింగ్ లేదా అనలిటిక్స్ నిర్మించబడలేదు. మీ సెట్టింగ్‌లు, నిఘంటువు మరియు చరిత్ర మీ స్వంత కంప్యూటర్‌లో స్థానికంగానే ఉంటాయి.",
@@ -330,7 +328,6 @@
 "Vietnamese": "వియత్నామీస్",
 "About these costs": "ఈ ఖర్చుల గురించి",
 "How do these costs work?": "ఈ ఖర్చులు ఎలా పని చేస్తాయి?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito తనంతట తానుగా ఎలాంటి ఛార్జ్ చేయదు. అన్ని ఖర్చులు బాహ్యం: మీ స్వంత కీలు ఎవరివో ఆ API ప్రొవైడర్‌లకు నేరుగా చెల్లిస్తారు — స్పీచ్ రికగ్నిషన్ కోసం AssemblyAI మరియు AI శుద్ధీకరణ కోసం Anthropic.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "ఈ మొత్తం ఒక అంచనా. Vito మీ కొలిచిన వాడకాన్ని క్రింది ధరలతో గుణిస్తుంది; ఇది ఇన్‌వాయిస్ కాదు. అసలు ఛార్జ్ మీ ప్రొవైడర్ డాష్‌బోర్డ్‌లో ఉంటుంది మరియు ధర మార్పులు, ఉచిత క్రెడిట్, తగ్గింపులు లేదా పన్నుల వల్ల మారవచ్చు.",
 "Calculated with:": "దీనితో లెక్కించబడింది:",
 "per hour of recorded audio": "గంట రికార్డ్ చేసిన ఆడియోకు",
@@ -646,7 +643,12 @@
 "Token cost estimate": "టోకెన్ ఖర్చు అంచనా",
 "Input · $/Mtok": "ఇన్‌పుట్ · $/Mtok",
 "Output · $/Mtok": "అవుట్‌పుట్ · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "ఈ కాలంలో మీరు ఎన్ని Vito Assist వాయిస్ కమాండ్‌లు అమలు చేశారో — మీ డిక్టేషన్‌ను అనువదించే, సంక్షిప్తం చేసే, జవాబిచ్చే లేదా మలచే 'Vito, …' సూచనలు."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "ఈ కాలంలో మీరు ఎన్ని Vito Assist వాయిస్ కమాండ్‌లు అమలు చేశారో — మీ డిక్టేషన్‌ను అనువదించే, సంక్షిప్తం చేసే, జవాబిచ్చే లేదా మలచే 'Vito, …' సూచనలు.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "macOSలో ఎక్కడైనా ఈ కలయికలను నొక్కండి. కనీసం Control, Option లేదా Command ఉపయోగించండి. ఫీల్డ్ ఖాళీ చేయడానికి Esc నొక్కండి.",
+"Choose a combination with at least Control, Option or Command.": "కనీసం Control, Option లేదా Command ఉన్న కలయికను ఎంచుకోండి.",
+"Grant Accessibility permission": "Accessibility అనుమతి ఇవ్వండి",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "గ్లోబల్ షార్ట్‌కట్ల కోసం Vitoకి Accessibility అనుమతి అవసరం. System Settings → Privacy & Security → Accessibilityలో దాన్ని ఇవ్వండి.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "System Settingsలో Vitoని టిక్ చేయండి — షార్ట్‌కట్ కొన్ని సెకన్ల తర్వాత పనిచేయడం మొదలవుతుంది."
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

@@ -40,8 +40,8 @@ import (
 var version = "dev"
 
 func main() {
-	cmd := "help"
-	if len(os.Args) > 1 {
+	cmd := defaultCommand()
+	if len(os.Args) > 1 && !isLaunchArg(os.Args[1]) {
 		cmd = os.Args[1]
 	}
 	var err error
@@ -219,13 +219,13 @@ func serve() error {
 
 	if cfg.Tray.Enabled {
 		url := fmt.Sprintf("http://127.0.0.1:%d", cfg.Server.Port)
-		tray.Run(d, url, version, log, func() {
+		if tray.Run(d, url, version, log) {
 			log.Info("shutting down (tray quit)")
 			d.Shutdown() // restore any ducked/paused media before exiting
 			os.Exit(0)
-		})
-		// systray.Run returned without a Quit: no tray host. Stay alive and
-		// keep serving headlessly rather than exiting the daemon.
+		}
+		// The tray loop ended without the user asking to quit: there is no tray
+		// host here. Stay alive and keep serving headlessly rather than exiting.
 		log.Debug("tray unavailable; continuing headless")
 	}
 	return <-srvErr

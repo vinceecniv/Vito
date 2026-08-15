@@ -81,7 +81,6 @@
 "Got it": "Το κατάλαβα",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Το Vito ακούει τη φωνή σας και επικολλά το τελικό κείμενο ακριβώς εκεί που βρίσκεται ο δρομέας σας. Δείτε πώς ξεκινάτε:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Δημιουργήστε ένα κλειδί API AssemblyAI (απαραίτητο) και εισαγάγετέ το στις Ρυθμίσεις → Αναγνώριση ομιλίας.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Θέλετε αυτόματο καθαρισμό AI; Τότε δημιουργήστε και ένα κλειδί API Anthropic και εισαγάγετέ το.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Ορίστε τη συντόμευση έναρξης/διακοπής στις Ρυθμίσεις → Ενεργοποίηση και ελέγξτε τις υπόλοιπες ρυθμίσεις.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Πατήστε τη συντόμευσή σας, μιλήστε, και το Vito επικολλά το κείμενο εκεί που βρίσκεται ο δρομέας σας.",
 "Close the welcome card?": "Κλείσιμο κάρτας καλωσορίσματος;",
@@ -262,7 +261,6 @@
 "Display": "Εμφάνιση",
 "System": "Σύστημα",
 "Other": "Άλλα",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Το Vito λειτουργεί με το μοντέλο «Bring Your Own Key» (BYOK): χρησιμοποιείτε τα δικά σας κλειδιά API (AssemblyAI ή Soniox για αναγνώριση ομιλίας, Anthropic για τον καθαρισμό AI). Το Vito δεν χρεώνει τίποτα το ίδιο και δεν στέλνει τον ήχο ή το κείμενό σας πουθενά αλλού εκτός από τους παρόχους στους οποίους ανήκουν τα κλειδιά.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Η παροχή, διαχείριση και ασφάλεια αυτών των κλειδιών — και κάθε κόστος που συνεπάγεται η χρήση τους στους παρόχους — είναι εξ ολοκλήρου δική σας ευθύνη.",
 "Privacy & data": "Απόρρητο & δεδομένα",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Το Vito δεν συλλέγει με κανέναν τρόπο δεδομένα χρηστών για να τα προωθήσει, και δεν υπάρχει κανενός είδους παρακολούθηση ή analytics ενσωματωμένα στην εφαρμογή. Οι ρυθμίσεις, το λεξικό και το ιστορικό σας παραμένουν τοπικά στον δικό σας υπολογιστή.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Βιετναμικά",
 "About these costs": "Σχετικά με αυτό το κόστος",
 "How do these costs work?": "Πώς προκύπτει αυτό το κόστος;",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Το Vito δεν χρεώνει τίποτα το ίδιο. Όλα τα κόστη είναι εξωτερικά: τα πληρώνετε απευθείας στους παρόχους API στους οποίους ανήκουν τα δικά σας κλειδιά — AssemblyAI για την αναγνώριση ομιλίας και Anthropic για τον καθαρισμό AI.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Αυτό το ποσό είναι μια εκτίμηση. Το Vito πολλαπλασιάζει τη μετρημένη χρήση σας με τις παρακάτω τιμές· δεν είναι τιμολόγιο. Η πραγματική χρέωση βρίσκεται στον πίνακα ελέγχου του παρόχου σας και μπορεί να διαφέρει λόγω αλλαγών τιμών, δωρεάν υπολοίπου, εκπτώσεων ή φόρων.",
 "Calculated with:": "Υπολογίζεται με:",
 "per hour of recorded audio": "ανά ώρα εγγεγραμμένου ήχου",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Εκτίμηση κόστους tokens",
 "Input · $/Mtok": "Είσοδος · $/Mtok",
 "Output · $/Mtok": "Έξοδος · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Πόσες φωνητικές εντολές Vito Assist εκτελέσατε σε αυτή την περίοδο — τις οδηγίες «Vito, …» που μεταφράζουν, συνοψίζουν, απαντούν ή αναδιαμορφώνουν την υπαγόρευσή σας."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Πόσες φωνητικές εντολές Vito Assist εκτελέσατε σε αυτή την περίοδο — τις οδηγίες «Vito, …» που μεταφράζουν, συνοψίζουν, απαντούν ή αναδιαμορφώνουν την υπαγόρευσή σας.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Πατήστε αυτούς τους συνδυασμούς οπουδήποτε στο macOS. Χρησιμοποιήστε τουλάχιστον Control, Option ή Command. Πατήστε Esc σε ένα πεδίο για να το καθαρίσετε.",
+"Choose a combination with at least Control, Option or Command.": "Επιλέξτε συνδυασμό με τουλάχιστον Control, Option ή Command.",
+"Grant Accessibility permission": "Χορήγηση άδειας Προσβασιμότητας",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Το Vito χρειάζεται άδεια Προσβασιμότητας για τα καθολικά πλήκτρα συντόμευσης. Δώστε την από Ρυθμίσεις συστήματος → Απόρρητο και ασφάλεια → Προσβασιμότητα.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Επιλέξτε το Vito στις Ρυθμίσεις συστήματος — η συντόμευση αρχίζει να λειτουργεί λίγα δευτερόλεπτα αργότερα."
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

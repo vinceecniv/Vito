@@ -8,13 +8,13 @@
 </p>
 
 <p align="center">
-  <a href="#download"><img alt="Download" src="https://img.shields.io/badge/Download-Windows%20%C2%B7%20Linux-7C3AED?style=for-the-badge"></a>
+  <a href="#download"><img alt="Download" src="https://img.shields.io/badge/Download-Windows%20%C2%B7%20Linux%20%C2%B7%20macOS-7C3AED?style=for-the-badge"></a>
   <a href="https://vito.talk"><img alt="Website" src="https://img.shields.io/badge/Website-vito.talk-2B2440?style=for-the-badge"></a>
   <a href="https://ko-fi.com/vito_app"><img alt="Ko-fi" src="https://img.shields.io/badge/Support-Ko--fi-FF6B5E?style=for-the-badge"></a>
 </p>
 
 <p align="center">
-  <img alt="Platforms" src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS%20(soon)-2B2440">
+  <img alt="Platforms" src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-2B2440">
   <img alt="Languages" src="https://img.shields.io/badge/languages-60-7C3AED">
   <img alt="License" src="https://img.shields.io/badge/license-AGPL--3.0-FF6B5E">
   <img alt="Pricing" src="https://img.shields.io/badge/pricing-free%20%C2%B7%20bring%20your%20own%20key-2B2440">
@@ -230,7 +230,7 @@ Vito is **simple to use, but powerful under the hood.**
 ### System & maintenance
 - 🚀 **Start with your computer**, so Vito is always ready.
 - 🔁 **Backup & restore** with automatic rolling backups.
-- ⬆️ **Built-in update checker** that can install updates for you.
+- ⬆️ **Built-in update checker** — tells you when a new version is out, and on Windows installs it for you.
 - 🎧 **Configurable media behavior** while dictating — do nothing, duck the audio, or auto pause/play.
 - 🐧 **Linux-friendly** — detects missing utilities/libraries and explains how to bind hotkeys in each desktop environment.
 
@@ -242,13 +242,34 @@ Vito is **simple to use, but powerful under the hood.**
 
 ## Download
 
-> Vito is **cross-platform: Windows and Linux today, macOS coming soon.**
+> Vito is **cross-platform: Windows, Linux and macOS.**
 
 - **Windows** — grab `Vito-Setup-<version>.exe` from the [**Releases**](../../releases) page. Per-user install,
   no admin needed.
 - **Linux** — download the `Vito-<version>.AppImage` from [**Releases**](../../releases), make it executable,
   and run it. Nothing else to copy or install — the hotkey binds to a signal (see below).
-- **macOS** — *coming soon.*
+- **macOS** — download `Vito-<version>.dmg` from [**Releases**](../../releases) and drag Vito to Applications.
+  Universal (Apple Silicon and Intel), macOS 11 or newer. Vito lives in the menu bar, not the Dock.
+
+  The build is **not signed with an Apple Developer certificate**. Double-clicking a freshly downloaded
+  copy shows "Vito cannot be opened": use **right-click → Open**, and if macOS still refuses (it does on
+  recent versions), go to **System Settings → Privacy & Security** and press **Open Anyway** under the
+  message about Vito. You only do this once.
+
+  Finder also shows a small ⌛ next to Vito's name. That is macOS reporting that the app has not been
+  through notarisation — not that something is still copying, and not something approving the app clears.
+  It is cosmetic: the ⌛ stays until the app is notarised, while Vito itself runs perfectly well.
+  Then grant two permissions in **System Settings → Privacy & Security**:
+
+  | Permission | Needed for | Without it |
+  |---|---|---|
+  | **Microphone** | recording your voice | Vito records silence |
+  | **Accessibility** | the global hotkey, and pasting into other apps | no hotkey; injection falls back to an error, use *clipboard only* mode and paste yourself |
+
+  You grant these once; updating Vito keeps them. (If you ever build Vito yourself without the signing
+  certificate, macOS ties the grant to that exact binary instead, and every rebuild resets it — with the
+  confusing symptom that the switch still shows as *on* while Vito reports the permission as missing.
+  Select Vito in the list, remove it with **−**, and let Vito ask again.)
 
 After installing, open Vito, paste in a speech-to-text API key, pick your hotkey, and start talking.
 
@@ -315,6 +336,45 @@ instructions for binding the hotkey.
 </details>
 
 <details>
+<summary><b>macOS build details</b></summary>
+
+<br>
+
+Nothing to install beyond the Xcode Command Line Tools — audio goes through CoreAudio and text injection
+through CoreGraphics, both part of macOS, so there are no external helpers like Linux needs:
+
+```sh
+xcode-select --install
+bash packaging/make-signing-cert.sh       # once per machine, see below
+bash packaging/build-macos.sh 2026.8      # -> dist/Vito-2026.8.dmg
+```
+
+That produces a universal `Vito.app` (arm64 + x86_64, merged with `lipo`) inside a DMG, with a `.sha256`
+beside it. Must run on macOS: cgo needs the real SDK, and the icon, signature and disk image are made with
+Apple's own tools (`sips`, `iconutil`, `codesign`, `hdiutil`).
+
+Two things the bundle carries that the binary alone cannot:
+
+- **`NSMicrophoneUsageDescription`** in `Info.plist`. Without it macOS denies the microphone outright
+  rather than asking, and dictation silently records nothing.
+- **`LSUIElement`**, which keeps Vito out of the Dock and the app switcher — it lives in the menu bar,
+  like the tray icon elsewhere.
+
+`make-signing-cert.sh` creates a self-signed code-signing certificate in your login keychain, which the
+build uses when it is there and falls back to ad-hoc when it isn't. It is worth the one command: macOS
+stores a permission grant as a *code signing requirement*, and signed ad-hoc that requirement is the exact
+binary — so every rebuild quietly invalidates the user's Accessibility approval. Signed with a certificate
+that stays put, the requirement is `identifier … and certificate root …` and the grant survives updates.
+Sign every release with the same certificate, and never commit it. The script also asks once for your
+login keychain password, to add codesign to the key's partition list — without that macOS interrupts every
+build with a password prompt, twice over, once per architecture of the universal binary.
+
+It is still not a Developer ID and still not notarised, so the right-click-to-open step and the ⌛ remain.
+Only an Apple Developer ID plus `notarytool` removes those.
+
+</details>
+
+<details>
 <summary><b>Configuration & hotkeys</b></summary>
 
 <br>
@@ -322,6 +382,10 @@ instructions for binding the hotkey.
 First run creates `~/.config/vito/config.json` (chmod 600) with defaults and an auth token. Configure
 everything from the **web UI at `http://127.0.0.1:4573`** while the daemon runs — changes apply to the next
 dictation without a restart.
+
+On **Windows and macOS** you set the hotkey in the app itself, under Settings → Activation. On macOS it
+needs the Accessibility permission; until you grant it the settings page shows the hotkey as denied and
+says so.
 
 **Wayland has no in-app global hotkeys by design** — bind a command to a key in your compositor. The
 recommended commands send a signal to the running daemon, so they launch no process, need no binary path
@@ -338,8 +402,8 @@ recommended commands send a signal to the running daemon, so they launch no proc
   ```
 
 `SIGUSR2` toggles a dictation, `SIGUSR1` cancels it (cleanup is the settings toggle, not a hotkey). On
-**Windows** the daemon registers a global hotkey itself. The exact commands, per desktop, are also shown in
-the app under Settings → Activation.
+**Windows and macOS** the daemon registers a global hotkey itself. The exact commands, per desktop, are also
+shown in the app under Settings → Activation.
 
 </details>
 

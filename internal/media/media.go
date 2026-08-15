@@ -21,8 +21,8 @@
 // the platform has no backend) both calls are no-ops.
 //
 // The OS-specific backends live in the platform files: MPRIS over D-Bus on
-// Linux, the media transport key / WASAPI session volume on Windows, and a
-// no-op elsewhere.
+// Linux, the media transport key / WASAPI session volume on Windows, the
+// scriptable players / system output volume on macOS, and a no-op elsewhere.
 package media
 
 import "log/slog"

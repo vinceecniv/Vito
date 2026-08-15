@@ -81,7 +81,6 @@
 "Got it": "Am înțeles",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "Vito ascultă vocea ta și lipește textul finalizat direct acolo unde este cursorul. Iată cum începi:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Creează o cheie API AssemblyAI (necesară) și introdu-o la Setări → Recunoaștere vocală.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Vrei curățare AI automată? Atunci creează și o cheie API Anthropic și introdu-o.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Setează scurtătura de start/stop la Setări → Activare și parcurge celelalte setări.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Apasă scurtătura, vorbește, iar Vito lipește textul acolo unde este cursorul.",
 "Close the welcome card?": "Închizi cardul de bun venit?",
@@ -262,7 +261,6 @@
 "Display": "Afișare",
 "System": "Sistem",
 "Other": "Altele",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "Vito funcționează după modelul „Bring Your Own Key” (BYOK): folosești propriile chei API (AssemblyAI sau Soniox pentru recunoașterea vocală, Anthropic pentru curățarea AI). Vito nu îți percepe nimic și nu trimite audioul sau textul tău nicăieri în afară de furnizorii cărora le aparțin cheile.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Furnizarea, gestionarea și securizarea acestor chei — și toate costurile pe care le implică utilizarea lor la furnizori — sunt în întregime responsabilitatea ta.",
 "Privacy & data": "Confidențialitate și date",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito nu colectează în niciun fel date ale utilizatorilor pentru a le trimite mai departe și nu există nicio formă de urmărire sau analiză integrată în aplicație. Setările, dicționarul și istoricul tău rămân local pe propriul computer.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Vietnameză",
 "About these costs": "Despre aceste costuri",
 "How do these costs work?": "Cum funcționează aceste costuri?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "Vito nu îți percepe niciodată nimic. Toate costurile sunt externe: le plătești direct furnizorilor API cărora le aparțin propriile chei — AssemblyAI pentru recunoașterea vocală și Anthropic pentru curățarea AI.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Această sumă este o estimare. Vito înmulțește utilizarea ta măsurată cu tarifele de mai jos; nu este o factură. Costul real se află în tabloul de bord al furnizorului și poate diferi din cauza modificărilor de preț, a creditului gratuit, a reducerilor sau a taxelor.",
 "Calculated with:": "Se calculează cu:",
 "per hour of recorded audio": "pe oră de audio înregistrat",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Estimare a costului tokenurilor",
 "Input · $/Mtok": "Intrare · $/Mtok",
 "Output · $/Mtok": "Ieșire · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Câte comenzi vocale Vito Assist ai rulat în această perioadă — instrucțiunile „Vito, …” care traduc, rezumă, răspund sau remodelează dictarea ta."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Câte comenzi vocale Vito Assist ai rulat în această perioadă — instrucțiunile „Vito, …” care traduc, rezumă, răspund sau remodelează dictarea ta.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Apăsați aceste combinații oriunde în macOS. Folosiți cel puțin Control, Option sau Command. Apăsați Esc într-un câmp pentru a-l goli.",
+"Choose a combination with at least Control, Option or Command.": "Alegeți o combinație cu cel puțin Control, Option sau Command.",
+"Grant Accessibility permission": "Acordă permisiunea Accesibilitate",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "Vito are nevoie de permisiunea Accesibilitate pentru scurtăturile globale. Acordați-o în Configurări sistem → Confidențialitate și securitate → Accesibilitate.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Bifați Vito în Configurări sistem — scurtătura începe să funcționeze după câteva secunde."
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",

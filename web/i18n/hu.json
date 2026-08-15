@@ -81,7 +81,6 @@
 "Got it": "Értem",
 "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:": "A Vito a hangodra figyel, és a kész szöveget közvetlenül oda illeszti, ahol a kurzorod áll. Így kezdheted el:",
 "Create an AssemblyAI API key (required) and enter it in Settings → Speech recognition.": "Hozz létre egy AssemblyAI API-kulcsot (szükséges), és add meg a Beállítások → Beszédfelismerés menüben.",
-"Want automatic AI cleanup? Then also create an Anthropic API key and enter it.": "Szeretnél automatikus AI-tisztítást? Akkor hozz létre egy Anthropic API-kulcsot is, és add meg.",
 "Set your start/stop hotkey under Settings → Activation and review the other settings.": "Állítsd be az indítás/leállítás gyorsbillentyűt a Beállítások → Aktiválás menüben, és nézd át a többi beállítást.",
 "Press your hotkey, speak, and Vito pastes the text where your cursor is.": "Nyomd le a gyorsbillentyűt, beszélj, és a Vito oda illeszti a szöveget, ahol a kurzorod áll.",
 "Close the welcome card?": "Bezárod az üdvözlőkártyát?",
@@ -262,7 +261,6 @@
 "Display": "Megjelenés",
 "System": "Rendszer",
 "Other": "Egyéb",
-"Vito uses a \"Bring Your Own Key\" (BYOK) model: you use your own API keys (AssemblyAI or Soniox for speech recognition, Anthropic for the AI cleanup). Vito charges you nothing itself and sends your audio or text nowhere except to the providers your keys belong to.": "A Vito a „Bring Your Own Key” (BYOK) modell szerint működik: a saját API-kulcsaidat használod (AssemblyAI vagy Soniox a beszédfelismeréshez, Anthropic az AI-tisztításhoz). A Vito maga semmit sem számol fel, és a hangodat vagy szövegedet kizárólag azoknak a szolgáltatóknak küldi, amelyekhez a kulcsok tartoznak.",
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "E kulcsok biztosítása, kezelése és védelme — valamint minden, a szolgáltatóknál a használatukból eredő költség — teljes mértékben a te felelősséged.",
 "Privacy & data": "Adatvédelem és adatok",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "A Vito semmilyen módon nem gyűjt felhasználói adatokat továbbítás céljából, és semmilyen nyomkövetés vagy analitika nincs beépítve az alkalmazásba. A beállításaid, szótárad és előzményeid helyben, a saját számítógépeden maradnak.",
@@ -330,7 +328,6 @@
 "Vietnamese": "Vietnami",
 "About these costs": "E költségekről",
 "How do these costs work?": "Hogyan alakulnak ezek a költségek?",
-"Vito never charges you anything. All costs are external: you pay them straight to the API providers your own keys belong to — AssemblyAI for speech recognition and Anthropic for AI cleanup.": "A Vito maga semmit sem számol fel. Minden költség külső: közvetlenül azoknak az API-szolgáltatóknak fizeted, amelyekhez a saját kulcsaid tartoznak — AssemblyAI a beszédfelismeréshez és Anthropic az AI-tisztításhoz.",
 "This amount is an estimate. Vito multiplies your measured usage by the rates below; it is not an invoice. The real charge is in your provider's dashboard and can differ because of price changes, free credit, discounts or taxes.": "Ez az összeg becslés. A Vito a mért használatodat megszorozza az alábbi díjszabással; ez nem számla. A valós elszámolás a szolgáltatód irányítópultján található, és eltérhet ártváltozások, ingyenes kredit, kedvezmények vagy adók miatt.",
 "Calculated with:": "A számítás alapja:",
 "per hour of recorded audio": "óránként felvett hang",
@@ -646,7 +643,12 @@
 "Token cost estimate": "Tokenköltség-becslés",
 "Input · $/Mtok": "Bemenet · $/Mtok",
 "Output · $/Mtok": "Kimenet · $/Mtok",
-"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Hány Vito Assist hangparancsot futtattál ebben az időszakban — a »Vito, …« utasításokat, amelyek lefordítják, összefoglalják, megválaszolják vagy átformálják a diktálásodat."
+"How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.": "Hány Vito Assist hangparancsot futtattál ebben az időszakban — a »Vito, …« utasításokat, amelyek lefordítják, összefoglalják, megválaszolják vagy átformálják a diktálásodat.",
+"Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.": "Nyomd meg ezeket a kombinációkat bárhol a macOS-ben. Használj legalább Control, Option vagy Command billentyűt. Egy mezőben az Esc törli.",
+"Choose a combination with at least Control, Option or Command.": "Válassz olyan kombinációt, amelyben van legalább Control, Option vagy Command.",
+"Grant Accessibility permission": "Kisegítő lehetőségek engedély megadása",
+"Vito needs Accessibility permission for global hotkeys. Grant it under System Settings → Privacy & Security → Accessibility.": "A Vitónak Kisegítő lehetőségek engedély kell a globális gyorsbillentyűkhöz. Add meg a Rendszerbeállítások → Adatvédelem és biztonság → Kisegítő lehetőségek alatt.",
+"Tick Vito in System Settings — the hotkey starts working a few seconds later.": "Pipáld ki a Vitót a Rendszerbeállításokban — a gyorsbillentyű pár másodperc múlva működni kezd."
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",
