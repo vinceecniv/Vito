@@ -10,6 +10,7 @@ import (
 	"sync"
 
 	"vito/internal/config"
+	"vito/internal/xdgportal"
 )
 
 // Linux has three ways to press keys in another application, and Vito keeps all
@@ -73,6 +74,20 @@ func canType(cfg config.Injection) bool {
 	if resolveBackend(cfg) != backendYdotool {
 		return true
 	}
+	return ydotoolUsable()
+}
+
+// ydotoolUsable reports whether the uinput route could actually deliver.
+//
+// Inside a Flatpak the answer is always no, and that is worth short-circuiting
+// rather than discovering through a failed exec: the binary is not shipped, the
+// sandbox has no /dev/uinput and no daemon to talk to, and there is no version
+// of "install ydotool" that would change any of it. Telling the user to follow
+// the README there is advice they cannot act on.
+func ydotoolUsable() bool {
+	if xdgportal.InFlatpak() {
+		return false
+	}
 	_, err := exec.LookPath("ydotool")
 	return err == nil
 }
@@ -87,29 +102,49 @@ func adjustMode(cfg config.Injection, mode Mode) Mode {
 	return ModeClipboardOnly
 }
 
-func injectPlatform(cfg config.Injection, mode Mode, text string) error {
+func injectPlatform(cfg config.Injection, mode Mode, text string) (Mode, error) {
 	// Clipboard-only types nothing, so it is the same either way.
 	if mode == ModeClipboardOnly {
-		return copyText(text)
+		return mode, copyText(text)
 	}
 	backend := resolveBackend(cfg)
 	setLastBackend(backend)
 
 	switch backend {
 	case backendWayland:
-		return wtypeInject(cfg, mode, text)
+		return mode, wtypeInject(cfg, mode, text)
 	case backendPortal:
 		err := portalInject(cfg, mode, text)
 		// errPortalUnavailable is only returned before any key was sent (no
 		// portal, permission refused, timed out), so falling back cannot deliver
 		// the text twice. Any other error means keys were already in flight.
 		if err != nil && errors.Is(err, errPortalUnavailable) && cfg.Backend != backendPortal {
-			setLastBackend(backendYdotool)
-			return ydotoolInject(cfg, mode, text)
+			return fallback(cfg, mode, text)
 		}
-		return err
+		return mode, err
 	}
-	return ydotoolInject(cfg, mode, text)
+	return fallback(cfg, mode, text)
+}
+
+// fallback delivers after the preferred route turned out to be unavailable.
+//
+// It exists because "the portal is advertised" and "the portal works" are
+// different claims, and the difference only shows on the first dictation. When
+// ydotool can still take over it does; when it cannot — a sandbox, or simply a
+// machine without it — the text goes to the clipboard rather than surfacing an
+// error about a tool the user may have no way to provide. The transcript is
+// already earned by then, and losing it to a setup problem is the worst possible
+// outcome.
+//
+// The returned mode is what actually happened, not what was asked for, so the
+// caller can tell the user their text was copied instead of typed.
+func fallback(cfg config.Injection, mode Mode, text string) (Mode, error) {
+	if ydotoolUsable() {
+		setLastBackend(backendYdotool)
+		return mode, ydotoolInject(cfg, mode, text)
+	}
+	setLastBackend(backendClipboard)
+	return ModeClipboardOnly, copyText(text)
 }
 
 func setLastBackend(name string) {
@@ -183,6 +218,11 @@ func checkTool(name string) error {
 // log line and the Linux diagnostics panel. Now that there are three of them,
 // "which one am I actually on?" is the first question worth answering when
 // delivery misbehaves.
+// Sandboxed reports whether Vito is running inside a Flatpak. The settings page
+// uses it to stop offering advice that only applies outside one — installing
+// helpers it cannot see, or a delivery route the sandbox forbids.
+func Sandboxed() bool { return xdgportal.InFlatpak() }
+
 func ActiveBackend(cfg config.Injection) string {
 	if !canType(cfg) {
 		return backendClipboard

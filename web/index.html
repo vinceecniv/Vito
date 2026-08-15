@@ -1897,6 +1897,12 @@ const TR = { nl: {
   "Vito has been updated to {v}.":"Vito is bijgewerkt naar versie {v}.",
   "Welcome, Linux user! Set Vito up for your desktop in the Linux settings.":"Welkom, Linux-gebruiker! Stel Vito in voor je desktop bij de Linux-instellingen.",
   "Open Linux settings":"Linux-instellingen openen",
+  "Get the AppImage":"Download de AppImage",
+  "Vito can't press keys on this desktop from inside the Flatpak, so your dictations go to the clipboard. The AppImage can type them for you.":"Vito kan vanuit de Flatpak geen toetsen aanslaan op deze desktop, dus je dictaten komen op het klembord. De AppImage kan ze wel voor je typen.",
+  "Vito is running as a Flatpak. Everything it needs to reach your clipboard and type is bundled or comes from your desktop through the portals, so there is nothing to install here.":"Vito draait als Flatpak. Alles wat nodig is voor het klembord en om te typen zit erin of komt via de portals van je desktop, dus hier valt niets te installeren.",
+  "This desktop has no RemoteDesktop portal, and the sandbox blocks the alternative, so nothing here can press a key. Your dictations are copied to the clipboard and you paste them yourself. The AppImage has no such limit on this desktop.":"Deze desktop heeft geen RemoteDesktop-portal, en de sandbox blokkeert het alternatief, dus niets hier kan een toets aanslaan. Je dictaten worden naar het klembord gekopieerd en je plakt ze zelf. De AppImage heeft die beperking hier niet.",
+  "Your desktop provides the portals Vito uses, so text delivery and the hotkey work without any setup.":"Je desktop biedt de portals die Vito gebruikt, dus tekstlevering en de sneltoets werken zonder instellen.",
+  "On Wayland the shortcut belongs to your desktop, not to Vito. Where the portal allows it Vito asks for one and you confirm it once; otherwise you bind a key yourself. Both are explained under Settings → Activation.":"Op Wayland hoort de sneltoets bij je desktop, niet bij Vito. Waar de portal het toestaat vraagt Vito er een aan en bevestig je die één keer; anders bind je zelf een toets. Beide staan uitgelegd bij Instellingen → Activering.",
   "Choose which cards to show, and in what order":"Kies welke kaarten je ziet, en in welke volgorde",
   "Edit this page":"Deze pagina aanpassen","Status page layout":"Indeling statuspagina",
   "Show or hide cards, and drag them into the order you want.":"Toon of verberg kaarten, en sleep ze in de volgorde die je wilt.",
@@ -3984,23 +3990,39 @@ function maybeShowWelcome(){
 // settings. Dismissible any time (remembered locally). renderLinuxCard supplies
 // the authoritative OS; both it and maybeShowWelcome poke this, so it shows once
 // config and OS are both known, whichever lands last.
-let lastIsLinux = false;
+let lastIsLinux = false, lastLinuxInfo = null;
 function maybeShowLinuxHint(){
   if (!lastIsLinux) return;
-  if (!(cfg && cfg.ui && !cfg.ui.welcome_done)) return; // first-run window only
-  let dismissed = false; try { dismissed = localStorage.getItem("vito-linux-hint") === "1"; } catch {}
+  const info = lastLinuxInfo || {};
+  // A Flatpak on a desktop with the portals needs no introduction: there are no
+  // helpers to install and no key to bind by hand. Staying quiet there is the
+  // whole point of having packaged it.
+  const stuck = info.flatpak && info.backend === "clipboard";
+  if (info.flatpak && !stuck) return;
+  // The stuck case is not onboarding — it says the download does not fit this
+  // desktop — so it is worth showing outside the first-run window too.
+  if (!stuck && !(cfg && cfg.ui && !cfg.ui.welcome_done)) return;
+  const key = stuck ? "vito-flatpak-hint" : "vito-linux-hint";
+  let dismissed = false; try { dismissed = localStorage.getItem(key) === "1"; } catch {}
   if (dismissed) return;
   const slot = $("linux-banner"); if (!slot || slot.firstChild) return;
+  const text = stuck
+    ? t("Vito can't press keys on this desktop from inside the Flatpak, so your dictations go to the clipboard. The AppImage can type them for you.")
+    : t("Welcome, Linux user! Set Vito up for your desktop in the Linux settings.");
+  const action = stuck ? t("Get the AppImage") : t("Open Linux settings");
   slot.innerHTML =
     `<div class="update-bar linux-bar">` +
       `<span class="ub-ico tux-slot"></span>` +
-      `<span class="ub-text">${t("Welcome, Linux user! Set Vito up for your desktop in the Linux settings.")}</span>` +
-      `<button class="linkbtn" id="lx-open">${t("Open Linux settings")}</button>` +
+      `<span class="ub-text">${text}</span>` +
+      `<button class="linkbtn" id="lx-open">${action}</button>` +
       `<button class="ub-x" id="lx-dismiss" title="${t("Close")}" aria-label="${t("Close")}">×</button>` +
     `</div>`;
   const ic = slot.querySelector(".tux-slot"); if (ic) ic.innerHTML = TUX_SVG;
-  const o = $("lx-open"); if (o) o.onclick = () => { selectTab("settings"); selectSetSection("linux"); };
-  const x = $("lx-dismiss"); if (x) x.onclick = () => { slot.innerHTML = ""; try { localStorage.setItem("vito-linux-hint", "1"); } catch {} };
+  const o = $("lx-open");
+  if (o) o.onclick = stuck
+    ? () => window.open(releasesURL(), "_blank")
+    : () => { selectTab("settings"); selectSetSection("linux"); };
+  const x = $("lx-dismiss"); if (x) x.onclick = () => { slot.innerHTML = ""; try { localStorage.setItem(key, "1"); } catch {} };
 }
 
 /* ---- Linux tools report card (status page) ----
@@ -4042,11 +4064,17 @@ async function renderLinuxCard(){
   try { info = await api("/api/linux-tools"); } catch { if (tab) tab.hidden = true; return; }
   const isLinux = !!info && info.os === "linux";
   lastIsLinux = isLinux;
+  lastLinuxInfo = isLinux ? info : null;
   maybeShowLinuxHint();
   if (tab) tab.hidden = !isLinux;
   if (!isLinux) { body.innerHTML = ""; return; }
   const present = info.present || {};
   const backend = info.backend || "";
+  // Inside the sandbox the helper list is not a to-do list: wl-copy and wtype are
+  // bundled, and ydotool is absent on purpose and cannot be added. Listing them
+  // with a red cross would invite the user to install something that would change
+  // nothing, so the Flatpak gets a shorter, truthful card instead.
+  if (info.flatpak) { body.innerHTML = flatpakLinuxHTML(backend); wireLinuxButtons(); return; }
   const required = linuxRequired(backend);
   const rows = LINUX_TOOLS.map(tl => {
     const ok = !!present[tl.name];
@@ -4067,13 +4095,35 @@ async function renderLinuxCard(){
     <div class="toollist">${rows}</div>
     ${backend === "clipboard" ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("Nothing on this system can press a key for you, so dictations are put on the clipboard and you paste them yourself. Inside a Flatpak that happens on compositors without a RemoteDesktop portal: the sandbox filters out the virtual-keyboard protocol.")}</p>`
       : missingReq ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.")}</p>` : ""}
-    <p class="act-note" style="margin-top:10px;">${t("On Wayland no app can claim global hotkeys itself — you bind your start/stop key in your compositor. That's explained under Settings → Activation.")}</p>
+    <p class="act-note" style="margin-top:10px;">${t("On Wayland the shortcut belongs to your desktop, not to Vito. Where the portal allows it Vito asks for one and you confirm it once; otherwise you bind a key yourself. Both are explained under Settings → Activation.")}</p>
     <div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;">
       <button class="btn ghost small" id="linux-activation">${t("Go to Activation")}</button>
       <button class="btn ghost small" id="linux-retest">${t("Re-test")}</button>
     </div>`;
-  $("linux-retest").onclick = renderLinuxCard;
-  $("linux-activation").onclick = () => selectSetSection("activation");
+  wireLinuxButtons();
+}
+function wireLinuxButtons(){
+  const r = $("linux-retest"); if (r) r.onclick = renderLinuxCard;
+  const a = $("linux-activation"); if (a) a.onclick = () => selectSetSection("activation");
+  const d = $("linux-appimage"); if (d) d.onclick = () => window.open(releasesURL(), "_blank");
+}
+// Where to send someone who needs the other download. The update check already
+// knows the repository; the literal is only for the moment before it answers.
+function releasesURL(){
+  return (updateState && updateState.repo_url) || "https://github.com/vinceecniv/vito/releases";
+}
+// The Flatpak's own version of the Linux card. Same questions answered — how is
+// text delivered, how is the hotkey bound — without the helper checklist that
+// only makes sense where the user installs the helpers themselves.
+function flatpakLinuxHTML(backend){
+  const stuck = backend === "clipboard";
+  return `<p class="act-note" style="margin:0 0 8px;">${t("Vito is running as a Flatpak. Everything it needs to reach your clipboard and type is bundled or comes from your desktop through the portals, so there is nothing to install here.")}</p>` +
+    (backend ? `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(BACKEND_LABELS[backend] || backend)}</p>` : "") +
+    (stuck
+      ? `<p class="act-note" style="color:var(--coral); margin:10px 0 0;">${t("This desktop has no RemoteDesktop portal, and the sandbox blocks the alternative, so nothing here can press a key. Your dictations are copied to the clipboard and you paste them yourself. The AppImage has no such limit on this desktop.")}</p>` +
+        `<div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;"><button class="btn ghost small" id="linux-appimage">${t("Get the AppImage")}</button><button class="btn ghost small" id="linux-retest">${t("Re-test")}</button></div>`
+      : `<p class="act-note" style="margin:10px 0 0;">${t("Your desktop provides the portals Vito uses, so text delivery and the hotkey work without any setup.")}</p>` +
+        `<div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;"><button class="btn ghost small" id="linux-activation">${t("Go to Activation")}</button><button class="btn ghost small" id="linux-retest">${t("Re-test")}</button></div>`);
 }
 renderLinuxCard();
 

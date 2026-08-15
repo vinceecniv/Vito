@@ -594,6 +594,10 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 		"present":        present,
 		"ydotool_socket": socket,
 		"backend":        inject.ActiveBackend(s.d.Config().Injection),
+		// Inside a Flatpak most of this card is beside the point: the helpers are
+		// bundled or forbidden, not something the user installs. The UI needs to
+		// know which story to tell, and only the daemon can see the sandbox.
+		"flatpak": inject.Sandboxed(),
 	})
 }
 
