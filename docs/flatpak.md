@@ -18,8 +18,8 @@ flatpak remote-add --user --if-not-exists vito https://vinceecniv.github.io/Vito
 flatpak install --user vito io.github.vinceecniv.vito
 ```
 
-Until the repository is signed, that second command needs the remote to have been
-added with `--no-gpg-verify`; see below.
+Nothing else: the repository is signed, and `vito.flatpakrepo` carries the public
+key, so flatpak verifies every pull without the user doing anything.
 
 ## What is in the sandbox, and what is not
 
@@ -129,19 +129,27 @@ would have to be downloaded and reinstalled by hand for every release.
 
 One-time repository setup: enable Pages with "GitHub Actions" as the source.
 
-### Signing (recommended)
+### Signing
 
-Without a key the repo is unsigned and users must add the remote with
-`--no-gpg-verify`, which means nothing verifies what they are updating to. To
-sign:
+The repository **is** signed. `vito.flatpakrepo` carries `GPGKey=` — the base64
+of the public key — so flatpak checks every pull against it and refuses an
+update that does not verify. Users need no extra flag, and `--no-gpg-verify`
+should never appear in the install instructions again.
 
-```sh
-gpg --quick-generate-key "Vito Flatpak Repository" default default never
-gpg --armor --export-secret-keys <KEY-ID>      # -> secret FLATPAK_GPG_KEY
-```
+The key is an ed25519 pair created with `gpg --quick-generate-key "Vito Flatpak
+Repository" default default never`, held as two repository secrets:
+`FLATPAK_GPG_KEY` (the armoured private key) and `FLATPAK_GPG_ID` (the
+fingerprint). The workflow imports them, signs the repo, and exports the public
+key to `repo/vito.gpg` beside it. Without those secrets it still builds and
+publishes, just unsigned — which would break every existing installation, since
+their remote now expects a signature.
 
-Add `FLATPAK_GPG_KEY` (the armoured private key) and `FLATPAK_GPG_ID` (the key
-id) as repository secrets; the workflow signs the repo and exports the public key
-to `repo/vito.gpg` when they are present. Then add a `GPGKey=` line to
-`vito.flatpakrepo` with the base64 of that public key, and drop the
-`--no-gpg-verify` from the install instructions.
+**It has no passphrase**, because the workflow imports and signs unattended with
+nowhere to type one. Treat the private key accordingly: it lives only in the
+repository secrets and in the author's keyring, and GitHub will not show it
+again.
+
+**Replacing the key is not free.** The public half is baked into every remote a
+user has already added, so a new key means everyone re-adds the remote — the
+same cost as losing it. Keep a backup of the secret key and the revocation
+certificate that `gpg` wrote to `~/.gnupg/openpgp-revocs.d/`.

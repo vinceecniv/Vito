@@ -5,3 +5,6 @@ Homepage=https://vito.talk
 Comment=Voice In, Text Out — dictate anywhere with a hotkey
 Description=Free, open-source voice dictation. Press a hotkey, speak, and clean text is pasted where your cursor is. Bring your own API key; no subscription.
 Icon=https://vito.talk/icon-512.png
+# The repository signing key. flatpak verifies every pull against this, so a
+# tampered or truncated update is refused rather than installed.
+GPGKey=mDMEaoBcchYJKwYBBAHaRw8BAQdATV8cgy9BeoZgkUivKRC3zyK8xNeutxYHreKTvowEDqG0F1ZpdG8gRmxhdHBhayBSZXBvc2l0b3J5iJMEExYKADsWIQQUgyQqDBe52y7SkJRRGs8QcGryfwUCaoBccgIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgAAKCRBRGs8QcGryf9OrAQCjXK++FqOW6YUFQ9wdgJzEvgK6bFrmFAFiCsmjrKY+igD5AVzrm3Um8PAI2BmN7L+I2ZmZuQs6NXnLfzpSa9Wy5Qe4OARqgFxyEgorBgEEAZdVAQUBAQdAr2SAxAMseS5ZzR8/N0aSWR2xW3gsPXFrm9svXTQmLUYDAQgHiHgEGBYKACAWIQQUgyQqDBe52y7SkJRRGs8QcGryfwUCaoBccgIbDAAKCRBRGs8QcGryf31YAQD+guciZEtywb2dlupSYG4Qy4IHzc/zEz9I0pm4uZbeQgEAuXMSOstfrpWmnNvdRMvdv8X3dhtAnDQpM6dCb9CWcQE=
