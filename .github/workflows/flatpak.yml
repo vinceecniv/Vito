@@ -30,6 +30,13 @@ jobs:
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
       options: --privileged
+    env:
+      # Hoisted here because `secrets` is not one of the contexts allowed in an
+      # `if:` — using it there does not evaluate to false, it makes the whole
+      # workflow unparseable. `env` is allowed in both, so the steps below test
+      # these instead.
+      GPG_KEY: ${{ secrets.FLATPAK_GPG_KEY }}
+      GPG_ID: ${{ secrets.FLATPAK_GPG_ID }}
     steps:
       - uses: actions/checkout@v7
 
@@ -54,10 +61,7 @@ jobs:
         # would break `flatpak update` for existing installations rather than
         # merely weakening it. The condition stays so a fork without the secret
         # still gets a working (unsigned) build.
-        if: ${{ secrets.FLATPAK_GPG_KEY != '' }}
-        env:
-          GPG_KEY: ${{ secrets.FLATPAK_GPG_KEY }}
-          GPG_ID: ${{ secrets.FLATPAK_GPG_ID }}
+        if: env.GPG_KEY != ''
         run: |
           set -eu
           printf '%s' "$GPG_KEY" | gpg --batch --import
@@ -65,8 +69,8 @@ jobs:
           flatpak build-update-repo repo --gpg-sign="$GPG_ID" --generate-static-deltas
           gpg --batch --export "$GPG_ID" > repo/vito.gpg
 
-      - name: Finish the repository
-        if: ${{ secrets.FLATPAK_GPG_KEY == '' }}
+      - name: Finish the repository (unsigned — a fork without the key)
+        if: env.GPG_KEY == ''
         run: flatpak build-update-repo repo --generate-static-deltas
 
       - name: Add the .flatpakrepo users point at
