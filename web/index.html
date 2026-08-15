@@ -1898,6 +1898,10 @@ const TR = { nl: {
   "Welcome, Linux user! Set Vito up for your desktop in the Linux settings.":"Welkom, Linux-gebruiker! Stel Vito in voor je desktop bij de Linux-instellingen.",
   "Open Linux settings":"Linux-instellingen openen",
   "Get the AppImage":"Download de AppImage",
+  "Wayland virtual-keyboard (wtype)":"Wayland virtual-keyboard (wtype)",
+  "RemoteDesktop portal":"RemoteDesktop-portal",
+  "ydotool (uinput)":"ydotool (uinput)",
+  "SendInput":"SendInput",
   "Vito can't press keys on this desktop from inside the Flatpak, so your dictations go to the clipboard. The AppImage can type them for you.":"Vito kan vanuit de Flatpak geen toetsen aanslaan op deze desktop, dus je dictaten komen op het klembord. De AppImage kan ze wel voor je typen.",
   "Vito is running as a Flatpak. Everything it needs to reach your clipboard and type is bundled or comes from your desktop through the portals, so there is nothing to install here.":"Vito draait als Flatpak. Alles wat nodig is voor het klembord en om te typen zit erin of komt via de portals van je desktop, dus hier valt niets te installeren.",
   "This desktop has no RemoteDesktop portal, and the sandbox blocks the alternative, so nothing here can press a key. Your dictations are copied to the clipboard and you paste them yourself. The AppImage has no such limit on this desktop.":"Deze desktop heeft geen RemoteDesktop-portal, en de sandbox blokkeert het alternatief, dus niets hier kan een toets aanslaan. Je dictaten worden naar het klembord gekopieerd en je plakt ze zelf. De AppImage heeft die beperking hier niet.",
@@ -4037,7 +4041,9 @@ const LINUX_TOOLS = [
   { name:"notify-send", nl:"Bureaubladmeldingen",                          en:"Desktop notifications" },
   { name:"pactl",       nl:"Microfoonniveau instellen",                    en:"Setting the microphone level" },
 ];
-// How the active delivery route is named in the UI.
+// How the active delivery route is named in the UI. The values are translation
+// keys like any other user-facing string; the ones that are product names
+// (SendInput, wtype) simply come back unchanged.
 const BACKEND_LABELS = {
   wayland:   "Wayland virtual-keyboard (wtype)",
   portal:    "RemoteDesktop portal",
@@ -4086,7 +4092,7 @@ async function renderLinuxCard(){
   }).join("");
   const missingReq = LINUX_TOOLS.some(tl => required.has(tl.name) && !present[tl.name]);
   const backendRow = backend
-    ? `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(BACKEND_LABELS[backend] || backend)}</p>`
+    ? `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(t(BACKEND_LABELS[backend] || backend))}</p>`
     : "";
   body.innerHTML =
     `<p class="act-note" style="margin:0 0 8px;">${t("On Linux, Vito depends on your distribution and desktop environment: some external helpers must be installed, and extra steps are sometimes needed. Below is what Vito found on this system.")}</p>
@@ -4118,7 +4124,7 @@ function releasesURL(){
 function flatpakLinuxHTML(backend){
   const stuck = backend === "clipboard";
   return `<p class="act-note" style="margin:0 0 8px;">${t("Vito is running as a Flatpak. Everything it needs to reach your clipboard and type is bundled or comes from your desktop through the portals, so there is nothing to install here.")}</p>` +
-    (backend ? `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(BACKEND_LABELS[backend] || backend)}</p>` : "") +
+    (backend ? `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(t(BACKEND_LABELS[backend] || backend))}</p>` : "") +
     (stuck
       ? `<p class="act-note" style="color:var(--coral); margin:10px 0 0;">${t("This desktop has no RemoteDesktop portal, and the sandbox blocks the alternative, so nothing here can press a key. Your dictations are copied to the clipboard and you paste them yourself. The AppImage has no such limit on this desktop.")}</p>` +
         `<div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;"><button class="btn ghost small" id="linux-appimage">${t("Get the AppImage")}</button><button class="btn ghost small" id="linux-retest">${t("Re-test")}</button></div>`
