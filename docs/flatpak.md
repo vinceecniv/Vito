@@ -57,6 +57,37 @@ in as many words rather than reporting a missing ydotool, which would point the
 user at something they cannot fix. Users on those compositors are better served
 by the AppImage until their compositor implements the portal.
 
+**The obvious workaround does not work, and it is worth knowing why before
+trying it.** The advice you will find is to hand the app the compositor's real
+socket instead of the managed one:
+
+```sh
+flatpak override --user --filesystem=xdg-run/wayland-1 io.github.vinceecniv.vito
+```
+
+Measured on Flatpak 1.18 (Fedora 44, niri): it changes nothing. `wtype` still
+reports *"Compositor does not support the virtual keyboard protocol"*. The
+reason is visible from inside the sandbox — `$XDG_RUNTIME_DIR` is not a
+directory with the host's sockets in it, but a set of symlinks into Flatpak's
+own tree:
+
+```
+wayland-1 -> ../../flatpak/wayland-1
+bus       -> ../../flatpak/bus
+pulse     -> ../../flatpak/pulse
+```
+
+The `--filesystem` grant would have to land on exactly the path Flatpak already
+owns a symlink at, so it is shadowed and never appears. Adding
+`--nosocket=wayland` does not free the path either: the symlink stays, now
+dangling. Both were tried.
+
+So the managed socket is structural, not a setting — which means this cannot be
+fixed from the manifest either, since a manifest `finish-args` entry performs
+the same grant that was just shown to be inert. Where the RemoteDesktop portal
+is absent, a sandboxed Vito cannot type. That is the sandbox working as
+designed, and the AppImage is the answer.
+
 Bundled: `wl-clipboard` (the clipboard is used by paste mode, clipboard-only mode
 and Vito Assist's clipboard commands) and `wtype`.
 
