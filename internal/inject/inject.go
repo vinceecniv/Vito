@@ -42,7 +42,13 @@ func Inject(cfg config.Injection, text string) (Mode, error) {
 	// injection route. Deliver to the clipboard instead of failing; the caller
 	// reports the mode actually used, so the user is told where the text went.
 	mode = adjustMode(cfg, mode)
-	if err := injectPlatform(cfg, mode, text); err != nil {
+	// The route can also turn out to be unavailable only once it is tried — a
+	// portal that is advertised but has no backend behind it. injectPlatform
+	// reports what it ended up doing, which may be "copied" where "pasted" was
+	// asked for, so that is the mode the caller hears about.
+	used, err := injectPlatform(cfg, mode, text)
+	mode = used
+	if err != nil {
 		return mode, err
 	}
 	// Optionally submit the text with a trailing Enter (handy for chat/REPL

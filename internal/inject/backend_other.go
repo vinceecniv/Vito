@@ -14,3 +14,7 @@ func ActiveBackend(cfg config.Injection) string { return "" }
 // always has CGEventPost. A missing Accessibility grant is a different thing —
 // an error the user can act on, reported as such rather than silently downgraded.
 func adjustMode(cfg config.Injection, mode Mode) Mode { return mode }
+
+// Sandboxed is always false here: the Flatpak is a Linux packaging format, and
+// nothing else Vito ships confines it this way.
+func Sandboxed() bool { return false }

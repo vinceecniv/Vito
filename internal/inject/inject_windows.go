@@ -16,7 +16,15 @@ import (
 // injectPlatform implements clipboard + SendInput Ctrl+V on Windows, with
 // Unicode SendInput typing and clipboard-only as alternative modes.
 // NOTE: written per Win32 docs; validated on the Windows machine, not here.
-func injectPlatform(cfg config.Injection, mode Mode, text string) error {
+// injectPlatform delivers, and reports the mode it actually used. Only Linux
+// can end up somewhere other than where it aimed — Windows has one way to press
+// a key and it is either available or an error — so the mode passes straight
+// through here.
+func injectPlatform(cfg config.Injection, mode Mode, text string) (Mode, error) {
+	return mode, injectHere(cfg, mode, text)
+}
+
+func injectHere(cfg config.Injection, mode Mode, text string) error {
 	switch mode {
 	case ModeClipboardOnly:
 		return setClipboardText(text)
@@ -229,4 +237,7 @@ func adjustMode(cfg config.Injection, mode Mode) Mode { return mode }
 
 // ActiveBackend names the backend an injection would use. Windows has exactly
 // one way to do this, so there is nothing to choose.
+// Sandboxed is always false on Windows: there is no equivalent packaging.
+func Sandboxed() bool { return false }
+
 func ActiveBackend(cfg config.Injection) string { return "sendinput" }

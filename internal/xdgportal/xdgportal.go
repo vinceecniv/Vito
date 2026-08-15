@@ -38,6 +38,25 @@ var ErrCancelled = errors.New("cancelled by the user")
 
 // Bus returns the shared session bus. Do not close it: portal sessions are tied
 // to the connection, so closing it would tear them down.
+// InFlatpak reports whether we are running inside a Flatpak sandbox.
+//
+// It decides more than cosmetics: inside the sandbox ydotool cannot work at all
+// (no /dev/uinput, no daemon, and the binary is not shipped), and Flatpak hands
+// the app a proxied Wayland socket with the virtual-keyboard protocol filtered
+// out. So a sandboxed Vito has exactly one way to press a key — the
+// RemoteDesktop portal — and callers need to know that before offering a route
+// that cannot exist.
+//
+// FLATPAK_ID is set for the app's own processes; /.flatpak-info exists for every
+// process in the sandbox, including ones spawned without that environment.
+func InFlatpak() bool {
+	if os.Getenv("FLATPAK_ID") != "" {
+		return true
+	}
+	_, err := os.Stat("/.flatpak-info")
+	return err == nil
+}
+
 func Bus() (*dbus.Conn, error) { return dbus.SessionBus() }
 
 // Version reports the version of a portal interface, and whether it is present

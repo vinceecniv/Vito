@@ -24,7 +24,15 @@ import (
 // which macOS gates behind the Accessibility right. Without it the calls
 // succeed but do nothing at all, so the modes that need it check first and say
 // so rather than reporting a silent success.
-func injectPlatform(cfg config.Injection, mode Mode, text string) error {
+// injectPlatform delivers, and reports the mode it actually used. Only Linux
+// can end up somewhere other than where it aimed — macOS has one way to press
+// a key and it is either available or an error — so the mode passes straight
+// through here.
+func injectPlatform(cfg config.Injection, mode Mode, text string) (Mode, error) {
+	return mode, injectHere(cfg, mode, text)
+}
+
+func injectHere(cfg config.Injection, mode Mode, text string) error {
 	switch mode {
 	case ModeClipboardOnly:
 		return setClipboardText(text)

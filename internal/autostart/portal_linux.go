@@ -25,16 +25,10 @@ import (
 
 const ifaceBackground = "org.freedesktop.portal.Background"
 
-// inFlatpak reports whether we are running inside a Flatpak sandbox. Outside
-// one, the file-based route is kept: it works, it is inspectable, and it costs
+// inFlatpak is xdgportal's detection under a local name. Outside a sandbox the
+// file-based autostart route is kept: it works, it is inspectable, and it costs
 // the user no extra permission dialog.
-func inFlatpak() bool {
-	if os.Getenv("FLATPAK_ID") != "" {
-		return true
-	}
-	_, err := os.Stat("/.flatpak-info")
-	return err == nil
-}
+func inFlatpak() bool { return xdgportal.InFlatpak() }
 
 // portalStatePath remembers what the portal last granted. The Background portal
 // has no method to query the current state, so the alternative would be to

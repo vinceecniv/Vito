@@ -246,17 +246,34 @@ Vito is **simple to use, but powerful under the hood.**
 
 - **Windows** — grab `Vito-Setup-<version>.exe` from the [**Releases**](../../releases) page. Per-user install,
   no admin needed.
-- **Linux** — either install the **Flatpak**, which updates itself:
+- **Linux** — two builds, and which one suits you depends on your desktop:
+
+  | | **Flatpak** | **AppImage** |
+  |---|---|---|
+  | **Best for** | GNOME, KDE | everything else — wlroots compositors (niri, Sway, Hyprland), X11, minimal setups |
+  | **Typing into other apps** | needs the **RemoteDesktop portal**, which GNOME and KDE provide | always works — `wtype` on Wayland, `ydotool` on X11 |
+  | **Updates** | `flatpak update`, like any other app | download the new file yourself |
+  | **Setup** | none | none on Wayland; `ydotool` + a udev rule only on X11 |
+
+  **The AppImage always works.** The Flatpak is the nicer way to *live with* Vito — it installs and updates
+  itself — but the sandbox has one hard requirement: it can only type where the RemoteDesktop portal exists.
+  On a compositor without one, a sandboxed Vito can still hear you and clean up your text, but it can only
+  put the result on the clipboard for you to paste. It says so on the settings page rather than leaving you
+  guessing.
+
+  **Flatpak** (GNOME, KDE):
 
   ```sh
   flatpak remote-add --user --if-not-exists vito https://vinceecniv.github.io/Vito/vito.flatpakrepo
   flatpak install --user vito io.github.vinceecniv.vito
   ```
 
-  or download the `Vito-<version>.AppImage` from [**Releases**](../../releases), make it executable, and run
-  it. Either way there is nothing to set up first: on GNOME and KDE, Vito asks the desktop for its hotkey and
-  for permission to type, through the XDG portals. Elsewhere it falls back to `wtype`, and to the clipboard
-  when even that is unavailable. See [`docs/flatpak.md`](docs/flatpak.md).
+  **AppImage** (anything): download `Vito-<version>.AppImage` from [**Releases**](../../releases), make it
+  executable, and run it.
+
+  Either way there is nothing to configure first: where the portals are available Vito asks the desktop for
+  its hotkey and for permission to type, and you confirm once. See [`docs/flatpak.md`](docs/flatpak.md) and
+  [`docs/linux-portals.md`](docs/linux-portals.md).
 - **macOS** — download `Vito-<version>.dmg` from [**Releases**](../../releases) and drag Vito to Applications.
   Universal (Apple Silicon and Intel), macOS 11 or newer. Vito lives in the menu bar, not the Dock.
 
