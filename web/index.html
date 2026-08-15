@@ -907,6 +907,7 @@
   .modelcombo-list .mdl-x { border:0; background:none; color:var(--text3); cursor:pointer; font-size:15px; line-height:1; padding:0 2px; flex:0 0 auto; }
   .modelcombo-list .mdl-x:hover { color:var(--coral); }
   .modelcombo-list .mdl-empty { padding:8px 10px; font-size:12.5px; color:var(--text3); }
+  .modelcombo-list .mdl-note { font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text3); border:1px solid var(--line); border-radius:5px; padding:1px 5px; flex:0 0 auto; }
   /* The global shortcut the desktop bound for us, shown instead of "bind it yourself". */
   .hk-portal { border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; background:var(--card); }
   .hk-portal-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:7px; }
@@ -1898,6 +1899,7 @@ const TR = { nl: {
   "Welcome, Linux user! Set Vito up for your desktop in the Linux settings.":"Welkom, Linux-gebruiker! Stel Vito in voor je desktop bij de Linux-instellingen.",
   "Open Linux settings":"Linux-instellingen openen",
   "Get the AppImage":"Download de AppImage",
+  "preview":"preview",
   "Wayland virtual-keyboard (wtype)":"Wayland virtual-keyboard (wtype)",
   "RemoteDesktop portal":"RemoteDesktop-portal",
   "ydotool (uinput)":"ydotool (uinput)",
@@ -2951,15 +2953,22 @@ function presetFromBase(url){
 // keep any custom model you type, and remember custom ones (each removable) so
 // you can switch back without retyping.
 const CLEANUP_MODEL_PRESETS = {
-  // Production models only. Groq retired both Llama entries on 16 Aug 2026 and
-  // dropped kimi-k2 from its catalogue; qwen3.6-27b is offered as a replacement
-  // but is flagged preview — "may be discontinued at short notice" — which is
-  // exactly the situation this list just had to be rescued from. The field is a
-  // combobox, so anyone who wants a preview model can still type it.
-  groq:   ["openai/gpt-oss-120b", "openai/gpt-oss-20b"],
+  // Groq retired both Llama entries on 16 Aug 2026 and dropped kimi-k2 from its
+  // catalogue, which left only the two gpt-oss models on production footing.
+  // The two preview entries are listed because a two-item menu is barely a menu —
+  // but they are labelled, because Groq reserves the right to drop a preview
+  // model "at short notice" and that is precisely how this list broke.
+  //
+  // Not listed: groq/compound and compound-mini. They decide for themselves
+  // whether to web-search or run code, and a dictation that happens to sound
+  // like a question could come back answered instead of tidied.
+  groq:   ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.6-27b", "minimaxai/minimax-m2.7"],
   openai: ["gpt-4o-mini", "gpt-4o", "gpt-4.1-mini"],
   local:  [],
 };
+// Models Groq serves but does not commit to. Shown with a badge so the choice is
+// informed rather than a surprise three months later.
+const PREVIEW_MODELS = new Set(["qwen/qwen3.6-27b", "minimaxai/minimax-m2.7"]);
 function cleanupPreset(){ return $("s-cleanuppreset").value || "groq"; }
 function rememberedModels(){ try { return JSON.parse(localStorage.getItem("vito-cleanup-models") || "{}"); } catch { return {}; } }
 function rememberModel(preset, model){
@@ -2987,7 +2996,8 @@ function renderModelCombo(q){
   const ps = presets.filter(match), rs = remembered.filter(match);
   let html = "";
   if (ps.length) html += `<div class="mdl-label">${t("Suggested")}</div>` +
-    ps.map(m => `<div class="flagsel-opt mdl-opt" data-v="${esc(m)}"><span>${esc(m)}</span></div>`).join("");
+    ps.map(m => `<div class="flagsel-opt mdl-opt" data-v="${esc(m)}"><span>${esc(m)}</span>` +
+      (PREVIEW_MODELS.has(m) ? `<span class="mdl-note">${t("preview")}</span>` : "") + `</div>`).join("");
   if (rs.length) html += `<div class="mdl-label">${t("Your models")}</div>` +
     rs.map(m => `<div class="flagsel-opt mdl-opt" data-v="${esc(m)}"><span>${esc(m)}</span>` +
       `<button type="button" class="mdl-x" data-rm="${esc(m)}" title="${t("Remove")}" aria-label="${t("Remove")}">×</button></div>`).join("");
@@ -6539,7 +6549,7 @@ const HELP = {
   cleanuppreset:{nl:"Snelle voorinstelling die het endpoint en een passend model invult. 'Groq' gebruikt Groq's gratis tier; 'Lokaal / eigen endpoint' is voor je eigen (bijv. lokaal draaiende) OpenAI-compatibele server.",en:"A quick preset that fills the endpoint and a sensible model. 'Groq' uses Groq's free tier; 'Local / custom endpoint' is for your own (e.g. locally running) OpenAI-compatible server."},
   openaibaseurl:{nl:"De base-URL van het OpenAI-compatibele endpoint, bijv. Groq https://api.groq.com/openai/v1, of een lokaal model op http://localhost:11434/v1. Bij een lokaal endpoint verlaat je opschoning je computer nooit — maximale privacy.",en:"The base URL of the OpenAI-compatible endpoint, e.g. Groq https://api.groq.com/openai/v1, or a local model at http://localhost:11434/v1. With a local endpoint your cleanup never leaves your computer — maximum privacy."},
   openaikey:{nl:"De API-key voor dit endpoint. Een lokaal draaiend model heeft er vaak geen nodig — laat het veld dan leeg.",en:"The API key for this endpoint. A locally running model often needs none — leave it empty in that case."},
-  openaimodel:{nl:"Welk model op dit endpoint de opschoning doet, bijv. openai/gpt-oss-120b.",en:"Which model on this endpoint does the cleanup, e.g. openai/gpt-oss-120b."},
+  openaimodel:{nl:"Welk model op dit endpoint de opschoning doet, bijv. openai/gpt-oss-120b. Modellen met het label \u2018preview\u2019 worden door de aanbieder niet gegarandeerd en kunnen verdwijnen.",en:"Which model on this endpoint does the cleanup, e.g. openai/gpt-oss-120b. Models badged \u2018preview\u2019 are not guaranteed by the provider and can disappear."},
   inject:{nl:"Hoe de tekst in het actieve venster komt: plakken (Ctrl+V), letter voor letter typen, of alleen naar het klembord.",en:"How the text reaches the active window: paste (Ctrl+V), type it out, or clipboard only."},
   restore:{nl:"Zet je vorige klembord-inhoud terug nadat de gedicteerde tekst is geplakt.",en:"Restore your previous clipboard contents after the dictated text is pasted."},
   appendenter:{nl:"Drukt na de tekst automatisch op Enter — handig om invoer meteen te verzenden, bijvoorbeeld in een Claude Code-sessie of chat.",en:"Presses Enter after the text — handy to submit input right away, e.g. in a Claude Code session or chat."},
