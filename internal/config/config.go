@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 type Server struct {
@@ -255,7 +256,7 @@ func Default() *Config {
 			// The Anthropic model stays filled in case they switch providers.
 			Provider:      "openai",
 			OpenAIBaseURL: "https://api.groq.com/openai/v1",
-			OpenAIModel:   "llama-3.3-70b-versatile",
+			OpenAIModel:   "openai/gpt-oss-120b",
 			OpenAIPreset:  "groq",
 			Model:         "claude-haiku-4-5",
 			// Generous on purpose: hitting the timeout means you pay for the
@@ -300,6 +301,34 @@ func Exists() bool {
 	}
 	_, err = os.Stat(p)
 	return err == nil
+}
+
+// groqRetired maps the Groq models that stopped being served to the replacements
+// Groq itself names for them. Both Llama entries were decommissioned on
+// 16 August 2026, and llama-3.3-70b-versatile was Vito's default — so an install
+// nobody touched would simply stop cleaning up that day, with a provider error
+// Vito can report but not explain.
+var groqRetired = map[string]string{
+	"llama-3.3-70b-versatile": "openai/gpt-oss-120b",
+	"llama-3.1-8b-instant":    "openai/gpt-oss-20b",
+}
+
+// retireGroqModel rewrites a decommissioned model in place and reports whether
+// it changed anything.
+//
+// It is deliberately narrow: only these exact ids, and only when the endpoint is
+// Groq's. The same names against another OpenAI-compatible host — a local Ollama,
+// a proxy — are still perfectly valid, and silently renaming someone's working
+// model would be worse than the problem being fixed.
+func retireGroqModel(c *Cleanup) bool {
+	if !strings.Contains(c.OpenAIBaseURL, "groq.com") {
+		return false
+	}
+	if to, ok := groqRetired[c.OpenAIModel]; ok {
+		c.OpenAIModel = to
+		return true
+	}
+	return false
 }
 
 // Load reads the config file, creating it with defaults (and a fresh auth
@@ -359,6 +388,17 @@ func Load() (*Config, error) {
 	// the right fill-in — not the current default provider's model.
 	if cfg.STT.Model == "" {
 		cfg.STT.Model = "universal-3-5-pro"
+		if err := cfg.Save(); err != nil {
+			return nil, err
+		}
+	}
+	// Groq stopped serving the model Vito shipped as its default. Move existing
+	// configs across rather than leaving them to fail on the next dictation;
+	// Assist gets the same treatment, since it can carry its own model.
+	// Both are evaluated: || would skip Assist whenever cleanup already matched.
+	movedCleanup := retireGroqModel(&cfg.Cleanup)
+	movedAssist := retireGroqModel(&cfg.Assist.Cleanup)
+	if movedCleanup || movedAssist {
 		if err := cfg.Save(); err != nil {
 			return nil, err
 		}
