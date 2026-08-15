@@ -2886,7 +2886,7 @@ function syncCleanupUI(){
 // A preset prefills the endpoint + a sensible model; "local" leaves them to edit.
 function applyCleanupPreset(v){
   if (v === "groq")   { $("s-openaibaseurl").value = "https://api.groq.com/openai/v1"; $("s-openaimodel").value = "openai/gpt-oss-120b"; $("s-openaikey").placeholder = "gsk_…"; }
-  else if (v === "openai") { $("s-openaibaseurl").value = "https://api.openai.com/v1"; $("s-openaimodel").value = "gpt-4o-mini"; $("s-openaikey").placeholder = "sk-…"; }
+  else if (v === "openai") { $("s-openaibaseurl").value = "https://api.openai.com/v1"; $("s-openaimodel").value = "gpt-5.6-luna"; $("s-openaikey").placeholder = "sk-…"; }
   else { $("s-openaikey").placeholder = "(often none for a local model)"; } // local: keep what's there
   syncCleanupUI();
   renderModelCombo();
@@ -2900,7 +2900,7 @@ function syncAssistUI(){
 }
 function applyAssistPreset(v){
   if (v === "groq")   { $("s-assistbaseurl").value = "https://api.groq.com/openai/v1"; $("s-assistopenaimodel").value = "openai/gpt-oss-120b"; $("s-assistopenaikey").placeholder = "gsk_…"; }
-  else if (v === "openai") { $("s-assistbaseurl").value = "https://api.openai.com/v1"; $("s-assistopenaimodel").value = "gpt-4o"; $("s-assistopenaikey").placeholder = "sk-…"; }
+  else if (v === "openai") { $("s-assistbaseurl").value = "https://api.openai.com/v1"; $("s-assistopenaimodel").value = "gpt-5.6-terra"; $("s-assistopenaikey").placeholder = "sk-…"; }
   else { $("s-assistopenaikey").placeholder = "(often none for a local model)"; }
   syncAssistUI();
 }
@@ -2917,22 +2917,35 @@ function syncAssistMode(){
     ? t("Uses the AI cleanup model:") + " " + currentCleanupModelName()
     : t("Uses its own model, set below.");
 }
-// Default token rates per provider — the same table the cost card trusts, so the
-// visible fields start from a sensible assumption you can then override.
-function ratesForProvider(provider, baseURL){
+// OpenAI list prices, USD per million tokens. Only OpenAI needs a per-model
+// table: Groq's free tier and a local model cost nothing whichever model you
+// pick, and Anthropic has one rate here because Vito only ever fills in Haiku.
+// Without this, someone on the frontier model would see a quarter of a percent
+// of their actual bill.
+const OPENAI_RATES = {
+  "gpt-5.6-sol":   { in: 5,    out: 30   },
+  "gpt-5.6-terra": { in: 2,    out: 12   },
+  "gpt-5.6-luna":  { in: 0.20, out: 1.20 },
+  "gpt-4o-mini":   { in: 0.15, out: 0.60 },
+};
+// Default token rates — the same table the cost card trusts, so the visible
+// fields start from a sensible assumption you can then override. An OpenAI model
+// we have no price for falls back to what the preset fills in, which is at least
+// the right order of magnitude for a cleanup-sized model.
+function ratesForProvider(provider, baseURL, model){
   if ((provider || "anthropic") === "openai") {
     const b = (baseURL || "").toLowerCase();
-    if (b.includes("openai.com")) return { in: 0.15, out: 0.60 }; // gpt-4o-mini
+    if (b.includes("openai.com")) return OPENAI_RATES[(model || "").trim()] || OPENAI_RATES["gpt-5.6-luna"];
     return { in: 0, out: 0 }; // Groq free tier / local model
   }
   return { in: 1.0, out: 5.0 }; // Anthropic Haiku
 }
 function fillCleanupRates(){
-  const r = ratesForProvider($("s-cleanupprovider").value, $("s-openaibaseurl").value);
+  const r = ratesForProvider($("s-cleanupprovider").value, $("s-openaibaseurl").value, $("s-openaimodel").value);
   $("s-cleanupinrate").value = r.in; $("s-cleanupoutrate").value = r.out;
 }
 function fillAssistRates(){
-  const r = ratesForProvider($("s-assistprovider").value, $("s-assistbaseurl").value);
+  const r = ratesForProvider($("s-assistprovider").value, $("s-assistbaseurl").value, $("s-assistopenaimodel").value);
   $("s-assistinrate").value = r.in; $("s-assistoutrate").value = r.out;
 }
 // The four token rates read from their (editable) fields, for saving into costs.
@@ -2963,7 +2976,11 @@ const CLEANUP_MODEL_PRESETS = {
   // whether to web-search or run code, and a dictation that happens to sound
   // like a question could come back answered instead of tidied.
   groq:   ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.6-27b", "minimaxai/minimax-m2.7"],
-  openai: ["gpt-4o-mini", "gpt-4o", "gpt-4.1-mini"],
+  // The GPT-5.6 family supersedes the 4o line: luna is the high-volume budget
+  // model, terra balances, sol is the frontier one. gpt-4o-mini stays because it
+  // is not deprecated and is still the cheapest of the four ($0.15/$0.60 against
+  // luna's $0.20/$1.20) — worth keeping for anyone dictating a lot.
+  openai: ["gpt-5.6-luna", "gpt-5.6-terra", "gpt-5.6-sol", "gpt-4o-mini"],
   local:  [],
 };
 // Models Groq serves but does not commit to. Shown with a badge so the choice is
@@ -3009,7 +3026,10 @@ function closeModelCombo(){ const c = $("modelcombo"); if (c) c.classList.remove
 function cleanupCostRates(){
   if (($("s-cleanupprovider").value || "anthropic") === "openai") {
     const b = ($("s-openaibaseurl").value || "").toLowerCase();
-    if (b.includes("openai.com")) return { cleanup_in_per_mtok_usd: 0.15, cleanup_out_per_mtok_usd: 0.60 }; // gpt-4o-mini
+    if (b.includes("openai.com")) {
+      const r = OPENAI_RATES[($("s-openaimodel").value || "").trim()] || OPENAI_RATES["gpt-5.6-luna"];
+      return { cleanup_in_per_mtok_usd: r.in, cleanup_out_per_mtok_usd: r.out };
+    }
     return { cleanup_in_per_mtok_usd: 0, cleanup_out_per_mtok_usd: 0 }; // Groq free tier / local model
   }
   return { cleanup_in_per_mtok_usd: 1.0, cleanup_out_per_mtok_usd: 5.0 }; // Anthropic Haiku
