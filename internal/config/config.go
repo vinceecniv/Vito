@@ -99,7 +99,15 @@ type Dictionary struct {
 }
 
 type Injection struct {
-	Mode             string `json:"mode"` // paste | type | clipboard_only
+	Mode string `json:"mode"` // paste | type | clipboard_only
+	// Backend picks how the keystrokes are delivered on Linux:
+	// auto (default) | portal | ydotool. "portal" uses the XDG RemoteDesktop
+	// portal — the sandboxed, Wayland-native route that needs no ydotoold and no
+	// udev rule, and the only one that works inside a Flatpak. "ydotool" is the
+	// original uinput path, kept for X11 and compositors without the portal.
+	// "auto" prefers the portal when it is usable and falls back to ydotool.
+	// Ignored on Windows, which has exactly one way to do this.
+	Backend          string `json:"backend,omitempty"`
 	RestoreClipboard bool   `json:"restore_clipboard"`
 	PasteDelayMS     int    `json:"paste_delay_ms"`   // delay between copy and paste keystroke
 	RestoreDelayMS   int    `json:"restore_delay_ms"` // delay before restoring previous clipboard

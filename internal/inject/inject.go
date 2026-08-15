@@ -38,6 +38,10 @@ func Inject(cfg config.Injection, text string) (Mode, error) {
 		text += " "
 	}
 	mode := SelectMode(cfg)
+	// A platform may have no way to press a key at all — a sandbox without an
+	// injection route. Deliver to the clipboard instead of failing; the caller
+	// reports the mode actually used, so the user is told where the text went.
+	mode = adjustMode(cfg, mode)
 	if err := injectPlatform(cfg, mode, text); err != nil {
 		return mode, err
 	}

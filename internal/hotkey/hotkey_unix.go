@@ -1,9 +1,9 @@
-//go:build !windows && !darwin
+//go:build !windows && !darwin && !linux
 
-// Package hotkey registers global hotkeys where the OS allows it.
 package hotkey
 
 import (
+	"errors"
 	"log/slog"
 
 	"vito/internal/daemon"
@@ -34,3 +34,9 @@ func (m *Manager) Rebind(toggle, cancel string) {}
 func (m *Manager) Status() (toggle, cancel BindInfo, supported bool) {
 	return BindInfo{}, BindInfo{}, false
 }
+
+// Configure is unsupported here: there is no portal to ask.
+func (m *Manager) Configure() error { return errors.New("not supported on this platform") }
+
+// CanConfigure is false: there is no portal to open an editor.
+func (m *Manager) CanConfigure() bool { return false }

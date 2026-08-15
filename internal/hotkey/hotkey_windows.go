@@ -375,3 +375,11 @@ func parseSpec(spec string) (mods uint32, vk uint32, err error) {
 	}
 	return mods, vk, nil
 }
+
+// Configure is unsupported on Windows: the hotkey is Vito's own setting there,
+// edited in Vito's settings page rather than by the desktop.
+func (m *Manager) Configure() error { return fmt.Errorf("not supported on Windows") }
+
+// CanConfigure is false on Windows: the hotkey is Vito's own setting, edited in
+// Vito's settings page rather than by the desktop.
+func (m *Manager) CanConfigure() bool { return false }

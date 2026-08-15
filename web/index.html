@@ -907,6 +907,14 @@
   .modelcombo-list .mdl-x { border:0; background:none; color:var(--text3); cursor:pointer; font-size:15px; line-height:1; padding:0 2px; flex:0 0 auto; }
   .modelcombo-list .mdl-x:hover { color:var(--coral); }
   .modelcombo-list .mdl-empty { padding:8px 10px; font-size:12.5px; color:var(--text3); }
+  /* The global shortcut the desktop bound for us, shown instead of "bind it yourself". */
+  .hk-portal { border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; background:var(--card); }
+  .hk-portal-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:7px; }
+  .hk-portal-row:last-of-type { margin-bottom:0; }
+  .hk-portal-label { font-size:13px; color:var(--text2); min-width:150px; }
+  .hk-portal-key.none { font-family:inherit; font-weight:500; color:var(--text3); background:none; border-style:dashed; }
+  .hk-portal-key { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:14px; font-weight:700;
+    color:var(--text); background:var(--input-bg); border:1px solid var(--card-border); border-radius:8px; padding:5px 11px; }
   /* Vito Assist settings: example groups + the "requires cleanup" callout. */
   .assist-flow { margin:4px 0 8px; padding-left:22px; }
   .assist-flow li { font-size:13px; color:var(--text2); line-height:1.5; padding:3px 0; }
@@ -2012,6 +2020,16 @@ const TR = { nl: {
   "Hotkey in your desktop":"Sneltoets in je desktop","Cleanup off":"Opschoning uit","Local model":"Lokaal model","Auto":"Auto",
   "Command":"Opdracht","speak your text…":"spreek je tekst…",
   "Vito Assist":"Vito Assist","result is on your clipboard":"resultaat staat op je klembord",
+  "Text delivery":"Tekstaflevering",
+  "Clipboard only — no way to type here":"Alleen klembord — hier kan niets getypt worden",
+  "Nothing on this system can press a key for you, so dictations are put on the clipboard and you paste them yourself. Inside a Flatpak that happens on compositors without a RemoteDesktop portal: the sandbox filters out the virtual-keyboard protocol.":"Niets op dit systeem kan een toets voor je indrukken, dus dictaten komen op het klembord en plak je zelf. In een Flatpak gebeurt dat op compositors zonder RemoteDesktop-portal: de sandbox filtert het virtual-keyboard-protocol eruit.",
+  "Change shortcut":"Sneltoets wijzigen","Not set":"Niet ingesteld",
+  "Your desktop owns this shortcut — Vito asked for it through the shortcuts portal. On GNOME you change it under Settings → Apps → Vito → Global Shortcuts.":"Deze sneltoets is van je bureaublad — Vito heeft 'm via de sneltoets-portal aangevraagd. In GNOME wijzig je 'm via Instellingen → Toepassingen → Vito → Globale sneltoetsen.",
+  "Your desktop owns this shortcut — Vito asked for it through the shortcuts portal, so you can also change it in your desktop's own settings.":"Deze sneltoets is van je bureaublad — Vito heeft 'm via de sneltoets-portal aangevraagd, dus je kunt 'm ook in de instellingen van je bureaublad wijzigen.",
+  "Prefer to bind it yourself, or on a desktop without the shortcuts portal? These commands drive the running daemon:":"Liever zelf binden, of op een bureaublad zonder sneltoets-portal? Deze commando's bedienen de draaiende daemon:",
+  "Bind it manually instead":"Zelf handmatig binden",
+  "Vito uses the first delivery route your desktop supports, so helpers the other routes would need are optional here.":"Vito gebruikt de eerste afleverroute die je bureaublad ondersteunt; helpers die de andere routes nodig zouden hebben, zijn hier optioneel.",
+  "A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.":"Er ontbreekt een helper die de actieve afleverroute nodig heeft — plakken werkt nog niet. Zie de README voor de installatie.",
   "Vito Assist commands":"Vito Assist-opdrachten",
   "Examples":"Voorbeelden",
   "Say “Vito, …” and a short instruction. It isn't typed out — it's applied to your next dictation, or to the text already on your clipboard.":"Zeg “Vito, …” en een korte opdracht. Die wordt niet uitgetypt — hij wordt toegepast op je volgende dictaat, of op de tekst die al op je klembord staat.",
@@ -3989,14 +4007,32 @@ function maybeShowLinuxHint(){
    Detects the optional helpers Vito shells out to and reports what's present so
    Linux users know what still needs installing. Re-testable and dismissable. */
 const LINUX_TOOLS = [
-  { name:"wl-copy",     req:true,  nl:"Klembord — kopieert de tekst",                en:"Clipboard — copies the text" },
-  { name:"ydotool",     req:true,  nl:"Plakken & typen — stuurt de Ctrl+V-toets",    en:"Paste & type — sends the Ctrl+V keystroke" },
-  { name:"ydotoold",    req:true,  nl:"ydotool-daemon — socket moet actief zijn",    en:"ydotool daemon — its socket must be running" },
-  { name:"wl-paste",    req:false, nl:"Klembord — herstelt de vorige inhoud",        en:"Clipboard — restores the previous contents" },
-  { name:"notify-send", req:false, nl:"Bureaubladmeldingen",                          en:"Desktop notifications" },
-  { name:"pactl",       req:false, nl:"Media dempen (duck) tijdens opname",           en:"Duck media volume while recording" },
-  { name:"playerctl",   req:false, nl:"Media pauzeren tijdens opname",                en:"Pause media while recording" },
+  { name:"wl-copy",     nl:"Klembord — kopieert de tekst",                en:"Clipboard — copies the text" },
+  { name:"wtype",       nl:"Plakken & typen — Wayland virtual-keyboard-protocol, geen installatie nodig", en:"Paste & type — Wayland virtual-keyboard protocol, no setup" },
+  { name:"ydotool",     nl:"Plakken & typen — uinput-terugval",           en:"Paste & type — uinput fallback" },
+  { name:"ydotoold",    nl:"ydotool-daemon — alleen nodig voor de uinput-terugval", en:"ydotool daemon — only needed for the uinput fallback" },
+  { name:"wl-paste",    nl:"Klembord — herstelt de vorige inhoud",        en:"Clipboard — restores the previous contents" },
+  { name:"notify-send", nl:"Bureaubladmeldingen",                          en:"Desktop notifications" },
+  { name:"pactl",       nl:"Microfoonniveau instellen",                    en:"Setting the microphone level" },
 ];
+// How the active delivery route is named in the UI.
+const BACKEND_LABELS = {
+  wayland:   "Wayland virtual-keyboard (wtype)",
+  portal:    "RemoteDesktop portal",
+  ydotool:   "ydotool (uinput)",
+  clipboard: "Clipboard only — no way to type here",
+  sendinput: "SendInput",
+};
+// Which helpers the *current* route actually depends on. Vito tries wtype, then
+// the portal, then ydotool — so which tools are genuinely required depends on
+// where that search landed, and marking all of them required would be a lie.
+function linuxRequired(backend){
+  const req = new Set(["wl-copy"]);
+  if (backend === "clipboard") return req; // nothing can type; only the clipboard matters
+  if (backend === "wayland") req.add("wtype");
+  else if (backend === "ydotool") { req.add("ydotool"); req.add("ydotoold"); }
+  return req; // the portal route needs no external helper at all
+}
 // Fills the Linux settings section with a live tool report and reveals its tab
 // only on Linux. Re-testable; no longer dismissable (it's a settings section).
 async function renderLinuxCard(){
@@ -4010,18 +4046,27 @@ async function renderLinuxCard(){
   if (tab) tab.hidden = !isLinux;
   if (!isLinux) { body.innerHTML = ""; return; }
   const present = info.present || {};
+  const backend = info.backend || "";
+  const required = linuxRequired(backend);
   const rows = LINUX_TOOLS.map(tl => {
     const ok = !!present[tl.name];
+    const req = required.has(tl.name);
     const purpose = (uiLang === "nl" ? tl.nl : tl.en);
     return `<div class="tool-row"><span class="tool-badge ${ok?"ok":"no"}">${ok?"✓":"✗"}</span>` +
-      `<span class="tool-main"><span class="tool-name">${tl.name}${tl.req?`<span class="req">${t("required")}</span>`:""}</span>` +
+      `<span class="tool-main"><span class="tool-name">${tl.name}${req?`<span class="req">${t("required")}</span>`:""}</span>` +
       `<span class="tool-purpose">${purpose}</span></span></div>`;
   }).join("");
-  const missingReq = LINUX_TOOLS.some(tl => tl.req && !present[tl.name]);
+  const missingReq = LINUX_TOOLS.some(tl => required.has(tl.name) && !present[tl.name]);
+  const backendRow = backend
+    ? `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(BACKEND_LABELS[backend] || backend)}</p>`
+    : "";
   body.innerHTML =
     `<p class="act-note" style="margin:0 0 8px;">${t("On Linux, Vito depends on your distribution and desktop environment: some external helpers must be installed, and extra steps are sometimes needed. Below is what Vito found on this system.")}</p>
+    ${backendRow}
+    <p class="act-note" style="margin:0 0 8px;">${t("Vito uses the first delivery route your desktop supports, so helpers the other routes would need are optional here.")}</p>
     <div class="toollist">${rows}</div>
-    ${missingReq ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("A required helper is missing — pasting won't work yet. See the README for installation (e.g. ydotool + ydotoold).")}</p>` : ""}
+    ${backend === "clipboard" ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("Nothing on this system can press a key for you, so dictations are put on the clipboard and you paste them yourself. Inside a Flatpak that happens on compositors without a RemoteDesktop portal: the sandbox filters out the virtual-keyboard protocol.")}</p>`
+      : missingReq ? `<p class="act-note" style="color:var(--coral); margin-top:10px;">${t("A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.")}</p>` : ""}
     <p class="act-note" style="margin-top:10px;">${t("On Wayland no app can claim global hotkeys itself — you bind your start/stop key in your compositor. That's explained under Settings → Activation.")}</p>
     <div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;">
       <button class="btn ghost small" id="linux-activation">${t("Go to Activation")}</button>
@@ -5234,9 +5279,12 @@ function cleanupProviderLabel(cl){
 function renderStatusTags(){
   const box = $("status-tags"); if (!box || !cfg) return;
   const hk = hkInfo || {}, tags = [];
-  if (hk.supported) {
+  const portalSpec = hk.os !== "windows" && hk.supported && hk.toggle ? hk.toggle.spec : "";
+  if (hk.os === "windows") {
     const spec = (hk.toggle && (hk.toggle.spec || hk.toggle.configured)) || "";
     tags.push({ ico: ICON_KBD, text: spec ? fmtHotkey(spec) : t("No hotkey set"), sec: "activation" });
+  } else if (portalSpec) {
+    tags.push({ ico: ICON_KBD, text: fmtPortalShortcut(portalSpec), sec: "activation" });
   } else {
     tags.push({ ico: ICON_KBD, text: t("Hotkey in your desktop"), sec: "activation" });
   }
@@ -5295,7 +5343,10 @@ function hkFieldHTML(kind, label){
 function renderActivation(info){
   const body = $("activation-body"); if (!body) return;
   hkIsMac = info.os === "darwin";
-  if (info.supported) { // Windows and macOS: configurable global hotkeys
+  // "supported" now also means "the portal bound our shortcut", so branch on the
+  // platform rather than on that flag: only Windows and macOS capture keys
+  // themselves — on Linux the binding belongs to the desktop.
+  if (info.os === "windows" || hkIsMac) { // Windows and macOS: configurable global hotkeys
     body.innerHTML =
       hkFieldHTML("toggle", t("Hotkey — start / stop")) +
       hkFieldHTML("cancel", t("Hotkey — cancel")) +
@@ -5331,13 +5382,17 @@ function renderActivation(info){
       ptt.addEventListener("change", autoSaveSettings);
     }
   } else { // Linux / other: no global hotkeys — bind pkill signals to keys
-    const html = linuxActivationHTML();
+    const html = linuxActivationHTML(info);
     // Activation section: the instructions + a jump to the dedicated Linux section.
     body.innerHTML = html +
       `<div class="rowflex" style="justify-content:flex-end; margin-top:14px;"><button class="btn ghost small" id="act-to-linux">${TUX_SVG} ${t("All Linux info & tools")}</button></div>`;
     const jump = $("act-to-linux"); if (jump) jump.onclick = () => selectSetSection("linux");
     // The Linux section repeats the same activation info so it's one complete story.
     const la = $("linux-activation-body"); if (la) la.innerHTML = html;
+    // Both copies carry the same id, so wire every one of them.
+    document.querySelectorAll("#activation-body #hk-configure, #linux-activation-body #hk-configure")
+      .forEach(b => b.onclick = () => api("/api/hotkey/configure", { method: "POST" })
+        .catch(e => toast(e.message, "err")));
   }
 }
 // Map a KeyboardEvent.code to Vito's hotkey vocabulary; null for modifier keys.
@@ -5378,12 +5433,48 @@ async function setHotkey(kind, spec){
   await saveConfig(patch, spec ? "Hotkey saved" : "Hotkey cleared");
   setTimeout(loadHotkey, 350); // the daemon re-registers async; re-read live status
 }
-function linuxActivationHTML(){
+// Turn the portal's trigger description into something that reads like a
+// shortcut. Desktops phrase it in prose and in the user's own language —
+// GNOME says "Druk op <Control><Alt>space" — so keep only the key part and
+// render it the way a keyboard shortcut is normally written. Anything that
+// doesn't look like that is shown untouched rather than mangled.
+function fmtPortalShortcut(desc){
+  if (!desc) return "";
+  const at = desc.indexOf("<");
+  if (at < 0) return desc;
+  const NAMES = { control:"Ctrl", ctrl:"Ctrl", primary:"Ctrl", alt:"Alt", shift:"Shift", super:"Super", meta:"Super", logo:"Super" };
+  const mods = [];
+  const key = desc.slice(at).replace(/<([^>]+)>/g, (_, m) => {
+    mods.push(NAMES[m.toLowerCase()] || m);
+    return "";
+  }).trim();
+  const parts = mods.concat(key ? key.charAt(0).toUpperCase() + key.slice(1) : []);
+  return parts.length ? parts.join(" + ") : desc;
+}
+function linuxActivationHTML(info){
+  // When the GlobalShortcuts portal bound a key, that is the answer — show it,
+  // and offer the desktop's own editor to change it. The signal bindings below
+  // then become the fallback story rather than the main instruction.
+  const spec = info && info.supported && info.toggle ? info.toggle.spec : "";
+  // Both shortcuts are registered with the desktop, so show both — a cancel key
+  // that was never given a combination is worth seeing, not hiding.
+  const row = (label, s) => `<div class="hk-portal-row">
+        <span class="hk-portal-label">${label}</span>
+        <span class="hk-portal-key${s ? "" : " none"}">${s ? ahEsc(fmtPortalShortcut(s)) : t("Not set")}</span>
+      </div>`;
+  const portal = !spec ? "" : `<div class="hk-portal">
+      ${row(t("Hotkey — start / stop"), spec)}
+      ${row(t("Hotkey — cancel"), info.cancel && info.cancel.spec)}
+      ${info.configurable ? `<div class="hk-portal-row"><button type="button" class="btn ghost small" id="hk-configure">${t("Change shortcut")}</button></div>` : ""}
+      <p class="act-note" style="margin:8px 0 0;">${info.configurable
+          ? t("Your desktop owns this shortcut — Vito asked for it through the shortcuts portal, so you can also change it in your desktop's own settings.")
+          : t("Your desktop owns this shortcut — Vito asked for it through the shortcuts portal. On GNOME you change it under Settings → Apps → Vito → Global Shortcuts.")}</p>
+    </div>`;
   // Signal-based bindings: they send SIGUSR2/USR1 to the running daemon, so they
   // launch no process, need no binary path (works the same whether Vito is an
   // AppImage, a package or a plain binary), and never wait for a squashfs mount.
-  return `<div class="linux-act">
-    <p>${t("On Linux (Wayland especially) apps can't claim global hotkeys themselves. Instead, bind these commands to keys in your desktop or compositor:")}</p>
+  const manual = `<div class="linux-act">
+    <p>${spec ? t("Prefer to bind it yourself, or on a desktop without the shortcuts portal? These commands drive the running daemon:") : t("On Linux (Wayland especially) apps can't claim global hotkeys themselves. Instead, bind these commands to keys in your desktop or compositor:")}</p>
     <pre>pkill -USR2 -f 'vito serve'   <span style="color:var(--text3)"># ${t("start / stop")}</span>\npkill -USR1 -f 'vito serve'   <span style="color:var(--text3)"># ${t("cancel")}</span></pre>
     <h4>KDE Plasma</h4>
     <p>${t("System Settings → Shortcuts → Custom Shortcuts → a new command per command, paste it and assign a key.")}</p>
@@ -5402,6 +5493,8 @@ function linuxActivationHTML(){
     <h4>DMS / ${t("other Wayland shells")}</h4>
     <p>${t("Add keybinds to your shell or compositor config that run these commands.")}</p>
   </div>`;
+  if (!spec) return manual;
+  return portal + `<details style="margin-top:12px;"><summary>${t("Bind it manually instead")}</summary>${manual}</details>`;
 }
 
 async function loadAutostart() {

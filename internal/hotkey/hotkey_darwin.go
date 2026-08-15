@@ -186,6 +186,13 @@ func (m *Manager) Rebind(toggle, cancel string) {
 	m.reparse()
 }
 
+// Configure is unsupported: macOS has no desktop-provided editor for an app's
+// own shortcuts — they are set inside Vito itself.
+func (m *Manager) Configure() error { return fmt.Errorf("not supported on macOS") }
+
+// CanConfigure is false: there is no external editor to offer.
+func (m *Manager) CanConfigure() bool { return false }
+
 // Status reports both hotkeys' state; supported is always true on macOS.
 func (m *Manager) Status() (toggle, cancel BindInfo, supported bool) {
 	m.mu.Lock()

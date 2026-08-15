@@ -77,16 +77,45 @@ on an older image; raise it by accident and older distributions stop working.
 
 Nothing is bundled beyond the binary. miniaudio dlopens ALSA/PulseAudio at
 runtime, so there is no link-time audio dependency (`ldd` shows only libc and
-libm), and `ydotool`/`wl-clipboard` need a daemon and a udev rule for
-`/dev/uinput` — shipping copies would save nobody the install, so the settings
-page checks for them instead.
+libm), and the external helpers are checked for by the settings page rather than
+shipped — copies would save nobody the install.
 
-The hotkey binds to a **signal**, not a command that launches Vito: `pkill -USR2
--f 'vito serve'` toggles a dictation and `pkill -USR1 -f 'vito serve'` cancels it
-(`cmd/vito/signals_unix.go`). That needs no stable binary path and never mounts a
-squashfs, so it is identical for an AppImage, a distro package or a plain binary —
-no `~/.local/bin` copy step. The per-desktop commands are shown in the app under
-Settings → Activation (`linuxActivationHTML` in `web/index.html`).
+There is also a **Flatpak**, published to a self-hosted repository on GitHub
+Pages by `.github/workflows/flatpak.yml` on every `v*` tag. Pages must be set to
+"GitHub Actions" as its source and its `github-pages` environment must allow
+`v*` tags to deploy, or the workflow builds and then fails at publish. See
+`docs/flatpak.md`.
+
+**Both the hotkey and text delivery go through the XDG portals first**, which is
+what removed the `ydotoold` + `/dev/uinput` setup for every Linux user, sandboxed
+or not. Read `docs/linux-portals.md` before touching any of it — in particular
+the rule that the portal frontend advertises interfaces its backend may not
+implement, so only a real attempt tells you anything.
+
+Injection tries, in order: the **RemoteDesktop portal** (GNOME, KDE), then
+**wtype**, then **ydotool**, then clipboard-only. `inject.ActiveBackend` reports
+which one won, and the settings page shows it — with a fallback chain, "it works"
+and "it works the way you think" are different claims.
+
+The hotkey prefers the **GlobalShortcuts portal** (`internal/hotkey/hotkey_linux.go`).
+The portal refuses callers it cannot identify, so `cmd/vito/scope_linux.go`
+re-executes Vito inside a systemd app scope when it is not already in one; it
+fails open. The **signals stay supported permanently** as the fallback and the
+documented route for scripts: `pkill -USR2 -f 'vito serve'` toggles a dictation
+and `pkill -USR1 -f 'vito serve'` cancels it (`cmd/vito/signals_unix.go`). They
+need no stable binary path and never mount a squashfs, so they are identical for
+a Flatpak, an AppImage, a distro package or a plain binary. The per-desktop
+commands are shown in the app under Settings → Activation
+(`linuxActivationHTML` in `web/index.html`).
+
+Two portal paths cannot be tested on a compositor that lacks a backend — niri is
+the canary here, and it has neither. Each has a manual test behind an environment
+variable, to be run on GNOME or KDE:
+
+```sh
+VITO_PORTAL_TEST=1 go test ./internal/inject/ -run TestPortalSession -v
+VITO_GS_TEST=1     go test ./internal/hotkey/ -run TestGlobalShortcutsSession -v
+```
 
 Where a stable path *is* baked in — the XDG autostart entry and the `vito://` URL
 handler that relaunches the daemon for the PWA — use `internal/selfexe`, which

@@ -246,8 +246,17 @@ Vito is **simple to use, but powerful under the hood.**
 
 - **Windows** — grab `Vito-Setup-<version>.exe` from the [**Releases**](../../releases) page. Per-user install,
   no admin needed.
-- **Linux** — download the `Vito-<version>.AppImage` from [**Releases**](../../releases), make it executable,
-  and run it. Nothing else to copy or install — the hotkey binds to a signal (see below).
+- **Linux** — either install the **Flatpak**, which updates itself:
+
+  ```sh
+  flatpak remote-add --user --if-not-exists vito https://vinceecniv.github.io/Vito/vito.flatpakrepo
+  flatpak install --user vito io.github.vinceecniv.vito
+  ```
+
+  or download the `Vito-<version>.AppImage` from [**Releases**](../../releases), make it executable, and run
+  it. Either way there is nothing to set up first: on GNOME and KDE, Vito asks the desktop for its hotkey and
+  for permission to type, through the XDG portals. Elsewhere it falls back to `wtype`, and to the clipboard
+  when even that is unavailable. See [`docs/flatpak.md`](docs/flatpak.md).
 - **macOS** — download `Vito-<version>.dmg` from [**Releases**](../../releases) and drag Vito to Applications.
   Universal (Apple Silicon and Intel), macOS 11 or newer. Vito lives in the menu bar, not the Dock.
 
@@ -311,16 +320,22 @@ pwsh -File packaging/build-installer.ps1 -Version 2026.7.2 -Tag
 
 <br>
 
+Text delivery picks the first route that works, so what you need depends on your desktop. On GNOME and KDE
+the **RemoteDesktop portal** handles it and there is nothing to install. Elsewhere Vito uses **wtype**, and
+`ydotool` remains selectable for X11 and older setups — that is the only route that still wants a daemon
+and a udev rule for `/dev/uinput`. Clipboard-only mode always works.
+
 Runtime helpers (miniaudio dlopens ALSA/PulseAudio, so there's no link-time audio dependency):
 
 - **PipeWire / PulseAudio** — audio capture/playback.
 - **wl-clipboard** (`wl-copy`/`wl-paste`) — clipboard.
-- **ydotool + ydotoold** — the synthetic Ctrl+V paste keystroke (works on GNOME/Mutter and niri).
+- **wtype** — the paste keystroke where the portal is unavailable (niri, wlroots).
+- **ydotool + ydotoold** (optional) — the older injection route, for X11 and as a last resort.
 - **libnotify** (`notify-send`) — state notifications.
-- **pactl** / **playerctl** (optional) — duck/pause media while dictating.
+- **pactl** (optional) — duck media while dictating; pausing goes over MPRIS and needs nothing installed.
 
 ```sh
-sudo dnf install wl-clipboard ydotool libnotify pulseaudio-utils playerctl   # Fedora
+sudo dnf install wl-clipboard wtype libnotify pulseaudio-utils   # Fedora
 ```
 
 Build the AppImage:
@@ -330,8 +345,16 @@ bash packaging/build-appimage.sh 2026.7                       # from Linux
 pwsh -File packaging/build-appimage.ps1 -Version 2026.7       # from Windows, via Docker
 ```
 
-The settings page checks for the helpers above and tells you what's missing, with per-desktop
-instructions for binding the hotkey.
+Build the Flatpak (manifest in `packaging/flatpak/`, published to a self-hosted repository by
+`.github/workflows/flatpak.yml` on every release tag):
+
+```sh
+flatpak-builder --user --install build packaging/flatpak/io.github.vinceecniv.vito.yml
+```
+
+The settings page checks for the helpers above, reports which delivery route is actually in use, and gives
+per-desktop instructions for binding the hotkey. Background on the portals and the sandbox:
+[`docs/linux-portals.md`](docs/linux-portals.md) and [`docs/flatpak.md`](docs/flatpak.md).
 
 </details>
 
@@ -387,9 +410,15 @@ On **Windows and macOS** you set the hotkey in the app itself, under Settings �
 needs the Accessibility permission; until you grant it the settings page shows the hotkey as denied and
 says so.
 
-**Wayland has no in-app global hotkeys by design** — bind a command to a key in your compositor. The
-recommended commands send a signal to the running daemon, so they launch no process, need no binary path
-(identical for AppImage, a package or a plain binary) and never wait for a squashfs mount:
+**On Wayland the binding belongs to the desktop, not to Vito** — an application cannot grab a key for
+itself, so it has to ask. Vito asks through the **GlobalShortcuts portal**: you confirm the shortcut once,
+it then appears in your desktop's own keyboard settings, and Vito can send you straight there to change it.
+Push-to-talk works too, because the portal reports the release as well as the press. This needs GNOME or
+KDE; other compositors do not implement the portal yet.
+
+Where the portal is unavailable, **bind a signal to a key in your compositor** instead. The signals are not
+a lesser route — they cost nothing, launch no process, need no binary path (identical for a Flatpak, an
+AppImage or a plain binary) and never wait for a squashfs mount, so they stay supported permanently:
 
 - **GNOME / KDE:** Custom Shortcuts → command `pkill -USR2 -f 'vito serve'` (start/stop), and
   `pkill -USR1 -f 'vito serve'` (cancel).
@@ -402,8 +431,8 @@ recommended commands send a signal to the running daemon, so they launch no proc
   ```
 
 `SIGUSR2` toggles a dictation, `SIGUSR1` cancels it (cleanup is the settings toggle, not a hotkey). On
-**Windows and macOS** the daemon registers a global hotkey itself. The exact commands, per desktop, are also
-shown in the app under Settings → Activation.
+**Windows and macOS** the daemon registers a global hotkey itself. Which route is actually in use, and the
+exact commands per desktop, are shown in the app under Settings → Activation.
 
 </details>
 

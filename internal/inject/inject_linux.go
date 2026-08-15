@@ -3,76 +3,141 @@
 package inject
 
 import (
-	"context"
+	"errors"
 	"fmt"
-	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
-	"time"
+	"sync"
 
 	"vito/internal/config"
 )
 
-// injectPlatform implements clipboard+paste on Wayland: wl-copy for the
-// clipboard, ydotool (uinput) for the Ctrl+V keystroke — wtype does not work
-// on GNOME/Mutter, ydotool works on both GNOME and niri.
-func injectPlatform(cfg config.Injection, mode Mode, text string) error {
-	switch mode {
-	case ModeClipboardOnly:
-		return copyText(text)
+// Linux has three ways to press keys in another application, and Vito keeps all
+// three because no single one covers the field (see docs/linux-portals.md):
+//
+//	wayland  wtype over the virtual-keyboard protocol. No daemon, no udev rule,
+//	         no permission prompt — only the Wayland socket, which a Flatpak
+//	         already has. Works on niri/wlroots/KDE; Mutter refuses it.
+//	portal   the XDG RemoteDesktop portal over D-Bus. Asks permission once, and
+//	         is the route that works on GNOME. Also sandbox-friendly.
+//	ydotool  the original uinput path: needs ydotoold plus a /dev/uinput rule,
+//	         and cannot work from inside a sandbox. The last resort — X11, or a
+//	         compositor that offers neither of the above.
+//
+// "auto" tries them in that order, from least to most intrusive. The first two
+// are exact complements: where one is unavailable the other generally isn't.
+//
+// The mode (paste/type/clipboard_only) is orthogonal: it says *what* to deliver,
+// the backend says *how*.
+const (
+	backendAuto    = "auto"
+	backendWayland = "wayland"
+	backendPortal  = "portal"
+	backendYdotool = "ydotool"
+	// backendClipboard is not a way of typing but the absence of one: nothing on
+	// this system can press a key, so the text is left on the clipboard.
+	backendClipboard = "clipboard"
+)
 
-	case ModeType:
-		if err := checkTool("ydotool"); err != nil {
-			return err
-		}
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-		defer cancel()
-		cmd := ydotoolCmd(ctx, "type", "--file=-")
-		cmd.Stdin = strings.NewReader(text)
-		if out, err := cmd.CombinedOutput(); err != nil {
-			return fmt.Errorf("ydotool type: %w: %s", err, strings.TrimSpace(string(out)))
-		}
-		return nil
-
-	case ModePaste:
-		if err := checkTool("ydotool"); err != nil {
-			return err
-		}
-		prev, prevOK := readClipboardText()
-		if err := copyText(text); err != nil {
-			return err
-		}
-		time.Sleep(time.Duration(cfg.PasteDelayMS) * time.Millisecond)
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-		// key codes: 29 = LEFTCTRL, 47 = V
-		if out, err := ydotoolCmd(ctx, "key", "29:1", "47:1", "47:0", "29:0").CombinedOutput(); err != nil {
-			return fmt.Errorf("ydotool key (is ydotoold running?): %w: %s", err, strings.TrimSpace(string(out)))
-		}
-		if cfg.RestoreClipboard && prevOK {
-			time.Sleep(time.Duration(cfg.RestoreDelayMS) * time.Millisecond)
-			_ = copyText(prev) // best effort
-		}
-		return nil
-	}
-	return fmt.Errorf("unknown injection mode %q", mode)
+// lastBackend remembers what the most recent injection used, so the optional
+// trailing Enter is pressed the same way the text was. pressEnter takes no
+// config of its own (it is shared with Windows, which has only one backend).
+var lastBackend struct {
+	sync.Mutex
+	name string
 }
 
-// pressEnter presses Return via ydotool, used to auto-submit after injection.
-func pressEnter() error {
-	if err := checkTool("ydotool"); err != nil {
+// resolveBackend decides the backend up front rather than trying one and
+// falling back on error: a half-delivered injection must never be retried
+// through the other backend, or the text would land twice.
+func resolveBackend(cfg config.Injection) string {
+	switch cfg.Backend {
+	case backendWayland, backendPortal, backendYdotool:
+		return cfg.Backend
+	}
+	if wtypeUsable() {
+		return backendWayland
+	}
+	if portalUsable() {
+		return backendPortal
+	}
+	return backendYdotool
+}
+
+// canType reports whether any backend can actually deliver keystrokes. Inside a
+// Flatpak on a compositor with no RemoteDesktop portal there is none: the
+// portal is missing, ydotool cannot work in a sandbox, and Flatpak's managed
+// Wayland socket filters out the virtual-keyboard protocol — deliberately, since
+// injecting input into other windows is exactly what a sandbox restricts.
+func canType(cfg config.Injection) bool {
+	if resolveBackend(cfg) != backendYdotool {
+		return true
+	}
+	_, err := exec.LookPath("ydotool")
+	return err == nil
+}
+
+// adjustMode downgrades paste/type to clipboard-only when nothing here can press
+// a key. Failing with "ydotool not found" would point the user at something they
+// cannot fix — and would throw away a perfectly good transcript.
+func adjustMode(cfg config.Injection, mode Mode) Mode {
+	if mode == ModeClipboardOnly || canType(cfg) {
+		return mode
+	}
+	return ModeClipboardOnly
+}
+
+func injectPlatform(cfg config.Injection, mode Mode, text string) error {
+	// Clipboard-only types nothing, so it is the same either way.
+	if mode == ModeClipboardOnly {
+		return copyText(text)
+	}
+	backend := resolveBackend(cfg)
+	setLastBackend(backend)
+
+	switch backend {
+	case backendWayland:
+		return wtypeInject(cfg, mode, text)
+	case backendPortal:
+		err := portalInject(cfg, mode, text)
+		// errPortalUnavailable is only returned before any key was sent (no
+		// portal, permission refused, timed out), so falling back cannot deliver
+		// the text twice. Any other error means keys were already in flight.
+		if err != nil && errors.Is(err, errPortalUnavailable) && cfg.Backend != backendPortal {
+			setLastBackend(backendYdotool)
+			return ydotoolInject(cfg, mode, text)
+		}
 		return err
 	}
-	time.Sleep(40 * time.Millisecond) // let the paste settle before submitting
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	// key code 28 = KEY_ENTER
-	if out, err := ydotoolCmd(ctx, "key", "28:1", "28:0").CombinedOutput(); err != nil {
-		return fmt.Errorf("ydotool enter: %w: %s", err, strings.TrimSpace(string(out)))
-	}
-	return nil
+	return ydotoolInject(cfg, mode, text)
 }
+
+func setLastBackend(name string) {
+	lastBackend.Lock()
+	lastBackend.name = name
+	lastBackend.Unlock()
+}
+
+// pressEnter submits the just-injected text, through whichever backend
+// delivered it.
+func pressEnter() error {
+	lastBackend.Lock()
+	backend := lastBackend.name
+	lastBackend.Unlock()
+	switch backend {
+	case backendWayland:
+		return wtypePressEnter()
+	case backendPortal:
+		return portalPressEnter()
+	}
+	return ydotoolPressEnter()
+}
+
+// --- clipboard (shared by both backends) ---------------------------------
+//
+// wl-copy/wl-paste serve both backends today. Inside a Flatpak they are not on
+// PATH unless bundled; the Clipboard portal is the alternative once injection
+// lands (phase 4 in docs/linux-portals.md).
 
 func copyText(text string) error {
 	if err := checkTool("wl-copy"); err != nil {
@@ -107,26 +172,20 @@ func readClipboardText() (string, bool) {
 // commands that operate on already-copied text.
 func ReadClipboard() (string, bool) { return readClipboardText() }
 
-// ydotoolCmd builds a ydotool invocation that finds the ydotoold socket in
-// either location: the client defaults to $XDG_RUNTIME_DIR/.ydotool_socket,
-// but Fedora's system service creates /tmp/.ydotool_socket. Point the client
-// at whichever exists so no environment setup is required.
-func ydotoolCmd(ctx context.Context, args ...string) *exec.Cmd {
-	cmd := exec.CommandContext(ctx, "ydotool", args...)
-	if os.Getenv("YDOTOOL_SOCKET") == "" {
-		userSock := filepath.Join(os.Getenv("XDG_RUNTIME_DIR"), ".ydotool_socket")
-		if _, err := os.Stat(userSock); err != nil {
-			if _, err := os.Stat("/tmp/.ydotool_socket"); err == nil {
-				cmd.Env = append(os.Environ(), "YDOTOOL_SOCKET=/tmp/.ydotool_socket")
-			}
-		}
-	}
-	return cmd
-}
-
 func checkTool(name string) error {
 	if _, err := exec.LookPath(name); err != nil {
 		return fmt.Errorf("%s not found in PATH (see README for setup)", name)
 	}
 	return nil
+}
+
+// ActiveBackend names the backend an injection would use right now, for the
+// log line and the Linux diagnostics panel. Now that there are three of them,
+// "which one am I actually on?" is the first question worth answering when
+// delivery misbehaves.
+func ActiveBackend(cfg config.Injection) string {
+	if !canType(cfg) {
+		return backendClipboard
+	}
+	return resolveBackend(cfg)
 }

@@ -436,6 +436,12 @@ func (d *Daemon) UpdateConfig(cfg *config.Config) {
 	d.emit(Event{Type: "config"})
 }
 
+// NotifySettingsChanged tells listeners to re-read settings that live outside
+// the config file. Autostart is an OS-level setting, so changing it emits no
+// config event of its own — and without this the tray's checkbox keeps showing
+// whatever it read at startup.
+func (d *Daemon) NotifySettingsChanged() { d.emit(Event{Type: "config"}) }
+
 // SetConfig validates, persists and applies cfg. Used by the tray for quick
 // setting changes; the web UI goes through the server's PUT /api/config.
 func (d *Daemon) SetConfig(cfg config.Config) error {
@@ -1172,6 +1178,7 @@ func (d *Daemon) finish(s *session) {
 		"duration", duration.Round(10*time.Millisecond),
 		"source", source,
 		"cleanup", cleanupUsed,
+		"backend", inject.ActiveBackend(cfg.Injection),
 		"stt_final", timings.SttFinal.Round(time.Millisecond),
 		"cleanup_ms", timings.Cleanup.Round(time.Millisecond),
 		"injected", timings.Injected.Round(time.Millisecond),

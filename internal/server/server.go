@@ -118,6 +118,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("PUT /api/config", s.auth(s.handlePutConfig))
 	mux.HandleFunc("GET /api/hotkey", s.auth(s.handleGetHotkey))
 	mux.HandleFunc("POST /api/accessibility", s.auth(s.handleRequestAccessibility))
+	mux.HandleFunc("POST /api/hotkey/configure", s.auth(s.handleConfigureHotkey))
 	mux.HandleFunc("POST /api/test-key", s.auth(s.handleTestKey))
 	mux.HandleFunc("GET /api/costs", s.auth(s.handleCosts))
 	mux.HandleFunc("GET /api/achievements", s.auth(s.handleAchievements))
@@ -516,6 +517,11 @@ func (s *Server) handleGetHotkey(w http.ResponseWriter, r *http.Request) {
 		"exe":       exe,
 		"toggle":    bind(toggle, cfg.HotkeyWindows),
 		"cancel":    bind(cancel, cfg.HotkeyCancelWindows),
+		// Whether the desktop can actually open its own shortcut editor for Vito.
+		// Only GlobalShortcuts v2 has ConfigureShortcuts, and the portal frontend
+		// lists the method whatever the backend supports — so ask the manager,
+		// which knows the version, rather than assuming.
+		"configurable": s.hk.CanConfigure(),
 		// macOS gates both the hotkey and pasting behind one permission; the
 		// settings page offers to ask for it when this is false. Always true
 		// elsewhere, so the UI can read it without checking the OS first.
@@ -538,6 +544,17 @@ func (s *Server) handleRequestAccessibility(w http.ResponseWriter, r *http.Reque
 	})
 }
 
+// handleConfigureHotkey asks the desktop to open its shortcut editor for Vito.
+// On Wayland the binding belongs to the user, not the app, so this is how the
+// settings page offers to change it without inventing a key-capture UI.
+func (s *Server) handleConfigureHotkey(w http.ResponseWriter, r *http.Request) {
+	if err := s.hk.Configure(); err != nil {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
 // handleLinuxTools reports which optional external helpers Vito relies on are
 // present on this Linux host, so the web UI can show a live "what's installed"
 // report. Non-Linux hosts get os != "linux" and an empty list; the UI hides the
@@ -547,7 +564,7 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 		s.writeJSON(w, http.StatusOK, map[string]any{"os": runtime.GOOS, "present": map[string]bool{}})
 		return
 	}
-	names := []string{"wl-copy", "wl-paste", "ydotool", "notify-send", "pactl", "playerctl"}
+	names := []string{"wl-copy", "wl-paste", "wtype", "ydotool", "notify-send", "pactl"}
 	present := make(map[string]bool, len(names))
 	for _, n := range names {
 		_, err := exec.LookPath(n)
@@ -569,10 +586,14 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	present["ydotoold"] = socket != ""
+	// Which of the three delivery routes is actually in play. With a fallback
+	// chain, "it works" and "it works the way you think" are different claims —
+	// this is the first thing worth knowing when delivery misbehaves.
 	s.writeJSON(w, http.StatusOK, map[string]any{
 		"os":             runtime.GOOS,
 		"present":        present,
 		"ydotool_socket": socket,
+		"backend":        inject.ActiveBackend(s.d.Config().Injection),
 	})
 }
 
@@ -988,6 +1009,9 @@ func (s *Server) handlePutAutostart(w http.ResponseWriter, r *http.Request) {
 		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}
+	// Autostart lives in the OS, not the config file, so nothing else would tell
+	// the tray its checkbox is now stale.
+	s.d.NotifySettingsChanged()
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "enabled": body.Enabled})
 }
 
