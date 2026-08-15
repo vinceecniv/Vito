@@ -907,6 +907,7 @@
   .modelcombo-list .mdl-x { border:0; background:none; color:var(--text3); cursor:pointer; font-size:15px; line-height:1; padding:0 2px; flex:0 0 auto; }
   .modelcombo-list .mdl-x:hover { color:var(--coral); }
   .modelcombo-list .mdl-empty { padding:8px 10px; font-size:12.5px; color:var(--text3); }
+  .modelcombo-list .mdl-note { font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text3); border:1px solid var(--line); border-radius:5px; padding:1px 5px; flex:0 0 auto; }
   /* The global shortcut the desktop bound for us, shown instead of "bind it yourself". */
   .hk-portal { border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; background:var(--card); }
   .hk-portal-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:7px; }
@@ -1437,7 +1438,7 @@
             <label class="fld" data-help="openaimodel">Model</label>
             <div class="flagsel modelcombo" id="modelcombo">
               <span class="mdl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></span>
-              <input type="text" id="s-openaimodel" placeholder="llama-3.3-70b-versatile" autocomplete="off">
+              <input type="text" id="s-openaimodel" placeholder="openai/gpt-oss-120b" autocomplete="off">
               <div class="flagsel-list" id="modelcombo-list"></div>
             </div>
           </div>
@@ -1898,6 +1899,7 @@ const TR = { nl: {
   "Welcome, Linux user! Set Vito up for your desktop in the Linux settings.":"Welkom, Linux-gebruiker! Stel Vito in voor je desktop bij de Linux-instellingen.",
   "Open Linux settings":"Linux-instellingen openen",
   "Get the AppImage":"Download de AppImage",
+  "preview":"preview",
   "Wayland virtual-keyboard (wtype)":"Wayland virtual-keyboard (wtype)",
   "RemoteDesktop portal":"RemoteDesktop-portal",
   "ydotool (uinput)":"ydotool (uinput)",
@@ -2883,8 +2885,8 @@ function syncCleanupUI(){
 }
 // A preset prefills the endpoint + a sensible model; "local" leaves them to edit.
 function applyCleanupPreset(v){
-  if (v === "groq")   { $("s-openaibaseurl").value = "https://api.groq.com/openai/v1"; $("s-openaimodel").value = "llama-3.3-70b-versatile"; $("s-openaikey").placeholder = "gsk_…"; }
-  else if (v === "openai") { $("s-openaibaseurl").value = "https://api.openai.com/v1"; $("s-openaimodel").value = "gpt-4o-mini"; $("s-openaikey").placeholder = "sk-…"; }
+  if (v === "groq")   { $("s-openaibaseurl").value = "https://api.groq.com/openai/v1"; $("s-openaimodel").value = "openai/gpt-oss-120b"; $("s-openaikey").placeholder = "gsk_…"; }
+  else if (v === "openai") { $("s-openaibaseurl").value = "https://api.openai.com/v1"; $("s-openaimodel").value = "gpt-5.6-luna"; $("s-openaikey").placeholder = "sk-…"; }
   else { $("s-openaikey").placeholder = "(often none for a local model)"; } // local: keep what's there
   syncCleanupUI();
   renderModelCombo();
@@ -2898,7 +2900,7 @@ function syncAssistUI(){
 }
 function applyAssistPreset(v){
   if (v === "groq")   { $("s-assistbaseurl").value = "https://api.groq.com/openai/v1"; $("s-assistopenaimodel").value = "openai/gpt-oss-120b"; $("s-assistopenaikey").placeholder = "gsk_…"; }
-  else if (v === "openai") { $("s-assistbaseurl").value = "https://api.openai.com/v1"; $("s-assistopenaimodel").value = "gpt-4o"; $("s-assistopenaikey").placeholder = "sk-…"; }
+  else if (v === "openai") { $("s-assistbaseurl").value = "https://api.openai.com/v1"; $("s-assistopenaimodel").value = "gpt-5.6-terra"; $("s-assistopenaikey").placeholder = "sk-…"; }
   else { $("s-assistopenaikey").placeholder = "(often none for a local model)"; }
   syncAssistUI();
 }
@@ -2915,22 +2917,35 @@ function syncAssistMode(){
     ? t("Uses the AI cleanup model:") + " " + currentCleanupModelName()
     : t("Uses its own model, set below.");
 }
-// Default token rates per provider — the same table the cost card trusts, so the
-// visible fields start from a sensible assumption you can then override.
-function ratesForProvider(provider, baseURL){
+// OpenAI list prices, USD per million tokens. Only OpenAI needs a per-model
+// table: Groq's free tier and a local model cost nothing whichever model you
+// pick, and Anthropic has one rate here because Vito only ever fills in Haiku.
+// Without this, someone on the frontier model would see a quarter of a percent
+// of their actual bill.
+const OPENAI_RATES = {
+  "gpt-5.6-sol":   { in: 5,    out: 30   },
+  "gpt-5.6-terra": { in: 2,    out: 12   },
+  "gpt-5.6-luna":  { in: 0.20, out: 1.20 },
+  "gpt-4o-mini":   { in: 0.15, out: 0.60 },
+};
+// Default token rates — the same table the cost card trusts, so the visible
+// fields start from a sensible assumption you can then override. An OpenAI model
+// we have no price for falls back to what the preset fills in, which is at least
+// the right order of magnitude for a cleanup-sized model.
+function ratesForProvider(provider, baseURL, model){
   if ((provider || "anthropic") === "openai") {
     const b = (baseURL || "").toLowerCase();
-    if (b.includes("openai.com")) return { in: 0.15, out: 0.60 }; // gpt-4o-mini
+    if (b.includes("openai.com")) return OPENAI_RATES[(model || "").trim()] || OPENAI_RATES["gpt-5.6-luna"];
     return { in: 0, out: 0 }; // Groq free tier / local model
   }
   return { in: 1.0, out: 5.0 }; // Anthropic Haiku
 }
 function fillCleanupRates(){
-  const r = ratesForProvider($("s-cleanupprovider").value, $("s-openaibaseurl").value);
+  const r = ratesForProvider($("s-cleanupprovider").value, $("s-openaibaseurl").value, $("s-openaimodel").value);
   $("s-cleanupinrate").value = r.in; $("s-cleanupoutrate").value = r.out;
 }
 function fillAssistRates(){
-  const r = ratesForProvider($("s-assistprovider").value, $("s-assistbaseurl").value);
+  const r = ratesForProvider($("s-assistprovider").value, $("s-assistbaseurl").value, $("s-assistopenaimodel").value);
   $("s-assistinrate").value = r.in; $("s-assistoutrate").value = r.out;
 }
 // The four token rates read from their (editable) fields, for saving into costs.
@@ -2951,10 +2966,26 @@ function presetFromBase(url){
 // keep any custom model you type, and remember custom ones (each removable) so
 // you can switch back without retyping.
 const CLEANUP_MODEL_PRESETS = {
-  groq:   ["llama-3.3-70b-versatile", "openai/gpt-oss-120b", "openai/gpt-oss-20b", "moonshotai/kimi-k2-instruct", "llama-3.1-8b-instant"],
-  openai: ["gpt-4o-mini", "gpt-4o", "gpt-4.1-mini"],
+  // Groq retired both Llama entries on 16 Aug 2026 and dropped kimi-k2 from its
+  // catalogue, which left only the two gpt-oss models on production footing.
+  // The two preview entries are listed because a two-item menu is barely a menu —
+  // but they are labelled, because Groq reserves the right to drop a preview
+  // model "at short notice" and that is precisely how this list broke.
+  //
+  // Not listed: groq/compound and compound-mini. They decide for themselves
+  // whether to web-search or run code, and a dictation that happens to sound
+  // like a question could come back answered instead of tidied.
+  groq:   ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.6-27b", "minimaxai/minimax-m2.7"],
+  // The GPT-5.6 family supersedes the 4o line: luna is the high-volume budget
+  // model, terra balances, sol is the frontier one. gpt-4o-mini stays because it
+  // is not deprecated and is still the cheapest of the four ($0.15/$0.60 against
+  // luna's $0.20/$1.20) — worth keeping for anyone dictating a lot.
+  openai: ["gpt-5.6-luna", "gpt-5.6-terra", "gpt-5.6-sol", "gpt-4o-mini"],
   local:  [],
 };
+// Models Groq serves but does not commit to. Shown with a badge so the choice is
+// informed rather than a surprise three months later.
+const PREVIEW_MODELS = new Set(["qwen/qwen3.6-27b", "minimaxai/minimax-m2.7"]);
 function cleanupPreset(){ return $("s-cleanuppreset").value || "groq"; }
 function rememberedModels(){ try { return JSON.parse(localStorage.getItem("vito-cleanup-models") || "{}"); } catch { return {}; } }
 function rememberModel(preset, model){
@@ -2982,7 +3013,8 @@ function renderModelCombo(q){
   const ps = presets.filter(match), rs = remembered.filter(match);
   let html = "";
   if (ps.length) html += `<div class="mdl-label">${t("Suggested")}</div>` +
-    ps.map(m => `<div class="flagsel-opt mdl-opt" data-v="${esc(m)}"><span>${esc(m)}</span></div>`).join("");
+    ps.map(m => `<div class="flagsel-opt mdl-opt" data-v="${esc(m)}"><span>${esc(m)}</span>` +
+      (PREVIEW_MODELS.has(m) ? `<span class="mdl-note">${t("preview")}</span>` : "") + `</div>`).join("");
   if (rs.length) html += `<div class="mdl-label">${t("Your models")}</div>` +
     rs.map(m => `<div class="flagsel-opt mdl-opt" data-v="${esc(m)}"><span>${esc(m)}</span>` +
       `<button type="button" class="mdl-x" data-rm="${esc(m)}" title="${t("Remove")}" aria-label="${t("Remove")}">×</button></div>`).join("");
@@ -2994,7 +3026,10 @@ function closeModelCombo(){ const c = $("modelcombo"); if (c) c.classList.remove
 function cleanupCostRates(){
   if (($("s-cleanupprovider").value || "anthropic") === "openai") {
     const b = ($("s-openaibaseurl").value || "").toLowerCase();
-    if (b.includes("openai.com")) return { cleanup_in_per_mtok_usd: 0.15, cleanup_out_per_mtok_usd: 0.60 }; // gpt-4o-mini
+    if (b.includes("openai.com")) {
+      const r = OPENAI_RATES[($("s-openaimodel").value || "").trim()] || OPENAI_RATES["gpt-5.6-luna"];
+      return { cleanup_in_per_mtok_usd: r.in, cleanup_out_per_mtok_usd: r.out };
+    }
     return { cleanup_in_per_mtok_usd: 0, cleanup_out_per_mtok_usd: 0 }; // Groq free tier / local model
   }
   return { cleanup_in_per_mtok_usd: 1.0, cleanup_out_per_mtok_usd: 5.0 }; // Anthropic Haiku
@@ -6534,7 +6569,7 @@ const HELP = {
   cleanuppreset:{nl:"Snelle voorinstelling die het endpoint en een passend model invult. 'Groq' gebruikt Groq's gratis tier; 'Lokaal / eigen endpoint' is voor je eigen (bijv. lokaal draaiende) OpenAI-compatibele server.",en:"A quick preset that fills the endpoint and a sensible model. 'Groq' uses Groq's free tier; 'Local / custom endpoint' is for your own (e.g. locally running) OpenAI-compatible server."},
   openaibaseurl:{nl:"De base-URL van het OpenAI-compatibele endpoint, bijv. Groq https://api.groq.com/openai/v1, of een lokaal model op http://localhost:11434/v1. Bij een lokaal endpoint verlaat je opschoning je computer nooit — maximale privacy.",en:"The base URL of the OpenAI-compatible endpoint, e.g. Groq https://api.groq.com/openai/v1, or a local model at http://localhost:11434/v1. With a local endpoint your cleanup never leaves your computer — maximum privacy."},
   openaikey:{nl:"De API-key voor dit endpoint. Een lokaal draaiend model heeft er vaak geen nodig — laat het veld dan leeg.",en:"The API key for this endpoint. A locally running model often needs none — leave it empty in that case."},
-  openaimodel:{nl:"Welk model op dit endpoint de opschoning doet, bijv. llama-3.3-70b-versatile.",en:"Which model on this endpoint does the cleanup, e.g. llama-3.3-70b-versatile."},
+  openaimodel:{nl:"Welk model op dit endpoint de opschoning doet, bijv. openai/gpt-oss-120b. Modellen met het label \u2018preview\u2019 worden door de aanbieder niet gegarandeerd en kunnen verdwijnen.",en:"Which model on this endpoint does the cleanup, e.g. openai/gpt-oss-120b. Models badged \u2018preview\u2019 are not guaranteed by the provider and can disappear."},
   inject:{nl:"Hoe de tekst in het actieve venster komt: plakken (Ctrl+V), letter voor letter typen, of alleen naar het klembord.",en:"How the text reaches the active window: paste (Ctrl+V), type it out, or clipboard only."},
   restore:{nl:"Zet je vorige klembord-inhoud terug nadat de gedicteerde tekst is geplakt.",en:"Restore your previous clipboard contents after the dictated text is pasted."},
   appendenter:{nl:"Drukt na de tekst automatisch op Enter — handig om invoer meteen te verzenden, bijvoorbeeld in een Claude Code-sessie of chat.",en:"Presses Enter after the text — handy to submit input right away, e.g. in a Claude Code session or chat."},
