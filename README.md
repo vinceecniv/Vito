@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="#download"><img alt="Download" src="https://img.shields.io/badge/Download-Windows%20%C2%B7%20Linux-7C3AED?style=for-the-badge"></a>
+  <a href="#download"><img alt="Download" src="https://img.shields.io/badge/Download-Windows%20%C2%B7%20Linux%20%C2%B7%20macOS-7C3AED?style=for-the-badge"></a>
   <a href="https://vito.talk"><img alt="Website" src="https://img.shields.io/badge/Website-vito.talk-2B2440?style=for-the-badge"></a>
   <a href="https://ko-fi.com/vito_app"><img alt="Ko-fi" src="https://img.shields.io/badge/Support-Ko--fi-FF6B5E?style=for-the-badge"></a>
 </p>
@@ -230,7 +230,7 @@ Vito is **simple to use, but powerful under the hood.**
 ### System & maintenance
 - 🚀 **Start with your computer**, so Vito is always ready.
 - 🔁 **Backup & restore** with automatic rolling backups.
-- ⬆️ **Built-in update checker** that can install updates for you.
+- ⬆️ **Built-in update checker** — tells you when a new version is out, and on Windows installs it for you.
 - 🎧 **Configurable media behavior** while dictating — do nothing, duck the audio, or auto pause/play.
 - 🐧 **Linux-friendly** — detects missing utilities/libraries and explains how to bind hotkeys in each desktop environment.
 
@@ -402,8 +402,8 @@ recommended commands send a signal to the running daemon, so they launch no proc
   ```
 
 `SIGUSR2` toggles a dictation, `SIGUSR1` cancels it (cleanup is the settings toggle, not a hotkey). On
-**Windows** the daemon registers a global hotkey itself. The exact commands, per desktop, are also shown in
-the app under Settings → Activation.
+**Windows and macOS** the daemon registers a global hotkey itself. The exact commands, per desktop, are also
+shown in the app under Settings → Activation.
 
 </details>
 
