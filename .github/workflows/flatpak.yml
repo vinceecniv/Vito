@@ -40,6 +40,19 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Install the Go SDK extension
+        # The flathub-infra image ships the Platform and Sdk but not the language
+        # extensions, and the manifest asks for golang — without this the build
+        # stops at "Requested extension ... not installed" before compiling
+        # anything. Pinned to the same runtime version as the manifest; they have
+        # to match or flatpak-builder will not see it.
+        run: |
+          set -eux
+          flatpak remote-add --if-not-exists flathub \
+            https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install -y --noninteractive flathub \
+            org.freedesktop.Sdk.Extension.golang//25.08
+
       - name: Build the Flatpak into a repository
         env:
           # Stamped into the binary the same way the other builds do it, so
