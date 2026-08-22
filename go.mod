@@ -6,7 +6,7 @@ require (
 	fyne.io/systray v1.12.2
 	github.com/anthropics/anthropic-sdk-go v1.63.0
 	github.com/coder/websocket v1.8.15
-	github.com/gen2brain/malgo v0.11.25
+	github.com/gen2brain/malgo v0.11.26
 	github.com/godbus/dbus/v5 v5.1.0
 	golang.org/x/sys v0.47.0
 	modernc.org/sqlite v1.56.0
