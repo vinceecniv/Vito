@@ -33,13 +33,19 @@ type Entry struct {
 	Raw         string    `json:"raw"`
 	Cleaned     string    `json:"cleaned,omitempty"` // empty when cleanup was off or fell back
 	CleanupUsed bool      `json:"cleanup_used"`
-	SttMS       int64     `json:"stt_ms"`
-	CleanupMS   int64     `json:"cleanup_ms"`
-	InjectedMS  int64     `json:"injected_ms"`
-	Words       int       `json:"words"`                  // word count of the injected text
-	Sentences   int       `json:"sentences"`              // sentence count of the injected text
-	Command     bool      `json:"command,omitempty"`      // a Vito Assist voice command ("Vito, …") drove this dictation
-	CommandText string    `json:"command_text,omitempty"` // the instruction itself ("vertaal naar Duits"), for the history label
+	// CleanupError is why the AI pass failed, when one was attempted and errored
+	// (empty otherwise, including when cleanup was off). The raw transcript went
+	// in instead, and a toast that has since disappeared is the only other place
+	// that reason ever existed — keeping it on the entry is what lets the history
+	// explain an unpolished dictation hours later.
+	CleanupError string `json:"cleanup_error,omitempty"`
+	SttMS        int64  `json:"stt_ms"`
+	CleanupMS    int64  `json:"cleanup_ms"`
+	InjectedMS   int64  `json:"injected_ms"`
+	Words        int    `json:"words"`                  // word count of the injected text
+	Sentences    int    `json:"sentences"`              // sentence count of the injected text
+	Command      bool   `json:"command,omitempty"`      // a Vito Assist voice command ("Vito, …") drove this dictation
+	CommandText  string `json:"command_text,omitempty"` // the instruction itself ("vertaal naar Duits"), for the history label
 	// ClipboardCommand marks a Vito Assist command that worked on the clipboard
 	// (vs. a spoken follow-up). Not stored per row — only folded into the daily
 	// counter, which is enough to tell the two modes apart for achievements.
@@ -57,6 +63,9 @@ type Entry struct {
 	// search results.
 	Favorite bool `json:"favorite"`
 }
+
+// maxCleanupError caps the stored failure reason.
+const maxCleanupError = 2000
 
 // Text returns what was actually injected.
 func (e Entry) Text() string {
@@ -108,6 +117,9 @@ func NewStore(maxEntries, retentionDays int) (*Store, error) {
 	_, _ = db.Exec("ALTER TABLE history ADD COLUMN favorite INTEGER NOT NULL DEFAULT 0")
 	// The Vito Assist instruction column (added later than the table).
 	_, _ = db.Exec("ALTER TABLE history ADD COLUMN command_text TEXT NOT NULL DEFAULT ''")
+	// The failed-cleanup reason (added later than the table); older rows keep ''
+	// — the reason was never stored back then, not even for the ones that failed.
+	_, _ = db.Exec("ALTER TABLE history ADD COLUMN cleanup_error TEXT NOT NULL DEFAULT ''")
 	s := &Store{db: db, maxEntries: maxEntries, retentionDays: retentionDays}
 	s.importLegacy(filepath.Join(base, "history.jsonl"))
 	s.backfillDayStats()
@@ -147,6 +159,9 @@ CREATE TABLE IF NOT EXISTS history (
   raw          TEXT,
   cleaned      TEXT,
   cleanup_used INTEGER,
+  -- Why the AI pass failed, when it did ('' = it didn't, or never ran). Stored
+  -- so the history can explain a dictation that came out unpolished.
+  cleanup_error TEXT NOT NULL DEFAULT '',
   stt_ms       INTEGER,
   cleanup_ms   INTEGER,
   injected_ms  INTEGER,
@@ -214,10 +229,10 @@ func (s *Store) Append(e Entry) error {
 	e.fillDefaults()
 	_, err := s.db.Exec(
 		`INSERT OR REPLACE INTO history
-		 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text)
-		 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+		 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text)
+		 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 		e.ID, e.Timestamp.UnixMilli(), e.DurationMS, e.Language, e.Source, e.Raw, e.Cleaned,
-		b2i(e.CleanupUsed), e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, e.CleanupInTokens, e.CleanupOutTokens, e.CommandInTokens, e.CommandOutTokens, e.CommandText)
+		b2i(e.CleanupUsed), e.CleanupError, e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, e.CleanupInTokens, e.CleanupOutTokens, e.CommandInTokens, e.CommandOutTokens, e.CommandText)
 	if err != nil {
 		return err
 	}
@@ -251,10 +266,10 @@ func (s *Store) AppendUpload(e Entry) error {
 	e.fillDefaults()
 	_, err := s.db.Exec(
 		`INSERT OR REPLACE INTO history
-		 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens)
-		 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+		 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens)
+		 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 		e.ID, e.Timestamp.UnixMilli(), e.DurationMS, e.Language, e.Source, e.Raw, e.Cleaned,
-		b2i(e.CleanupUsed), e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, e.CleanupInTokens, e.CleanupOutTokens)
+		b2i(e.CleanupUsed), e.CleanupError, e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, e.CleanupInTokens, e.CleanupOutTokens)
 	if err != nil {
 		return err
 	}
@@ -288,6 +303,11 @@ func (s *Store) AppendStatsOnly(e Entry) error {
 func (e *Entry) fillDefaults() {
 	if e.Timestamp.IsZero() {
 		e.Timestamp = time.Now()
+	}
+	// A provider error can carry its whole response body; keep enough to diagnose
+	// with and no more, so one bad day can't bloat the database.
+	if len(e.CleanupError) > maxCleanupError {
+		e.CleanupError = e.CleanupError[:maxCleanupError] + "…"
 	}
 	text := e.Text()
 	if e.Words == 0 {
@@ -444,7 +464,7 @@ func (s *Store) CommandTotal(fromDay, toDay string) (int, error) {
 func (s *Store) List(query string, favoritesOnly bool, limit, offset int) ([]Entry, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	q := `SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite
+	q := `SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite
 	      FROM history`
 	where, args := listWhere(query, favoritesOnly)
 	q += where
@@ -511,7 +531,7 @@ func (s *Store) Get(id string) (Entry, bool, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	row := s.db.QueryRow(
-		`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite
+		`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite
 		 FROM history WHERE id=?`, id)
 	e, err := scanEntry(row)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -621,7 +641,7 @@ func scanEntry(sc scanner) (Entry, error) {
 	var ts int64
 	var cleanup, favorite int
 	if err := sc.Scan(&e.ID, &ts, &e.DurationMS, &e.Language, &e.Source, &e.Raw, &e.Cleaned,
-		&cleanup, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences, &e.CommandText, &favorite); err != nil {
+		&cleanup, &e.CleanupError, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences, &e.CommandText, &favorite); err != nil {
 		return Entry{}, err
 	}
 	e.Timestamp = time.UnixMilli(ts)

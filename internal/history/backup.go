@@ -46,7 +46,7 @@ func (s *Store) Snapshot() (BackupData, error) {
 	defer s.mu.Unlock()
 	var b BackupData
 
-	rows, err := s.db.Query(`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,
+	rows, err := s.db.Query(`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,
 		stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,
 		command_in_tokens,command_out_tokens,command_text,favorite
 		FROM history ORDER BY ts`)
@@ -58,7 +58,7 @@ func (s *Store) Snapshot() (BackupData, error) {
 		var ts int64
 		var used, favorite int
 		if err := rows.Scan(&e.ID, &ts, &e.DurationMS, &e.Language, &e.Source, &e.Raw, &e.Cleaned,
-			&used, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences,
+			&used, &e.CleanupError, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences,
 			&e.CleanupInTokens, &e.CleanupOutTokens, &e.CommandInTokens, &e.CommandOutTokens, &e.CommandText, &favorite); err != nil {
 			rows.Close()
 			return b, err
@@ -131,10 +131,10 @@ func (s *Store) Restore(b BackupData) error {
 	for _, e := range b.History {
 		if _, err := tx.Exec(
 			`INSERT OR REPLACE INTO history
-			 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text,favorite)
-			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+			 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text,favorite)
+			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 			e.ID, e.Timestamp.UnixMilli(), e.DurationMS, e.Language, e.Source, e.Raw, e.Cleaned,
-			b2i(e.CleanupUsed), e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences,
+			b2i(e.CleanupUsed), e.CleanupError, e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences,
 			e.CleanupInTokens, e.CleanupOutTokens, e.CommandInTokens, e.CommandOutTokens, e.CommandText, b2i(e.Favorite)); err != nil {
 			return err
 		}

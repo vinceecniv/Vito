@@ -27,6 +27,7 @@ import (
 	"vito/internal/dictionary"
 	"vito/internal/history"
 	"vito/internal/inject"
+	"vito/internal/localstt"
 	"vito/internal/media"
 	"vito/internal/notify"
 	"vito/internal/stt"
@@ -85,10 +86,17 @@ type Event struct {
 	Playback *audio.PlaybackState `json:"playback,omitempty"`
 	// Upload reports progress while an uploaded audio file is transcribed.
 	Upload *UploadStatus `json:"upload,omitempty"`
+	// LocalSTT is the managed local speech engine's state, on every change.
+	LocalSTT *localstt.Status `json:"local_stt,omitempty"`
 	// CleanupFailed marks a final where the AI cleanup pass was attempted but
 	// errored/timed out, so the raw transcript was injected instead. The web UI
 	// surfaces this as a toast.
 	CleanupFailed bool `json:"cleanup_failed,omitempty"`
+	// CleanupError is that failure's reason, and EntryID the history entry it was
+	// stored on (empty when nothing was stored — history off, or privacy mode).
+	// Together they let the toast point at the entry that keeps the full text.
+	CleanupError string `json:"cleanup_error,omitempty"`
+	EntryID      string `json:"entry_id,omitempty"`
 	// Credit names the provider whose depleted balance caused a failure, when
 	// that is the reason (rather than a transient error). Set on an "error"
 	// event; CleanupCredit is its equivalent on a "final" where only the cleanup
@@ -99,6 +107,7 @@ type Event struct {
 
 type session struct {
 	cfg       config.Config // snapshot for the whole session
+	stt       config.STT    // cfg.STT with the managed local engine resolved to its endpoint
 	spool     *audio.Spool
 	capture   *audio.Capture
 	stream    stt.Streamer
@@ -146,16 +155,54 @@ type Daemon struct {
 
 	creditMu  sync.Mutex
 	creditOut map[string]bool // provider display name → known out of credit
+	// creditHush holds the providers whose warning the user clicked away. It is
+	// deliberately tied to the flag above rather than remembered by the browser:
+	// a dismissal must last exactly as long as the problem it hides, and both
+	// clearing the flag (credit is back) and setting it afresh drop the hush, so
+	// the card returns the next time that account actually runs dry.
+	creditHush map[string]bool
 
 	cmdMu      sync.Mutex
 	pendingCmd string // one-off spoken command ("Vito, …") armed for the next dictation
+
+	// local is the speech engine Vito installs and runs itself (provider
+	// "local"). It is always constructed, so the settings page can offer it,
+	// and only started when the config selects it.
+	local *localstt.Manager
+}
+
+// LocalSTT exposes the managed local engine to the HTTP layer.
+func (d *Daemon) LocalSTT() *localstt.Manager { return d.local }
+
+// resolveSTT turns the configured provider into what the stt package can act
+// on. The managed local engine is not a provider there at all: it is an
+// OpenAI-compatible server on localhost, so it becomes the endpoint provider
+// pointed at whatever port the sidecar is on right now. An engine that is not
+// running says why, in words meant for the notification the caller shows.
+func (d *Daemon) resolveSTT(cfg config.STT) (config.STT, error) {
+	if cfg.Provider != "local" {
+		return cfg, nil
+	}
+	base, err := d.local.BaseURL()
+	if err != nil {
+		return cfg, err
+	}
+	cfg.Provider = "openai"
+	cfg.OpenAIBaseURL = base
+	cfg.OpenAIKey = ""
+	cfg.OpenAIModel = localstt.ModelName
+	cfg.OpenAIPreset = ""
+	return cfg, nil
 }
 
 // sttProviderName is the display name of the configured speech-recognition
 // provider, used to name it in the "out of credit" UI.
 func sttProviderName(cfg config.STT) string {
-	if cfg.Provider == "soniox" {
+	switch cfg.Provider {
+	case "soniox":
 		return "Soniox"
+	case "openai":
+		return stt.OpenAIName(cfg)
 	}
 	return "AssemblyAI"
 }
@@ -170,9 +217,10 @@ func (d *Daemon) flagCredit(provider string) bool {
 		d.creditOut = map[string]bool{}
 	}
 	if d.creditOut[provider] {
-		return false
+		return false // already known; a repeat failure must not undo a dismissal
 	}
 	d.creditOut[provider] = true
+	delete(d.creditHush, provider) // running out again is news, however often
 	return true
 }
 
@@ -183,15 +231,50 @@ func (d *Daemon) clearCredit(provider string) bool {
 		return false
 	}
 	delete(d.creditOut, provider)
+	delete(d.creditHush, provider)
 	return true
 }
 
-// CreditOut returns the providers currently known to be out of credit, sorted.
+// DismissCredit hides the out-of-credit warning for one provider, or for every
+// provider currently flagged when the name is empty, and broadcasts the change
+// so any other open window loses the card too.
+func (d *Daemon) DismissCredit(provider string) {
+	if d.hush(provider) {
+		d.emit(Event{Type: "credit"})
+	}
+}
+
+// hush marks the dismissal, reporting whether anything actually changed.
+func (d *Daemon) hush(provider string) bool {
+	d.creditMu.Lock()
+	defer d.creditMu.Unlock()
+	if d.creditHush == nil {
+		d.creditHush = map[string]bool{}
+	}
+	changed := false
+	for p := range d.creditOut {
+		if provider != "" && p != provider {
+			continue
+		}
+		if !d.creditHush[p] {
+			d.creditHush[p] = true
+			changed = true
+		}
+	}
+	return changed
+}
+
+// CreditOut returns the providers currently known to be out of credit and still
+// worth warning about, sorted — dismissed ones are left out, which is what makes
+// the card stay gone until that account runs dry again.
 func (d *Daemon) CreditOut() []string {
 	d.creditMu.Lock()
 	defer d.creditMu.Unlock()
 	out := make([]string, 0, len(d.creditOut))
 	for p := range d.creditOut {
+		if d.creditHush[p] {
+			continue
+		}
 		out = append(out, p)
 	}
 	sort.Strings(out)
@@ -236,6 +319,9 @@ func (d *Daemon) restoreMedia() {
 func (d *Daemon) Shutdown() {
 	_ = d.Cancel()   // restores + tears down when recording
 	d.restoreMedia() // catch the brief stop→finish window, or any leftover
+	if d.local != nil {
+		d.local.Stop() // the sidecar has no reason to outlive us
+	}
 }
 
 // AddEventListener registers an extra sink for live events, alongside OnEvent.
@@ -278,6 +364,8 @@ func (d *Daemon) privacyActive() bool { on, _ := d.PrivacyStatus(); return on }
 func New(cfg *config.Config, log *slog.Logger, audioCtx *audio.Context, hist *history.Store) *Daemon {
 	d := &Daemon{cfg: cfg, log: log, audioCtx: audioCtx, hist: hist, state: StateIdle}
 	d.player = audio.NewPlayer(func(string) { d.stopPlayback() })
+	d.local = localstt.New(log, func(st localstt.Status) { d.emit(Event{Type: "local_stt", LocalSTT: &st}) })
+	d.local.SetDesired(cfg.STT.Provider == "local", cfg.STT.LocalVariant)
 	go d.retentionLoop()
 	return d
 }
@@ -432,6 +520,9 @@ func (d *Daemon) UpdateConfig(cfg *config.Config) {
 		d.hist.SetRetentionDays(cfg.History.RetentionDays)
 		go d.pruneHistory() // apply a shortened retention window right away
 	}
+	if d.local != nil {
+		d.local.SetDesired(cfg.STT.Provider == "local", cfg.STT.LocalVariant)
+	}
 	d.log.Info("configuration updated")
 	d.emit(Event{Type: "config"})
 }
@@ -530,6 +621,16 @@ func (d *Daemon) start() error {
 	d.emit(Event{Type: "state", State: StateRecording})
 	d.stopPlayback() // never let the microphone record a recording we're playing
 
+	// The managed local engine may still be installing or warming up; better to
+	// say so now than to record and have nowhere to send it.
+	sttCfg, err := d.resolveSTT(cfg.STT)
+	if err != nil {
+		d.setIdleWithError(err)
+		d.emit(Event{Type: "state", State: StateIdle})
+		d.noteErr("vito: spraakherkenning", err.Error())
+		return err
+	}
+
 	spool, err := audio.NewSpool()
 	if err != nil {
 		d.setIdleWithError(fmt.Errorf("create spool: %w", err))
@@ -538,6 +639,7 @@ func (d *Daemon) start() error {
 
 	s := &session{
 		cfg:     cfg,
+		stt:     sttCfg,
 		spool:   spool,
 		started: time.Now(),
 		chunks:  make(chan []byte, 256),
@@ -556,7 +658,7 @@ func (d *Daemon) start() error {
 	// Prewarm: the STT socket dials while the first chunks are buffered.
 	s.lastActivity.Store(time.Now().UnixMilli())
 	var lastPartial string // reset the silence timer only on genuinely new text
-	s.stream = stt.NewStream(cfg.STT, keyterms, d.log, func(partial string) {
+	s.stream = stt.NewStream(s.stt, keyterms, d.log, func(partial string) {
 		if p := strings.TrimSpace(partial); p != "" && p != lastPartial {
 			lastPartial = p
 			s.lastActivity.Store(time.Now().UnixMilli())
@@ -565,6 +667,12 @@ func (d *Daemon) start() error {
 		d.emit(Event{Type: "partial", Text: partial})
 	})
 
+	// A provider without partials never tells us when speech is happening, and
+	// both watchdogs above read that off the partials: the silence timeout would
+	// cancel every dictation longer than itself, and auto-stop would never fire.
+	// For those sessions the microphone level stands in — cruder (a door slam
+	// counts as speech), but it errs towards keeping the recording.
+	listenByLevel := !stt.HasPartials(s.stt)
 	s.consumers.Add(1)
 	go func() {
 		defer s.consumers.Done()
@@ -575,9 +683,13 @@ func (d *Daemon) start() error {
 				d.log.Error("spool write failed", "err", err)
 			}
 			s.stream.Send(chunk)
+			r, clip := peakRatio(chunk)
+			if listenByLevel && r >= speechGate {
+				s.lastActivity.Store(time.Now().UnixMilli())
+				s.spoke.Store(true)
+			}
 			if now := time.Now(); now.Sub(lastLevel) >= 100*time.Millisecond {
 				lastLevel = now
-				r, clip := peakRatio(chunk)
 				d.emit(Event{Type: "level", Level: meter.level(r, now), Clip: clip})
 			}
 		}
@@ -914,7 +1026,7 @@ func (d *Daemon) finish(s *session) {
 		keyterms = dictionary.Keyterms(cfg.Dictionary)
 	}
 
-	streamCtx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+	streamCtx, cancel := context.WithTimeout(context.Background(), stt.FinishTimeout(s.stt))
 	text, err := s.stream.Finish(streamCtx)
 	cancel()
 	source := "stream"
@@ -926,12 +1038,14 @@ func (d *Daemon) finish(s *session) {
 				d.finishWithError(s, err, duration)
 				return
 			}
-			d.log.Warn("stream failed, falling back to async transcription", "err", err)
-			d.note("vito: verwerken…", "streaming viel weg, spool wordt verwerkt")
-			asyncCtx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
-			text, err = stt.NewAsyncClient(cfg.STT, keyterms).TranscribeFile(asyncCtx, s.spool.Path())
-			cancel()
-			source = "async"
+			if fallback := stt.Fallback(s.stt, keyterms); fallback != nil {
+				d.log.Warn("stream failed, falling back to async transcription", "err", err)
+				d.note("vito: verwerken…", "streaming viel weg, spool wordt verwerkt")
+				asyncCtx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+				text, err = fallback.TranscribeFile(asyncCtx, s.spool.Path())
+				cancel()
+				source = "async"
+			}
 		}
 		if err != nil {
 			d.finishWithError(s, fmt.Errorf("transcription failed (%s): %w", source, err), duration)
@@ -940,8 +1054,11 @@ func (d *Daemon) finish(s *session) {
 	}
 	// Speech recognition succeeded: if this provider was flagged out of credit, it
 	// clearly isn't anymore.
-	d.markCredit(sttProviderName(cfg.STT), false)
+	d.markCredit(sttProviderName(s.stt), false)
 	sttDone := time.Now()
+	if cfg.STT.Provider == "local" {
+		d.local.NoteLatency(sttDone.Sub(stopAt))
+	}
 
 	// Prefer the language the provider actually recognised (Soniox reports it per
 	// token) so the history flag matches what was spoken, not just the configured
@@ -1027,6 +1144,7 @@ func (d *Daemon) finish(s *session) {
 	cleanupUsed := false
 	cleanupFailed := false
 	cleanupCredit := ""
+	cleanupErr := "" // why it failed, kept with the history entry
 	var cleanUsage cleanup.Usage
 	// A Vito Assist command may run on its own (heavier) model; a plain dictation
 	// always uses the cleanup model. The master on/off switch stays cfg.Cleanup —
@@ -1050,6 +1168,7 @@ func (d *Daemon) finish(s *session) {
 			// Never block on cleanup: inject the raw transcript instead.
 			d.log.Warn("cleanup failed, injecting raw transcript", "err", err)
 			cleanupFailed = true
+			cleanupErr = err.Error()
 			if p, isCredit := apierr.CreditProvider(err); isCredit {
 				cleanupCredit = p
 				d.markCredit(p, true)
@@ -1098,6 +1217,7 @@ func (d *Daemon) finish(s *session) {
 	// is minted here rather than by the store.
 	entryID := history.NewID()
 	recordingID := ""
+	storedID := "" // entryID once the row is really on disk, "" otherwise
 	if cfg.History.Enabled && cfg.History.StoreAudio && d.hist != nil && !d.privacyActive() {
 		// Favorites' recordings are kept regardless of the last-N cap.
 		keep, _ := d.hist.FavoriteIDs()
@@ -1126,6 +1246,7 @@ func (d *Daemon) finish(s *session) {
 			Raw:              raw,
 			Cleaned:          cleaned,
 			CleanupUsed:      cleanupUsed,
+			CleanupError:     cleanupErr,
 			Command:          instruction != "",
 			CommandText:      instruction,
 			ClipboardCommand: clipboardOut,
@@ -1151,10 +1272,13 @@ func (d *Daemon) finish(s *session) {
 		}
 		if err != nil {
 			d.log.Warn("history append failed", "err", err)
+		} else if !d.privacyActive() {
+			storedID = entry.ID // there is a row to point the failure at
 		}
 	}
 
-	d.emit(Event{Type: "final", Raw: raw, Cleaned: cleaned, Timings: timings, RecordingID: recordingID, CleanupFailed: cleanupFailed, CleanupCredit: cleanupCredit})
+	d.emit(Event{Type: "final", Raw: raw, Cleaned: cleaned, Timings: timings, RecordingID: recordingID,
+		CleanupFailed: cleanupFailed, CleanupCredit: cleanupCredit, CleanupError: cleanupErr, EntryID: storedID})
 	d.emit(Event{Type: "state", State: StateIdle})
 	// The "done" chime already played when recording stopped (see Stop). It
 	// promised a finished dictation, so when the cleanup then failed and the raw
@@ -1165,10 +1289,21 @@ func (d *Daemon) finish(s *session) {
 		d.playSound(cfg, assets.SoundWarn)
 	}
 	switch {
-	case cleanupFailed && mode == inject.ModeClipboardOnly:
-		d.noteErr("vito: opschoning mislukt", "ruwe tekst in klembord — "+preview(final))
 	case cleanupFailed:
-		d.noteErr("vito: opschoning mislukt", "ruwe tekst geplakt — "+preview(final))
+		// The notification is the only warning you get away from the window, so it
+		// says where the reason went: the entry keeps the full provider error, this
+		// body has no room for it and would be truncated into uselessness anyway.
+		// Without a stored entry (history off, or privacy mode) there is nothing to
+		// point at, so it carries the reason itself instead.
+		where := "ruwe tekst geplakt"
+		if mode == inject.ModeClipboardOnly {
+			where = "ruwe tekst in klembord"
+		}
+		if storedID != "" {
+			d.noteErr("vito: opschoning mislukt", where+" — reden staat bij dit dictaat in de geschiedenis")
+		} else {
+			d.noteErr("vito: opschoning mislukt", where+" — "+preview(cleanupErr))
+		}
 	case mode == inject.ModeClipboardOnly:
 		d.note("vito: in klembord", preview(final))
 	default:
@@ -1274,6 +1409,11 @@ func peakRatio(pcm []byte) (float64, bool) {
 }
 
 const (
+	// speechGate is the peak above which a chunk counts as someone talking, for
+	// sessions that hear no partials (see Start). ≈ -30 dBFS: under the quietest
+	// peak the meter stretches to full, above room noise on a normal microphone.
+	speechGate = 0.03
+
 	meterGate   = 0.012                  // ambient hiss: the bar rests at 0 below this
 	meterRefMin = 0.05                   // ≈ -26 dBFS: quietest peak we'll stretch to full
 	meterWindow = 2 * time.Second        // sliding window whose loudest peak is "100%"

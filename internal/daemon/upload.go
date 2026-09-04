@@ -3,6 +3,7 @@ package daemon
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -60,6 +61,18 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 		d.emitUpload(UploadStatus{Phase: "error", Name: name, Error: err.Error()})
 		return UploadResult{}, err
 	}
+	sttCfg, err := d.resolveSTT(cfg.STT)
+	if err != nil {
+		d.emitUpload(UploadStatus{Phase: "error", Name: name, Error: err.Error()})
+		return UploadResult{}, err
+	}
+	// The managed engine decodes nothing but WAV, and Vito has no decoder of
+	// its own to hand it anything else. Said up front, before the upload.
+	if cfg.STT.Provider == "local" && !strings.EqualFold(filepath.Ext(name), ".wav") {
+		err := fmt.Errorf("de lokale spraakherkenning accepteert alleen WAV-bestanden")
+		d.emitUpload(UploadStatus{Phase: "error", Name: name, Error: err.Error()})
+		return UploadResult{}, err
+	}
 
 	var keyterms []string
 	if cfg.STT.KeytermsEnabled {
@@ -68,7 +81,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 
 	started := time.Now()
 	d.emitUpload(UploadStatus{Phase: "upload", Frac: 0, Name: name})
-	out, err := stt.TranscribeUpload(ctx, cfg.STT, keyterms, path, func(p stt.UploadProgress) {
+	out, err := stt.TranscribeUpload(ctx, sttCfg, keyterms, path, func(p stt.UploadProgress) {
 		d.emitUpload(UploadStatus{Phase: string(p.Phase), Frac: p.Frac, Name: name})
 	})
 	if err != nil {
@@ -79,7 +92,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 		d.emitUpload(UploadStatus{Phase: "error", Name: name, Error: err.Error(), Credit: provider})
 		return UploadResult{}, err
 	}
-	d.markCredit(sttProviderName(cfg.STT), false) // succeeded → not out of credit
+	d.markCredit(sttProviderName(sttCfg), false) // succeeded → not out of credit
 	sttMS := time.Since(started).Milliseconds()
 	lang := out.Language
 	// The provider measured the audio itself; the browser's figure is only a
@@ -99,6 +112,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 	}
 
 	cleaned, cleanupUsed := "", false
+	cleanupErr := ""
 	var usage cleanup.Usage
 	if cfg.Cleanup.Enabled && cleanup.Configured(cfg.Cleanup) && wordCount(raw) <= uploadCleanupMaxWords {
 		// A longer window than a dictation gets: there is no cursor waiting on it.
@@ -108,6 +122,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 		usage = u
 		if err != nil {
 			d.log.Warn("cleanup of uploaded file failed, keeping the raw transcript", "err", err)
+			cleanupErr = err.Error()
 			if p, isCredit := apierr.CreditProvider(err); isCredit {
 				d.markCredit(p, true)
 			}
@@ -135,6 +150,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 		Raw:              raw,
 		Cleaned:          cleaned,
 		CleanupUsed:      cleanupUsed,
+		CleanupError:     cleanupErr,
 		SttMS:            sttMS,
 		CleanupInTokens:  usage.InputTokens,
 		CleanupOutTokens: usage.OutputTokens,
@@ -159,9 +175,15 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 
 // uploadReady reports whether the configured provider can be used at all.
 func uploadReady(cfg config.STT) error {
-	if cfg.Provider == "soniox" {
+	switch cfg.Provider {
+	case "soniox":
 		if strings.TrimSpace(cfg.SonioxAPIKey) == "" {
 			return fmt.Errorf("geen Soniox API-key ingesteld")
+		}
+		return nil
+	case "openai":
+		if !stt.OpenAIConfigured(cfg) {
+			return fmt.Errorf("geen spraak-endpoint ingesteld")
 		}
 		return nil
 	}

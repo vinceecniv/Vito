@@ -123,6 +123,34 @@
   .pill { display:inline-flex; align-items:center; gap:8px; align-self:flex-start;
     padding:5px 12px; border-radius:99px; background:var(--input-bg); font-size:12px; color:var(--text2); }
   :root[data-theme="dark"] .pill { background:#262031; }
+  /* The active rule set, where you can see it without opening settings — it
+     decides what every dictation comes out like, and switching by task is the
+     normal case rather than a one-off configuration. */
+  .pill-btn { border:1px solid transparent; cursor:pointer; max-width:100%; text-align:left;
+    font-size:12px; color:var(--text2); gap:7px; }
+  .pill-btn svg { width:14px; height:14px; flex:none; color:var(--text3); }
+  .pill-btn span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .pill-btn:hover { border-color:var(--card-border); color:var(--text); }
+  .pill-btn:hover svg { color:var(--accent); }
+  .pill-btn[aria-expanded="true"] { border-color:var(--accent); color:var(--text); }
+  /* Its picker: anchored above the pill rather than a modal — it is a switch you
+     flick between dictations, not a settings trip. */
+  .rs-pop { position:fixed; z-index:250; width:310px; max-width:calc(100vw - 24px); background:var(--card);
+    border:1px solid var(--card-border); border-radius:14px; padding:8px; box-shadow:0 16px 44px rgba(20,10,40,.3);
+    animation:pop .18s ease; max-height:min(70vh, 520px); overflow-y:auto; }
+  .rs-pop .rs-grp { font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--text3);
+    padding:8px 10px 4px; }
+  .rs-opt { display:flex; gap:9px; align-items:flex-start; width:100%; text-align:left; background:none;
+    border:none; border-radius:10px; padding:8px 10px; cursor:pointer; color:var(--text); }
+  .rs-opt:hover { background:var(--accent-soft); }
+  .rs-opt .rs-chk { width:15px; height:15px; flex:none; margin-top:1px; color:var(--accent); opacity:0; }
+  .rs-opt.on .rs-chk { opacity:1; }
+  .rs-opt .rs-nm { font-size:13px; font-weight:600; }
+  .rs-opt .rs-dsc { font-size:11.5px; color:var(--text3); line-height:1.45; margin-top:1px; }
+  .rs-pop .rs-foot { border-top:1px solid var(--card-border); margin-top:6px; padding:8px 10px 4px; }
+  .rs-pop .rs-foot button { background:none; border:none; padding:0; cursor:pointer; color:var(--accent);
+    font-size:12px; font-weight:600; }
+  .rs-pop .rs-foot button:hover { text-decoration:underline; }
   .pill .dot { width:8px; height:8px; border-radius:99px; background:var(--text3); }
   .pill.recording .dot { background:var(--coral); animation:pulse 1s infinite; }
   .pill.processing .dot { background:var(--violet); animation:pulse 1.6s infinite; }
@@ -188,6 +216,9 @@
   .welcome-intro { position:relative; margin:16px 0 10px; font-size:14px; opacity:.96; line-height:1.55; max-width:900px; }
   .welcome-steps { position:relative; margin:0; padding-left:20px; display:flex; flex-direction:column; gap:7px; font-size:13.5px; line-height:1.5; max-width:900px; }
   .welcome-steps li::marker { font-weight:700; }
+  /* The two ways speech becomes text, as a sub-list of step 1: a choice, not a step. */
+  .welcome-opts { margin:6px 0 0; padding-left:18px; display:flex; flex-direction:column; gap:4px; font-size:13px; opacity:.95; }
+  .welcome-opts li::marker { font-weight:400; }
   .welcome-tip { position:relative; margin:14px 0 0; font-size:12.5px; line-height:1.5; opacity:.95; background:rgba(255,255,255,.15); padding:10px 13px; border-radius:10px; max-width:900px; }
   .welcome-actions { position:relative; display:flex; gap:10px; margin-top:20px; flex-wrap:wrap; }
   .welcome-actions .btn { background:#fff; color:var(--violet); border:none; font-weight:600; }
@@ -534,6 +565,15 @@
     border:none; border-radius:10px; padding:8px 12px; font:inherit; font-size:12.5px; font-weight:600; cursor:pointer;
     color:#fff; background:linear-gradient(135deg,var(--coral),var(--violet)); }
   .credit-card .cr-btn:hover { filter:brightness(1.06); }
+  /* Dismiss. The warning is true and stays true, but after the third look it is
+     only in the way — so it can be closed, and the daemon keeps it closed until
+     that account runs dry again. */
+  .credit-card { position:relative; }
+  .credit-card .cr-close { position:absolute; top:8px; right:8px; width:26px; height:26px; padding:0;
+    border:none; border-radius:7px; background:none; color:var(--text3); cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center; }
+  .credit-card .cr-close svg { width:14px; height:14px; }
+  .credit-card .cr-close:hover { color:var(--text); background:var(--input-bg); }
   .credit-card .cr-btn .btn-ico { width:14px; height:14px; }
   /* Release notes, rendered from a safe subset of Markdown. */
   .relnotes { max-height:46vh; overflow-y:auto; font-size:13px; line-height:1.6; color:var(--text2); }
@@ -771,6 +811,40 @@
   .htext .hw, #transcript .hw { cursor:pointer; border-radius:3px; padding:0 1px; transition:background .1s; }
   .htext .hw:hover, #transcript .hw:hover { background:var(--accent-soft); color:var(--accent); }
   .hentry .meta .flag { margin:0 1px; }
+  /* Cleanup rules: Vito's own set is shown but not editable — it is the floor you
+     can always come back to. The contract below the box is drawn as part of the
+     same block, because that is what it is: the end of every prompt. */
+  #s-promptrules[readonly] { opacity:.72; cursor:default; }
+  .prompt-fixed { margin:6px 0 0; padding:7px 10px; border-radius:8px; border:1px dashed var(--card-border);
+    background:var(--input-bg); color:var(--text3); font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:11.5px; line-height:1.5; white-space:pre-wrap; }
+  /* A failed AI pass: a one-line warning that unfolds into the provider's own
+     error. Collapsed by default — the reason matters exactly once, when you
+     wonder why this one dictation came out unpolished. */
+  .hentry .herr { margin-top:6px; font-size:12.5px; }
+  .hentry .herr summary { cursor:pointer; color:var(--coral); display:flex; align-items:center; gap:5px;
+    list-style:none; width:fit-content; border-radius:6px; padding:1px 3px; }
+  .hentry .herr summary::-webkit-details-marker { display:none; }
+  .hentry .herr summary:hover { background:color-mix(in srgb, var(--coral) 12%, transparent); }
+  .hentry .herr summary svg { width:13px; height:13px; flex:none; }
+  .hentry .herr summary .chev { transition:transform .15s; }
+  .hentry .herr[open] summary .chev { transform:rotate(90deg); }
+  .hentry .herr .herr-box { margin-top:5px; display:flex; align-items:flex-start; gap:6px; }
+  .hentry .herr .herr-msg { flex:1; min-width:0; padding:8px 10px; border-radius:8px; font-size:12px; line-height:1.5;
+    color:var(--text2); background:var(--input-bg); border:1px solid var(--card-border);
+    white-space:pre-wrap; word-break:break-word; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  /* Always visible, unlike the row's hover-only buttons: by the time this is
+     unfolded you are already looking at it on purpose. The .hbtn rules are
+     scoped to .actions, so this one carries its own. */
+  .hentry .herr .herr-copy { flex:none; width:30px; height:30px; padding:0; border:1px solid var(--card-border);
+    border-radius:8px; background:none; color:var(--text2); cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center; }
+  .hentry .herr .herr-copy svg { width:15px; height:15px; }
+  .hentry .herr .herr-copy:hover { color:var(--text); border-color:var(--accent); }
+  .hentry .herr .herr-copy.ok { color:#2AA46A; border-color:#2AA46A; }
+  /* The row a "Details" toast just jumped to, so the eye lands on it. */
+  .hentry.flash { animation:hflash 1.6s ease; }
+  @keyframes hflash { 0%,55% { background:color-mix(in srgb, var(--coral) 14%, transparent); } 100% { background:transparent; } }
   .correction-pop { position:fixed; z-index:250; width:264px; background:var(--card); border:1px solid var(--card-border);
     border-radius:12px; padding:14px; box-shadow:0 16px 44px rgba(20,10,40,.3); animation:pop .18s ease; }
   .correction-pop .cp-title { font-size:13px; color:var(--text2); }
@@ -960,7 +1034,35 @@
   .stag-ico svg { width:15px; height:15px; }
   .stag-ico .flag { width:17px; height:12px; border-radius:2px; }
   /* Speech-model picker: cards you can weigh against each other. */
-  .modelcards { display:flex; flex-direction:column; gap:9px; }
+  .modelcards { display:flex; flex-direction:column; gap:16px; }
+  /* The provider's mark, so a card is recognisable before it is read. */
+  .mc-logo { flex:0 0 auto; width:26px; height:26px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; overflow:hidden; background:var(--track); }
+  .mc-logo img { width:100%; height:100%; object-fit:cover; display:block; }
+  .mc-logo svg { width:16px; height:16px; }
+  .mc-logo.vito { background:linear-gradient(135deg,var(--coral),var(--violet)); }
+  .mc-logo.vito svg { width:17px; height:17px; }
+  .mc-logo.plain { color:var(--text2); }
+  .mc-head > b { display:inline-flex; align-items:center; gap:9px; }
+  /* A card plus, under it, the fold-out with that provider's settings — so the
+     page is a list of choices rather than a list of every field of every choice.
+     The active provider's panel starts open; the others start closed. */
+  .mc-wrap { display:flex; flex-direction:column; border:1px solid var(--input-border); border-radius:11px; background:var(--input-bg); overflow:hidden; }
+  .mc-wrap:hover { border-color:var(--accent); }
+  .mc-wrap.sel { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+  /* Inside the wrap the card's own frame goes: the wrap is the frame now, so the
+     settings read as the lower half of the same card. */
+  .mc-wrap .modelcard { border:0; border-radius:0; box-shadow:none; background:none; }
+  .mc-wrap.sel .modelcard { background:var(--accent-soft); }
+  .mc-wrap .modelcard.off:hover { border:0; }
+  .mc-panel { border-top:1px solid var(--input-border); }
+  .mc-toggle { display:flex; align-items:center; gap:8px; width:100%; padding:9px 14px; border:0; background:none; font:inherit; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--text3); cursor:pointer; }
+  .mc-toggle:hover { color:var(--accent); }
+  .mc-toggle .gear { width:14px; height:14px; flex:0 0 auto; }
+  .mc-toggle .chev { display:inline-block; margin-left:auto; transition:transform .15s ease; }
+  .mc-panel.closed .chev { transform:rotate(-90deg); }
+  .mc-panel-body { padding:2px 14px 14px; }
+  .mc-panel.closed .mc-panel-body { display:none; }
+  .prov-settings > .act-note:first-child { margin-top:4px; }
   .modelcard { display:flex; flex-direction:column; gap:5px; width:100%; text-align:left; cursor:pointer;
     padding:12px 14px; border:1px solid var(--input-border); border-radius:11px; background:var(--input-bg); font:inherit; color:var(--text); }
   .modelcard:hover { border-color:var(--accent); }
@@ -984,6 +1086,9 @@
   .modelcard.off { opacity:.55; cursor:not-allowed; }
   .modelcard.off:hover { border-color:var(--input-border); }
   .mc-sub { font-size:12px; color:var(--text2); }
+  /* What you have to arrange before this card works: an account, a server, a download. */
+  .mc-needs { font-size:11.5px; color:var(--text2); padding-left:13px; position:relative; margin-top:2px; }
+  .mc-needs::before { content:"→"; position:absolute; left:0; color:var(--text3); }
   .mc-list { display:flex; flex-direction:column; gap:2px; margin-top:3px; font-size:11.5px; color:var(--text3); }
   .mc-list span { padding-left:13px; position:relative; }
   .mc-list span::before { content:"✓"; position:absolute; left:0; color:var(--accent); }
@@ -1032,7 +1137,12 @@
   .tool-badge.no { background:var(--coral-soft); color:var(--coral); }
   .tux-slot { display:inline-flex; align-items:center; }
   /* the Linux section stacks two cards — space them like separate sections */
-  .card[data-sec="linux"] + .card[data-sec="linux"] { margin-top:20px; }
+  /* Two cards in one settings section need the gap spelled out: only one section
+     is shown at a time, so the rule has to stay inside a section — a plain
+     "card + card" would also fire on a visible card whose predecessor is a
+     hidden card from another section, and push it down for no reason. */
+  .card[data-sec="linux"] + .card[data-sec="linux"],
+  .card[data-sec="cleanup"] + .card[data-sec="cleanup"] { margin-top:20px; }
   /* About section */
   .about-head { display:flex; align-items:center; gap:14px; }
   .about-logo { width:52px; height:52px; border-radius:14px; background:var(--grad); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
@@ -1135,6 +1245,10 @@
       <span class="pip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1" fill="currentColor" stroke="none"/></svg></span>
       <span>Detached window</span></button>
     <div class="side-bottom">
+      <button class="pill pill-btn" id="ruleset-pill" data-help="prompts" aria-haspopup="true" aria-expanded="false" aria-label="Cleanup rules">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h16M4 18h9"/><path d="M17.5 15.5l3 3-4 1z"/></svg>
+        <span id="ruleset-lbl">Vito default</span>
+      </button>
       <span class="pill" id="statuspill"><span class="dot"></span><span id="statuslbl">idle</span></span>
     </div>
   </aside>
@@ -1175,7 +1289,12 @@
         </div>
         <p class="welcome-intro">Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:</p>
         <ol class="welcome-steps">
-          <li>Create a speech-recognition API key (required) — you only need one, from either AssemblyAI or Soniox — and enter it in Settings → Speech recognition.</li>
+          <li>Choose how your speech becomes text, under Settings → Speech recognition:
+            <ul class="welcome-opts">
+              <li>Cloud (Soniox or AssemblyAI): the most accurate, live transcript while you speak, all languages — needs a free API key; from $0.10 per hour of audio after the starting credit.</li>
+              <li>Vito local: free, works offline, nothing leaves your computer — one download of about 1 GB; 25 European languages, the text arrives after you stop. Best for privacy.</li>
+            </ul>
+          </li>
           <li>Want automatic AI cleanup? Add a key for Anthropic (Claude) or any OpenAI-compatible endpoint — Groq has a free tier, or point Vito at a local model.</li>
           <li>Set your start/stop hotkey under Settings → Activation and review the other settings.</li>
           <li>Press your hotkey, speak, and Vito pastes the text where your cursor is.</li>
@@ -1372,7 +1491,12 @@
           <label class="fld" data-help="model">Speech model</label>
           <input type="hidden" id="s-model">
           <div class="modelcards" id="model-cards"></div>
-          <div class="subhead">Soniox</div>
+          <!-- Each provider's settings live in a fold-out under its card. The
+               blocks are written here once, with their ids and listeners, and
+               buildModelCards moves them into the cards' panels, and parks
+               them back here before it re-renders the cards. -->
+          <div id="prov-holder" hidden>
+          <div class="prov-settings" id="prov-soniox" hidden>
           <div class="key-row">
             <div class="fld-row"><label class="fld" data-help="sonioxkey">Soniox API-key</label><button type="button" class="info-btn" id="info-sonioxkey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
             <div class="key-input">
@@ -1381,8 +1505,8 @@
             </div>
             <button type="button" class="mini-btn" id="test-sonioxkey">Test</button>
           </div>
-          <div class="subhead">AssemblyAI</div>
-          <p class="act-note" style="margin:0 0 8px;">These options apply to AssemblyAI only.</p>
+          </div>
+          <div class="prov-settings" id="prov-assemblyai" hidden>
           <label class="tgl" data-help="eu"><input type="checkbox" id="s-eu"><span class="tr"></span> EU endpoints</label>
           <label class="tgl" data-help="keyterms"><input type="checkbox" id="s-keyterms"><span class="tr"></span> Send dictionary keyterms</label>
           <div class="key-row">
@@ -1392,6 +1516,41 @@
               <button type="button" class="eye-btn" data-eye="s-sttkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
             </div>
             <button type="button" class="mini-btn" id="test-sttkey">Test</button>
+          </div>
+          </div>
+          <div class="prov-settings" id="prov-openai" hidden>
+          <p class="act-note" style="margin:0 0 8px;">No live transcript with this provider: the whole recording is sent when you stop, and the text follows once the endpoint is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.</p>
+          <label class="fld" data-help="sttpreset">Preset</label>
+          <input type="hidden" id="s-sttpreset">
+          <div class="flagsel" id="sttpreset-sel">
+            <button type="button" class="flagsel-btn" id="sttpreset-btn"></button>
+            <div class="flagsel-list" id="sttpreset-list"></div>
+          </div>
+          <label class="fld" data-help="sttbaseurl">Endpoint (base URL)</label>
+          <input type="text" id="s-sttbaseurl" placeholder="http://127.0.0.1:8080/v1">
+          <div class="key-row">
+            <div class="fld-row"><label class="fld" data-help="sttopenaikey">API key</label><button type="button" class="info-btn" id="info-sttopenaikey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+            <div class="key-input">
+              <input type="password" id="s-sttopenaikey" autocomplete="off" placeholder="(often none for a local server)">
+              <button type="button" class="eye-btn" data-eye="s-sttopenaikey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
+            </div>
+            <button type="button" class="mini-btn" id="test-sttopenaikey">Test</button>
+          </div>
+          <label class="fld" data-help="sttopenaimodel">Model</label>
+          <input type="text" id="s-sttopenaimodel" placeholder="whisper-large-v3-turbo" autocomplete="off">
+          </div>
+          <div class="prov-settings" id="prov-local" hidden>
+          <p class="act-note" style="margin:0 0 8px;">Runs on this computer, free, and your audio never leaves it. Vito installs and runs the engine itself: parakeet.cpp with NVIDIA's Parakeet TDT 0.6B v3.</p>
+          <p class="act-note" style="margin:0 0 8px;" data-help="localstt"><b>Languages (25):</b> Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages. Keyterms are not used by this engine; your corrections are.</p>
+          <p class="act-note" style="margin:0 0 8px;"><b>System requirements:</b> about 1 GB of RAM while the engine runs — it stays loaded as long as this card is selected and is freed when you pick another provider — 0.9 GB of disk space, and a 64-bit processor (Windows or Linux x64/ARM64, Apple Silicon or Intel Mac). Speed: about a second per dictation on a recent multi-core CPU, longer on older or low-power machines; the GPU build (Vulkan) is several times faster.</p>
+          <div class="act-note" id="localstt-status" style="margin:0 0 8px; padding:9px 12px; border-radius:9px; background:var(--card-border); color:var(--text2);"></div>
+          <div class="up-prog" id="localstt-bar" hidden style="margin:0 0 10px;"><div class="up-bar"><i></i></div></div>
+          <div class="rowflex" id="localstt-row" style="gap:9px; align-items:center;">
+            <select id="s-localvariant" data-help="localvariant" style="width:auto;"></select>
+            <button type="button" class="mini-btn" id="localstt-install">Install</button>
+            <button type="button" class="mini-btn" id="localstt-remove">Remove</button>
+          </div>
+          </div>
           </div>
         </div>
         <div class="card" data-sec="cleanup" hidden>
@@ -1441,6 +1600,16 @@
               <input type="text" id="s-openaimodel" placeholder="openai/gpt-oss-120b" autocomplete="off">
               <div class="flagsel-list" id="modelcombo-list"></div>
             </div>
+            <label class="fld" data-help="reasoning">Thinking</label>
+            <select id="s-openaireasoning">
+              <option value="">Let the model decide</option>
+              <option value="none">Off</option>
+              <option value="minimal">Minimal</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <p class="act-note" id="reasoning-note" style="margin:6px 0 0;"></p>
           </div>
 
           <div class="subhead" data-help="cleanuprate">Token cost estimate</div>
@@ -1448,6 +1617,21 @@
             <div style="flex:1;min-width:0;"><label class="fld" data-help="cleanuprate">Input · $/Mtok</label><input type="number" id="s-cleanupinrate" min="0" step="0.01" placeholder="0"></div>
             <div style="flex:1;min-width:0;"><label class="fld" data-help="cleanuprate">Output · $/Mtok</label><input type="number" id="s-cleanupoutrate" min="0" step="0.01" placeholder="0"></div>
           </div>
+        </div>
+        <div class="card" data-sec="cleanup" hidden>
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h16M4 18h9"/><path d="M17.5 15.5l3 3-4 1z"/></svg><span>Cleanup rules</span></h2>
+          <p class="act-note" style="margin:0 0 12px;" data-help="prompts">The instructions Vito gives the model. Vito's own sets are always here and can't be changed — pick the one that fits what you dictate, or start your own from it.</p>
+          <label class="fld">Rule set</label>
+          <select id="s-promptsel"></select>
+          <p class="act-note" id="prompt-desc" style="margin:6px 0 0;"></p>
+          <div class="rowflex" style="gap:8px; margin-top:10px;">
+            <button type="button" class="mini-btn" id="prompt-new">New from this one</button>
+            <button type="button" class="mini-btn" id="prompt-rename">Rename</button>
+            <button type="button" class="mini-btn" id="prompt-del">Delete</button>
+          </div>
+          <textarea id="s-promptrules" rows="14" spellcheck="false" style="margin-top:10px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; line-height:1.55;"></textarea>
+          <p class="act-note prompt-fixed" id="prompt-contract"></p>
+          <p class="act-note" style="margin-top:10px;">A Vito Assist command (“Vito, …”) doesn't use these rules: carrying out an instruction replaces them rather than extending them. The dictionary corrections and the language are sent separately, so you don't need to repeat them here.</p>
         </div>
         <div class="card" data-sec="assist" hidden>
           <h2><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg><span>Vito Assist</span></h2>
@@ -1691,6 +1875,61 @@ const $ = (id) => document.getElementById(id);
 
 /* ---- i18n (source strings are English; every other language via a map) ---- */
 const TR = { nl: {
+  "Local or OpenAI-compatible endpoint":"Lokaal of OpenAI-compatibel endpoint",
+  "Whisper, Parakeet or any server that speaks the OpenAI audio API.":"Whisper, Parakeet of elke server die de OpenAI-audio-API spreekt.",
+  "Best for: privacy — runs on your own machine":"Ideaal voor: privacy — draait op je eigen computer",
+  "Any language the model supports":"Elke taal die het model ondersteunt",
+  "No live transcript: the text arrives after you stop":"Geen live transcript: de tekst komt nadat je stopt",
+  "Keyterms sent as prompt (Whisper)":"Keyterms meegestuurd als prompt (Whisper)",
+  "No live transcript with this provider: the whole recording is sent when you stop, and the text follows once the endpoint is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.":"Geen live transcript bij deze provider: de hele opname wordt verstuurd zodra je stopt, en de tekst volgt als het endpoint klaar is. Kies hierboven een vaste taal in plaats van 'Automatisch' — Whisper raadt de taal uit de eerste seconden en zit er bij een kort dictaat naast.",
+  "Endpoint missing":"Endpoint ontbreekt",
+  "Requires: a Soniox account (free to create) and its API key, entered below. Audio is sent to Soniox.":"Vereist: een Soniox-account (gratis aan te maken) en de API-key daarvan, hieronder in te vullen. Audio gaat naar Soniox.",
+  "Requires: an AssemblyAI account (free starting credit) and its API key, entered below. Audio is sent to AssemblyAI.":"Vereist: een AssemblyAI-account (gratis starttegoed) en de API-key daarvan, hieronder in te vullen. Audio gaat naar AssemblyAI.",
+  "Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.":"Vereist: een server die je zelf opzet (whisper-server, Speaches, LocalAI) of een account bij Groq of OpenAI — de base-URL hieronder, plus een API-key voor de gehoste varianten.",
+  "Requires: nothing but the one-time download below — no account, no key, no server of your own.":"Vereist: alleen de eenmalige download hieronder — geen account, geen key, geen eigen server.",
+  "Choose how your speech becomes text, under Settings → Speech recognition:":"Kies hoe je spraak tekst wordt, onder Instellingen → Spraakherkenning:",
+  "Cloud (Soniox or AssemblyAI): the most accurate, live transcript while you speak, all languages — needs a free API key; from $0.10 per hour of audio after the starting credit.":"Cloud (Soniox of AssemblyAI): het nauwkeurigst, live transcript terwijl je spreekt, alle talen — vereist een gratis API-key; vanaf $0,10 per uur audio na het starttegoed.",
+  "Vito local: free, works offline, nothing leaves your computer — one download of about 1 GB; 25 European languages, the text arrives after you stop. Best for privacy.":"Vito lokaal: gratis, werkt offline, niets verlaat je computer — eenmalig een download van ongeveer 1 GB; 25 Europese talen, de tekst komt nadat je stopt. Ideaal voor privacy.",
+  "Built-in local recognition (Parakeet)":"Ingebouwde lokale herkenning (Parakeet)",
+  "Runs on this computer, free, and your audio never leaves it. Vito installs and runs the engine itself: parakeet.cpp with NVIDIA's Parakeet TDT 0.6B v3.":"Draait op deze computer, gratis, en je audio verlaat hem nooit. Vito installeert en draait de engine zelf: parakeet.cpp met NVIDIA's Parakeet TDT 0.6B v3.",
+  "Languages (25):":"Talen (25):",
+  "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages. Keyterms are not used by this engine; your corrections are.":"Nederlands, Engels, Duits, Frans, Spaans, Italiaans, Portugees, Pools, Tsjechisch, Slowaaks, Hongaars, Roemeens, Bulgaars, Kroatisch, Sloveens, Grieks, Zweeds, Deens, Fins, Estisch, Lets, Litouws, Maltees, Russisch en Oekraïens — automatisch herkend. Niet geschikt voor andere talen. Keyterms gebruikt deze engine niet; je correcties wel.",
+  "Vito local (Parakeet)":"Vito lokaal (Parakeet)",
+  "Vito local":"Vito lokaal",
+  "On this computer, free, nothing leaves it. One download of about 1 GB.":"Op deze computer, gratis, niets verlaat hem. Eén download van ongeveer 1 GB.",
+  "Best for: privacy and zero cost":"Ideaal voor: privacy en nul kosten",
+  "25 European languages, detected automatically":"25 Europese talen, automatisch herkend",
+  "About a second per dictation on a CPU":"Ongeveer een seconde per dictaat op een CPU",
+  "Needs ≈ 1 GB RAM while active, 0.9 GB disk":"Vraagt ≈ 1 GB RAM zolang actief, 0,9 GB schijf",
+  "System requirements:":"Systeemvereisten:",
+  "about 1 GB of RAM while the engine runs — it stays loaded as long as this card is selected and is freed when you pick another provider — 0.9 GB of disk space, and a 64-bit processor (Windows or Linux x64/ARM64, Apple Silicon or Intel Mac). Speed: about a second per dictation on a recent multi-core CPU, longer on older or low-power machines; the GPU build (Vulkan) is several times faster.":"ongeveer 1 GB RAM zolang de engine draait — hij blijft geladen zolang deze kaart gekozen is en wordt vrijgegeven zodra je een andere provider kiest — 0,9 GB schijfruimte en een 64-bits processor (Windows of Linux x64/ARM64, Apple Silicon of Intel-Mac). Snelheid: ongeveer een seconde per dictaat op een recente multicore-CPU, langer op oudere of zuinige machines; de GPU-build (Vulkan) is een paar keer sneller.",
+  "Not installed":"Niet geïnstalleerd",
+  "Not installed.":"Niet geïnstalleerd.",
+  "Not available on this system":"Niet beschikbaar op dit systeem",
+  "There is no build of this engine for your system.":"Er is geen build van deze engine voor jouw systeem.",
+  "Download of about {mb} MB, once.":"Download van ongeveer {mb} MB, eenmalig.",
+  "Running":"Draait",
+  "Starting — loading the model…":"Starten — model wordt geladen…",
+  "Installing…":"Installeren…",
+  "Installed":"Geïnstalleerd",
+  "Installed, not running — select the card above to use it.":"Geïnstalleerd, draait niet — kies de kaart hierboven om hem te gebruiken.",
+  "last dictation":"laatste dictaat",
+  "Status unavailable.":"Status niet beschikbaar.",
+  "CPU (standard)":"CPU (standaard)",
+  "GPU (Vulkan)":"GPU (Vulkan)",
+  "Install":"Installeren",
+  "Reinstall":"Opnieuw installeren",
+  "Remove":"Verwijderen",
+  "Install failed.":"Installeren mislukt.",
+  "Installing the local speech engine…":"Lokale spraakherkenning wordt geïnstalleerd…",
+  "Remove local speech engine?":"Lokale spraakherkenning verwijderen?",
+  "Deletes the engine and the model from this computer. You can install them again at any time.":"Verwijdert de engine en het model van deze computer. Je kunt ze altijd opnieuw installeren.",
+  "Remove failed.":"Verwijderen mislukt.",
+  "Speech endpoint":"Spraak-endpoint",
+  "Local speech model":"Lokaal spraakmodel",
+  "Groq":"Groq",
+  "free":"gratis",
+  "(often none for a local server)":"(vaak geen voor een lokale server)",
   "Status":"Status",
   "Settings":"Instellingen",
   "Dictionary":"Woordenboek",
@@ -1771,6 +2010,8 @@ const TR = { nl: {
   "I understand this overwrites everything — I'm sure":"Ik begrijp dat dit alles overschrijft — ik weet het zeker",
   // Out of credit
   "Out of credit":"Tegoed op",
+  "Dismiss":"Sluiten",
+  "Hide this until that account runs out again":"Verberg dit tot dat tegoed opnieuw op is",
   "Your {p} account has run out":"Je {p}-tegoed is op",
   "{n} provider accounts have run out":"{n} provider-accounts zijn leeg",
   "Top up {p}":"{p} aanvullen",
@@ -1865,6 +2106,56 @@ const TR = { nl: {
   "Add a space after the text":"Spatie toevoegen na tekst",
   "AI cleanup failed — raw text pasted.":"AI-opschoning mislukte — ruwe tekst geplakt.",
   "Cleanup failed":"Opschoning mislukt",
+  "AI cleanup failed":"AI-opschoning mislukt",
+  "Vito Assist failed":"Vito Assist mislukt",
+  "Cleanup rules":"Opschoonregels",
+  "A Vito Assist command (“Vito, …”) doesn't use these rules: carrying out an instruction replaces them rather than extending them. The dictionary corrections and the language are sent separately, so you don't need to repeat them here.":"Een Vito Assist-opdracht (“Vito, …”) gebruikt deze regels niet: het uitvoeren van een opdracht vervangt ze in plaats van ze aan te vullen. De woordenboekcorrecties en de taal worden apart meegestuurd, dus die hoef je hier niet te herhalen.",
+  "Vito default":"Vito standaard",
+  "Balanced tidy-up: punctuation, spelling and fillers fixed, your wording left alone.":"Evenwichtig opschonen: interpunctie, spelling en stopwoorden opgelost, je formulering blijft van jou.",
+  "Verbatim":"Letterlijk",
+  "Touches as little as possible — punctuation only, every spoken word kept.":"Raakt zo min mogelijk aan — alleen interpunctie, elk gesproken woord blijft staan.",
+  "Business writing":"Zakelijk",
+  "Rewrites spoken phrasing into clean, professional sentences.":"Herschrijft spreektaal naar nette, zakelijke zinnen.",
+  "Notes":"Notities",
+  "Turns dictated thinking into bullet points, with to-dos marked.":"Zet hardop denken om in opsommingstekens, met taken gemarkeerd.",
+  "Messages":"Berichten",
+  "Keeps it short and casual, emoji included — for chat and DMs.":"Houdt het kort en informeel, emoji inbegrepen — voor chat en DM's.",
+  "Vito":"Vito",
+  "Your own":"Eigen",
+  "Rule set":"Regelset",
+  "Edit rule sets…":"Regelsets bewerken…",
+  "The instructions Vito gives the model. Vito's own sets are always here and can't be changed — pick the one that fits what you dictate, or start your own from it.":"De instructies die Vito aan het model geeft. De sets van Vito zelf staan er altijd bij en zijn niet te wijzigen — kies degene die past bij wat je dicteert, of begin daarvandaan een eigen set.",
+  "New from this one":"Nieuw op basis hiervan",
+  "Rename":"Hernoemen",
+  "New cleanup rules":"Nieuwe opschoonregels",
+  "Starts as a copy of “{n}”, which stays untouched.":"Begint als kopie van “{n}”; die blijft ongewijzigd.",
+  "Name":"Naam",
+  "My rules":"Mijn regels",
+  "Create":"Aanmaken",
+  "You can keep at most 20 rule sets.":"Je kunt maximaal 20 regelsets bewaren.",
+  "Rule set created":"Regelset aangemaakt",
+  "Rename rule set":"Regelset hernoemen",
+  "Renamed":"Hernoemd",
+  "Delete rule set?":"Regelset verwijderen?",
+  "“{n}” is deleted and cleanup goes back to the Vito default.":"“{n}” wordt verwijderd en het opschonen gaat terug naar Vito standaard.",
+  "Rule set deleted":"Regelset verwijderd",
+  "Rule set switched":"Regelset gewisseld",
+  "Copy this error message":"Kopieer deze foutmelding",
+  "Copy error message":"Foutmelding kopiëren",
+  "Thinking":"Denken",
+  "Let the model decide":"Model beslist",
+  "Off":"Uit",
+  "Minimal":"Minimaal",
+  "Low":"Laag",
+  "Medium":"Midden",
+  "High":"Hoog",
+  "Qwen on Groq answers without thinking — fast and cheap. This is the right setting for cleanup.":"Qwen op Groq antwoordt zonder te denken — snel en goedkoop. Dit is de juiste instelling voor opschonen.",
+  "Qwen on Groq thinks by default and can spend thousands of tokens on it, which makes cleanup fail. Choose “Off”.":"Qwen op Groq denkt standaard en kan daar duizenden tokens aan besteden, waardoor de opschoning mislukt. Kies “Uit”.",
+  "gpt-oss on Groq accepts only low, medium or high — this value will be rejected.":"gpt-oss op Groq accepteert alleen laag, midden of hoog — deze waarde wordt geweigerd.",
+  "gpt-oss on Groq thinks briefly and keeps it out of the answer; it needs nothing set here.":"gpt-oss op Groq denkt kort en houdt dat buiten het antwoord; hier hoeft niets ingesteld te worden.",
+  "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.":"Vito stuurt deze waarde mee als “reasoning_effort”. Een endpoint dat die niet kent, antwoordt met een fout.",
+  "Details":"Details",
+  "That dictation is no longer in the history.":"Dat dictaat staat niet meer in de geschiedenis.",
   "Show help tips on hover":"Help-tips tonen bij mouse-over",
   "All Linux info & tools":"Alle Linux-info & tools",
   "Activation & hotkeys":"Activering & sneltoetsen",
@@ -1948,7 +2239,6 @@ const TR = { nl: {
   "Go to settings":"Naar instellingen",
   "Got it":"Begrepen",
   "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:":"Vito luistert naar je stem en plakt de uitgewerkte tekst direct waar je cursor staat. Zo zet je het in gebruik:",
-  "Create a speech-recognition API key (required) — you only need one, from either AssemblyAI or Soniox — and enter it in Settings → Speech recognition.":"Maak een spraakherkenning-API-key aan (nodig) — je hebt er maar één nodig, van AssemblyAI óf Soniox — en vul die in bij Instellingen → Spraakherkenning.",
   "Want automatic AI cleanup? Add a key for Anthropic (Claude) or any OpenAI-compatible endpoint — Groq has a free tier, or point Vito at a local model.":"Automatische AI-opschoning erbij? Voeg een key toe voor Anthropic (Claude) of een OpenAI-compatibel endpoint — Groq heeft een gratis tier, of wijs Vito naar een lokaal model.",
   "Want automatic AI cleanup? Then also create an Anthropic API key and enter it.":"Wil je automatische AI-opschoning? Maak dan ook een Anthropic API-key aan en vul die in.",
   "Set your start/stop hotkey under Settings → Activation and review the other settings.":"Stel je start/stop-sneltoets in onder Instellingen → Activering en loop de overige instellingen na.",
@@ -2506,21 +2796,25 @@ function toast(msg, type = "ok", ms = 3400) {
   $("toasts").appendChild(el);
   setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 250); }, ms);
 }
-// undoToast is a toast with an "Undo" link that stays up longer, for reversible
-// actions. onUndo fires if the link is clicked before the toast times out.
-function undoToast(msg, onUndo, ms = 7000) {
+// actionToast is a toast with a link on the end and a longer life, for a message
+// that invites one follow-up: undoing what just happened, or opening what it is
+// talking about. onAction fires if the link is clicked before it times out.
+function actionToast(msg, label, onAction, ms = 7000, type = "ok") {
   positionToasts();
   const el = document.createElement("div");
-  el.className = "toast ok";
-  const icon = document.createElement("span"); icon.className = "ic"; icon.textContent = "✓";
+  el.className = "toast " + type;
+  const icon = document.createElement("span"); icon.className = "ic";
+  icon.textContent = { ok: "✓", err: "✕", info: "i" }[type] || "i";
   const span = document.createElement("span"); span.textContent = msg;
-  const btn = document.createElement("button"); btn.type = "button"; btn.className = "toast-undo"; btn.textContent = t("Undo");
+  const btn = document.createElement("button"); btn.type = "button"; btn.className = "toast-undo"; btn.textContent = label;
   el.appendChild(icon); el.appendChild(span); el.appendChild(btn);
   $("toasts").appendChild(el);
   const hide = () => { if (el._gone) return; el._gone = true; el.classList.add("out"); setTimeout(() => el.remove(), 250); };
   const timer = setTimeout(hide, ms);
-  btn.onclick = () => { clearTimeout(timer); onUndo && onUndo(); hide(); };
+  btn.onclick = () => { clearTimeout(timer); onAction && onAction(); hide(); };
 }
+// undoToast is that toast with the "Undo" link, for reversible actions.
+function undoToast(msg, onUndo, ms = 7000) { actionToast(msg, t("Undo"), onUndo, ms, "ok"); }
 
 /* ---- daemon connection monitor ---- */
 let daemonUp = true, autoStartTried = false, everConnected = false, dismissed = false;
@@ -2586,23 +2880,69 @@ const OS_LANG = (navigator.language || "").slice(0, 2).toLowerCase();
 // Soniox's stt-rt-v5 covers all 60 languages from its official supported-languages
 // list — each with a real flag (served from /flags) and a localized name below.
 const SONIOX_LANGS = ["en","nl","de","fr","es","it","pt","pl","ru","uk","cs","sk","sv","da","no","fi","el","hu","ro","bg","hr","sr","sl","bs","sq","mk","be","lt","lv","et","ca","eu","gl","cy","tr","az","kk","ar","he","fa","ur","hi","bn","gu","pa","mr","kn","ml","ta","te","zh","ja","ko","vi","th","id","ms","tl","af","sw"];
+// Parakeet TDT 0.6B v3's 25 languages, minus Maltese (no flag in LANG_DATA).
+const PARAKEET_LANGS = ["nl","en","de","fr","es","it","pt","pl","cs","sk","hu","ro","bg","hr","sl","el","sv","da","fi","et","lv","lt","ru","uk"];
+// The marks on the cards: the providers' own icons (web/logos), Vito's bars for
+// its own engine, and a server icon for an endpoint that could be anything.
+const LOGO_VITO = '<span class="mc-logo vito"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>';
+const LOGO_SERVER = '<span class="mc-logo plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>';
+const LOGO_IMG = (name) => `<span class="mc-logo"><img src="/logos/${name}.png" alt=""></span>`;
+const GEAR_SVG = '<svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
 const SPEECH_MODELS = [
-  { id:"stt-rt-v5", provider:"soniox", name:"Soniox stt-rt-v5", price:0.12, langs:SONIOX_LANGS,
+  // The engine Vito installs and runs itself (see internal/localstt) comes
+  // first: it is the one choice that needs no account and sends nothing away.
+  // The picker's languages are the model's 25, minus Maltese, which has no flag here.
+  { id:"vito-local", provider:"local", name:"Vito local (Parakeet)", price:0, langs:PARAKEET_LANGS, logo:LOGO_VITO,
+    sub:"On this computer, free, nothing leaves it. One download of about 1 GB.",
+    needs:"Requires: nothing but the one-time download below — no account, no key, no server of your own.",
+    bullets:["Best for: privacy and zero cost", "25 European languages, detected automatically", "About a second per dictation on a CPU", "Needs ≈ 1 GB RAM while active, 0.9 GB disk", "No live transcript: the text arrives after you stop"] },
+  { id:"stt-rt-v5", provider:"soniox", name:"Soniox stt-rt-v5", price:0.12, langs:SONIOX_LANGS, logo:LOGO_IMG("soniox"),
     sub:"The cheapest option, with the most languages.",
+    needs:"Requires: a Soniox account (free to create) and its API key, entered below. Audio is sent to Soniox.",
     bullets:["Best for: low cost", "60+ languages in one model", "Automatic language detection", "Keyterms not supported yet"] },
-  { id:"universal-streaming-multilingual", provider:"assemblyai", name:"Universal Streaming Multilingual", price:0.15, langs:["en","es","fr","de","it","pt"],
+  { id:"universal-streaming-multilingual", provider:"assemblyai", name:"Universal Streaming Multilingual", price:0.15, langs:["en","es","fr","de","it","pt"], logo:LOGO_IMG("assemblyai"),
     sub:"Three times cheaper, six languages.",
+    needs:"Requires: an AssemblyAI account (free starting credit) and its API key, entered below. Audio is sent to AssemblyAI.",
     bullets:["Best for: multilingual use", "EN, ES, FR, DE, IT, PT", "Automatic language detection", "Keyterms +$0.04/hr"] },
-  { id:"universal-3-5-pro", provider:"assemblyai", name:"Universal-3.5 Pro Realtime", price:0.45, langs:PRO_LANGS,
+  { id:"universal-3-5-pro", provider:"assemblyai", name:"Universal-3.5 Pro Realtime", price:0.45, langs:PRO_LANGS, logo:LOGO_IMG("assemblyai"),
     sub:"The most accurate realtime model.",
+    needs:"Requires: an AssemblyAI account (free starting credit) and its API key, entered below. Audio is sent to AssemblyAI.",
     bullets:["Best for: names, numbers and technical terms", "18 languages with code-switching", "≈150 ms latency", "Keyterms included"] },
+  // Any server that speaks the OpenAI audio API: whisper.cpp or Speaches on this
+  // machine, a Parakeet wrapper, Groq's hosted Whisper, OpenAI. The price is not
+  // a property of the card but of the endpoint behind it — free for your own.
+  { id:"openai-compatible", provider:"openai", name:"Local or OpenAI-compatible endpoint", price:0, langs:SONIOX_LANGS, logo:LOGO_SERVER,
+    sub:"Whisper, Parakeet or any server that speaks the OpenAI audio API.",
+    needs:"Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.",
+    bullets:["Best for: privacy — runs on your own machine", "Any language the model supports", "No live transcript: the text arrives after you stop", "Keyterms sent as prompt (Whisper)"] },
 ];
-const PROVIDER_NAMES = { assemblyai:"AssemblyAI", soniox:"Soniox" };
-// A provider is usable once its key is filled in; the key fields live in this
-// same card, so the answer changes as you type.
-function providerKey(p){
-  if (!cfg) return "";
-  return (p === "soniox" ? cfg.stt.soniox_api_key : cfg.stt.api_key) || "";
+const PROVIDER_NAMES = { assemblyai:"AssemblyAI", soniox:"Soniox", openai:"Speech endpoint", local:"Vito local" };
+// The endpoint provider is named after what is behind the URL, as the daemon
+// names it in the out-of-credit card and the cleanup side names its own.
+function sttEndpointName(){
+  const b = ((cfg && cfg.stt && cfg.stt.openai_base_url) || "").toLowerCase();
+  if (b.includes("groq.com")) return "Groq";
+  if (b.includes("openai.com")) return "OpenAI";
+  if (b.includes("localhost") || b.includes("127.0.0.1") || b.includes("0.0.0.0")) return t("Local speech model");
+  return t("Speech endpoint");
+}
+// Mirrors stt.OpenAIRateUSD: the published per-hour price of the endpoint's
+// model, and 0 for a server of your own.
+function sttEndpointRateUSD(){
+  const b = ((cfg && cfg.stt && cfg.stt.openai_base_url) || "").toLowerCase();
+  const m = ((cfg && cfg.stt && cfg.stt.openai_model) || "").toLowerCase();
+  if (b.includes("groq.com")) return m.includes("turbo") ? 0.04 : 0.111;
+  if (b.includes("openai.com")) return m.includes("mini") ? 0.18 : 0.36;
+  return 0;
+}
+// A provider is usable once what it needs is filled in — a key, or for the
+// endpoint provider just a URL; those fields live in this same card, so the
+// answer changes as you type.
+function providerReady(p){
+  if (!cfg) return false;
+  if (p === "local") return !!(localStt && localStt.installed);
+  const v = p === "soniox" ? cfg.stt.soniox_api_key : p === "openai" ? cfg.stt.openai_base_url : cfg.stt.api_key;
+  return !!(v || "").trim();
 }
 const MODEL_LANGS = Object.fromEntries(SPEECH_MODELS.map(m => [m.id, m.langs]));
 // Per-language display names (nl/en) and the flag country code served at
@@ -2754,28 +3094,94 @@ function modelPrice(usd){
   const sym = cur === "eur" ? "€" : "$";
   return sym + amt.toFixed(2).replace(".", numLoc() === "nl-NL" ? "," : ".");
 }
+// The parts of a card that change while you type or while the local engine
+// installs, kept apart so they can be refreshed in place.
+const cardPrice = (m) => { const rate = m.provider === "openai" ? sttEndpointRateUSD() : m.price; return rate > 0 ? `${modelPrice(rate)}<em>/${t("hr")}</em>` : t("free"); };
+const cardTag = (m) => m.provider === "openai" ? sttEndpointName() : m.provider === "local" ? localSttTag() : PROVIDER_NAMES[m.provider];
+const cardMissing = (m) => m.provider === "local" ? "Not installed" : m.provider === "openai" ? "Endpoint missing" : "API key missing";
+const providerLabel = (p) => p === "local" ? t("Vito local") : p === "openai" ? t("Speech endpoint") : PROVIDER_NAMES[p];
+// Which fold-outs the user opened or closed this session; unset means "open if
+// it is the active provider", which is what a fresh page shows.
+const panelOpen = {};
+const panelIsOpen = (p) => panelOpen[p] === undefined ? !!(cfg && cfg.stt && cfg.stt.provider === p) : panelOpen[p];
+
 function buildModelCards(){
   const box = $("model-cards"), cur = $("s-model").value || "";
+  // Re-rendering moves the settings blocks, and a moved input loses focus — so
+  // while the selection and language stand, only the volatile bits are updated.
+  const sig = cur + "|" + (document.documentElement.lang || "");
+  if (box.dataset.sig === sig && refreshModelCards()) return;
+  box.dataset.sig = sig;
+  // The settings blocks are inside the cards from the previous render; park
+  // them first, or replacing the cards' HTML would take them along.
+  const PROVIDERS = ["local", "soniox", "assemblyai", "openai"], holder = $("prov-holder");
+  PROVIDERS.forEach(p => { const b = $("prov-" + p); if (b && holder) holder.appendChild(b); });
+  // A provider's settings sit under its selected card, or under its last card
+  // when none of its cards is selected (AssemblyAI has two).
+  const host = {};
+  SPEECH_MODELS.forEach(m => { if (m.id === cur || host[m.provider] !== cur) host[m.provider] = m.id; });
   box.innerHTML = SPEECH_MODELS.map(m => {
-    const off = !providerKey(m.provider).trim();
-    return `
+    const off = !providerReady(m.provider);
+    const card = `
     <button type="button" class="modelcard${m.id === cur ? " sel" : ""}${off ? " off" : ""}" data-id="${m.id}" data-provider="${m.provider}"${off ? " disabled" : ""}>
-      <span class="mc-head"><b>${m.name}</b><span class="mc-price">${modelPrice(m.price)}<em>/${t("hr")}</em></span></span>
-      <span class="mc-tagrow"><span class="mc-tag">${PROVIDER_NAMES[m.provider]}</span>${(OS_LANG && OS_LANG !== "en" && m.langs.includes(OS_LANG)) ? `<span class="mc-lang-hit">${flag(OS_LANG)}${langName(OS_LANG)}</span>` : ""}${off ? `<span class="mc-nokey">${t("API key missing")}</span>` : ""}</span>
+      <span class="mc-head"><b>${m.logo || ""}<span>${t(m.name)}</span></b><span class="mc-price">${cardPrice(m)}</span></span>
+      <span class="mc-tagrow"><span class="mc-tag">${cardTag(m)}</span>${(OS_LANG && OS_LANG !== "en" && m.langs.includes(OS_LANG)) ? `<span class="mc-lang-hit">${flag(OS_LANG)}${langName(OS_LANG)}</span>` : ""}${off ? `<span class="mc-nokey">${t(cardMissing(m))}</span>` : ""}</span>
       <span class="mc-sub">${t(m.sub)}</span>
+      ${m.needs ? `<span class="mc-needs">${t(m.needs)}</span>` : ""}
       <span class="mc-list">${m.bullets.map(b => `<span>${t(b)}</span>`).join("")}</span>
     </button>`;
+    const panel = host[m.provider] === m.id ? `
+    <div class="mc-panel${panelIsOpen(m.provider) ? "" : " closed"}" data-panel="${m.provider}">
+      <button type="button" class="mc-toggle" data-toggle="${m.provider}" aria-expanded="${panelIsOpen(m.provider)}">${GEAR_SVG}<span>${providerLabel(m.provider)} — ${t("Settings")}</span><span class="chev" aria-hidden="true">▾</span></button>
+      <div class="mc-panel-body"></div>
+    </div>` : "";
+    return `<div class="mc-wrap${m.id === cur ? " sel" : ""}" data-id="${m.id}">${card}${panel}</div>`;
   }).join("");
-  [...box.children].forEach(c => c.onclick = () => {
+  // Move the settings blocks into their panels: the nodes move, so their ids,
+  // values and listeners come along.
+  PROVIDERS.forEach(p => {
+    const body = box.querySelector(`.mc-panel[data-panel="${p}"] .mc-panel-body`), block = $("prov-" + p);
+    if (body && block) { body.appendChild(block); block.hidden = false; }
+  });
+  box.querySelectorAll(".mc-toggle").forEach(b => b.onclick = () => {
+    const p = b.dataset.toggle, open = !panelIsOpen(p);
+    panelOpen[p] = open;
+    b.closest(".mc-panel").classList.toggle("closed", !open);
+    b.setAttribute("aria-expanded", String(open));
+  });
+  box.querySelectorAll(".modelcard").forEach(c => c.onclick = () => {
     if (c.disabled) return;
     $("s-model").value = c.dataset.id;
-    // The provider follows the card, so choosing a model is the whole decision.
+    // The provider follows the card, so choosing a model is the whole decision —
+    // and its settings unfold, since that is where you go next.
     if (cfg) cfg.stt.provider = c.dataset.provider;
+    panelOpen[c.dataset.provider] = true;
     updateKeytermsNotice();
     buildModelCards();
     buildLangDropdown();
     autoSaveSettings();  // also re-prices the cost card, via the config event
   });
+}
+// refreshModelCards updates selection, availability, price and tag on the cards
+// that are already on the page. False when the page has no cards yet.
+function refreshModelCards(){
+  const box = $("model-cards"), cur = $("s-model").value || "";
+  let ok = true;
+  SPEECH_MODELS.forEach(m => {
+    const c = box.querySelector(`.modelcard[data-id="${m.id}"]`);
+    if (!c) { ok = false; return; }
+    const off = !providerReady(m.provider);
+    c.classList.toggle("sel", m.id === cur);
+    c.closest(".mc-wrap").classList.toggle("sel", m.id === cur);
+    c.classList.toggle("off", off);
+    c.disabled = off;
+    c.querySelector(".mc-price").innerHTML = cardPrice(m);
+    c.querySelector(".mc-tag").textContent = cardTag(m);
+    const nk = c.querySelector(".mc-nokey");
+    if (off && !nk) c.querySelector(".mc-tagrow").insertAdjacentHTML("beforeend", `<span class="mc-nokey">${t(cardMissing(m))}</span>`);
+    else if (!off && nk) nk.remove();
+  });
+  return ok;
 }
 // Deliberately not built here: which cards are selectable depends on the
 // provider keys, and those arrive with the config — loadSettings builds them.
@@ -2869,10 +3275,114 @@ function buildIconSelects(){
   const cp = $("s-cleanupprovider").value || "anthropic", cpre = $("s-cleanuppreset").value || "groq";
   setCleanupProviderDisplay = buildIconSelect("cleanupprovider", CLEANUP_PROVIDER_OPTS, () => { syncCleanupUI(); fillCleanupRates(); });
   setCleanupPresetDisplay = buildIconSelect("cleanuppreset", CLEANUP_PRESET_OPTS, (v) => { applyCleanupPreset(v); fillCleanupRates(); });
+  const spre = $("s-sttpreset").value || "local";
+  setSttPresetDisplay = buildIconSelect("sttpreset", STT_PRESET_OPTS, applySttPreset);
   const ap = $("s-assistprovider").value || "anthropic", apre = $("s-assistpreset").value || "groq";
   setAssistProviderDisplay = buildIconSelect("assistprovider", CLEANUP_PROVIDER_OPTS, () => { syncAssistUI(); syncAssistMode(); fillAssistRates(); });
   setAssistPresetDisplay = buildIconSelect("assistpreset", CLEANUP_PRESET_OPTS, (v) => { applyAssistPreset(v); fillAssistRates(); });
-  setTypespeedDisplay(ts); setNotifyDisplay(nf); setMediaDisplay(ma); setInjectDisplay(ij); setRetentionDisplay(rt); setCleanupProviderDisplay(cp); setCleanupPresetDisplay(cpre); setAssistProviderDisplay(ap); setAssistPresetDisplay(apre); // rebuild keeps the current value
+  setTypespeedDisplay(ts); setNotifyDisplay(nf); setMediaDisplay(ma); setInjectDisplay(ij); setRetentionDisplay(rt); setCleanupProviderDisplay(cp); setCleanupPresetDisplay(cpre); setAssistProviderDisplay(ap); setAssistPresetDisplay(apre); setSttPresetDisplay(spre); // rebuild keeps the current value
+}
+// The speech endpoint's presets, the same three the cleanup has. "local" is the
+// one this provider exists for, so it comes first and is the default.
+const STT_PRESET_OPTS = [
+  CLEANUP_PRESET_OPTS[2],
+  { v:"groq",   label:"Groq", icon:CLEANUP_PRESET_OPTS[0].icon },
+  { v:"openai", label:"OpenAI", icon:OA_GLOBE },
+];
+let setSttPresetDisplay = () => {};
+// A preset prefills the endpoint and a model; "local" only suggests, since the
+// port and the model name are whatever the user's own server has.
+function applySttPreset(v){
+  if (v === "groq")        { $("s-sttbaseurl").value = "https://api.groq.com/openai/v1"; $("s-sttopenaimodel").value = "whisper-large-v3-turbo"; $("s-sttopenaikey").placeholder = "gsk_…"; }
+  else if (v === "openai") { $("s-sttbaseurl").value = "https://api.openai.com/v1"; $("s-sttopenaimodel").value = "gpt-4o-mini-transcribe"; $("s-sttopenaikey").placeholder = "sk-…"; }
+  else { $("s-sttopenaikey").placeholder = t("(often none for a local server)"); }
+  syncSttEndpointUI();
+}
+// The endpoint fields feed the model card (usable or not, its price and its
+// name), so they are mirrored into cfg as you type, like the keys are.
+function syncSttEndpointUI(){
+  if (cfg && cfg.stt) {
+    cfg.stt.openai_base_url = $("s-sttbaseurl").value.trim();
+    cfg.stt.openai_model = $("s-sttopenaimodel").value.trim();
+    cfg.stt.openai_key = $("s-sttopenaikey").value;
+  }
+  const localPreset = ($("s-sttpreset").value || "local") === "local";
+  const info = $("info-sttopenaikey"); if (info) info.style.display = localPreset ? "none" : "";
+  buildModelCards();
+}
+
+/* ---- the speech engine Vito installs and runs itself ---- */
+// Its state comes from /api/local-stt once, then follows "local_stt" events:
+// install progress, the process starting, running, or dying.
+let localStt = null;
+async function loadLocalStt(){
+  localStt = await api("/api/local-stt").catch(() => null);
+  renderLocalStt();
+  buildModelCards();
+}
+const VARIANT_LABELS = { cpu:"CPU (standard)", vulkan:"GPU (Vulkan)" };
+// The short tag on the model card: the one word that says whether it works.
+function localSttTag(){
+  const s = localStt;
+  if (!s) return t("Vito local");
+  if (!s.supported) return t("Not available on this system");
+  switch (s.phase) {
+    case "running": return t("Running") + (s.last_ms ? " · " + (s.last_ms / 1000).toFixed(1).replace(".", numLoc() === "nl-NL" ? "," : ".") + " s" : "");
+    case "starting": return t("Starting…");
+    case "downloading": return t("Installing…") + " " + Math.round((s.frac || 0) * 100) + "%";
+    case "error": return t("Error");
+    case "stopped": return t("Installed");
+    default: return t("Not installed");
+  }
+}
+function renderLocalStt(){
+  const s = localStt, box = $("localstt-status"), bar = $("localstt-bar"), sel = $("s-localvariant");
+  if (!box) return;
+  if (!s) { box.textContent = t("Status unavailable."); return; }
+  // The build picker lists what exists for this machine; on macOS that is one
+  // entry, and the standard build already uses the GPU there.
+  const variants = s.variants || [];
+  const cur = sel.value || (cfg && cfg.stt && cfg.stt.local_variant) || s.variant || "cpu";
+  sel.innerHTML = variants.map(v => `<option value="${v}">${t(VARIANT_LABELS[v] || v)}</option>`).join("");
+  sel.value = variants.includes(cur) ? cur : (variants[0] || "");
+  sel.hidden = variants.length < 2;
+  const engine = `${s.engine} ${s.version} · ${s.model}` + (s.variant ? ` · ${t(VARIANT_LABELS[s.variant] || s.variant)}` : "");
+  let line;
+  switch (s.phase) {
+    case "running": line = "✓ " + t("Running") + (s.last_ms ? ` — ${t("last dictation")} ${(s.last_ms / 1000).toFixed(2)} s` : "") + ` · ${engine}`; break;
+    case "starting": line = t("Starting — loading the model…") + ` · ${engine}`; break;
+    case "downloading": line = t("Installing…") + ` ${Math.round((s.frac || 0) * 100)}%`; break;
+    case "error": line = "✗ " + (s.error || t("Error")) + (s.installed ? ` · ${engine}` : ""); break;
+    case "stopped": line = t("Installed, not running — select the card above to use it.") + ` · ${engine}`; break;
+    default: line = s.supported ? t("Not installed.") + ` ${t("Download of about {mb} MB, once.").replace("{mb}", s.model_mb)}` : t("There is no build of this engine for your system.");
+  }
+  box.textContent = line;
+  bar.hidden = s.phase !== "downloading";
+  bar.querySelector("i").style.width = Math.round((s.frac || 0) * 100) + "%";
+  const busy = s.phase === "downloading";
+  $("localstt-install").hidden = !s.supported || busy;
+  $("localstt-install").textContent = s.installed ? t("Reinstall") : t("Install");
+  $("localstt-remove").hidden = !s.installed || busy;
+  sel.disabled = busy;
+}
+async function installLocalStt(){
+  const variant = $("s-localvariant").value || "cpu";
+  try {
+    const r = await api("/api/local-stt/install", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ variant }) });
+    if (!r.ok) { toast("✗ " + (r.error || t("Install failed.")), "err"); return; }
+    if (cfg && cfg.stt) { cfg.stt.local_variant = variant; }
+    autoSaveSettings();
+    toast(t("Installing the local speech engine…"), "info");
+  } catch { toast(t("Install failed."), "err"); }
+}
+function removeLocalStt(){
+  modal(t("Remove local speech engine?"), `<p class="ki-note">${t("Deletes the engine and the model from this computer. You can install them again at any time.")}</p>`,
+    async () => {
+      try {
+        const r = await api("/api/local-stt/remove", { method:"POST" });
+        if (!r.ok) toast("✗ " + (r.error || t("Remove failed.")), "err");
+      } catch { toast(t("Remove failed."), "err"); }
+    }, "Remove", true);
 }
 // Show the Anthropic vs OpenAI-compatible block, and hide the "Get a key" hint
 // for a local endpoint (which typically needs none).
@@ -3219,7 +3729,12 @@ function connectWS() {
         const msg = e.cleanup_credit
           ? t("{p} account is out of credit — cleanup skipped, raw text pasted.").replace("{p}", e.cleanup_credit)
           : t("AI cleanup failed — raw text pasted.");
-        toast("⚠ " + msg, "err", e.cleanup_credit ? 6000 : 3400);
+        // The reason is on the history entry now, so the toast links to it rather
+        // than trying to fit a provider error in one line. Without a stored entry
+        // (history off, or privacy mode) the toast is all there is, so it says the
+        // reason itself instead of pointing at a page that would not have it.
+        if (e.entry_id) actionToast("⚠ " + msg, t("Details"), () => showCleanupError(e.entry_id), 8000, "err");
+        else toast("⚠ " + msg + (e.cleanup_error ? " (" + e.cleanup_error + ")" : ""), "err", e.cleanup_credit ? 6000 : 4500);
         if (typeof pipToast === "function") pipToast("⚠ " + t("Cleanup failed"));
         if (e.cleanup_credit) refreshCredit();
       }
@@ -3235,6 +3750,11 @@ function connectWS() {
       onPlaybackStream(e.playback || {});
     } else if (e.type === "upload") {
       setUploadProgress(e.upload || {});
+    } else if (e.type === "local_stt") {
+      localStt = e.local_stt || localStt;
+      renderLocalStt();
+      buildModelCards();
+      if (cfg && cfg.stt && cfg.stt.provider === "local") renderStatusTags();
     } else if (e.type === "level") {
       // A last level can arrive just after the state already moved on, which
       // used to leave the recording meter frozen part-way up until the next
@@ -3982,6 +4502,184 @@ async function testKey(provider, inputId, btnId, opts){
   } catch { toast(t("Key test failed (network or service)."), "err"); }
   finally { if (btn) btn.disabled = false; }
 }
+/* ---- cleanup rule sets ---- */
+// The prompt is the biggest lever on what cleanup does, so it can be tuned — but
+// only the rules. Vito appends a fixed output contract to whichever set is
+// active, which is why a bad rule set can make cleanup worse and can never make
+// it paste commentary at your cursor. Vito's own set is always in the list,
+// always read-only, and is what an empty selection means.
+let promptBuiltins = [];   // Vito's own sets, from /api/cleanup/prompts
+let promptContract = "";   // the line appended to every prompt
+let promptList = [];       // the user's own sets
+let promptActive = "";     // "" = Vito's default
+async function loadPromptBuiltins(){
+  try {
+    const d = await api("/api/cleanup/prompts");
+    promptBuiltins = d.builtins || [];
+    promptContract = d.contract || "";
+  } catch {}
+  const c = $("prompt-contract"); if (c) c.textContent = promptContract;
+  renderRulesetPill(); // the sidebar shows the name, so it needs the sets too
+}
+const builtinOf = (id) => promptBuiltins.find(b => b.id === id);
+const ownOf = (id) => promptList.find(p => p.id === id);
+// An empty selection, and any id that no longer resolves, mean Vito's default —
+// the same fallback the daemon applies, so the page can never show one set while
+// dictations run on another.
+function resolvedPrompt(){
+  return ownOf(promptActive) || builtinOf(promptActive) || builtinOf("vito:default") || null;
+}
+function renderPromptPicker(){
+  const sel = $("s-promptsel"), box = $("s-promptrules");
+  if (!sel || !box) return;
+  const own = ownOf(promptActive);
+  const active = resolvedPrompt();
+  const group = (label, items) => items.length
+    ? `<optgroup label="${ahEsc(label)}">` +
+      items.map(p => `<option value="${ahEsc(p.id)}">${ahEsc(t(p.name))}</option>`).join("") + `</optgroup>`
+    : "";
+  sel.innerHTML = group(t("Vito"), promptBuiltins) + group(t("Your own"), promptList);
+  sel.value = active ? active.id : "";
+  box.value = active ? active.rules : "";
+  box.readOnly = !own;
+  $("prompt-desc").textContent = own ? "" : (active && active.description ? t(active.description) : "");
+  // Renaming or deleting one of Vito's own sets is the one thing that must stay
+  // impossible; starting a set of your own from it is the whole point.
+  $("prompt-rename").disabled = !own;
+  $("prompt-del").disabled = !own;
+  renderRulesetPill();
+}
+// A short random id, so renaming a set keeps it selected.
+const newPromptID = () => "p" + Math.random().toString(36).slice(2, 10);
+function savePrompts(msg){
+  saveConfig({ cleanup: Object.assign({}, cfg.cleanup, { prompts: promptList, active_prompt: promptActive }) }, msg);
+}
+function newPromptFromCurrent(){
+  const base = $("s-promptrules").value;
+  const src = resolvedPrompt();
+  const from = ownOf(promptActive) ? src.name : t((src || {}).name || "Vito default");
+  const m = modal(t("New cleanup rules"),
+    `<p class="act-note" style="margin:0 0 10px;">${t("Starts as a copy of “{n}”, which stays untouched.").replace("{n}", ahEsc(from))}</p>` +
+    `<label class="fld">${t("Name")}</label><input type="text" id="pr-name" value="${ahEsc(t("My rules"))}">`,
+    (back) => {
+      const name = back.querySelector("#pr-name").value.trim() || t("My rules");
+      if (promptList.length >= 20) { toast(t("You can keep at most 20 rule sets."), "err"); return false; }
+      const p = { id: newPromptID(), name, rules: base };
+      promptList.push(p); promptActive = p.id;
+      renderPromptPicker();
+      savePrompts(t("Rule set created"));
+    }, "Create");
+  setTimeout(() => { const i = m.querySelector("#pr-name"); i.focus(); i.select(); }, 30);
+}
+function renamePrompt(){
+  const p = promptList.find(x => x.id === promptActive); if (!p) return;
+  const m = modal(t("Rename rule set"),
+    `<label class="fld">${t("Name")}</label><input type="text" id="pr-name" value="${ahEsc(p.name)}">`,
+    (back) => {
+      const name = back.querySelector("#pr-name").value.trim();
+      if (!name) return false;
+      p.name = name; renderPromptPicker(); savePrompts(t("Renamed"));
+    });
+  setTimeout(() => { const i = m.querySelector("#pr-name"); i.focus(); i.select(); }, 30);
+}
+function deletePrompt(){
+  const p = promptList.find(x => x.id === promptActive); if (!p) return;
+  modal(t("Delete rule set?"),
+    `<p style="color:var(--text2);font-size:13px;line-height:1.55;margin:0;">${t("“{n}” is deleted and cleanup goes back to the Vito default.").replace("{n}", ahEsc(p.name))}</p>`,
+    () => {
+      promptList = promptList.filter(x => x.id !== p.id);
+      promptActive = ""; // back to Vito's default, never to nothing
+      renderPromptPicker(); savePrompts(t("Rule set deleted"));
+    }, "Delete", true);
+}
+
+/* ---- the active rule set, in the sidebar ---- */
+// Which rules are running decides what every dictation comes out like, so it
+// belongs where you can see it, and switching by task (notes now, business
+// writing next) is the normal case rather than a settings trip.
+function renderRulesetPill(){
+  const lbl = $("ruleset-lbl"); if (!lbl) return;
+  const p = resolvedPrompt();
+  lbl.textContent = !p ? t("Vito default") : (ownOf(p.id) ? p.name : t(p.name));
+}
+const RS_CHECK = '<svg class="rs-chk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>';
+let rsPop = null;
+function closeRulesetPop(){
+  if (!rsPop) return;
+  rsPop.remove(); rsPop = null;
+  $("ruleset-pill").setAttribute("aria-expanded", "false");
+}
+function openRulesetPop(){
+  if (rsPop) { closeRulesetPop(); return; }
+  const active = resolvedPrompt();
+  const row = (p, own) => {
+    const on = active && p.id === active.id;
+    const desc = own ? "" : `<div class="rs-dsc">${ahEsc(t(p.description || ""))}</div>`;
+    return `<button type="button" class="rs-opt${on ? " on" : ""}" data-id="${ahEsc(p.id)}">${RS_CHECK}` +
+      `<span><span class="rs-nm">${ahEsc(own ? p.name : t(p.name))}</span>${desc}</span></button>`;
+  };
+  const pop = document.createElement("div");
+  pop.className = "rs-pop";
+  pop.innerHTML =
+    `<div class="rs-grp">${ahEsc(t("Vito"))}</div>` + promptBuiltins.map(p => row(p, false)).join("") +
+    (promptList.length ? `<div class="rs-grp">${ahEsc(t("Your own"))}</div>` + promptList.map(p => row(p, true)).join("") : "") +
+    `<div class="rs-foot"><button type="button" id="rs-settings">${ahEsc(t("Edit rule sets…"))}</button></div>`;
+  document.body.appendChild(pop);
+  rsPop = pop;
+  $("ruleset-pill").setAttribute("aria-expanded", "true");
+
+  // Anchored to the pill, above it when there is room and below it when there
+  // isn't — the sidebar puts it at the very bottom of a short window.
+  const r = $("ruleset-pill").getBoundingClientRect(), h = pop.offsetHeight;
+  const top = r.top - h - 8 >= 8 ? r.top - h - 8 : Math.min(r.bottom + 8, innerHeight - h - 8);
+  pop.style.top = Math.max(8, top) + "px";
+  pop.style.left = Math.max(8, Math.min(r.left, innerWidth - pop.offsetWidth - 8)) + "px";
+
+  pop.querySelectorAll(".rs-opt").forEach(b => b.onclick = () => {
+    const id = b.dataset.id;
+    promptActive = id === "vito:default" ? "" : id;
+    closeRulesetPop();
+    renderRulesetPill();
+    renderPromptPicker(); // the settings page, if it is built
+    savePrompts("Rule set switched");
+  });
+  pop.querySelector("#rs-settings").onclick = () => {
+    closeRulesetPop();
+    selectTab("settings"); selectSetSection("cleanup");
+    const card = document.querySelectorAll('.card[data-sec="cleanup"]')[1];
+    if (card) setTimeout(() => card.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+  };
+  pop.addEventListener("click", (e) => e.stopPropagation());
+}
+$("ruleset-pill").onclick = (e) => { e.stopPropagation(); openRulesetPop(); };
+document.addEventListener("click", closeRulesetPop);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeRulesetPop(); });
+addEventListener("resize", closeRulesetPop);
+
+// updateReasoningNote spells out what this particular endpoint+model does with
+// the thinking setting. It has to be said per model, not once in the help text:
+// on Groq the very same account takes "none" for Qwen and rejects it for
+// gpt-oss, and finding that out through a failed dictation is the bad way.
+function updateReasoningNote(){
+  const note = $("reasoning-note"), sel = $("s-openaireasoning");
+  if (!note || !sel) return;
+  const model = ($("s-openaimodel").value || "").toLowerCase();
+  const groq = (($("s-openaibaseurl").value || "").toLowerCase()).includes("groq.com");
+  let msg = "";
+  if (groq && model.includes("qwen")) {
+    msg = sel.value === "none"
+      ? t("Qwen on Groq answers without thinking — fast and cheap. This is the right setting for cleanup.")
+      : t("Qwen on Groq thinks by default and can spend thousands of tokens on it, which makes cleanup fail. Choose “Off”.");
+  } else if (groq && model.includes("gpt-oss")) {
+    msg = sel.value === "none" || sel.value === "minimal"
+      ? t("gpt-oss on Groq accepts only low, medium or high — this value will be rejected.")
+      : t("gpt-oss on Groq thinks briefly and keeps it out of the answer; it needs nothing set here.");
+  } else if (sel.value) {
+    msg = t("Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.");
+  }
+  note.textContent = msg;
+  note.hidden = !msg;
+}
 const openaiName = () => { const b=($("s-openaibaseurl").value||"").toLowerCase(); return b.includes("groq.com")?"Groq":b.includes("openai.com")?"OpenAI":"Endpoint"; };
 const testOpenAI = () => testKey("openai", "s-openaikey", "test-openaikey", { baseUrl: $("s-openaibaseurl").value.trim(), name: openaiName() });
 $("test-sttkey").onclick = () => testKey("assemblyai", "s-sttkey", "test-sttkey");
@@ -3993,6 +4691,12 @@ $("info-openaikey").onclick = () => showKeyInfo($("s-cleanuppreset").value === "
 $("s-sttkey").addEventListener("paste", () => setTimeout(() => testKey("assemblyai", "s-sttkey", "test-sttkey"), 250));
 $("s-sonioxkey").addEventListener("paste", () => setTimeout(() => testKey("soniox", "s-sonioxkey", "test-sonioxkey"), 250));
 // A key arriving or leaving flips which model cards are selectable.
+$("test-sttopenaikey").onclick = () => testKey("openai", "s-sttopenaikey", "test-sttopenaikey", { baseUrl: $("s-sttbaseurl").value.trim(), name: sttEndpointName() });
+$("localstt-install").onclick = installLocalStt;
+$("localstt-remove").onclick = removeLocalStt;
+$("s-localvariant").addEventListener("change", autoSaveSettings);
+$("info-sttopenaikey").onclick = () => showKeyInfo($("s-sttpreset").value === "openai" ? "openai" : "groq");
+["s-sttbaseurl","s-sttopenaikey","s-sttopenaimodel"].forEach(id => $(id).addEventListener("input", syncSttEndpointUI));
 ["s-sttkey","s-sonioxkey"].forEach(id => $(id).addEventListener("input", () => {
   if (cfg) { cfg.stt.api_key = $("s-sttkey").value; cfg.stt.soniox_api_key = $("s-sonioxkey").value; buildModelCards(); }
 }));
@@ -4475,8 +5179,11 @@ const PROVIDER_BILLING = {
   "AssemblyAI": "https://www.assemblyai.com/app/account",
   "Soniox": "https://console.soniox.com/",
   "Anthropic": "https://console.anthropic.com/settings/billing",
+  "Groq": "https://console.groq.com/settings/billing",
+  "OpenAI": "https://platform.openai.com/settings/organization/billing/overview",
 };
 const ICON_WARN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 1.8 20.5h20.4z"/><path d="M12 9.5v5"/><circle cx="12" cy="17.6" r="0.6" fill="currentColor" stroke="none"/></svg>';
+const ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 const ICON_EXT = '<svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8 8M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg>';
 function creditCardHTML(){
   const list = creditState || [];
@@ -4486,7 +5193,8 @@ function creditCardHTML(){
     : t("Your {p} account has run out").replace("{p}", list[0] || "");
   const btns = list.map(p =>
     `<button class="cr-btn" data-provider="${ahEsc(p)}">${t("Top up {p}").replace("{p}", ahEsc(p))} ${ICON_EXT}</button>`).join("");
-  return `<div class="chip coral">${ICON_WARN}</div>` +
+  return `<button class="cr-close" aria-label="${t("Dismiss")}" data-tip-text="${t("Hide this until that account runs out again")}">${ICON_X}</button>` +
+    `<div class="chip coral">${ICON_WARN}</div>` +
     `<div class="num cr-title">${t("Out of credit")}</div>` +
     `<div class="delta cr-sub">${sub}</div>` +
     `<div class="cr-btns">${btns}</div>`;
@@ -4496,6 +5204,18 @@ function wireCreditCard(el){
     const url = PROVIDER_BILLING[b.dataset.provider];
     if (url) window.open(url, "_blank", "noopener");
   });
+  const x = el.querySelector(".cr-close");
+  if (x) x.onclick = () => {
+    // The daemon owns the dismissal, next to the flag it hides, so it survives a
+    // reload and lifts itself the moment the provider works again. The card goes
+    // here and now, under the finger that just closed it; loadStats rebuilds the
+    // grid around the gap, and only then does the round trip matter.
+    creditState = [];
+    el.remove();
+    applyStatusLayout();
+    loadStats();
+    api("/api/credit/dismiss", { method: "POST" }).catch(() => refreshCredit());
+  };
 }
 // Pull the current out-of-credit set from the daemon and reflect it in the card.
 async function refreshCredit(){
@@ -5035,10 +5755,15 @@ function showCostInfo(){
   const usd = (n) => "$" + Number(n).toFixed(2).replace(".", numLoc() === "nl-NL" ? "," : ".");
   // Prefer the rates the server actually reckoned with — the speech rate follows
   // the chosen model, so the config value is only a fallback.
-  const stt = c.stt_per_hour_usd || rates.stt_per_hour_usd || 0.15;
+  // For the endpoint provider a zero is the real rate (a server of your own),
+  // not a missing one to paper over with the default.
+  const prov = (cfg && cfg.stt && cfg.stt.provider) || "";
+  const endpoint = prov === "openai" || prov === "local";
+  const stt = endpoint ? (c.stt_per_hour_usd || 0) : (c.stt_per_hour_usd || rates.stt_per_hour_usd || 0.15);
   const cin = c.cleanup_in_per_mtok_usd || rates.cleanup_in_per_mtok_usd || 1.0;
   const cout = c.cleanup_out_per_mtok_usd || rates.cleanup_out_per_mtok_usd || 5.0;
   const model = SPEECH_MODELS.find(m => m.id === ((cfg && cfg.stt && cfg.stt.model) || ""));
+  const modelLabel = !model ? "" : prov === "local" ? t("Vito local") : endpoint ? sttEndpointName() : model.name + (cfg.stt.keyterms_enabled && model.price < 0.45 ? ", incl. keyterms" : "");
   const fx = c.fx_rate && cur === "eur"
     ? `<p class="ki-note">${t("Converted to euros at")} <b>1 USD = ${Number(c.fx_rate).toFixed(4).replace(".", numLoc()==="nl-NL" ? "," : ".")} EUR</b>.</p>` : "";
   modal(t("About these costs"),
@@ -5048,7 +5773,7 @@ function showCostInfo(){
       <div class="ki-warn">
         <b>${t("Calculated with:")}</b>
         <div style="margin-top:7px; display:flex; flex-direction:column; gap:4px;">
-          <span>${t("Speech recognition")} — <b>${usd(stt)}</b> ${t("per hour of recorded audio")}${model ? ` <span style="color:var(--text3)">(${model.name}${cfg.stt.keyterms_enabled && model.price < 0.45 ? ", incl. keyterms" : ""})</span>` : ""}</span>
+          <span>${t("Speech recognition")} — <b>${usd(stt)}</b> ${t("per hour of recorded audio")}${modelLabel ? ` <span style="color:var(--text3)">(${modelLabel})</span>` : ""}</span>
           <span>${t("AI cleanup")} — <b>${usd(cin)}</b> ${t("per million input tokens")}</span>
           <span>${t("AI cleanup")} — <b>${usd(cout)}</b> ${t("per million output tokens")}</span>
         </div>
@@ -5274,12 +5999,26 @@ async function loadSettings() {
   $("s-keyterms").checked = cfg.stt.keyterms_enabled;
   $("s-sttkey").value = cfg.stt.api_key;
   $("s-sonioxkey").value = cfg.stt.soniox_api_key || "";
+  $("s-sttbaseurl").value = cfg.stt.openai_base_url || "";
+  $("s-sttopenaikey").value = cfg.stt.openai_key || "";
+  $("s-sttopenaimodel").value = cfg.stt.openai_model || "";
+  setSttPresetDisplay(cfg.stt.openai_preset || (cfg.stt.openai_base_url ? presetFromBase(cfg.stt.openai_base_url) : "local"));
+  syncSttEndpointUI();
   $("s-cleanup").checked = cfg.cleanup.enabled;
   $("s-cleanupkey").value = cfg.cleanup.api_key;
   $("s-cleanupmodel").value = cfg.cleanup.model;
   $("s-openaibaseurl").value = cfg.cleanup.openai_base_url || "";
   $("s-openaikey").value = cfg.cleanup.openai_key || "";
   $("s-openaimodel").value = cfg.cleanup.openai_model || "";
+  $("s-openaireasoning").value = cfg.cleanup.reasoning_effort || "";
+  updateReasoningNote();
+  promptList = Array.isArray(cfg.cleanup.prompts) ? cfg.cleanup.prompts : [];
+  promptActive = cfg.cleanup.active_prompt || "";
+  renderPromptPicker();
+  loadLocalStt();
+  // Vito's own sets come from the daemon, not the page: they are the prompts the
+  // running build actually uses, and would drift if the UI kept its own copy.
+  loadPromptBuiltins().then(renderPromptPicker);
   setCleanupProviderDisplay(cfg.cleanup.provider === "openai" ? "openai" : "anthropic");
   // Prefer the saved preset; fall back to deriving it from the base URL for
   // configs written before the preset was persisted.
@@ -5380,7 +6119,12 @@ function renderStatusTags(){
     tags.push({ ico: ICON_KBD, text: t("Hotkey in your desktop"), sec: "activation" });
   }
   const sm = SPEECH_MODELS.find(m => m.id === (cfg.stt && cfg.stt.model));
-  tags.push({ ico: ICON_MIC2, text: sm ? sm.name : ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
+  // The endpoint card's name is a description, not a name; what is behind the
+  // URL (and which model) is what tells you something.
+  const sttLabel = sm && sm.provider === "openai" ? sttEndpointName() + (cfg.stt.openai_model ? " · " + cfg.stt.openai_model : "")
+    : sm && sm.provider === "local" ? t("Vito local") + " · Parakeet" + (localStt && localStt.phase !== "running" ? " · " + localSttTag() : "")
+    : sm ? sm.name : null;
+  tags.push({ ico: ICON_MIC2, text: sttLabel || ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
   tags.push({ raw: langIcon((cfg.stt && cfg.stt.language) || ""), text: langName(cfg.stt && cfg.stt.language), sec: "stt" });
   const cl = cfg.cleanup || {};
   if (!cl.enabled) tags.push({ ico: SPARK_SVG, text: t("Cleanup off"), sec: "cleanup", muted: true });
@@ -5741,6 +6485,9 @@ function collectSettings() {
       language: $("s-lang").value, model: $("s-model").value,
       eu_endpoint: $("s-eu").checked, keyterms_enabled: $("s-keyterms").checked,
       api_key: $("s-sttkey").value, soniox_api_key: $("s-sonioxkey").value,
+      openai_base_url: $("s-sttbaseurl").value.trim(), openai_key: $("s-sttopenaikey").value,
+      openai_model: $("s-sttopenaimodel").value.trim(), openai_preset: $("s-sttpreset").value || "local",
+      local_variant: $("s-localvariant").value || (cfg.stt.local_variant || "cpu"),
       provider: (SPEECH_MODELS.find(m => m.id === $("s-model").value) || {}).provider || "assemblyai",
     }),
     cleanup: Object.assign(cfg.cleanup, {
@@ -5750,6 +6497,7 @@ function collectSettings() {
       openai_base_url: $("s-openaibaseurl").value.trim(),
       openai_key: $("s-openaikey").value,
       openai_model: $("s-openaimodel").value.trim(),
+      reasoning_effort: $("s-openaireasoning").value,
       openai_preset: $("s-cleanuppreset").value || "groq",
     }),
     // Vito Assist: borrow the cleanup model, or run its own (heavier) one.
@@ -5960,8 +6708,38 @@ $("s-tray").onchange = () => {
     "Turn off anyway", true,
     () => { $("s-tray").checked = true; });
 };
-["s-svol","s-sttkey","s-sonioxkey","s-cleanupkey","s-cleanupmodel","s-silence","s-autostopms","s-openaibaseurl","s-openaikey","s-openaimodel",
+["s-svol","s-sttkey","s-sonioxkey","s-sttbaseurl","s-sttopenaikey","s-sttopenaimodel","s-cleanupkey","s-cleanupmodel","s-silence","s-autostopms","s-openaibaseurl","s-openaikey","s-openaimodel",
  "s-assistkey","s-assistmodel","s-assistbaseurl","s-assistopenaikey","s-assistopenaimodel","s-cleanupinrate","s-cleanupoutrate","s-assistinrate","s-assistoutrate"].forEach(id => $(id).addEventListener("input", autoSaveSettings));
+// The thinking picker saves like the rest, and re-reads its own advice: that
+// advice depends on the model and endpoint next to it, so all three poke it.
+$("s-openaireasoning").addEventListener("change", () => { updateReasoningNote(); autoSaveSettings(); });
+// Chrome cycles a focused <select> on the mouse wheel, so scrolling the settings
+// page with the cursor over one silently changes the setting — and everything
+// here auto-saves, so it is changed for good before you notice. Dropping focus
+// on the wheel stops it; every other picker in the app is a custom dropdown and
+// never had the problem.
+document.querySelectorAll("select").forEach(sel =>
+  sel.addEventListener("wheel", () => { if (document.activeElement === sel) sel.blur(); }, { passive: true }));
+$("s-promptsel").addEventListener("change", () => {
+  // "" and "vito:default" mean the same thing; store the empty one so the config
+  // has a single spelling for "Vito's default", the same one a fresh install has.
+  const v = $("s-promptsel").value;
+  promptActive = v === "vito:default" ? "" : v;
+  renderPromptPicker();
+  savePrompts("Rule set switched");
+});
+$("prompt-new").onclick = newPromptFromCurrent;
+$("prompt-rename").onclick = renamePrompt;
+$("prompt-del").onclick = deletePrompt;
+// Editing rides on the ordinary debounced save: cfg.cleanup.prompts holds these
+// very objects, so mutating one here is already part of the next PUT.
+$("s-promptrules").addEventListener("input", () => {
+  const p = promptList.find(x => x.id === promptActive);
+  if (!p) return; // Vito's own set is read-only
+  p.rules = $("s-promptrules").value;
+  autoSaveSettings();
+});
+["s-openaimodel","s-openaibaseurl"].forEach(id => $(id).addEventListener("input", updateReasoningNote));
 // Editable model combobox wiring: open on focus/type, pick a suggestion or a
 // remembered model, ✕ to forget a remembered one; free text stays allowed.
 {
@@ -6323,6 +7101,7 @@ async function refreshRecordingUI(){
 // total (or the match count while searching).
 const HIST_PAGE = 100;
 let hTotal = 0, hLoaded = 0, hLoading = false, hLastBucket = null, hQuery = "", hObserver = null, hFavOnly = false;
+let hLoad = null; // the in-flight loadHistory(), so loads queue instead of racing
 // Deletes awaiting their undo window; each value is a commit() that finalises the
 // server-side deletion. Flushed before a reload so a pending row can't reappear.
 const hPendingDel = new Set();
@@ -6332,8 +7111,57 @@ const hPendingDel = new Set();
 function starSVG(on){
   return `<svg viewBox="0 0 24 24" fill="${on ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.6l2.6 5.27 5.82.85-4.21 4.1.99 5.8L12 17.9l-5.2 2.72.99-5.8-4.21-4.1 5.82-.85z"/></svg>`;
 }
+const ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>';
+const CHEV_SVG = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>';
+// cleanupErrorEl builds the collapsed "cleanup failed" disclosure for one entry.
+// A Vito Assist entry says so by name: calling a command that never ran "cleanup"
+// would send you looking in the wrong settings.
+function cleanupErrorEl(e){
+  const det = document.createElement("details"); det.className = "herr";
+  const sum = document.createElement("summary");
+  sum.innerHTML = CHEV_SVG + ICON_WARN;
+  const label = document.createElement("span");
+  label.textContent = e.command_text ? t("Vito Assist failed") : t("AI cleanup failed");
+  sum.appendChild(label);
+  const box = document.createElement("div"); box.className = "herr-box";
+  const msg = document.createElement("div"); msg.className = "herr-msg"; msg.textContent = e.cleanup_error;
+  // A provider error is something you paste into a search box or a bug report,
+  // not something you retype — and selecting it by hand inside a <details> that
+  // closes on a stray click is exactly the fiddly bit worth removing.
+  const copy = document.createElement("button");
+  copy.type = "button"; copy.className = "hbtn herr-copy";
+  copy.dataset.tipText = t("Copy this error message"); copy.setAttribute("aria-label", t("Copy error message"));
+  copy.innerHTML = ICON_COPY;
+  copy.onclick = (ev) => {
+    ev.preventDefault(); // inside <summary>'s sibling, but keep the details from toggling
+    navigator.clipboard.writeText(e.cleanup_error).then(() => {
+      copy.classList.add("ok");
+      setTimeout(() => copy.classList.remove("ok"), 1200);
+    }).catch(er => toast(er.message, "err"));
+  };
+  box.appendChild(msg); box.appendChild(copy);
+  det.appendChild(sum); det.appendChild(box);
+  return det;
+}
+// Open the history at one entry, with its failure reason already unfolded — this
+// is what the "Details" link on a cleanup-failed toast leads to.
+async function showCleanupError(id){
+  // A search left in the box, or the favorites filter, would hide the very entry
+  // the link points at — clear both before switching tab, so the load that the
+  // switch kicks off is already the one worth waiting for.
+  $("h-search").value = "";
+  if (hFavOnly) { hFavOnly = false; $("h-fav-filter").classList.remove("on"); }
+  selectTab("history");
+  try { await hLoad; } catch {}
+  const el = document.querySelector(`.hentry[data-id="${CSS.escape(id)}"]`);
+  if (!el) { toast(t("That dictation is no longer in the history."), "err"); return; }
+  const det = el.querySelector(".herr"); if (det) det.open = true;
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+  el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+}
 function historyEntryEl(e){
   const div = document.createElement("div"); div.className = "hentry" + (e.favorite ? " fav" : "");
+  div.dataset.id = e.id; // so a "Details" toast can jump straight to this row
   const meta = document.createElement("div"); meta.className = "meta";
   // A Vito Assist command shows the instruction it ran instead of the plain
   // "cleanup" tag — the cleanup pass is what carried the command out.
@@ -6347,6 +7175,9 @@ function historyEntryEl(e){
   if (e.cleanup_used && e.cleaned && e.raw !== e.cleaned) {
     const raw = document.createElement("div"); raw.className = "raw htext"; raw.textContent = t("raw: ") + e.raw; div.appendChild(raw);
   }
+  // The AI pass was tried and failed: say so, and keep the provider's own error
+  // one click away. Folded shut, because the text above is what you came for.
+  if (e.cleanup_error) div.appendChild(cleanupErrorEl(e));
   const actions = document.createElement("div"); actions.className = "actions";
   // Tips go on data-tip-text, not title: the styled tooltip is delegated, so it
   // survives the re-render, and a native title would pop up alongside it.
@@ -6435,7 +7266,16 @@ function updateHistoryCount(){
     ? t("{n} matches").replace("{n}", n)
     : t("{n} dictations").replace("{n}", n));
 }
-async function loadHistory() {
+// One history load at a time. Two overlapping ones each clear the list and then
+// append into it, so the loser's rows land under the winner's empty-state — the
+// kind of thing that only shows up when something switches tab and reloads in
+// the same breath, which is exactly what the "Details" jump does. Callers that
+// need the finished list can await hLoad.
+function loadHistory(){
+  hLoad = (hLoad || Promise.resolve()).then(loadHistoryNow, loadHistoryNow);
+  return hLoad;
+}
+async function loadHistoryNow() {
   [...hPendingDel].forEach(c => c()); // finalise pending deletes so they don't reappear
   hPlayRows.clear(); // the rows this maps to are about to be replaced
   hQuery = $("h-search").value;
@@ -6558,8 +7398,14 @@ const HELP = {
   lang:{nl:"De taal die je inspreekt. 'Automatisch' laat de dienst de taal zelf detecteren.",en:"The language you speak. 'Automatic' lets the service detect the language itself."},
   model:{nl:"Het spraakherkenningsmodel. De standaard (Universal Streaming) is snel en werkt voor de meeste talen.",en:"The speech-recognition model. The default (Universal Streaming) is fast and works for most languages."},
   eu:{nl:"Verwerk je audio via Europese servers (data-residentie in de EU).",en:"Process your audio via European servers (data residency in the EU)."},
-  keyterms:{nl:"Stuurt je keyterms mee naar de spraakherkenning (AssemblyAI) zodat eigen namen en vakjargon beter worden herkend. Losstaand hiervan: je correcties worden altijd op de tekst toegepast, ook als dit uitstaat.",en:"Sends your keyterms to the speech recogniser (AssemblyAI) so proper names and jargon are recognised better. Independently of this: your corrections are always applied to the text, even when this is off."},
+  keyterms:{nl:"Stuurt je keyterms mee naar de spraakherkenning (AssemblyAI, en als prompt naar een Whisper-endpoint) zodat eigen namen en vakjargon beter worden herkend. Losstaand hiervan: je correcties worden altijd op de tekst toegepast, ook als dit uitstaat.",en:"Sends your keyterms to the speech recogniser (AssemblyAI, and as the prompt to a Whisper endpoint) so proper names and jargon are recognised better. Independently of this: your corrections are always applied to the text, even when this is off."},
   sttkey:{nl:"Je persoonlijke AssemblyAI-sleutel voor de spraak-naar-tekst dienst.",en:"Your personal AssemblyAI key for the speech-to-text service."},
+  sttpreset:{nl:"Snelle voorinstelling. 'Lokaal / eigen endpoint' is voor een server op je eigen computer (whisper.cpp's whisper-server, Speaches, een Parakeet-wrapper) — dan verlaat je audio je computer nooit. Groq en OpenAI bieden gehoste Whisper-modellen.",en:"A quick preset. 'Local / custom endpoint' is for a server on your own machine (whisper.cpp's whisper-server, Speaches, a Parakeet wrapper) — then your audio never leaves your computer. Groq and OpenAI offer hosted Whisper models."},
+  sttbaseurl:{nl:"De base-URL van het endpoint, bijv. http://127.0.0.1:8080/v1 voor whisper-server op je eigen computer, of https://api.groq.com/openai/v1. Vito stuurt de opname naar <base-URL>/audio/transcriptions.",en:"The base URL of the endpoint, e.g. http://127.0.0.1:8080/v1 for whisper-server on your own machine, or https://api.groq.com/openai/v1. Vito posts the recording to <base URL>/audio/transcriptions."},
+  sttopenaikey:{nl:"De API-key voor dit endpoint. Een server op je eigen computer heeft er meestal geen nodig — laat het veld dan leeg.",en:"The API key for this endpoint. A server on your own machine usually needs none — leave it empty in that case."},
+  localstt:{nl:"Vito downloadt de engine (parakeet.cpp, ~2 MB) en het model (Parakeet TDT 0.6B v3, ~900 MB) eenmalig naar je cachemap, controleert de controlesommen en draait de engine als achtergrondproces zolang deze kaart gekozen is. Alles blijft op je computer. Whisper via een eigen endpoint blijft de betere keuze voor Nederlands met veel Engels vakjargon.",en:"Vito downloads the engine (parakeet.cpp, ~2 MB) and the model (Parakeet TDT 0.6B v3, ~900 MB) once into your cache folder, verifies the checksums and runs the engine as a background process while this card is selected. Everything stays on your computer. Whisper through your own endpoint remains the better choice for Dutch with a lot of English jargon."},
+  localvariant:{nl:"Welke build van de engine: 'CPU' werkt overal en kost ongeveer een seconde per dictaat; 'GPU (Vulkan)' gebruikt je videokaart of iGPU (Intel Arc, AMD, NVIDIA) en is een paar keer sneller, maar het eerste dictaat na het opstarten duurt langer door het compileren van shaders. Op Apple Silicon gebruikt de standaardbuild al de GPU.",en:"Which build of the engine: 'CPU' works everywhere and takes about a second per dictation; 'GPU (Vulkan)' uses your graphics card or iGPU (Intel Arc, AMD, NVIDIA) and is several times faster, but the first dictation after start-up takes longer while shaders compile. On Apple Silicon the standard build already uses the GPU."},
+  sttopenaimodel:{nl:"Welk model het endpoint moet gebruiken, bijv. whisper-large-v3-turbo. Een lokale server met één geladen model negeert dit veld vaak. Voor Nederlands: kies minimaal 'medium' of 'large-v3-turbo' — kleinere Whisper-modellen zijn voor Nederlands onbruikbaar.",en:"Which model the endpoint should use, e.g. whisper-large-v3-turbo. A local server with one loaded model often ignores this field. For a language other than English pick at least 'medium' or 'large-v3-turbo' — the smaller Whisper models are not usable there."},
   cleanup:{nl:"Laat Claude elke dictatie automatisch opschonen: interpunctie, hoofdletters en 'eh/uhm' eruit.",en:"Let Claude automatically clean up every dictation: punctuation, capitals, and removing 'eh/uhm'."},
   anthropickey:{nl:"Je Anthropic-sleutel voor de Claude-opschoning. Zonder key wordt de ruwe tekst geplakt.",en:"Your Anthropic key for the Claude cleanup. Without a key the raw text is pasted."},
   cleanupmodel:{nl:"Welk Claude-model de opschoning doet. Haiku is snel en goedkoop.",en:"Which Claude model does the cleanup. Haiku is fast and cheap."},
@@ -6567,6 +7413,8 @@ const HELP = {
   assistmodel:{nl:"Standaard gebruikt Vito Assist hetzelfde model als AI-opschoning. Zet dit uit om Assist een eigen, zwaarder model te geven — beantwoorden en omvormen zijn zwaarder dan opschonen.",en:"By default Vito Assist uses the same model as AI cleanup. Turn this off to give Assist its own, heavier model — answering and transforming are more demanding than tidy-up."},
   cleanupprovider:{nl:"Welke dienst de opschoning doet: Anthropic (Claude), of een OpenAI-compatibel endpoint (Groq, OpenAI, of een lokaal model). Groq heeft een gratis tier (rate-limited, dagelijkse tokenlimiet) en traint niet op je data — samen met het gratis startkrediet van de spraakherkenning kun je zo volledig gratis beginnen.",en:"Which service does the cleanup: Anthropic (Claude), or any OpenAI-compatible endpoint (Groq, OpenAI, or a local model). Groq has a free tier (rate-limited, daily token limit) and doesn't train on your data — together with speech recognition's free starting credit you can begin entirely for free."},
   cleanuppreset:{nl:"Snelle voorinstelling die het endpoint en een passend model invult. 'Groq' gebruikt Groq's gratis tier; 'Lokaal / eigen endpoint' is voor je eigen (bijv. lokaal draaiende) OpenAI-compatibele server.",en:"A quick preset that fills the endpoint and a sensible model. 'Groq' uses Groq's free tier; 'Local / custom endpoint' is for your own (e.g. locally running) OpenAI-compatible server."},
+  prompts:{nl:"De instructies die Vito aan het model geeft bij het opschonen. De sets van Vito zelf staan er altijd bij en zijn niet te wijzigen — maak er een kopie van (of van een eigen set) en pas die aan. Ze verschillen bewust van elkaar: vergelijk 'Letterlijk' met 'Zakelijk' en je ziet meteen aan welke knoppen je kunt draaien. Eén regel blijft altijd staan, ook bij een eigen set: dat er alléén de opgeschoonde tekst terugkomt, zonder commentaar of aanhalingstekens. Zonder die afspraak zou het model 'Hier is je tekst:' kunnen antwoorden en typt Vito dat gewoon bij je cursor.",en:"The instructions Vito gives the model when cleaning up. Vito's own sets are always there and can't be changed — copy one (or one of your own) and edit that. They differ on purpose: compare 'Verbatim' with 'Business writing' and you can see which knobs there are to turn. One line always stays, custom set or not: that only the cleaned text comes back, with no commentary or quotes. Without that agreement the model could answer 'Here is your text:' and Vito would type it straight at your cursor."},
+  reasoning:{nl:"Sommige modellen 'denken' eerst hardop voordat ze antwoorden. Dat denken kost outputtokens en tijd — en als het je hele budget opmaakt, komt het antwoord er niet meer en mislukt de opschoning. Voor opschonen heb je dat denken niet nodig. Welke waarden werken verschilt per endpoint én per model: Groq accepteert 'Uit' voor Qwen, maar voor gpt-oss alleen laag/midden/hoog. Weet je het niet, laat het dan op 'Model beslist' — dan stuurt Vito niets mee.",en:"Some models 'think' out loud before answering. That thinking costs output tokens and time — and if it uses up the whole budget, the answer never arrives and cleanup fails. Cleanup doesn't need it. Which values work differs per endpoint and per model: Groq accepts 'Off' for Qwen, but only low/medium/high for gpt-oss. When in doubt leave it on 'Let the model decide' — then Vito sends nothing at all."},
   openaibaseurl:{nl:"De base-URL van het OpenAI-compatibele endpoint, bijv. Groq https://api.groq.com/openai/v1, of een lokaal model op http://localhost:11434/v1. Bij een lokaal endpoint verlaat je opschoning je computer nooit — maximale privacy.",en:"The base URL of the OpenAI-compatible endpoint, e.g. Groq https://api.groq.com/openai/v1, or a local model at http://localhost:11434/v1. With a local endpoint your cleanup never leaves your computer — maximum privacy."},
   openaikey:{nl:"De API-key voor dit endpoint. Een lokaal draaiend model heeft er vaak geen nodig — laat het veld dan leeg.",en:"The API key for this endpoint. A locally running model often needs none — leave it empty in that case."},
   openaimodel:{nl:"Welk model op dit endpoint de opschoning doet, bijv. openai/gpt-oss-120b. Modellen met het label \u2018preview\u2019 worden door de aanbieder niet gegarandeerd en kunnen verdwijnen.",en:"Which model on this endpoint does the cleanup, e.g. openai/gpt-oss-120b. Models badged \u2018preview\u2019 are not guaranteed by the provider and can disappear."},

@@ -1,6 +1,7 @@
 package history
 
 import (
+	"strings"
 	"testing"
 	"time"
 )
@@ -139,4 +140,93 @@ func (s *Store) mustFind(t *testing.T, q string) int {
 		t.Fatal(err)
 	}
 	return len(l)
+}
+
+// A failed AI pass keeps its reason on the entry, through List, Get and a
+// backup round-trip alike — losing it there would put the history back to the
+// state this exists to fix: an unpolished dictation with no explanation.
+func TestCleanupErrorSurvives(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("AppData", dir)
+	t.Setenv("XDG_CONFIG_HOME", dir)
+	t.Setenv("HOME", dir)
+
+	s, err := NewStore(500, 0)
+	if err != nil {
+		t.Fatalf("NewStore: %v", err)
+	}
+	defer s.Close()
+
+	const reason = "Anthropic account is out of credit: your credit balance is too low"
+	if err := s.Append(Entry{ID: "e1", Raw: "ruwe tekst", Language: "nl", CleanupError: reason}); err != nil {
+		t.Fatalf("Append: %v", err)
+	}
+	// A dictation that went fine carries no reason at all.
+	if err := s.Append(Entry{ID: "e2", Raw: "ruwe tekst", Cleaned: "Ruwe tekst.", CleanupUsed: true, Language: "nl"}); err != nil {
+		t.Fatalf("Append: %v", err)
+	}
+
+	got, ok, err := s.Get("e1")
+	if err != nil || !ok {
+		t.Fatalf("Get: ok=%v err=%v", ok, err)
+	}
+	if got.CleanupError != reason {
+		t.Fatalf("Get: CleanupError = %q, want %q", got.CleanupError, reason)
+	}
+
+	list, err := s.List("", false, 10, 0)
+	if err != nil {
+		t.Fatalf("List: %v", err)
+	}
+	for _, e := range list {
+		want := ""
+		if e.ID == "e1" {
+			want = reason
+		}
+		if e.CleanupError != want {
+			t.Fatalf("List: %s CleanupError = %q, want %q", e.ID, e.CleanupError, want)
+		}
+	}
+
+	b, err := s.Snapshot()
+	if err != nil {
+		t.Fatalf("Snapshot: %v", err)
+	}
+	if err := s.Restore(b); err != nil {
+		t.Fatalf("Restore: %v", err)
+	}
+	got, _, err = s.Get("e1")
+	if err != nil {
+		t.Fatalf("Get after restore: %v", err)
+	}
+	if got.CleanupError != reason {
+		t.Fatalf("after backup round-trip: CleanupError = %q, want %q", got.CleanupError, reason)
+	}
+}
+
+// A provider can answer with its whole response body; the stored reason is
+// capped so one bad afternoon can't grow the database without bound.
+func TestCleanupErrorIsCapped(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("AppData", dir)
+	t.Setenv("XDG_CONFIG_HOME", dir)
+	t.Setenv("HOME", dir)
+
+	s, err := NewStore(500, 0)
+	if err != nil {
+		t.Fatalf("NewStore: %v", err)
+	}
+	defer s.Close()
+
+	long := strings.Repeat("x", maxCleanupError*3)
+	if err := s.Append(Entry{ID: "e1", Raw: "ruwe tekst", CleanupError: long}); err != nil {
+		t.Fatalf("Append: %v", err)
+	}
+	got, _, err := s.Get("e1")
+	if err != nil {
+		t.Fatalf("Get: %v", err)
+	}
+	if len(got.CleanupError) > maxCleanupError+4 {
+		t.Fatalf("stored reason is %d bytes, want it capped near %d", len(got.CleanupError), maxCleanupError)
+	}
 }

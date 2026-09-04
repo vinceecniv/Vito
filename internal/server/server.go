@@ -34,6 +34,7 @@ import (
 	"vito/internal/audio"
 	"vito/internal/autostart"
 	"vito/internal/backup"
+	"vito/internal/cleanup"
 	"vito/internal/config"
 	"vito/internal/daemon"
 	"vito/internal/demo"
@@ -103,6 +104,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /fonts-baloo2.woff2", s.static("font/woff2", web.FontBaloo2, true))
 	mux.HandleFunc("GET /fonts-sora.woff2", s.static("font/woff2", web.FontSora, true))
 	mux.HandleFunc("GET /flags/{name}", s.handleFlag)
+	mux.HandleFunc("GET /logos/{name}", s.handleLogo)
 	mux.HandleFunc("GET /i18n/{name}", s.handleI18n)
 	// Public (no token): achievement medal art + animations, embedded in the binary.
 	mux.HandleFunc("GET /achievements/{name}", s.handleAchievementAsset)
@@ -124,6 +126,11 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/achievements", s.auth(s.handleAchievements))
 	mux.HandleFunc("POST /api/achievements/{id}", s.auth(s.handleAchievementSet))
 	mux.HandleFunc("POST /api/welcome-done", s.auth(s.handleWelcomeDone))
+	mux.HandleFunc("POST /api/credit/dismiss", s.auth(s.handleDismissCredit))
+	mux.HandleFunc("GET /api/local-stt", s.auth(s.handleLocalSTT))
+	mux.HandleFunc("POST /api/local-stt/install", s.auth(s.handleLocalSTTInstall))
+	mux.HandleFunc("POST /api/local-stt/remove", s.auth(s.handleLocalSTTRemove))
+	mux.HandleFunc("GET /api/cleanup/prompts", s.auth(s.handleBuiltinPrompts))
 	mux.HandleFunc("GET /api/about", s.auth(s.handleAbout))
 	mux.HandleFunc("GET /api/linux-tools", s.auth(s.handleLinuxTools))
 	mux.HandleFunc("GET /api/autostart", s.auth(s.handleGetAutostart))
@@ -348,6 +355,26 @@ func (s *Server) handleFlag(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "image/svg+xml")
+	w.Header().Set("Cache-Control", "public, max-age=86400")
+	_, _ = w.Write(data)
+}
+
+// logoName restricts a logo request to a bare "<name>.png", like flagName.
+var logoName = regexp.MustCompile(`^[a-z]+\.png$`)
+
+// handleLogo serves an embedded provider mark for the model cards.
+func (s *Server) handleLogo(w http.ResponseWriter, r *http.Request) {
+	name := r.PathValue("name")
+	if !logoName.MatchString(name) {
+		http.NotFound(w, r)
+		return
+	}
+	data, err := web.Logos.ReadFile("logos/" + name)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", "image/png")
 	w.Header().Set("Cache-Control", "public, max-age=86400")
 	_, _ = w.Write(data)
 }
@@ -616,15 +643,15 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 // one from the language code. That is not the cheap English-only tier: the
 // billing dashboard shows those sessions charged as "Realtime Universal-3.5
 // Pro", which is also why a Dutch language code works on it.
-func sttRateUSD(provider, model string, keyterms bool) float64 {
-	if provider == "soniox" {
+func sttRateUSD(cfg config.STT) float64 {
+	if cfg.Provider == "soniox" {
 		return 0.12 // one realtime model, one price, all languages
 	}
-	switch model {
+	switch cfg.Model {
 	case "universal-3-5-pro", "":
 		return 0.45 // keyterm prompting is included in this model
 	case "universal-streaming-multilingual", "universal-streaming-english":
-		if keyterms {
+		if cfg.KeytermsEnabled {
 			return 0.15 + 0.04 // keyterms prompting is an add-on here
 		}
 		return 0.15
@@ -635,7 +662,16 @@ func sttRateUSD(provider, model string, keyterms bool) float64 {
 func (s *Server) costRates() (sttHr, inRate, outRate, fx float64, currency string) {
 	cfg := s.d.Config()
 	c := cfg.Costs
-	sttHr = nonZero(sttRateUSD(cfg.STT.Provider, cfg.STT.Model, cfg.STT.KeytermsEnabled), nonZero(c.SttPerHourUSD, 0.15))
+	switch cfg.STT.Provider {
+	case "openai":
+		// Taken as is, zero included: a server of your own is free, and "unknown
+		// rate, assume the default" would bill it at AssemblyAI's price.
+		sttHr = stt.OpenAIRateUSD(cfg.STT)
+	case "local":
+		sttHr = 0 // Vito's own engine on this machine
+	default:
+		sttHr = nonZero(sttRateUSD(cfg.STT), nonZero(c.SttPerHourUSD, 0.15))
+	}
 	inRate = nonZero(c.CleanupInPerMTokUSD, 1.0)
 	outRate = nonZero(c.CleanupOutPerMTokUSD, 5.0)
 	currency = c.Currency
@@ -667,7 +703,7 @@ func (s *Server) handleCosts(w http.ResponseWriter, r *http.Request) {
 	sttUSD := func(durMS int64) float64 { return float64(durMS) / 3_600_000.0 * sttHr }
 	// Transcribed uploads are billed at the provider's pre-recorded rate, which
 	// is lower than what a streaming session costs.
-	uploadHr := stt.UploadRateUSD(s.d.Config().STT.Provider)
+	uploadHr := stt.UploadRateUSD(s.d.Config().STT)
 	uploadUSD := func(durMS int64) float64 { return float64(durMS) / 3_600_000.0 * uploadHr }
 	cleanUSD := func(in, out int64) float64 { return float64(in)/1e6*inRate + float64(out)/1e6*outRate }
 	// Assist commands may run on their own model, so they price at their own rate.
@@ -777,7 +813,7 @@ func (s *Server) handleAchievements(w http.ResponseWriter, r *http.Request) {
 	_, _, _, fx, currency := s.costRates()
 	now := time.Now()
 	sttHr, inRate, outRate, _, _ := s.costRates()
-	uploadHr := stt.UploadRateUSD(s.d.Config().STT.Provider)
+	uploadHr := stt.UploadRateUSD(s.d.Config().STT)
 	aInRate, aOutRate := s.assistTokenRates(inRate, outRate)
 	dur, up, in, out, cmdIn, cmdOut, first, _ := s.hist.CostTotals("", now.Format("2006-01-02"))
 	spent := (float64(dur)/3_600_000.0*sttHr + float64(up)/3_600_000.0*uploadHr +
@@ -884,6 +920,70 @@ func (s *Server) handleWelcomeDone(w http.ResponseWriter, r *http.Request) {
 		}
 		s.d.UpdateConfig(&cfg)
 	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
+// handleBuiltinPrompts serves Vito's own cleanup rule sets and the output
+// contract appended to every prompt. The settings page lists the sets read-only
+// and copies one when you start a set of your own, and shows the contract so it
+// is visible that it can't be edited away. The rules are the ones this build
+// actually uses, rather than a copy the page would have to keep in step.
+func (s *Server) handleBuiltinPrompts(w http.ResponseWriter, r *http.Request) {
+	out := make([]map[string]string, 0, len(cleanup.Builtins()))
+	for _, b := range cleanup.Builtins() {
+		out = append(out, map[string]string{
+			"id": b.ID, "name": b.Name, "description": b.Description, "rules": b.Rules,
+		})
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"builtins": out, "contract": cleanup.Contract()})
+}
+
+// handleLocalSTT reports the managed local speech engine: whether this machine
+// has a build, whether it is installed, and what it is doing right now. The
+// page reads it once and then follows the "local_stt" events.
+func (s *Server) handleLocalSTT(w http.ResponseWriter, r *http.Request) {
+	s.writeJSON(w, http.StatusOK, s.d.LocalSTT().Status())
+}
+
+// handleLocalSTTInstall starts the download of engine and model in the
+// background — a gigabyte, so the reply cannot wait for it; progress goes out
+// over the WebSocket. The variant is the build to fetch (cpu | vulkan).
+func (s *Server) handleLocalSTTInstall(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Variant string `json:"variant"`
+	}
+	if r.Body != nil {
+		_ = json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<12)).Decode(&req)
+	}
+	if err := s.d.LocalSTT().Install(req.Variant); err != nil {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
+// handleLocalSTTRemove stops the engine and deletes its files.
+func (s *Server) handleLocalSTTRemove(w http.ResponseWriter, r *http.Request) {
+	if err := s.d.LocalSTT().Remove(); err != nil {
+		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
+// handleDismissCredit clicks the out-of-credit card away. An empty provider
+// dismisses every warning currently showing. The dismissal lives in the daemon
+// beside the flag it hides, so it lasts exactly as long: it is gone the moment
+// that provider works again, and the card comes back when it next runs dry.
+func (s *Server) handleDismissCredit(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Provider string `json:"provider"`
+	}
+	// A bodyless POST means "all of them"; only malformed JSON is an error.
+	if r.Body != nil {
+		_ = json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<12)).Decode(&req)
+	}
+	s.d.DismissCredit(req.Provider)
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
