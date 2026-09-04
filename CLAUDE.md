@@ -31,6 +31,33 @@ per language (batches of at most 20) with the brief in
 `scripts/TRANSLATION-BRIEF.md`, then verify with `pwsh -File
 scripts/i18n-missing.ps1` — every language must report `missing 0`.
 
+## Local speech recognition
+
+Two ways to keep audio on the machine, both in `internal/stt` as the `openai`
+provider (any endpoint speaking `POST /audio/transcriptions`):
+
+- **Vito local** (`stt.provider = "local"`, `internal/localstt`): Vito downloads
+  a pinned release of mudler's parakeet.cpp `parakeet-server` (one static
+  binary per OS/arch/variant) plus the Parakeet TDT 0.6B v3 q8_0 model into
+  `<UserCacheDir>/vito/local-stt/`, verifies both against hashes pinned in
+  `localstt.go`, and runs it as a subprocess on a free localhost port. The
+  daemon rewrites the provider to `openai` with that port (`resolveSTT`), so
+  the transcription code has one path. Bumping the release means re-pinning
+  every asset digest (GitHub's release API carries them) and the model's LFS
+  sha256. A warm-up request runs before the engine counts as `running`: on a
+  Vulkan build the first request compiles shaders and takes ~30 s. Language is
+  detected by the model, keyterms are ignored, uploads must be WAV.
+- **Bring-your-own endpoint** (`stt.provider = "openai"`): whisper-server,
+  Speaches, LocalAI, Groq, OpenAI. For whisper.cpp Vito sends `audio_ctx` sized
+  to the recording (halves CPU time — Whisper always encodes 30 s otherwise),
+  falls back to `/inference` on a 404, and joins whisper.cpp's newline-separated
+  segments back into one line.
+
+Measured on this machine (i9-10920X, 12 threads): Parakeet ≈ 1 s per dictation
+on CPU, 0.25 s on Vulkan; Whisper large-v3-turbo ≈ 4–9 s on CPU, 0.4 s on CUDA.
+Whisper is the better engine for Dutch with English jargon; Parakeet for CPU.
+Benchmark only on an idle machine — a background encode inflated numbers 2×.
+
 ## Releases (Windows)
 
 Versions are calendar-based: `year.month`, plus a counter for further releases

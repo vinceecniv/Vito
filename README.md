@@ -184,7 +184,7 @@ Vito in a language they understand.
 
 | Purpose | Providers |
 |---|---|
-| **Speech-to-text** | [Soniox](https://soniox.com) · [AssemblyAI](https://www.assemblyai.com) |
+| **Speech-to-text** | [Soniox](https://soniox.com) · [AssemblyAI](https://www.assemblyai.com) · **Vito local** — a built-in engine Vito installs and runs itself ([parakeet.cpp](https://github.com/mudler/parakeet.cpp) with NVIDIA Parakeet TDT 0.6B v3: 25 European languages, free, nothing leaves your machine, one ~900 MB download) · or any **OpenAI-compatible** audio endpoint — [whisper.cpp](https://github.com/ggml-org/whisper.cpp)'s `whisper-server`, [Speaches](https://speaches.ai), [LocalAI](https://localai.io), or hosted Whisper at [Groq](https://groq.com) / [OpenAI](https://openai.com) |
 | **AI cleanup** | [Anthropic](https://www.anthropic.com) (Claude), or any **OpenAI-compatible** endpoint — [Groq](https://groq.com) (free tier), [OpenAI](https://openai.com), or a **local model** (Ollama, LM Studio) that keeps cleanup fully on-device |
 
 You only need a key for the speech-to-text provider to get started; the AI-cleanup key is optional but

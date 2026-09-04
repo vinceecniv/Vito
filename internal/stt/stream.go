@@ -3,6 +3,7 @@ package stt
 import (
 	"context"
 	"log/slog"
+	"time"
 
 	"vito/internal/config"
 )
@@ -31,7 +32,45 @@ func NewStream(cfg config.STT, keyterms []string, log *slog.Logger, onPartial fu
 	switch cfg.Provider {
 	case "soniox":
 		return newSonioxStream(cfg, keyterms, log, onPartial)
+	case "openai":
+		return newOpenAIStream(cfg, keyterms, log)
 	default:
 		return newAssemblyAIStream(cfg, keyterms, log, onPartial)
+	}
+}
+
+// HasPartials reports whether the provider's session produces text while the
+// recording is still running. The daemon reads speech activity off the partials
+// — for its silence watchdog and auto-stop — and needs another signal when
+// there are none.
+func HasPartials(cfg config.STT) bool {
+	return cfg.Provider != "openai"
+}
+
+// FinishTimeout is how long the daemon waits for Finish. A socket session has
+// already heard everything and only needs to close, so a few seconds is plenty
+// and anything longer just delays the fallback. An endpoint that gets the
+// recording whole at the end has all of its work still ahead of it — a local
+// model on a plain CPU included — so it gets the same window the file path has.
+func FinishTimeout(cfg config.STT) time.Duration {
+	if !HasPartials(cfg) {
+		return 120 * time.Second
+	}
+	return 8 * time.Second
+}
+
+// Fallback is the file-based client that transcribes the spool when the live
+// session failed — the provider's own, so a dropped Soniox stream is retried
+// at Soniox rather than at AssemblyAI with a key that may not exist. Nil when
+// there is nothing to retry with: an endpoint session already *was* one
+// request with the whole file, and sending it again would only fail the same way.
+func Fallback(cfg config.STT, keyterms []string) Transcriber {
+	switch cfg.Provider {
+	case "openai":
+		return nil
+	case "soniox":
+		return newSonioxFileClient(cfg, keyterms)
+	default:
+		return NewAsyncClient(cfg, keyterms)
 	}
 }

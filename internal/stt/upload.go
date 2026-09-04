@@ -54,8 +54,11 @@ func TranscribeUpload(ctx context.Context, cfg config.STT, keyterms []string, pa
 	if onProgress == nil {
 		onProgress = func(UploadProgress) {}
 	}
-	if cfg.Provider == "soniox" {
+	switch cfg.Provider {
+	case "soniox":
 		return newSonioxFileClient(cfg, keyterms).transcribe(ctx, path, onProgress)
+	case "openai":
+		return newOpenAIClient(cfg, keyterms).transcribeUpload(ctx, path, onProgress)
 	}
 	return NewAsyncClient(cfg, keyterms).transcribeWithProgress(ctx, path, onProgress)
 }
@@ -63,9 +66,14 @@ func TranscribeUpload(ctx context.Context, cfg config.STT, keyterms []string, pa
 // UploadRateUSD is the price per hour of audio for file transcription, which is
 // not the streaming price: providers charge less for pre-recorded work. Used
 // for the estimate shown before a file is sent and for the cost card after.
-func UploadRateUSD(provider string) float64 {
-	if provider == "soniox" {
+func UploadRateUSD(cfg config.STT) float64 {
+	switch cfg.Provider {
+	case "soniox":
 		return 0.10 // stt-async-v5
+	case "openai":
+		return OpenAIRateUSD(cfg) // one price: the audio API has no streaming tier
+	case "local":
+		return 0 // Vito's own engine on this machine
 	}
 	return 0.15 // AssemblyAI pre-recorded, default model
 }
@@ -193,6 +201,13 @@ func newSonioxFileClient(cfg config.STT, keyterms []string) *sonioxFileClient {
 	// No client-level timeout: an hour of audio takes minutes, and the caller's
 	// context is what should decide when to give up.
 	return &sonioxFileClient{cfg: cfg, keyterms: keyterms, http: &http.Client{}}
+}
+
+// TranscribeFile makes the client a Transcriber, so a dropped Soniox stream can
+// be retried at Soniox from the spool.
+func (c *sonioxFileClient) TranscribeFile(ctx context.Context, path string) (string, error) {
+	out, err := c.transcribe(ctx, path, func(UploadProgress) {})
+	return out.Text, err
 }
 
 func (c *sonioxFileClient) transcribe(ctx context.Context, path string, onProgress func(UploadProgress)) (UploadOutcome, error) {

@@ -50,6 +50,22 @@ type STT struct {
 	Model           string `json:"model"`    // AssemblyAI speech_model; empty = server default
 	KeytermsEnabled bool   `json:"keyterms_enabled"`
 	EUEndpoint      bool   `json:"eu_endpoint"`
+	// OpenAI-compatible provider (provider="openai"): any endpoint that speaks the
+	// OpenAI audio API (POST /audio/transcriptions) — OpenAI itself, Groq's hosted
+	// Whisper, or a server on this machine (whisper.cpp, Speaches, a Parakeet
+	// wrapper), which keeps the audio fully on-device. Batch-only: there is no
+	// live transcript, the recording is sent whole when it ends. Kept separate
+	// from the other keys so switching provider throws nothing away.
+	OpenAIBaseURL string `json:"openai_base_url,omitempty"` // e.g. http://127.0.0.1:8080/v1
+	OpenAIKey     string `json:"openai_key,omitempty"`      // optional: a local server usually has none
+	OpenAIModel   string `json:"openai_model,omitempty"`    // e.g. whisper-large-v3-turbo; a local server may ignore it
+	// OpenAIPreset is a UI-only hint (local | groq | openai), as in Cleanup.
+	OpenAIPreset string `json:"openai_preset,omitempty"`
+	// LocalVariant is the build of the managed local engine (provider="local")
+	// the user asked for: "cpu" (the standard build; Metal on Apple Silicon) or
+	// "vulkan" (GPU on Windows/Linux). See internal/localstt. Which one is
+	// actually on disk is the manager's business, not the config's.
+	LocalVariant string `json:"local_variant,omitempty"`
 }
 
 type Cleanup struct {
@@ -69,8 +85,37 @@ type Cleanup struct {
 	// can remember "local / custom endpoint" — which isn't derivable from the base
 	// URL alone. The backend ignores it and only looks at the fields above.
 	OpenAIPreset string `json:"openai_preset,omitempty"`
-	TimeoutMS    int    `json:"timeout_ms"`
-	MinWords     int    `json:"min_words"`
+	// ReasoningEffort is passed straight through as the request's
+	// "reasoning_effort" when set, and left out of the request entirely when
+	// empty. It is a string rather than an enum because every endpoint takes a
+	// different set: Groq accepts "none" for Qwen but only low/medium/high for
+	// gpt-oss, OpenAI adds "minimal", and a local model may take none of them.
+	// Sending a value the endpoint doesn't know is an HTTP 400, so "empty means
+	// don't send" has to stay the default.
+	ReasoningEffort string `json:"reasoning_effort,omitempty"`
+	TimeoutMS       int    `json:"timeout_ms"`
+	MinWords        int    `json:"min_words"`
+	// Prompts are the user's own cleanup rule sets and ActivePrompt picks the
+	// active one by id — one of theirs, or one of Vito's own (ids prefixed
+	// "vito:", see cleanup.Builtins). An empty or unknown id means Vito's default
+	// set, which is therefore always reachable and can never be edited away. Only the *rules* are the
+	// user's: the cleaner appends a fixed output contract to whichever set is
+	// active (see cleanup.outputContract), so a custom rule set changes what
+	// cleanup does and never what it hands back.
+	//
+	// Vito Assist ignores both: a spoken command replaces the cleanup prompt
+	// outright rather than extending it, so Assist's own copy of this struct
+	// leaves them empty.
+	Prompts      []Prompt `json:"prompts,omitempty"`
+	ActivePrompt string   `json:"active_prompt,omitempty"`
+}
+
+// Prompt is one named set of cleanup rules. The id is what ActivePrompt refers
+// to, so renaming a set keeps it selected.
+type Prompt struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Rules string `json:"rules"`
 }
 
 // Assist configures the model behind Vito Assist voice commands. By default a
@@ -445,6 +490,13 @@ func isLangCode(s string) bool {
 	return true
 }
 
+// Bounds on the user's own cleanup rule sets.
+const (
+	maxPrompts     = 20
+	maxPromptName  = 60
+	maxPromptRules = 8000
+)
+
 func (c *Config) Validate() error {
 	if c.Server.Port < 1 || c.Server.Port > 65535 {
 		return fmt.Errorf("server.port %d out of range", c.Server.Port)
@@ -464,6 +516,28 @@ func (c *Config) Validate() error {
 	case "", "duck", "pause", "off":
 	default:
 		return fmt.Errorf("audio.media_action %q invalid (duck|pause|off)", c.Audio.MediaAction)
+	}
+	// Prompt rule sets go into the same JSON file as everything else and are sent
+	// to the model on every dictation, so they are bounded on both counts. The
+	// limits are generous: Vito's own rules are around 1300 characters.
+	if n := len(c.Cleanup.Prompts); n > maxPrompts {
+		return fmt.Errorf("cleanup.prompts: %d rule sets, at most %d", n, maxPrompts)
+	}
+	seen := make(map[string]bool, len(c.Cleanup.Prompts))
+	for i, p := range c.Cleanup.Prompts {
+		if strings.TrimSpace(p.ID) == "" {
+			return fmt.Errorf("cleanup.prompts[%d]: missing id", i)
+		}
+		if seen[p.ID] {
+			return fmt.Errorf("cleanup.prompts[%d]: duplicate id %q", i, p.ID)
+		}
+		seen[p.ID] = true
+		if len(p.Name) > maxPromptName {
+			return fmt.Errorf("cleanup.prompts[%d]: name longer than %d characters", i, maxPromptName)
+		}
+		if len(p.Rules) > maxPromptRules {
+			return fmt.Errorf("cleanup.prompts[%d]: rules longer than %d characters", i, maxPromptRules)
+		}
 	}
 	if c.Audio.SilenceTimeoutSec < 0 || c.Audio.SilenceTimeoutSec > 600 {
 		return fmt.Errorf("audio.silence_timeout_sec %d out of range [0, 600]", c.Audio.SilenceTimeoutSec)

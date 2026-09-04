@@ -37,6 +37,13 @@ var (
 //go:embed flags/*.svg
 var Flags embed.FS
 
+// Logos holds the speech providers' marks, served at /logos/<name>.png for the
+// model cards — 64 px PNGs made from the providers' own site icons, self-hosted
+// for the same reason as the flags.
+//
+//go:embed logos/*.png
+var Logos embed.FS
+
 // I18n holds the frozen per-language UI translations (nl/en live in index.html
 // and stay continuously maintained; these are generated on request), served at
 // /i18n/<code>.json and loaded by the web UI on demand.
