@@ -20,6 +20,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 )
@@ -169,8 +170,11 @@ func TestManagerLifecycle(t *testing.T) {
 	m := newTestManager(t, dir)
 	m.installFake(t)
 
+	// The manager broadcasts from its own goroutines, so the record of what it
+	// broadcast needs a lock of its own.
+	var evMu sync.Mutex
 	var events []Status
-	m.emit = func(s Status) { events = append(events, s) }
+	m.emit = func(s Status) { evMu.Lock(); events = append(events, s); evMu.Unlock() }
 	m.SetDesired(true, VariantCPU)
 	waitPhase(t, m, PhaseRunning, 15*time.Second)
 
@@ -206,11 +210,13 @@ func TestManagerLifecycle(t *testing.T) {
 		t.Error("stop must not uninstall")
 	}
 	sawStarting := false
+	evMu.Lock()
 	for _, e := range events {
 		if e.Phase == PhaseStarting {
 			sawStarting = true
 		}
 	}
+	evMu.Unlock()
 	if !sawStarting {
 		t.Error("no 'starting' event was broadcast")
 	}

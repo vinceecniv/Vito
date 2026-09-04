@@ -154,6 +154,11 @@ type Manager struct {
 	cmd        *exec.Cmd
 	gen        int // bumped on every start/stop; a stale monitor sees a mismatch and stands down
 	stderr     *tail
+	// reaped is closed by monitor once it has waited on the current process.
+	// Only monitor may call Wait: a second Wait on the same exec.Cmd is
+	// undefined, and with a pipe for stderr the two block on each other
+	// forever. stop() kills and then waits on this instead.
+	reaped chan struct{}
 }
 
 // Dir is where the sidecar lives: under the cache directory, beside the spool,
@@ -300,12 +305,20 @@ func (m *Manager) Stop() { m.stop(PhaseStopped) }
 func (m *Manager) stop(phase string) {
 	m.mu.Lock()
 	cmd := m.cmd
+	reaped := m.reaped
 	m.cmd = nil
 	m.gen++
 	m.mu.Unlock()
 	if cmd != nil && cmd.Process != nil {
 		_ = cmd.Process.Kill()
-		_ = cmd.Wait()
+		// Wait for monitor to reap it, rather than calling Wait here as well.
+		// SIGKILL is immediate, so the timeout only guards against a monitor
+		// that never ran; it must not turn a shutdown into a hang.
+		select {
+		case <-reaped:
+		case <-time.After(5 * time.Second):
+			m.log.Warn("local stt: server did not report as stopped")
+		}
 	}
 	m.set(func(s *Status) {
 		if s.Installed {
@@ -362,22 +375,24 @@ func (m *Manager) start() {
 	}
 	tieToParent(cmd)
 	m.mu.Lock()
-	m.cmd, m.stderr = cmd, tl
+	reaped := make(chan struct{})
+	m.cmd, m.stderr, m.reaped = cmd, tl, reaped
 	m.gen++
 	gen := m.gen
 	m.mu.Unlock()
 	m.set(func(s *Status) { s.Phase, s.Port, s.Error = PhaseStarting, port, "" })
 	m.log.Info("local stt: server started", "pid", cmd.Process.Pid, "port", port, "threads", threads())
 
-	go m.monitor(cmd, gen)
+	go m.monitor(cmd, gen, reaped)
 	go m.await(gen, port)
 }
 
 // monitor notices the process ending. Expected (stop() took it down) or not,
 // in which case it is reported and — while still wanted — restarted, with a
 // pause that grows so a build that cannot run here does not spin.
-func (m *Manager) monitor(cmd *exec.Cmd, gen int) {
+func (m *Manager) monitor(cmd *exec.Cmd, gen int, reaped chan struct{}) {
 	err := cmd.Wait()
+	close(reaped) // whoever is stopping us may stop waiting
 	m.mu.Lock()
 	ours := m.cmd == cmd && m.gen == gen
 	if ours {
