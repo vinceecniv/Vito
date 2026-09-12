@@ -89,7 +89,7 @@ jobs:
       - name: Add the .flatpakrepo users point at
         run: cp packaging/flatpak/vito.flatpakrepo repo/vito.flatpakrepo
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: repo
 
