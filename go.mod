@@ -7,7 +7,7 @@ require (
 	github.com/anthropics/anthropic-sdk-go v1.71.0
 	github.com/coder/websocket v1.8.15
 	github.com/gen2brain/malgo v0.11.26
-	github.com/godbus/dbus/v5 v5.1.0
+	github.com/godbus/dbus/v5 v5.2.2
 	golang.org/x/sys v0.48.0
 	modernc.org/sqlite v1.56.0
 )
