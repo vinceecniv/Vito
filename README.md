@@ -18,6 +18,7 @@
   <img alt="Languages" src="https://img.shields.io/badge/languages-60-7C3AED">
   <img alt="License" src="https://img.shields.io/badge/license-AGPL--3.0-FF6B5E">
   <img alt="Pricing" src="https://img.shields.io/badge/pricing-free%20%C2%B7%20bring%20your%20own%20key-2B2440">
+  <img alt="Offline" src="https://img.shields.io/badge/offline-local%20engine%20included-7C3AED">
 </p>
 
 ---
@@ -34,7 +35,8 @@ manage everything — settings, history, dictionary and more — shown just belo
 
 You press a hotkey, speak naturally, and Vito:
 
-1. **Transcribes** your speech with a best-in-class speech-to-text engine, then
+1. **Transcribes** your speech with a best-in-class speech-to-text engine — cloud, or a
+   [local one](#offline-if-you-want-it) that runs on your own machine, then
 2. **Cleans it up** with AI — stripping the "uhm"s and false starts, fixing punctuation, building proper sentences, and
 3. **Pastes** the finished text straight at your cursor — in your editor, your browser, Slack, an email, anywhere.
 
@@ -52,7 +54,7 @@ Dictation apps like [**Wispr Flow**](https://vito.talk/compare/wispr-flow/),
 [**Superwhisper**](https://vito.talk/compare/superwhisper/),
 [**Aqua Voice**](https://vito.talk/compare/aqua-voice/) and [**Willow**](https://vito.talk/compare/willow/)
 are excellent — but most of them charge **a monthly subscription**, typically **€12–€30 a month**, whether
-you use them a little or a lot. (Side-by-side [comparisons on vito.talk](https://vito.talk/compare/).)
+you use them a little or a lot. (Each name links to a side-by-side comparison on vito.talk.)
 
 Vito flips that model:
 
@@ -64,6 +66,7 @@ Vito flips that model:
 | **Source** | Closed | **Open source (AGPL-3.0)** |
 | **Tracking** | Varies | **None. Zero telemetry.** |
 | **Languages** | Varies | **60, UI translated into all 60** |
+| **Offline** | Usually cloud-only | **Optional — a local engine, €0** |
 
 > **The app itself is free.** You only pay the speech-to-text and AI providers directly, for exactly what you
 > dictate. Stop using it for a month and that month costs you **€0** — no recurring charge, ever.
@@ -90,7 +93,7 @@ Nothing runs through a middle-man server. It's *your* key, *your* account, *your
 
 <br>
 
-Speech-to-text is billed **per hour of audio**. In practice that's about **15 cents (€0.15) for a solid hour
+Cloud speech-to-text is billed **per hour of audio**. In practice that's about **15 cents (€0.15) for a solid hour
 of continuous talking** — and almost nobody dictates non-stop.
 
 | Your usage | Roughly costs |
@@ -105,6 +108,29 @@ To spend €15 in a month — a typical *monthly* subscription price elsewhere �
 > **Start free — no credit card.** Pair **[AssemblyAI](https://vito.talk/setup/assemblyai/)** (speech-to-text,
 > free starting credit) with **[Groq](https://vito.talk/setup/groq/)** (AI cleanup, free tier) and you can set
 > Vito up and start dictating without paying anything or entering a card.
+>
+> **Or skip the bill entirely** — run speech-to-text on your own machine with the built-in local engine below.
+
+---
+
+## Offline, if you want it
+
+Vito ships with a **local speech engine it installs itself**. One button in settings —
+*Install, ≈ 1 GB, once* — and the cloud becomes optional:
+
+- 💸 **Free** — no key, no account, no per-hour bill.
+- 🔒 **Private** — your audio never leaves the computer; there is nothing to send.
+- ⚡ **Fast** — roughly a second per dictation on a desktop CPU, a quarter of that on a GPU.
+- 🌍 **25 European languages**, detected automatically. The text arrives when you stop talking, not word by word.
+
+Under the hood it's [parakeet.cpp](https://github.com/mudler/parakeet.cpp) running NVIDIA's
+**Parakeet TDT 0.6B v3** — a pinned, checksum-verified build that Vito downloads, starts and stops for you.
+It uses the GPU where there is one (Vulkan on Windows and Linux, Metal on Apple Silicon) and the CPU where
+there isn't. Nothing to install by hand, no Python, no Docker.
+
+> Already run your own server? Point Vito at **any OpenAI-compatible audio endpoint** instead —
+> whisper.cpp's `whisper-server`, [Speaches](https://speaches.ai), [LocalAI](https://localai.io).
+> Add a local cleanup model (Ollama, LM Studio) and Vito never touches the internet at all.
 
 ---
 
@@ -162,10 +188,8 @@ Vito dictates in **60 languages**, and its entire interface is **translated into
 
 <br>
 
-Together these cover roughly **75–80% of the world as a native language** — nearly every language with more
-than 50 million speakers — and, counting people who use one of them as a second or lingua-franca language
-(English, French, Arabic, Russian, Hindi, Spanish, Indonesian, Swahili…), **around 90%+ of humanity** can use
-Vito in a language they understand.
+That's **nearly every language with more than 50 million speakers**: roughly 75–80% of the world natively,
+and **90%+ of humanity** once you count second and lingua-franca languages.
 
 ---
 
@@ -179,16 +203,18 @@ Vito in a language they understand.
   transcript never leaves your machine.
 - Because it's **Bring Your Own Key**, that data flows through **your own accounts**, not ours. There is no
   Vito server in the middle.
+- Choose the **local engine for speech and a local model for cleanup**, and nothing leaves the machine at
+  all — Vito works with the network unplugged.
 
 ### Providers Vito uses
 
-| Purpose | Providers |
-|---|---|
-| **Speech-to-text** | [Soniox](https://soniox.com) · [AssemblyAI](https://www.assemblyai.com) · **Vito local** — a built-in engine Vito installs and runs itself ([parakeet.cpp](https://github.com/mudler/parakeet.cpp) with NVIDIA Parakeet TDT 0.6B v3: 25 European languages, free, nothing leaves your machine, one ~900 MB download) · or any **OpenAI-compatible** audio endpoint — [whisper.cpp](https://github.com/ggml-org/whisper.cpp)'s `whisper-server`, [Speaches](https://speaches.ai), [LocalAI](https://localai.io), or hosted Whisper at [Groq](https://groq.com) / [OpenAI](https://openai.com) |
-| **AI cleanup** | [Anthropic](https://www.anthropic.com) (Claude), or any **OpenAI-compatible** endpoint — [Groq](https://groq.com) (free tier), [OpenAI](https://openai.com), or a **local model** (Ollama, LM Studio) that keeps cleanup fully on-device |
+| Purpose | On your machine | In the cloud |
+|---|---|---|
+| **Speech-to-text** | **[Vito local](#offline-if-you-want-it)** (no key needed) · any OpenAI-compatible endpoint: [whisper.cpp](https://github.com/ggml-org/whisper.cpp), [Speaches](https://speaches.ai), [LocalAI](https://localai.io) | [Soniox](https://soniox.com) · [AssemblyAI](https://www.assemblyai.com) · hosted Whisper at [Groq](https://groq.com) / [OpenAI](https://openai.com) |
+| **AI cleanup** | A local model via [Ollama](https://ollama.com) or [LM Studio](https://lmstudio.ai) | [Anthropic](https://www.anthropic.com) (Claude) · [Groq](https://groq.com) (free tier) · [OpenAI](https://openai.com) |
 
-You only need a key for the speech-to-text provider to get started; the AI-cleanup key is optional but
-recommended.
+Pick one per row. You need **at most one key to get started** — none at all with the local engine — and the
+AI-cleanup key is optional, though it's what turns a transcript into finished text.
 
 **Step-by-step setup guides**, one per provider:
 [Soniox](https://vito.talk/setup/soniox/) · [AssemblyAI](https://vito.talk/setup/assemblyai/) ·
@@ -207,6 +233,7 @@ Vito is **simple to use, but powerful under the hood.**
 - 🪄 **[Vito Assist](https://vito.talk)** — say "Vito, …" with a command to translate, summarise, answer or reshape your dictation (or your clipboard), instead of typing it out.
 - ⏸️ **Auto-stop on pause** — Vito can stop by itself when you stop speaking.
 - 📋 **Paste, type or clipboard-only** injection modes for maximum app compatibility.
+- 🔒 **Offline speech recognition** — a local engine Vito installs for you: free, private, no account.
 - 📁 **Upload an audio file** to have it transcribed to text.
 
 ### Interface
@@ -255,11 +282,10 @@ Vito is **simple to use, but powerful under the hood.**
   | **Updates** | `flatpak update`, like any other app | download the new file yourself |
   | **Setup** | none | none on Wayland; `ydotool` + a udev rule only on X11 |
 
-  **The AppImage always works.** The Flatpak is the nicer way to *live with* Vito — it installs and updates
-  itself — but the sandbox has one hard requirement: it can only type where the RemoteDesktop portal exists.
-  On a compositor without one, a sandboxed Vito can still hear you and clean up your text, but it can only
-  put the result on the clipboard for you to paste. It says so on the settings page rather than leaving you
-  guessing.
+  **In doubt, take the AppImage** — it always works. The Flatpak is the nicer way to *live with* Vito, since
+  it updates itself, but the sandbox can only type where the RemoteDesktop portal exists. Without one it
+  still hears you and cleans up your text, then puts the result on the clipboard for you to paste — and the
+  settings page says so, rather than leaving you guessing.
 
   **Flatpak** (GNOME, KDE):
 
@@ -277,27 +303,29 @@ Vito is **simple to use, but powerful under the hood.**
 - **macOS** — download `Vito-<version>.dmg` from [**Releases**](../../releases) and drag Vito to Applications.
   Universal (Apple Silicon and Intel), macOS 11 or newer. Vito lives in the menu bar, not the Dock.
 
-  The build is **not signed with an Apple Developer certificate**. Double-clicking a freshly downloaded
-  copy shows "Vito cannot be opened": use **right-click → Open**, and if macOS still refuses (it does on
-  recent versions), go to **System Settings → Privacy & Security** and press **Open Anyway** under the
-  message about Vito. You only do this once.
+  Two one-time steps, because the build is **not signed with an Apple Developer certificate**:
+  open it with **right-click → Open** (or **System Settings → Privacy & Security → Open Anyway**), then
+  grant **Microphone** and **Accessibility** there. Without the microphone Vito records silence; without
+  accessibility there is no hotkey and no pasting into other apps.
 
-  Finder also shows a small ⌛ next to Vito's name. That is macOS reporting that the app has not been
-  through notarisation — not that something is still copying, and not something approving the app clears.
-  It is cosmetic: the ⌛ stays until the app is notarised, while Vito itself runs perfectly well.
-  Then grant two permissions in **System Settings → Privacy & Security**:
+  <details>
+  <summary>The ⌛ next to Vito's name, and permissions that reset</summary>
 
-  | Permission | Needed for | Without it |
-  |---|---|---|
-  | **Microphone** | recording your voice | Vito records silence |
-  | **Accessibility** | the global hotkey, and pasting into other apps | no hotkey; injection falls back to an error, use *clipboard only* mode and paste yourself |
+  <br>
 
-  You grant these once; updating Vito keeps them. (If you ever build Vito yourself without the signing
-  certificate, macOS ties the grant to that exact binary instead, and every rebuild resets it — with the
-  confusing symptom that the switch still shows as *on* while Vito reports the permission as missing.
-  Select Vito in the list, remove it with **−**, and let Vito ask again.)
+  Finder shows a small ⌛ beside Vito. That is macOS reporting the app has not been through notarisation —
+  not that something is still copying, and not something approving the app clears. It is cosmetic, and it
+  stays until the app is notarised.
 
-After installing, open Vito, paste in a speech-to-text API key, pick your hotkey, and start talking.
+  Permissions survive updates. They do *not* survive rebuilding Vito yourself without the signing
+  certificate: macOS then ties the grant to that exact binary, and the switch still shows as *on* while
+  Vito reports the permission as missing. Select Vito in the list, remove it with **−**, and let Vito ask
+  again.
+
+  </details>
+
+After installing, open Vito, pick a speech-to-text engine — paste an API key, or install the local one —
+choose your hotkey, and start talking.
 
 ---
 
