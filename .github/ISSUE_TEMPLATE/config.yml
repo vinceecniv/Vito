@@ -5,4 +5,4 @@ contact_links:
     about: Please report security issues privately, not as a public issue.
   - name: Contributing policy
     url: https://github.com/vinceecniv/Vito/blob/main/CONTRIBUTING.md
-    about: Vito welcomes bug reports and ideas, but does not accept external code changes (yet).
+    about: How to report bugs, suggest ideas and send pull requests.

@@ -337,7 +337,7 @@ func (s *Server) handleAbout(w http.ResponseWriter, r *http.Request) {
 		"commit":      short,
 		"commit_time": ctime,
 		"modified":    modified,
-		"license":     "AGPL-3.0-or-later",
+		"license":     "MIT",
 	})
 }
 

@@ -1,12 +1,13 @@
 <!--
-Vito is open source but NOT open contribution: external code changes aren't
-accepted right now (see CONTRIBUTING.md for the copyright/licensing reason).
-Bug reports and ideas are very welcome — please open an issue instead.
-
-The checklist below is for the maintainer.
+Thanks for contributing to Vito! See CONTRIBUTING.md for the details.
+Contributions are licensed under the MIT License, like the rest of Vito.
 -->
 
 ## Summary
+
+
+## How was this tested?
+<!-- OS, and on Linux the desktop or compositor -->
 
 
 ## Checklist

@@ -1,21 +1,12 @@
 # Contributing to Vito
 
-Vito is open source. **Bug reports, ideas and translation fixes are very welcome
-right now. Code contributions aren't open yet — but that's a "not yet", not a
-closed door.**
+Vito is open source under the [MIT License](LICENSE), and contributions are
+welcome: bug reports, ideas, translation fixes and pull requests.
 
-It's not about the quality of anyone's work. Vito is written and maintained by
-one person, and while the project is young, keeping the copyright in one pair of
-hands is what leaves the licence open to change later: once someone else's code
-is in the tree, every future licensing decision needs their agreement too. When
-code does open up, that's handled with a lightweight contributor agreement — you
-keep your copyright, the project keeps the freedom to relicence — so contributing
-won't take that option away. Until then, the ways below help the most.
+## Bug reports
 
-## What helps most
-
-**Bug reports.** Open an issue and say what you did, what you expected, and what
-happened instead. Two things make a report much easier to act on:
+Open an issue and say what you did, what you expected, and what happened
+instead. Two things make a report much easier to act on:
 
 - the version and commit from **Settings → About** (or `vito version`)
 - your operating system, and on Linux your desktop or compositor — most of the
@@ -24,28 +15,48 @@ happened instead. Two things make a report much easier to act on:
 If it involves dictation going wrong, the text Vito produced and the text you
 expected are worth more than a description of them.
 
-**Ideas.** Say what you are trying to do, not only what feature you think would
-do it. The problem behind a request is usually the more interesting half.
+## Ideas
 
-**Bad translations.** Vito's interface ships in 60 languages, most of them
-machine-translated and reviewed only lightly. If something reads badly in yours,
-open an issue with the string and a better wording — that is genuinely useful and
-takes a minute.
+Say what you are trying to do, not only what feature you think would do it. The
+problem behind a request is usually the more interesting half. For anything
+bigger than a small fix, opening an issue first to talk it through saves you
+from writing code that goes in a different direction than Vito.
+
+## Translations
+
+Vito's interface ships in 60 languages, most of them machine-translated and
+reviewed only lightly. If something reads badly in yours, a pull request that
+fixes `web/i18n/<code>.json` is welcome — or open an issue with the string and a
+better wording. How the translation files fit together is described in
+[web/i18n/TRANSLATING.md](web/i18n/TRANSLATING.md).
 
 ## Pull requests
 
-Not open yet. For now a code PR will be closed with thanks and without judgement —
-but a good idea in it may well end up in Vito, written independently, so please
-don't send code you would be unhappy to see arrived at that way. When code
-contributions open, this page will say so and explain how (a one-click
-contributor agreement, nothing heavy).
+1. Fork the repository and create a branch from `main`.
+2. Keep a PR to one change; small PRs are reviewed and merged faster.
+3. Before pushing, make sure these pass — CI runs the same checks:
 
-## Forking
+   ```sh
+   gofmt -l .        # must print nothing
+   go vet ./...
+   go build ./...
+   go test ./...
+   ```
 
-Forking is welcome, and the licence guarantees it. If Vito is nearly what you
-want but not quite, take it and make it yours — under a name and an icon of your
-own, and under the terms in [LICENSE](LICENSE). You do not need anyone's
-permission for that, which is rather the point of publishing it.
+   `git config core.hooksPath .githooks` runs them automatically on every push.
+4. **User-facing text:** English is the source language and the English string
+   is the lookup key (`t("…")` in the web UI). Every new string needs an entry
+   in the inline `TR.nl` table in `web/index.html`; filling the other languages
+   is welcome but not required — missing keys fall back to English.
+5. Describe what the change does and why, and how you tested it — especially on
+   which OS and, on Linux, which desktop or compositor.
 
-If the AGPL does not fit what you have in mind, ask; other arrangements are
-possible.
+PRs are squash-merged, so the PR title becomes the commit message on `main`.
+
+By submitting a pull request you agree that your contribution is licensed under
+the MIT License, the same as the rest of Vito.
+
+## Name and logo
+
+The licence covers the code, **not** the name **Vito** or the waveform logo. A
+fork is welcome under a name and an icon of its own.

@@ -16,7 +16,7 @@
 <p align="center">
   <img alt="Platforms" src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-2B2440">
   <img alt="Languages" src="https://img.shields.io/badge/languages-60-7C3AED">
-  <img alt="License" src="https://img.shields.io/badge/license-AGPL--3.0-FF6B5E">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-FF6B5E">
   <img alt="Pricing" src="https://img.shields.io/badge/pricing-free%20%C2%B7%20bring%20your%20own%20key-2B2440">
   <img alt="Offline" src="https://img.shields.io/badge/offline-local%20engine%20included-7C3AED">
 </p>
@@ -63,7 +63,7 @@ Vito flips that model:
 | **Cost** | Fixed €12–€30 / month | **Only the API you actually use** |
 | **Idle months** | You still pay | **You pay nothing** |
 | **Your key** | Locked to their backend | **Bring Your Own Key — your accounts** |
-| **Source** | Closed | **Open source (AGPL-3.0)** |
+| **Source** | Closed | **Open source (MIT)** |
 | **Tracking** | Varies | **None. Zero telemetry.** |
 | **Languages** | Varies | **60, UI translated into all 60** |
 | **Offline** | Usually cloud-only | **Optional — a local engine, €0** |
@@ -487,14 +487,11 @@ exact commands per desktop, are shown in the app under Settings → Activation.
 
 Vito's full source is here for anyone to read, audit, and adapt.
 
-It's released under the [**GNU Affero General Public License v3.0**](LICENSE). Use it, change it, build on it,
-and yes — charge for it if you like. The AGPL asks one thing in return: if you distribute a changed version,
-or run one as a service for other people, those people get the source too, under the same licence.
-Improvements stay where everyone can reach them.
+It's released under the [**MIT License**](LICENSE). Use it, change it, build on it, ship it inside
+something else, and yes — charge for it if you like. Keep the copyright notice; that's all it asks.
 
-**Not open contribution.** Bug reports, ideas and translation corrections are very welcome; code contributions
-are not accepted, so the copyright stays in one pair of hands and the licence can be changed later. Forking is
-welcome and the licence guarantees it — see [CONTRIBUTING.md](CONTRIBUTING.md).
+**Contributions are welcome.** Bug reports, ideas, translation fixes and pull requests — see
+[CONTRIBUTING.md](CONTRIBUTING.md) for how to get a change merged. Forking is welcome too.
 
 > The licence covers the code, **not** the name **Vito** or the waveform logo — a fork is welcome under a
 > name and icon of its own.
