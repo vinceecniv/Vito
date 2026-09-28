@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Të vetmet të dhëna që aplikacioni dërgon jashtë janë fjalimi yt dhe tekstet që shkojnë te ofruesit e jashtëm BYOK (njohja e të folurit dhe pastrimi me AI). Ato të dhëna rregullohen nga politikat e privatësisë të atyre ofruesve të jashtëm.",
 "What to do with playing media": "Çfarë të bëhet me median që po luhet",
 "not used yet": "ende i papërdorur",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Desktopi yt e reklamon këtë rrugë, por vetëm një provë e vërtetë tregon nëse funksionon, prandaj Vito e provon së pari kur diktoni. Nëse nuk funksionon, diktimet e tua shkojnë në kujtesë."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Desktopi yt e reklamon këtë rrugë, por vetëm një provë e vërtetë tregon nëse funksionon, prandaj Vito e provon së pari kur diktoni. Nëse nuk funksionon, diktimet e tua shkojnë në kujtesë.",
+"Credits": "Kreditet",
+"Achievement medals and animations use": "Medaljet e arritjeve dhe animacionet përdorin",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "nga Google (statike nën Apache-2.0, animacionet nën CC BY 4.0), të luajtura me",
+"by Airbnb (MIT). Country flags are": "nga Airbnb (MIT). Flamujt e vendeve janë",
+"by Panayiotis Lipiridis (MIT).": "nga Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

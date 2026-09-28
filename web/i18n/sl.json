@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Edini podatki, ki jih aplikacija pošilja navzven, so vaš govor in besedila, ki gredo zunanjim ponudnikom BYOK (prepoznavanje govora in čiščenje z UI). Za te podatke veljajo pravilniki o zasebnosti teh zunanjih ponudnikov.",
 "What to do with playing media": "Kaj storiti s predvajanimi mediji",
 "not used yet": "še ni bilo uporabljeno",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Tvoje namizje ta način oglašuje, vendar le pravi poskus pokaže, ali deluje, zato ga Vito pri narekovanju najprej poskusi. Če ne deluje, tvoja narekovanja namesto tega pristanejo v odložišču."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Tvoje namizje ta način oglašuje, vendar le pravi poskus pokaže, ali deluje, zato ga Vito pri narekovanju najprej poskusi. Če ne deluje, tvoja narekovanja namesto tega pristanejo v odložišču.",
+"Credits": "Zasluge",
+"Achievement medals and animations use": "Medalje za dosežke in animacije uporabljajo",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "podjetja Google (statične pod licenco Apache-2.0, animacije pod CC BY 4.0), predvajajo pa jih z",
+"by Airbnb (MIT). Country flags are": "podjetja Airbnb (MIT). Zastave držav so iz",
+"by Panayiotis Lipiridis (MIT).": "avtorja Panayiotisa Lipiridisa (MIT)."
 },
 "help": {
 "theme": "Svetla, temna ali samodejna — samodejna sledi svetli/temni nastavitvi vašega sistema.",

@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Aplikazioak kanpora bidaltzen duen datu bakarra zure ahotsa eta kanpoko BYOK hornitzaileei (ahots-ezagutza eta AA garbiketa) doazen testuak dira. Datu horiek kanpoko hornitzaile horien pribatutasun-politikek arautzen dituzte.",
 "What to do with playing media": "Zer egin erreproduzitzen ari diren multimediarekin",
 "not used yet": "oraindik erabili gabe",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Zure mahaigainak bide hau iragartzen du, baina benetako saiakera batek soilik erakusten du funtzionatzen duen ala ez, beraz Vitok lehenengo hori probatzen du diktatzen duzunean. Funtzionatzen ez badu, zure diktaketak arbelera doaz horren ordez."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Zure mahaigainak bide hau iragartzen du, baina benetako saiakera batek soilik erakusten du funtzionatzen duen ala ez, beraz Vitok lehenengo hori probatzen du diktatzen duzunean. Funtzionatzen ez badu, zure diktaketak arbelera doaz horren ordez.",
+"Credits": "Kredituak",
+"Achievement medals and animations use": "Lorpen-dominek eta animazioek honako hau erabiltzen dute:",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google-ren lana (estatikoak Apache-2.0 lizentziapean, animazioak CC BY 4.0 lizentziapean), eta hauxe erabiltzen da erreproduzitzeko:",
+"by Airbnb (MIT). Country flags are": "Airbnb-ren lana (MIT). Herrialdeetako banderak",
+"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridisen lana dira (MIT)."
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

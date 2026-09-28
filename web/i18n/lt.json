@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Vieninteliai duomenys, kuriuos programa siunčia į išorę, yra jūsų kalba ir tekstai, keliaujantys pas išorinius BYOK tiekėjus (kalbos atpažinimas ir DI valymas). Šiems duomenims taikomos tų išorinių tiekėjų privatumo politikos.",
 "What to do with playing media": "Ką daryti su grojančia medija",
 "not used yet": "dar nenaudota",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Jūsų darbalaukis skelbia, kad šis maršrutas pasiekiamas, bet ar jis veikia, parodo tik tikras bandymas, todėl Vito jį išbando pirmiausia, kai diktuojate. Jei jis neveikia, jūsų diktavimai vietoj to keliauja į iškarpinę."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Jūsų darbalaukis skelbia, kad šis maršrutas pasiekiamas, bet ar jis veikia, parodo tik tikras bandymas, todėl Vito jį išbando pirmiausia, kai diktuojate. Jei jis neveikia, jūsų diktavimai vietoj to keliauja į iškarpinę.",
+"Credits": "Padėkos",
+"Achievement medals and animations use": "Pasiekimų medaliai ir animacijos naudoja",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "iš Google (statiniai – pagal Apache-2.0, animacijos – pagal CC BY 4.0), o grojamos naudojant",
+"by Airbnb (MIT). Country flags are": "iš Airbnb (MIT). Šalių vėliavos –",
+"by Panayiotis Lipiridis (MIT).": "iš Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

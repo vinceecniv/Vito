@@ -1,5 +1,10 @@
 {
 "strings": {
+"Credits": "Подяки",
+"Achievement medals and animations use": "Медалі за досягнення та анімації використовують",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "від Google (статичні — за ліцензією Apache-2.0, анімації — за CC BY 4.0), а відтворюються за допомогою",
+"by Airbnb (MIT). Country flags are": "від Airbnb (MIT). Прапори країн — це",
+"by Panayiotis Lipiridis (MIT).": "від Panayiotis Lipiridis (MIT).",
 "Status": "Статус",
 "Settings": "Налаштування",
 "Dictionary": "Словник",

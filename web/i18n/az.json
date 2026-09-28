@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Tətbiqin xaricə göndərdiyi yeganə məlumat nitqiniz və xarici BYOK provayderlərinə (nitqin tanınması və Sİ təmizləməsi) gedən mətnlərdir. Bu məlumatlar həmin xarici provayderlərin məxfilik siyasətlərinə tabedir.",
 "What to do with playing media": "Oxudulan mediaya nə etməli",
 "not used yet": "hələ istifadə olunmayıb",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Masaüstünüz bu yolu təklif edir, lakin onun işləyib-işləmədiyini yalnız real cəhd göstərir, ona görə də diktə etdiyiniz zaman Vito əvvəlcə onu sınayır. İşləməsə, diktələriniz əvəzinə mübadilə buferinə göndərilir."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Masaüstünüz bu yolu təklif edir, lakin onun işləyib-işləmədiyini yalnız real cəhd göstərir, ona görə də diktə etdiyiniz zaman Vito əvvəlcə onu sınayır. İşləməsə, diktələriniz əvəzinə mübadilə buferinə göndərilir.",
+"Credits": "Kreditlər",
+"Achievement medals and animations use": "Nailiyyət medalları və animasiyalar",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "şirkəti Google-dan istifadə edir (statik olanlar Apache-2.0, animasiyalar CC BY 4.0 lisenziyası ilə), oxudulması isə",
+"by Airbnb (MIT). Country flags are": "şirkəti Airbnb-dən (MIT) istifadə edilir. Ölkə bayraqları isə",
+"by Panayiotis Lipiridis (MIT).": "kitabxanasındandır, müəllifi Panayiotis Lipiridisdir (MIT)."
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

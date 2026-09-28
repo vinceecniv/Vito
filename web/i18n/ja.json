@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "アプリが外部に送信するデータは、あなたの音声と、外部のBYOKプロバイダー（音声認識とAIクリーンアップ）に送られるテキストだけです。これらのデータには、各外部プロバイダーのプライバシーポリシーが適用されます。",
 "What to do with playing media": "再生中のメディアの扱い",
 "not used yet": "未使用",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "お使いのデスクトップはこの経路に対応していると通知していますが、実際に動作するかどうかは試してみないと分からないため、Vito は口述するときにまずこの経路を試します。動作しない場合、口述の内容は代わりにクリップボードに送られます。"
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "お使いのデスクトップはこの経路に対応していると通知していますが、実際に動作するかどうかは試してみないと分からないため、Vito は口述するときにまずこの経路を試します。動作しない場合、口述の内容は代わりにクリップボードに送られます。",
+"Credits": "クレジット",
+"Achievement medals and animations use": "実績メダルとアニメーションには",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "（Google提供、静止画はApache-2.0、アニメーションはCC BY 4.0）を使用し、再生には",
+"by Airbnb (MIT). Country flags are": "（Airbnb提供、MIT）を使っています。国旗は",
+"by Panayiotis Lipiridis (MIT).": "（Panayiotis Lipiridis提供、MIT）です。"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",

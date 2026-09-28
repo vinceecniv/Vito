@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Los únicos datos que la aplicación envía al exterior son tu voz y los textos que van a los proveedores externos BYOK (reconocimiento de voz y limpieza con IA). Esos datos se rigen por las políticas de privacidad de dichos proveedores externos.",
 "What to do with playing media": "Qué hacer con los medios que se están reproduciendo",
 "not used yet": "aún sin usar",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Tu escritorio anuncia esta ruta, pero solo un intento real demuestra si funciona, así que Vito la prueba primero cuando dictas. Si no funciona, tus dictados van al portapapeles."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Tu escritorio anuncia esta ruta, pero solo un intento real demuestra si funciona, así que Vito la prueba primero cuando dictas. Si no funciona, tus dictados van al portapapeles.",
+"Credits": "Créditos",
+"Achievement medals and animations use": "Las medallas de logros y las animaciones usan",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "de Google (las estáticas bajo Apache-2.0, las animaciones bajo CC BY 4.0), y se reproducen con",
+"by Airbnb (MIT). Country flags are": "de Airbnb (MIT). Las banderas de los países son",
+"by Panayiotis Lipiridis (MIT).": "de Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "Claro, oscuro o automático — automático sigue el modo claro/oscuro de tu sistema.",

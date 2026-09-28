@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "એપ્લિકેશન બહાર ફક્ત તમારી વાણી અને બાહ્ય BYOK પ્રદાતાઓ (વાણી ઓળખ અને AI સફાઈ) ને મોકલાતા ટેક્સ્ટ જ મોકલે છે. તે ડેટા તે બાહ્ય પ્રદાતાઓની ગોપનીયતા નીતિઓ હેઠળ આવે છે.",
 "What to do with playing media": "ચાલી રહેલા મીડિયા સાથે શું કરવું",
 "not used yet": "હજી ઉપયોગમાં લેવાયું નથી",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "તમારું ડેસ્કટૉપ આ માર્ગ ઉપલબ્ધ હોવાનું જણાવે છે, પરંતુ તે ખરેખર કામ કરે છે કે નહીં તે માત્ર વાસ્તવિક પ્રયાસથી જ ખબર પડે છે, તેથી તમે શ્રુતલેખન કરો ત્યારે Vito પહેલા તેને અજમાવે છે. જો તે કામ ન કરે, તો તમારા શ્રુતલેખન તેના બદલે ક્લિપબોર્ડ પર જાય છે."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "તમારું ડેસ્કટૉપ આ માર્ગ ઉપલબ્ધ હોવાનું જણાવે છે, પરંતુ તે ખરેખર કામ કરે છે કે નહીં તે માત્ર વાસ્તવિક પ્રયાસથી જ ખબર પડે છે, તેથી તમે શ્રુતલેખન કરો ત્યારે Vito પહેલા તેને અજમાવે છે. જો તે કામ ન કરે, તો તમારા શ્રુતલેખન તેના બદલે ક્લિપબોર્ડ પર જાય છે.",
+"Credits": "શ્રેય",
+"Achievement medals and animations use": "સિદ્ધિ ચંદ્રકો અને એનિમેશન આનો ઉપયોગ કરે છે:",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google દ્વારા (સ્થિર Apache-2.0 હેઠળ, એનિમેશન CC BY 4.0 હેઠળ), જે આના વડે ચલાવવામાં આવે છે:",
+"by Airbnb (MIT). Country flags are": "Airbnb દ્વારા (MIT). દેશના ધ્વજ આ છે:",
+"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis દ્વારા (MIT)."
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",

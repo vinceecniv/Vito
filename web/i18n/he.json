@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "הנתונים היחידים שהאפליקציה שולחת החוצה הם הדיבור שלך והטקסטים שנשלחים לספקי BYOK חיצוניים (זיהוי דיבור וניקוי AI). על נתונים אלה חלות מדיניות הפרטיות של אותם ספקים חיצוניים.",
 "What to do with playing media": "מה לעשות עם מדיה שמתנגנת",
 "not used yet": "טרם נעשה בו שימוש",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "שולחן העבודה שלך מצהיר על תמיכה בנתיב הזה, אבל רק ניסיון אמיתי יראה אם הוא עובד, ולכן Vito מנסה אותו קודם כשאתה מכתיב. אם הוא לא עובד, ההכתבות שלך יועברו במקום זאת ללוח הגזירים."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "שולחן העבודה שלך מצהיר על תמיכה בנתיב הזה, אבל רק ניסיון אמיתי יראה אם הוא עובד, ולכן Vito מנסה אותו קודם כשאתה מכתיב. אם הוא לא עובד, ההכתבות שלך יועברו במקום זאת ללוח הגזירים.",
+"Credits": "קרדיטים",
+"Achievement medals and animations use": "מדליות ההישגים והאנימציות משתמשות ב-",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "מבית Google (הסטטיות ברישיון Apache-2.0, האנימציות ברישיון CC BY 4.0), ומופעלות באמצעות",
+"by Airbnb (MIT). Country flags are": "מבית Airbnb (MIT). דגלי המדינות מגיעים מ-",
+"by Panayiotis Lipiridis (MIT).": "מאת Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

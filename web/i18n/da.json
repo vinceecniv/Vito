@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "De eneste data, appen sender eksternt, er din tale og de tekster, der går til de eksterne BYOK-udbydere (talegenkendelse og AI-oprydning). Disse data er underlagt de eksterne udbyderes privatlivspolitikker.",
 "What to do with playing media": "Hvad der skal ske med medier, der afspilles",
 "not used yet": "endnu ikke brugt",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Dit skrivebord annoncerer denne rute, men kun et reelt forsøg viser, om den virker, så Vito prøver den først, når du dikterer. Hvis den ikke virker, går dine diktater i stedet til udklipsholderen."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Dit skrivebord annoncerer denne rute, men kun et reelt forsøg viser, om den virker, så Vito prøver den først, når du dikterer. Hvis den ikke virker, går dine diktater i stedet til udklipsholderen.",
+"Credits": "Tak til",
+"Achievement medals and animations use": "Præstationsmedaljer og animationer bruger",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "fra Google (de statiske under Apache-2.0, animationerne under CC BY 4.0) og afspilles med",
+"by Airbnb (MIT). Country flags are": "fra Airbnb (MIT). Landeflagene kommer fra",
+"by Panayiotis Lipiridis (MIT).": "af Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",

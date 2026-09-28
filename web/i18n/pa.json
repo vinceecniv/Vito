@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "ਐਪ ਬਾਹਰ ਸਿਰਫ਼ ਤੁਹਾਡੀ ਬੋਲੀ ਅਤੇ ਉਹ ਟੈਕਸਟ ਭੇਜਦੀ ਹੈ ਜੋ ਬਾਹਰੀ BYOK ਪ੍ਰਦਾਤਾਵਾਂ (ਬੋਲੀ ਪਛਾਣ ਅਤੇ AI ਸਫ਼ਾਈ) ਵੱਲ ਜਾਂਦਾ ਹੈ। ਉਸ ਡਾਟੇ 'ਤੇ ਉਹਨਾਂ ਬਾਹਰੀ ਪ੍ਰਦਾਤਾਵਾਂ ਦੀਆਂ ਪ੍ਰਾਈਵੇਸੀ ਨੀਤੀਆਂ ਲਾਗੂ ਹੁੰਦੀਆਂ ਹਨ।",
 "What to do with playing media": "ਚੱਲ ਰਹੇ ਮੀਡੀਆ ਦਾ ਕੀ ਕਰਨਾ ਹੈ",
 "not used yet": "ਹਾਲੇ ਵਰਤਿਆ ਨਹੀਂ ਗਿਆ",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "ਤੁਹਾਡਾ ਡੈਸਕਟਾਪ ਦੱਸਦਾ ਹੈ ਕਿ ਇਹ ਰਸਤਾ ਉਪਲਬਧ ਹੈ, ਪਰ ਇਹ ਕੰਮ ਕਰਦਾ ਹੈ ਜਾਂ ਨਹੀਂ, ਇਹ ਸਿਰਫ਼ ਅਸਲ ਕੋਸ਼ਿਸ਼ ਨਾਲ ਹੀ ਪਤਾ ਲੱਗਦਾ ਹੈ, ਇਸ ਲਈ ਜਦੋਂ ਤੁਸੀਂ ਡਿਕਟੇਟ ਕਰਦੇ ਹੋ ਤਾਂ Vito ਪਹਿਲਾਂ ਇਸਨੂੰ ਅਜ਼ਮਾਉਂਦਾ ਹੈ। ਜੇ ਇਹ ਕੰਮ ਨਹੀਂ ਕਰਦਾ, ਤਾਂ ਤੁਹਾਡੇ ਡਿਕਟੇਸ਼ਨ ਇਸਦੀ ਥਾਂ ਕਲਿੱਪਬੋਰਡ 'ਤੇ ਚਲੇ ਜਾਂਦੇ ਹਨ।"
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "ਤੁਹਾਡਾ ਡੈਸਕਟਾਪ ਦੱਸਦਾ ਹੈ ਕਿ ਇਹ ਰਸਤਾ ਉਪਲਬਧ ਹੈ, ਪਰ ਇਹ ਕੰਮ ਕਰਦਾ ਹੈ ਜਾਂ ਨਹੀਂ, ਇਹ ਸਿਰਫ਼ ਅਸਲ ਕੋਸ਼ਿਸ਼ ਨਾਲ ਹੀ ਪਤਾ ਲੱਗਦਾ ਹੈ, ਇਸ ਲਈ ਜਦੋਂ ਤੁਸੀਂ ਡਿਕਟੇਟ ਕਰਦੇ ਹੋ ਤਾਂ Vito ਪਹਿਲਾਂ ਇਸਨੂੰ ਅਜ਼ਮਾਉਂਦਾ ਹੈ। ਜੇ ਇਹ ਕੰਮ ਨਹੀਂ ਕਰਦਾ, ਤਾਂ ਤੁਹਾਡੇ ਡਿਕਟੇਸ਼ਨ ਇਸਦੀ ਥਾਂ ਕਲਿੱਪਬੋਰਡ 'ਤੇ ਚਲੇ ਜਾਂਦੇ ਹਨ।",
+"Credits": "ਕ੍ਰੈਡਿਟ",
+"Achievement medals and animations use": "ਪ੍ਰਾਪਤੀ ਮੈਡਲ ਅਤੇ ਐਨੀਮੇਸ਼ਨ ਇਹ ਵਰਤਦੇ ਹਨ:",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google ਵੱਲੋਂ (ਸਥਿਰ Apache-2.0 ਅਧੀਨ, ਐਨੀਮੇਸ਼ਨ CC BY 4.0 ਅਧੀਨ), ਜੋ ਇਸ ਨਾਲ ਚਲਾਏ ਜਾਂਦੇ ਹਨ:",
+"by Airbnb (MIT). Country flags are": "Airbnb ਵੱਲੋਂ (MIT)। ਦੇਸ਼ਾਂ ਦੇ ਝੰਡੇ ਇਹ ਹਨ:",
+"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis ਵੱਲੋਂ (MIT)।"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",
