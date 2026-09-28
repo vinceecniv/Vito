@@ -229,3 +229,12 @@ func ActiveBackend(cfg config.Injection) string {
 	}
 	return resolveBackend(cfg)
 }
+
+// BackendVerified reports whether ActiveBackend is a known quantity. The
+// portal is the exception: it is advertised even where nothing implements it,
+// and probing it honestly means creating a session — which raises the
+// permission dialog, a prompt not worth spending on a status field. So until
+// the first session succeeds, the portal is reported as unverified.
+func BackendVerified(cfg config.Injection) bool {
+	return ActiveBackend(cfg) != backendPortal || portalVerified.Load()
+}

@@ -794,7 +794,9 @@
 "Start or stop a recording": "ریکارڈنگ شروع یا بند کریں",
 "Stop the daemon": "daemon کو بند کریں",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "ایپ باہر صرف وہی ڈیٹا بھیجتی ہے جو آپ کی تقریر اور وہ متون ہیں جو BYOK ماڈل کے بیرونی فراہم کنندگان کو جاتے ہیں (تقریر کی شناخت اور AI صفائی)۔ اس ڈیٹا پر ان بیرونی فراہم کنندگان کی پرائیویسی پالیسیاں لاگو ہوتی ہیں۔",
-"What to do with playing media": "چلتے ہوئے میڈیا کے ساتھ کیا کرنا ہے"
+"What to do with playing media": "چلتے ہوئے میڈیا کے ساتھ کیا کرنا ہے",
+"not used yet": "ابھی تک استعمال نہیں ہوا",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "آپ کا ڈیسک ٹاپ اس راستے کا اعلان کرتا ہے، لیکن یہ کام کرتا ہے یا نہیں، یہ صرف حقیقی کوشش سے معلوم ہوتا ہے، اس لیے جب آپ املا کراتے ہیں تو Vito پہلے اسے آزماتا ہے۔ اگر یہ کام نہ کرے تو آپ کا املا اس کے بجائے کلپ بورڈ پر چلا جاتا ہے۔"
 },
 "help": {
 "theme": "روشن، گہرا یا خودکار — خودکار آپ کے سسٹم کی روشن/گہری ترتیب کے مطابق چلتا ہے۔",

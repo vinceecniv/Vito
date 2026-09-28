@@ -793,7 +793,9 @@
 "Start or stop a recording": "Rozpocznij lub zatrzymaj nagrywanie",
 "Stop the daemon": "Zatrzymaj demona",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Jedyne dane, które aplikacja wysyła na zewnątrz, to twoja mowa i teksty trafiające do zewnętrznych dostawców BYOK (rozpoznawanie mowy i czyszczenie AI). Do tych danych mają zastosowanie polityki prywatności tych zewnętrznych dostawców.",
-"What to do with playing media": "Co zrobić z odtwarzanymi multimediami"
+"What to do with playing media": "Co zrobić z odtwarzanymi multimediami",
+"not used yet": "jeszcze nieużywane",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Twój pulpit deklaruje obsługę tej metody, ale dopiero prawdziwa próba pokaże, czy działa, dlatego Vito najpierw wypróbowuje ją, gdy dyktujesz. Jeśli nie zadziała, twoje dyktowania trafią zamiast tego do schowka."
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

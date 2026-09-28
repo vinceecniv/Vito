@@ -793,7 +793,9 @@
 "Start or stop a recording": "녹음 시작 또는 정지",
 "Stop the daemon": "데몬 중지",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "앱이 외부로 전송하는 유일한 데이터는 음성과 외부 BYOK 제공자(음성 인식 및 AI 정리)로 가는 텍스트입니다. 해당 데이터에는 이들 외부 제공자의 개인정보 처리방침이 적용됩니다.",
-"What to do with playing media": "재생 중인 미디어 처리 방법"
+"What to do with playing media": "재생 중인 미디어 처리 방법",
+"not used yet": "아직 사용 안 함",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "사용 중인 데스크톱이 이 경로를 지원한다고 알리지만 실제로 작동하는지는 직접 시도해 봐야 알 수 있으므로, Vito는 받아쓰기를 할 때 먼저 이 경로를 시도합니다. 작동하지 않으면 받아쓰기 내용은 대신 클립보드로 전달됩니다."
 },
 "help": {
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",

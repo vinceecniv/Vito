@@ -793,7 +793,9 @@
 "Start or stop a recording": "Mulai atau hentikan rekaman",
 "Stop the daemon": "Hentikan daemon",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Satu-satunya data yang dikirim aplikasi ke luar adalah ucapan Anda dan teks yang dikirim ke penyedia BYOK eksternal (pengenalan ucapan dan pembersihan AI). Data tersebut tunduk pada kebijakan privasi penyedia eksternal tersebut.",
-"What to do with playing media": "Apa yang dilakukan pada media yang sedang diputar"
+"What to do with playing media": "Apa yang dilakukan pada media yang sedang diputar",
+"not used yet": "belum digunakan",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Desktop Anda menyatakan jalur ini tersedia, tetapi hanya percobaan nyata yang menunjukkan apakah jalur ini berfungsi, jadi Vito mencobanya lebih dulu saat Anda berdikte. Jika tidak berfungsi, dikte Anda akan masuk ke papan klip."
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",

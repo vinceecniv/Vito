@@ -793,7 +793,9 @@
 "Start or stop a recording": "Cychwyn neu stopio recordiad",
 "Stop the daemon": "Stopio'r daemon",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Yr unig ddata y mae'r ap yn ei anfon allan yw dy leferydd a'r testunau sy'n mynd i'r darparwyr BYOK allanol (adnabod lleferydd a glanhau AI). Mae polisïau preifatrwydd y darparwyr allanol hynny yn llywodraethu'r data hwnnw.",
-"What to do with playing media": "Beth i'w wneud gyda chyfryngau sy'n chwarae"
+"What to do with playing media": "Beth i'w wneud gyda chyfryngau sy'n chwarae",
+"not used yet": "heb ei ddefnyddio eto",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Mae dy fwrdd gwaith yn hysbysebu'r llwybr hwn, ond dim ond ymgais go iawn sy'n dangos a yw'n gweithio, felly mae Vito'n ei drio gyntaf pan fyddi di'n arddweud. Os nad yw'n gweithio, mae dy arddywediadau'n mynd i'r clipfwrdd yn lle hynny."
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

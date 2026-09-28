@@ -793,7 +793,9 @@
 "Start or stop a recording": "Anza au simamisha kurekodi",
 "Stop the daemon": "Simamisha daemon",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Data pekee ambayo programu hutuma nje ni sauti yako na maandishi yanayokwenda kwa watoa huduma wa nje wa BYOK (utambuzi wa sauti na usafishaji wa AI). Data hiyo inasimamiwa na sera za faragha za watoa huduma hao wa nje.",
-"What to do with playing media": "Cha kufanya na media inayochezwa"
+"What to do with playing media": "Cha kufanya na media inayochezwa",
+"not used yet": "bado haijatumika",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Kompyuta yako inatangaza njia hii, lakini ni jaribio halisi tu linaloonyesha kama inafanya kazi, kwa hiyo Vito huijaribu kwanza unapoongea. Isipofanya kazi, maandishi yako yatakwenda kwenye ubao wa kunakili badala yake."
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

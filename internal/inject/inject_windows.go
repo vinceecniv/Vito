@@ -241,3 +241,6 @@ func adjustMode(cfg config.Injection, mode Mode) Mode { return mode }
 func Sandboxed() bool { return false }
 
 func ActiveBackend(cfg config.Injection) string { return "sendinput" }
+
+// BackendVerified: with a single route there is nothing to be unsure about.
+func BackendVerified(cfg config.Injection) bool { return true }

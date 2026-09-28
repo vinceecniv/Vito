@@ -793,7 +793,9 @@
 "Start or stop a recording": "بدء التسجيل أو إيقافه",
 "Stop the daemon": "إيقاف الخدمة الخلفية (daemon)",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "البيانات الوحيدة التي يرسلها التطبيق إلى الخارج هي كلامك والنصوص التي تذهب إلى مزوّدي BYOK الخارجيين (التعرّف على الكلام وتنقيح الذكاء الاصطناعي). تخضع هذه البيانات لسياسات الخصوصية الخاصة بهؤلاء المزوّدين الخارجيين.",
-"What to do with playing media": "ما يجب فعله بالوسائط قيد التشغيل"
+"What to do with playing media": "ما يجب فعله بالوسائط قيد التشغيل",
+"not used yet": "لم يُستخدم بعد",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "يعلن سطح مكتبك عن هذا المسار، لكن المحاولة الفعلية وحدها تبيّن ما إذا كان يعمل، لذا يجرّبه Vito أولًا عند الإملاء. وإذا لم يعمل، تذهب الإملاءات إلى الحافظة بدلًا من ذلك."
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

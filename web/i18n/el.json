@@ -793,7 +793,9 @@
 "Start or stop a recording": "Έναρξη ή διακοπή μιας εγγραφής",
 "Stop the daemon": "Διακοπή του daemon",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Τα μόνα δεδομένα που στέλνει η εφαρμογή προς τα έξω είναι η ομιλία σας και τα κείμενα που πηγαίνουν στους εξωτερικούς παρόχους BYOK (αναγνώριση ομιλίας και καθαρισμός AI). Αυτά τα δεδομένα διέπονται από τις πολιτικές απορρήτου των εξωτερικών παρόχων.",
-"What to do with playing media": "Τι να γίνεται με τα πολυμέσα που αναπαράγονται"
+"What to do with playing media": "Τι να γίνεται με τα πολυμέσα που αναπαράγονται",
+"not used yet": "δεν έχει χρησιμοποιηθεί ακόμα",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Η επιφάνεια εργασίας σας διαφημίζει αυτή τη διαδρομή, αλλά μόνο μια πραγματική προσπάθεια δείχνει αν λειτουργεί, οπότε το Vito τη δοκιμάζει πρώτα όταν υπαγορεύετε. Αν δεν λειτουργεί, οι υπαγορεύσεις σας πηγαίνουν στο πρόχειρο."
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

@@ -793,7 +793,9 @@
 "Start or stop a recording": "开始或停止录音",
 "Stop the daemon": "停止 daemon",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "应用向外部发送的唯一数据，是你的语音以及发送给 BYOK 模式外部提供商（语音识别和 AI 清理）的文本。这些数据适用于这些外部提供商的隐私声明。",
-"What to do with playing media": "如何处理正在播放的媒体"
+"What to do with playing media": "如何处理正在播放的媒体",
+"not used yet": "尚未使用",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "你的桌面环境声明支持这条途径，但只有实际尝试才能确定它是否可用，所以你口述时 Vito 会先尝试它。如果不可用，你的口述内容会改为进入剪贴板。"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",
