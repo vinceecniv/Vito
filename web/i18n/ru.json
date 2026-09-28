@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito отправляет это значение как «reasoning_effort». Эндпоинт, который его не знает, ответит ошибкой.",
 "Details": "Подробности",
 "That dictation is no longer in the history.": "Этой диктовки больше нет в истории.",
-"preview": "превью"
+"preview": "превью",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Автоматически добавляет Enter (например, отправляет ввод в чате или терминале)",
+"Cancel the current recording": "Отменить текущую запись",
+"Cleanup on by default": "Очистка включена по умолчанию",
+"Idle": "Простой",
+"Open settings…": "Открыть настройки…",
+"Open the web UI in the browser": "Открыть веб-интерфейс в браузере",
+"Quit Vito": "Выйти из Vito",
+"Recording…": "Запись…",
+"Run every dictation through the AI cleanup": "Пропускать каждую диктовку через ИИ-очистку",
+"Start / stop dictation": "Старт / стоп диктовки",
+"Start Vito when you log in": "Запускать Vito при входе в систему",
+"Start or stop a recording": "Начать или остановить запись",
+"Stop the daemon": "Остановить демон",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Единственные данные, которые приложение отправляет наружу, — это ваша речь и тексты, передаваемые внешним BYOK-провайдерам (распознавание речи и ИИ-очистка). На эти данные распространяются политики конфиденциальности этих внешних провайдеров.",
+"What to do with playing media": "Что делать с воспроизводимым медиа"
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",

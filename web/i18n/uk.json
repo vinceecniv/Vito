@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito надсилає це значення як «reasoning_effort». Точка доступу, яка його не знає, відповість помилкою.",
 "Details": "Подробиці",
 "That dictation is no longer in the history.": "Цього диктування вже немає в історії.",
-"preview": "попередній перегляд"
+"preview": "попередній перегляд",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Автоматично додає Enter (наприклад, надсилає повідомлення в чаті чи ввід у терміналі)",
+"Cancel the current recording": "Скасувати поточний запис",
+"Cleanup on by default": "Очищення типово ввімкнено",
+"Idle": "Неактивно",
+"Open settings…": "Відкрити налаштування…",
+"Open the web UI in the browser": "Відкрити веб-інтерфейс у браузері",
+"Quit Vito": "Вийти з Vito",
+"Recording…": "Запис…",
+"Run every dictation through the AI cleanup": "Пропускати кожну диктовку через очищення ШІ",
+"Start / stop dictation": "Почати / зупинити диктування",
+"Start Vito when you log in": "Запускати Vito під час входу в систему",
+"Start or stop a recording": "Почати або зупинити запис",
+"Stop the daemon": "Зупинити daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Єдині дані, які застосунок надсилає назовні, — це ваше мовлення й тексти, що йдуть до зовнішніх провайдерів моделі BYOK (розпізнавання мовлення та очищення ШІ). До цих даних застосовуються політики приватності цих зовнішніх провайдерів.",
+"What to do with playing media": "Що робити з медіа, яке відтворюється"
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",

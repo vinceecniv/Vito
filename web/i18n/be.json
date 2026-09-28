@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "бясплатна",
 "(often none for a local server)": "(для лакальнага сервера часта не патрэбны)",
-"Edit rule sets…": "Рэдагаваць наборы правілаў…"
+"Edit rule sets…": "Рэдагаваць наборы правілаў…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Аўтаматычна дадае Enter (напрыклад, адпраўляе ўвод у чаце ці тэрмінале)",
+"Cancel the current recording": "Скасаваць бягучы запіс",
+"Cleanup on by default": "Ачыстка ўключана па змаўчанні",
+"Idle": "Неактыўна",
+"Open settings…": "Адкрыць налады…",
+"Open the web UI in the browser": "Адкрыць вэб-інтэрфейс у браўзеры",
+"Quit Vito": "Выйсці з Vito",
+"Recording…": "Запіс…",
+"Run every dictation through the AI cleanup": "Прапускаць кожную дыктоўку праз ШІ-ачыстку",
+"Start / stop dictation": "Пачаць / спыніць дыктоўку",
+"Start Vito when you log in": "Запускаць Vito пры ўваходзе ў сістэму",
+"Start or stop a recording": "Пачаць або спыніць запіс",
+"Stop the daemon": "Спыніць daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Адзіныя даныя, якія праграма адпраўляе вонкі, — гэта ваша размова і тэксты, што ідуць да знешніх BYOK-правайдараў (распазнаванне маўлення і ШІ-ачыстка). На гэтыя даныя распаўсюджваюцца палітыкі прыватнасці гэтых знешніх правайдараў.",
+"What to do with playing media": "Што рабіць з мультымедыя, якое прайграецца"
 },
 "help": {
 "theme": "Светлая, цёмная ці аўтаматычная — аўтаматычная сочыць за светлым/цёмным рэжымам вашай сістэмы.",

@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito שולח ערך זה בשם “reasoning_effort”. נקודת קצה שאינה מכירה אותו מחזירה שגיאה.",
 "Details": "פרטים",
 "That dictation is no longer in the history.": "ההכתבה הזו כבר לא נמצאת בהיסטוריה.",
-"preview": "תצוגה מקדימה"
+"preview": "תצוגה מקדימה",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "מוסיף Enter אוטומטית (לדוגמה לשליחת קלט בצ׳אט או בטרמינל)",
+"Cancel the current recording": "בטל את ההקלטה הנוכחית",
+"Cleanup on by default": "ניקוי פעיל כברירת מחדל",
+"Idle": "לא פעיל",
+"Open settings…": "פתח הגדרות…",
+"Open the web UI in the browser": "פתח את ממשק הווב בדפדפן",
+"Quit Vito": "צא מ-Vito",
+"Recording…": "מקליט…",
+"Run every dictation through the AI cleanup": "העבר כל הכתבה דרך ניקוי ה-AI",
+"Start / stop dictation": "התחל / עצור הכתבה",
+"Start Vito when you log in": "הפעל את Vito בכניסה למערכת",
+"Start or stop a recording": "התחל או עצור הקלטה",
+"Stop the daemon": "עצור את הדמון",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "הנתונים היחידים שהאפליקציה שולחת החוצה הם הדיבור שלך והטקסטים שנשלחים לספקי BYOK חיצוניים (זיהוי דיבור וניקוי AI). על נתונים אלה חלות מדיניות הפרטיות של אותם ספקים חיצוניים.",
+"What to do with playing media": "מה לעשות עם מדיה שמתנגנת"
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

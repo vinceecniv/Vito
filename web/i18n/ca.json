@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "gratuït",
 "(often none for a local server)": "(sovint cap per a un servidor local)",
-"Edit rule sets…": "Editar conjunts de regles…"
+"Edit rule sets…": "Editar conjunts de regles…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Afegeix automàticament un Enter (per exemple, envia l'entrada del xat o del terminal)",
+"Cancel the current recording": "Cancel·la l'enregistrament actual",
+"Cleanup on by default": "Neteja activada per defecte",
+"Idle": "Inactiu",
+"Open settings…": "Obre la configuració…",
+"Open the web UI in the browser": "Obre la interfície web al navegador",
+"Quit Vito": "Surt de Vito",
+"Recording…": "Gravant…",
+"Run every dictation through the AI cleanup": "Passa cada dictat per la neteja amb IA",
+"Start / stop dictation": "Iniciar / aturar el dictat",
+"Start Vito when you log in": "Inicia Vito en iniciar la sessió",
+"Start or stop a recording": "Inicia o atura una gravació",
+"Stop the daemon": "Atura el dimoni",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Les úniques dades que l'aplicació envia a l'exterior són la teva veu i els textos que van als proveïdors externs BYOK (reconeixement de veu i neteja amb IA). Aquestes dades estan regides per les polítiques de privadesa d'aquests proveïdors externs.",
+"What to do with playing media": "Què fer amb el contingut multimèdia en reproducció"
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

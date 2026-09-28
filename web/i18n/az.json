@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "pulsuz",
 "(often none for a local server)": "(lokal server üçün çox vaxt lazım deyil)",
-"Edit rule sets…": "Qayda dəstlərini redaktə et…"
+"Edit rule sets…": "Qayda dəstlərini redaktə et…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Avtomatik olaraq Enter əlavə edir (məsələn, çat və ya terminal daxiletməsini göndərir)",
+"Cancel the current recording": "Cari qeydi ləğv et",
+"Cleanup on by default": "Təmizləmə standart olaraq aktivdir",
+"Idle": "Qeyri-aktiv",
+"Open settings…": "Parametrləri aç…",
+"Open the web UI in the browser": "Veb interfeysi brauzerdə aç",
+"Quit Vito": "Vito-dan çıx",
+"Recording…": "Qeyd gedir…",
+"Run every dictation through the AI cleanup": "Hər diktəni Sİ təmizləməsindən keçir",
+"Start / stop dictation": "Diktəni başlat / dayandır",
+"Start Vito when you log in": "Sistemə daxil olanda Vito-nu başlat",
+"Start or stop a recording": "Qeydi başlat və ya dayandır",
+"Stop the daemon": "Daemon-u dayandır",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Tətbiqin xaricə göndərdiyi yeganə məlumat nitqiniz və xarici BYOK provayderlərinə (nitqin tanınması və Sİ təmizləməsi) gedən mətnlərdir. Bu məlumatlar həmin xarici provayderlərin məxfilik siyasətlərinə tabedir.",
+"What to do with playing media": "Oxudulan mediaya nə etməli"
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

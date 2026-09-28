@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito ส่งค่านี้ไปในชื่อ “reasoning_effort” เอนด์พอยต์ที่ไม่รู้จักค่านี้จะตอบกลับเป็นข้อผิดพลาด",
 "Details": "รายละเอียด",
 "That dictation is no longer in the history.": "คำบอกนั้นไม่อยู่ในประวัติแล้ว",
-"preview": "ตัวอย่าง"
+"preview": "ตัวอย่าง",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "เพิ่ม Enter ให้อัตโนมัติ (เช่น ส่งข้อความแชทหรืออินพุตเทอร์มินัล)",
+"Cancel the current recording": "ยกเลิกการบันทึกปัจจุบัน",
+"Cleanup on by default": "เปิดการปรับข้อความเป็นค่าเริ่มต้น",
+"Idle": "ว่าง",
+"Open settings…": "เปิดการตั้งค่า…",
+"Open the web UI in the browser": "เปิดเว็บ UI ในเบราว์เซอร์",
+"Quit Vito": "ออกจาก Vito",
+"Recording…": "กำลังบันทึก…",
+"Run every dictation through the AI cleanup": "ส่งทุกการพูดผ่านการปรับข้อความด้วย AI",
+"Start / stop dictation": "เริ่ม / หยุดการบอก",
+"Start Vito when you log in": "เริ่ม Vito เมื่อคุณเข้าสู่ระบบ",
+"Start or stop a recording": "เริ่มหรือหยุดการบันทึก",
+"Stop the daemon": "หยุด daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "ข้อมูลเดียวที่แอปส่งออกภายนอกคือเสียงและข้อความที่ส่งไปยังผู้ให้บริการภายนอกของโมเดล BYOK (การรู้จำเสียงพูดและการปรับข้อความด้วย AI) ข้อมูลเหล่านั้นอยู่ภายใต้นโยบายความเป็นส่วนตัวของผู้ให้บริการภายนอกเหล่านั้น",
+"What to do with playing media": "สิ่งที่ต้องทำกับสื่อที่กำลังเล่นอยู่"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",

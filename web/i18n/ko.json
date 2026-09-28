@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito는 이 값을 “reasoning_effort”로 전송합니다. 이를 모르는 엔드포인트는 오류로 응답합니다.",
 "Details": "자세히",
 "That dictation is no longer in the history.": "해당 받아쓰기는 더 이상 기록에 없습니다.",
-"preview": "미리보기"
+"preview": "미리보기",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "자동으로 Enter를 추가합니다 (예: 채팅이나 터미널 입력 전송)",
+"Cancel the current recording": "현재 녹음 취소",
+"Cleanup on by default": "기본적으로 정리 켜기",
+"Idle": "대기",
+"Open settings…": "설정 열기…",
+"Open the web UI in the browser": "브라우저에서 웹 UI 열기",
+"Quit Vito": "Vito 종료",
+"Recording…": "녹음 중…",
+"Run every dictation through the AI cleanup": "모든 받아쓰기에 AI 정리 적용",
+"Start / stop dictation": "받아쓰기 시작 / 정지",
+"Start Vito when you log in": "로그인할 때 Vito 시작",
+"Start or stop a recording": "녹음 시작 또는 정지",
+"Stop the daemon": "데몬 중지",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "앱이 외부로 전송하는 유일한 데이터는 음성과 외부 BYOK 제공자(음성 인식 및 AI 정리)로 가는 텍스트입니다. 해당 데이터에는 이들 외부 제공자의 개인정보 처리방침이 적용됩니다.",
+"What to do with playing media": "재생 중인 미디어 처리 방법"
 },
 "help": {
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",

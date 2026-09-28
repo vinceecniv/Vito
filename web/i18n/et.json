@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito saadab selle väärtuse nime „reasoning_effort“ all. Lõpp-punkt, mis seda ei tunne, vastab veaga.",
 "Details": "Üksikasjad",
 "That dictation is no longer in the history.": "Seda dikteeringut ajaloos enam pole.",
-"preview": "eelvaade"
+"preview": "eelvaade",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Lisab automaatselt Enteri (saadab näiteks vestluse või terminali sisendi)",
+"Cancel the current recording": "Tühista praegune salvestus",
+"Cleanup on by default": "Puhastus vaikimisi sees",
+"Idle": "Ootel",
+"Open settings…": "Ava seaded…",
+"Open the web UI in the browser": "Ava veebiliides brauseris",
+"Quit Vito": "Sulge Vito",
+"Recording…": "Salvestan…",
+"Run every dictation through the AI cleanup": "Lase iga dikteering läbi tehisintellekti puhastuse",
+"Start / stop dictation": "Alusta / peata dikteerimine",
+"Start Vito when you log in": "Käivita Vito sisselogimisel",
+"Start or stop a recording": "Alusta või peata salvestus",
+"Stop the daemon": "Peata daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Ainus teave, mida rakendus väljapoole saadab, on sinu kõne ja tekstid, mis lähevad välistele BYOK-teenusepakkujatele (kõnetuvastus ja tehisintellekti puhastus). Seda teavet reguleerivad nende väliste teenusepakkujate privaatsuspoliitikad.",
+"What to do with playing media": "Mida teha esitatava meediaga"
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

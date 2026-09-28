@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito invia questo valore come “reasoning_effort”. Un endpoint che non lo conosce risponde con un errore.",
 "Details": "Dettagli",
 "That dictation is no longer in the history.": "Quella dettatura non è più nella cronologia.",
-"preview": "anteprima"
+"preview": "anteprima",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Aggiunge automaticamente un Invio (ad esempio per inviare l'input in chat o nel terminale)",
+"Cancel the current recording": "Annulla la registrazione in corso",
+"Cleanup on by default": "Pulizia attiva per impostazione predefinita",
+"Idle": "Inattivo",
+"Open settings…": "Apri le impostazioni…",
+"Open the web UI in the browser": "Apri l'interfaccia web nel browser",
+"Quit Vito": "Esci da Vito",
+"Recording…": "Registrazione…",
+"Run every dictation through the AI cleanup": "Passa ogni dettatura attraverso la pulizia AI",
+"Start / stop dictation": "Avvia / ferma la dettatura",
+"Start Vito when you log in": "Avvia Vito all'accesso",
+"Start or stop a recording": "Avvia o ferma una registrazione",
+"Stop the daemon": "Ferma il daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Gli unici dati che l'app invia all'esterno sono la tua voce e i testi inviati ai provider BYOK esterni (riconoscimento vocale e pulizia AI). Tali dati sono soggetti alle informative sulla privacy di quei provider esterni.",
+"What to do with playing media": "Cosa fare con i contenuti multimediali in riproduzione"
 },
 "help": {
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",

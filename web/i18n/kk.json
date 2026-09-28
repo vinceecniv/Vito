@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito бұл мәнді “reasoning_effort” ретінде жібереді. Оны білмейтін эндпоинт қатемен жауап береді.",
 "Details": "Толығырақ",
 "That dictation is no longer in the history.": "Ол дикт енді тарихта жоқ.",
-"preview": "превью"
+"preview": "превью",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Enter пернесін автоматты түрде қосады (мысалы, чат немесе терминал енгізуін жіберу үшін)",
+"Cancel the current recording": "Ағымдағы жазуды болдырмау",
+"Cleanup on by default": "Тазалау әдепкі бойынша қосулы",
+"Idle": "Белсенді емес",
+"Open settings…": "Баптауларды ашу…",
+"Open the web UI in the browser": "Веб-интерфейсті браузерде ашу",
+"Quit Vito": "Vito-дан шығу",
+"Recording…": "Жазу…",
+"Run every dictation through the AI cleanup": "Әр диктовканы AI тазалауынан өткізу",
+"Start / stop dictation": "Диктовканы бастау / тоқтату",
+"Start Vito when you log in": "Жүйеге кіргенде Vito іске қосу",
+"Start or stop a recording": "Жазуды бастау немесе тоқтату",
+"Stop the daemon": "Демонды тоқтату",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Қолданба сыртқа тек сіздің сөйлеуіңізді және сыртқы BYOK провайдерлеріне (сөйлеуді тану және AI тазалау) жіберілетін мәтіндерді ғана жібереді. Бұл деректерге сол сыртқы провайдерлердің құпиялылық саясаты қолданылады.",
+"What to do with playing media": "Ойнатылып жатқан медиамен не істеу керек"
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",

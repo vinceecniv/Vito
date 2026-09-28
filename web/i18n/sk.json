@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito posiela túto hodnotu ako „reasoning_effort“. Koncový bod, ktorý ju nepozná, odpovie chybou.",
 "Details": "Podrobnosti",
 "That dictation is no longer in the history.": "Ten diktát už v histórii nie je.",
-"preview": "ukážka"
+"preview": "ukážka",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Automaticky pridá Enter (napríklad odošle vstup v chate alebo termináli)",
+"Cancel the current recording": "Zrušiť aktuálne nahrávanie",
+"Cleanup on by default": "Čistenie predvolene zapnuté",
+"Idle": "Nečinné",
+"Open settings…": "Otvoriť nastavenia…",
+"Open the web UI in the browser": "Otvoriť webové rozhranie v prehliadači",
+"Quit Vito": "Ukončiť Vito",
+"Recording…": "Nahráva sa…",
+"Run every dictation through the AI cleanup": "Každý diktát prepustiť cez čistenie AI",
+"Start / stop dictation": "Spustiť / zastaviť diktovanie",
+"Start Vito when you log in": "Spustiť Vito po prihlásení",
+"Start or stop a recording": "Spustiť alebo zastaviť nahrávanie",
+"Stop the daemon": "Zastaviť démon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Jediné údaje, ktoré aplikácia odosiela von, sú vaša reč a texty, ktoré idú externým poskytovateľom BYOK (rozpoznávanie reči a čistenie AI). Tieto údaje sa riadia zásadami ochrany osobných údajov týchto externých poskytovateľov.",
+"What to do with playing media": "Čo robiť s prehrávaným médiom"
 },
 "help": {
 "theme": "Svetlá, tmavá alebo automatická — automatická sleduje svetlý/tmavý režim vášho systému.",

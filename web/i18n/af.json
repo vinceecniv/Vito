@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "gratis",
 "(often none for a local server)": "(dikwels geen vir 'n plaaslike bediener nie)",
-"Edit rule sets…": "Wysig reëlstelle…"
+"Edit rule sets…": "Wysig reëlstelle…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Voeg outomaties 'n Enter by (stuur byvoorbeeld klets- of terminaalinvoer)",
+"Cancel the current recording": "Kanselleer die huidige opname",
+"Cleanup on by default": "Skoonmaak by verstek aan",
+"Idle": "Onaktief",
+"Open settings…": "Maak instellings oop…",
+"Open the web UI in the browser": "Maak die web-UI in die blaaier oop",
+"Quit Vito": "Verlaat Vito",
+"Recording…": "Neem tans op…",
+"Run every dictation through the AI cleanup": "Stuur elke diktaat deur die KI-skoonmaak",
+"Start / stop dictation": "Begin / stop diktering",
+"Start Vito when you log in": "Begin Vito wanneer jy aanmeld",
+"Start or stop a recording": "Begin of stop 'n opname",
+"Stop the daemon": "Stop die daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Die enigste data wat die toep ekstern stuur, is jou spraak en die tekste wat na die eksterne BYOK-verskaffers gaan (spraakherkenning en KI-skoonmaak). Daardie data word deur die eksterne verskaffers se privaatheidsbeleide beheer.",
+"What to do with playing media": "Wat om te doen met media wat speel"
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

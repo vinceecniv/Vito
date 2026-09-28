@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "am ddim",
 "(often none for a local server)": "(yn aml dim ar gyfer gweinydd lleol)",
-"Edit rule sets…": "Golygu setiau rheolau…"
+"Edit rule sets…": "Golygu setiau rheolau…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Ychwanegu Enter yn awtomatig (anfon mewnbwn sgwrs neu derfynell, er enghraifft)",
+"Cancel the current recording": "Canslo'r recordiad presennol",
+"Cleanup on by default": "Glanhau ymlaen yn ddiofyn",
+"Idle": "Segur",
+"Open settings…": "Agor gosodiadau…",
+"Open the web UI in the browser": "Agor y rhyngwyneb gwe yn y porwr",
+"Quit Vito": "Gadael Vito",
+"Recording…": "Yn recordio…",
+"Run every dictation through the AI cleanup": "Rhoi pob arddywediad drwy'r glanhau AI",
+"Start / stop dictation": "Cychwyn / stopio arddweud",
+"Start Vito when you log in": "Cychwyn Vito pan fyddi'n mewngofnodi",
+"Start or stop a recording": "Cychwyn neu stopio recordiad",
+"Stop the daemon": "Stopio'r daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Yr unig ddata y mae'r ap yn ei anfon allan yw dy leferydd a'r testunau sy'n mynd i'r darparwyr BYOK allanol (adnabod lleferydd a glanhau AI). Mae polisïau preifatrwydd y darparwyr allanol hynny yn llywodraethu'r data hwnnw.",
+"What to do with playing media": "Beth i'w wneud gyda chyfryngau sy'n chwarae"
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

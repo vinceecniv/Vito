@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito šalje ovu vrijednost kao „reasoning_effort”. Krajnja točka koja je ne poznaje odgovorit će pogreškom.",
 "Details": "Pojedinosti",
 "That dictation is no longer in the history.": "Tog diktata više nema u povijesti.",
-"preview": "pretpregled"
+"preview": "pretpregled",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Automatski dodaje Enter (na primjer za slanje unosa u chatu ili terminalu)",
+"Cancel the current recording": "Otkaži trenutačno snimanje",
+"Cleanup on by default": "Čišćenje prema zadanim postavkama uključeno",
+"Idle": "Neaktivno",
+"Open settings…": "Otvori postavke…",
+"Open the web UI in the browser": "Otvori web sučelje u pregledniku",
+"Quit Vito": "Zatvori Vito",
+"Recording…": "Snimanje…",
+"Run every dictation through the AI cleanup": "Provedi svako diktiranje kroz AI čišćenje",
+"Start / stop dictation": "Pokreni / zaustavi diktiranje",
+"Start Vito when you log in": "Pokreni Vito pri prijavi",
+"Start or stop a recording": "Pokreni ili zaustavi snimanje",
+"Stop the daemon": "Zaustavi daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Jedini podaci koje aplikacija šalje prema van su vaš govor i tekstovi koji idu vanjskim BYOK pružateljima (prepoznavanje govora i AI čišćenje). Ti su podaci uređeni pravilima o privatnosti tih vanjskih pružatelja.",
+"What to do with playing media": "Što učiniti s medijima koji se reproduciraju"
 },
 "help": {
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetlu/tamnu postavku vašeg sustava.",

@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "ilmainen",
 "(often none for a local server)": "(paikallisella palvelimella usein ei tarvita)",
-"Edit rule sets…": "Muokkaa sääntöjoukkoja…"
+"Edit rule sets…": "Muokkaa sääntöjoukkoja…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Lisää automaattisesti Enterin (lähettää esimerkiksi chat- tai päätesyötteen)",
+"Cancel the current recording": "Peruuta käynnissä oleva nauhoitus",
+"Cleanup on by default": "Siistintä oletuksena päällä",
+"Idle": "Lepotilassa",
+"Open settings…": "Avaa asetukset…",
+"Open the web UI in the browser": "Avaa web-käyttöliittymä selaimessa",
+"Quit Vito": "Sulje Vito",
+"Recording…": "Nauhoitetaan…",
+"Run every dictation through the AI cleanup": "Aja jokainen sanelu tekoälysiistinnän läpi",
+"Start / stop dictation": "Aloita / lopeta sanelu",
+"Start Vito when you log in": "Käynnistä Vito kirjautuessasi sisään",
+"Start or stop a recording": "Aloita tai lopeta nauhoitus",
+"Stop the daemon": "Pysäytä daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Ainoa data, jonka sovellus lähettää ulkopuolelle, on puheesi ja tekstit, jotka menevät ulkoisille BYOK-palveluntarjoajille (puheentunnistus ja tekoälysiistintä). Näihin tietoihin sovelletaan kyseisten ulkoisten palveluntarjoajien tietosuojakäytäntöjä.",
+"What to do with playing media": "Mitä toistettavalle medialle tehdään"
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito wysyła tę wartość jako „reasoning_effort”. Punkt końcowy, który jej nie zna, odpowiada błędem.",
 "Details": "Szczegóły",
 "That dictation is no longer in the history.": "Tego dyktowania nie ma już w historii.",
-"preview": "wersja zapoznawcza"
+"preview": "wersja zapoznawcza",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Automatycznie dodaje Enter (na przykład wysyła dane wpisane w czacie lub terminalu)",
+"Cancel the current recording": "Anuluj bieżące nagrywanie",
+"Cleanup on by default": "Czyszczenie domyślnie włączone",
+"Idle": "Bezczynny",
+"Open settings…": "Otwórz ustawienia…",
+"Open the web UI in the browser": "Otwórz interfejs WWW w przeglądarce",
+"Quit Vito": "Zamknij Vito",
+"Recording…": "Nagrywanie…",
+"Run every dictation through the AI cleanup": "Przepuszczaj każde dyktowanie przez czyszczenie AI",
+"Start / stop dictation": "Rozpocznij / zatrzymaj dyktowanie",
+"Start Vito when you log in": "Uruchamiaj Vito po zalogowaniu",
+"Start or stop a recording": "Rozpocznij lub zatrzymaj nagrywanie",
+"Stop the daemon": "Zatrzymaj demona",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Jedyne dane, które aplikacja wysyła na zewnątrz, to twoja mowa i teksty trafiające do zewnętrznych dostawców BYOK (rozpoznawanie mowy i czyszczenie AI). Do tych danych mają zastosowanie polityki prywatności tych zewnętrznych dostawców.",
+"What to do with playing media": "Co zrobić z odtwarzanymi multimediami"
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

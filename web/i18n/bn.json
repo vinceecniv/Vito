@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "বিনামূল্যে",
 "(often none for a local server)": "(স্থানীয় সার্ভারের জন্য প্রায়ই লাগে না)",
-"Edit rule sets…": "নিয়মসেট সম্পাদনা করুন…"
+"Edit rule sets…": "নিয়মসেট সম্পাদনা করুন…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "স্বয়ংক্রিয়ভাবে Enter যোগ করে (যেমন চ্যাট বা টার্মিনালের ইনপুট পাঠায়)",
+"Cancel the current recording": "বর্তমান রেকর্ডিং বাতিল করুন",
+"Cleanup on by default": "পরিষ্করণ ডিফল্টভাবে চালু",
+"Idle": "নিষ্ক্রিয়",
+"Open settings…": "সেটিংস খুলুন…",
+"Open the web UI in the browser": "ব্রাউজারে ওয়েব UI খুলুন",
+"Quit Vito": "Vito বন্ধ করুন",
+"Recording…": "রেকর্ডিং হচ্ছে…",
+"Run every dictation through the AI cleanup": "প্রতিটি ডিকটেশন AI পরিষ্করণের মধ্য দিয়ে চালান",
+"Start / stop dictation": "ডিকটেশন শুরু / বন্ধ করুন",
+"Start Vito when you log in": "লগ ইন করার সময় Vito শুরু করুন",
+"Start or stop a recording": "রেকর্ডিং শুরু বা বন্ধ করুন",
+"Stop the daemon": "ডেমন বন্ধ করুন",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "অ্যাপ বাইরে যে ডেটা পাঠায় তা শুধু আপনার কথা এবং বাহ্যিক BYOK প্রোভাইডারদের (স্পিচ রেকগনিশন ও AI পরিষ্করণ) কাছে যাওয়া টেক্সট। সেই ডেটা ওই বাহ্যিক প্রোভাইডারদের প্রাইভেসি পলিসি দ্বারা নিয়ন্ত্রিত।",
+"What to do with playing media": "চলমান মিডিয়ার ক্ষেত্রে কী করবেন"
 },
 "help": {
 "theme": "হালকা, গাঢ় বা স্বয়ংক্রিয় — স্বয়ংক্রিয় আপনার সিস্টেমের হালকা/গাঢ় সেটিং অনুসরণ করে।",

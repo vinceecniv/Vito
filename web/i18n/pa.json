@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito ਇਹ ਮੁੱਲ “reasoning_effort” ਵਜੋਂ ਭੇਜਦਾ ਹੈ। ਜਿਹੜਾ ਐਂਡਪੁਆਇੰਟ ਇਸਨੂੰ ਨਹੀਂ ਜਾਣਦਾ, ਉਹ ਗਲਤੀ ਨਾਲ ਜਵਾਬ ਦਿੰਦਾ ਹੈ।",
 "Details": "ਵੇਰਵੇ",
 "That dictation is no longer in the history.": "ਉਹ ਡਿਕਟੇਸ਼ਨ ਹੁਣ ਇਤਿਹਾਸ ਵਿੱਚ ਨਹੀਂ ਹੈ।",
-"preview": "ਝਲਕ"
+"preview": "ਝਲਕ",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "ਆਪਣੇ-ਆਪ Enter ਜੋੜਦਾ ਹੈ (ਉਦਾਹਰਨ ਲਈ, ਚੈਟ ਜਾਂ ਟਰਮੀਨਲ ਇਨਪੁੱਟ ਭੇਜਣ ਲਈ)",
+"Cancel the current recording": "ਮੌਜੂਦਾ ਰਿਕਾਰਡਿੰਗ ਰੱਦ ਕਰੋ",
+"Cleanup on by default": "ਕਲੀਨਅੱਪ ਮੂਲ ਰੂਪ ਵਿੱਚ ਚਾਲੂ",
+"Idle": "ਨਿਸ਼ਕਿਰਿਆ",
+"Open settings…": "ਸੈਟਿੰਗਾਂ ਖੋਲ੍ਹੋ…",
+"Open the web UI in the browser": "ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਵੈੱਬ UI ਖੋਲ੍ਹੋ",
+"Quit Vito": "Vito ਬੰਦ ਕਰੋ",
+"Recording…": "ਰਿਕਾਰਡ ਹੋ ਰਿਹਾ…",
+"Run every dictation through the AI cleanup": "ਹਰ ਡਿਕਟੇਸ਼ਨ ਨੂੰ AI ਸਫ਼ਾਈ ਵਿੱਚੋਂ ਲੰਘਾਓ",
+"Start / stop dictation": "ਡਿਕਟੇਸ਼ਨ ਸ਼ੁਰੂ / ਬੰਦ ਕਰੋ",
+"Start Vito when you log in": "ਲੌਗ ਇਨ ਕਰਨ ਵੇਲੇ Vito ਸ਼ੁਰੂ ਕਰੋ",
+"Start or stop a recording": "ਰਿਕਾਰਡਿੰਗ ਸ਼ੁਰੂ ਜਾਂ ਬੰਦ ਕਰੋ",
+"Stop the daemon": "ਡੀਮਨ ਬੰਦ ਕਰੋ",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "ਐਪ ਬਾਹਰ ਸਿਰਫ਼ ਤੁਹਾਡੀ ਬੋਲੀ ਅਤੇ ਉਹ ਟੈਕਸਟ ਭੇਜਦੀ ਹੈ ਜੋ ਬਾਹਰੀ BYOK ਪ੍ਰਦਾਤਾਵਾਂ (ਬੋਲੀ ਪਛਾਣ ਅਤੇ AI ਸਫ਼ਾਈ) ਵੱਲ ਜਾਂਦਾ ਹੈ। ਉਸ ਡਾਟੇ 'ਤੇ ਉਹਨਾਂ ਬਾਹਰੀ ਪ੍ਰਦਾਤਾਵਾਂ ਦੀਆਂ ਪ੍ਰਾਈਵੇਸੀ ਨੀਤੀਆਂ ਲਾਗੂ ਹੁੰਦੀਆਂ ਹਨ।",
+"What to do with playing media": "ਚੱਲ ਰਹੇ ਮੀਡੀਆ ਦਾ ਕੀ ਕਰਨਾ ਹੈ"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",

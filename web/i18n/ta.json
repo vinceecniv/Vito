@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito இந்த மதிப்பை “reasoning_effort” ஆக அனுப்புகிறது. அதைத் தெரியாத ஓர் எண்ட்பாயிண்ட் ஒரு பிழையுடன் பதிலளிக்கும்.",
 "Details": "விவரங்கள்",
 "That dictation is no longer in the history.": "அந்தச் சொல்லெழுத்து இனி வரலாற்றில் இல்லை.",
-"preview": "முன்னோட்டம்"
+"preview": "முன்னோட்டம்",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "தானாக Enter சேர்க்கிறது (எ.கா., அரட்டை அல்லது டெர்மினல் உள்ளீட்டை அனுப்புகிறது)",
+"Cancel the current recording": "தற்போதைய பதிவை ரத்து செய்",
+"Cleanup on by default": "சுத்தம் இயல்பாக இயக்கத்தில்",
+"Idle": "செயலற்ற",
+"Open settings…": "அமைப்புகளைத் திற…",
+"Open the web UI in the browser": "இணைய இடைமுகத்தை உலாவியில் திற",
+"Quit Vito": "Vito-விலிருந்து வெளியேறு",
+"Recording…": "பதிவு செய்கிறது…",
+"Run every dictation through the AI cleanup": "ஒவ்வொரு சொல்லெழுத்தையும் AI சுத்தம் வழியாக அனுப்பு",
+"Start / stop dictation": "சொல்லெழுத்தைத் தொடங்கு / நிறுத்து",
+"Start Vito when you log in": "உள்நுழையும்போது Vito-வைத் தொடங்கு",
+"Start or stop a recording": "பதிவைத் தொடங்கு அல்லது நிறுத்து",
+"Stop the daemon": "டீமனை நிறுத்து",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "இந்த ஆப் வெளியே அனுப்பும் ஒரே தரவு உங்கள் பேச்சும், வெளிப்புற BYOK வழங்குநர்களுக்குச் செல்லும் உரைகளும் (பேச்சு அறிதல் மற்றும் AI சுத்தம்) மட்டுமே. அந்தத் தரவு அந்த வெளிப்புற வழங்குநர்களின் தனியுரிமைக் கொள்கைகளால் நிர்வகிக்கப்படுகிறது.",
+"What to do with playing media": "இயங்கும் மீடியாவை என்ன செய்வது"
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

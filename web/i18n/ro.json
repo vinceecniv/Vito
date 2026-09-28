@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito trimite această valoare ca „reasoning_effort”. Un endpoint care nu o cunoaște răspunde cu o eroare.",
 "Details": "Detalii",
 "That dictation is no longer in the history.": "Acea dictare nu mai este în istoric.",
-"preview": "previzualizare"
+"preview": "previzualizare",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Adaugă automat un Enter (de exemplu, trimite intrarea din chat sau terminal)",
+"Cancel the current recording": "Anulează înregistrarea curentă",
+"Cleanup on by default": "Curățare activată implicit",
+"Idle": "Inactiv",
+"Open settings…": "Deschide setările…",
+"Open the web UI in the browser": "Deschide interfața web în browser",
+"Quit Vito": "Ieși din Vito",
+"Recording…": "Se înregistrează…",
+"Run every dictation through the AI cleanup": "Trece fiecare dictare prin curățarea AI",
+"Start / stop dictation": "Start / Stop dictare",
+"Start Vito when you log in": "Pornește Vito la autentificare",
+"Start or stop a recording": "Pornește sau oprește o înregistrare",
+"Stop the daemon": "Oprește daemonul",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Singurele date pe care aplicația le trimite în exterior sunt vocea ta și textele care ajung la furnizorii externi BYOK (recunoaștere vocală și curățare AI). Aceste date sunt guvernate de politicile de confidențialitate ale acelor furnizori externi.",
+"What to do with playing media": "Ce se întâmplă cu media în redare"
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",

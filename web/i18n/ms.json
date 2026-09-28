@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito menghantar nilai ini sebagai “reasoning_effort”. Endpoint yang tidak mengenalinya akan menjawab dengan ralat.",
 "Details": "Butiran",
 "That dictation is no longer in the history.": "Dikte itu tiada lagi dalam sejarah.",
-"preview": "pratonton"
+"preview": "pratonton",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Menambah Enter secara automatik (contohnya menghantar input sembang atau terminal)",
+"Cancel the current recording": "Batalkan rakaman semasa",
+"Cleanup on by default": "Pembersihan dihidupkan secara lalai",
+"Idle": "Tidak aktif",
+"Open settings…": "Buka tetapan…",
+"Open the web UI in the browser": "Buka UI web dalam pelayar",
+"Quit Vito": "Keluar dari Vito",
+"Recording…": "Merakam…",
+"Run every dictation through the AI cleanup": "Jalankan setiap dikte melalui pembersihan AI",
+"Start / stop dictation": "Mula / henti dikte",
+"Start Vito when you log in": "Mulakan Vito apabila anda log masuk",
+"Start or stop a recording": "Mula atau henti rakaman",
+"Stop the daemon": "Hentikan daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Satu-satunya data yang dihantar oleh aplikasi secara luaran ialah suara anda dan teks yang pergi ke penyedia BYOK luar (pengecaman suara dan pembersihan AI). Data tersebut tertakluk kepada dasar privasi penyedia luar tersebut.",
+"What to do with playing media": "Apa yang perlu dilakukan dengan media yang sedang dimainkan"
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",

@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito skickar det här värdet som “reasoning_effort”. En endpoint som inte känner till det svarar med ett fel.",
 "Details": "Detaljer",
 "That dictation is no longer in the history.": "Den dikteringen finns inte längre i historiken.",
-"preview": "förhandsvisning"
+"preview": "förhandsvisning",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Lägger automatiskt till ett Enter (skickar till exempel inmatning i chatt eller terminal)",
+"Cancel the current recording": "Avbryt den pågående inspelningen",
+"Cleanup on by default": "Rensning på som standard",
+"Idle": "Inaktiv",
+"Open settings…": "Öppna inställningar…",
+"Open the web UI in the browser": "Öppna webbgränssnittet i webbläsaren",
+"Quit Vito": "Avsluta Vito",
+"Recording…": "Spelar in…",
+"Run every dictation through the AI cleanup": "Skicka varje diktering genom AI-rensningen",
+"Start / stop dictation": "Starta / stoppa diktering",
+"Start Vito when you log in": "Starta Vito när du loggar in",
+"Start or stop a recording": "Starta eller stoppa en inspelning",
+"Stop the daemon": "Stoppa daemonen",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Den enda data som appen skickar externt är ditt tal och de texter som går till de externa BYOK-leverantörerna (taligenkänning och AI-rensning). Den datan omfattas av de externa leverantörernas integritetspolicyer.",
+"What to do with playing media": "Vad som ska hända med media som spelas upp"
 },
 "help": {
 "theme": "Ljust, mörkt eller automatiskt — automatiskt följer systemets ljus/mörk-inställning.",

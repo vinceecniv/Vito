@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "δωρεάν",
 "(often none for a local server)": "(συχνά κανένα για τοπικό διακομιστή)",
-"Edit rule sets…": "Επεξεργασία συνόλων κανόνων…"
+"Edit rule sets…": "Επεξεργασία συνόλων κανόνων…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Προσθέτει αυτόματα ένα Enter (στέλνει, για παράδειγμα, μήνυμα συνομιλίας ή είσοδο τερματικού)",
+"Cancel the current recording": "Ακύρωση της τρέχουσας εγγραφής",
+"Cleanup on by default": "Καθαρισμός ενεργός από προεπιλογή",
+"Idle": "Αδράνεια",
+"Open settings…": "Άνοιγμα ρυθμίσεων…",
+"Open the web UI in the browser": "Άνοιγμα του web UI στο πρόγραμμα περιήγησης",
+"Quit Vito": "Έξοδος από το Vito",
+"Recording…": "Εγγραφή…",
+"Run every dictation through the AI cleanup": "Εκτέλεση κάθε υπαγόρευσης μέσω του καθαρισμού AI",
+"Start / stop dictation": "Έναρξη / διακοπή υπαγόρευσης",
+"Start Vito when you log in": "Εκκίνηση του Vito κατά τη σύνδεση",
+"Start or stop a recording": "Έναρξη ή διακοπή μιας εγγραφής",
+"Stop the daemon": "Διακοπή του daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Τα μόνα δεδομένα που στέλνει η εφαρμογή προς τα έξω είναι η ομιλία σας και τα κείμενα που πηγαίνουν στους εξωτερικούς παρόχους BYOK (αναγνώριση ομιλίας και καθαρισμός AI). Αυτά τα δεδομένα διέπονται από τις πολιτικές απορρήτου των εξωτερικών παρόχων.",
+"What to do with playing media": "Τι να γίνεται με τα πολυμέσα που αναπαράγονται"
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

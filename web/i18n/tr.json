@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito bu değeri “reasoning_effort” olarak gönderir. Bunu tanımayan bir uç nokta hata döndürür.",
 "Details": "Ayrıntılar",
 "That dictation is no longer in the history.": "Bu dikte artık geçmişte yok.",
-"preview": "önizleme"
+"preview": "önizleme",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Otomatik olarak Enter ekler (örneğin sohbet veya terminal girdisini gönderir)",
+"Cancel the current recording": "Geçerli kaydı iptal et",
+"Cleanup on by default": "Temizleme varsayılan olarak açık",
+"Idle": "Boşta",
+"Open settings…": "Ayarları aç…",
+"Open the web UI in the browser": "Web arayüzünü tarayıcıda aç",
+"Quit Vito": "Vito'dan çık",
+"Recording…": "Kaydediliyor…",
+"Run every dictation through the AI cleanup": "Her dikteyi AI temizlemesinden geçir",
+"Start / stop dictation": "Dikteyi başlat / durdur",
+"Start Vito when you log in": "Oturum açtığınızda Vito'yu başlat",
+"Start or stop a recording": "Kaydı başlat veya durdur",
+"Stop the daemon": "Daemon'u durdur",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Uygulamanın dışarıya gönderdiği tek veri, BYOK modelinin harici sağlayıcılarına giden sesiniz ve metinlerinizdir (konuşma tanıma ve AI temizleme). Bu veriler, ilgili harici sağlayıcıların gizlilik politikalarına tabidir.",
+"What to do with playing media": "Oynatılan medyayla ne yapılacağı"
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",

@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "A Vito ezt az értéket „reasoning_effort” néven küldi el. Az a végpont, amelyik nem ismeri, hibával válaszol.",
 "Details": "Részletek",
 "That dictation is no longer in the history.": "Az a diktálás már nincs meg az előzményekben.",
-"preview": "előnézet"
+"preview": "előnézet",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Automatikusan Entert ad hozzá (például chat- vagy terminálbevitel elküldéséhez)",
+"Cancel the current recording": "A jelenlegi felvétel megszakítása",
+"Cleanup on by default": "Tisztítás alapértelmezetten bekapcsolva",
+"Idle": "Tétlen",
+"Open settings…": "Beállítások megnyitása…",
+"Open the web UI in the browser": "A webes felület megnyitása a böngészőben",
+"Quit Vito": "Kilépés a Vitóból",
+"Recording…": "Felvétel…",
+"Run every dictation through the AI cleanup": "Minden diktálás átvezetése az AI-tisztításon",
+"Start / stop dictation": "Diktálás indítása / leállítása",
+"Start Vito when you log in": "A Vito indítása bejelentkezéskor",
+"Start or stop a recording": "Felvétel indítása vagy leállítása",
+"Stop the daemon": "A daemon leállítása",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Az alkalmazás kifelé csak a beszédedet és a külső BYOK szolgáltatókhoz (beszédfelismerés és AI-tisztítás) kerülő szövegeket küldi el. Ezekre az adatokra a külső szolgáltatók adatvédelmi szabályzata vonatkozik.",
+"What to do with playing media": "Mi történjen a lejátszott médiával"
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

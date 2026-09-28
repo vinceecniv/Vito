@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito e dërgon këtë vlerë si “reasoning_effort”. Një endpoint që nuk e njeh përgjigjet me gabim.",
 "Details": "Detaje",
 "That dictation is no longer in the history.": "Ai diktim nuk ndodhet më te historiku.",
-"preview": "paraprak"
+"preview": "paraprak",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Shton automatikisht një Enter (p.sh. dërgon hyrjen në chat ose terminal)",
+"Cancel the current recording": "Anulo regjistrimin aktual",
+"Cleanup on by default": "Pastrimi aktiv si parazgjedhje",
+"Idle": "Joaktiv",
+"Open settings…": "Hap cilësimet…",
+"Open the web UI in the browser": "Hap ndërfaqen web në shfletues",
+"Quit Vito": "Mbyll Vito",
+"Recording…": "Po regjistron…",
+"Run every dictation through the AI cleanup": "Kalo çdo diktim përmes pastrimit me AI",
+"Start / stop dictation": "Fillo / ndalo diktimin",
+"Start Vito when you log in": "Nis Vito kur hyn në sistem",
+"Start or stop a recording": "Fillo ose ndalo një regjistrim",
+"Stop the daemon": "Ndalo daemonin",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Të vetmet të dhëna që aplikacioni dërgon jashtë janë fjalimi yt dhe tekstet që shkojnë te ofruesit e jashtëm BYOK (njohja e të folurit dhe pastrimi me AI). Ato të dhëna rregullohen nga politikat e privatësisë të atyre ofruesve të jashtëm.",
+"What to do with playing media": "Çfarë të bëhet me median që po luhet"
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",
