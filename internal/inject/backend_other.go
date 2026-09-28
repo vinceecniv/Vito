@@ -9,6 +9,9 @@ import "vito/internal/config"
 // report — callers can ask without first checking which OS they are on.
 func ActiveBackend(cfg config.Injection) string { return "" }
 
+// BackendVerified: with a single route there is nothing to be unsure about.
+func BackendVerified(cfg config.Injection) bool { return true }
+
 // adjustMode is a no-op here. It exists for the Linux case where no injection
 // route is present at all and paste has to degrade to the clipboard; macOS
 // always has CGEventPost. A missing Accessibility grant is a different thing —

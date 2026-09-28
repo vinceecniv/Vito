@@ -793,7 +793,9 @@
 "Start or stop a recording": "రికార్డింగ్‌ను ప్రారంభించు లేదా ఆపు",
 "Stop the daemon": "డెమన్‌ను ఆపు",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "యాప్ బయటికి పంపే ఏకైక డేటా మీ ప్రసంగం మరియు బాహ్య BYOK ప్రొవైడర్లకు (ప్రసంగ గుర్తింపు మరియు AI శుద్ధీకరణ) వెళ్లే టెక్స్ట్‌లు మాత్రమే. ఆ డేటా ఆ బాహ్య ప్రొవైడర్ల గోప్యతా విధానాలచే నియంత్రించబడుతుంది.",
-"What to do with playing media": "ప్లే అవుతున్న మీడియాతో ఏం చేయాలి"
+"What to do with playing media": "ప్లే అవుతున్న మీడియాతో ఏం చేయాలి",
+"not used yet": "ఇంకా ఉపయోగించలేదు",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "మీ డెస్క్‌టాప్ ఈ మార్గాన్ని అందుబాటులో ఉన్నట్లు చూపిస్తుంది, కానీ అది పనిచేస్తుందో లేదో నిజమైన ప్రయత్నం మాత్రమే చెబుతుంది, కాబట్టి మీరు డిక్టేట్ చేసినప్పుడు Vito ముందుగా దీన్ని ప్రయత్నిస్తుంది. ఇది పనిచేయకపోతే, మీ డిక్టేషన్‌లు బదులుగా క్లిప్‌బోర్డ్‌కు వెళ్తాయి."
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

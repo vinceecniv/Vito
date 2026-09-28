@@ -2642,6 +2642,9 @@ const TR = { nl: {
   "Start Vito when you log in":"Vito starten bij inloggen",
   "Quit Vito":"Vito afsluiten",
   "Stop the daemon":"Stop de daemon",
+  // Linux text delivery not yet verified (#23)
+  "not used yet":"nog niet gebruikt",
+  "Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.":"Je desktop biedt deze route aan, maar alleen een echte poging laat zien of die werkt, dus Vito probeert hem pas bij je eerste dictaat. Werkt hij niet, dan gaan je dictaten naar het klembord.",
 }, en: {} };
 // Languages the UI is translated into (nl + en are inline; the rest load from
 // /i18n/<code>.json on demand). Kept in sync with the Soniox language list.
@@ -4808,6 +4811,15 @@ const BACKEND_LABELS = {
 // Which helpers the *current* route actually depends on. Vito tries wtype, then
 // the portal, then ydotool — so which tools are genuinely required depends on
 // where that search landed, and marking all of them required would be a lie.
+// The "Text delivery" line. The portal is advertised even where nothing
+// implements it, and only a real session proves it works (#23) — so until the
+// first dictation has used it, say so instead of naming it with confidence.
+function backendRowHTML(backend, verified){
+  if (!backend) return "";
+  const unverified = verified === false;
+  return `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(t(BACKEND_LABELS[backend] || backend))}${unverified ? ` <i>(${t("not used yet")})</i>` : ""}</p>` +
+    (unverified ? `<p class="act-note" style="margin:0 0 8px;">${t("Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.")}</p>` : "");
+}
 function linuxRequired(backend){
   const req = new Set(["wl-copy"]);
   if (backend === "clipboard") return req; // nothing can type; only the clipboard matters
@@ -4834,7 +4846,7 @@ async function renderLinuxCard(){
   // bundled, and ydotool is absent on purpose and cannot be added. Listing them
   // with a red cross would invite the user to install something that would change
   // nothing, so the Flatpak gets a shorter, truthful card instead.
-  if (info.flatpak) { body.innerHTML = flatpakLinuxHTML(backend); wireLinuxButtons(); return; }
+  if (info.flatpak) { body.innerHTML = flatpakLinuxHTML(backend, info.backend_verified); wireLinuxButtons(); return; }
   const required = linuxRequired(backend);
   const rows = LINUX_TOOLS.map(tl => {
     const ok = !!present[tl.name];
@@ -4845,9 +4857,7 @@ async function renderLinuxCard(){
       `<span class="tool-purpose">${purpose}</span></span></div>`;
   }).join("");
   const missingReq = LINUX_TOOLS.some(tl => required.has(tl.name) && !present[tl.name]);
-  const backendRow = backend
-    ? `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(t(BACKEND_LABELS[backend] || backend))}</p>`
-    : "";
+  const backendRow = backendRowHTML(backend, info.backend_verified);
   body.innerHTML =
     `<p class="act-note" style="margin:0 0 8px;">${t("On Linux, Vito depends on your distribution and desktop environment: some external helpers must be installed, and extra steps are sometimes needed. Below is what Vito found on this system.")}</p>
     ${backendRow}
@@ -4875,14 +4885,14 @@ function releasesURL(){
 // The Flatpak's own version of the Linux card. Same questions answered — how is
 // text delivered, how is the hotkey bound — without the helper checklist that
 // only makes sense where the user installs the helpers themselves.
-function flatpakLinuxHTML(backend){
+function flatpakLinuxHTML(backend, verified){
   const stuck = backend === "clipboard";
   return `<p class="act-note" style="margin:0 0 8px;">${t("Vito is running as a Flatpak. Everything it needs to reach your clipboard and type is bundled or comes from your desktop through the portals, so there is nothing to install here.")}</p>` +
-    (backend ? `<p class="act-note" style="margin:0 0 8px;"><b>${t("Text delivery")}:</b> ${ahEsc(t(BACKEND_LABELS[backend] || backend))}</p>` : "") +
+    backendRowHTML(backend, verified) +
     (stuck
       ? `<p class="act-note" style="color:var(--coral); margin:10px 0 0;">${t("This desktop has no RemoteDesktop portal, and the sandbox blocks the alternative, so nothing here can press a key. Your dictations are copied to the clipboard and you paste them yourself. The AppImage has no such limit on this desktop.")}</p>` +
         `<div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;"><button class="btn ghost small" id="linux-appimage">${t("Get the AppImage")}</button><button class="btn ghost small" id="linux-retest">${t("Re-test")}</button></div>`
-      : `<p class="act-note" style="margin:10px 0 0;">${t("Your desktop provides the portals Vito uses, so text delivery and the hotkey work without any setup.")}</p>` +
+      : (verified === false ? "" : `<p class="act-note" style="margin:10px 0 0;">${t("Your desktop provides the portals Vito uses, so text delivery and the hotkey work without any setup.")}</p>`) +
         `<div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;"><button class="btn ghost small" id="linux-activation">${t("Go to Activation")}</button><button class="btn ghost small" id="linux-retest">${t("Re-test")}</button></div>`);
 }
 renderLinuxCard();

@@ -793,7 +793,9 @@
 "Start or stop a recording": "Inicia o atura una gravació",
 "Stop the daemon": "Atura el dimoni",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Les úniques dades que l'aplicació envia a l'exterior són la teva veu i els textos que van als proveïdors externs BYOK (reconeixement de veu i neteja amb IA). Aquestes dades estan regides per les polítiques de privadesa d'aquests proveïdors externs.",
-"What to do with playing media": "Què fer amb el contingut multimèdia en reproducció"
+"What to do with playing media": "Què fer amb el contingut multimèdia en reproducció",
+"not used yet": "encara no s'ha fet servir",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "El teu escriptori anuncia aquesta ruta, però només un intent real mostra si funciona, així que Vito la prova primer quan dictes. Si no funciona, els teus dictats van al porta-retalls."
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

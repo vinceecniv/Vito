@@ -793,7 +793,9 @@
 "Start or stop a recording": "Sākt vai apturēt ierakstu",
 "Stop the daemon": "Apturēt dēmonu",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Vienīgie dati, ko lietotne sūta ārpusē, ir tava runa un teksti, kas nonāk pie ārējiem BYOK pakalpojumu sniedzējiem (runas atpazīšana un MI attīrīšana). Uz šiem datiem attiecas šo ārējo pakalpojumu sniedzēju privātuma politikas.",
-"What to do with playing media": "Ko darīt ar atskaņoto multividi"
+"What to do with playing media": "Ko darīt ar atskaņoto multividi",
+"not used yet": "vēl nav izmantots",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Jūsu darbvirsma norāda, ka šis maršruts ir pieejams, taču vai tas darbojas, parāda tikai īsts mēģinājums, tāpēc Vito to izmēģina pirmo, kad diktējat. Ja tas nedarbojas, jūsu diktāti tā vietā nonāk starpliktuvē."
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

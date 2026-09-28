@@ -793,7 +793,9 @@
 "Start or stop a recording": "ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ ಅಥವಾ ನಿಲ್ಲಿಸಿ",
 "Stop the daemon": "ಡೀಮನ್ ಅನ್ನು ನಿಲ್ಲಿಸಿ",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "ಅಪ್ಲಿಕೇಶನ್ ಹೊರಗೆ ಕಳುಹಿಸುವ ಏಕೈಕ ಡೇಟಾ ನಿಮ್ಮ ಧ್ವನಿ ಮತ್ತು ಬಾಹ್ಯ BYOK ಪೂರೈಕೆದಾರರಿಗೆ (ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ ಮತ್ತು AI ಶುದ್ಧೀಕರಣ) ಹೋಗುವ ಪಠ್ಯಗಳು. ಆ ಡೇಟಾ ಆ ಬಾಹ್ಯ ಪೂರೈಕೆದಾರರ ಗೌಪ್ಯತಾ ನೀತಿಗಳಿಗೆ ಒಳಪಟ್ಟಿರುತ್ತದೆ.",
-"What to do with playing media": "ಪ್ಲೇ ಆಗುತ್ತಿರುವ ಮೀಡಿಯಾದೊಂದಿಗೆ ಏನು ಮಾಡಬೇಕು"
+"What to do with playing media": "ಪ್ಲೇ ಆಗುತ್ತಿರುವ ಮೀಡಿಯಾದೊಂದಿಗೆ ಏನು ಮಾಡಬೇಕು",
+"not used yet": "ಇನ್ನೂ ಬಳಸಿಲ್ಲ",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್ ಈ ಮಾರ್ಗ ಲಭ್ಯವಿದೆ ಎಂದು ತಿಳಿಸುತ್ತದೆ, ಆದರೆ ಅದು ಕೆಲಸ ಮಾಡುತ್ತದೆಯೇ ಎಂಬುದನ್ನು ನಿಜವಾದ ಪ್ರಯತ್ನ ಮಾತ್ರ ತೋರಿಸುತ್ತದೆ, ಆದ್ದರಿಂದ ನೀವು ಡಿಕ್ಟೇಟ್ ಮಾಡಿದಾಗ Vito ಮೊದಲು ಇದನ್ನು ಪ್ರಯತ್ನಿಸುತ್ತದೆ. ಅದು ಕೆಲಸ ಮಾಡದಿದ್ದರೆ, ನಿಮ್ಮ ಡಿಕ್ಟೇಶನ್‌ಗಳು ಬದಲಾಗಿ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ಹೋಗುತ್ತವೆ."
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

@@ -86,6 +86,12 @@ func PortalVersion() uint32 {
 // worse than falling back quietly.
 var portalFailed atomic.Bool
 
+// portalVerified latches once a session has actually been established. Until
+// then "portal" is only what resolveBackend would try — the interface being
+// advertised proves nothing (see portalFailed) — so the settings page reports
+// it as not yet used rather than as a working route.
+var portalVerified atomic.Bool
+
 // PortalWorking reports whether the portal looks usable in this run.
 func PortalWorking() bool { return portalUsable() }
 
@@ -125,6 +131,7 @@ func ensureSession() (*dbus.Conn, dbus.ObjectPath, error) {
 		return nil, "", err
 	}
 	portal.conn, portal.session = conn, session
+	portalVerified.Store(true)
 	return conn, session, nil
 }
 

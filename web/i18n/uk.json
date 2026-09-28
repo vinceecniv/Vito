@@ -793,7 +793,9 @@
 "Start or stop a recording": "Почати або зупинити запис",
 "Stop the daemon": "Зупинити daemon",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Єдині дані, які застосунок надсилає назовні, — це ваше мовлення й тексти, що йдуть до зовнішніх провайдерів моделі BYOK (розпізнавання мовлення та очищення ШІ). До цих даних застосовуються політики приватності цих зовнішніх провайдерів.",
-"What to do with playing media": "Що робити з медіа, яке відтворюється"
+"What to do with playing media": "Що робити з медіа, яке відтворюється",
+"not used yet": "ще не використовувався",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Ваш робочий стіл заявляє про підтримку цього способу, але чи працює він, покаже лише справжня спроба, тому Vito спершу пробує його, коли ви диктуєте. Якщо він не спрацює, ваші диктування натомість потраплять у буфер обміну."
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",

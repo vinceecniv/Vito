@@ -793,7 +793,9 @@
 "Start or stop a recording": "Aloita tai lopeta nauhoitus",
 "Stop the daemon": "Pysäytä daemon",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Ainoa data, jonka sovellus lähettää ulkopuolelle, on puheesi ja tekstit, jotka menevät ulkoisille BYOK-palveluntarjoajille (puheentunnistus ja tekoälysiistintä). Näihin tietoihin sovelletaan kyseisten ulkoisten palveluntarjoajien tietosuojakäytäntöjä.",
-"What to do with playing media": "Mitä toistettavalle medialle tehdään"
+"What to do with playing media": "Mitä toistettavalle medialle tehdään",
+"not used yet": "ei vielä käytetty",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Työpöytäsi ilmoittaa tämän reitin olevan käytettävissä, mutta vasta todellinen yritys näyttää, toimiiko se, joten Vito kokeilee sitä ensin, kun saneletat. Jos se ei toimi, sanelusi menevät sen sijaan leikepöydälle."
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

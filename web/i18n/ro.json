@@ -793,7 +793,9 @@
 "Start or stop a recording": "Pornește sau oprește o înregistrare",
 "Stop the daemon": "Oprește daemonul",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Singurele date pe care aplicația le trimite în exterior sunt vocea ta și textele care ajung la furnizorii externi BYOK (recunoaștere vocală și curățare AI). Aceste date sunt guvernate de politicile de confidențialitate ale acelor furnizori externi.",
-"What to do with playing media": "Ce se întâmplă cu media în redare"
+"What to do with playing media": "Ce se întâmplă cu media în redare",
+"not used yet": "încă nefolosit",
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Desktopul tău anunță această metodă, dar doar o încercare reală arată dacă funcționează, așa că Vito o încearcă mai întâi când dictezi. Dacă nu funcționează, dictările tale ajung în schimb în clipboard."
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",
