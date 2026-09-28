@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito はこの値を「reasoning_effort」として送信します。これを知らないエンドポイントはエラーを返します。",
 "Details": "詳細",
 "That dictation is no longer in the history.": "その口述はもう履歴にありません。",
-"preview": "プレビュー"
+"preview": "プレビュー",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Enterを自動で追加します（チャットやターミナルの入力を送信する場合など）",
+"Cancel the current recording": "現在の録音をキャンセル",
+"Cleanup on by default": "クリーンアップをデフォルトでオン",
+"Idle": "待機中",
+"Open settings…": "設定を開く…",
+"Open the web UI in the browser": "Web UIをブラウザで開く",
+"Quit Vito": "Vitoを終了",
+"Recording…": "録音中…",
+"Run every dictation through the AI cleanup": "すべてのディクテーションをAIクリーンアップに通す",
+"Start / stop dictation": "ディクテーションを開始 / 停止",
+"Start Vito when you log in": "ログイン時にVitoを開始",
+"Start or stop a recording": "録音を開始または停止",
+"Stop the daemon": "デーモンを停止",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "アプリが外部に送信するデータは、あなたの音声と、外部のBYOKプロバイダー（音声認識とAIクリーンアップ）に送られるテキストだけです。これらのデータには、各外部プロバイダーのプライバシーポリシーが適用されます。",
+"What to do with playing media": "再生中のメディアの扱い"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",

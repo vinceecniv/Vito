@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "gratis",
 "(often none for a local server)": "(a menudo ninguna para un servidor local)",
-"Edit rule sets…": "Editar conjuntos de reglas…"
+"Edit rule sets…": "Editar conjuntos de reglas…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Añade automáticamente un Enter (envía, por ejemplo, la entrada de un chat o de una terminal)",
+"Cancel the current recording": "Cancelar la grabación actual",
+"Cleanup on by default": "Limpieza activada por defecto",
+"Idle": "Inactivo",
+"Open settings…": "Abrir ajustes…",
+"Open the web UI in the browser": "Abrir la interfaz web en el navegador",
+"Quit Vito": "Salir de Vito",
+"Recording…": "Grabando…",
+"Run every dictation through the AI cleanup": "Pasar cada dictado por la limpieza con IA",
+"Start / stop dictation": "Iniciar / detener el dictado",
+"Start Vito when you log in": "Iniciar Vito al iniciar sesión",
+"Start or stop a recording": "Iniciar o detener una grabación",
+"Stop the daemon": "Detener el daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Los únicos datos que la aplicación envía al exterior son tu voz y los textos que van a los proveedores externos BYOK (reconocimiento de voz y limpieza con IA). Esos datos se rigen por las políticas de privacidad de dichos proveedores externos.",
+"What to do with playing media": "Qué hacer con los medios que se están reproduciendo"
 },
 "help": {
 "theme": "Claro, oscuro o automático — automático sigue el modo claro/oscuro de tu sistema.",

@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "besplatno",
 "(often none for a local server)": "(za lokalni server često nije potreban)",
-"Edit rule sets…": "Uredi skupove pravila…"
+"Edit rule sets…": "Uredi skupove pravila…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Automatski dodaje Enter (na primjer šalje unos u chatu ili terminalu)",
+"Cancel the current recording": "Otkaži trenutno snimanje",
+"Cleanup on by default": "Čišćenje uključeno prema zadanim postavkama",
+"Idle": "Neaktivno",
+"Open settings…": "Otvori postavke…",
+"Open the web UI in the browser": "Otvori web sučelje u pregledniku",
+"Quit Vito": "Zatvori Vito",
+"Recording…": "Snimanje…",
+"Run every dictation through the AI cleanup": "Provedi svaki diktat kroz AI čišćenje",
+"Start / stop dictation": "Start / stop diktiranja",
+"Start Vito when you log in": "Pokreni Vito pri prijavi",
+"Start or stop a recording": "Započni ili zaustavi snimanje",
+"Stop the daemon": "Zaustavi daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Jedini podaci koje aplikacija šalje prema vani su vaš govor i tekstovi koji idu vanjskim BYOK pružaocima (prepoznavanje govora i AI čišćenje). Ti podaci podliježu politikama privatnosti tih vanjskih pružalaca.",
+"What to do with playing media": "Šta uraditi s medijem koji se reproducira"
 },
 "help": {
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetli/tamni način vašeg sistema.",

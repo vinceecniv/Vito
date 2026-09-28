@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito ഈ മൂല്യം “reasoning_effort” ആയി അയയ്ക്കുന്നു. ഇത് അറിയാത്ത ഒരു എൻഡ്‌പോയിന്റ് ഒരു പിശകോടെ മറുപടി നൽകും.",
 "Details": "വിശദാംശങ്ങൾ",
 "That dictation is no longer in the history.": "ആ ഡിക്ടേഷൻ ഇനി ചരിത്രത്തിൽ ഇല്ല.",
-"preview": "പ്രിവ്യൂ"
+"preview": "പ്രിവ്യൂ",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "സ്വയമേവ Enter ചേർക്കുന്നു (ഉദാഹരണത്തിന്, ചാറ്റ് അല്ലെങ്കിൽ ടെർമിനൽ ഇൻപുട്ട് അയയ്ക്കാൻ)",
+"Cancel the current recording": "നിലവിലെ റെക്കോർഡിംഗ് റദ്ദാക്കുക",
+"Cleanup on by default": "വൃത്തിയാക്കൽ ഡിഫോൾട്ടായി ഓൺ",
+"Idle": "നിഷ്‌ക്രിയം",
+"Open settings…": "ക്രമീകരണങ്ങൾ തുറക്കുക…",
+"Open the web UI in the browser": "വെബ് UI ബ്രൗസറിൽ തുറക്കുക",
+"Quit Vito": "Vito പുറത്തുകടക്കുക",
+"Recording…": "റെക്കോർഡ് ചെയ്യുന്നു…",
+"Run every dictation through the AI cleanup": "ഓരോ ഡിക്ടേഷനും AI വൃത്തിയാക്കലിലൂടെ കടത്തിവിടുക",
+"Start / stop dictation": "ഡിക്ടേഷൻ ആരംഭിക്കുക / നിർത്തുക",
+"Start Vito when you log in": "ലോഗിൻ ചെയ്യുമ്പോൾ Vito ആരംഭിക്കുക",
+"Start or stop a recording": "റെക്കോർഡിംഗ് ആരംഭിക്കുക അല്ലെങ്കിൽ നിർത്തുക",
+"Stop the daemon": "ഡെമൺ നിർത്തുക",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "ആപ്പ് പുറത്തേക്ക് അയയ്ക്കുന്ന ഏക ഡാറ്റ നിങ്ങളുടെ സംഭാഷണവും ബാഹ്യ BYOK ദാതാക്കളിലേക്ക് (സംഭാഷണ തിരിച്ചറിയലും AI വൃത്തിയാക്കലും) പോകുന്ന ടെക്സ്റ്റുകളുമാണ്. ആ ഡാറ്റയ്ക്ക് ആ ബാഹ്യ ദാതാക്കളുടെ സ്വകാര്യതാ നയങ്ങൾ ബാധകമാണ്.",
+"What to do with playing media": "പ്ലേ ചെയ്യുന്ന മീഡിയ എന്തുചെയ്യണം"
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "gratis",
 "(often none for a local server)": "(ofte ingen for en lokal server)",
-"Edit rule sets…": "Rediger regelsæt…"
+"Edit rule sets…": "Rediger regelsæt…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Tilføjer automatisk et Enter (sender fx chat- eller terminalinput)",
+"Cancel the current recording": "Annuller den aktuelle optagelse",
+"Cleanup on by default": "Oprydning som standard slået til",
+"Idle": "Inaktiv",
+"Open settings…": "Åbn indstillinger…",
+"Open the web UI in the browser": "Åbn webgrænsefladen i browseren",
+"Quit Vito": "Afslut Vito",
+"Recording…": "Optager…",
+"Run every dictation through the AI cleanup": "Kør hver diktat gennem AI-oprydningen",
+"Start / stop dictation": "Start / stop diktering",
+"Start Vito when you log in": "Start Vito, når du logger ind",
+"Start or stop a recording": "Start eller stop en optagelse",
+"Stop the daemon": "Stop daemonen",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "De eneste data, appen sender eksternt, er din tale og de tekster, der går til de eksterne BYOK-udbydere (talegenkendelse og AI-oprydning). Disse data er underlagt de eksterne udbyderes privatlivspolitikker.",
+"What to do with playing media": "Hvad der skal ske med medier, der afspilles"
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",

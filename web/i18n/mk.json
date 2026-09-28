@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito ја испраќа оваа вредност како „reasoning_effort“. Крајна точка што не ја познава одговара со грешка.",
 "Details": "Детали",
 "That dictation is no longer in the history.": "Тој диктат повеќе не е во историјата.",
-"preview": "преглед"
+"preview": "преглед",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Автоматски додава Enter (на пример, испраќа внес во разговор или терминал)",
+"Cancel the current recording": "Откажи го тековното снимање",
+"Cleanup on by default": "Средувањето е вклучено по стандард",
+"Idle": "Неактивно",
+"Open settings…": "Отвори ги поставките…",
+"Open the web UI in the browser": "Отвори го веб-интерфејсот во прелистувачот",
+"Quit Vito": "Излези од Vito",
+"Recording…": "Снимање…",
+"Run every dictation through the AI cleanup": "Секое диктирање помини го низ AI-средувањето",
+"Start / stop dictation": "Започни / запри диктирање",
+"Start Vito when you log in": "Стартувај го Vito при најава",
+"Start or stop a recording": "Започни или запри снимање",
+"Stop the daemon": "Запри го демонот",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Единствените податоци што апликацијата ги испраќа надворешно се вашиот говор и текстовите што одат до надворешните BYOK-провајдери (препознавање говор и AI-средување). За тие податоци важат политиките за приватност на тие надворешни провајдери.",
+"What to do with playing media": "Што да се прави со медиумите што се пуштаат"
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

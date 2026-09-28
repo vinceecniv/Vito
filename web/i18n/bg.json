@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "безплатно",
 "(often none for a local server)": "(често няма такъв при локален сървър)",
-"Edit rule sets…": "Редактиране на наборите от правила…"
+"Edit rule sets…": "Редактиране на наборите от правила…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Автоматично добавя Enter (например изпраща въведеното в чат или терминал)",
+"Cancel the current recording": "Отказ на текущия запис",
+"Cleanup on by default": "Обработката е включена по подразбиране",
+"Idle": "Неактивен",
+"Open settings…": "Отваряне на настройките…",
+"Open the web UI in the browser": "Отваряне на уеб интерфейса в браузъра",
+"Quit Vito": "Изход от Vito",
+"Recording…": "Записване…",
+"Run every dictation through the AI cleanup": "Прекарвай всяка диктовка през AI обработката",
+"Start / stop dictation": "Старт / стоп на диктовката",
+"Start Vito when you log in": "Стартиране на Vito при вход в системата",
+"Start or stop a recording": "Начало или край на запис",
+"Stop the daemon": "Спиране на daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Единствените данни, които приложението изпраща навън, са вашата реч и текстовете, които отиват към външните BYOK доставчици (разпознаване на реч и AI обработка). Тези данни се уреждат от политиките за поверителност на тези външни доставчици.",
+"What to do with playing media": "Какво да се прави с възпроизвежданите медии"
 },
 "help": {
 "theme": "Светла, тъмна или автоматична — автоматичната следва светлия/тъмния режим на системата ви.",

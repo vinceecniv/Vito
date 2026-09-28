@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito 会以“reasoning_effort”的形式发送此值。不认识该参数的端点会返回错误。",
 "Details": "详情",
 "That dictation is no longer in the history.": "该口述已不在历史记录中。",
-"preview": "预览"
+"preview": "预览",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "自动添加一个 Enter（例如用于发送聊天或终端输入）",
+"Cancel the current recording": "取消当前录音",
+"Cleanup on by default": "默认开启清理",
+"Idle": "空闲",
+"Open settings…": "打开设置…",
+"Open the web UI in the browser": "在浏览器中打开网页界面",
+"Quit Vito": "退出 Vito",
+"Recording…": "录音中…",
+"Run every dictation through the AI cleanup": "让每次听写都经过 AI 清理",
+"Start / stop dictation": "开始 / 停止听写",
+"Start Vito when you log in": "登录时启动 Vito",
+"Start or stop a recording": "开始或停止录音",
+"Stop the daemon": "停止 daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "应用向外部发送的唯一数据，是你的语音以及发送给 BYOK 模式外部提供商（语音识别和 AI 清理）的文本。这些数据适用于这些外部提供商的隐私声明。",
+"What to do with playing media": "如何处理正在播放的媒体"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

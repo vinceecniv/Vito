@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito siunčia šią reikšmę kaip „reasoning_effort“. Galinis taškas, kuris jos nežino, atsako klaida.",
 "Details": "Išsamiau",
 "That dictation is no longer in the history.": "Šio diktavimo istorijoje nebėra.",
-"preview": "peržiūra"
+"preview": "peržiūra",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Automatiškai prideda Enter (pavyzdžiui, išsiunčia pokalbio ar terminalo įvestį)",
+"Cancel the current recording": "Atšaukti dabartinį įrašymą",
+"Cleanup on by default": "Valymas įjungtas pagal numatytuosius nustatymus",
+"Idle": "Neaktyvu",
+"Open settings…": "Atverti nustatymus…",
+"Open the web UI in the browser": "Atverti žiniatinklio sąsają naršyklėje",
+"Quit Vito": "Uždaryti Vito",
+"Recording…": "Įrašoma…",
+"Run every dictation through the AI cleanup": "Kiekvieną diktavimą praleisti per DI valymą",
+"Start / stop dictation": "Pradėti / stabdyti diktavimą",
+"Start Vito when you log in": "Paleisti Vito prisijungus",
+"Start or stop a recording": "Pradėti arba sustabdyti įrašymą",
+"Stop the daemon": "Sustabdyti demoną",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Vieninteliai duomenys, kuriuos programa siunčia į išorę, yra jūsų kalba ir tekstai, keliaujantys pas išorinius BYOK tiekėjus (kalbos atpažinimas ir DI valymas). Šiems duomenims taikomos tų išorinių tiekėjų privatumo politikos.",
+"What to do with playing media": "Ką daryti su grojančia medija"
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

@@ -98,34 +98,78 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 	if runtime.GOOS != "darwin" {
 		systray.SetTitle("Vito Tray")
 	}
-	systray.SetTooltip("Vito Tray — idle")
-
-	mVersion := systray.AddMenuItem("Vito "+version, "Versie")
+	// Titles are set by relabel below, in the interface language.
+	mVersion := systray.AddMenuItem("Vito "+version, "")
 	mVersion.Disable()
 	systray.AddSeparator()
-	mStatus := systray.AddMenuItem("● Idle", "Huidige status")
+	mStatus := systray.AddMenuItem("", "")
 	mStatus.Disable()
 	systray.AddSeparator()
-	mSettings := systray.AddMenuItem("Instellingen openen…", "Open de web-UI in de browser")
+	mSettings := systray.AddMenuItem("", "")
 	systray.AddSeparator()
-	mToggle := systray.AddMenuItem("Start / stop dictaat", "Start of stop een opname")
-	mCancel := systray.AddMenuItem("Annuleren", "Annuleer de huidige opname")
+	mToggle := systray.AddMenuItem("", "")
+	mCancel := systray.AddMenuItem("", "")
 	systray.AddSeparator()
 
 	// Media action submenu (radio-style checkboxes).
-	mMedia := systray.AddMenuItem("Media tijdens inspreken", "Wat te doen met afspelende media")
-	mMediaDuck := mMedia.AddSubMenuItemCheckbox("Volume dempen (duck)", "", false)
-	mMediaPause := mMedia.AddSubMenuItemCheckbox("Pauzeren", "", false)
-	mMediaOff := mMedia.AddSubMenuItemCheckbox("Uit", "", false)
+	mMedia := systray.AddMenuItem("", "")
+	mMediaDuck := mMedia.AddSubMenuItemCheckbox("", "", false)
+	mMediaPause := mMedia.AddSubMenuItemCheckbox("", "", false)
+	mMediaOff := mMedia.AddSubMenuItemCheckbox("", "", false)
 
-	mCleanupDefault := systray.AddMenuItemCheckbox("Cleanup standaard aan", "Elke dictatie door Claude-cleanup", false)
-	mAppendEnter := systray.AddMenuItemCheckbox("Enter na tekst", "Voegt automatisch een Enter toe (verzendt bv. chat/terminal-invoer)", false)
-	mAutostart := systray.AddMenuItemCheckbox("Meestarten met OS", "Vito starten bij inloggen", false)
+	mCleanupDefault := systray.AddMenuItemCheckbox("", "", false)
+	mAppendEnter := systray.AddMenuItemCheckbox("", "", false)
+	mAutostart := systray.AddMenuItemCheckbox("", "", false)
 	if !autostart.Supported() {
 		mAutostart.Disable()
 	}
 	systray.AddSeparator()
-	mQuit := systray.AddMenuItem("Vito afsluiten", "Stop de daemon")
+	mQuit := systray.AddMenuItem("", "")
+
+	// relabel puts every text in the interface language. It runs at start and
+	// again whenever the language changes in the settings page, so switching
+	// language needs no restart.
+	var (
+		labelMu sync.Mutex
+		lang    string
+		state   = daemon.StateIdle
+	)
+	setStatus := func() { // callers hold labelMu
+		label, tip := statusText(state, translator(lang))
+		mStatus.SetTitle(label)
+		systray.SetTooltip("Vito Tray — " + tip)
+	}
+	relabel := func() {
+		labelMu.Lock()
+		defer labelMu.Unlock()
+		l := resolveLang(d.Config().UI.Lang)
+		if l == lang {
+			return
+		}
+		lang = l
+		t := translator(l)
+		set := func(it *systray.MenuItem, title, tip string) {
+			it.SetTitle(t(title))
+			if tip != "" {
+				it.SetTooltip(t(tip))
+			}
+		}
+		mVersion.SetTooltip(t("Version"))
+		mStatus.SetTooltip(t("Status"))
+		set(mSettings, "Open settings…", "Open the web UI in the browser")
+		set(mToggle, "Start / stop dictation", "Start or stop a recording")
+		set(mCancel, "Cancel", "Cancel the current recording")
+		set(mMedia, "Media while dictating", "What to do with playing media")
+		set(mMediaDuck, "Duck volume", "")
+		set(mMediaPause, "Pause", "")
+		set(mMediaOff, "Off", "")
+		set(mCleanupDefault, "Cleanup on by default", "Run every dictation through the AI cleanup")
+		set(mAppendEnter, "Enter after text", "Automatically adds an Enter (sends chat or terminal input, for example)")
+		set(mAutostart, "Start with the system", "Start Vito when you log in")
+		set(mQuit, "Quit Vito", "Stop the daemon")
+		setStatus()
+	}
+	relabel()
 
 	setCheck := func(it *systray.MenuItem, on bool) {
 		if on {
@@ -165,11 +209,13 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 	d.AddEventListener(func(e daemon.Event) {
 		switch e.Type {
 		case "state":
-			label, tip := statusText(e.State)
-			mStatus.SetTitle(label)
-			systray.SetTooltip("Vito Tray — " + tip)
+			labelMu.Lock()
+			state = e.State
+			setStatus()
+			labelMu.Unlock()
 			anim.setState(e.State)
 		case "config", "privacy":
+			relabel()
 			refresh()
 			anim.setDark(wantDark(d)) // theme may have changed in the web UI
 		}
@@ -230,13 +276,15 @@ func wantDark(d *daemon.Daemon) bool {
 	}
 }
 
-func statusText(s daemon.State) (label, tip string) {
+// statusText gives the status line and the tooltip suffix for s. The tooltip
+// uses the lowercase words the settings page shows for the same states.
+func statusText(s daemon.State, t func(string) string) (label, tip string) {
 	switch s {
 	case daemon.StateRecording:
-		return "● Opname…", "recording"
+		return "● " + t("Recording…"), t("recording")
 	case daemon.StateProcessing:
-		return "● Verwerken…", "processing"
+		return "● " + t("Processing…"), t("processing")
 	default:
-		return "● Idle", "idle"
+		return "● " + t("Idle"), t("idle")
 	}
 }

@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "doan",
 "(often none for a local server)": "(zerbitzari lokal batean sarritan ez dago)",
-"Edit rule sets…": "Editatu arau-multzoak…"
+"Edit rule sets…": "Editatu arau-multzoak…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Enter bat gehitzen du automatikoki (adibidez, txateko edo terminaleko sarrera bidaltzeko)",
+"Cancel the current recording": "Utzi uneko grabaketa",
+"Cleanup on by default": "Garbiketa lehenespenez aktibo",
+"Idle": "Geldirik",
+"Open settings…": "Ireki ezarpenak…",
+"Open the web UI in the browser": "Ireki web interfazea nabigatzailean",
+"Quit Vito": "Irten Vitotik",
+"Recording…": "Grabatzen…",
+"Run every dictation through the AI cleanup": "Igaro diktatu bakoitza AA garbiketatik",
+"Start / stop dictation": "Hasi / gelditu diktatua",
+"Start Vito when you log in": "Hasi Vito saioa hasten duzunean",
+"Start or stop a recording": "Hasi edo gelditu grabaketa bat",
+"Stop the daemon": "Gelditu daemon-a",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Aplikazioak kanpora bidaltzen duen datu bakarra zure ahotsa eta kanpoko BYOK hornitzaileei (ahots-ezagutza eta AA garbiketa) doazen testuak dira. Datu horiek kanpoko hornitzaile horien pribatutasun-politikek arautzen dituzte.",
+"What to do with playing media": "Zer egin erreproduzitzen ari diren multimediarekin"
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

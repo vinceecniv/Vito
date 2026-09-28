@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "O Vito envia este valor como “reasoning_effort”. Um endpoint que não o conheça responde com um erro.",
 "Details": "Detalhes",
 "That dictation is no longer in the history.": "Esse ditado já não está no histórico.",
-"preview": "pré-visualização"
+"preview": "pré-visualização",
+"Idle": "Inativo",
+"Recording…": "A gravar…",
+"Open settings…": "Abrir definições…",
+"Open the web UI in the browser": "Abrir a interface web no navegador",
+"Start / stop dictation": "Iniciar / parar ditado",
+"Start or stop a recording": "Iniciar ou parar uma gravação",
+"Cancel the current recording": "Cancelar a gravação atual",
+"What to do with playing media": "O que fazer com a multimédia em reprodução",
+"Cleanup on by default": "Limpeza ativada por predefinição",
+"Run every dictation through the AI cleanup": "Passar cada ditado pela limpeza com IA",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Adiciona automaticamente um Enter (envia, por exemplo, uma mensagem de chat ou um comando no terminal)",
+"Start Vito when you log in": "Iniciar o Vito ao iniciar sessão",
+"Quit Vito": "Sair do Vito",
+"Stop the daemon": "Parar o daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Os únicos dados que a aplicação envia para o exterior são a sua voz e os textos que seguem para os fornecedores BYOK externos (reconhecimento de voz e limpeza com IA). Esses dados estão sujeitos às políticas de privacidade desses fornecedores externos."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",

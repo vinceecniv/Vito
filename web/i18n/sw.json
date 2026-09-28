@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito hutuma thamani hii kama “reasoning_effort”. Endpoint isiyoifahamu hujibu kwa hitilafu.",
 "Details": "Maelezo",
 "That dictation is no longer in the history.": "Uandishi huo haupo tena katika historia.",
-"preview": "hakikisho"
+"preview": "hakikisho",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Huongeza Enter kiotomatiki (kwa mfano, hutuma ingizo la gumzo au terminal)",
+"Cancel the current recording": "Ghairi kurekodi kunakoendelea",
+"Cleanup on by default": "Usafishaji umewashwa kwa chaguo-msingi",
+"Idle": "Haitumiki",
+"Open settings…": "Fungua mipangilio…",
+"Open the web UI in the browser": "Fungua kiolesura cha wavuti kwenye kivinjari",
+"Quit Vito": "Toka Vito",
+"Recording…": "Inarekodi…",
+"Run every dictation through the AI cleanup": "Pitisha kila dictation kwenye usafishaji wa AI",
+"Start / stop dictation": "Anza / simamisha dictation",
+"Start Vito when you log in": "Anza Vito unapoingia",
+"Start or stop a recording": "Anza au simamisha kurekodi",
+"Stop the daemon": "Simamisha daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Data pekee ambayo programu hutuma nje ni sauti yako na maandishi yanayokwenda kwa watoa huduma wa nje wa BYOK (utambuzi wa sauti na usafishaji wa AI). Data hiyo inasimamiwa na sera za faragha za watoa huduma hao wa nje.",
+"What to do with playing media": "Cha kufanya na media inayochezwa"
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

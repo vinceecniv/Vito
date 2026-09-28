@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito sūta šo vērtību kā “reasoning_effort”. Galapunkts, kas to nepazīst, atbild ar kļūdu.",
 "Details": "Sīkāk",
 "That dictation is no longer in the history.": "Šī diktāta vairs nav vēsturē.",
-"preview": "priekšskats"
+"preview": "priekšskats",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Automātiski pievieno Enter (piemēram, nosūta sarunas vai termināļa ievadi)",
+"Cancel the current recording": "Atcelt pašreizējo ierakstu",
+"Cleanup on by default": "Attīrīšana pēc noklusējuma ieslēgta",
+"Idle": "Dīkstāvē",
+"Open settings…": "Atvērt iestatījumus…",
+"Open the web UI in the browser": "Atvērt tīmekļa saskarni pārlūkā",
+"Quit Vito": "Aizvērt Vito",
+"Recording…": "Ieraksta…",
+"Run every dictation through the AI cleanup": "Katru diktējumu izlaist cauri MI attīrīšanai",
+"Start / stop dictation": "Sākt / apturēt diktēšanu",
+"Start Vito when you log in": "Startēt Vito, kad piesakies",
+"Start or stop a recording": "Sākt vai apturēt ierakstu",
+"Stop the daemon": "Apturēt dēmonu",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Vienīgie dati, ko lietotne sūta ārpusē, ir tava runa un teksti, kas nonāk pie ārējiem BYOK pakalpojumu sniedzējiem (runas atpazīšana un MI attīrīšana). Uz šiem datiem attiecas šo ārējo pakalpojumu sniedzēju privātuma politikas.",
+"What to do with playing media": "Ko darīt ar atskaņoto multividi"
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

@@ -778,7 +778,22 @@
 "Groq": "Groq",
 "free": "zdarma",
 "(often none for a local server)": "(u lokálního serveru často žádný)",
-"Edit rule sets…": "Upravit sady pravidel…"
+"Edit rule sets…": "Upravit sady pravidel…",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Automaticky přidá Enter (například odešle vstup v chatu nebo terminálu)",
+"Cancel the current recording": "Zrušit aktuální nahrávání",
+"Cleanup on by default": "Vyčištění ve výchozím stavu zapnuto",
+"Idle": "Nečinný",
+"Open settings…": "Otevřít nastavení…",
+"Open the web UI in the browser": "Otevřít webové rozhraní v prohlížeči",
+"Quit Vito": "Ukončit Vito",
+"Recording…": "Nahrávání…",
+"Run every dictation through the AI cleanup": "Provést každý diktát AI vyčištěním",
+"Start / stop dictation": "Spustit / zastavit diktování",
+"Start Vito when you log in": "Spustit Vito při přihlášení",
+"Start or stop a recording": "Spustit nebo zastavit nahrávání",
+"Stop the daemon": "Zastavit daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Jediná data, která aplikace odesílá navenek, jsou vaše řeč a texty určené externím poskytovatelům BYOK (rozpoznávání řeči a AI vyčištění). Tato data se řídí zásadami ochrany soukromí těchto externích poskytovatelů.",
+"What to do with playing media": "Co dělat s přehrávaným médiem"
 },
 "help": {
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",

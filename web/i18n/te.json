@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito ఈ విలువను “reasoning_effort” గా పంపుతుంది. దాన్ని తెలియని ఎండ్‌పాయింట్ దోషంతో జవాబిస్తుంది.",
 "Details": "వివరాలు",
 "That dictation is no longer in the history.": "ఆ డిక్టేషన్ ఇక చరిత్రలో లేదు.",
-"preview": "ప్రివ్యూ"
+"preview": "ప్రివ్యూ",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "స్వయంచాలకంగా Enter ని జోడిస్తుంది (ఉదాహరణకు, చాట్ లేదా టెర్మినల్ ఇన్‌పుట్‌ను పంపుతుంది)",
+"Cancel the current recording": "ప్రస్తుత రికార్డింగ్‌ను రద్దు చేయి",
+"Cleanup on by default": "శుద్ధీకరణ డిఫాల్ట్‌గా ఆన్",
+"Idle": "నిష్క్రియం",
+"Open settings…": "సెట్టింగ్‌లను తెరవండి…",
+"Open the web UI in the browser": "వెబ్ UI ను బ్రౌజర్‌లో తెరవండి",
+"Quit Vito": "Vito నుండి నిష్క్రమించు",
+"Recording…": "రికార్డింగ్ అవుతోంది…",
+"Run every dictation through the AI cleanup": "ప్రతి డిక్టేషన్‌ను AI శుద్ధీకరణ ద్వారా పంపు",
+"Start / stop dictation": "డిక్టేషన్ ప్రారంభం / ఆపు",
+"Start Vito when you log in": "లాగిన్ అయినప్పుడు Vito ను ప్రారంభించు",
+"Start or stop a recording": "రికార్డింగ్‌ను ప్రారంభించు లేదా ఆపు",
+"Stop the daemon": "డెమన్‌ను ఆపు",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "యాప్ బయటికి పంపే ఏకైక డేటా మీ ప్రసంగం మరియు బాహ్య BYOK ప్రొవైడర్లకు (ప్రసంగ గుర్తింపు మరియు AI శుద్ధీకరణ) వెళ్లే టెక్స్ట్‌లు మాత్రమే. ఆ డేటా ఆ బాహ్య ప్రొవైడర్ల గోప్యతా విధానాలచే నియంత్రించబడుతుంది.",
+"What to do with playing media": "ప్లే అవుతున్న మీడియాతో ఏం చేయాలి"
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

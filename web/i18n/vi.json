@@ -778,7 +778,22 @@
 "Vito sends this value as “reasoning_effort”. An endpoint that doesn't know it answers with an error.": "Vito gửi giá trị này dưới tên “reasoning_effort”. Một endpoint không biết tham số này sẽ trả về lỗi.",
 "Details": "Chi tiết",
 "That dictation is no longer in the history.": "Bản đọc đó không còn trong lịch sử.",
-"preview": "xem trước"
+"preview": "xem trước",
+"Automatically adds an Enter (sends chat or terminal input, for example)": "Tự động thêm Enter (ví dụ: để gửi tin nhắn chat hoặc đầu vào terminal)",
+"Cancel the current recording": "Hủy bản ghi hiện tại",
+"Cleanup on by default": "Bật dọn dẹp theo mặc định",
+"Idle": "Nghỉ",
+"Open settings…": "Mở cài đặt…",
+"Open the web UI in the browser": "Mở giao diện web trong trình duyệt",
+"Quit Vito": "Thoát Vito",
+"Recording…": "Đang ghi…",
+"Run every dictation through the AI cleanup": "Cho mọi lần đọc chính tả qua bước dọn dẹp bằng AI",
+"Start / stop dictation": "Bắt đầu / dừng đọc chính tả",
+"Start Vito when you log in": "Khởi động Vito khi bạn đăng nhập",
+"Start or stop a recording": "Bắt đầu hoặc dừng ghi",
+"Stop the daemon": "Dừng daemon",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Dữ liệu duy nhất mà ứng dụng gửi ra ngoài là giọng nói và văn bản đi đến các nhà cung cấp bên ngoài của mô hình BYOK (nhận dạng giọng nói và dọn dẹp bằng AI). Dữ liệu đó chịu sự điều chỉnh của chính sách riêng tư của các nhà cung cấp bên ngoài đó.",
+"What to do with playing media": "Việc cần làm với nội dung đa phương tiện đang phát"
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",
