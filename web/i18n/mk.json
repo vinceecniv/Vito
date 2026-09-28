@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Единствените податоци што апликацијата ги испраќа надворешно се вашиот говор и текстовите што одат до надворешните BYOK-провајдери (препознавање говор и AI-средување). За тие податоци важат политиките за приватност на тие надворешни провајдери.",
 "What to do with playing media": "Што да се прави со медиумите што се пуштаат",
 "not used yet": "сè уште не е користено",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Твојот работен простор кажува дека овој пат е достапен, но дали работи покажува само вистинскиот обид, па Vito прво него го проба кога диктираш. Ако не работи, твоите диктати наместо тоа одат во клипборд."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Твојот работен простор кажува дека овој пат е достапен, но дали работи покажува само вистинскиот обид, па Vito прво него го проба кога диктираш. Ако не работи, твоите диктати наместо тоа одат во клипборд.",
+"Credits": "Заслуги",
+"Achievement medals and animations use": "Медалите за достигнувања и анимациите го користат",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "од Google (статичните под Apache-2.0, анимациите под CC BY 4.0), а се пуштаат со",
+"by Airbnb (MIT). Country flags are": "од Airbnb (MIT). Знамињата на земјите се од",
+"by Panayiotis Lipiridis (MIT).": "од Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Die enigste data wat die toep ekstern stuur, is jou spraak en die tekste wat na die eksterne BYOK-verskaffers gaan (spraakherkenning en KI-skoonmaak). Daardie data word deur die eksterne verskaffers se privaatheidsbeleide beheer.",
 "What to do with playing media": "Wat om te doen met media wat speel",
 "not used yet": "nog nie gebruik nie",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Jou werkskerm bied hierdie roete aan, maar net 'n werklike poging wys of dit werk, so Vito probeer dit eers wanneer jy diktaat gee. As dit nie werk nie, gaan jou diktate eerder na die knipbord."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Jou werkskerm bied hierdie roete aan, maar net 'n werklike poging wys of dit werk, so Vito probeer dit eers wanneer jy diktaat gee. As dit nie werk nie, gaan jou diktate eerder na die knipbord.",
+"Credits": "Erkennings",
+"Achievement medals and animations use": "Prestasiemedaljes en animasies gebruik",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "van Google (statiese onder Apache-2.0, animasies onder CC BY 4.0), en word gespeel met",
+"by Airbnb (MIT). Country flags are": "van Airbnb (MIT). Landsvlae kom van",
+"by Panayiotis Lipiridis (MIT).": "van Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

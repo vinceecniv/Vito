@@ -795,6 +795,11 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "应用向外部发送的唯一数据，是你的语音以及发送给 BYOK 模式外部提供商（语音识别和 AI 清理）的文本。这些数据适用于这些外部提供商的隐私声明。",
 "What to do with playing media": "如何处理正在播放的媒体",
 "not used yet": "尚未使用",
+"Credits": "致谢",
+"Achievement medals and animations use": "成就奖章和动画使用",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "，由 Google 提供（静态图像采用 Apache-2.0 许可，动画采用 CC BY 4.0 许可），并通过",
+"by Airbnb (MIT). Country flags are": "（由 Airbnb 提供，MIT 许可）播放。国旗来自",
+"by Panayiotis Lipiridis (MIT).": "（由 Panayiotis Lipiridis 提供，MIT 许可）。",
 "Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "你的桌面环境声明支持这条途径，但只有实际尝试才能确定它是否可用，所以你口述时 Vito 会先尝试它。如果不可用，你的口述内容会改为进入剪贴板。"
 },
 "help": {

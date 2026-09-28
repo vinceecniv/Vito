@@ -1,5 +1,10 @@
 {
 "strings": {
+"Credits": "Падзякі",
+"Achievement medals and animations use": "Медалі за дасягненні і анімацыі выкарыстоўваюць",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "ад Google (статычныя — пад ліцэнзіяй Apache-2.0, анімацыі — пад CC BY 4.0), а прайграюцца з дапамогай",
+"by Airbnb (MIT). Country flags are": "ад Airbnb (MIT). Сцягі краін —",
+"by Panayiotis Lipiridis (MIT).": "ад Panayiotis Lipiridis (MIT).",
 "achievements": "дасягненні",
 "Milestones you've unlocked with your voice": "Вехі, якія вы адкрылі сваім голасам",
 "Achievement unlocked": "Дасягненне адкрыта",

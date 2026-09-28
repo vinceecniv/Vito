@@ -1,5 +1,10 @@
 {
 "strings": {
+"Credits": "Katkıda bulunanlar",
+"Achievement medals and animations use": "Başarı madalyaları ve animasyonlar",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "kullanır (Google tarafından; statik olanlar Apache-2.0, animasyonlar CC BY 4.0 lisanslı) ve şununla oynatılır:",
+"by Airbnb (MIT). Country flags are": "(Airbnb tarafından, MIT). Ülke bayrakları",
+"by Panayiotis Lipiridis (MIT).": "(Panayiotis Lipiridis tarafından, MIT) ile sağlanır.",
 "Status": "Durum",
 "Settings": "Ayarlar",
 "Dictionary": "Sözlük",

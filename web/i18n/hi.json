@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "ऐप बाहर केवल आपकी आवाज़ और बाहरी BYOK प्रदाताओं (स्पीच रिकग्निशन और AI सफ़ाई) को जाने वाले टेक्स्ट भेजता है। वह डेटा उन बाहरी प्रदाताओं की गोपनीयता नीतियों के अधीन है।",
 "What to do with playing media": "चल रहे मीडिया के साथ क्या करना है",
 "not used yet": "अभी उपयोग नहीं हुआ",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "आपका डेस्कटॉप इस रास्ते के उपलब्ध होने का संकेत देता है, लेकिन यह काम करता है या नहीं, यह केवल असली कोशिश से ही पता चलता है, इसलिए जब आप डिक्टेट करते हैं तो Vito पहले इसे आज़माता है। अगर यह काम नहीं करता, तो आपके डिक्टेशन इसके बजाय क्लिपबोर्ड पर चले जाते हैं।"
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "आपका डेस्कटॉप इस रास्ते के उपलब्ध होने का संकेत देता है, लेकिन यह काम करता है या नहीं, यह केवल असली कोशिश से ही पता चलता है, इसलिए जब आप डिक्टेट करते हैं तो Vito पहले इसे आज़माता है। अगर यह काम नहीं करता, तो आपके डिक्टेशन इसके बजाय क्लिपबोर्ड पर चले जाते हैं।",
+"Credits": "क्रेडिट",
+"Achievement medals and animations use": "उपलब्धि पदक और एनिमेशन इनका उपयोग करते हैं:",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google द्वारा (स्थिर Apache-2.0 के अंतर्गत, एनिमेशन CC BY 4.0 के अंतर्गत), और इन्हें चलाने के लिए",
+"by Airbnb (MIT). Country flags are": "Airbnb द्वारा (MIT)। देशों के झंडे",
+"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis द्वारा (MIT) से हैं।"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",

@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "இந்த ஆப் வெளியே அனுப்பும் ஒரே தரவு உங்கள் பேச்சும், வெளிப்புற BYOK வழங்குநர்களுக்குச் செல்லும் உரைகளும் (பேச்சு அறிதல் மற்றும் AI சுத்தம்) மட்டுமே. அந்தத் தரவு அந்த வெளிப்புற வழங்குநர்களின் தனியுரிமைக் கொள்கைகளால் நிர்வகிக்கப்படுகிறது.",
 "What to do with playing media": "இயங்கும் மீடியாவை என்ன செய்வது",
 "not used yet": "இன்னும் பயன்படுத்தப்படவில்லை",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "உங்கள் டெஸ்க்டாப் இந்த வழியை அறிவிக்கிறது, ஆனால் உண்மையான முயற்சி மட்டுமே அது செயல்படுகிறதா என்பதைக் காட்டும்; அதனால் நீங்கள் சொல்லெழுதும்போது Vito முதலில் இதை முயற்சிக்கும். இது செயல்படவில்லை என்றால், உங்கள் சொல்லெழுத்துக்கள் அதற்குப் பதிலாக கிளிப்போர்டுக்குச் செல்லும்."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "உங்கள் டெஸ்க்டாப் இந்த வழியை அறிவிக்கிறது, ஆனால் உண்மையான முயற்சி மட்டுமே அது செயல்படுகிறதா என்பதைக் காட்டும்; அதனால் நீங்கள் சொல்லெழுதும்போது Vito முதலில் இதை முயற்சிக்கும். இது செயல்படவில்லை என்றால், உங்கள் சொல்லெழுத்துக்கள் அதற்குப் பதிலாக கிளிப்போர்டுக்குச் செல்லும்.",
+"Credits": "நன்றி அறிவிப்புகள்",
+"Achievement medals and animations use": "சாதனைப் பதக்கங்களும் அனிமேஷன்களும் பயன்படுத்துவது:",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "கூகுள் உருவாக்கியது (நிலையானவை Apache-2.0 உரிமத்திலும், அனிமேஷன்கள் CC BY 4.0 உரிமத்திலும்), இயக்குவது:",
+"by Airbnb (MIT). Country flags are": "ஏர்பிஎன்பி உருவாக்கியது (MIT). நாட்டுக் கொடிகள்:",
+"by Panayiotis Lipiridis (MIT).": "பனாயியோட்டிஸ் லிபிரிடிஸ் உருவாக்கியது (MIT)."
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

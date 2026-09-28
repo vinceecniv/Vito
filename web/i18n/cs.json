@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Jediná data, která aplikace odesílá navenek, jsou vaše řeč a texty určené externím poskytovatelům BYOK (rozpoznávání řeči a AI vyčištění). Tato data se řídí zásadami ochrany soukromí těchto externích poskytovatelů.",
 "What to do with playing media": "Co dělat s přehrávaným médiem",
 "not used yet": "zatím nepoužito",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Váš desktop tuto cestu nabízí, ale zda funguje, ukáže až skutečný pokus, proto ji Vito při diktování nejdřív vyzkouší. Pokud nefunguje, vaše diktáty se místo toho uloží do schránky."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Váš desktop tuto cestu nabízí, ale zda funguje, ukáže až skutečný pokus, proto ji Vito při diktování nejdřív vyzkouší. Pokud nefunguje, vaše diktáty se místo toho uloží do schránky.",
+"Credits": "Poděkování",
+"Achievement medals and animations use": "Medaile za úspěchy a animace používají",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "od Googlu (statické pod licencí Apache-2.0, animace pod CC BY 4.0), přehrávané pomocí",
+"by Airbnb (MIT). Country flags are": "od Airbnb (MIT). Vlajky zemí pocházejí z",
+"by Panayiotis Lipiridis (MIT).": "od Panayiotise Lipiridise (MIT)."
 },
 "help": {
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",

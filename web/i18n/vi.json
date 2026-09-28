@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Dữ liệu duy nhất mà ứng dụng gửi ra ngoài là giọng nói và văn bản đi đến các nhà cung cấp bên ngoài của mô hình BYOK (nhận dạng giọng nói và dọn dẹp bằng AI). Dữ liệu đó chịu sự điều chỉnh của chính sách riêng tư của các nhà cung cấp bên ngoài đó.",
 "What to do with playing media": "Việc cần làm với nội dung đa phương tiện đang phát",
 "not used yet": "chưa dùng",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Máy tính của bạn quảng bá cách này, nhưng chỉ thử thật mới biết nó có hoạt động không, nên Vito sẽ thử nó trước khi bạn đọc. Nếu không được, bản đọc của bạn sẽ được chuyển vào bộ nhớ tạm."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Máy tính của bạn quảng bá cách này, nhưng chỉ thử thật mới biết nó có hoạt động không, nên Vito sẽ thử nó trước khi bạn đọc. Nếu không được, bản đọc của bạn sẽ được chuyển vào bộ nhớ tạm.",
+"Credits": "Ghi công",
+"Achievement medals and animations use": "Huy chương thành tích và hoạt ảnh sử dụng",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "của Google (ảnh tĩnh theo giấy phép Apache-2.0, hoạt ảnh theo CC BY 4.0), được phát bằng",
+"by Airbnb (MIT). Country flags are": "của Airbnb (MIT). Cờ quốc gia là",
+"by Panayiotis Lipiridis (MIT).": "của Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",

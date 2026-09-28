@@ -1,5 +1,10 @@
 {
 "strings": {
+"Credits": "ಕ್ರೆಡಿಟ್‌ಗಳು",
+"Achievement medals and animations use": "ಸಾಧನೆಯ ಪದಕಗಳು ಮತ್ತು ಅನಿಮೇಷನ್‌ಗಳು ಬಳಸುವುದು",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "— Google ರಚನೆ (ಸ್ಥಿರ ಚಿತ್ರಗಳು Apache-2.0 ಅಡಿಯಲ್ಲಿ, ಅನಿಮೇಷನ್‌ಗಳು CC BY 4.0 ಅಡಿಯಲ್ಲಿ); ಇವುಗಳನ್ನು ಪ್ಲೇ ಮಾಡುವುದು",
+"by Airbnb (MIT). Country flags are": "— Airbnb ರಚನೆ (MIT). ದೇಶಗಳ ಧ್ವಜಗಳು",
+"by Panayiotis Lipiridis (MIT).": "— Panayiotis Lipiridis ರಚನೆ (MIT).",
 "Status": "ಸ್ಥಿತಿ",
 "Settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
 "Dictionary": "ಶಬ್ದಕೋಶ",

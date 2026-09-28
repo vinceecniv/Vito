@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Единствените данни, които приложението изпраща навън, са вашата реч и текстовете, които отиват към външните BYOK доставчици (разпознаване на реч и AI обработка). Тези данни се уреждат от политиките за поверителност на тези външни доставчици.",
 "What to do with playing media": "Какво да се прави с възпроизвежданите медии",
 "not used yet": "още не е използван",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Работната ви среда обявява този маршрут, но само реален опит показва дали работи, затова Vito първо го изпробва, когато диктувате. Ако не работи, диктовките ви отиват в клипборда."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Работната ви среда обявява този маршрут, но само реален опит показва дали работи, затова Vito първо го изпробва, когато диктувате. Ако не работи, диктовките ви отиват в клипборда.",
+"Credits": "Благодарности",
+"Achievement medals and animations use": "Медалите за постижения и анимациите използват",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "от Google (статичните под Apache-2.0, анимациите под CC BY 4.0), възпроизвеждани с",
+"by Airbnb (MIT). Country flags are": "от Airbnb (MIT). Знамената на държавите са от",
+"by Panayiotis Lipiridis (MIT).": "от Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "Светла, тъмна или автоматична — автоматичната следва светлия/тъмния режим на системата ви.",

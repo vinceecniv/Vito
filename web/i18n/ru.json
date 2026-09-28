@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Единственные данные, которые приложение отправляет наружу, — это ваша речь и тексты, передаваемые внешним BYOK-провайдерам (распознавание речи и ИИ-очистка). На эти данные распространяются политики конфиденциальности этих внешних провайдеров.",
 "What to do with playing media": "Что делать с воспроизводимым медиа",
 "not used yet": "ещё не использовался",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Ваш рабочий стол заявляет о поддержке этого способа, но работает ли он, покажет только реальная попытка, поэтому Vito сначала пробует его, когда вы диктуете. Если он не сработает, ваши диктовки попадут в буфер обмена."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Ваш рабочий стол заявляет о поддержке этого способа, но работает ли он, покажет только реальная попытка, поэтому Vito сначала пробует его, когда вы диктуете. Если он не сработает, ваши диктовки попадут в буфер обмена.",
+"Credits": "Благодарности",
+"Achievement medals and animations use": "Медали за достижения и анимации используют",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "от Google (статичные — по лицензии Apache-2.0, анимации — по CC BY 4.0); воспроизводятся с помощью",
+"by Airbnb (MIT). Country flags are": "от Airbnb (MIT). Флаги стран —",
+"by Panayiotis Lipiridis (MIT).": "от Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",

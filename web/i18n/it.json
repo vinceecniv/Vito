@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Gli unici dati che l'app invia all'esterno sono la tua voce e i testi inviati ai provider BYOK esterni (riconoscimento vocale e pulizia AI). Tali dati sono soggetti alle informative sulla privacy di quei provider esterni.",
 "What to do with playing media": "Cosa fare con i contenuti multimediali in riproduzione",
 "not used yet": "non ancora usato",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Il tuo desktop dichiara di supportare questo percorso, ma solo un tentativo reale mostra se funziona, quindi Vito lo prova per primo quando detti. Se non funziona, le tue dettature vanno invece negli appunti."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Il tuo desktop dichiara di supportare questo percorso, ma solo un tentativo reale mostra se funziona, quindi Vito lo prova per primo quando detti. Se non funziona, le tue dettature vanno invece negli appunti.",
+"Credits": "Crediti",
+"Achievement medals and animations use": "Le medaglie dei traguardi e le animazioni usano",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "di Google (quelle statiche con licenza Apache-2.0, le animazioni con CC BY 4.0), riprodotte con",
+"by Airbnb (MIT). Country flags are": "di Airbnb (MIT). Le bandiere dei paesi provengono da",
+"by Panayiotis Lipiridis (MIT).": "di Panayiotis Lipiridis (MIT)."
 },
 "help": {
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",

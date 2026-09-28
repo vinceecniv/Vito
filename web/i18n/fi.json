@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Ainoa data, jonka sovellus lähettää ulkopuolelle, on puheesi ja tekstit, jotka menevät ulkoisille BYOK-palveluntarjoajille (puheentunnistus ja tekoälysiistintä). Näihin tietoihin sovelletaan kyseisten ulkoisten palveluntarjoajien tietosuojakäytäntöjä.",
 "What to do with playing media": "Mitä toistettavalle medialle tehdään",
 "not used yet": "ei vielä käytetty",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Työpöytäsi ilmoittaa tämän reitin olevan käytettävissä, mutta vasta todellinen yritys näyttää, toimiiko se, joten Vito kokeilee sitä ensin, kun saneletat. Jos se ei toimi, sanelusi menevät sen sijaan leikepöydälle."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Työpöytäsi ilmoittaa tämän reitin olevan käytettävissä, mutta vasta todellinen yritys näyttää, toimiiko se, joten Vito kokeilee sitä ensin, kun saneletat. Jos se ei toimi, sanelusi menevät sen sijaan leikepöydälle.",
+"Credits": "Tekijät ja lähteet",
+"Achievement medals and animations use": "Saavutusmitalit ja animaatiot käyttävät kirjastoa",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "(Google; staattiset kuvat Apache-2.0-lisenssillä, animaatiot CC BY 4.0 -lisenssillä), ja ne toistetaan kirjastolla",
+"by Airbnb (MIT). Country flags are": "(Airbnb; MIT). Maiden liput ovat peräisin kirjastosta",
+"by Panayiotis Lipiridis (MIT).": "(Panayiotis Lipiridis; MIT)."
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

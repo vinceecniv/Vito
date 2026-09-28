@@ -795,7 +795,12 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Az alkalmazás kifelé csak a beszédedet és a külső BYOK szolgáltatókhoz (beszédfelismerés és AI-tisztítás) kerülő szövegeket küldi el. Ezekre az adatokra a külső szolgáltatók adatvédelmi szabályzata vonatkozik.",
 "What to do with playing media": "Mi történjen a lejátszott médiával",
 "not used yet": "még nem használt",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Az asztali környezeted jelzi, hogy ez az útvonal elérhető, de csak egy valódi próbálkozás mutatja meg, hogy működik-e, ezért a Vito diktáláskor először ezt próbálja ki. Ha nem működik, a diktálásaid helyette a vágólapra kerülnek."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Az asztali környezeted jelzi, hogy ez az útvonal elérhető, de csak egy valódi próbálkozás mutatja meg, hogy működik-e, ezért a Vito diktáláskor először ezt próbálja ki. Ha nem működik, a diktálásaid helyette a vágólapra kerülnek.",
+"Credits": "Közreműködők",
+"Achievement medals and animations use": "A teljesítményérmek és az animációk a következőt használják:",
+"by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "a Google-től (a statikus képek Apache-2.0, az animációk CC BY 4.0 licenc alatt), lejátszásukhoz pedig ezt használjuk:",
+"by Airbnb (MIT). Country flags are": "az Airbnb-től (MIT). Az országzászlók a következők:",
+"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis munkája (MIT)."
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",
