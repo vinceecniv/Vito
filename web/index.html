@@ -2652,6 +2652,8 @@ const TR = { nl: {
   // Linux text delivery not yet verified (#23)
   "not used yet":"nog niet gebruikt",
   "Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.":"Je desktop biedt deze route aan, maar alleen een echte poging laat zien of die werkt, dus Vito probeert hem pas bij je eerste dictaat. Werkt hij niet, dan gaan je dictaten naar het klembord.",
+  // Cleanup endpoint without a chat route (#50)
+  "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
 }, en: {} };
 // Languages the UI is translated into (nl + en are inline; the rest load from
 // /i18n/<code>.json on demand). Kept in sync with the Soniox language list.
@@ -4520,9 +4522,12 @@ async function testKey(provider, inputId, btnId, opts){
   const btn = btnId && $(btnId); if (btn) btn.disabled = true;
   toast(t("Testing key…"), "info");
   try {
-    const r = await api("/api/test-key", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ provider, key, baseURL }) });
+    const r = await api("/api/test-key", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ provider, key, baseURL, purpose: opts.purpose || "" }) });
     if (r.ok) toast("✓ " + t("{p} key works").replace("{p}", name), "ok");
     else if (r.error === "unauthorized") toast("✗ " + t("{p} key is invalid").replace("{p}", name), "err");
+    // The server answers, but not with the chat API cleanup needs (#50) — most
+    // often LM Studio's native /api/v1 instead of its OpenAI-compatible /v1.
+    else if (r.error === "no_chat") toast("✗ " + t("This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1)."), "err");
     else toast("✗ " + t("Key test failed (network or service)."), "err");
   } catch { toast(t("Key test failed (network or service)."), "err"); }
   finally { if (btn) btn.disabled = false; }
@@ -4706,7 +4711,7 @@ function updateReasoningNote(){
   note.hidden = !msg;
 }
 const openaiName = () => { const b=($("s-openaibaseurl").value||"").toLowerCase(); return b.includes("groq.com")?"Groq":b.includes("openai.com")?"OpenAI":"Endpoint"; };
-const testOpenAI = () => testKey("openai", "s-openaikey", "test-openaikey", { baseUrl: $("s-openaibaseurl").value.trim(), name: openaiName() });
+const testOpenAI = () => testKey("openai", "s-openaikey", "test-openaikey", { baseUrl: $("s-openaibaseurl").value.trim(), name: openaiName(), purpose: "chat" });
 $("test-sttkey").onclick = () => testKey("assemblyai", "s-sttkey", "test-sttkey");
 $("test-sonioxkey").onclick = () => testKey("soniox", "s-sonioxkey", "test-sonioxkey");
 $("test-anthropickey").onclick = () => testKey("anthropic", "s-cleanupkey", "test-anthropickey");

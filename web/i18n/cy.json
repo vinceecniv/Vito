@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Mae medalau cyflawniad ac animeiddiadau yn defnyddio",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "gan Google (rhai statig o dan Apache-2.0, animeiddiadau o dan CC BY 4.0), a chânt eu chwarae gyda",
 "by Airbnb (MIT). Country flags are": "gan Airbnb (MIT). Daw baneri gwledydd o",
-"by Panayiotis Lipiridis (MIT).": "gan Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "gan Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Mae'r pwynt terfyn hwn yn ateb, ond nid oes ganddo /chat/completions. Defnyddiwch yr URL sy'n gydnaws ag OpenAI — mae fel arfer yn gorffen gyda /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

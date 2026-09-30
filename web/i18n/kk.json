@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Жетістік медальдары мен анимациялар мыналарды пайдаланады:",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "(Google, статикалық түрі Apache-2.0, анимациялар CC BY 4.0 бойынша), ал ойнату үшін",
 "by Airbnb (MIT). Country flags are": "(Airbnb, MIT) қолданылады. Ел жалаулары —",
-"by Panayiotis Lipiridis (MIT).": "(Панайотис Липиридис, MIT)."
+"by Panayiotis Lipiridis (MIT).": "(Панайотис Липиридис, MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Бұл эндпоинт жауап береді, бірақ онда /chat/completions жоқ. OpenAI-мен үйлесімді URL мекенжайын пайдаланыңыз — ол әдетте /v1 деп аяқталады (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",

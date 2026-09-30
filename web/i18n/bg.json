@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Медалите за постижения и анимациите използват",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "от Google (статичните под Apache-2.0, анимациите под CC BY 4.0), възпроизвеждани с",
 "by Airbnb (MIT). Country flags are": "от Airbnb (MIT). Знамената на държавите са от",
-"by Panayiotis Lipiridis (MIT).": "от Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "от Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Този ендпойнт отговаря, но няма /chat/completions. Използвайте съвместимия с OpenAI URL адрес — обикновено завършва на /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Светла, тъмна или автоматична — автоматичната следва светлия/тъмния режим на системата ви.",

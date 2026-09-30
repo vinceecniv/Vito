@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "実績メダルとアニメーションには",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "（Google提供、静止画はApache-2.0、アニメーションはCC BY 4.0）を使用し、再生には",
 "by Airbnb (MIT). Country flags are": "（Airbnb提供、MIT）を使っています。国旗は",
-"by Panayiotis Lipiridis (MIT).": "（Panayiotis Lipiridis提供、MIT）です。"
+"by Panayiotis Lipiridis (MIT).": "（Panayiotis Lipiridis提供、MIT）です。",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "このエンドポイントは応答しますが、/chat/completions がありません。OpenAI 互換の URL を使用してください — 通常は /v1 で終わります (LM Studio: http://localhost:1234/v1)。"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",

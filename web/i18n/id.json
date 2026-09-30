@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Medali pencapaian dan animasi menggunakan",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "oleh Google (yang statis berlisensi Apache-2.0, animasi berlisensi CC BY 4.0), dan diputar dengan",
 "by Airbnb (MIT). Country flags are": "oleh Airbnb (MIT). Bendera negara berasal dari",
-"by Panayiotis Lipiridis (MIT).": "oleh Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "oleh Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Endpoint ini merespons, tetapi tidak memiliki /chat/completions. Gunakan URL yang kompatibel dengan OpenAI — biasanya berakhiran /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",

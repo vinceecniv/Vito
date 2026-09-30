@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "നേട്ട മെഡലുകളും ആനിമേഷനുകളും ഉപയോഗിക്കുന്നത്",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google നിർമ്മിച്ചത് (സ്റ്റാറ്റിക് ചിത്രങ്ങൾ Apache-2.0 പ്രകാരവും ആനിമേഷനുകൾ CC BY 4.0 പ്രകാരവും); ഇവ പ്ലേ ചെയ്യുന്നത്",
 "by Airbnb (MIT). Country flags are": "Airbnb നിർമ്മിച്ചത് (MIT) ഉപയോഗിച്ചാണ്. രാജ്യങ്ങളുടെ പതാകകൾ",
-"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis നിർമ്മിച്ചത് (MIT) ആണ്."
+"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis നിർമ്മിച്ചത് (MIT) ആണ്.",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "ഈ എൻഡ്‌പോയിന്റ് പ്രതികരിക്കുന്നുണ്ട്, പക്ഷേ അതിൽ /chat/completions ഇല്ല. OpenAI-യുമായി പൊരുത്തപ്പെടുന്ന URL ഉപയോഗിക്കുക — അത് സാധാരണയായി /v1 ൽ അവസാനിക്കും (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

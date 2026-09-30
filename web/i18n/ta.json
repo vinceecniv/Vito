@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "சாதனைப் பதக்கங்களும் அனிமேஷன்களும் பயன்படுத்துவது:",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "கூகுள் உருவாக்கியது (நிலையானவை Apache-2.0 உரிமத்திலும், அனிமேஷன்கள் CC BY 4.0 உரிமத்திலும்), இயக்குவது:",
 "by Airbnb (MIT). Country flags are": "ஏர்பிஎன்பி உருவாக்கியது (MIT). நாட்டுக் கொடிகள்:",
-"by Panayiotis Lipiridis (MIT).": "பனாயியோட்டிஸ் லிபிரிடிஸ் உருவாக்கியது (MIT)."
+"by Panayiotis Lipiridis (MIT).": "பனாயியோட்டிஸ் லிபிரிடிஸ் உருவாக்கியது (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "இந்த எண்ட்பாயிண்ட் பதிலளிக்கிறது, ஆனால் அதில் /chat/completions இல்லை. OpenAI-இணக்கமான URL-ஐப் பயன்படுத்துங்கள் — அது பொதுவாக /v1-இல் முடியும் (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

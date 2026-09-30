@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Ang mga medalya ng tagumpay at mga animasyon ay gumagamit ng",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "mula sa Google (ang mga static sa ilalim ng Apache-2.0, ang mga animasyon sa ilalim ng CC BY 4.0), na pinapatugtog gamit ang",
 "by Airbnb (MIT). Country flags are": "mula sa Airbnb (MIT). Ang mga watawat ng mga bansa ay mula sa",
-"by Panayiotis Lipiridis (MIT).": "ni Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "ni Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Sumasagot ang endpoint na ito, pero wala itong /chat/completions. Gamitin ang URL na compatible sa OpenAI — kadalasan itong nagtatapos sa /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",

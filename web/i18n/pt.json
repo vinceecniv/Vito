@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "As medalhas de conquistas e as animações usam o",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "da Google (as estáticas sob Apache-2.0, as animações sob CC BY 4.0), reproduzidas com o",
 "by Airbnb (MIT). Country flags are": "da Airbnb (MIT). As bandeiras dos países são do",
-"by Panayiotis Lipiridis (MIT).": "de Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "de Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Este endpoint responde, mas não tem /chat/completions. Use o URL compatível com OpenAI — normalmente termina em /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",

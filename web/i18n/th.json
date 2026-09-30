@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "เหรียญรางวัลและแอนิเมชันใช้",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "โดย Google (แบบภาพนิ่งภายใต้ Apache-2.0 และแอนิเมชันภายใต้ CC BY 4.0) และเล่นด้วย",
 "by Airbnb (MIT). Country flags are": "โดย Airbnb (MIT) ส่วนธงประเทศมาจาก",
-"by Panayiotis Lipiridis (MIT).": "โดย Panayiotis Lipiridis (MIT)"
+"by Panayiotis Lipiridis (MIT).": "โดย Panayiotis Lipiridis (MIT)",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "เอนด์พอยต์นี้ตอบสนอง แต่ไม่มี /chat/completions ให้ใช้ URL ที่เข้ากันได้กับ OpenAI — โดยปกติจะลงท้ายด้วย /v1 (LM Studio: http://localhost:1234/v1)"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",
