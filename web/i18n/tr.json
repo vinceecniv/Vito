@@ -800,7 +800,8 @@
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers’ privacy policies.": "Uygulamanın dışarıya gönderdiği tek veri, BYOK modelinin harici sağlayıcılarına giden sesiniz ve metinlerinizdir (konuşma tanıma ve AI temizleme). Bu veriler, ilgili harici sağlayıcıların gizlilik politikalarına tabidir.",
 "What to do with playing media": "Oynatılan medyayla ne yapılacağı",
 "not used yet": "henüz kullanılmadı",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Masaüstünüz bu yolu destekliyor gibi görünüyor, ancak çalışıp çalışmadığını yalnızca gerçek bir deneme gösterir; bu yüzden Vito, dikte ettiğinizde önce bunu dener. Çalışmazsa dikteleriniz bunun yerine panoya gider."
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Masaüstünüz bu yolu destekliyor gibi görünüyor, ancak çalışıp çalışmadığını yalnızca gerçek bir deneme gösterir; bu yüzden Vito, dikte ettiğinizde önce bunu dener. Çalışmazsa dikteleriniz bunun yerine panoya gider.",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Bu uç nokta yanıt veriyor, ancak /chat/completions yok. OpenAI uyumlu URL'yi kullanın — genellikle /v1 ile biter (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",

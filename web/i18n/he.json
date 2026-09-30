@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "מדליות ההישגים והאנימציות משתמשות ב-",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "מבית Google (הסטטיות ברישיון Apache-2.0, האנימציות ברישיון CC BY 4.0), ומופעלות באמצעות",
 "by Airbnb (MIT). Country flags are": "מבית Airbnb (MIT). דגלי המדינות מגיעים מ-",
-"by Panayiotis Lipiridis (MIT).": "מאת Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "מאת Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "נקודת הקצה הזו מגיבה, אך אין בה /chat/completions. השתמש בכתובת ה-URL התואמת ל-OpenAI — היא בדרך כלל מסתיימת ב-/v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

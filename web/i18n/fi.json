@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Saavutusmitalit ja animaatiot käyttävät kirjastoa",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "(Google; staattiset kuvat Apache-2.0-lisenssillä, animaatiot CC BY 4.0 -lisenssillä), ja ne toistetaan kirjastolla",
 "by Airbnb (MIT). Country flags are": "(Airbnb; MIT). Maiden liput ovat peräisin kirjastosta",
-"by Panayiotis Lipiridis (MIT).": "(Panayiotis Lipiridis; MIT)."
+"by Panayiotis Lipiridis (MIT).": "(Panayiotis Lipiridis; MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Tämä päätepiste vastaa, mutta siinä ei ole /chat/completions. Käytä OpenAI-yhteensopivaa URL-osoitetta — se päättyy yleensä /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

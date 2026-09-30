@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Medaliile de realizări și animațiile folosesc",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "de la Google (cele statice sub Apache-2.0, animațiile sub CC BY 4.0), redate cu",
 "by Airbnb (MIT). Country flags are": "de la Airbnb (MIT). Drapelele țărilor sunt din",
-"by Panayiotis Lipiridis (MIT).": "de la Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "de la Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Acest endpoint răspunde, dar nu are /chat/completions. Folosește URL-ul compatibil cu OpenAI — de obicei se termină cu /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",

@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Huy chương thành tích và hoạt ảnh sử dụng",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "của Google (ảnh tĩnh theo giấy phép Apache-2.0, hoạt ảnh theo CC BY 4.0), được phát bằng",
 "by Airbnb (MIT). Country flags are": "của Airbnb (MIT). Cờ quốc gia là",
-"by Panayiotis Lipiridis (MIT).": "của Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "của Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Endpoint này có phản hồi, nhưng không có /chat/completions. Hãy dùng URL tương thích OpenAI — thường kết thúc bằng /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",

@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "업적 메달과 애니메이션에는",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "(Google 제작, 정적 이미지는 Apache-2.0, 애니메이션은 CC BY 4.0)를 사용하며, 재생에는",
 "by Airbnb (MIT). Country flags are": "(Airbnb 제작, MIT)을 사용합니다. 국기는",
-"by Panayiotis Lipiridis (MIT).": "(Panayiotis Lipiridis 제작, MIT)의 것입니다."
+"by Panayiotis Lipiridis (MIT).": "(Panayiotis Lipiridis 제작, MIT)의 것입니다.",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "이 엔드포인트는 응답하지만 /chat/completions가 없습니다. OpenAI 호환 URL을 사용하세요 — 보통 /v1로 끝납니다 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",

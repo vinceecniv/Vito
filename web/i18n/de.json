@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Die Erfolgsmedaillen und Animationen verwenden",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "von Google (statische Grafiken unter Apache-2.0, Animationen unter CC BY 4.0) und werden abgespielt mit",
 "by Airbnb (MIT). Country flags are": "von Airbnb (MIT). Die Länderflaggen stammen aus",
-"by Panayiotis Lipiridis (MIT).": "von Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "von Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Dieser Endpunkt antwortet, hat aber kein /chat/completions. Verwende die OpenAI-kompatible URL — sie endet meist auf /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Hell, dunkel oder automatisch — automatisch folgt der Hell/Dunkel-Einstellung deines Systems.",

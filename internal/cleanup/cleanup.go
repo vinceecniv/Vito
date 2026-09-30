@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	neturl "net/url"
 	"regexp"
 	"strings"
 
@@ -415,6 +416,9 @@ func (c *OpenAICleaner) Clean(ctx context.Context, text, language string, correc
 		if c.effort != "" && strings.Contains(strings.ToLower(string(body)), "reasoning_effort") {
 			return "", Usage{}, fmt.Errorf("%s rejected thinking=%q for this model: %s", c.name, c.effort, errSnippet(body))
 		}
+		if resp.StatusCode == http.StatusNotFound || resp.StatusCode == http.StatusMethodNotAllowed {
+			return "", Usage{}, fmt.Errorf("%s cleanup: HTTP %d at %s: %s — %s", c.name, resp.StatusCode, url, errSnippet(body), endpointHint(c.baseURL))
+		}
 		return "", Usage{}, fmt.Errorf("%s cleanup: HTTP %d: %s", c.name, resp.StatusCode, errSnippet(body))
 	}
 
@@ -453,6 +457,18 @@ func truncatedErr(used, budget int64) error {
 	return fmt.Errorf("cleanup output truncated: the model used all %d of its %d output tokens without finishing. "+
 		"This is a reasoning model spending its budget thinking before it answers. "+
 		"Set \"thinking\" to none/low under Settings → AI cleanup, or pick a model that doesn't think", used, budget)
+}
+
+// endpointHint explains a 404 on chat/completions: the endpoint URL points at
+// a server that does not speak the OpenAI chat API on that path. LM Studio's
+// native API (/api/v1) is the common way to end up there (#50) — its models
+// list works, so the connection test used to pass — so name its right URL.
+func endpointHint(base string) string {
+	if u, err := neturl.Parse(strings.TrimSpace(base)); err == nil && strings.HasPrefix(u.Path, "/api/v") {
+		u.Path = "/v1"
+		return "this looks like LM Studio's native API; use its OpenAI-compatible endpoint " + u.String() + " instead"
+	}
+	return "check that the endpoint URL is the OpenAI-compatible one (it usually ends in /v1)"
 }
 
 // errSnippet trims a response body to a short, single-line hint for an error.

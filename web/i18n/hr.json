@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Medalje postignuća i animacije koriste",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "tvrtke Google (statične pod licencijom Apache-2.0, animacije pod CC BY 4.0), a reproduciraju se pomoću",
 "by Airbnb (MIT). Country flags are": "tvrtke Airbnb (MIT). Zastave zemalja dolaze iz",
-"by Panayiotis Lipiridis (MIT).": "autora Panayiotisa Lipiridisa (MIT)."
+"by Panayiotis Lipiridis (MIT).": "autora Panayiotisa Lipiridisa (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Ova krajnja točka odgovara, ali nema /chat/completions. Koristite URL kompatibilan s OpenAI-jem — obično završava na /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetlu/tamnu postavku vašeg sustava.",

@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "مدال‌های دستاورد و انیمیشن‌ها از",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "ساخته‌ی Google (نسخه‌های ثابت با مجوز Apache-2.0 و انیمیشن‌ها با مجوز CC BY 4.0) استفاده می‌کنند و با",
 "by Airbnb (MIT). Country flags are": "ساخته‌ی Airbnb (MIT) پخش می‌شوند. پرچم کشورها از",
-"by Panayiotis Lipiridis (MIT).": "ساخته‌ی Panayiotis Lipiridis (MIT) هستند."
+"by Panayiotis Lipiridis (MIT).": "ساخته‌ی Panayiotis Lipiridis (MIT) هستند.",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "این endpoint پاسخ می‌دهد، اما /chat/completions ندارد. از نشانی سازگار با OpenAI استفاده کنید — معمولاً به /v1 ختم می‌شود (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "روشن، تیره یا خودکار — خودکار از حالت روشن/تیره سیستم شما پیروی می‌کند.",

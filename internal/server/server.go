@@ -1028,7 +1028,9 @@ func (s *Server) usdToEur() float64 {
 // to the provider and reporting the outcome. The key is checked as given (before
 // it is necessarily saved), so the UI can auto-test on paste.
 func (s *Server) handleTestKey(w http.ResponseWriter, r *http.Request) {
-	var body struct{ Provider, Key, BaseURL string }
+	// Purpose "chat" asks for the chat-completions route to be checked too: the
+	// cleanup posts there, and /models answering proves nothing about it (#50).
+	var body struct{ Provider, Key, BaseURL, Purpose string }
 	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<16)).Decode(&body); err != nil {
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "invalid JSON"})
 		return
@@ -1083,6 +1085,12 @@ func (s *Server) handleTestKey(w http.ResponseWriter, r *http.Request) {
 	defer resp.Body.Close()
 	_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, 1<<14))
 	switch {
+	case resp.StatusCode == http.StatusOK && body.Provider == "openai" && body.Purpose == "chat":
+		if st := probeChat(ctx, req.URL.String(), key); st == http.StatusNotFound || st == http.StatusMethodNotAllowed {
+			s.writeJSON(w, http.StatusOK, map[string]any{"ok": false, "error": "no_chat", "status": st})
+			return
+		}
+		s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 	case resp.StatusCode == http.StatusOK:
 		s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 	case resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden:
@@ -1090,6 +1098,31 @@ func (s *Server) handleTestKey(w http.ResponseWriter, r *http.Request) {
 	default:
 		s.writeJSON(w, http.StatusOK, map[string]any{"ok": false, "error": "status", "status": resp.StatusCode})
 	}
+}
+
+// probeChat checks that <base>/chat/completions exists without running the
+// model: an empty body is rejected (400/422) by any server that has the route,
+// while a server without it answers 404 or 405. LM Studio is the case that
+// needed this — its native API at /api/v1 serves /models but not
+// /chat/completions, so the key test passed and every cleanup then failed.
+// Anything other than a clear "no such route" counts as present.
+func probeChat(ctx context.Context, modelsURL, key string) int {
+	u := strings.TrimSuffix(modelsURL, "/models") + "/chat/completions"
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, u, strings.NewReader("{}"))
+	if err != nil {
+		return 0
+	}
+	req.Header.Set("Content-Type", "application/json")
+	if key != "" {
+		req.Header.Set("Authorization", "Bearer "+key)
+	}
+	resp, err := (&http.Client{Timeout: 9 * time.Second}).Do(req)
+	if err != nil {
+		return 0
+	}
+	defer resp.Body.Close()
+	_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, 1<<14))
+	return resp.StatusCode
 }
 
 // handleGetAutostart reports the real OS autostart state (source of truth), not

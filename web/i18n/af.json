@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Prestasiemedaljes en animasies gebruik",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "van Google (statiese onder Apache-2.0, animasies onder CC BY 4.0), en word gespeel met",
 "by Airbnb (MIT). Country flags are": "van Airbnb (MIT). Landsvlae kom van",
-"by Panayiotis Lipiridis (MIT).": "van Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "van Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Hierdie eindpunt antwoord, maar het geen /chat/completions nie. Gebruik die OpenAI-versoenbare URL — dit eindig gewoonlik op /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

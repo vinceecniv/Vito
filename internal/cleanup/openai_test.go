@@ -141,3 +141,20 @@ func TestOpenAICleanStripsThinkingAndReportsTruncation(t *testing.T) {
 		t.Errorf("usage.OutputTokens = %d, want 2089 even on failure", usage.OutputTokens)
 	}
 }
+
+// A 404 on chat/completions is a wrong endpoint URL, not a transient failure.
+// LM Studio's native API (/api/v1) is how users get there (#50): the error must
+// name the OpenAI-compatible URL to use instead.
+func TestOpenAINotFoundNamesTheRightEndpoint(t *testing.T) {
+	var seen map[string]any
+	srv := serveJSON(t, http.StatusNotFound, `{"error":"Unexpected endpoint or method. (POST /api/v1/chat/completions)"}`, &seen)
+	defer srv.Close()
+	c := NewOpenAICleaner(config.Cleanup{Provider: "openai", OpenAIBaseURL: srv.URL + "/api/v1", OpenAIModel: "m"})
+	_, _, err := c.Clean(context.Background(), "hallo", "nl", nil, "")
+	if err == nil || !strings.Contains(err.Error(), srv.URL+"/v1 instead") {
+		t.Fatalf("want a hint naming %s/v1, got %v", srv.URL, err)
+	}
+	if got := endpointHint("https://api.groq.com/openai/v1"); !strings.Contains(got, "usually ends in /v1") {
+		t.Errorf("generic hint = %q", got)
+	}
+}

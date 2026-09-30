@@ -800,7 +800,8 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "，由 Google 提供（静态图像采用 Apache-2.0 许可，动画采用 CC BY 4.0 许可），并通过",
 "by Airbnb (MIT). Country flags are": "（由 Airbnb 提供，MIT 许可）播放。国旗来自",
 "by Panayiotis Lipiridis (MIT).": "（由 Panayiotis Lipiridis 提供，MIT 许可）。",
-"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "你的桌面环境声明支持这条途径，但只有实际尝试才能确定它是否可用，所以你口述时 Vito 会先尝试它。如果不可用，你的口述内容会改为进入剪贴板。"
+"Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "你的桌面环境声明支持这条途径，但只有实际尝试才能确定它是否可用，所以你口述时 Vito 会先尝试它。如果不可用，你的口述内容会改为进入剪贴板。",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "此端点有响应，但没有 /chat/completions。请使用与 OpenAI 兼容的 URL — 通常以 /v1 结尾（LM Studio: http://localhost:1234/v1）。"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

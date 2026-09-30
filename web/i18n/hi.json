@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "उपलब्धि पदक और एनिमेशन इनका उपयोग करते हैं:",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google द्वारा (स्थिर Apache-2.0 के अंतर्गत, एनिमेशन CC BY 4.0 के अंतर्गत), और इन्हें चलाने के लिए",
 "by Airbnb (MIT). Country flags are": "Airbnb द्वारा (MIT)। देशों के झंडे",
-"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis द्वारा (MIT) से हैं।"
+"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis द्वारा (MIT) से हैं।",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "यह एंडपॉइंट जवाब देता है, लेकिन इसमें /chat/completions नहीं है। OpenAI-संगत URL का उपयोग करें — यह आमतौर पर /v1 पर समाप्त होता है (LM Studio: http://localhost:1234/v1)।"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",

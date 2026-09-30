@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Medali za mafanikio na uhuishaji hutumia",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "kutoka Google (zisizosogea chini ya Apache-2.0, uhuishaji chini ya CC BY 4.0), na huchezwa kwa",
 "by Airbnb (MIT). Country flags are": "kutoka Airbnb (MIT). Bendera za nchi ni za",
-"by Panayiotis Lipiridis (MIT).": "kutoka kwa Panayiotis Lipiridis (MIT)."
+"by Panayiotis Lipiridis (MIT).": "kutoka kwa Panayiotis Lipiridis (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Endpoint hii inajibu, lakini haina /chat/completions. Tumia URL inayooana na OpenAI — kwa kawaida huishia na /v1 (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

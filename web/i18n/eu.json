@@ -800,7 +800,8 @@
 "Achievement medals and animations use": "Lorpen-dominek eta animazioek honako hau erabiltzen dute:",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google-ren lana (estatikoak Apache-2.0 lizentziapean, animazioak CC BY 4.0 lizentziapean), eta hauxe erabiltzen da erreproduzitzeko:",
 "by Airbnb (MIT). Country flags are": "Airbnb-ren lana (MIT). Herrialdeetako banderak",
-"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridisen lana dira (MIT)."
+"by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridisen lana dira (MIT).",
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Endpoint honek erantzuten du, baina ez du /chat/completions. Erabili OpenAI-rekin bateragarria den URLa — normalean /v1 amaieran izaten du (LM Studio: http://localhost:1234/v1)."
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",
