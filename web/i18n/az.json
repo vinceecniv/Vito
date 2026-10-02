@@ -807,7 +807,10 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "şirkəti Google-dan istifadə edir (statik olanlar Apache-2.0, animasiyalar CC BY 4.0 lisenziyası ilə), oxudulması isə",
 "by Airbnb (MIT). Country flags are": "şirkəti Airbnb-dən (MIT) istifadə edilir. Ölkə bayraqları isə",
 "by Panayiotis Lipiridis (MIT).": "kitabxanasındandır, müəllifi Panayiotis Lipiridisdir (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Bu son nöqtə cavab verir, lakin /chat/completions yoxdur. OpenAI ilə uyğun URL-dən istifadə edin — o, adətən /v1 ilə bitir (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Bu son nöqtə cavab verir, lakin /chat/completions yoxdur. OpenAI ilə uyğun URL-dən istifadə edin — o, adətən /v1 ilə bitir (LM Studio: http://localhost:1234/v1).",
+"Earned today": "Bu gün qazanılanlar",
+"Unlocked today": "Bu gün açıldı",
+"{n} new today": "bu gün {n} yeni"
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

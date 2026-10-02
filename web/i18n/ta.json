@@ -1,5 +1,8 @@
 {
 "strings": {
+"Earned today": "இன்று பெற்றவை",
+"Unlocked today": "இன்று திறக்கப்பட்டது",
+"{n} new today": "இன்று {n} புதியவை",
 "Custom range…": "தனிப்பயன் வரம்பு…",
 "Previous month": "முந்தைய மாதம்",
 "Next month": "அடுத்த மாதம்",
