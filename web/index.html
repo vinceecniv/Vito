@@ -5022,24 +5022,27 @@ const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences
 const LAYOUT_WIDE_EL = { stats:"statgrid", cost:"cost-card", chart:"chart-card", transcript:"transcript-card" };
 const LAYOUT_FULL = ["stats","transcript"];
 const LAYOUT_PINNED = ["transcript"];
+// LAYOUT_DEFAULT is the page as it was before the cards could move — the order
+// a saved layout fills its new cards in by, so an existing arrangement keeps
+// its look. LAYOUT_FRESH is what you get without one, or after a reset: the
+// transcript first, then the statistics, the chart and the costs.
 const LAYOUT_DEFAULT = LAYOUT_GROUPS.flatMap(g => g.keys);
+const LAYOUT_FRESH = [...LAYOUT_GROUPS.find(g => g.id === "stats").keys, "transcript", "stats", "chart", "cost"];
 let statusLayout = null;
 function loadLayout(){
   if (statusLayout) return statusLayout;
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem("vito-status-layout") || "null"); } catch {}
-  const order = Array.isArray(saved && saved.order) ? saved.order.filter(k => LAYOUT_DEFAULT.includes(k)) : [];
+  const order = Array.isArray(saved && saved.order) ? saved.order.filter(k => LAYOUT_DEFAULT.includes(k)) : [...LAYOUT_FRESH];
   // Anything the stored order doesn't mention is new since it was saved, and
-  // belongs at its default position — right after its default predecessor that
-  // the saved order already has — rather than tacked on at the very end.
+  // belongs at its default position — right after the last of its default
+  // predecessors in the saved order, wherever you moved those — rather than
+  // tacked on at the very end.
   LAYOUT_DEFAULT.forEach((k, idx) => {
     if (order.includes(k)) return;
-    let insertAt = order.length;
-    for (let j = idx - 1; j >= 0; j--) {
-      const p = order.indexOf(LAYOUT_DEFAULT[j]);
-      if (p >= 0) { insertAt = p + 1; break; }
-    }
-    order.splice(insertAt, 0, k);
+    let insertAt = -1;
+    for (let j = idx - 1; j >= 0; j--) insertAt = Math.max(insertAt, order.indexOf(LAYOUT_DEFAULT[j]));
+    order.splice(insertAt < 0 ? order.length : insertAt + 1, 0, k);
   });
   const hidden = Array.isArray(saved && saved.hidden) ? saved.hidden.filter(k => LAYOUT_DEFAULT.includes(k)) : [];
   // The version card is on by default but keeps quiet: it appears when there is
@@ -5130,7 +5133,7 @@ function openLayoutDialog(){
   const reset = document.createElement("button");
   reset.className = "btn ghost small"; reset.style.marginRight = "auto";
   reset.textContent = t("Reset to default");
-  reset.onclick = () => { statusLayout = { order: [...LAYOUT_DEFAULT], hidden: [] }; saveLayout(); applyStatusLayout(); loadStats(); m.remove(); };
+  reset.onclick = () => { statusLayout = { order: [...LAYOUT_FRESH], hidden: [] }; saveLayout(); applyStatusLayout(); loadStats(); m.remove(); };
   bar.insertBefore(reset, bar.firstChild);
 }
 const LAY_EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>';
