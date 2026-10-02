@@ -230,3 +230,36 @@ func TestCleanupErrorIsCapped(t *testing.T) {
 		t.Fatalf("stored reason is %d bytes, want it capped near %d", len(got.CleanupError), maxCleanupError)
 	}
 }
+
+func TestCapSparesTheLastThreeMonths(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("AppData", dir)
+	t.Setenv("XDG_CONFIG_HOME", dir)
+	t.Setenv("HOME", dir)
+
+	s, err := NewStore(2, 0)
+	if err != nil {
+		t.Fatalf("NewStore: %v", err)
+	}
+	defer s.Close()
+
+	now := time.Now()
+	add := func(raw string, ago time.Duration) {
+		if err := s.Append(Entry{Timestamp: now.Add(-ago), Raw: raw, Cleaned: raw, Language: "nl"}); err != nil {
+			t.Fatalf("Append: %v", err)
+		}
+	}
+	// Two entries from before the protected window, then four recent ones: the
+	// cap of two may drop the old pair, but none of the recent four.
+	add("old one", 200*24*time.Hour)
+	add("old two", 120*24*time.Hour)
+	for i := 0; i < 4; i++ {
+		add("recent", time.Duration(i+1)*24*time.Hour)
+	}
+	if n, err := s.Count("", false); err != nil || n != 4 {
+		t.Fatalf("Count: got %d (err %v), want the 4 recent entries", n, err)
+	}
+	if n, _ := s.Count("old", false); n != 0 {
+		t.Fatalf("old entries beyond the cap survived: %d", n)
+	}
+}
