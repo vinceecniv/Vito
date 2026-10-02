@@ -445,7 +445,7 @@
      buckets as the words chart. */
   .card.stat { position:relative; overflow:hidden; }
   .card.stat > .chip, .card.stat > .num, .card.stat > .lbl, .card.stat > .delta { position:relative; z-index:1; }
-  .spark { position:absolute; left:0; right:0; bottom:0; height:55%; z-index:0; pointer-events:none; opacity:.6; }
+  .spark { position:absolute; left:0; right:0; bottom:0; height:calc(100% - 8px); z-index:0; pointer-events:none; opacity:.6; }
   .spark:empty { display:none; }
   .spark svg { display:block; width:100%; height:100%; }
   :root[data-theme="dark"] .spark { opacity:.5; }
@@ -5870,9 +5870,12 @@ function rhythmCardHTML(st, ins){
 function sparkSVG(values, key, cls){
   const pts = (values || []).map((v, i) => [i, v]).filter(([, v]) => Number.isFinite(v));
   if (pts.length < 2 || !pts.some(([, v]) => v > 0)) return "";
-  const W = 100, H = 32, pad = 3, n = values.length - 1 || 1;
+  const W = 100, H = 32, pad = 1.5;
+  // The x axis spans the first to the last point that has a value, so a gap at
+  // either end (no speaking time that day) cannot leave the line short of the edge.
+  const i0 = pts[0][0], span = (pts[pts.length - 1][0] - i0) || 1;
   const max = Math.max(...pts.map(([, v]) => v));
-  const xy = pts.map(([i, v]) => [i / n * W, H - pad - (v / max) * (H - pad * 2)]);
+  const xy = pts.map(([i, v]) => [(i - i0) / span * W, H - pad - (v / max) * (H - pad * 2)]);
   // Smoothed with midpoint quadratic curves: soft, and never overshoots below 0.
   let line = `M${xy[0][0].toFixed(2)},${xy[0][1].toFixed(2)}`;
   for (let i = 1; i < xy.length; i++) {
