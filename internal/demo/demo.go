@@ -157,6 +157,13 @@ func stats(now time.Time, wpm float64, from, today time.Time, days int, buckets 
 		FirstDay:          FirstDay(now),
 		WeekPeakIndex:     -1,
 	}
+	if durMS > 0 {
+		st.SpokenWPM = int(float64(words)/(float64(durMS)/60000.0) + 0.5)
+	}
+	if act > 0 {
+		st.AvgWords = float64(words) / float64(act)
+	}
+	st.Insights = insights(now, from, today)
 
 	st.SeriesUnit = unit
 	peak := -1
@@ -356,4 +363,36 @@ func Transcript() []struct{ Raw, Cleaned string } {
 		out = append(out, struct{ Raw, Cleaned string }{t.raw, t.cleaned})
 	}
 	return out
+}
+
+// insights fabricates the per-dictation figures for from..today: office hours
+// on weekdays, a little in the evening, mostly Dutch with some English, and
+// timings in the range a cloud setup actually shows.
+func insights(now, from, today time.Time) history.Insights {
+	var in history.Insights
+	for d := from; !d.After(today); d = d.AddDate(0, 0, 1) {
+		_, _, a, _, _, _ := day(now, d)
+		wd := (int(d.Weekday()) + 6) % 7
+		ds := d.Format("2006-01-02")
+		for i := 0; i < a; i++ {
+			h := dayHash(ds, uint32(100+i))
+			hour := 8 + int(h%10)
+			if h%9 == 0 {
+				hour = 19 + int(h%4)
+			}
+			in.Heatmap[wd][hour]++
+			in.Dictations++
+		}
+	}
+	if in.Dictations == 0 {
+		return in
+	}
+	in.LatencyMedianMS, in.LatencyP95MS = 1150, 2600
+	in.SttMedianMS, in.CleanupMedianMS = 420, 610
+	in.CleanupFailed = in.Dictations / 90
+	in.CleanupRuns = in.Dictations*85/100 - in.CleanupFailed
+	in.CleanupChanged = in.CleanupRuns * 72 / 100
+	nl := in.Dictations * 70 / 100
+	in.Languages = []history.LangCount{{Code: "nl", Count: nl}, {Code: "en", Count: in.Dictations - nl}}
+	return in
 }

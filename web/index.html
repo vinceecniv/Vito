@@ -440,6 +440,18 @@
   .stat .lbl { color:var(--text2); font-size:12.5px; margin-top:2px; }
   .delta { font-size:11.5px; font-weight:600; margin-top:8px; }
   .delta.up { color:var(--coral); } .delta.flat { color:var(--text3); }
+  /* Languages: the top one as the figure, all of them as shares of one bar. */
+  .lang-card .num.lang-top { font-size:22px; line-height:1.35; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lang-bar { display:flex; height:7px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
+  .lang-bar i { display:block; height:100%; }
+  .lang-legend { display:flex; flex-wrap:wrap; gap:2px 10px; margin-top:7px; font-size:11px; color:var(--text3); }
+  .lang-legend b { display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:4px; vertical-align:0; }
+  /* Rhythm: twice as wide, so the week-by-hour grid has room. */
+  .statgrid > .rhythm-card { grid-column:span 2; }
+  .heat { display:grid; grid-template-columns:repeat(24, 1fr); gap:2px; margin-top:12px; }
+  .heat i { display:block; aspect-ratio:1; border-radius:2px; background:var(--track); }
+  .heat i.on { background:var(--violet); }
+  :root[data-theme="dark"] .heat i.on { background:var(--violet-l); }
 
   /* week chart */
   /* The chart fills whatever height the card has: side by side with the cost
@@ -1994,6 +2006,20 @@ const TR = { nl: {
   "{a} of {b} unlocked":"{a} van {b} behaald",
   "achievements":"prestaties",
   "of {n} unlocked":"van {n} behaald",
+  "wpm spoken":"wpm gesproken",
+  "How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.":"Hoe snel je spreekt tijdens het dicteren: je woorden gedeeld door de opnametijd. Je typesnelheid staat ingesteld op {n} wpm.",
+  "wait after stopping":"wachttijd na stoppen",
+  "slowest 5%: {s}":"traagste 5%: {s}",
+  "Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).":"Mediane tijd van het stoppen van een dictaat tot de tekst geplakt is. Spraakherkenning {a}, AI-opschoning {b} (medianen).",
+  "changed by AI cleanup":"aangepast door AI-opschoning",
+  "{n} failed":"{n} mislukt",
+  "of {n} cleaned":"van {n} opgeschoond",
+  "Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.":"Van de dictaten waarop AI-opschoning draaide, het aandeel waarin de tekst ook echt is aangepast. Mislukt betekent dat de opschoning een fout gaf en de niet-opgeschoonde tekst is geplakt.",
+  "Languages":"Talen",
+  "{p}% of dictations":"{p}% van de dictaten",
+  "Languages you dictated in this period, by number of dictations.":"De talen waarin je in deze periode dicteerde, naar aantal dictaten.",
+  "words per dictation":"woorden per dictaat",
+  "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.":"De gemiddelde lengte van een dictaat. Het raster laat zien wanneer je dicteert: weekdagen van boven naar beneden, uren van links naar rechts — hoe donkerder, hoe drukker.",
   "Earned today":"Vandaag behaald",
   "Unlocked today":"Vandaag behaald",
   "{n} new today":"{n} nieuw vandaag",
@@ -5042,11 +5068,13 @@ loadAbout();
 // inside the statistics block and are ordered there; dragging stays within a
 // level, so a statistic can't leave its block.
 const LAYOUT_GROUPS = [
-  { id:"stats", label:"Statistics", keys:["credit","words","sentences","activations","spoken","saved","commands","achievements","update"] },
+  { id:"stats", label:"Statistics", keys:["credit","words","sentences","activations","spoken","saved","commands",
+    "spokenwpm","latency","cleanupfx","languages","rhythm","achievements","update"] },
   { id:"wide",  label:"Cards",      keys:["stats","cost","chart","transcript"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences:"sentences cleaned", activations:"activations",
   spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
+  spokenwpm:"wpm spoken", latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation",
   stats:"Statistics", cost:"Costs", chart:"Words per day", transcript:"Live transcript" };
 // The cards and their elements. Costs and the chart are half-width and pair up
 // when they are next to each other; the statistics and the transcript always
@@ -5772,6 +5800,59 @@ function fmtHMS(sec){
 //
 // Each card carries its raw value plus the formatter, because the displayed text
 // ("17.278", "2 u 6 m 15 s") can't be interpolated — the number behind it can.
+// A duration in seconds with one decimal ("1,2 s"), or a dash for no data.
+function fmtSecs(ms){
+  if (!ms) return "–";
+  return (ms / 1000).toLocaleString(numLoc(), { minimumFractionDigits:1, maximumFractionDigits:1 }) + " " + t("s");
+}
+// The styled tooltip for a custom card, the way renderStatCards sets it on the
+// standard ones.
+function setCardTip(el, tip){
+  el.dataset.tipText = tip; el.dataset.i18nDataTipText = tip; el.classList.add("has-tip");
+}
+// Language names come from Intl in the interface language, so the codes the
+// recogniser reports need no translation table of their own.
+function langName(code){
+  try {
+    const n = new Intl.DisplayNames([uiLang, "en"], { type:"language" }).of(code);
+    if (n && n !== code) return n.charAt(0).toLocaleUpperCase(uiLang) + n.slice(1);
+  } catch {}
+  return code.toUpperCase();
+}
+const LANG_COLORS = ["var(--violet)", "var(--coral)", "var(--violet-l)", "var(--coral-l)"];
+// The most used language as the figure, and every language as a share of one
+// bar: the top four in colour, the rest together in grey.
+function langCardHTML(ins){
+  const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9s1.3-6.4 3.8-9z"/></svg>';
+  const langs = ins.languages || [];
+  const total = langs.reduce((s, l) => s + l.count, 0);
+  if (!total) return `<div class="chip coral">${icon}</div><div class="num">–</div><div class="lbl">${t("Languages")}</div>`;
+  const pct = (n) => Math.round(n / total * 100);
+  const shown = langs.slice(0, 4), rest = total - shown.reduce((s, l) => s + l.count, 0);
+  const seg = shown.map((l, i) => `<i style="width:${l.count / total * 100}%;background:${LANG_COLORS[i]}"></i>`).join("") +
+    (rest ? `<i style="width:${rest / total * 100}%;background:var(--text3)"></i>` : "");
+  const legend = shown.map((l, i) => `<span><b style="background:${LANG_COLORS[i]}"></b>${ahEsc(langName(l.code))} ${pct(l.count)}%</span>`).join("");
+  return `<div class="chip coral">${icon}</div><div class="num lang-top">${ahEsc(langName(langs[0].code))}</div>` +
+    `<div class="lbl">${t("{p}% of dictations").replace("{p}", pct(langs[0].count))}</div>` +
+    `<div class="lang-bar">${seg}</div><div class="lang-legend">${legend}</div>`;
+}
+// Words per dictation as the figure, with a week-by-hour grid of when you
+// dictate underneath. Each cell names its day and hour on hover.
+function rhythmCardHTML(st, ins){
+  const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16M13 4v16"/></svg>';
+  const avg = st.avg_words ? Math.round(st.avg_words).toLocaleString(numLoc()) : "–";
+  const heat = ins.heatmap || [];
+  const max = Math.max(0, ...heat.flat());
+  const wd = dateFmt({ weekday:"long" });
+  let cells = "";
+  for (let d = 0; d < 7; d++) for (let h = 0; h < 24; h++) {
+    const n = (heat[d] || [])[h] || 0;
+    const name = wd.format(new Date(2024, 0, 1 + d)); // 1 Jan 2024 was a Monday
+    cells += `<i${n ? ` style="opacity:${(0.18 + 0.82 * n / max).toFixed(2)}" class="on"` : ""} title="${ahEsc(name)} ${h}:00 · ${n}"></i>`;
+  }
+  return `<div class="chip violet">${icon}</div><div class="num">${avg}</div><div class="lbl">${t("words per dictation")}</div>` +
+    `<div class="heat">${cells}</div>`;
+}
 function renderStatCards(all){
   // Only the cards you kept, in the order you put them in.
   const order = layoutOrderOf("stats");
@@ -6082,6 +6163,7 @@ async function loadStats(){
     mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg>',
   };
   const nf = (n)=> n.toLocaleString(numLoc());
+  const ins = st.insights || {};
   // The period is already shown by the dropdown, so cards don't repeat it; only
   // the genuinely extra sub-lines (per-day, wpm) stay.
   renderStatCards([
@@ -6103,6 +6185,24 @@ async function loadStats(){
           t("What you save compared with typing it yourself: your words divided by your typing speed, minus the time you spent speaking. Set your typing speed under Settings → General.") },
     { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:st.commands, format:nf, lbl:t("Vito Assist commands"),
       tip:t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.") },
+    // Speaking rate: words over recording time, next to the typing speed the
+    // saved-time card assumes.
+    { key:"spokenwpm", cls:"violet", icon:I.mic, value:st.spoken_wpm || 0, format:n => n ? nf(n) : "–", lbl:t("wpm spoken"),
+      tip:t("How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.").replace("{n}", st.typing_wpm) },
+    // The insights below come from the dictations still in the history.
+    { key:"latency", cls:"coral", icon:I.time, value:ins.latency_median_ms || 0, format:fmtSecs, lbl:t("wait after stopping"),
+      sub: ins.latency_p95_ms ? t("slowest 5%: {s}").replace("{s}", fmtSecs(ins.latency_p95_ms)) : "",
+      tip:t("Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).")
+        .replace("{a}", fmtSecs(ins.stt_median_ms || 0)).replace("{b}", fmtSecs(ins.cleanup_median_ms || 0)) },
+    { key:"cleanupfx", cls:"violet", icon:I.sent, value: ins.cleanup_runs ? Math.round(ins.cleanup_changed / ins.cleanup_runs * 100) : 0,
+      format:n => ins.cleanup_runs ? n + "%" : "–", lbl:t("changed by AI cleanup"),
+      sub: ins.cleanup_failed ? t("{n} failed").replace("{n}", nf(ins.cleanup_failed))
+         : ins.cleanup_runs ? t("of {n} cleaned").replace("{n}", nf(ins.cleanup_runs)) : "",
+      tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
+    { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
+      t("Languages you dictated in this period, by number of dictations.")) },
+    { key:"rhythm", custom:true, cardClass:"rhythm-card", html:() => rhythmCardHTML(st, ins), wire:el => setCardTip(el,
+      t("The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.")) },
     // A compact medal counter that opens the full Achievements page.
     { key:"achievements", custom:true, cardClass:"ach-mini", html:achMiniCardHTML, wire:wireAchMiniCard },
     // Not a statistic, but it lives in the same row: which version you run, and

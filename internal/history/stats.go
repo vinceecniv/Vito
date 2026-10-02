@@ -48,6 +48,15 @@ type Stats struct {
 	// requested window, so the chart never turns into a wall of thin bars.
 	SeriesUnit string `json:"series_unit"`
 	Currency   string `json:"currency"` // currency of DayWords.Cost, set by the server
+
+	// SpokenWPM is how fast you speak while dictating: words over recording
+	// time. AvgWords is the length of a typical dictation. Both come from the
+	// permanent day sums, so they cover any period.
+	SpokenWPM int     `json:"spoken_wpm"`
+	AvgWords  float64 `json:"avg_words"`
+	// Insights need the individual dictations, so they reach back only as far
+	// as the history does.
+	Insights Insights `json:"insights"`
 }
 
 // Stats computes the summary over the last `days` calendar days (0 = all time)
@@ -153,6 +162,15 @@ func (s *Store) stats(wpm float64, from, anchor time.Time, buckets func(firstDay
 		TypingWPM:         int(wpm),
 		FirstDay:          allTimeFirst,
 		WeekPeakIndex:     -1,
+	}
+	if durMS > 0 {
+		st.SpokenWPM = int(float64(words)/(float64(durMS)/60000.0) + 0.5)
+	}
+	if act > 0 {
+		st.AvgWords = float64(words) / float64(act)
+	}
+	if st.Insights, err = s.Insights(from, anchor); err != nil {
+		return Stats{}, err
 	}
 
 	// "Today" gets an hourly breakdown — a single day bar says nothing, and the

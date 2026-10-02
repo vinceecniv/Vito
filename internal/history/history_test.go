@@ -263,3 +263,50 @@ func TestCapSparesTheLastThreeMonths(t *testing.T) {
 		t.Fatalf("old entries beyond the cap survived: %d", n)
 	}
 }
+
+func TestInsights(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("AppData", dir)
+	t.Setenv("XDG_CONFIG_HOME", dir)
+	t.Setenv("HOME", dir)
+
+	s, err := NewStore(500, 0)
+	if err != nil {
+		t.Fatalf("NewStore: %v", err)
+	}
+	defer s.Close()
+
+	// A Wednesday, 10:00 local.
+	at := time.Date(2026, 9, 30, 10, 0, 0, 0, time.Local)
+	add := func(e Entry) {
+		e.Timestamp = at
+		if err := s.Append(e); err != nil {
+			t.Fatalf("Append: %v", err)
+		}
+	}
+	add(Entry{Language: "nl", Raw: "een twee", Cleaned: "Een twee.", CleanupUsed: true, SttMS: 300, CleanupMS: 500, InjectedMS: 900})
+	add(Entry{Language: "nl", Raw: "drie", Cleaned: "drie", CleanupUsed: true, SttMS: 200, CleanupMS: 400, InjectedMS: 700})
+	add(Entry{Language: "en", Raw: "four", Cleaned: "four", CleanupError: "timeout", SttMS: 250, InjectedMS: 3000})
+
+	day := time.Date(2026, 9, 30, 0, 0, 0, 0, time.Local)
+	in, err := s.Insights(day, day)
+	if err != nil {
+		t.Fatalf("Insights: %v", err)
+	}
+	if in.Dictations != 3 || in.CleanupRuns != 2 || in.CleanupChanged != 1 || in.CleanupFailed != 1 {
+		t.Fatalf("counts: %+v", in)
+	}
+	if in.LatencyMedianMS != 900 || in.LatencyP95MS != 3000 || in.SttMedianMS != 250 || in.CleanupMedianMS != 400 {
+		t.Fatalf("timings: median %d p95 %d stt %d cleanup %d", in.LatencyMedianMS, in.LatencyP95MS, in.SttMedianMS, in.CleanupMedianMS)
+	}
+	if len(in.Languages) != 2 || in.Languages[0] != (LangCount{"nl", 2}) {
+		t.Fatalf("languages: %+v", in.Languages)
+	}
+	if in.Heatmap[2][10] != 3 {
+		t.Fatalf("heatmap Wednesday 10:00 = %d, want 3", in.Heatmap[2][10])
+	}
+	// The day after holds nothing.
+	if in, _ := s.Insights(day.AddDate(0, 0, 1), day.AddDate(0, 0, 1)); in.Dictations != 0 {
+		t.Fatalf("next day: %d dictations", in.Dictations)
+	}
+}
