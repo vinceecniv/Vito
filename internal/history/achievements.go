@@ -7,8 +7,8 @@ import (
 )
 
 // AchievementInputs gathers the figures the achievement definitions are checked
-// against: lifetime totals, a best day and best week, the longest streak of
-// consecutive days, how many distinct languages you've dictated in, and a few
+// against: lifetime totals, a best day and best week, the longest streak (which
+// forgives two missed days a week — see longestStreak), how many distinct languages you've dictated in, and a few
 // one-off flags (dictated at night, before dawn, or after a long absence).
 //
 // The cost-saving figure isn't set here — the server fills it in, since it owns
@@ -71,27 +71,15 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 		return st, err
 	}
 
-	// Longest run of consecutive calendar days; best sum over any 7-day window;
-	// and whether there was ever a gap of 30+ days followed by more activity.
-	var streak, longest int64
+	// Best sum over any 7-day window, and whether there was ever a gap of 30+
+	// days followed by more activity.
 	var window []dayRow
 	var prev time.Time
+	active := make([]time.Time, 0, len(days))
 	for i, d := range days {
-		if i > 0 {
-			gap := int(d.d.Sub(prev).Hours()/24 + 0.5)
-			if gap == 1 {
-				streak++
-			} else {
-				if gap >= 30 {
-					st.Comeback = true
-				}
-				streak = 1
-			}
-		} else {
-			streak = 1
-		}
-		if streak > longest {
-			longest = streak
+		active = append(active, d.d)
+		if i > 0 && daysBetween(prev, d.d) >= 30 {
+			st.Comeback = true
 		}
 		// Drop days that fell out of the trailing 7-day window, then sum.
 		window = append(window, d)
@@ -107,7 +95,7 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 		}
 		prev = d.d
 	}
-	st.LongestStreak = longest
+	st.LongestStreak = longestStreak(active)
 
 	// Distinct dictation languages, and the time-of-day flags, come from the
 	// entry rows. Those are capped, so this is best-effort — but an achievement
@@ -133,6 +121,63 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 		hourRows.Close()
 	}
 	return st, nil
+}
+
+// streakMissesPerWeek is how many days in any 7 a streak may skip and survive.
+// Two, so a working week keeps a streak alive: someone who dictates Monday to
+// Friday would otherwise never get past five days. Three days off in a row — a
+// long weekend — still breaks it.
+const streakMissesPerWeek = 2
+
+// longestStreak returns the longest streak in days, given the active days in
+// ascending order. A streak runs from one active day to another, counted in
+// calendar days, and holds as long as no 7-day stretch inside it has more than
+// streakMissesPerWeek days without dictation.
+func longestStreak(active []time.Time) int64 {
+	if len(active) == 0 {
+		return 0
+	}
+	first := active[0]
+	on := make([]bool, daysBetween(first, active[len(active)-1])+1)
+	for _, d := range active {
+		on[daysBetween(first, d)] = true
+	}
+	missed := func(from, to int) int {
+		n := 0
+		for i := from; i <= to; i++ {
+			if !on[i] {
+				n++
+			}
+		}
+		return n
+	}
+
+	// Two pointers: any part of a valid streak is itself valid, so when the 7
+	// days ending at t hold too many misses, moving the start forward is the
+	// only way to recover, and the windows ending before t stay valid.
+	var longest int64
+	start := 0
+	for t := range on {
+		for start <= t && !on[start] {
+			start++
+		}
+		for start <= t && missed(max(start, t-6), t) > streakMissesPerWeek {
+			start++
+			for start <= t && !on[start] {
+				start++
+			}
+		}
+		if on[t] && start <= t {
+			longest = max(longest, int64(t-start+1))
+		}
+	}
+	return longest
+}
+
+// daysBetween counts calendar days from a to b, both local midnights. Rounding
+// absorbs the 23- and 25-hour days around a daylight-saving change.
+func daysBetween(a, b time.Time) int {
+	return int(b.Sub(a).Hours()/24 + 0.5)
 }
 
 // UnlockedAchievements returns the ids already recorded, with when.
