@@ -440,6 +440,14 @@
   .stat .lbl { color:var(--text2); font-size:12.5px; margin-top:2px; }
   .delta { font-size:11.5px; font-weight:600; margin-top:8px; }
   .delta.up { color:var(--coral); } .delta.flat { color:var(--text3); }
+  /* Sparkline under a statistic: same buckets as the words chart. The dot is
+     HTML rather than SVG so the stretched viewBox can't squash it into an oval. */
+  .spark { position:relative; height:34px; margin-top:12px; }
+  .spark:empty { display:none; }
+  .spark svg { display:block; width:100%; height:100%; overflow:visible; }
+  .spark-dot { position:absolute; width:7px; height:7px; margin:-3.5px 0 0 -3.5px; border-radius:50%;
+    background:var(--violet); box-shadow:0 0 0 2px var(--card), 0 0 0 4px color-mix(in srgb, var(--violet) 25%, transparent); }
+  :root[data-theme="dark"] .spark-dot { background:var(--violet-l); }
   /* Languages: the top one as the figure, all of them as shares of one bar. */
   .lang-card .num.lang-top { font-size:22px; line-height:1.35; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .lang-bar { display:flex; height:7px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
@@ -5853,6 +5861,35 @@ function rhythmCardHTML(st, ins){
   return `<div class="chip violet">${icon}</div><div class="num">${avg}</div><div class="lbl">${t("words per dictation")}</div>` +
     `<div class="heat">${cells}</div>`;
 }
+// A small area chart for a stat card: the line in the brand gradient (coral to
+// violet), the area under it fading from the card's own colour to nothing, and
+// a dot on the latest value. Gaps (NaN — e.g. no speaking time to divide by)
+// are skipped rather than drawn as zero. Empty when there is nothing to show.
+function sparkSVG(values, key, cls){
+  const pts = (values || []).map((v, i) => [i, v]).filter(([, v]) => Number.isFinite(v));
+  if (pts.length < 2 || !pts.some(([, v]) => v > 0)) return "";
+  const W = 100, H = 32, pad = 3, n = values.length - 1 || 1;
+  const max = Math.max(...pts.map(([, v]) => v));
+  const xy = pts.map(([i, v]) => [i / n * W, H - pad - (v / max) * (H - pad * 2)]);
+  // Smoothed with midpoint quadratic curves: soft, and never overshoots below 0.
+  let line = `M${xy[0][0].toFixed(2)},${xy[0][1].toFixed(2)}`;
+  for (let i = 1; i < xy.length; i++) {
+    const [x0, y0] = xy[i - 1], [x1, y1] = xy[i], mx = (x0 + x1) / 2;
+    line += ` Q${x0.toFixed(2)},${y0.toFixed(2)} ${mx.toFixed(2)},${((y0 + y1) / 2).toFixed(2)}`;
+    if (i === xy.length - 1) line += ` T${x1.toFixed(2)},${y1.toFixed(2)}`;
+  }
+  const area = `${line} L${xy[xy.length - 1][0].toFixed(2)},${H} L${xy[0][0].toFixed(2)},${H} Z`;
+  const fill = cls === "coral" ? "var(--coral)" : "var(--violet)";
+  const [lx, ly] = xy[xy.length - 1];
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="spk-l-${key}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--coral)"/><stop offset="1" stop-color="var(--violet)"/></linearGradient>
+      <linearGradient id="spk-f-${key}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${fill}" stop-opacity=".32"/><stop offset="1" stop-color="${fill}" stop-opacity="0"/></linearGradient>
+    </defs>
+    <path d="${area}" fill="url(#spk-f-${key})"/>
+    <path d="${line}" fill="none" stroke="url(#spk-l-${key})" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+  </svg><i class="spark-dot" style="left:${lx}%;top:${(ly / H * 100).toFixed(1)}%"></i>`;
+}
 function renderStatCards(all){
   // Only the cards you kept, in the order you put them in.
   const order = layoutOrderOf("stats");
@@ -5866,7 +5903,8 @@ function renderStatCards(all){
   if (grid.childElementCount !== cards.length) {
     grid.innerHTML = cards.map((c, i) =>
       `<div class="card stat reveal" style="--i:${i+1}"><div class="chip ${c.cls}">${c.icon}</div>` +
-      `<div class="num"></div><div class="lbl"></div>${c.sub !== undefined ? `<div class="delta flat"></div>` : ""}</div>`).join("");
+      `<div class="num"></div><div class="lbl"></div>${c.sub !== undefined ? `<div class="delta flat"></div>` : ""}` +
+      `${c.spark ? `<div class="spark"></div>` : ""}</div>`).join("");
   }
   cards.forEach((c, i) => {
     const el = grid.children[i];
@@ -5875,6 +5913,8 @@ function renderStatCards(all){
     const d = el.querySelector(".delta");
     if (d) { if (c.sub) d.textContent = c.sub; else d.remove(); } // no sub-line: drop the row entirely
     tickNumber(el.querySelector(".num"), c.value, c.format);
+    const sp = el.querySelector(".spark");
+    if (sp) sp.innerHTML = sparkSVG(c.spark, c.key, c.cls);
     // The sub-line is terse by necessity; the explanation lives in the same
     // styled tooltip the settings use, rather than a native title attribute.
     if (c.tip) { el.dataset.tipText = c.tip; el.dataset.i18nDataTipText = c.tip; el.classList.add("has-tip"); }
@@ -6164,30 +6204,36 @@ async function loadStats(){
   };
   const nf = (n)=> n.toLocaleString(numLoc());
   const ins = st.insights || {};
+  // One value per chart bar, so a card's sparkline covers the same period and
+  // buckets as the words chart. Bars still in the future (the rest of today's
+  // hours) are left off, or the line would dive to zero at the end.
+  const nowD = new Date(), todayYmd = ymd(nowD);
+  const past = (st.week || []).filter(d => d.date < todayYmd || (d.date === todayYmd && (st.series_unit !== "hour" || d.hour <= nowD.getHours())));
+  const series = (f) => past.map(f);
   // The period is already shown by the dropdown, so cards don't repeat it; only
   // the genuinely extra sub-lines (per-day, wpm) stay.
   renderStatCards([
     // A prominent warning card that only appears when a provider is out of credit.
     { key:"credit", custom:true, cardClass:"credit-card", html:creditCardHTML, wire:wireCreditCard },
-    { key:"words", cls:"violet", icon:I.words, value:st.words,         format:nf,          lbl:t("words dictated"),
+    { key:"words", spark:series(d => d.words), cls:"violet", icon:I.words, value:st.words,         format:nf,          lbl:t("words dictated"),
       tip:t("Every word in the text Vito pasted for you in this period — after cleanup, if that was on. Privacy-mode dictations count too; only their text isn't kept.") },
-    { key:"sentences", cls:"coral",  icon:I.sent,  value:st.sentences,     format:nf,          lbl:t("sentences cleaned"),
+    { key:"sentences", spark:series(d => d.sentences), cls:"coral",  icon:I.sent,  value:st.sentences,     format:nf,          lbl:t("sentences cleaned"),
       tip:t("The number of sentences in the pasted text. They are counted whether or not AI cleanup actually ran — short dictations skip that step.") },
     // The two derived figures moved into the tooltip: the cards stay one line
     // shorter, and the number gets the explanation it needed anyway.
-    { key:"activations", cls:"violet", icon:I.act,   value:st.activations,   format:nf,          lbl:t("activations"),
+    { key:"activations", spark:series(d => d.activations), cls:"violet", icon:I.act,   value:st.activations,   format:nf,          lbl:t("activations"),
       tip:`≈ ${st.activations_per_day.toFixed(1)} ${t("per day")} — ` +
           t("Average number of times a day you started a dictation, over the days you used Vito in this period.") },
-    { key:"spoken", cls:"coral",  icon:I.mic,   value:st.spoken_seconds, format:fmtHMS,     lbl:t("spoken time"),
+    { key:"spoken", spark:series(d => d.spoken_seconds), cls:"coral",  icon:I.mic,   value:st.spoken_seconds, format:fmtHMS,     lbl:t("spoken time"),
       tip:t("How long the microphone was recording, from start to stop. Pauses and silences within a dictation count too — this is also the time your speech recognition bills for.") },
-    { key:"saved", cls:"violet", icon:I.time,  value:st.saved_minutes,  format:fmtDuration, lbl:t("saved typing time"),
+    { key:"saved", spark:series(d => d.saved_minutes), cls:"violet", icon:I.time,  value:st.saved_minutes,  format:fmtDuration, lbl:t("saved typing time"),
       tip:t("based on {n} wpm").replace("{n}", st.typing_wpm) + " — " +
           t("What you save compared with typing it yourself: your words divided by your typing speed, minus the time you spent speaking. Set your typing speed under Settings → General.") },
     { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:st.commands, format:nf, lbl:t("Vito Assist commands"),
       tip:t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.") },
     // Speaking rate: words over recording time, next to the typing speed the
     // saved-time card assumes.
-    { key:"spokenwpm", cls:"violet", icon:I.mic, value:st.spoken_wpm || 0, format:n => n ? nf(n) : "–", lbl:t("wpm spoken"),
+    { key:"spokenwpm", spark:series(d => d.spoken_seconds >= 10 ? d.words / (d.spoken_seconds / 60) : NaN), cls:"violet", icon:I.mic, value:st.spoken_wpm || 0, format:n => n ? nf(n) : "–", lbl:t("wpm spoken"),
       tip:t("How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.").replace("{n}", st.typing_wpm) },
     // The insights below come from the dictations still in the history.
     { key:"latency", cls:"coral", icon:I.time, value:ins.latency_median_ms || 0, format:fmtSecs, lbl:t("wait after stopping"),
