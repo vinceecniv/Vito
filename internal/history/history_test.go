@@ -58,28 +58,20 @@ func TestStoreAndStats(t *testing.T) {
 	if len(st.Week) != 30 || st.SeriesUnit != "day" {
 		t.Fatalf("series = %d bars of %q, want 30 of \"day\"", len(st.Week), st.SeriesUnit)
 	}
-	// A wider window switches to coarser buckets so the bar count stays sane.
-	wide, err := s.Stats(now, 40, 365)
-	if err != nil {
-		t.Fatalf("Stats(365): %v", err)
-	}
-	if wide.SeriesUnit != "month" || len(wide.Week) < 10 || len(wide.Week) > 13 {
-		t.Fatalf("365d series = %d bars of %q, want ~12 of \"month\"", len(wide.Week), wide.SeriesUnit)
-	}
-	// The named periods divide exactly: 4 week bars and 3 month bars.
-	quarter, err := s.Stats(now, 40, 92)
-	if err != nil {
-		t.Fatalf("Stats(92): %v", err)
-	}
-	if quarter.SeriesUnit != "month" || len(quarter.Week) != 3 {
-		t.Fatalf("3-month series = %d bars of %q, want 3 of \"month\"", len(quarter.Week), quarter.SeriesUnit)
-	}
-	weeks, err := s.Stats(now, 40, 28)
-	if err != nil {
-		t.Fatalf("Stats(28): %v", err)
-	}
-	if weeks.SeriesUnit != "week" || len(weeks.Week) != 4 {
-		t.Fatalf("4-week series = %d bars of %q, want 4 of \"week\"", len(weeks.Week), weeks.SeriesUnit)
+	// Wider windows switch to coarser buckets, as fine as their length allows:
+	// four weeks as days, three months and a year as weeks.
+	for _, c := range []struct {
+		days     int
+		unit     string
+		min, max int
+	}{{28, "day", 28, 28}, {92, "week", 14, 15}, {365, "week", 53, 54}} {
+		st, err := s.Stats(now, 40, c.days)
+		if err != nil {
+			t.Fatalf("Stats(%d): %v", c.days, err)
+		}
+		if st.SeriesUnit != c.unit || len(st.Week) < c.min || len(st.Week) > c.max {
+			t.Fatalf("%dd series = %d bars of %q, want %d-%d of %q", c.days, len(st.Week), st.SeriesUnit, c.min, c.max, c.unit)
+		}
 	}
 }
 

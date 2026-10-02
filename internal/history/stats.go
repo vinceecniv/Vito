@@ -299,7 +299,6 @@ func ChartBuckets(now time.Time, days int, firstDay string) ([]Bucket, string) {
 	const day = 24 * time.Hour
 	loc := now.Location()
 	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
-	fmtDay := func(t time.Time) string { return t.Format("2006-01-02") }
 
 	// "Today" as a single bar is not a chart — keep a week of context around it.
 	// The caller labels the chart with its real span, so this stays honest.
@@ -313,58 +312,16 @@ func ChartBuckets(now time.Time, days int, firstDay string) ([]Bucket, string) {
 		start = fd
 	}
 
-	// The "last 4 weeks" and "last 3 months" periods are picked to divide
-	// exactly, so they get that many bars: four rolling weeks ending today, or
-	// three whole months ending with the current one. Anchoring those to the
-	// calendar instead would leave a stub bar at either end.
-	if days == 28 {
-		out := make([]Bucket, 0, 4)
-		for i := 3; i >= 0; i-- {
-			from := today.Add(-time.Duration(i*7+6) * day)
-			to := today.Add(-time.Duration(i*7) * day)
-			out = append(out, Bucket{From: fmtDay(from), To: fmtDay(to),
-				Label: strconv.Itoa(from.Day()) + "/" + strconv.Itoa(int(from.Month()))})
-		}
-		return out, "week"
-	}
-	// All time: one bar per calendar year. Anything finer turns into a wall of
-	// bars the moment Vito has been in use for a while.
-	if days == 0 {
-		firstYear := today.Year()
-		if fd, err := time.ParseInLocation("2006-01-02", firstDay, loc); err == nil {
-			firstYear = fd.Year()
-		}
-		out := make([]Bucket, 0, today.Year()-firstYear+1)
-		for y := firstYear; y <= today.Year(); y++ {
-			from := time.Date(y, time.January, 1, 0, 0, 0, 0, loc)
-			to := time.Date(y, time.December, 31, 0, 0, 0, 0, loc)
-			if to.After(today) {
-				to = today
-			}
-			out = append(out, Bucket{From: fmtDay(from), To: fmtDay(to), Label: strconv.Itoa(y)})
-		}
-		return out, "year"
-	}
-	if days == 92 {
-		out := make([]Bucket, 0, 3)
-		first := time.Date(today.Year(), today.Month(), 1, 0, 0, 0, 0, loc).AddDate(0, -2, 0)
-		for i := 0; i < 3; i++ {
-			m := first.AddDate(0, i, 0)
-			end := m.AddDate(0, 1, -1)
-			if end.After(today) {
-				end = today
-			}
-			out = append(out, Bucket{From: fmtDay(m), To: fmtDay(end), Label: monthLabels[int(m.Month())-1]})
-		}
-		return out, "month"
-	}
-
+	// Every period, all time included, gets the finest bars its length allows
+	// (spanBuckets): four weeks as days, three months and a year as weeks,
+	// longer as months. The UI thins out the labels when the bars get many.
 	return spanBuckets(start, today, false)
 }
 
 // RangeBuckets lays out the bars for a chosen range, from and to both included:
-// a day per bar up to a month, then weeks, then calendar months. The outer
-// bars are clipped to the range, so none counts a day outside it.
+// a day per bar up to two months, then weeks up to a year, then calendar
+// months. The outer bars are clipped to the range, so none counts a day
+// outside it.
 func RangeBuckets(from, to time.Time) ([]Bucket, string) {
 	return spanBuckets(from, to, true)
 }
@@ -386,7 +343,7 @@ func spanBuckets(start, end time.Time, clip bool) ([]Bucket, string) {
 		return Bucket{From: fmtDay(from), To: fmtDay(to), Label: label}
 	}
 	switch {
-	case span <= 31:
+	case span <= 62:
 		// A day per bar, labelled with the weekday for a week and the day of the
 		// month once there are too many for that to be readable.
 		out := make([]Bucket, 0, span)
@@ -399,7 +356,7 @@ func spanBuckets(start, end time.Time, clip bool) ([]Bucket, string) {
 			out = append(out, Bucket{From: fmtDay(d), To: fmtDay(d), Label: label, Weekend: wd >= 5})
 		}
 		return out, "day"
-	case span <= 190:
+	case span <= 371:
 		// Whole weeks, Monday-anchored, labelled with the Monday's date.
 		out := []Bucket{}
 		wd := (int(start.Weekday()) + 6) % 7

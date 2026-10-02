@@ -17,9 +17,10 @@ func TestRangeBuckets(t *testing.T) {
 		first, end string // From of the first bar, To of the last
 	}{
 		{"2026-09-03", "2026-09-20", "day", 18, "2026-09-03", "2026-09-20"},
+		{"2026-08-20", "2026-10-10", "day", 52, "2026-08-20", "2026-10-10"},
 		// 2026-08-20 is a Thursday: its week bar starts there, not on Monday.
-		{"2026-08-20", "2026-10-10", "week", 8, "2026-08-20", "2026-10-10"},
-		{"2026-01-15", "2026-09-10", "month", 9, "2026-01-15", "2026-09-10"},
+		{"2026-08-20", "2026-11-30", "week", 16, "2026-08-20", "2026-11-30"},
+		{"2025-01-15", "2026-09-10", "month", 21, "2025-01-15", "2026-09-10"},
 	}
 	for _, c := range cases {
 		bars, unit := RangeBuckets(d(c.from), d(c.to))

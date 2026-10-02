@@ -486,6 +486,9 @@
   /* A bar you point at lifts towards you a little, so the chart answers the mouse. */
   .weekcol:hover .bar { transform:scaleX(1.14) scaleY(1.03); filter:brightness(1.12); }
   .weekcol.peak .bar { background:linear-gradient(180deg,var(--coral),var(--violet)); }
+  /* Many thin bars: a smaller radius, or a bar a few pixels wide turns into a pill. */
+  .weekwrap.dense .bar { border-radius:3px 3px 1px 1px; }
+  .weekwrap.dense .weekcol:hover .bar { transform:scaleY(1.03); }
   .weekcol.empty .bar { background:var(--bar); }
   .weekcol.placeholder .bar { background:var(--bar); opacity:.5; cursor:help; }
   .weekcol.placeholder .d { opacity:.7; }
@@ -6296,18 +6299,28 @@ async function loadStats(){
   const grow = chartKey !== lastChartKey;
   lastChartKey = chartKey;
   const heights = [];
-  $("weekchart").innerHTML = st.week.map((d,i)=>{
+  // A long period has many bars — four weeks of days, a year of weeks. The gap
+  // narrows with the count so the bars keep some width, and only every few
+  // labels are shown so they don't run into each other; each bar still names
+  // its own range in the tooltip.
+  const n = st.week.length, dense = unit !== "hour" && n > 14;
+  const step = dense ? Math.ceil(n / 9) : 1;
+  const wrap = $("weekchart");
+  wrap.classList.toggle("dense", dense);
+  wrap.style.gap = !dense ? "" : n > 40 ? "2px" : n > 20 ? "3px" : "5px";
+  wrap.innerHTML = st.week.map((d,i)=>{
+    const shown = i % step === 0;
     if (isPh(d)) {
       const h = 16 + (hashStr(d.date) % 46); // stable pseudo-random 16..61%
       heights.push(h);
-      return `<div class="weekcol placeholder"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d">${t(d.label)}</div></div>`;
+      return `<div class="weekcol placeholder"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d">${shown ? t(d.label) : ""}</div></div>`;
     }
     const h = d.words>0 ? Math.max(6, Math.round(d.words/max*100)) : 4;
     heights.push(h);
     const marker = unit === "hour" ? (d.hour === nowHour) : (d.date === todayStr);
     const cls = (i===st.week_peak_index ? "peak" : (d.words===0 ? "empty" : "")) + (marker ? " today" : "");
     // 24 hourly labels don't fit; every third keeps the axis readable.
-    const label = unit === "hour" ? (d.hour % 3 === 0 ? d.hour : "") : t(d.label);
+    const label = unit === "hour" ? (d.hour % 3 === 0 ? d.hour : "") : (shown ? t(d.label) : "");
     return `<div class="weekcol ${cls}"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d">${label}</div></div>`;
   }).join("");
   const cols = $("weekchart").querySelectorAll(".weekcol");
