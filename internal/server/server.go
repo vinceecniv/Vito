@@ -737,7 +737,11 @@ func (s *Server) handleCosts(w http.ResponseWriter, r *http.Request) {
 	// second figure next to the month-to-date one. Same day arithmetic as the
 	// statistics: -1 is yesterday, 0 is all time.
 	periodTotal := 0.0
-	if v := r.URL.Query().Get("days"); v != "" {
+	if from, to, ok := dateRange(r, now); ok {
+		if pDur, pUp, pIn, pOut, pCmdIn, pCmdOut, _, e := costTotals(from.Format("2006-01-02"), to.Format("2006-01-02")); e == nil {
+			periodTotal = sttUSD(pDur) + uploadUSD(pUp) + cleanUSD(pIn, pOut) + assistUSD(pCmdIn, pCmdOut)
+		}
+	} else if v := r.URL.Query().Get("days"); v != "" {
 		if days, e := strconv.Atoi(v); e == nil && days >= -1 {
 			anchor := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
 			if days == -1 {
@@ -1237,6 +1241,31 @@ func (s *Server) handlePlaySound(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
+// dateRange reads a chosen period from ?from=yyyy-mm-dd&to=yyyy-mm-dd, both
+// days included, in now's location. ok is false when either is missing or
+// malformed, and the caller falls back to ?days. The two are swapped if given
+// the wrong way round, and the end is capped at today: there is no data from
+// the future, and counting those days would dilute the per-day average.
+func dateRange(r *http.Request, now time.Time) (from, to time.Time, ok bool) {
+	q := r.URL.Query()
+	loc := now.Location()
+	from, err1 := time.ParseInLocation("2006-01-02", q.Get("from"), loc)
+	to, err2 := time.ParseInLocation("2006-01-02", q.Get("to"), loc)
+	if err1 != nil || err2 != nil {
+		return time.Time{}, time.Time{}, false
+	}
+	if to.Before(from) {
+		from, to = to, from
+	}
+	if today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc); to.After(today) {
+		to = today
+	}
+	if from.After(to) {
+		from = to
+	}
+	return from, to, true
+}
+
 func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
 	days := 28 // default look-back; 0 = all time, -1 = yesterday
 	if v := r.URL.Query().Get("days"); v != "" {
@@ -1245,12 +1274,22 @@ func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	wpm := s.d.Config().TypingWPM()
+	from, to, isRange := dateRange(r, time.Now())
 	var st history.Stats
 	if s.demo() {
-		st = demo.Stats(time.Now(), wpm, days)
+		if isRange {
+			st = demo.StatsRange(time.Now(), wpm, from, to)
+		} else {
+			st = demo.Stats(time.Now(), wpm, days)
+		}
 	} else {
 		var err error
-		if st, err = s.hist.Stats(time.Now(), wpm, days); err != nil {
+		if isRange {
+			st, err = s.hist.StatsRange(wpm, from, to)
+		} else {
+			st, err = s.hist.Stats(time.Now(), wpm, days)
+		}
+		if err != nil {
 			s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
 			return
 		}

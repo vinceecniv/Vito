@@ -491,6 +491,32 @@
   .period-sel .flagsel-btn > span { overflow:hidden; text-overflow:ellipsis; }
   .period-sel .flagsel-list { left:auto; right:0; min-width:max-content; }
   .period-sel .flagsel-opt { white-space:nowrap; }
+  .period-sel .flagsel-sep { height:1px; margin:4px 6px; background:var(--card-border); }
+  /* "Custom range…" swaps the option list for a month calendar in the same
+     panel: click a start day, then an end day. Future days can't be picked. */
+  .period-sel.cal .flagsel-list { min-width:0; padding:12px; }
+  .rcal-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; font-size:13.5px; }
+  .rcal-head b { font-weight:600; }
+  .rcal-nav { width:30px; height:30px; border-radius:8px; border:1px solid var(--input-border); background:var(--input-bg);
+    color:var(--text2); cursor:pointer; font:inherit; font-size:16px; line-height:1; }
+  .rcal-nav:hover:not(:disabled) { color:var(--accent); }
+  .rcal-nav:disabled { opacity:.35; cursor:default; }
+  .rcal-grid { display:grid; grid-template-columns:repeat(7, 38px); row-gap:2px; }
+  .rcal-wd { font-size:11px; color:var(--text3); text-align:center; padding:4px 0 6px; }
+  .rcal-day { height:34px; border:0; padding:0; background:none; color:var(--text); font:inherit; font-size:13px;
+    cursor:pointer; border-radius:8px; }
+  .rcal-day:hover:not(:disabled) { background:var(--nav-active-bg); }
+  .rcal-day.today { color:var(--accent); font-weight:700; }
+  .rcal-day:disabled { color:var(--placeholder); cursor:default; }
+  .rcal-day.in, .rcal-day.in:hover:not(:disabled) { background:var(--accent-soft); border-radius:0; }
+  .rcal-day.start, .rcal-day.end, .rcal-day.start:hover, .rcal-day.end:hover { background:var(--violet); color:#fff; font-weight:600; }
+  .rcal-day.start { border-radius:8px 0 0 8px; }
+  .rcal-day.end { border-radius:0 8px 8px 0; }
+  .rcal-day.start.end { border-radius:8px; }
+  .rcal-foot { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px;
+    padding-top:10px; border-top:1px solid var(--card-border); }
+  .rcal-sum { font-size:12.5px; color:var(--text2); white-space:nowrap; }
+  .rcal-foot .rowflex { display:flex; gap:6px; }
   /* On the narrow layout the picker collapses to its calendar icon: the label
      costs a lot of the header's width, and the open list names the period
      anyway. Same footprint as the privacy button beside it. */
@@ -2445,6 +2471,12 @@ const TR = { nl: {
   "Last 90 days":"Afgelopen 90 dagen",
   "Last year":"Afgelopen jaar",
   "All time":"Alle tijd",
+  "Custom range…":"Aangepaste periode…",
+  "Previous month":"Vorige maand",
+  "Next month":"Volgende maand",
+  "Pick a start date":"Kies een begindatum",
+  "Pick an end date":"Kies een einddatum",
+  "Apply":"Toepassen",
   "Typing speed (for time saved)":"Typesnelheid (voor tijdsbesparing)",
   "Slow typist (25 wpm)":"Langzame typist (25 wpm)",
   "Average (40 wpm)":"Gemiddeld (40 wpm)",
@@ -5707,40 +5739,149 @@ const PERIOD_MIGRATE = { "30":"28", "90":"92" };
 // A period in the picker's own words — reused as the chart's subtitle so the
 // two can't drift apart. Pass a value to name a period other than the selected
 // one (the chart widens "today" to a week, and then says so).
+// A chosen range is stored as "range:yyyy-mm-dd:yyyy-mm-dd", both days included.
+const RANGE_RE = /^range:(\d{4}-\d\d-\d\d):(\d{4}-\d\d-\d\d)$/;
+function ymd(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
+function parseYmd(s){ const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); }
+// Dates in the interface language; Intl knows the month names, so nothing here
+// needs a translation entry.
+function dateFmt(opts){
+  try { return new Intl.DateTimeFormat(uiLang, opts); } catch { return new Intl.DateTimeFormat(numLoc(), opts); }
+}
+function rangeLabel(from, to){
+  const a = parseYmd(from), b = parseYmd(to);
+  const f = dateFmt({ day:"numeric", month:"short", year:"numeric" });
+  if (from === to) return f.format(a);
+  return f.formatRange ? f.formatRange(a, b) : f.format(a) + " – " + f.format(b);
+}
 function periodLabel(value){
-  const v = value === undefined ? ($("stat-period") || {}).value : value;
-  const o = PERIOD_OPTS.find(x => x.v === String(v));
+  const v = String(value === undefined ? ($("stat-period") || {}).value : value);
+  const r = v.match(RANGE_RE);
+  if (r) return rangeLabel(r[1], r[2]);
+  const o = PERIOD_OPTS.find(x => x.v === v);
   return o ? t(o.label) : "";
 }
-function statPeriodDays(){
+function statPeriod(){
   const v = $("stat-period");
-  if (!v) return 30;
+  if (!v) return "28";
   if (!v.dataset.restored) {
     v.dataset.restored = "1";
-    const saved = PERIOD_MIGRATE[localStorage.getItem("vito-stat-period")] || localStorage.getItem("vito-stat-period");
-    if (saved && PERIOD_OPTS.some(o => o.v === saved)) v.value = saved;
+    let saved = null; try { saved = localStorage.getItem("vito-stat-period"); } catch {}
+    saved = PERIOD_MIGRATE[saved] || saved;
+    if (saved && (PERIOD_OPTS.some(o => o.v === saved) || RANGE_RE.test(saved))) v.value = saved;
   }
-  return parseInt(v.value,10)||0;
+  return v.value;
+}
+// The period as the query string /api/stats and /api/costs take.
+function statPeriodQuery(){
+  const v = statPeriod(), r = v.match(RANGE_RE);
+  return r ? `from=${r[1]}&to=${r[2]}` : "days=" + (parseInt(v,10)||0);
+}
+function setStatPeriod(v){
+  $("stat-period").value = v;
+  try { localStorage.setItem("vito-stat-period", v); } catch {}
+  setPeriodDisplay();
+  loadStats();
 }
 function setPeriodDisplay(){
   const btn = $("statperiod-btn"), list = $("statperiod-list");
   if (!btn) return;
-  const cur = String(statPeriodDays());
+  const cur = statPeriod();
   btn.innerHTML = PERIOD_ICON + "<span>" + periodLabel(cur) + "</span>";
-  [...list.children].forEach(c => c.classList.toggle("sel", c.dataset.v === cur));
+  const want = RANGE_RE.test(cur) ? "range" : cur;
+  list.querySelectorAll(".flagsel-opt").forEach(c => c.classList.toggle("sel", c.dataset.v === want));
+}
+function renderPeriodOptions(){
+  $("statperiod-sel").classList.remove("cal");
+  $("statperiod-list").innerHTML =
+    PERIOD_OPTS.map(o => `<div class="flagsel-opt" data-v="${o.v}">${PERIOD_ICON}<span>${t(o.label)}</span></div>`).join("") +
+    `<div class="flagsel-sep"></div><div class="flagsel-opt" data-v="range">${PERIOD_ICON}<span>${t("Custom range…")}</span></div>`;
+  setPeriodDisplay();
+}
+// The range calendar: one month at a time, Monday first. The first click sets
+// the start, the second the end (hovering shows the range it would make); a
+// click before the start moves the start instead. Apply with only a start
+// picks that single day.
+let rcal = null;
+function openRangeCalendar(){
+  const r = statPeriod().match(RANGE_RE);
+  const base = r ? parseYmd(r[2]) : new Date();
+  rcal = { a: r ? r[1] : "", b: r ? r[2] : "", hover: "", month: new Date(base.getFullYear(), base.getMonth(), 1) };
+  $("statperiod-sel").classList.add("cal");
+  renderRangeCalendar();
+}
+function renderRangeCalendar(){
+  const today = ymd(new Date());
+  const m = rcal.month, y = m.getFullYear(), mo = m.getMonth();
+  const lead = (m.getDay() + 6) % 7, len = new Date(y, mo+1, 0).getDate();
+  const end = rcal.b || (rcal.a && rcal.hover > rcal.a ? rcal.hover : "");
+  const wd = dateFmt({ weekday:"narrow" });
+  let cells = "";
+  for (let i = 0; i < 7; i++) cells += `<div class="rcal-wd">${wd.format(new Date(2024, 0, 1+i))}</div>`; // 1 Jan 2024 was a Monday
+  for (let i = 0; i < lead; i++) cells += "<span></span>";
+  for (let d = 1; d <= len; d++) {
+    const ds = ymd(new Date(y, mo, d));
+    const cls = ["rcal-day"];
+    if (ds === today) cls.push("today");
+    if (ds === rcal.a) cls.push("start");
+    if (ds === end || (ds === rcal.a && !end)) cls.push("end");
+    if (rcal.a && end && ds > rcal.a && ds < end) cls.push("in");
+    cells += `<button type="button" class="${cls.join(" ")}" data-day="${ds}"${ds > today ? " disabled" : ""}>${d}</button>`;
+  }
+  const atNow = y > new Date().getFullYear() || (y === new Date().getFullYear() && mo >= new Date().getMonth());
+  const sum = rcal.a ? (rcal.b ? rangeLabel(rcal.a, rcal.b) : t("Pick an end date")) : t("Pick a start date");
+  $("statperiod-list").innerHTML = `<div class="rcal">
+    <div class="rcal-head">
+      <button type="button" class="rcal-nav" data-nav="-1" aria-label="${t("Previous month")}">‹</button>
+      <b>${dateFmt({ month:"long", year:"numeric" }).format(m)}</b>
+      <button type="button" class="rcal-nav" data-nav="1" aria-label="${t("Next month")}"${atNow ? " disabled" : ""}>›</button>
+    </div>
+    <div class="rcal-grid">${cells}</div>
+    <div class="rcal-foot"><span class="rcal-sum">${sum}</span>
+      <div class="rowflex"><button type="button" class="btn ghost small" data-cal="cancel">${t("Cancel")}</button>
+      <button type="button" class="btn primary small" data-cal="apply"${rcal.a ? "" : " disabled"}>${t("Apply")}</button></div>
+    </div></div>`;
 }
 function buildPeriodDropdown(){
   const sel = $("statperiod-sel"), btn = $("statperiod-btn"), list = $("statperiod-list");
   if (!sel) return;
-  list.innerHTML = PERIOD_OPTS.map(o => `<div class="flagsel-opt" data-v="${o.v}">${PERIOD_ICON}<span>${t(o.label)}</span></div>`).join("");
-  [...list.children].forEach(c => c.onclick = () => {
-    sel.classList.remove("open");
-    $("stat-period").value = c.dataset.v;
-    try { localStorage.setItem("vito-stat-period", c.dataset.v); } catch {}
-    setPeriodDisplay();
-    loadStats();
-  });
-  btn.onclick = (e) => { e.stopPropagation(); sel.classList.toggle("open"); };
+  renderPeriodOptions();
+  // One delegated handler for both faces of the panel. It stops the click here
+  // so the document handler below doesn't close the calendar mid-pick.
+  list.onclick = (e) => {
+    e.stopPropagation();
+    const opt = e.target.closest(".flagsel-opt"), day = e.target.closest(".rcal-day"),
+          nav = e.target.closest(".rcal-nav"), act = e.target.closest("[data-cal]");
+    if (opt) {
+      if (opt.dataset.v === "range") return openRangeCalendar();
+      sel.classList.remove("open");
+      setStatPeriod(opt.dataset.v);
+    } else if (day && !day.disabled) {
+      const ds = day.dataset.day;
+      if (!rcal.a || rcal.b || ds < rcal.a) { rcal.a = ds; rcal.b = ""; }
+      else rcal.b = ds;
+      renderRangeCalendar();
+    } else if (nav && !nav.disabled) {
+      rcal.month = new Date(rcal.month.getFullYear(), rcal.month.getMonth() + Number(nav.dataset.nav), 1);
+      renderRangeCalendar();
+    } else if (act) {
+      sel.classList.remove("open");
+      if (act.dataset.cal === "apply" && rcal.a) setStatPeriod(`range:${rcal.a}:${rcal.b || rcal.a}`);
+      renderPeriodOptions();
+    }
+  };
+  // Hover previews the range while only the start is set.
+  list.onmouseover = (e) => {
+    const day = e.target.closest(".rcal-day");
+    if (!rcal || !rcal.a || rcal.b || !day || day.disabled || day.dataset.day === rcal.hover) return;
+    rcal.hover = day.dataset.day;
+    renderRangeCalendar();
+  };
+  btn.onclick = (e) => {
+    e.stopPropagation();
+    if (!sel.classList.contains("open")) renderPeriodOptions(); // always open on the list, not a stale calendar
+    sel.classList.toggle("open");
+  };
   document.addEventListener("click", () => sel.classList.remove("open"));
   setPeriodDisplay();
 }
@@ -5757,8 +5898,7 @@ let lastCosts = null; // kept for the explanation popup (needs the exchange rate
 async function loadCosts(){
   // The period travels with the request so the card can show what the window on
   // screen actually cost, next to the month-to-date figure people expect.
-  const days = statPeriodDays();
-  let c; try { c = await api("/api/costs?days=" + days); } catch { return; }
+  let c; try { c = await api("/api/costs?" + statPeriodQuery()); } catch { return; }
   lastCosts = c;
   const cur = c.currency || "eur";
   $("cost-period-lbl").textContent = periodLabel();
@@ -5828,8 +5968,7 @@ let weekCur = "eur";
 let chartUnit = "day";
 async function loadStats(){
   loadCosts();
-  const days = statPeriodDays();
-  let st; try { st = await api("/api/stats?days="+days); } catch { return; }
+  let st; try { st = await api("/api/stats?" + statPeriodQuery()); } catch { return; }
   weekCur = st.currency || "eur";
   const I = {
     words:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/></svg>',

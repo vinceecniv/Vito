@@ -79,18 +79,39 @@ func Stats(now time.Time, wpm float64, days int) history.Stats {
 	if days == -1 { // "yesterday" — the sample data has no hourly detail anyway
 		days = 1
 	}
-	const dur = 24 * time.Hour
 	loc := now.Location()
 	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
 
 	from := today.AddDate(0, 0, -364) // "all time" still needs a start
 	if days > 0 {
-		from = today.Add(-time.Duration(days-1) * dur)
+		from = today.AddDate(0, 0, -(days - 1))
 	}
+	// Same buckets as the real chart, so demo mode reacts to the period
+	// dropdown exactly like live data does.
+	buckets, unit := history.ChartBuckets(now, days, FirstDay(now))
+	return stats(now, wpm, from, today, days, buckets, unit)
+}
+
+// StatsRange mirrors history.Store.StatsRange: a chosen range, from and to both
+// included. A single day has no hourly detail here, so it is one bar.
+func StatsRange(now time.Time, wpm float64, from, to time.Time) history.Stats {
+	if wpm <= 0 {
+		wpm = 40
+	}
+	buckets, unit := history.RangeBuckets(from, to)
+	days := int(to.Sub(from).Hours()/24+0.5) + 1
+	return stats(now, wpm, from, to, days, buckets, unit)
+}
+
+// stats totals the fabricated days from..today (both included) and lays them
+// out over the given bars. days is the window length, 0 for all time.
+func stats(now time.Time, wpm float64, from, today time.Time, days int, buckets []history.Bucket, unit string) history.Stats {
+	const dur = 24 * time.Hour
+	loc := now.Location()
 	var words, sent, act int
 	var durMS int64
 	first := ""
-	for d := from; !d.After(today); d = d.Add(dur) {
+	for d := from; !d.After(today); d = d.AddDate(0, 0, 1) {
 		w, sn, a, ms, _, _ := day(now, d)
 		if w == 0 {
 			continue
@@ -137,9 +158,6 @@ func Stats(now time.Time, wpm float64, days int) history.Stats {
 		WeekPeakIndex:     -1,
 	}
 
-	// Same buckets as the real chart, so demo mode reacts to the period
-	// dropdown exactly like live data does.
-	buckets, unit := history.ChartBuckets(now, days, FirstDay(now))
 	st.SeriesUnit = unit
 	peak := -1
 	for i, b := range buckets {

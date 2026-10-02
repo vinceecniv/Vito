@@ -55,10 +55,6 @@ type Stats struct {
 // row cap. `wpm` sets the saved-typing-time baseline. `now`'s location sets the
 // day boundaries. The weekly chart always covers the current Monday..Sunday.
 func (s *Store) Stats(now time.Time, wpm float64, days int) (Stats, error) {
-	if wpm <= 0 {
-		wpm = 40
-	}
-	const day = 24 * time.Hour
 	loc := now.Location()
 	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
 
@@ -66,12 +62,40 @@ func (s *Store) Stats(now time.Time, wpm float64, days int) (Stats, error) {
 	// window ends a day earlier. Every calculation below works off that anchor.
 	anchor := today
 	if days == -1 {
-		anchor, days = today.Add(-day), 1
+		anchor, days = today.AddDate(0, 0, -1), 1
 	}
-	toDay := anchor.Format("2006-01-02")
-	fromDay := ""
+	var from time.Time // zero: all time
 	if days > 0 {
-		fromDay = anchor.Add(-time.Duration(days-1) * day).Format("2006-01-02")
+		from = anchor.AddDate(0, 0, -(days - 1))
+	}
+	return s.stats(wpm, from, anchor, func(firstDay string) ([]Bucket, string) {
+		return ChartBuckets(now, days, firstDay)
+	})
+}
+
+// StatsRange is Stats over a chosen stretch of the calendar, from and to both
+// local midnights and both included. A single day gets the hourly chart, like
+// today; longer ranges get days, weeks or months by length (RangeBuckets).
+func (s *Store) StatsRange(wpm float64, from, to time.Time) (Stats, error) {
+	return s.stats(wpm, from, to, func(string) ([]Bucket, string) {
+		return RangeBuckets(from, to)
+	})
+}
+
+// stats does the work for Stats and StatsRange: the window runs from `from`
+// (zero for all time) to `anchor`, both included, and buckets lays out the
+// chart bars for anything longer than a day.
+func (s *Store) stats(wpm float64, from, anchor time.Time, buckets func(firstDay string) ([]Bucket, string)) (Stats, error) {
+	if wpm <= 0 {
+		wpm = 40
+	}
+	const day = 24 * time.Hour
+	loc := anchor.Location()
+	toDay := anchor.Format("2006-01-02")
+	fromDay, days := "", 0
+	if !from.IsZero() {
+		fromDay = from.Format("2006-01-02")
+		days = daysBetween(from, anchor) + 1
 	}
 
 	words, sent, act, durMS, firstDay, err := s.DayTotals(fromDay, toDay)
@@ -173,10 +197,10 @@ func (s *Store) Stats(now time.Time, wpm float64, days int) (Stats, error) {
 	// Otherwise the chart covers the same window as the figures above it. Buckets
 	// grow with the window so the bar count stays readable: days for a week or a
 	// month, weeks for four weeks, months for a quarter and beyond.
-	buckets, unit := ChartBuckets(now, days, firstDay)
+	bars, unit := buckets(firstDay)
 	st.SeriesUnit = unit
 	peak := -1
-	for i, b := range buckets {
+	for i, b := range bars {
 		w, sn, ac, dur, _, err := s.DayTotals(b.From, b.To)
 		if err != nil {
 			return Stats{}, err
@@ -264,7 +288,6 @@ func ChartBuckets(now time.Time, days int, firstDay string) ([]Bucket, string) {
 	} else if fd, err := time.ParseInLocation("2006-01-02", firstDay, loc); err == nil {
 		start = fd
 	}
-	span := int(today.Sub(start)/day) + 1
 
 	// The "last 4 weeks" and "last 3 months" periods are picked to divide
 	// exactly, so they get that many bars: four rolling weeks ending today, or
@@ -312,12 +335,38 @@ func ChartBuckets(now time.Time, days int, firstDay string) ([]Bucket, string) {
 		return out, "month"
 	}
 
+	return spanBuckets(start, today, false)
+}
+
+// RangeBuckets lays out the bars for a chosen range, from and to both included:
+// a day per bar up to a month, then weeks, then calendar months. The outer
+// bars are clipped to the range, so none counts a day outside it.
+func RangeBuckets(from, to time.Time) ([]Bucket, string) {
+	return spanBuckets(from, to, true)
+}
+
+// spanBuckets picks the bar size from the length of start..end, so the chart
+// stays readable however long the window is. With clip, the first week or
+// month starts at start instead of its own first day.
+func spanBuckets(start, end time.Time, clip bool) ([]Bucket, string) {
+	loc := start.Location()
+	fmtDay := func(t time.Time) string { return t.Format("2006-01-02") }
+	span := daysBetween(start, end) + 1
+	bucket := func(from, to time.Time, label string) Bucket {
+		if clip && from.Before(start) {
+			from = start
+		}
+		if to.After(end) {
+			to = end
+		}
+		return Bucket{From: fmtDay(from), To: fmtDay(to), Label: label}
+	}
 	switch {
 	case span <= 31:
 		// A day per bar, labelled with the weekday for a week and the day of the
 		// month once there are too many for that to be readable.
 		out := make([]Bucket, 0, span)
-		for d := start; !d.After(today); d = d.Add(day) {
+		for d := start; !d.After(end); d = d.AddDate(0, 0, 1) {
 			wd := (int(d.Weekday()) + 6) % 7
 			label := dayLabels[wd]
 			if span > 10 {
@@ -330,23 +379,15 @@ func ChartBuckets(now time.Time, days int, firstDay string) ([]Bucket, string) {
 		// Whole weeks, Monday-anchored, labelled with the Monday's date.
 		out := []Bucket{}
 		wd := (int(start.Weekday()) + 6) % 7
-		for w := start.Add(-time.Duration(wd) * day); !w.After(today); w = w.Add(7 * day) {
-			end := w.Add(6 * day)
-			if end.After(today) {
-				end = today
-			}
-			out = append(out, Bucket{From: fmtDay(w), To: fmtDay(end), Label: strconv.Itoa(w.Day()) + "/" + strconv.Itoa(int(w.Month()))})
+		for w := start.AddDate(0, 0, -wd); !w.After(end); w = w.AddDate(0, 0, 7) {
+			out = append(out, bucket(w, w.AddDate(0, 0, 6), strconv.Itoa(w.Day())+"/"+strconv.Itoa(int(w.Month()))))
 		}
 		return out, "week"
 	default:
 		// Calendar months.
 		out := []Bucket{}
-		for m := time.Date(start.Year(), start.Month(), 1, 0, 0, 0, 0, loc); !m.After(today); m = m.AddDate(0, 1, 0) {
-			end := m.AddDate(0, 1, -1)
-			if end.After(today) {
-				end = today
-			}
-			out = append(out, Bucket{From: fmtDay(m), To: fmtDay(end), Label: monthLabels[int(m.Month())-1]})
+		for m := time.Date(start.Year(), start.Month(), 1, 0, 0, 0, 0, loc); !m.After(end); m = m.AddDate(0, 1, 0) {
+			out = append(out, bucket(m, m.AddDate(0, 1, -1), monthLabels[int(m.Month())-1]))
 		}
 		return out, "month"
 	}
