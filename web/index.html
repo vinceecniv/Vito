@@ -401,8 +401,8 @@
   /* Bar and pane share a max-width so the underline ends flush with the card
      instead of running off across empty space. 800px fits all six tabs in both
      languages without scrolling on desktop. */
-  .settabs { display:flex; flex-wrap:wrap; gap:2px 6px; max-width:800px; margin-bottom:24px;
-    border-bottom:1px solid var(--card-border); }
+  .settabs { display:flex; flex-wrap:nowrap; gap:6px; width:fit-content; min-width:min(800px,100%); max-width:100%;
+    margin-bottom:24px; border-bottom:1px solid var(--card-border); }
   .settabs::-webkit-scrollbar { display:none; }
   .settabs button { flex:none; display:inline-flex; align-items:center; gap:8px; padding:10px 13px 12px;
     margin-bottom:-1px; border:none; border-bottom:2px solid transparent; background:none;
@@ -415,17 +415,17 @@
   .settabs button[hidden] { display:none; }
   .settings-pane { max-width:800px; }
   .settings-pane > .card[hidden] { display:none; }
-  /* Narrow viewports get a dropdown instead, reusing the .flagsel pattern from
-     the theme/language pickers. The switch happens while the bar still fits
-     (772px of tabs needs a ~976px viewport), so it never has to scroll
-     sideways — a mouse can't scroll a horizontal strip anyway. */
+  /* When the tabs no longer fit on one line, a dropdown takes over, reusing
+     the .flagsel pattern from the theme/language pickers. Whether they fit is
+     measured (fitSetTabs), not guessed from a breakpoint: the labels' width
+     differs per language, and a fixed cut-off switched far too early. The
+     measured bar stays laid out, just invisible, so it can be measured again. */
   .setsec-sel { display:none; margin-bottom:20px; max-width:800px; }
   .setsec-sel .flagsel-btn svg, .setsec-sel .flagsel-opt svg { width:16px; height:16px; flex:0 0 16px; color:var(--text3); }
   .setsec-sel .flagsel-opt.sel svg { color:var(--accent); }
-  @media (max-width:1000px){
-    .settabs { display:none; }
-    .setsec-sel { display:block; }
-  }
+  #tab-settings { position:relative; }
+  #tab-settings.settabs-narrow .settabs { position:absolute; visibility:hidden; pointer-events:none; width:max-content; min-width:0; max-width:none; }
+  #tab-settings.settabs-narrow .setsec-sel { display:block; }
   @media (max-width:820px){
     .setsec-sel, .settings-pane { max-width:100%; }
   }
@@ -3716,6 +3716,28 @@ document.querySelectorAll("#settabs button").forEach(b => { b.onclick = () => se
 $("setsec-btn").onclick = (e) => { e.stopPropagation(); $("setsec-sel").classList.toggle("open"); };
 document.addEventListener("click", () => $("setsec-sel").classList.remove("open"));
 selectSetSection(localStorage.getItem("vito-set-section") || "general");
+// Tabs while they fit on one line, the dropdown only once they don't. The bar
+// is measured rather than matched against a breakpoint, because its width
+// depends on the language and on which tabs this platform shows. Re-checked
+// whenever the page or the bar changes size — a language switch included.
+function fitSetTabs(){
+  const sec = $("tab-settings"), bar = $("settabs");
+  if (!sec.clientWidth) return; // the settings page isn't showing; it is checked when it does
+  const cs = getComputedStyle(sec);
+  const avail = sec.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const btns = [...bar.children].filter(b => !b.hidden);
+  const gap = parseFloat(getComputedStyle(bar).columnGap) || 0;
+  // offsetWidth, like clientWidth, is in layout pixels whatever the interface
+  // zoom; it rounds, so allow a pixel per tab.
+  const need = btns.reduce((w, b) => w + b.offsetWidth + 1, 0) + gap * Math.max(0, btns.length - 1);
+  sec.classList.toggle("settabs-narrow", need > avail);
+}
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(() => fitSetTabs());
+  ro.observe($("tab-settings"));
+  ro.observe($("settabs"));
+} else addEventListener("resize", fitSetTabs);
+fitSetTabs();
 
 /* ---- live state ---- */
 function setState(state) {
