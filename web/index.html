@@ -325,6 +325,9 @@
   [hidden] { display:none !important; }
   .grid { display:grid; gap:20px; align-items:start; }
   .grid-2 { grid-template-columns:repeat(2,1fr); }
+  /* In the status page's card row, a card with no half-width partner next to
+     it takes the whole row (see applyStatusLayout). */
+  #wide-row > .span-all { grid-column:1 / -1; }
   .statgrid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); }
   /* Grid items default to min-width:auto, so a card can refuse to shrink below
      its content and push the whole page wider than the window. Everything here
@@ -1359,28 +1362,28 @@
           <div class="rowflex" style="justify-content:space-between;"><h2 style="margin:0;" id="chart-title">Words per day</h2><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
           <div class="weekwrap" id="weekchart"></div>
         </div>
-      </div>
-      <div class="card">
-        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 11h12M4 16h8"/></svg><span>Live transcript</span>
-          <span class="h2-btns">
-            <button class="h2-btn hover-only" id="btn-play-audio" data-tip-text="Play the recording of this dictation" aria-label="Play recording" hidden></button>
-            <button class="h2-btn hover-only" id="btn-upload" data-tip-text="Upload an audio file and have it transcribed" aria-label="Upload audio file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9m0 0 4 4m-4-4-4 4"/><path d="M5 5h14"/></svg></button>
-            <button class="h2-btn hover-only" id="btn-dl-audio" data-tip-text="Download the recording of this dictation (.wav)" aria-label="Download recording" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg></button>
-            <button class="h2-btn" id="btn-copy" data-tip-text="Copy text" aria-label="Copy text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></button>
-          </span></h2>
-        <div id="cmd-banner"></div>
-        <div class="tr-row">
-          <div class="tr-field">
-            <div id="transcript"><span class="partial">Live transcript appears here while dictating.</span></div>
-            <div class="pip-bursts"><div class="pip-wave" id="tr-wave"></div></div>
+        <div class="card span-all" id="transcript-card">
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 11h12M4 16h8"/></svg><span>Live transcript</span>
+            <span class="h2-btns">
+              <button class="h2-btn hover-only" id="btn-play-audio" data-tip-text="Play the recording of this dictation" aria-label="Play recording" hidden></button>
+              <button class="h2-btn hover-only" id="btn-upload" data-tip-text="Upload an audio file and have it transcribed" aria-label="Upload audio file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9m0 0 4 4m-4-4-4 4"/><path d="M5 5h14"/></svg></button>
+              <button class="h2-btn hover-only" id="btn-dl-audio" data-tip-text="Download the recording of this dictation (.wav)" aria-label="Download recording" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg></button>
+              <button class="h2-btn" id="btn-copy" data-tip-text="Copy text" aria-label="Copy text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></button>
+            </span></h2>
+          <div id="cmd-banner"></div>
+          <div class="tr-row">
+            <div class="tr-field">
+              <div id="transcript"><span class="partial">Live transcript appears here while dictating.</span></div>
+              <div class="pip-bursts"><div class="pip-wave" id="tr-wave"></div></div>
+            </div>
+            <div id="meterwrap"><div id="meter"></div></div>
           </div>
-          <div id="meterwrap"><div id="meter"></div></div>
+          <div class="rowflex">
+            <button class="btn primary" id="btn-toggle">Start / Stop</button>
+            <button class="btn ghost" id="btn-cancel" hidden>Cancel</button>
+          </div>
+          <div id="timings"></div>
         </div>
-        <div class="rowflex">
-          <button class="btn primary" id="btn-toggle">Start / Stop</button>
-          <button class="btn ghost" id="btn-cancel" hidden>Cancel</button>
-        </div>
-        <div id="timings"></div>
       </div>
       <div class="status-tags" id="status-tags"></div>
     </section>
@@ -4993,15 +4996,23 @@ function renderAboutVersion(){
 loadAbout();
 
 /* ---- status page layout (which cards, in what order) ---- */
-// Two groups, because they live in two different rows on the page: the five
-// small statistic cards share one grid, the two wide cards another. Dragging
-// stays inside a group — a card can't move to a row it doesn't fit in.
+// Two groups, because they live in two different rows on the page: the small
+// statistic cards share one grid, the large cards — costs, the chart and the
+// live transcript — another. Dragging stays inside a group — a card can't move
+// to a row it doesn't fit in.
 const LAYOUT_GROUPS = [
   { id:"stats", label:"Statistics", keys:["credit","words","sentences","activations","spoken","saved","commands","achievements","update"] },
-  { id:"wide",  label:"Cards",      keys:["cost","chart"] },
+  { id:"wide",  label:"Cards",      keys:["cost","chart","transcript"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences:"sentences cleaned", activations:"activations",
-  spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version", cost:"Costs", chart:"Words per day" };
+  spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version", cost:"Costs", chart:"Words per day",
+  transcript:"Live transcript" };
+// The large cards and their elements. Costs and the chart are half-width and
+// pair up when they are next to each other; the transcript always takes a full
+// row, and can't be hidden — it holds the Start / Stop button.
+const LAYOUT_WIDE_EL = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card" };
+const LAYOUT_FULL = ["transcript"];
+const LAYOUT_PINNED = ["transcript"];
 const LAYOUT_DEFAULT = LAYOUT_GROUPS.flatMap(g => g.keys);
 let statusLayout = null;
 function loadLayout(){
@@ -5036,7 +5047,7 @@ const layoutVisible = (key) => !loadLayout().hidden.includes(key);
 function layoutOrderOf(group){
   const l = loadLayout();
   const keys = LAYOUT_GROUPS.find(g => g.id === group).keys;
-  return l.order.filter(k => keys.includes(k) && !l.hidden.includes(k)
+  return l.order.filter(k => keys.includes(k) && (!l.hidden.includes(k) || LAYOUT_PINNED.includes(k))
     && (k !== "update" || updateCardWanted())
     && (k !== "credit" || creditCardWanted()));
 }
@@ -5051,12 +5062,22 @@ function creditCardWanted(){ return (creditState || []).length > 0; }
 // the statistic cards are rebuilt from their data anyway (see renderStatCards).
 function applyStatusLayout(){
   const wide = layoutOrderOf("wide");
-  ["cost","chart"].forEach(k => {
-    const el = $(k === "cost" ? "cost-card" : "chart-card");
+  // A half-width card shares a row only with the half-width card right next to
+  // it in the order; one left on its own — a neighbour hidden, or the
+  // transcript in between — stretches across the row instead of leaving a gap.
+  const alone = new Set();
+  for (let i = 0; i < wide.length; i++) {
+    if (LAYOUT_FULL.includes(wide[i])) continue;
+    if (i + 1 < wide.length && !LAYOUT_FULL.includes(wide[i+1])) { i++; continue; }
+    alone.add(wide[i]);
+  }
+  Object.entries(LAYOUT_WIDE_EL).forEach(([k, id]) => {
+    const el = $(id);
     if (!el) return;
     const i = wide.indexOf(k);
     el.hidden = i < 0;
     el.style.order = i < 0 ? "" : String(i);
+    el.classList.toggle("span-all", LAYOUT_FULL.includes(k) || alone.has(k));
   });
   const row = $("wide-row"); if (row) row.hidden = wide.length === 0;
   const grid = $("statgrid"); if (grid) grid.hidden = layoutOrderOf("stats").length === 0;
@@ -5111,7 +5132,8 @@ function layoutRow(key){
   return `<div class="lay-row${off ? " off" : ""}" data-key="${key}">` +
     `<span class="lay-grip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="7" r="1.5"/><circle cx="15" cy="7" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="17" r="1.5"/><circle cx="15" cy="17" r="1.5"/></svg></span>` +
     `<span class="lay-name">${t(LAYOUT_NAMES[key])}</span>${opt}` +
-    `<button type="button" class="lay-eye" data-tip-text="${t(off ? "Show" : "Hide")}" aria-label="${t(off ? "Show" : "Hide")}">${off ? LAY_EYE_OFF : LAY_EYE_ON}</button></div>`;
+    (LAYOUT_PINNED.includes(key) ? "" :
+    `<button type="button" class="lay-eye" data-tip-text="${t(off ? "Show" : "Hide")}" aria-label="${t(off ? "Show" : "Hide")}">${off ? LAY_EYE_OFF : LAY_EYE_ON}</button>`) + `</div>`;
 }
 // Dragging by the grip. Rows swap as the pointer passes a neighbour's midpoint,
 // which keeps the list readable while dragging instead of jumping at the drop.
