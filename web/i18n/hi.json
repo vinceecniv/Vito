@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "कस्टम अवधि…",
+"Previous month": "पिछला महीना",
+"Next month": "अगला महीना",
+"Pick a start date": "आरंभ तिथि चुनें",
+"Pick an end date": "अंतिम तिथि चुनें",
+"Apply": "लागू करें",
 "Status": "स्थिति",
 "Settings": "सेटिंग्स",
 "Dictionary": "शब्दकोश",

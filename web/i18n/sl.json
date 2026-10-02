@@ -801,7 +801,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "podjetja Google (statične pod licenco Apache-2.0, animacije pod CC BY 4.0), predvajajo pa jih z",
 "by Airbnb (MIT). Country flags are": "podjetja Airbnb (MIT). Zastave držav so iz",
 "by Panayiotis Lipiridis (MIT).": "avtorja Panayiotisa Lipiridisa (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Ta končna točka odgovarja, vendar nima /chat/completions. Uporabi URL, združljiv z OpenAI — običajno se konča z /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Ta končna točka odgovarja, vendar nima /chat/completions. Uporabi URL, združljiv z OpenAI — običajno se konča z /v1 (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "Poljubno obdobje…",
+"Previous month": "Prejšnji mesec",
+"Next month": "Naslednji mesec",
+"Pick a start date": "Izberite začetni datum",
+"Pick an end date": "Izberite končni datum",
+"Apply": "Uporabi"
 },
 "help": {
 "theme": "Svetla, temna ali samodejna — samodejna sledi svetli/temni nastavitvi vašega sistema.",

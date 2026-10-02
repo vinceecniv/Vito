@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Kipindi maalum…",
+"Previous month": "Mwezi uliopita",
+"Next month": "Mwezi unaofuata",
+"Pick a start date": "Chagua tarehe ya kuanza",
+"Pick an end date": "Chagua tarehe ya mwisho",
+"Apply": "Tumia",
 "Status": "Hali",
 "Settings": "Mipangilio",
 "Dictionary": "Kamusi",

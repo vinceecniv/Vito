@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "ഇഷ്ടാനുസൃത കാലയളവ്…",
+"Previous month": "മുൻ മാസം",
+"Next month": "അടുത്ത മാസം",
+"Pick a start date": "ആരംഭ തീയതി തിരഞ്ഞെടുക്കുക",
+"Pick an end date": "അവസാന തീയതി തിരഞ്ഞെടുക്കുക",
+"Apply": "പ്രയോഗിക്കുക",
 "Status": "സ്ഥിതി",
 "Settings": "ക്രമീകരണങ്ങൾ",
 "Dictionary": "നിഘണ്ടു",

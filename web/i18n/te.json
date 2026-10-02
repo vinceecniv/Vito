@@ -801,7 +801,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google నుండి (స్టాటిక్‌వి Apache-2.0 కింద, యానిమేషన్లు CC BY 4.0 కింద), వీటిని ప్లే చేసేది",
 "by Airbnb (MIT). Country flags are": "Airbnb నుండి (MIT). దేశాల జెండాలు",
 "by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis నుండి (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "ఈ endpoint స్పందిస్తోంది, కానీ దానిలో /chat/completions లేదు. OpenAI-అనుకూల URL ఉపయోగించండి — ఇది సాధారణంగా /v1తో ముగుస్తుంది (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "ఈ endpoint స్పందిస్తోంది, కానీ దానిలో /chat/completions లేదు. OpenAI-అనుకూల URL ఉపయోగించండి — ఇది సాధారణంగా /v1తో ముగుస్తుంది (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "అనుకూల పరిధి…",
+"Previous month": "మునుపటి నెల",
+"Next month": "తదుపరి నెల",
+"Pick a start date": "ప్రారంభ తేదీని ఎంచుకోండి",
+"Pick an end date": "ముగింపు తేదీని ఎంచుకోండి",
+"Apply": "వర్తింపజేయి"
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Mukautettu aikaväli…",
+"Previous month": "Edellinen kuukausi",
+"Next month": "Seuraava kuukausi",
+"Pick a start date": "Valitse alkupäivä",
+"Pick an end date": "Valitse loppupäivä",
+"Apply": "Käytä",
 "Status": "Tila",
 "Settings": "Asetukset",
 "Dictionary": "Sanakirja",

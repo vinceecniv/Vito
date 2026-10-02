@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "தனிப்பயன் வரம்பு…",
+"Previous month": "முந்தைய மாதம்",
+"Next month": "அடுத்த மாதம்",
+"Pick a start date": "தொடக்கத் தேதியைத் தேர்ந்தெடுக்கவும்",
+"Pick an end date": "முடிவுத் தேதியைத் தேர்ந்தெடுக்கவும்",
+"Apply": "பயன்படுத்து",
 "Status": "நிலை",
 "Settings": "அமைப்புகள்",
 "Dictionary": "அகராதி",

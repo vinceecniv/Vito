@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Periudhë e personalizuar…",
+"Previous month": "Muaji i mëparshëm",
+"Next month": "Muaji tjetër",
+"Pick a start date": "Zgjidh datën e fillimit",
+"Pick an end date": "Zgjidh datën e mbarimit",
+"Apply": "Apliko",
 "Status": "Statusi",
 "Settings": "Cilësimet",
 "Dictionary": "Fjalori",

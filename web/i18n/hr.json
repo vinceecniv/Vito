@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Prilagođeno razdoblje…",
+"Previous month": "Prethodni mjesec",
+"Next month": "Sljedeći mjesec",
+"Pick a start date": "Odaberite početni datum",
+"Pick an end date": "Odaberite završni datum",
+"Apply": "Primijeni",
 "Status": "Status",
 "Settings": "Postavke",
 "Dictionary": "Rječnik",

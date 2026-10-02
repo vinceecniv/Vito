@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "직접 지정…",
+"Previous month": "이전 달",
+"Next month": "다음 달",
+"Pick a start date": "시작일 선택",
+"Pick an end date": "종료일 선택",
+"Apply": "적용",
 "Status": "상태",
 "Settings": "설정",
 "Dictionary": "사전",

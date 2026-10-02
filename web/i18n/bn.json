@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "কাস্টম পরিসর…",
+"Previous month": "আগের মাস",
+"Next month": "পরের মাস",
+"Pick a start date": "শুরুর তারিখ বেছে নিন",
+"Pick an end date": "শেষের তারিখ বেছে নিন",
+"Apply": "প্রয়োগ করুন",
 "achievements": "অর্জন",
 "Milestones you've unlocked with your voice": "আপনার কণ্ঠ দিয়ে আনলক করা মাইলফলক",
 "Achievement unlocked": "অর্জন আনলক হয়েছে",

@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "自定义范围…",
+"Previous month": "上个月",
+"Next month": "下个月",
+"Pick a start date": "选择开始日期",
+"Pick an end date": "选择结束日期",
+"Apply": "应用",
 "Status": "状态",
 "Settings": "设置",
 "Dictionary": "词典",

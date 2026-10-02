@@ -802,7 +802,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "از Google (ساکن تصاویر Apache-2.0 کے تحت، اینیمیشنز CC BY 4.0 کے تحت)، جو چلائے جاتے ہیں",
 "by Airbnb (MIT). Country flags are": "از Airbnb (MIT) کے ذریعے۔ ملکوں کے جھنڈے",
 "by Panayiotis Lipiridis (MIT).": "از Panayiotis Lipiridis (MIT) سے ہیں۔",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "یہ اینڈ پوائنٹ جواب دیتا ہے، لیکن اس میں /chat/completions نہیں ہے۔ OpenAI سے ہم آہنگ URL استعمال کریں — یہ عموماً /v1 پر ختم ہوتا ہے (LM Studio: http://localhost:1234/v1)۔"
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "یہ اینڈ پوائنٹ جواب دیتا ہے، لیکن اس میں /chat/completions نہیں ہے۔ OpenAI سے ہم آہنگ URL استعمال کریں — یہ عموماً /v1 پر ختم ہوتا ہے (LM Studio: http://localhost:1234/v1)۔",
+"Custom range…": "حسبِ ضرورت مدت…",
+"Previous month": "پچھلا مہینہ",
+"Next month": "اگلا مہینہ",
+"Pick a start date": "شروع کی تاریخ منتخب کریں",
+"Pick an end date": "آخری تاریخ منتخب کریں",
+"Apply": "لاگو کریں"
 },
 "help": {
 "theme": "روشن، گہرا یا خودکار — خودکار آپ کے سسٹم کی روشن/گہری ترتیب کے مطابق چلتا ہے۔",

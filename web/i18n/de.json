@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Benutzerdefinierter Zeitraum…",
+"Previous month": "Vorheriger Monat",
+"Next month": "Nächster Monat",
+"Pick a start date": "Startdatum wählen",
+"Pick an end date": "Enddatum wählen",
+"Apply": "Übernehmen",
 "Status": "Status",
 "Settings": "Einstellungen",
 "Dictionary": "Wörterbuch",

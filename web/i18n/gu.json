@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "કસ્ટમ શ્રેણી…",
+"Previous month": "પાછલો મહિનો",
+"Next month": "આગલો મહિનો",
+"Pick a start date": "શરૂઆતની તારીખ પસંદ કરો",
+"Pick an end date": "અંતિમ તારીખ પસંદ કરો",
+"Apply": "લાગુ કરો",
 "Status": "સ્થિતિ",
 "Settings": "સેટિંગ્સ",
 "Dictionary": "શબ્દકોશ",

@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Персонализиран период…",
+"Previous month": "Предишен месец",
+"Next month": "Следващ месец",
+"Pick a start date": "Изберете начална дата",
+"Pick an end date": "Изберете крайна дата",
+"Apply": "Приложи",
 "achievements": "постижения",
 "Milestones you've unlocked with your voice": "Етапи, които сте отключили с гласа си",
 "Achievement unlocked": "Отключено постижение",

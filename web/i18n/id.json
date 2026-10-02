@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Rentang kustom…",
+"Previous month": "Bulan sebelumnya",
+"Next month": "Bulan berikutnya",
+"Pick a start date": "Pilih tanggal mulai",
+"Pick an end date": "Pilih tanggal akhir",
+"Apply": "Terapkan",
 "Status": "Status",
 "Settings": "Pengaturan",
 "Dictionary": "Kamus",

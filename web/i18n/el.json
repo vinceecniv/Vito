@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Προσαρμοσμένο εύρος…",
+"Previous month": "Προηγούμενος μήνας",
+"Next month": "Επόμενος μήνας",
+"Pick a start date": "Επιλέξτε ημερομηνία έναρξης",
+"Pick an end date": "Επιλέξτε ημερομηνία λήξης",
+"Apply": "Εφαρμογή",
 "Credits": "Ευχαριστίες",
 "Achievement medals and animations use": "Τα μετάλλια επιτευγμάτων και τα κινούμενα σχέδια χρησιμοποιούν το",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "της Google (τα στατικά με άδεια Apache-2.0, τα κινούμενα με CC BY 4.0) και αναπαράγονται με το",

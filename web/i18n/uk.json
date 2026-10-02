@@ -801,7 +801,13 @@
 "What to do with playing media": "Що робити з медіа, яке відтворюється",
 "not used yet": "ще не використовувався",
 "Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Ваш робочий стіл заявляє про підтримку цього способу, але чи працює він, покаже лише справжня спроба, тому Vito спершу пробує його, коли ви диктуєте. Якщо він не спрацює, ваші диктування натомість потраплять у буфер обміну.",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Ця точка доступу відповідає, але не має /chat/completions. Використайте URL, сумісний з OpenAI — зазвичай він закінчується на /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Ця точка доступу відповідає, але не має /chat/completions. Використайте URL, сумісний з OpenAI — зазвичай він закінчується на /v1 (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "Власний діапазон…",
+"Previous month": "Попередній місяць",
+"Next month": "Наступний місяць",
+"Pick a start date": "Виберіть початкову дату",
+"Pick an end date": "Виберіть кінцеву дату",
+"Apply": "Застосувати"
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",

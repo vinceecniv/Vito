@@ -801,7 +801,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "a Google-től (a statikus képek Apache-2.0, az animációk CC BY 4.0 licenc alatt), lejátszásukhoz pedig ezt használjuk:",
 "by Airbnb (MIT). Country flags are": "az Airbnb-től (MIT). Az országzászlók a következők:",
 "by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis munkája (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Ez a végpont válaszol, de nincs /chat/completions útvonala. Használd az OpenAI-kompatibilis URL-t — általában /v1-re végződik (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Ez a végpont válaszol, de nincs /chat/completions útvonala. Használd az OpenAI-kompatibilis URL-t — általában /v1-re végződik (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "Egyéni időszak…",
+"Previous month": "Előző hónap",
+"Next month": "Következő hónap",
+"Pick a start date": "Válassz kezdődátumot",
+"Pick an end date": "Válassz végdátumot",
+"Apply": "Alkalmaz"
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

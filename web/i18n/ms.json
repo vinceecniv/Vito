@@ -801,7 +801,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "oleh Google (statik di bawah Apache-2.0, animasi di bawah CC BY 4.0), dimainkan dengan",
 "by Airbnb (MIT). Country flags are": "oleh Airbnb (MIT). Bendera negara ialah",
 "by Panayiotis Lipiridis (MIT).": "oleh Panayiotis Lipiridis (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Endpoint ini memberi respons, tetapi tiada /chat/completions. Gunakan URL yang serasi dengan OpenAI — biasanya berakhir dengan /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Endpoint ini memberi respons, tetapi tiada /chat/completions. Gunakan URL yang serasi dengan OpenAI — biasanya berakhir dengan /v1 (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "Julat tersuai…",
+"Previous month": "Bulan sebelumnya",
+"Next month": "Bulan seterusnya",
+"Pick a start date": "Pilih tarikh mula",
+"Pick an end date": "Pilih tarikh akhir",
+"Apply": "Guna"
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",

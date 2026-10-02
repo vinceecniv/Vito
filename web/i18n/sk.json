@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Vlastné obdobie…",
+"Previous month": "Predchádzajúci mesiac",
+"Next month": "Nasledujúci mesiac",
+"Pick a start date": "Vyberte dátum začiatku",
+"Pick an end date": "Vyberte dátum konca",
+"Apply": "Použiť",
 "Status": "Stav",
 "Settings": "Nastavenia",
 "Dictionary": "Slovník",

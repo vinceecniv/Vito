@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Fərdi aralıq…",
+"Previous month": "Əvvəlki ay",
+"Next month": "Növbəti ay",
+"Pick a start date": "Başlanğıc tarixi seçin",
+"Pick an end date": "Bitmə tarixini seçin",
+"Apply": "Tətbiq et",
 "Status": "Status",
 "Settings": "Parametrlər",
 "Dictionary": "Lüğət",

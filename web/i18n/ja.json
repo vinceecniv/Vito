@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "期間を指定…",
+"Previous month": "前の月",
+"Next month": "次の月",
+"Pick a start date": "開始日を選択",
+"Pick an end date": "終了日を選択",
+"Apply": "適用",
 "Status": "ステータス",
 "Settings": "設定",
 "Dictionary": "辞書",

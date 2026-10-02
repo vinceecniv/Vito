@@ -801,7 +801,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "от Google (статичные — по лицензии Apache-2.0, анимации — по CC BY 4.0); воспроизводятся с помощью",
 "by Airbnb (MIT). Country flags are": "от Airbnb (MIT). Флаги стран —",
 "by Panayiotis Lipiridis (MIT).": "от Panayiotis Lipiridis (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Этот эндпоинт отвечает, но в нём нет /chat/completions. Используйте URL, совместимый с OpenAI — обычно он заканчивается на /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Этот эндпоинт отвечает, но в нём нет /chat/completions. Используйте URL, совместимый с OpenAI — обычно он заканчивается на /v1 (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "Свой период…",
+"Previous month": "Предыдущий месяц",
+"Next month": "Следующий месяц",
+"Pick a start date": "Выберите дату начала",
+"Pick an end date": "Выберите дату окончания",
+"Apply": "Применить"
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",

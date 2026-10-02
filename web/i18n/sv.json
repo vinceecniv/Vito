@@ -801,7 +801,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "från Google (de statiska under Apache-2.0, animationerna under CC BY 4.0), och spelas upp med",
 "by Airbnb (MIT). Country flags are": "från Airbnb (MIT). Landsflaggorna kommer från",
 "by Panayiotis Lipiridis (MIT).": "av Panayiotis Lipiridis (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Denna endpoint svarar, men saknar /chat/completions. Använd den OpenAI-kompatibla URL:en — den slutar oftast på /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Denna endpoint svarar, men saknar /chat/completions. Använd den OpenAI-kompatibla URL:en — den slutar oftast på /v1 (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "Anpassat intervall…",
+"Previous month": "Föregående månad",
+"Next month": "Nästa månad",
+"Pick a start date": "Välj ett startdatum",
+"Pick an end date": "Välj ett slutdatum",
+"Apply": "Använd"
 },
 "help": {
 "theme": "Ljust, mörkt eller automatiskt — automatiskt följer systemets ljus/mörk-inställning.",

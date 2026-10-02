@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Eie reeks…",
+"Previous month": "Vorige maand",
+"Next month": "Volgende maand",
+"Pick a start date": "Kies 'n begindatum",
+"Pick an end date": "Kies 'n einddatum",
+"Apply": "Pas toe",
 "Status": "Status",
 "Settings": "Instellings",
 "Dictionary": "Woordeboek",

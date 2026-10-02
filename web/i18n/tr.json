@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Özel aralık…",
+"Previous month": "Önceki ay",
+"Next month": "Sonraki ay",
+"Pick a start date": "Başlangıç tarihi seçin",
+"Pick an end date": "Bitiş tarihi seçin",
+"Apply": "Uygula",
 "Credits": "Katkıda bulunanlar",
 "Achievement medals and animations use": "Başarı madalyaları ve animasyonlar",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "kullanır (Google tarafından; statik olanlar Apache-2.0, animasyonlar CC BY 4.0 lisanslı) ve şununla oynatılır:",

@@ -801,7 +801,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "autorilt Google (staatilised Apache-2.0, animatsioonid CC BY 4.0 litsentsi all), esitatakse teegiga",
 "by Airbnb (MIT). Country flags are": "autorilt Airbnb (MIT). Riigilipud on teegist",
 "by Panayiotis Lipiridis (MIT).": "autorilt Panayiotis Lipiridis (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "See lõpp-punkt vastab, kuid sellel pole /chat/completions. Kasuta OpenAI-ga ühilduvat URL-i — see lõpeb tavaliselt /v1-ga (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "See lõpp-punkt vastab, kuid sellel pole /chat/completions. Kasuta OpenAI-ga ühilduvat URL-i — see lõpeb tavaliselt /v1-ga (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "Kohandatud vahemik…",
+"Previous month": "Eelmine kuu",
+"Next month": "Järgmine kuu",
+"Pick a start date": "Vali alguskuupäev",
+"Pick an end date": "Vali lõppkuupäev",
+"Apply": "Rakenda"
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

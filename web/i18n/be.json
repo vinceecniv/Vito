@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Іншы перыяд…",
+"Previous month": "Папярэдні месяц",
+"Next month": "Наступны месяц",
+"Pick a start date": "Абярыце дату пачатку",
+"Pick an end date": "Абярыце дату заканчэння",
+"Apply": "Ужыць",
 "Credits": "Падзякі",
 "Achievement medals and animations use": "Медалі за дасягненні і анімацыі выкарыстоўваюць",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "ад Google (статычныя — пад ліцэнзіяй Apache-2.0, анімацыі — пад CC BY 4.0), а прайграюцца з дапамогай",

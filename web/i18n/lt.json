@@ -801,7 +801,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "iš Google (statiniai – pagal Apache-2.0, animacijos – pagal CC BY 4.0), o grojamos naudojant",
 "by Airbnb (MIT). Country flags are": "iš Airbnb (MIT). Šalių vėliavos –",
 "by Panayiotis Lipiridis (MIT).": "iš Panayiotis Lipiridis (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Šis galinis taškas atsako, bet neturi /chat/completions. Naudokite su OpenAI suderinamą URL — jis paprastai baigiasi /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Šis galinis taškas atsako, bet neturi /chat/completions. Naudokite su OpenAI suderinamą URL — jis paprastai baigiasi /v1 (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "Pasirinktas laikotarpis…",
+"Previous month": "Ankstesnis mėnuo",
+"Next month": "Kitas mėnuo",
+"Pick a start date": "Pasirinkite pradžios datą",
+"Pick an end date": "Pasirinkite pabaigos datą",
+"Apply": "Taikyti"
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

@@ -801,7 +801,13 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "od Googlu (statické pod licencí Apache-2.0, animace pod CC BY 4.0), přehrávané pomocí",
 "by Airbnb (MIT). Country flags are": "od Airbnb (MIT). Vlajky zemí pocházejí z",
 "by Panayiotis Lipiridis (MIT).": "od Panayiotise Lipiridise (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Tento endpoint odpovídá, ale nemá /chat/completions. Použijte URL kompatibilní s OpenAI — obvykle končí na /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Tento endpoint odpovídá, ale nemá /chat/completions. Použijte URL kompatibilní s OpenAI — obvykle končí na /v1 (LM Studio: http://localhost:1234/v1).",
+"Custom range…": "Vlastní rozsah…",
+"Previous month": "Předchozí měsíc",
+"Next month": "Další měsíc",
+"Pick a start date": "Vyberte počáteční datum",
+"Pick an end date": "Vyberte koncové datum",
+"Apply": "Použít"
 },
 "help": {
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",

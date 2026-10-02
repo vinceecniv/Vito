@@ -1,5 +1,11 @@
 {
 "strings": {
+"Custom range…": "Таңдаулы аралық…",
+"Previous month": "Алдыңғы ай",
+"Next month": "Келесі ай",
+"Pick a start date": "Бастапқы күнді таңдаңыз",
+"Pick an end date": "Соңғы күнді таңдаңыз",
+"Apply": "Қолдану",
 "Status": "Күй",
 "Settings": "Баптаулар",
 "Dictionary": "Сөздік",
