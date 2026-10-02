@@ -563,7 +563,16 @@
   .lay-group { display:flex; flex-direction:column; gap:8px; }
   .lay-head { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--text3); }
   .lay-row { display:flex; align-items:center; gap:10px; padding:9px 11px; border:1px solid var(--card-border); border-radius:10px; background:var(--card); }
-  .lay-row.off .lay-name { color:var(--text3); text-decoration:line-through; }
+  .lay-row.off > .lay-name { color:var(--text3); text-decoration:line-through; }
+  .lay-row.lay-parent { flex-wrap:wrap; }
+  .lay-sub { flex-basis:100%; margin:4px 0 2px 28px; }
+  .lay-sub[hidden] { display:none; }
+  .lay-row.off > .lay-sub { opacity:.55; }
+  .lay-fold { width:30px; height:30px; padding:0; border:1px solid var(--card-border); border-radius:8px; background:none; color:var(--text2);
+    cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+  .lay-fold:hover { color:var(--text); border-color:var(--accent); }
+  .lay-fold svg { width:16px; height:16px; transition:transform .15s; }
+  .lay-fold[aria-expanded="true"] svg { transform:rotate(180deg); }
   .lay-row.dragging { position:relative; z-index:5; border-color:var(--accent); box-shadow:0 10px 26px rgba(20,10,40,.28); }
   .lay-grip { display:flex; color:var(--text3); cursor:grab; touch-action:none; }
   .lay-grip:active { cursor:grabbing; }
@@ -1337,8 +1346,8 @@
       <div id="update-banner"></div>
       <div id="linux-banner"></div>
       <div id="pwa-tip"></div>
-      <div class="statgrid" id="statgrid" style="margin-bottom:20px;"></div>
       <div class="grid grid-2" id="wide-row" style="align-items:stretch; margin-bottom:20px;">
+        <div class="statgrid span-all" id="statgrid"></div>
         <div class="card cost-card reveal" id="cost-card">
           <div class="rowflex" style="justify-content:space-between; align-items:center;">
             <h2 style="margin:0;">Costs</h2>
@@ -4996,22 +5005,22 @@ function renderAboutVersion(){
 loadAbout();
 
 /* ---- status page layout (which cards, in what order) ---- */
-// Two groups, because they live in two different rows on the page: the small
-// statistic cards share one grid, the large cards — costs, the chart and the
-// live transcript — another. Dragging stays inside a group — a card can't move
-// to a row it doesn't fit in.
+// The page is one column of cards in any order — the block of statistics, the
+// costs, the chart and the live transcript. The small statistic cards live
+// inside the statistics block and are ordered there; dragging stays within a
+// level, so a statistic can't leave its block.
 const LAYOUT_GROUPS = [
   { id:"stats", label:"Statistics", keys:["credit","words","sentences","activations","spoken","saved","commands","achievements","update"] },
-  { id:"wide",  label:"Cards",      keys:["cost","chart","transcript"] },
+  { id:"wide",  label:"Cards",      keys:["stats","cost","chart","transcript"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences:"sentences cleaned", activations:"activations",
-  spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version", cost:"Costs", chart:"Words per day",
-  transcript:"Live transcript" };
-// The large cards and their elements. Costs and the chart are half-width and
-// pair up when they are next to each other; the transcript always takes a full
-// row, and can't be hidden — it holds the Start / Stop button.
-const LAYOUT_WIDE_EL = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card" };
-const LAYOUT_FULL = ["transcript"];
+  spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
+  stats:"Statistics", cost:"Costs", chart:"Words per day", transcript:"Live transcript" };
+// The cards and their elements. Costs and the chart are half-width and pair up
+// when they are next to each other; the statistics and the transcript always
+// take a full row. The transcript can't be hidden — it holds Start / Stop.
+const LAYOUT_WIDE_EL = { stats:"statgrid", cost:"cost-card", chart:"chart-card", transcript:"transcript-card" };
+const LAYOUT_FULL = ["stats","transcript"];
 const LAYOUT_PINNED = ["transcript"];
 const LAYOUT_DEFAULT = LAYOUT_GROUPS.flatMap(g => g.keys);
 let statusLayout = null;
@@ -5061,7 +5070,8 @@ function creditCardWanted(){ return (creditState || []).length > 0; }
 // The wide cards stay where they are in the DOM and are placed with CSS order;
 // the statistic cards are rebuilt from their data anyway (see renderStatCards).
 function applyStatusLayout(){
-  const wide = layoutOrderOf("wide");
+  // The statistics block drops out when none of its cards is showing.
+  const wide = layoutOrderOf("wide").filter(k => k !== "stats" || layoutOrderOf("stats").length > 0);
   // A half-width card shares a row only with the half-width card right next to
   // it in the order; one left on its own — a neighbour hidden, or the
   // transcript in between — stretches across the row instead of leaving a gap.
@@ -5080,15 +5090,13 @@ function applyStatusLayout(){
     el.classList.toggle("span-all", LAYOUT_FULL.includes(k) || alone.has(k));
   });
   const row = $("wide-row"); if (row) row.hidden = wide.length === 0;
-  const grid = $("statgrid"); if (grid) grid.hidden = layoutOrderOf("stats").length === 0;
 }
 function openLayoutDialog(){
   const l = loadLayout();
-  const rows = LAYOUT_GROUPS.map(g => {
-    const keys = l.order.filter(k => g.keys.includes(k));
-    return `<div class="lay-group" data-group="${g.id}"><div class="lay-head">${t(g.label)}</div>` +
-      keys.map(k => layoutRow(k)).join("") + `</div>`;
-  }).join("");
+  // One list of cards; the statistics row folds open to its own cards.
+  const top = LAYOUT_GROUPS.find(g => g.id === "wide").keys;
+  const rows = `<div class="lay-group" data-group="wide">` +
+    l.order.filter(k => top.includes(k)).map(k => layoutRow(k)).join("") + `</div>`;
   const m = modal(t("Status page layout"),
     `<p class="act-note" style="margin:0 0 12px;">${t("Show or hide cards, and drag them into the order you want.")}</p>
      <div class="laylist" id="laylist">${rows}</div>`,
@@ -5105,6 +5113,11 @@ function openLayoutDialog(){
     b.closest(".lay-row").classList.toggle("off", l.hidden.includes(k));
     b.innerHTML = l.hidden.includes(k) ? LAY_EYE_OFF : LAY_EYE_ON;
     b.dataset.tipText = t(l.hidden.includes(k) ? "Show" : "Hide");
+  });
+  list.querySelectorAll(".lay-fold").forEach(b => b.onclick = () => {
+    const sub = b.closest(".lay-row").querySelector(".lay-sub");
+    sub.hidden = !sub.hidden;
+    b.setAttribute("aria-expanded", String(!sub.hidden));
   });
   const optBtn = list.querySelector(".lay-opt");
   if (optBtn) optBtn.onclick = () => {
@@ -5129,17 +5142,29 @@ function layoutRow(key){
   const opt = key === "update"
     ? `<button type="button" class="lay-opt" data-tip-text="${t("When to show this card")}">${t(l.updateAlways ? "Always" : "Only when there's an update")}</button>`
     : "";
-  return `<div class="lay-row${off ? " off" : ""}" data-key="${key}">` +
+  // The statistics row carries its own cards in a nested list, folded shut
+  // until you open it; they reorder among themselves, never into the outer list.
+  const parent = key === "stats";
+  const fold = parent
+    ? `<button type="button" class="lay-fold" aria-expanded="false" aria-label="${t(LAYOUT_NAMES[key])}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>`
+    : "";
+  const kids = parent
+    ? `<div class="lay-group lay-sub" data-group="stats" hidden>` +
+      l.order.filter(k => LAYOUT_GROUPS.find(g => g.id === "stats").keys.includes(k)).map(k => layoutRow(k)).join("") + `</div>`
+    : "";
+  return `<div class="lay-row${parent ? " lay-parent" : ""}${off ? " off" : ""}" data-key="${key}">` +
     `<span class="lay-grip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="7" r="1.5"/><circle cx="15" cy="7" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="17" r="1.5"/><circle cx="15" cy="17" r="1.5"/></svg></span>` +
-    `<span class="lay-name">${t(LAYOUT_NAMES[key])}</span>${opt}` +
+    `<span class="lay-name">${t(LAYOUT_NAMES[key])}</span>${opt}${fold}` +
     (LAYOUT_PINNED.includes(key) ? "" :
-    `<button type="button" class="lay-eye" data-tip-text="${t(off ? "Show" : "Hide")}" aria-label="${t(off ? "Show" : "Hide")}">${off ? LAY_EYE_OFF : LAY_EYE_ON}</button>`) + `</div>`;
+    `<button type="button" class="lay-eye" data-tip-text="${t(off ? "Show" : "Hide")}" aria-label="${t(off ? "Show" : "Hide")}">${off ? LAY_EYE_OFF : LAY_EYE_ON}</button>`) + kids + `</div>`;
 }
 // Dragging by the grip. Rows swap as the pointer passes a neighbour's midpoint,
 // which keeps the list readable while dragging instead of jumping at the drop.
 function wireLayoutDrag(list, l){
   let row = null, group = null, startY = 0, offset = 0;
-  const rowsOf = (g) => [...g.querySelectorAll(".lay-row")];
+  // Only a list's own rows: the statistics row holds a nested list whose rows
+  // are not neighbours of the outer ones.
+  const rowsOf = (g) => [...g.children].filter(c => c.classList.contains("lay-row"));
   const onMove = (ev) => {
     if (!row) return;
     // The pointer moves in visual pixels; a transform is applied before the
