@@ -810,7 +810,21 @@
 "Next month": "Mês seguinte",
 "Pick a start date": "Escolha a data de início",
 "Pick an end date": "Escolha a data de fim",
-"Apply": "Aplicar"
+"Apply": "Aplicar",
+"wpm spoken": "wpm falados",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "A velocidade a que fala ao ditar: as suas palavras divididas pelo tempo de gravação. A sua velocidade de digitação está definida em {n} wpm.",
+"wait after stopping": "espera após parar",
+"slowest 5%: {s}": "5% mais lentos: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Tempo mediano desde que para um ditado até o texto ser colado. Reconhecimento de voz {a}, limpeza por IA {b} (medianas).",
+"changed by AI cleanup": "alterado pela limpeza por IA",
+"{n} failed": "{n} falharam",
+"of {n} cleaned": "de {n} limpos",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Dos ditados em que a limpeza por IA correu, a parte em que alterou realmente o texto. Falhou significa que a chamada de limpeza deu erro e foi colado o texto sem limpeza.",
+"Languages": "Idiomas",
+"{p}% of dictations": "{p}% dos ditados",
+"Languages you dictated in this period, by number of dictations.": "Idiomas em que ditou neste período, por número de ditados.",
+"words per dictation": "palavras por ditado",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "A extensão média de um ditado. A grelha mostra quando dita: dias da semana de cima para baixo, horas da esquerda para a direita — quanto mais escuro, mais movimento."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",

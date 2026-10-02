@@ -810,7 +810,21 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "tvrtke Google (statične pod licencijom Apache-2.0, animacije pod CC BY 4.0), a reproduciraju se pomoću",
 "by Airbnb (MIT). Country flags are": "tvrtke Airbnb (MIT). Zastave zemalja dolaze iz",
 "by Panayiotis Lipiridis (MIT).": "autora Panayiotisa Lipiridisa (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Ova krajnja točka odgovara, ali nema /chat/completions. Koristite URL kompatibilan s OpenAI-jem — obično završava na /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Ova krajnja točka odgovara, ali nema /chat/completions. Koristite URL kompatibilan s OpenAI-jem — obično završava na /v1 (LM Studio: http://localhost:1234/v1).",
+"wpm spoken": "wpm govora",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Koliko brzo govorite tijekom diktiranja: broj riječi podijeljen s trajanjem snimanja. Brzina tipkanja postavljena je na {n} wpm.",
+"wait after stopping": "čekanje nakon zaustavljanja",
+"slowest 5%: {s}": "najsporijih 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Medijan vremena od zaustavljanja diktata do lijepljenja teksta. Prepoznavanje govora {a}, AI čišćenje {b} (medijani).",
+"changed by AI cleanup": "izmijenio AI čišćenje",
+"{n} failed": "neuspjelih: {n}",
+"of {n} cleaned": "od {n} očišćenih",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Udio diktata na kojima se AI čišćenje pokrenulo i doista izmijenilo tekst. Neuspjelo znači da je poziv čišćenja završio greškom pa je zalijepljen neočišćeni tekst.",
+"Languages": "Jezici",
+"{p}% of dictations": "{p}% diktata",
+"Languages you dictated in this period, by number of dictations.": "Jezici na kojima ste diktirali u ovom razdoblju, prema broju diktata.",
+"words per dictation": "riječi po diktatu",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Prosječna duljina diktata. Mreža prikazuje kada diktirate: dani u tjednu od vrha prema dnu, sati slijeva nadesno — tamnije znači življe."
 },
 "help": {
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetlu/tamnu postavku vašeg sustava.",

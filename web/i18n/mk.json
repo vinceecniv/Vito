@@ -810,7 +810,21 @@
 "Next month": "Следен месец",
 "Pick a start date": "Избери почетен датум",
 "Pick an end date": "Избери краен датум",
-"Apply": "Примени"
+"Apply": "Примени",
+"wpm spoken": "wpm изговорено",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Колку брзо зборувате додека диктирате: вашите зборови поделени со времето на снимање. Брзината на пишување ви е поставена на {n} wpm.",
+"wait after stopping": "чекање по запирање",
+"slowest 5%: {s}": "најспорите 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Медијанно време од запирањето на диктатот до залепувањето на текстот. Препознавање говор {a}, AI-средување {b} (медијани).",
+"changed by AI cleanup": "изменето со AI-средување",
+"{n} failed": "{n} не успеаја",
+"of {n} cleaned": "од {n} средени",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Од диктатите врз кои се извршило AI-средувањето, уделот каде што навистина го изменило текстот. Неуспешно значи дека повикот за средување дал грешка и залепен е несредениот текст.",
+"Languages": "Јазици",
+"{p}% of dictations": "{p}% од диктатите",
+"Languages you dictated in this period, by number of dictations.": "Јазиците на кои диктиравте во овој период, по број на диктати.",
+"words per dictation": "зборови по диктат",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Просечната должина на диктат. Мрежата покажува кога диктирате: денови во неделата одозгора надолу, часови од лево кон десно — потемно значи позафатено."
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

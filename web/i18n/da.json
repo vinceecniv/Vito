@@ -810,7 +810,21 @@
 "Next month": "Næste måned",
 "Pick a start date": "Vælg en startdato",
 "Pick an end date": "Vælg en slutdato",
-"Apply": "Anvend"
+"Apply": "Anvend",
+"wpm spoken": "wpm talt",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Hvor hurtigt du taler under diktering: dine ord divideret med optagetiden. Din skrivehastighed er sat til {n} wpm.",
+"wait after stopping": "ventetid efter stop",
+"slowest 5%: {s}": "langsomste 5 %: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Mediantid fra du stopper et diktat, til teksten er indsat. Talegenkendelse {a}, AI-oprydning {b} (medianer).",
+"changed by AI cleanup": "ændret af AI-oprydning",
+"{n} failed": "{n} mislykkedes",
+"of {n} cleaned": "af {n} ryddet op",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Af de diktater, AI-oprydningen kørte på, den andel hvor den faktisk ændrede teksten. Mislykkedes betyder, at oprydningskaldet fejlede, og at den uryddede tekst blev indsat.",
+"Languages": "Sprog",
+"{p}% of dictations": "{p} % af diktaterne",
+"Languages you dictated in this period, by number of dictations.": "Sprog, du dikterede på i denne periode, efter antal diktater.",
+"words per dictation": "ord pr. diktat",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Den gennemsnitlige længde af et diktat. Gitteret viser, hvornår du dikterer: ugedage fra top til bund, timer fra venstre mod højre — jo mørkere, jo travlere."
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",

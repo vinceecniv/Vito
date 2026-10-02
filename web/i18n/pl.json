@@ -810,7 +810,21 @@
 "Next month": "Następny miesiąc",
 "Pick a start date": "Wybierz datę początkową",
 "Pick an end date": "Wybierz datę końcową",
-"Apply": "Zastosuj"
+"Apply": "Zastosuj",
+"wpm spoken": "wpm mówionych",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Jak szybko mówisz podczas dyktowania: liczba twoich słów podzielona przez czas nagrania. Twoja szybkość pisania jest ustawiona na {n} wpm.",
+"wait after stopping": "oczekiwanie po zatrzymaniu",
+"slowest 5%: {s}": "najwolniejsze 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Mediana czasu od zatrzymania dyktowania do wklejenia tekstu. Rozpoznawanie mowy {a}, czyszczenie AI {b} (mediany).",
+"changed by AI cleanup": "zmienione przez czyszczenie AI",
+"{n} failed": "nieudane: {n}",
+"of {n} cleaned": "z {n} oczyszczonych",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Spośród dyktowań, na których działało czyszczenie AI, odsetek tych, w których faktycznie zmieniło ono tekst. Nieudane oznacza, że wywołanie czyszczenia zakończyło się błędem i wklejono nieoczyszczony tekst.",
+"Languages": "Języki",
+"{p}% of dictations": "{p}% dyktowań",
+"Languages you dictated in this period, by number of dictations.": "Języki, w których dyktowałeś w tym okresie, według liczby dyktowań.",
+"words per dictation": "słów na dyktowanie",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Średnia długość dyktowania. Siatka pokazuje, kiedy dyktujesz: dni tygodnia od góry do dołu, godziny od lewej do prawej — ciemniejszy kolor oznacza większy ruch."
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

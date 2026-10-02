@@ -810,7 +810,21 @@
 "Next month": "החודש הבא",
 "Pick a start date": "בחרו תאריך התחלה",
 "Pick an end date": "בחרו תאריך סיום",
-"Apply": "החל"
+"Apply": "החל",
+"wpm spoken": "wpm בדיבור",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "באיזו מהירות אתה מדבר בזמן הכתבה: מספר המילים שלך מחולק בזמן ההקלטה. מהירות ההקלדה שלך מוגדרת על {n} wpm.",
+"wait after stopping": "המתנה אחרי העצירה",
+"slowest 5%: {s}": "5% האיטיים ביותר: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "זמן חציוני מרגע עצירת ההכתבה ועד שהטקסט מודבק. זיהוי דיבור {a}, ניקוי AI {b} (חציונים).",
+"changed by AI cleanup": "שונה על ידי ניקוי AI",
+"{n} failed": "{n} נכשלו",
+"of {n} cleaned": "מתוך {n} שנוקו",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "מבין ההכתבות שניקוי ה-AI רץ עליהן, החלק שבו הוא אכן שינה את הטקסט. נכשל פירושו שקריאת הניקוי נכשלה והודבק הטקסט שלא נוקה.",
+"Languages": "שפות",
+"{p}% of dictations": "{p}% מההכתבות",
+"Languages you dictated in this period, by number of dictations.": "השפות שבהן הכתבת בתקופה זו, לפי מספר ההכתבות.",
+"words per dictation": "מילים להכתבה",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "האורך הממוצע של הכתבה. הרשת מראה מתי אתה מכתיב: ימי השבוע מלמעלה למטה, שעות משמאל לימין — כהה יותר פירושו עמוס יותר."
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

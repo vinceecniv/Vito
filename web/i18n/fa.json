@@ -810,7 +810,21 @@
 "Next month": "ماه بعد",
 "Pick a start date": "تاریخ شروع را انتخاب کنید",
 "Pick an end date": "تاریخ پایان را انتخاب کنید",
-"Apply": "اعمال"
+"Apply": "اعمال",
+"wpm spoken": "wpm گفتار",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "سرعت صحبت کردن شما هنگام دیکته: تعداد کلمه‌هایتان تقسیم بر مدت ضبط. سرعت تایپ شما روی {n} wpm تنظیم شده است.",
+"wait after stopping": "انتظار پس از توقف",
+"slowest 5%: {s}": "کندترین ۵٪: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "زمان میانه از لحظهٔ توقف دیکته تا جای‌گذاری متن. تشخیص گفتار {a}، پاک‌سازی هوش مصنوعی {b} (میانه‌ها).",
+"changed by AI cleanup": "تغییر یافته با پاک‌سازی هوش مصنوعی",
+"{n} failed": "{n} ناموفق",
+"of {n} cleaned": "از {n} پاک‌سازی‌شده",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "از میان دیکته‌هایی که پاک‌سازی هوش مصنوعی روی آن‌ها اجرا شد، سهمی که در آن‌ها متن واقعاً تغییر کرد. ناموفق یعنی فراخوانی پاک‌سازی با خطا روبه‌رو شد و متن پاک‌نشده جای‌گذاری شد.",
+"Languages": "زبان‌ها",
+"{p}% of dictations": "{p}٪ از دیکته‌ها",
+"Languages you dictated in this period, by number of dictations.": "زبان‌هایی که در این بازه دیکته کردید، به ترتیب تعداد دیکته‌ها.",
+"words per dictation": "کلمه در هر دیکته",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "میانگین طول یک دیکته. جدول نشان می‌دهد چه زمانی دیکته می‌کنید: روزهای هفته از بالا به پایین، ساعت‌ها از چپ به راست — هرچه تیره‌تر، شلوغ‌تر."
 },
 "help": {
 "theme": "روشن، تیره یا خودکار — خودکار از حالت روشن/تیره سیستم شما پیروی می‌کند.",

@@ -810,7 +810,21 @@
 "Next month": "Mes siguiente",
 "Pick a start date": "Elige una fecha de inicio",
 "Pick an end date": "Elige una fecha de fin",
-"Apply": "Aplicar"
+"Apply": "Aplicar",
+"wpm spoken": "wpm hablados",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Qué tan rápido hablas al dictar: tus palabras divididas por el tiempo de grabación. Tu velocidad de escritura está fijada en {n} wpm.",
+"wait after stopping": "espera tras detener",
+"slowest 5%: {s}": "el 5 % más lento: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Tiempo mediano desde que detienes un dictado hasta que se pega el texto. Reconocimiento de voz {a}, limpieza con IA {b} (medianas).",
+"changed by AI cleanup": "modificado por la limpieza con IA",
+"{n} failed": "{n} fallidos",
+"of {n} cleaned": "de {n} limpiados",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "De los dictados en los que se ejecutó la limpieza con IA, la proporción en la que realmente cambió el texto. Fallido significa que la llamada de limpieza dio error y se pegó el texto sin limpiar.",
+"Languages": "Idiomas",
+"{p}% of dictations": "{p} % de los dictados",
+"Languages you dictated in this period, by number of dictations.": "Idiomas en los que dictaste en este periodo, según el número de dictados.",
+"words per dictation": "palabras por dictado",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "La longitud media de un dictado. La cuadrícula muestra cuándo dictas: los días de la semana de arriba abajo, las horas de izquierda a derecha — cuanto más oscuro, más actividad."
 },
 "help": {
 "theme": "Claro, oscuro o automático — automático sigue el modo claro/oscuro de tu sistema.",

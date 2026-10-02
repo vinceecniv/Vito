@@ -810,7 +810,21 @@
 "Next month": "Kitas mėnuo",
 "Pick a start date": "Pasirinkite pradžios datą",
 "Pick an end date": "Pasirinkite pabaigos datą",
-"Apply": "Taikyti"
+"Apply": "Taikyti",
+"wpm spoken": "wpm kalbant",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Kaip greitai kalbate diktuodami: jūsų žodžių skaičius, padalytas iš įrašo trukmės. Jūsų spausdinimo greitis nustatytas {n} wpm.",
+"wait after stopping": "laukimas po sustabdymo",
+"slowest 5%: {s}": "lėčiausi 5 %: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Mediana laiko nuo diktavimo sustabdymo iki teksto įklijavimo. Kalbos atpažinimas {a}, DI valymas {b} (medianos).",
+"changed by AI cleanup": "pakeista DI valymo",
+"{n} failed": "nepavyko: {n}",
+"of {n} cleaned": "iš {n} išvalytų",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Iš diktavimų, kuriems buvo taikytas DI valymas, dalis, kai jis iš tikrųjų pakeitė tekstą. „Nepavyko“ reiškia, kad valymo užklausa baigėsi klaida ir buvo įklijuotas neišvalytas tekstas.",
+"Languages": "Kalbos",
+"{p}% of dictations": "{p} % diktavimų",
+"Languages you dictated in this period, by number of dictations.": "Kalbos, kuriomis diktavote per šį laikotarpį, pagal diktavimų skaičių.",
+"words per dictation": "žodžių per diktavimą",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Vidutinis diktavimo ilgis. Tinklelis rodo, kada diktuojate: savaitės dienos iš viršaus į apačią, valandos iš kairės į dešinę — tamsesnė spalva reiškia daugiau veiklos."
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

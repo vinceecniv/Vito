@@ -810,7 +810,21 @@
 "What to do with playing media": "Oynatılan medyayla ne yapılacağı",
 "not used yet": "henüz kullanılmadı",
 "Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Masaüstünüz bu yolu destekliyor gibi görünüyor, ancak çalışıp çalışmadığını yalnızca gerçek bir deneme gösterir; bu yüzden Vito, dikte ettiğinizde önce bunu dener. Çalışmazsa dikteleriniz bunun yerine panoya gider.",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Bu uç nokta yanıt veriyor, ancak /chat/completions yok. OpenAI uyumlu URL'yi kullanın — genellikle /v1 ile biter (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Bu uç nokta yanıt veriyor, ancak /chat/completions yok. OpenAI uyumlu URL'yi kullanın — genellikle /v1 ile biter (LM Studio: http://localhost:1234/v1).",
+"wpm spoken": "wpm konuşulan",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Dikte ederken ne kadar hızlı konuştuğunuz: kelimelerinizin kayıt süresine bölünmesi. Yazma hızınız {n} wpm olarak ayarlı.",
+"wait after stopping": "durdurduktan sonra bekleme",
+"slowest 5%: {s}": "en yavaş %5: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Bir dikteyi durdurmanızdan metnin yapıştırılmasına kadar geçen medyan süre. Konuşma tanıma {a}, AI temizleme {b} (medyanlar).",
+"changed by AI cleanup": "AI temizleme ile değişen",
+"{n} failed": "{n} başarısız",
+"of {n} cleaned": "temizlenen {n} dikteden",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "AI temizlemenin çalıştığı diktelerden, metni gerçekten değiştirdiği diktelerin payı. Başarısız, temizleme çağrısının hata verdiği ve temizlenmemiş metnin yapıştırıldığı anlamına gelir.",
+"Languages": "Diller",
+"{p}% of dictations": "diktelerin %{p}'i",
+"Languages you dictated in this period, by number of dictations.": "Bu dönemde dikte ettiğiniz diller, dikte sayısına göre.",
+"words per dictation": "dikte başına kelime",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Bir diktenin ortalama uzunluğu. Izgara ne zaman dikte ettiğinizi gösterir: hafta içi günler yukarıdan aşağıya, saatler soldan sağa — koyu renk daha yoğun demektir."
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",

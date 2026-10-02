@@ -810,7 +810,21 @@
 "Next month": "Y mis nesaf",
 "Pick a start date": "Dewiswch ddyddiad cychwyn",
 "Pick an end date": "Dewiswch ddyddiad gorffen",
-"Apply": "Gosod"
+"Apply": "Gosod",
+"wpm spoken": "wpm llafar",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Pa mor gyflym rwyt ti'n siarad wrth arddweud: dy eiriau wedi'u rhannu ag amser y recordiad. Mae dy gyflymder teipio wedi'i osod i {n} wpm.",
+"wait after stopping": "aros ar ôl stopio",
+"slowest 5%: {s}": "arafaf 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Yr amser canolrifol o stopio arddywediad nes i'r testun gael ei ludo. Adnabod lleferydd {a}, glanhau AI {b} (canolrifau).",
+"changed by AI cleanup": "newidiwyd gan lanhau AI",
+"{n} failed": "methodd {n}",
+"of {n} cleaned": "o {n} wedi'u glanhau",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "O'r arddywediadau y rhedodd glanhau AI arnynt, y gyfran lle newidiodd y testun mewn gwirionedd. Mae methu'n golygu bod galwad y glanhau wedi rhoi gwall a bod y testun heb ei lanhau wedi'i ludo.",
+"Languages": "Ieithoedd",
+"{p}% of dictations": "{p}% o'r arddywediadau",
+"Languages you dictated in this period, by number of dictations.": "Yr ieithoedd yr arddywedaist ynddynt yn y cyfnod hwn, yn ôl nifer yr arddywediadau.",
+"words per dictation": "geiriau fesul arddywediad",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Hyd cyfartalog arddywediad. Mae'r grid yn dangos pryd rwyt ti'n arddweud: dyddiau'r wythnos o'r top i'r gwaelod, oriau o'r chwith i'r dde — po dywyllaf, y prysuraf."
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

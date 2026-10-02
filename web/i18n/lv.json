@@ -810,7 +810,21 @@
 "Next month": "Nākamais mēnesis",
 "Pick a start date": "Izvēlies sākuma datumu",
 "Pick an end date": "Izvēlies beigu datumu",
-"Apply": "Lietot"
+"Apply": "Lietot",
+"wpm spoken": "wpm runājot",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Cik ātri tu runā, diktējot: tavi vārdi, dalīti ar ierakstes ilgumu. Tavs rakstīšanas ātrums ir iestatīts uz {n} wpm.",
+"wait after stopping": "gaidīšana pēc apturēšanas",
+"slowest 5%: {s}": "lēnākie 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Mediānais laiks no diktāta apturēšanas līdz teksta ielīmēšanai. Runas atpazīšana {a}, MI attīrīšana {b} (mediānas).",
+"changed by AI cleanup": "mainīts ar MI attīrīšanu",
+"{n} failed": "{n} neizdevās",
+"of {n} cleaned": "no {n} attīrītiem",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "No diktātiem, kuriem tika veikta MI attīrīšana, to īpatsvars, kuros teksts patiešām tika mainīts. Neizdevās nozīmē, ka attīrīšanas pieprasījums beidzās ar kļūdu un tika ielīmēts neattīrīts teksts.",
+"Languages": "Valodas",
+"{p}% of dictations": "{p}% diktātu",
+"Languages you dictated in this period, by number of dictations.": "Valodas, kurās diktēji šajā periodā, pēc diktātu skaita.",
+"words per dictation": "vārdi vienā diktātā",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Vidējais diktāta garums. Režģis parāda, kad tu diktē: nedēļas dienas no augšas uz leju, stundas no kreisās uz labo — tumšāks nozīmē aktīvāk."
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

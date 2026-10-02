@@ -810,7 +810,21 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "van Google (statiese onder Apache-2.0, animasies onder CC BY 4.0), en word gespeel met",
 "by Airbnb (MIT). Country flags are": "van Airbnb (MIT). Landsvlae kom van",
 "by Panayiotis Lipiridis (MIT).": "van Panayiotis Lipiridis (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Hierdie eindpunt antwoord, maar het geen /chat/completions nie. Gebruik die OpenAI-versoenbare URL — dit eindig gewoonlik op /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Hierdie eindpunt antwoord, maar het geen /chat/completions nie. Gebruik die OpenAI-versoenbare URL — dit eindig gewoonlik op /v1 (LM Studio: http://localhost:1234/v1).",
+"wpm spoken": "wpm gepraat",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Hoe vinnig jy praat terwyl jy dikteer: jou woorde gedeel deur die opnametyd. Jou tikspoed is op {n} wpm gestel.",
+"wait after stopping": "wagtyd ná ophou",
+"slowest 5%: {s}": "stadigste 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Mediaantyd vanaf die oomblik dat jy ophou dikteer tot die teks geplak word. Spraakherkenning {a}, KI-skoonmaak {b} (mediane).",
+"changed by AI cleanup": "verander deur KI-skoonmaak",
+"{n} failed": "{n} het misluk",
+"of {n} cleaned": "van {n} skoongemaak",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Van die diktate waarop KI-skoonmaak gedraai het, die deel waar dit die teks werklik verander het. Misluk beteken die skoonmaak-oproep het 'n fout gegee en die ongeskoonde teks is geplak.",
+"Languages": "Tale",
+"{p}% of dictations": "{p}% van diktate",
+"Languages you dictated in this period, by number of dictations.": "Tale waarin jy gedurende hierdie tydperk gedikteer het, volgens die aantal diktate.",
+"words per dictation": "woorde per diktaat",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Die gemiddelde lengte van 'n diktaat. Die rooster wys wanneer jy dikteer: weekdae van bo na onder, ure van links na regs — donkerder beteken besiger."
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

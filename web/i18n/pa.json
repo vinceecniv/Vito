@@ -810,7 +810,21 @@
 "Next month": "ਅਗਲਾ ਮਹੀਨਾ",
 "Pick a start date": "ਸ਼ੁਰੂਆਤੀ ਤਾਰੀਖ਼ ਚੁਣੋ",
 "Pick an end date": "ਆਖ਼ਰੀ ਤਾਰੀਖ਼ ਚੁਣੋ",
-"Apply": "ਲਾਗੂ ਕਰੋ"
+"Apply": "ਲਾਗੂ ਕਰੋ",
+"wpm spoken": "wpm ਬੋਲੇ",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "ਡਿਕਟੇਸ਼ਨ ਦੌਰਾਨ ਤੁਸੀਂ ਕਿੰਨੀ ਤੇਜ਼ੀ ਨਾਲ ਬੋਲਦੇ ਹੋ: ਤੁਹਾਡੇ ਸ਼ਬਦ ਰਿਕਾਰਡਿੰਗ ਦੇ ਸਮੇਂ ਨਾਲ ਭਾਗ ਕੀਤੇ ਹੋਏ। ਤੁਹਾਡੀ ਟਾਈਪਿੰਗ ਸਪੀਡ {n} wpm ਤੇ ਸੈੱਟ ਹੈ।",
+"wait after stopping": "ਰੋਕਣ ਤੋਂ ਬਾਅਦ ਉਡੀਕ",
+"slowest 5%: {s}": "ਸਭ ਤੋਂ ਹੌਲੀ 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "ਡਿਕਟੇਸ਼ਨ ਰੋਕਣ ਤੋਂ ਲੈ ਕੇ ਟੈਕਸਟ ਪੇਸਟ ਹੋਣ ਤੱਕ ਦਾ ਮੱਧਮਾਨ ਸਮਾਂ। ਬੋਲੀ ਪਛਾਣ {a}, AI ਸਫ਼ਾਈ {b} (ਮੱਧਮਾਨ)।",
+"changed by AI cleanup": "AI ਸਫ਼ਾਈ ਨੇ ਬਦਲਿਆ",
+"{n} failed": "{n} ਅਸਫਲ",
+"of {n} cleaned": "{n} ਸਾਫ਼ ਕੀਤਿਆਂ ਵਿੱਚੋਂ",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "ਜਿਨ੍ਹਾਂ ਡਿਕਟੇਸ਼ਨਾਂ ਉੱਤੇ AI ਸਫ਼ਾਈ ਚੱਲੀ, ਉਨ੍ਹਾਂ ਵਿੱਚੋਂ ਉਹ ਹਿੱਸਾ ਜਿੱਥੇ ਇਸ ਨੇ ਸੱਚਮੁੱਚ ਟੈਕਸਟ ਬਦਲਿਆ। ਅਸਫਲ ਦਾ ਮਤਲਬ ਹੈ ਕਿ ਸਫ਼ਾਈ ਦੀ ਕਾਲ ਵਿੱਚ ਗਲਤੀ ਆਈ ਅਤੇ ਬਿਨਾਂ ਸਾਫ਼ ਕੀਤਾ ਟੈਕਸਟ ਪੇਸਟ ਕੀਤਾ ਗਿਆ।",
+"Languages": "ਭਾਸ਼ਾਵਾਂ",
+"{p}% of dictations": "ਡਿਕਟੇਸ਼ਨਾਂ ਦਾ {p}%",
+"Languages you dictated in this period, by number of dictations.": "ਇਸ ਮਿਆਦ ਵਿੱਚ ਤੁਸੀਂ ਜਿਨ੍ਹਾਂ ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ ਡਿਕਟੇਸ਼ਨ ਕੀਤੀ, ਡਿਕਟੇਸ਼ਨਾਂ ਦੀ ਗਿਣਤੀ ਅਨੁਸਾਰ।",
+"words per dictation": "ਪ੍ਰਤੀ ਡਿਕਟੇਸ਼ਨ ਸ਼ਬਦ",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ਇੱਕ ਡਿਕਟੇਸ਼ਨ ਦੀ ਔਸਤ ਲੰਬਾਈ। ਗਰਿੱਡ ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਕਦੋਂ ਡਿਕਟੇਸ਼ਨ ਕਰਦੇ ਹੋ: ਹਫ਼ਤੇ ਦੇ ਦਿਨ ਉੱਪਰ ਤੋਂ ਹੇਠਾਂ, ਘੰਟੇ ਖੱਬੇ ਤੋਂ ਸੱਜੇ — ਗੂੜ੍ਹਾ ਮਤਲਬ ਵਧੇਰੇ ਰੁਝੇਵਾਂ।"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",

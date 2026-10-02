@@ -810,7 +810,21 @@
 "Apply": "تطبيق",
 "Earned today": "المكتسبة اليوم",
 "Unlocked today": "فُتحت اليوم",
-"{n} new today": "{n} جديدة اليوم"
+"{n} new today": "{n} جديدة اليوم",
+"wpm spoken": "wpm منطوقة",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "سرعة كلامك أثناء الإملاء: عدد كلماتك مقسومًا على مدة التسجيل. سرعة كتابتك محددة عند {n} wpm.",
+"wait after stopping": "الانتظار بعد الإيقاف",
+"slowest 5%: {s}": "الأبطأ 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "الزمن الوسيط من إيقاف الإملاء حتى لصق النص. التعرّف على الكلام {a}، التنقيح بالذكاء الاصطناعي {b} (قيم وسيطة).",
+"changed by AI cleanup": "تغيّرت بالتنقيح بالذكاء الاصطناعي",
+"{n} failed": "فشل {n}",
+"of {n} cleaned": "من أصل {n} جرى تنقيحها",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "من بين الإملاءات التي جرى عليها التنقيح بالذكاء الاصطناعي، نسبة ما غيّر فيها النص فعلًا. «فشل» يعني أن طلب التنقيح أخفق فتم لصق النص دون تنقيح.",
+"Languages": "اللغات",
+"{p}% of dictations": "{p}% من الإملاءات",
+"Languages you dictated in this period, by number of dictations.": "اللغات التي أملَيت بها في هذه الفترة، مرتّبة حسب عدد الإملاءات.",
+"words per dictation": "كلمات لكل إملاء",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "متوسط طول الإملاء. تُظهر الشبكة متى تُملي: أيام الأسبوع من الأعلى إلى الأسفل، والساعات من اليسار إلى اليمين — كلما كان اللون أغمق كان النشاط أكثر."
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

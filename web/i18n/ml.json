@@ -810,7 +810,21 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google നിർമ്മിച്ചത് (സ്റ്റാറ്റിക് ചിത്രങ്ങൾ Apache-2.0 പ്രകാരവും ആനിമേഷനുകൾ CC BY 4.0 പ്രകാരവും); ഇവ പ്ലേ ചെയ്യുന്നത്",
 "by Airbnb (MIT). Country flags are": "Airbnb നിർമ്മിച്ചത് (MIT) ഉപയോഗിച്ചാണ്. രാജ്യങ്ങളുടെ പതാകകൾ",
 "by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis നിർമ്മിച്ചത് (MIT) ആണ്.",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "ഈ എൻഡ്‌പോയിന്റ് പ്രതികരിക്കുന്നുണ്ട്, പക്ഷേ അതിൽ /chat/completions ഇല്ല. OpenAI-യുമായി പൊരുത്തപ്പെടുന്ന URL ഉപയോഗിക്കുക — അത് സാധാരണയായി /v1 ൽ അവസാനിക്കും (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "ഈ എൻഡ്‌പോയിന്റ് പ്രതികരിക്കുന്നുണ്ട്, പക്ഷേ അതിൽ /chat/completions ഇല്ല. OpenAI-യുമായി പൊരുത്തപ്പെടുന്ന URL ഉപയോഗിക്കുക — അത് സാധാരണയായി /v1 ൽ അവസാനിക്കും (LM Studio: http://localhost:1234/v1).",
+"wpm spoken": "wpm സംസാരിച്ചത്",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "ഡിക്ടേഷൻ ചെയ്യുമ്പോൾ നിങ്ങൾ എത്ര വേഗത്തിൽ സംസാരിക്കുന്നു: നിങ്ങളുടെ വാക്കുകളെ റെക്കോർഡിംഗ് സമയം കൊണ്ട് ഹരിച്ചത്. നിങ്ങളുടെ ടൈപ്പിംഗ് വേഗത {n} wpm ആയി സജ്ജീകരിച്ചിരിക്കുന്നു.",
+"wait after stopping": "നിർത്തിയ ശേഷമുള്ള കാത്തിരിപ്പ്",
+"slowest 5%: {s}": "ഏറ്റവും മന്ദഗതിയിലുള്ള 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "ഡിക്ടേഷൻ നിർത്തുന്നതു മുതൽ ടെക്സ്റ്റ് ഒട്ടിക്കുന്നതുവരെയുള്ള മധ്യമ സമയം. സംഭാഷണ തിരിച്ചറിയൽ {a}, AI വൃത്തിയാക്കൽ {b} (മധ്യമങ്ങൾ).",
+"changed by AI cleanup": "AI വൃത്തിയാക്കൽ മാറ്റിയത്",
+"{n} failed": "{n} പരാജയപ്പെട്ടു",
+"of {n} cleaned": "വൃത്തിയാക്കിയ {n}-ൽ",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "AI വൃത്തിയാക്കൽ പ്രവർത്തിച്ച ഡിക്ടേഷനുകളിൽ, അത് യഥാർത്ഥത്തിൽ ടെക്സ്റ്റ് മാറ്റിയവയുടെ പങ്ക്. പരാജയപ്പെട്ടു എന്നാൽ വൃത്തിയാക്കൽ അഭ്യർത്ഥന പിശകായി, വൃത്തിയാക്കാത്ത ടെക്സ്റ്റ് ഒട്ടിച്ചു എന്നാണ്.",
+"Languages": "ഭാഷകൾ",
+"{p}% of dictations": "ഡിക്ടേഷനുകളുടെ {p}%",
+"Languages you dictated in this period, by number of dictations.": "ഈ കാലയളവിൽ നിങ്ങൾ ഡിക്ടേറ്റ് ചെയ്ത ഭാഷകൾ, ഡിക്ടേഷനുകളുടെ എണ്ണം അനുസരിച്ച്.",
+"words per dictation": "ഓരോ ഡിക്ടേഷനിലെയും വാക്കുകൾ",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ഒരു ഡിക്ടേഷന്റെ ശരാശരി ദൈർഘ്യം. നിങ്ങൾ എപ്പോൾ ഡിക്ടേറ്റ് ചെയ്യുന്നുവെന്ന് ഗ്രിഡ് കാണിക്കുന്നു: ആഴ്ചയിലെ ദിവസങ്ങൾ മുകളിൽ നിന്ന് താഴേക്ക്, മണിക്കൂറുകൾ ഇടത്തുനിന്ന് വലത്തേക്ക് — ഇരുണ്ടതാകുന്തോറും തിരക്ക് കൂടുതൽ."
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

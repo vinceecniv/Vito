@@ -810,7 +810,21 @@
 "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Bu son nöqtə cavab verir, lakin /chat/completions yoxdur. OpenAI ilə uyğun URL-dən istifadə edin — o, adətən /v1 ilə bitir (LM Studio: http://localhost:1234/v1).",
 "Earned today": "Bu gün qazanılanlar",
 "Unlocked today": "Bu gün açıldı",
-"{n} new today": "bu gün {n} yeni"
+"{n} new today": "bu gün {n} yeni",
+"wpm spoken": "wpm danışıq",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Diktə edərkən nə qədər sürətlə danışırsınız: sözlərinizin sayı qeyd müddətinə bölünür. Yazma sürətiniz {n} wpm olaraq təyin edilib.",
+"wait after stopping": "dayandırdıqdan sonra gözləmə",
+"slowest 5%: {s}": "ən yavaş 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Diktəni dayandırdığınız andan mətnin yapışdırılmasına qədər median vaxt. Nitq tanıma {a}, AI təmizləmə {b} (medianlar).",
+"changed by AI cleanup": "AI təmizləmə ilə dəyişdirilib",
+"{n} failed": "{n} uğursuz",
+"of {n} cleaned": "{n} təmizlənmişdən",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "AI təmizləmənin işlədiyi diktələr arasında mətni həqiqətən dəyişdirdiyi hallların payı. Uğursuz o deməkdir ki, təmizləmə sorğusu xəta verdi və təmizlənməmiş mətn yapışdırıldı.",
+"Languages": "Dillər",
+"{p}% of dictations": "diktələrin {p}%-i",
+"Languages you dictated in this period, by number of dictations.": "Bu dövrdə diktə etdiyiniz dillər, diktə sayına görə.",
+"words per dictation": "diktə başına söz",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Diktənin orta uzunluğu. Cədvəl nə vaxt diktə etdiyinizi göstərir: həftənin günləri yuxarıdan aşağı, saatlar soldan sağa — tünd rəng daha yüklü vaxtdır."
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

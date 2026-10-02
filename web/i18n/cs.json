@@ -810,7 +810,21 @@
 "Next month": "Další měsíc",
 "Pick a start date": "Vyberte počáteční datum",
 "Pick an end date": "Vyberte koncové datum",
-"Apply": "Použít"
+"Apply": "Použít",
+"wpm spoken": "wpm mluvením",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Jak rychle mluvíte při diktování: počet vašich slov vydělený délkou nahrávky. Vaše rychlost psaní je nastavena na {n} wpm.",
+"wait after stopping": "čekání po zastavení",
+"slowest 5%: {s}": "nejpomalejších 5 %: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Medián doby od zastavení diktátu do vložení textu. Rozpoznávání řeči {a}, vyčištění pomocí AI {b} (mediány).",
+"changed by AI cleanup": "změněno vyčištěním AI",
+"{n} failed": "selhalo: {n}",
+"of {n} cleaned": "z {n} vyčištěných",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Z diktátů, na které se vyčištění pomocí AI použilo, podíl těch, kde skutečně změnilo text. Selhání znamená, že volání vyčištění skončilo chybou a vložil se nevyčištěný text.",
+"Languages": "Jazyky",
+"{p}% of dictations": "{p} % diktátů",
+"Languages you dictated in this period, by number of dictations.": "Jazyky, ve kterých jste v tomto období diktovali, podle počtu diktátů.",
+"words per dictation": "slov na diktát",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Průměrná délka diktátu. Mřížka ukazuje, kdy diktujete: dny v týdnu shora dolů, hodiny zleva doprava — tmavší znamená rušnější."
 },
 "help": {
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",

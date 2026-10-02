@@ -810,7 +810,21 @@
 "Next month": "Järgmine kuu",
 "Pick a start date": "Vali alguskuupäev",
 "Pick an end date": "Vali lõppkuupäev",
-"Apply": "Rakenda"
+"Apply": "Rakenda",
+"wpm spoken": "wpm kõneldes",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Kui kiiresti dikteerides räägid: sinu sõnad jagatud salvestuse ajaga. Sinu tippimiskiiruseks on seatud {n} wpm.",
+"wait after stopping": "ooteaeg pärast peatamist",
+"slowest 5%: {s}": "aeglaseim 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Mediaanaeg dikteeringu peatamisest kuni teksti kleepimiseni. Kõnetuvastus {a}, AI-puhastus {b} (mediaanid).",
+"changed by AI cleanup": "muudetud AI-puhastusega",
+"{n} failed": "{n} ebaõnnestus",
+"of {n} cleaned": "{n} puhastatust",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Nendest dikteeringutest, millel AI-puhastus töötas, see osa, kus see tekstit tegelikult muutis. Ebaõnnestunud tähendab, et puhastuspäring andis vea ja kleebiti puhastamata tekst.",
+"Languages": "Keeled",
+"{p}% of dictations": "{p}% dikteeringutest",
+"Languages you dictated in this period, by number of dictations.": "Keeled, milles selle perioodi jooksul dikteerisid, dikteeringute arvu järgi.",
+"words per dictation": "sõna dikteeringu kohta",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Dikteeringu keskmine pikkus. Ruudustik näitab, millal sa dikteerid: nädalapäevad ülalt alla, tunnid vasakult paremale — tumedam tähendab tegusamat."
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

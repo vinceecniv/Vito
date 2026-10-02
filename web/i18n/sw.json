@@ -810,7 +810,21 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "kutoka Google (zisizosogea chini ya Apache-2.0, uhuishaji chini ya CC BY 4.0), na huchezwa kwa",
 "by Airbnb (MIT). Country flags are": "kutoka Airbnb (MIT). Bendera za nchi ni za",
 "by Panayiotis Lipiridis (MIT).": "kutoka kwa Panayiotis Lipiridis (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Endpoint hii inajibu, lakini haina /chat/completions. Tumia URL inayooana na OpenAI — kwa kawaida huishia na /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Endpoint hii inajibu, lakini haina /chat/completions. Tumia URL inayooana na OpenAI — kwa kawaida huishia na /v1 (LM Studio: http://localhost:1234/v1).",
+"wpm spoken": "wpm ya kuongea",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Kasi unayoongea unapoandika kwa sauti: maneno yako yakigawanywa kwa muda wa kurekodi. Kasi yako ya kuandika imewekwa kuwa wpm {n}.",
+"wait after stopping": "kusubiri baada ya kusimamisha",
+"slowest 5%: {s}": "5% ya polepole zaidi: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Muda wa kati tangu kusimamisha uandishi hadi maandishi yabandikwe. Utambuzi wa sauti {a}, usafishaji wa AI {b} (thamani za kati).",
+"changed by AI cleanup": "yamebadilishwa na usafishaji wa AI",
+"{n} failed": "{n} yameshindwa",
+"of {n} cleaned": "kati ya {n} yaliyosafishwa",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Kati ya uandishi ambao usafishaji wa AI ulifanyika, sehemu ambayo ulibadilisha maandishi kweli. Kushindwa kunamaanisha ombi la usafishaji lilikosea na maandishi ambayo hayajasafishwa yakabandikwa.",
+"Languages": "Lugha",
+"{p}% of dictations": "{p}% ya uandishi",
+"Languages you dictated in this period, by number of dictations.": "Lugha ulizoandika kwa sauti katika kipindi hiki, kulingana na idadi ya uandishi.",
+"words per dictation": "maneno kwa kila uandishi",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Urefu wa wastani wa uandishi mmoja. Jedwali linaonyesha ni lini unaandika kwa sauti: siku za wiki kutoka juu hadi chini, saa kutoka kushoto kwenda kulia — rangi nzito zaidi inamaanisha shughuli nyingi zaidi."
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

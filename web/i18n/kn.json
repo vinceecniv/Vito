@@ -810,7 +810,21 @@
 "Next month": "ಮುಂದಿನ ತಿಂಗಳು",
 "Pick a start date": "ಪ್ರಾರಂಭ ದಿನಾಂಕವನ್ನು ಆರಿಸಿ",
 "Pick an end date": "ಅಂತಿಮ ದಿನಾಂಕವನ್ನು ಆರಿಸಿ",
-"Apply": "ಅನ್ವಯಿಸಿ"
+"Apply": "ಅನ್ವಯಿಸಿ",
+"wpm spoken": "wpm ಮಾತು",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "ಡಿಕ್ಟೇಶನ್ ಮಾಡುವಾಗ ನೀವು ಎಷ್ಟು ವೇಗವಾಗಿ ಮಾತನಾಡುತ್ತೀರಿ: ನಿಮ್ಮ ಪದಗಳನ್ನು ರೆಕಾರ್ಡಿಂಗ್ ಸಮಯದಿಂದ ಭಾಗಿಸಲಾಗುತ್ತದೆ. ನಿಮ್ಮ ಟೈಪಿಂಗ್ ವೇಗವನ್ನು {n} wpm ಗೆ ಹೊಂದಿಸಲಾಗಿದೆ.",
+"wait after stopping": "ನಿಲ್ಲಿಸಿದ ನಂತರದ ಕಾಯುವಿಕೆ",
+"slowest 5%: {s}": "ಅತ್ಯಂತ ನಿಧಾನ 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "ಡಿಕ್ಟೇಶನ್ ನಿಲ್ಲಿಸಿದಾಗಿನಿಂದ ಪಠ್ಯ ಅಂಟಿಸುವವರೆಗಿನ ಮಧ್ಯಮ ಸಮಯ. ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ {a}, AI ಶುದ್ಧೀಕರಣ {b} (ಮಧ್ಯಮ ಮೌಲ್ಯಗಳು).",
+"changed by AI cleanup": "AI ಶುದ್ಧೀಕರಣದಿಂದ ಬದಲಾದದ್ದು",
+"{n} failed": "{n} ವಿಫಲ",
+"of {n} cleaned": "{n} ಶುದ್ಧೀಕರಿಸಿದವುಗಳಲ್ಲಿ",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "AI ಶುದ್ಧೀಕರಣ ಚಾಲನೆಯಾದ ಡಿಕ್ಟೇಶನ್‌ಗಳಲ್ಲಿ, ಅದು ನಿಜವಾಗಿ ಪಠ್ಯವನ್ನು ಬದಲಾಯಿಸಿದ ಪಾಲು. ವಿಫಲ ಎಂದರೆ ಶುದ್ಧೀಕರಣ ಕರೆ ದೋಷದಿಂದ ಕೊನೆಗೊಂಡು ಶುದ್ಧೀಕರಿಸದ ಪಠ್ಯವನ್ನು ಅಂಟಿಸಲಾಗಿದೆ.",
+"Languages": "ಭಾಷೆಗಳು",
+"{p}% of dictations": "ಡಿಕ್ಟೇಶನ್‌ಗಳ {p}%",
+"Languages you dictated in this period, by number of dictations.": "ಈ ಅವಧಿಯಲ್ಲಿ ನೀವು ಡಿಕ್ಟೇಶನ್ ಮಾಡಿದ ಭಾಷೆಗಳು, ಡಿಕ್ಟೇಶನ್‌ಗಳ ಸಂಖ್ಯೆಯ ಪ್ರಕಾರ.",
+"words per dictation": "ಪ್ರತಿ ಡಿಕ್ಟೇಶನ್‌ಗೆ ಪದಗಳು",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ಡಿಕ್ಟೇಶನ್‌ನ ಸರಾಸರಿ ಉದ್ದ. ಗ್ರಿಡ್ ನೀವು ಯಾವಾಗ ಡಿಕ್ಟೇಶನ್ ಮಾಡುತ್ತೀರಿ ಎಂದು ತೋರಿಸುತ್ತದೆ: ವಾರದ ದಿನಗಳು ಮೇಲಿನಿಂದ ಕೆಳಗೆ, ಗಂಟೆಗಳು ಎಡದಿಂದ ಬಲಕ್ಕೆ — ಗಾಢವಾದಷ್ಟು ಹೆಚ್ಚು ಚಟುವಟಿಕೆ."
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

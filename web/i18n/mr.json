@@ -810,7 +810,21 @@
 "Next month": "पुढील महिना",
 "Pick a start date": "सुरुवातीची तारीख निवडा",
 "Pick an end date": "शेवटची तारीख निवडा",
-"Apply": "लागू करा"
+"Apply": "लागू करा",
+"wpm spoken": "wpm बोलले",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "डिक्टेट करताना तुम्ही किती वेगाने बोलता: तुमचे शब्द भागिले रेकॉर्डिंगचा वेळ. तुमचा टायपिंग वेग {n} wpm वर सेट केला आहे.",
+"wait after stopping": "थांबवल्यानंतरची प्रतीक्षा",
+"slowest 5%: {s}": "सर्वात हळू ५%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "डिक्टेशन थांबवल्यापासून मजकूर पेस्ट होईपर्यंतचा मध्यक वेळ. वाक् ओळख {a}, AI साफसफाई {b} (मध्यक).",
+"changed by AI cleanup": "AI साफसफाईने बदललेले",
+"{n} failed": "{n} अयशस्वी",
+"of {n} cleaned": "{n} पैकी साफ केलेल्या",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "AI साफसफाई चालवलेल्या डिक्टेशनपैकी, ज्यांत तिने प्रत्यक्षात मजकूर बदलला त्यांचा वाटा. अयशस्वी म्हणजे साफसफाईची विनंती त्रुटीने संपली आणि साफ न केलेला मजकूर पेस्ट केला गेला.",
+"Languages": "भाषा",
+"{p}% of dictations": "डिक्टेशनपैकी {p}%",
+"Languages you dictated in this period, by number of dictations.": "या कालावधीत तुम्ही ज्या भाषांमध्ये डिक्टेट केले, डिक्टेशनच्या संख्येनुसार.",
+"words per dictation": "प्रति डिक्टेशन शब्द",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "डिक्टेशनची सरासरी लांबी. ग्रिड तुम्ही कधी डिक्टेट करता ते दाखवतो: वर ते खाली आठवड्याचे वार, डावीकडून उजवीकडे तास — जितका गडद तितकी जास्त वर्दळ."
 },
 "help": {
 "theme": "उजळ, गडद किंवा आपोआप — आपोआप तुमच्या सिस्टीमच्या उजळ/गडद सेटिंगचे अनुसरण करते.",

@@ -810,7 +810,21 @@
 "Next month": "Mes següent",
 "Pick a start date": "Tria una data d'inici",
 "Pick an end date": "Tria una data de fi",
-"Apply": "Aplica"
+"Apply": "Aplica",
+"wpm spoken": "wpm parlades",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Com de ràpid parles quan dictes: les teves paraules dividides pel temps d'enregistrament. La teva velocitat d'escriptura està establerta en {n} wpm.",
+"wait after stopping": "espera en aturar",
+"slowest 5%: {s}": "el 5% més lent: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Temps mitjà (mediana) des que aturis un dictat fins que s'enganxa el text. Reconeixement de veu {a}, neteja amb IA {b} (medianes).",
+"changed by AI cleanup": "canviat per la neteja amb IA",
+"{n} failed": "{n} han fallat",
+"of {n} cleaned": "de {n} netejats",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Dels dictats on s'ha aplicat la neteja amb IA, la part en què ha canviat realment el text. Fallat vol dir que la crida de neteja ha donat error i s'ha enganxat el text sense netejar.",
+"Languages": "Idiomes",
+"{p}% of dictations": "{p}% dels dictats",
+"Languages you dictated in this period, by number of dictations.": "Idiomes en què has dictat en aquest període, segons el nombre de dictats.",
+"words per dictation": "paraules per dictat",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "La durada mitjana d'un dictat. La quadrícula mostra quan dictes: els dies de la setmana de dalt a baix, les hores d'esquerra a dreta — com més fosc, més activitat."
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

@@ -810,7 +810,21 @@
 "Next month": "Bulan seterusnya",
 "Pick a start date": "Pilih tarikh mula",
 "Pick an end date": "Pilih tarikh akhir",
-"Apply": "Guna"
+"Apply": "Guna",
+"wpm spoken": "wpm dituturkan",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Seberapa laju anda bercakap semasa mendikte: bilangan perkataan anda dibahagi dengan masa rakaman. Kelajuan menaip anda ditetapkan pada {n} wpm.",
+"wait after stopping": "menunggu selepas berhenti",
+"slowest 5%: {s}": "5% paling perlahan: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Masa median dari anda menghentikan dikte sehingga teks ditampal. Pengecaman suara {a}, pembersihan AI {b} (median).",
+"changed by AI cleanup": "diubah oleh pembersihan AI",
+"{n} failed": "{n} gagal",
+"of {n} cleaned": "daripada {n} dibersihkan",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Daripada dikte yang dijalankan pembersihan AI, bahagian di mana ia benar-benar mengubah teks. Gagal bermaksud panggilan pembersihan mengalami ralat dan teks yang belum dibersihkan telah ditampal.",
+"Languages": "Bahasa",
+"{p}% of dictations": "{p}% daripada dikte",
+"Languages you dictated in this period, by number of dictations.": "Bahasa yang anda gunakan untuk mendikte dalam tempoh ini, mengikut bilangan dikte.",
+"words per dictation": "perkataan setiap dikte",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Purata panjang sesuatu dikte. Grid menunjukkan bila anda mendikte: hari bekerja dari atas ke bawah, jam dari kiri ke kanan — lebih gelap bermaksud lebih sibuk."
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",

@@ -810,7 +810,21 @@
 "Next month": "Hurrengo hilabetea",
 "Pick a start date": "Aukeratu hasiera-data",
 "Pick an end date": "Aukeratu amaiera-data",
-"Apply": "Aplikatu"
+"Apply": "Aplikatu",
+"wpm spoken": "wpm hitz egin",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Diktatzean zein azkar hitz egiten duzun: zure hitzak grabazio-denboraz zatituta. Zure idazteko abiadura {n} wpm-n ezarrita dago.",
+"wait after stopping": "itxaronaldia gelditu ondoren",
+"slowest 5%: {s}": "geldoena %5: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Diktaketa bat gelditzen duzunetik testua itsatsi arteko batez besteko denbora (mediana). Ahots-ezagutza {a}, AI garbiketa {b} (medianak).",
+"changed by AI cleanup": "AI garbiketak aldatuta",
+"{n} failed": "{n} huts egin dute",
+"of {n} cleaned": "garbitutako {n}tik",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "AI garbiketa exekutatu zaien diktaketen artean, testua benetan aldatu duen ehunekoa. Huts egin du esan nahi du garbiketa-deiak errorea eman duela eta garbitu gabeko testua itsatsi dela.",
+"Languages": "Hizkuntzak",
+"{p}% of dictations": "diktaketen %{p}",
+"Languages you dictated in this period, by number of dictations.": "Aldi honetan diktatu dituzun hizkuntzak, diktaketa kopuruaren arabera.",
+"words per dictation": "hitz diktaketako",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Diktaketa baten batez besteko luzera. Sareak noiz diktatzen duzun erakusten du: asteko egunak goitik behera, orduak ezkerretik eskuinera — ilunagoa, okupatuagoa."
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

@@ -810,7 +810,21 @@
 "Next month": "Következő hónap",
 "Pick a start date": "Válassz kezdődátumot",
 "Pick an end date": "Válassz végdátumot",
-"Apply": "Alkalmaz"
+"Apply": "Alkalmaz",
+"wpm spoken": "wpm beszéddel",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Milyen gyorsan beszélsz diktálás közben: a szavaid száma osztva a felvétel hosszával. A gépelési sebességed {n} wpm-re van állítva.",
+"wait after stopping": "várakozás leállítás után",
+"slowest 5%: {s}": "leglassabb 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "A diktálás leállításától a szöveg beillesztéséig eltelt medián idő. Beszédfelismerés {a}, AI-tisztítás {b} (mediánok).",
+"changed by AI cleanup": "AI-tisztítás módosította",
+"{n} failed": "{n} sikertelen",
+"of {n} cleaned": "a(z) {n} megtisztítottból",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Azon diktálások közül, amelyeken lefutott az AI-tisztítás, az az arány, ahol ténylegesen módosította a szöveget. A sikertelen azt jelenti, hogy a tisztítási hívás hibára futott, és a tisztítatlan szöveg lett beillesztve.",
+"Languages": "Nyelvek",
+"{p}% of dictations": "a diktálások {p}%-a",
+"Languages you dictated in this period, by number of dictations.": "Az ebben az időszakban használt diktálási nyelvek a diktálások száma szerint.",
+"words per dictation": "szó diktálásonként",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "A diktálások átlagos hossza. A rács azt mutatja, mikor diktálsz: fent-lent a hét napjai, balról jobbra az órák — minél sötétebb, annál forgalmasabb."
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

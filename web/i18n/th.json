@@ -810,7 +810,21 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "โดย Google (แบบภาพนิ่งภายใต้ Apache-2.0 และแอนิเมชันภายใต้ CC BY 4.0) และเล่นด้วย",
 "by Airbnb (MIT). Country flags are": "โดย Airbnb (MIT) ส่วนธงประเทศมาจาก",
 "by Panayiotis Lipiridis (MIT).": "โดย Panayiotis Lipiridis (MIT)",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "เอนด์พอยต์นี้ตอบสนอง แต่ไม่มี /chat/completions ให้ใช้ URL ที่เข้ากันได้กับ OpenAI — โดยปกติจะลงท้ายด้วย /v1 (LM Studio: http://localhost:1234/v1)"
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "เอนด์พอยต์นี้ตอบสนอง แต่ไม่มี /chat/completions ให้ใช้ URL ที่เข้ากันได้กับ OpenAI — โดยปกติจะลงท้ายด้วย /v1 (LM Studio: http://localhost:1234/v1)",
+"wpm spoken": "wpm ที่พูด",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "คุณพูดเร็วแค่ไหนเวลาบอกข้อความ: จำนวนคำของคุณหารด้วยเวลาที่บันทึกเสียง ความเร็วในการพิมพ์ของคุณตั้งไว้ที่ {n} wpm",
+"wait after stopping": "รอหลังหยุดพูด",
+"slowest 5%: {s}": "ช้าสุด 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "ค่ามัธยฐานของเวลาตั้งแต่หยุดบอกข้อความจนถึงวางข้อความ การรู้จำเสียงพูด {a} การปรับข้อความด้วย AI {b} (ค่ามัธยฐาน)",
+"changed by AI cleanup": "ถูกแก้โดยการปรับข้อความด้วย AI",
+"{n} failed": "ล้มเหลว {n}",
+"of {n} cleaned": "จาก {n} ที่ปรับแล้ว",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "จากคำบอกที่ผ่านการปรับข้อความด้วย AI สัดส่วนที่ AI แก้ไขข้อความจริง ๆ ส่วน \"ล้มเหลว\" หมายถึงการเรียกปรับข้อความเกิดข้อผิดพลาดและวางข้อความที่ยังไม่ได้ปรับแทน",
+"Languages": "ภาษา",
+"{p}% of dictations": "{p}% ของคำบอก",
+"Languages you dictated in this period, by number of dictations.": "ภาษาที่คุณใช้บอกข้อความในช่วงเวลานี้ เรียงตามจำนวนคำบอก",
+"words per dictation": "คำต่อคำบอก",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ความยาวเฉลี่ยของคำบอกหนึ่งครั้ง ตารางแสดงช่วงเวลาที่คุณบอกข้อความ: วันในสัปดาห์เรียงจากบนลงล่าง ชั่วโมงเรียงจากซ้ายไปขวา — ยิ่งเข้มยิ่งมีการใช้งานมาก"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",

@@ -810,7 +810,21 @@
 "Next month": "Naslednji mesec",
 "Pick a start date": "Izberite začetni datum",
 "Pick an end date": "Izberite končni datum",
-"Apply": "Uporabi"
+"Apply": "Uporabi",
+"wpm spoken": "wpm govora",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Kako hitro govorite med narekovanjem: število besed, deljeno s časom snemanja. Vaša hitrost tipkanja je nastavljena na {n} wpm.",
+"wait after stopping": "čakanje po zaustavitvi",
+"slowest 5%: {s}": "najpočasnejših 5 %: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Mediani čas od zaustavitve narekovanja do prilepitve besedila. Prepoznava govora {a}, čiščenje z UI {b} (mediani).",
+"changed by AI cleanup": "spremenilo čiščenje z UI",
+"{n} failed": "{n} neuspešnih",
+"of {n} cleaned": "od {n} očiščenih",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Delež narekovanj, pri katerih se je izvedlo čiščenje z UI in je besedilo dejansko spremenilo. Neuspešno pomeni, da je klic čiščenja vrnil napako in je bilo prilepljeno neočiščeno besedilo.",
+"Languages": "Jeziki",
+"{p}% of dictations": "{p} % narekovanj",
+"Languages you dictated in this period, by number of dictations.": "Jeziki, v katerih ste narekovali v tem obdobju, glede na število narekovanj.",
+"words per dictation": "besed na narekovanje",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Povprečna dolžina narekovanja. Mreža prikazuje, kdaj narekujete: dnevi v tednu od zgoraj navzdol, ure od leve proti desni — temnejše pomeni več dela."
 },
 "help": {
 "theme": "Svetla, temna ali samodejna — samodejna sledi svetli/temni nastavitvi vašega sistema.",

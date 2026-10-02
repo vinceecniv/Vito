@@ -810,7 +810,21 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "கூகுள் உருவாக்கியது (நிலையானவை Apache-2.0 உரிமத்திலும், அனிமேஷன்கள் CC BY 4.0 உரிமத்திலும்), இயக்குவது:",
 "by Airbnb (MIT). Country flags are": "ஏர்பிஎன்பி உருவாக்கியது (MIT). நாட்டுக் கொடிகள்:",
 "by Panayiotis Lipiridis (MIT).": "பனாயியோட்டிஸ் லிபிரிடிஸ் உருவாக்கியது (MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "இந்த எண்ட்பாயிண்ட் பதிலளிக்கிறது, ஆனால் அதில் /chat/completions இல்லை. OpenAI-இணக்கமான URL-ஐப் பயன்படுத்துங்கள் — அது பொதுவாக /v1-இல் முடியும் (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "இந்த எண்ட்பாயிண்ட் பதிலளிக்கிறது, ஆனால் அதில் /chat/completions இல்லை. OpenAI-இணக்கமான URL-ஐப் பயன்படுத்துங்கள் — அது பொதுவாக /v1-இல் முடியும் (LM Studio: http://localhost:1234/v1).",
+"wpm spoken": "wpm பேசப்பட்டது",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "சொல்லெழுதும்போது நீங்கள் எவ்வளவு வேகமாகப் பேசுகிறீர்கள்: உங்கள் சொற்களை பதிவு நேரத்தால் வகுத்தது. உங்கள் தட்டச்சு வேகம் {n} wpm ஆக அமைக்கப்பட்டுள்ளது.",
+"wait after stopping": "நிறுத்திய பின் காத்திருப்பு",
+"slowest 5%: {s}": "மிக மெதுவான 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "சொல்லெழுத்தை நிறுத்திய பிறகு உரை ஒட்டப்படும் வரை ஆகும் இடைநிலை நேரம். பேச்சு அறிதல் {a}, AI சுத்தம் {b} (இடைநிலை மதிப்புகள்).",
+"changed by AI cleanup": "AI சுத்தத்தால் மாற்றப்பட்டது",
+"{n} failed": "{n} தோல்வி",
+"of {n} cleaned": "{n} சுத்தம் செய்யப்பட்டவற்றில்",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "AI சுத்தம் இயங்கிய சொல்லெழுத்துக்களில், அது உண்மையில் உரையை மாற்றிய பங்கு. தோல்வி என்றால் சுத்தம் செய்யும் அழைப்பு பிழையானது, சுத்தம் செய்யப்படாத உரை ஒட்டப்பட்டது.",
+"Languages": "மொழிகள்",
+"{p}% of dictations": "சொல்லெழுத்துக்களில் {p}%",
+"Languages you dictated in this period, by number of dictations.": "இந்தக் காலத்தில் நீங்கள் சொல்லெழுதிய மொழிகள், சொல்லெழுத்துக்களின் எண்ணிக்கையின்படி.",
+"words per dictation": "ஒரு சொல்லெழுத்துக்கான சொற்கள்",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ஒரு சொல்லெழுத்தின் சராசரி நீளம். கட்டம் நீங்கள் எப்போது சொல்லெழுதுகிறீர்கள் என்பதைக் காட்டுகிறது: வார நாட்கள் மேலிருந்து கீழாக, மணிநேரங்கள் இடமிருந்து வலமாக — அடர்த்தியான நிறம் அதிக பரபரப்பு."
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

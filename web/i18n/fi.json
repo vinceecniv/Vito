@@ -810,7 +810,21 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "(Google; staattiset kuvat Apache-2.0-lisenssillä, animaatiot CC BY 4.0 -lisenssillä), ja ne toistetaan kirjastolla",
 "by Airbnb (MIT). Country flags are": "(Airbnb; MIT). Maiden liput ovat peräisin kirjastosta",
 "by Panayiotis Lipiridis (MIT).": "(Panayiotis Lipiridis; MIT).",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Tämä päätepiste vastaa, mutta siinä ei ole /chat/completions. Käytä OpenAI-yhteensopivaa URL-osoitetta — se päättyy yleensä /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Tämä päätepiste vastaa, mutta siinä ei ole /chat/completions. Käytä OpenAI-yhteensopivaa URL-osoitetta — se päättyy yleensä /v1 (LM Studio: http://localhost:1234/v1).",
+"wpm spoken": "wpm puhuttuna",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Kuinka nopeasti puhut sanellessasi: sanojesi määrä jaettuna nauhoitusajalla. Kirjoitusnopeudeksesi on asetettu {n} wpm.",
+"wait after stopping": "odotus pysäytyksen jälkeen",
+"slowest 5%: {s}": "hitaimmat 5 %: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Mediaaniaika sanelun pysäyttämisestä siihen, että teksti liitetään. Puheentunnistus {a}, tekoälysiistintä {b} (mediaanit).",
+"changed by AI cleanup": "tekoälysiistinnän muuttamia",
+"{n} failed": "{n} epäonnistui",
+"of {n} cleaned": "{n} siistitystä",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Niistä saneluista, joihin tekoälysiistintä ajettiin, osuus, jossa se todella muutti tekstiä. Epäonnistui tarkoittaa, että siistintäkutsu päättyi virheeseen ja siistimätön teksti liitettiin.",
+"Languages": "Kielet",
+"{p}% of dictations": "{p} % saneluista",
+"Languages you dictated in this period, by number of dictations.": "Kielet, joilla sanelit tällä jaksolla, sanelujen määrän mukaan.",
+"words per dictation": "sanaa per sanelu",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Sanelun keskimääräinen pituus. Ruudukko näyttää, milloin sanelet: viikonpäivät ylhäältä alas, tunnit vasemmalta oikealle — tummempi tarkoittaa vilkkaampaa."
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

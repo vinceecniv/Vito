@@ -810,7 +810,21 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "（Google提供、静止画はApache-2.0、アニメーションはCC BY 4.0）を使用し、再生には",
 "by Airbnb (MIT). Country flags are": "（Airbnb提供、MIT）を使っています。国旗は",
 "by Panayiotis Lipiridis (MIT).": "（Panayiotis Lipiridis提供、MIT）です。",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "このエンドポイントは応答しますが、/chat/completions がありません。OpenAI 互換の URL を使用してください — 通常は /v1 で終わります (LM Studio: http://localhost:1234/v1)。"
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "このエンドポイントは応答しますが、/chat/completions がありません。OpenAI 互換の URL を使用してください — 通常は /v1 で終わります (LM Studio: http://localhost:1234/v1)。",
+"wpm spoken": "wpm（発話）",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "口述中の話す速さ：単語数を録音時間で割った値です。タイピング速度は {n} wpm に設定されています。",
+"wait after stopping": "停止後の待ち時間",
+"slowest 5%: {s}": "遅い方から5%：{s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "口述を止めてからテキストが貼り付けられるまでの時間の中央値です。音声認識 {a}、AIクリーンアップ {b}（いずれも中央値）。",
+"changed by AI cleanup": "AIクリーンアップで変更",
+"{n} failed": "{n}件失敗",
+"of {n} cleaned": "クリーンアップ{n}件中",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "AIクリーンアップを実行した口述のうち、実際にテキストが変更された割合です。失敗とは、クリーンアップの呼び出しがエラーになり、未処理のテキストが貼り付けられたことを指します。",
+"Languages": "言語",
+"{p}% of dictations": "口述の{p}%",
+"Languages you dictated in this period, by number of dictations.": "この期間に口述した言語を、口述の回数順に表示します。",
+"words per dictation": "1回あたりの単語数",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "口述1回あたりの平均の長さです。グリッドは口述する時間帯を示します：曜日が上から下、時間が左から右 — 色が濃いほど多く口述しています。"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",

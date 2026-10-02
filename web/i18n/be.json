@@ -810,7 +810,21 @@
 "What to do with playing media": "Што рабіць з мультымедыя, якое прайграецца",
 "not used yet": "яшчэ не выкарыстоўваўся",
 "Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Ваш працоўны стол прапануе гэты маршрут, але працуе ён ці не, паказвае толькі рэальная спроба, таму Vito спачатку спрабуе яго, калі вы дыктуеце. Калі ён не працуе, вашы дыктоўкі трапляюць у буфер абмену.",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Гэты эндпойнт адказвае, але ў яго няма /chat/completions. Выкарыстоўвайце сумяшчальны з OpenAI URL — ён звычайна заканчваецца на /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Гэты эндпойнт адказвае, але ў яго няма /chat/completions. Выкарыстоўвайце сумяшчальны з OpenAI URL — ён звычайна заканчваецца на /v1 (LM Studio: http://localhost:1234/v1).",
+"wpm spoken": "wpm у размове",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Як хутка вы гаворыце падчас дыктоўкі: колькасць вашых слоў, падзеленая на час запісу. Ваша хуткасць набору ўстаноўлена на {n} wpm.",
+"wait after stopping": "чаканне пасля спынення",
+"slowest 5%: {s}": "самыя павольныя 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Медыянны час ад спынення дыктоўкі да ўстаўкі тэксту. Распазнаванне маўлення {a}, AI-ачыстка {b} (медыяны).",
+"changed by AI cleanup": "зменена AI-ачысткай",
+"{n} failed": "не ўдалося: {n}",
+"of {n} cleaned": "з {n} ачышчаных",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Сярод дыктовак, да якіх ужывалася AI-ачыстка, доля тых, дзе яна сапраўды змяніла тэкст. «Не ўдалося» азначае, што выклік ачысткі завяршыўся памылкай і быў устаўлены неачышчаны тэкст.",
+"Languages": "Мовы",
+"{p}% of dictations": "{p}% дыктовак",
+"Languages you dictated in this period, by number of dictations.": "Мовы, на якіх вы дыктавалі ў гэты перыяд, паводле колькасці дыктовак.",
+"words per dictation": "слоў на дыктоўку",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Сярэдняя даўжыня дыктоўкі. Сетка паказвае, калі вы дыктуеце: дні тыдня зверху ўніз, гадзіны злева направа — чым цямней, тым больш актыўна."
 },
 "help": {
 "theme": "Светлая, цёмная ці аўтаматычная — аўтаматычная сочыць за светлым/цёмным рэжымам вашай сістэмы.",

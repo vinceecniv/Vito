@@ -810,7 +810,21 @@
 "Apply": "Применить",
 "Earned today": "Получено сегодня",
 "Unlocked today": "Открыто сегодня",
-"{n} new today": "{n} новых сегодня"
+"{n} new today": "{n} новых сегодня",
+"wpm spoken": "wpm в речи",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Как быстро вы говорите при диктовке: количество ваших слов, делённое на время записи. Скорость печати у вас задана как {n} wpm.",
+"wait after stopping": "ожидание после остановки",
+"slowest 5%: {s}": "самые медленные 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Медианное время от остановки диктовки до вставки текста. Распознавание речи {a}, очистка ИИ {b} (медианы).",
+"changed by AI cleanup": "изменено очисткой ИИ",
+"{n} failed": "не удалось: {n}",
+"of {n} cleaned": "из {n} обработанных",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Из диктовок, к которым применялась очистка ИИ, доля тех, где она действительно изменила текст. «Не удалось» означает, что вызов очистки завершился ошибкой и был вставлен необработанный текст.",
+"Languages": "Языки",
+"{p}% of dictations": "{p}% диктовок",
+"Languages you dictated in this period, by number of dictations.": "Языки, на которых вы диктовали в этот период, по числу диктовок.",
+"words per dictation": "слов за диктовку",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Средняя длина диктовки. Сетка показывает, когда вы диктуете: дни недели сверху вниз, часы слева направо — чем темнее, тем больше активности."
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",

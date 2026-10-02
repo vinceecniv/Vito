@@ -810,7 +810,21 @@
 "Pick a start date": "Pumili ng petsa ng simula",
 "Pick an end date": "Pumili ng petsa ng pagtatapos",
 "Apply": "Ilapat",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Sumasagot ang endpoint na ito, pero wala itong /chat/completions. Gamitin ang URL na compatible sa OpenAI — kadalasan itong nagtatapos sa /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Sumasagot ang endpoint na ito, pero wala itong /chat/completions. Gamitin ang URL na compatible sa OpenAI — kadalasan itong nagtatapos sa /v1 (LM Studio: http://localhost:1234/v1).",
+"wpm spoken": "wpm sa pagsasalita",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Gaano kabilis kang magsalita habang nagdidikta: ang mga salita mo hinati sa tagal ng recording. Nakatakda ang bilis ng pag-type mo sa {n} wpm.",
+"wait after stopping": "paghihintay pagkatapos huminto",
+"slowest 5%: {s}": "pinakamabagal na 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Median na oras mula sa paghinto ng diktasyon hanggang sa pagdikit ng teksto. Speech recognition {a}, AI cleanup {b} (mga median).",
+"changed by AI cleanup": "binago ng AI cleanup",
+"{n} failed": "{n} ang nabigo",
+"of {n} cleaned": "sa {n} na nilinis",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Sa mga diktasyong pinatakbuhan ng AI cleanup, ang bahagi kung saan talagang binago nito ang teksto. Ang nabigo ay nangangahulugang nagkaroon ng error ang cleanup call at ang hindi nilinis na teksto ang idinikit.",
+"Languages": "Mga wika",
+"{p}% of dictations": "{p}% ng mga diktasyon",
+"Languages you dictated in this period, by number of dictations.": "Mga wikang ginamit mo sa pagdidikta sa panahong ito, ayon sa bilang ng diktasyon.",
+"words per dictation": "salita bawat diktasyon",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Ang karaniwang haba ng isang diktasyon. Ipinapakita ng grid kung kailan ka nagdidikta: mga araw ng linggo mula itaas pababa, mga oras mula kaliwa pakanan — mas madilim, mas abala."
 },
 "help": {
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",

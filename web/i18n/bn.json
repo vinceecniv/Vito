@@ -810,7 +810,21 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "— Google-এর (স্থির ছবি Apache-2.0 লাইসেন্সে, অ্যানিমেশন CC BY 4.0 লাইসেন্সে), যা চালানো হয়",
 "by Airbnb (MIT). Country flags are": "— Airbnb-এর (MIT) মাধ্যমে। দেশের পতাকা এসেছে",
 "by Panayiotis Lipiridis (MIT).": "— Panayiotis Lipiridis-এর (MIT) কাছ থেকে।",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "এই এন্ডপয়েন্ট সাড়া দিচ্ছে, কিন্তু এতে /chat/completions নেই। OpenAI-সামঞ্জস্যপূর্ণ URL ব্যবহার করুন — সেটি সাধারণত /v1 দিয়ে শেষ হয় (LM Studio: http://localhost:1234/v1)।"
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "এই এন্ডপয়েন্ট সাড়া দিচ্ছে, কিন্তু এতে /chat/completions নেই। OpenAI-সামঞ্জস্যপূর্ণ URL ব্যবহার করুন — সেটি সাধারণত /v1 দিয়ে শেষ হয় (LM Studio: http://localhost:1234/v1)।",
+"wpm spoken": "wpm বলা",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "ডিকটেশনের সময় আপনি কত দ্রুত বলেন: আপনার শব্দসংখ্যাকে রেকর্ডিংয়ের সময় দিয়ে ভাগ করা হয়। আপনার টাইপিং গতি {n} wpm-এ সেট করা আছে।",
+"wait after stopping": "থামানোর পর অপেক্ষা",
+"slowest 5%: {s}": "সবচেয়ে ধীর ৫%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "ডিকটেশন থামানো থেকে টেক্সট পেস্ট হওয়া পর্যন্ত মধ্যমান সময়। স্পিচ রিকগনিশন {a}, AI পরিষ্করণ {b} (মধ্যমান)।",
+"changed by AI cleanup": "AI পরিষ্করণে বদলেছে",
+"{n} failed": "{n}টি ব্যর্থ",
+"of {n} cleaned": "{n}টি পরিষ্কার করা থেকে",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "যেসব ডিকটেশনে AI পরিষ্করণ চলেছে, তার মধ্যে কতটিতে এটি আসলে টেক্সট বদলেছে তার অংশ। ব্যর্থ মানে পরিষ্করণের কল ত্রুটি দিয়েছে এবং অপরিষ্কৃত টেক্সট পেস্ট হয়েছে।",
+"Languages": "ভাষা",
+"{p}% of dictations": "ডিকটেশনের {p}%",
+"Languages you dictated in this period, by number of dictations.": "এই সময়কালে আপনি যেসব ভাষায় ডিকটেশন দিয়েছেন, ডিকটেশনের সংখ্যা অনুযায়ী।",
+"words per dictation": "প্রতি ডিকটেশনে শব্দ",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "একটি ডিকটেশনের গড় দৈর্ঘ্য। গ্রিডটি দেখায় আপনি কখন ডিকটেশন দেন: উপর থেকে নিচে সপ্তাহের দিন, বাঁ থেকে ডানে ঘণ্টা — গাঢ় রঙ মানে বেশি ব্যস্ত।"
 },
 "help": {
 "theme": "হালকা, গাঢ় বা স্বয়ংক্রিয় — স্বয়ংক্রিয় আপনার সিস্টেমের হালকা/গাঢ় সেটিং অনুসরণ করে।",

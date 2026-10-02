@@ -810,7 +810,21 @@
 "Next month": "Mese successivo",
 "Pick a start date": "Scegli una data di inizio",
 "Pick an end date": "Scegli una data di fine",
-"Apply": "Applica"
+"Apply": "Applica",
+"wpm spoken": "wpm parlate",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Quanto velocemente parli mentre detti: le tue parole divise per il tempo di registrazione. La tua velocità di digitazione è impostata a {n} wpm.",
+"wait after stopping": "attesa dopo lo stop",
+"slowest 5%: {s}": "il 5% più lento: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Tempo mediano da quando fermi una dettatura a quando il testo viene incollato. Riconoscimento vocale {a}, pulizia AI {b} (mediane).",
+"changed by AI cleanup": "modificato dalla pulizia AI",
+"{n} failed": "{n} non riuscite",
+"of {n} cleaned": "su {n} pulite",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Tra le dettature su cui è stata eseguita la pulizia AI, la quota in cui ha davvero modificato il testo. «Non riuscite» significa che la chiamata di pulizia è andata in errore e il testo non pulito è stato incollato.",
+"Languages": "Lingue",
+"{p}% of dictations": "{p}% delle dettature",
+"Languages you dictated in this period, by number of dictations.": "Le lingue in cui hai dettato in questo periodo, in base al numero di dettature.",
+"words per dictation": "parole per dettatura",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "La lunghezza media di una dettatura. La griglia mostra quando detti: giorni della settimana dall'alto verso il basso, ore da sinistra a destra — più scuro significa più attività."
 },
 "help": {
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",

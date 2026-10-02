@@ -811,7 +811,21 @@
 "Next month": "اگلا مہینہ",
 "Pick a start date": "شروع کی تاریخ منتخب کریں",
 "Pick an end date": "آخری تاریخ منتخب کریں",
-"Apply": "لاگو کریں"
+"Apply": "لاگو کریں",
+"wpm spoken": "بولنے کی رفتار (wpm)",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "آپ املا کے دوران کتنی تیزی سے بولتے ہیں: آپ کے الفاظ کو ریکارڈنگ کے وقت سے تقسیم کیا جاتا ہے۔ آپ کی ٹائپنگ کی رفتار {n} wpm پر سیٹ ہے۔",
+"wait after stopping": "رکنے کے بعد انتظار",
+"slowest 5%: {s}": "سب سے سست 5٪: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "املا روکنے سے لے کر متن چسپاں ہونے تک کا درمیانی وقت۔ تقریر کی شناخت {a}، AI صفائی {b} (درمیانی اقدار)۔",
+"changed by AI cleanup": "AI صفائی سے بدلا گیا",
+"{n} failed": "{n} ناکام",
+"of {n} cleaned": "{n} صاف کیے گئے میں سے",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "جن املاؤں پر AI صفائی چلی، ان میں سے وہ حصہ جہاں اس نے واقعی متن بدلا۔ ناکام کا مطلب ہے کہ صفائی کی کال میں خرابی آئی اور بغیر صاف کیا ہوا متن چسپاں کیا گیا۔",
+"Languages": "زبانیں",
+"{p}% of dictations": "املاؤں کا {p}٪",
+"Languages you dictated in this period, by number of dictations.": "اس مدت میں آپ نے جن زبانوں میں املا کیا، املاؤں کی تعداد کے لحاظ سے۔",
+"words per dictation": "فی املا الفاظ",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "املا کی اوسط لمبائی۔ گرڈ دکھاتا ہے کہ آپ کب املا کرتے ہیں: ہفتے کے دن اوپر سے نیچے، گھنٹے بائیں سے دائیں — جتنا گہرا رنگ، اتنی زیادہ سرگرمی۔"
 },
 "help": {
 "theme": "روشن، گہرا یا خودکار — خودکار آپ کے سسٹم کی روشن/گہری ترتیب کے مطابق چلتا ہے۔",

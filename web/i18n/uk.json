@@ -810,7 +810,21 @@
 "Next month": "Наступний місяць",
 "Pick a start date": "Виберіть початкову дату",
 "Pick an end date": "Виберіть кінцеву дату",
-"Apply": "Застосувати"
+"Apply": "Застосувати",
+"wpm spoken": "wpm мовлення",
+"How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Як швидко ви говорите під час диктування: кількість ваших слів, поділена на тривалість запису. Вашу швидкість друку встановлено на {n} wpm.",
+"wait after stopping": "очікування після зупинки",
+"slowest 5%: {s}": "найповільніші 5%: {s}",
+"Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).": "Медіанний час від зупинки диктування до вставлення тексту. Розпізнавання мовлення {a}, очищення ШІ {b} (медіани).",
+"changed by AI cleanup": "змінено очищенням ШІ",
+"{n} failed": "невдало: {n}",
+"of {n} cleaned": "із {n} очищених",
+"Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.": "Серед диктувань, до яких застосовано очищення ШІ, частка тих, де воно справді змінило текст. «Невдало» означає, що виклик очищення завершився помилкою і було вставлено неочищений текст.",
+"Languages": "Мови",
+"{p}% of dictations": "{p}% диктувань",
+"Languages you dictated in this period, by number of dictations.": "Мови, якими ви диктували за цей період, за кількістю диктувань.",
+"words per dictation": "слів на диктування",
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Середня довжина диктування. Сітка показує, коли ви диктуєте: дні тижня зверху вниз, години зліва направо — що темніше, то активніше."
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",
