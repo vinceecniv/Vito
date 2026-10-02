@@ -164,6 +164,7 @@ func stats(now time.Time, wpm float64, from, today time.Time, days int, buckets 
 		st.AvgWords = float64(words) / float64(act)
 	}
 	st.Insights = insights(now, from, today)
+	st.Calendar = calendar(now)
 
 	st.SeriesUnit = unit
 	peak := -1
@@ -365,24 +366,13 @@ func Transcript() []struct{ Raw, Cleaned string } {
 	return out
 }
 
-// insights fabricates the per-dictation figures for from..today: office hours
-// on weekdays, a little in the evening, mostly Dutch with some English, and
-// timings in the range a cloud setup actually shows.
+// insights fabricates the per-dictation figures for from..today: mostly Dutch
+// with some English, and timings in the range a cloud setup actually shows.
 func insights(now, from, today time.Time) history.Insights {
 	var in history.Insights
 	for d := from; !d.After(today); d = d.AddDate(0, 0, 1) {
 		_, _, a, _, _, _ := day(now, d)
-		wd := (int(d.Weekday()) + 6) % 7
-		ds := d.Format("2006-01-02")
-		for i := 0; i < a; i++ {
-			h := dayHash(ds, uint32(100+i))
-			hour := 8 + int(h%10)
-			if h%9 == 0 {
-				hour = 19 + int(h%4)
-			}
-			in.Heatmap[wd][hour]++
-			in.Dictations++
-		}
+		in.Dictations += a
 	}
 	if in.Dictations == 0 {
 		return in
@@ -395,4 +385,16 @@ func insights(now, from, today time.Time) history.Insights {
 	nl := in.Dictations * 70 / 100
 	in.Languages = []history.LangCount{{Code: "nl", Count: nl}, {Code: "en", Count: in.Dictations - nl}}
 	return in
+}
+
+// calendar mirrors history.Store.Calendar over the fabricated days.
+func calendar(now time.Time) history.Calendar {
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	start := today.AddDate(0, 0, -((int(today.Weekday())+6)%7)-7*(history.CalendarWeeks-1))
+	cal := history.Calendar{Start: start.Format("2006-01-02")}
+	for d := start; !d.After(today); d = d.AddDate(0, 0, 1) {
+		w, _, _, _, _, _ := day(now, d)
+		cal.Words = append(cal.Words, w)
+	}
+	return cal
 }

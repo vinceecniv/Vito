@@ -276,7 +276,7 @@ func TestInsights(t *testing.T) {
 	}
 	defer s.Close()
 
-	// A Wednesday, 10:00 local.
+	// One day, 10:00 local.
 	at := time.Date(2026, 9, 30, 10, 0, 0, 0, time.Local)
 	add := func(e Entry) {
 		e.Timestamp = at
@@ -302,11 +302,37 @@ func TestInsights(t *testing.T) {
 	if len(in.Languages) != 2 || in.Languages[0] != (LangCount{"nl", 2}) {
 		t.Fatalf("languages: %+v", in.Languages)
 	}
-	if in.Heatmap[2][10] != 3 {
-		t.Fatalf("heatmap Wednesday 10:00 = %d, want 3", in.Heatmap[2][10])
-	}
 	// The day after holds nothing.
 	if in, _ := s.Insights(day.AddDate(0, 0, 1), day.AddDate(0, 0, 1)); in.Dictations != 0 {
 		t.Fatalf("next day: %d dictations", in.Dictations)
+	}
+}
+
+func TestCalendar(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("AppData", dir)
+	t.Setenv("XDG_CONFIG_HOME", dir)
+	t.Setenv("HOME", dir)
+
+	s, err := NewStore(500, 0)
+	if err != nil {
+		t.Fatalf("NewStore: %v", err)
+	}
+	defer s.Close()
+
+	now := time.Date(2026, 10, 2, 15, 0, 0, 0, time.Local) // a Friday
+	if err := s.Append(Entry{Timestamp: now.Add(-24 * time.Hour), Raw: "een twee drie", Cleaned: "een twee drie"}); err != nil {
+		t.Fatalf("Append: %v", err)
+	}
+	cal, err := s.Calendar(now)
+	if err != nil {
+		t.Fatalf("Calendar: %v", err)
+	}
+	// 25 whole weeks before this one, plus Monday to Friday of this week.
+	if cal.Start != "2026-04-06" || len(cal.Words) != 25*7+5 {
+		t.Fatalf("start %s, %d days", cal.Start, len(cal.Words))
+	}
+	if got := cal.Words[len(cal.Words)-2]; got != 3 {
+		t.Fatalf("yesterday: %d words, want 3", got)
 	}
 }

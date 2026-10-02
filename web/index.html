@@ -457,7 +457,11 @@
   .lang-legend b { display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:4px; vertical-align:0; }
   /* Rhythm: twice as wide, so the week-by-hour grid has room. */
   .statgrid > .rhythm-card { grid-column:span 2; }
-  .heat { display:grid; grid-template-columns:repeat(24, 1fr); gap:2px; margin-top:12px; }
+  .rhythm-head { display:flex; align-items:center; gap:10px; }
+  .rhythm-head .chip { margin-bottom:0; flex:none; }
+  .rhythm-head .num { font-size:24px; }
+  .rhythm-head .lbl { margin-top:0; }
+  .heat { display:grid; grid-template-rows:repeat(7, 1fr); grid-auto-flow:column; grid-auto-columns:1fr; gap:2px; margin-top:12px; }
   .heat i { display:block; aspect-ratio:1; border-radius:2px; background:var(--track); }
   .heat i.on { background:var(--violet); }
   :root[data-theme="dark"] .heat i.on { background:var(--violet-l); }
@@ -2028,7 +2032,7 @@ const TR = { nl: {
   "{p}% of dictations":"{p}% van de dictaten",
   "Languages you dictated in this period, by number of dictations.":"De talen waarin je in deze periode dicteerde, naar aantal dictaten.",
   "words per dictation":"woorden per dictaat",
-  "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.":"De gemiddelde lengte van een dictaat. Het raster laat zien wanneer je dicteert: weekdagen van boven naar beneden, uren van links naar rechts — hoe donkerder, hoe drukker.",
+  "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.":"De gemiddelde lengte van een dictaat. Het raster toont de laatste 26 weken, een vakje per dag van maandag tot zondag — hoe donkerder, hoe meer woorden.",
   "Earned today":"Vandaag behaald",
   "Unlocked today":"Vandaag behaald",
   "{n} new today":"{n} nieuw vandaag",
@@ -5847,20 +5851,26 @@ function langCardHTML(ins){
 }
 // Words per dictation as the figure, with a week-by-hour grid of when you
 // dictate underneath. Each cell names its day and hour on hover.
-function rhythmCardHTML(st, ins){
+// Words per dictation in a one-line head, and under it a calendar of the last
+// half year: a column per week, Monday at the top, a square per day shaded by
+// the words dictated. It always ends today, whatever the period — the permanent
+// day sums fill it, so it shows streaks and days off rather than one busy week.
+// The shading follows the square root, so a quiet day still shows next to a
+// record one.
+function rhythmCardHTML(st){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16M13 4v16"/></svg>';
   const avg = st.avg_words ? Math.round(st.avg_words).toLocaleString(numLoc()) : "–";
-  const heat = ins.heatmap || [];
-  const max = Math.max(0, ...heat.flat());
-  const wd = dateFmt({ weekday:"long" });
-  let cells = "";
-  for (let d = 0; d < 7; d++) for (let h = 0; h < 24; h++) {
-    const n = (heat[d] || [])[h] || 0;
-    const name = wd.format(new Date(2024, 0, 1 + d)); // 1 Jan 2024 was a Monday
-    cells += `<i${n ? ` style="opacity:${(0.18 + 0.82 * n / max).toFixed(2)}" class="on"` : ""} title="${ahEsc(name)} ${h}:00 · ${n}"></i>`;
-  }
-  return `<div class="chip violet">${icon}</div><div class="num">${avg}</div><div class="lbl">${t("words per dictation")}</div>` +
-    `<div class="heat">${cells}</div>`;
+  const cal = st.calendar || {}, words = cal.words || [];
+  const start = cal.start ? parseYmd(cal.start) : new Date();
+  const max = Math.max(0, ...words);
+  const df = dateFmt({ weekday:"short", day:"numeric", month:"short" });
+  const cells = words.map((n, i) => {
+    const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+    const tip = `${df.format(d)} · ${n.toLocaleString(numLoc())} ${t("words dictated")}`;
+    return `<i${n ? ` class="on" style="opacity:${(0.25 + 0.75 * Math.sqrt(n / max)).toFixed(2)}"` : ""} title="${ahEsc(tip)}"></i>`;
+  }).join("");
+  return `<div class="rhythm-head"><div class="chip violet">${icon}</div><div class="num">${avg}</div>` +
+    `<div class="lbl">${t("words per dictation")}</div></div><div class="heat">${cells}</div>`;
 }
 // A small area chart for a stat card: the line in the brand gradient (coral to
 // violet) and the area under it fading from the card's own colour to nothing. It
@@ -6251,8 +6261,8 @@ async function loadStats(){
       tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
     { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
       t("Languages you dictated in this period, by number of dictations.")) },
-    { key:"rhythm", custom:true, cardClass:"rhythm-card", html:() => rhythmCardHTML(st, ins), wire:el => setCardTip(el,
-      t("The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.")) },
+    { key:"rhythm", custom:true, cardClass:"rhythm-card", html:() => rhythmCardHTML(st), wire:el => setCardTip(el,
+      t("The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.")) },
     // A compact medal counter that opens the full Achievements page.
     { key:"achievements", custom:true, cardClass:"ach-mini", html:achMiniCardHTML, wire:wireAchMiniCard },
     // Not a statistic, but it lives in the same row: which version you run, and

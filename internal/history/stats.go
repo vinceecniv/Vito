@@ -57,6 +57,9 @@ type Stats struct {
 	// Insights need the individual dictations, so they reach back only as far
 	// as the history does.
 	Insights Insights `json:"insights"`
+	// Calendar is the last CalendarWeeks weeks of words per day, for the
+	// heatmap; it ends today regardless of the period.
+	Calendar Calendar `json:"calendar"`
 }
 
 // Stats computes the summary over the last `days` calendar days (0 = all time)
@@ -170,6 +173,9 @@ func (s *Store) stats(wpm float64, from, anchor time.Time, buckets func(firstDay
 		st.AvgWords = float64(words) / float64(act)
 	}
 	if st.Insights, err = s.Insights(from, anchor); err != nil {
+		return Stats{}, err
+	}
+	if st.Calendar, err = s.Calendar(time.Now().In(loc)); err != nil {
 		return Stats{}, err
 	}
 

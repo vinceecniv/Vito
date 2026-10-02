@@ -8,7 +8,7 @@ import (
 
 // Insights are the statistics that need the individual dictations rather than
 // the per-day sums: how long you wait for the text, what the cleanup does to
-// it, which languages you dictate in, and when. They come from the history
+// it, and which languages you dictate in. They come from the history
 // rows, so they reach back only as far as the history does (the row cap keeps
 // at least the last three months), and privacy-mode dictations, which leave no
 // row, are not in them.
@@ -27,9 +27,6 @@ type Insights struct {
 	CleanupFailed  int `json:"cleanup_failed"`  // ... or tried and failed
 
 	Languages []LangCount `json:"languages"` // most used first
-
-	// Heatmap[weekday][hour] counts dictations; weekday 0 is Monday.
-	Heatmap [7][24]int `json:"heatmap"`
 }
 
 // LangCount is how many dictations were in one language.
@@ -89,8 +86,6 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 		if lang = strings.ToLower(strings.TrimSpace(lang)); lang != "" && lang != "auto" {
 			langs[lang]++
 		}
-		t := time.UnixMilli(ts).In(to.Location())
-		in.Heatmap[(int(t.Weekday())+6)%7][t.Hour()]++
 	}
 	if err := rows.Err(); err != nil {
 		return Insights{}, err
@@ -110,6 +105,47 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 		return in.Languages[i].Code < in.Languages[j].Code
 	})
 	return in, nil
+}
+
+// CalendarWeeks is how far back the calendar heatmap reaches.
+const CalendarWeeks = 26
+
+// Calendar is words per day for the calendar heatmap: Words[i] belongs to
+// Start plus i days. It always ends today, whatever period the rest of the
+// page shows — a heatmap of one week would be a single column.
+type Calendar struct {
+	Start string `json:"start"` // yyyy-mm-dd, a Monday
+	Words []int  `json:"words"`
+}
+
+// Calendar reads the words per day from the permanent day sums, from the
+// Monday CalendarWeeks-1 weeks before today's week up to today.
+func (s *Store) Calendar(now time.Time) (Calendar, error) {
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	start := today.AddDate(0, 0, -((int(today.Weekday())+6)%7)-7*(CalendarWeeks-1))
+	cal := Calendar{Start: start.Format("2006-01-02"), Words: make([]int, daysBetween(start, today)+1)}
+
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	rows, err := s.db.Query(`SELECT day, words FROM day_stats WHERE day >= ? AND day <= ?`,
+		cal.Start, today.Format("2006-01-02"))
+	if err != nil {
+		return cal, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var day string
+		var words int
+		if err := rows.Scan(&day, &words); err != nil {
+			return cal, err
+		}
+		if d, err := time.ParseInLocation("2006-01-02", day, now.Location()); err == nil {
+			if i := daysBetween(start, d); i >= 0 && i < len(cal.Words) {
+				cal.Words[i] = words
+			}
+		}
+	}
+	return cal, rows.Err()
 }
 
 // percentile returns the p-th percentile (nearest rank) of v, 0 for none. It
