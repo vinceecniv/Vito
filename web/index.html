@@ -737,7 +737,16 @@
     section.active #ach-content .reveal { animation-duration:.4s; animation-delay:calc(var(--i,0) * 24ms); }
   }
   /* Compact status card: earned count with a trophy, tappable to the full page. */
-  .card.stat.ach-mini { cursor:pointer; }
+  .card.stat.ach-mini { cursor:pointer; position:relative; }
+  .ach-mini-medals { position:absolute; top:12px; right:12px; display:flex; }
+  .ach-mini-medal { width:30px; height:30px; margin-left:-8px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    font-size:16px; line-height:1; overflow:hidden; box-shadow:0 0 0 2px var(--card);
+    background:linear-gradient(135deg, color-mix(in srgb,var(--coral) 22%, var(--card)), color-mix(in srgb,var(--violet) 26%, var(--card))); }
+  .ach-mini-medal img, .ach-mini-medal svg { width:100%; height:100%; object-fit:contain; display:block; }
+  /* Earned today: a coral ring and a soft glow, until the date turns over. */
+  .ach.today, .ach.today.earned:hover { border-color:transparent; box-shadow:0 0 0 1.6px var(--coral), 0 8px 22px var(--coral-soft); }
+  .ach.today .ach-date { color:var(--coral); }
+  .ach-group-head.ach-today-head { color:var(--coral); }
   .card.stat.ach-mini:hover { border-color:color-mix(in srgb,var(--violet) 35%, var(--card-border)); }
   /* Celebration toast: a bigger, warmer variant of the normal toast. */
   .toast.ach-pop { display:flex; align-items:center; gap:12px; background:linear-gradient(135deg,var(--violet),var(--coral)); color:#fff; padding:13px 18px; }
@@ -1984,6 +1993,9 @@ const TR = { nl: {
   "{a} of {b} unlocked":"{a} van {b} behaald",
   "achievements":"prestaties",
   "of {n} unlocked":"van {n} behaald",
+  "Earned today":"Vandaag behaald",
+  "Unlocked today":"Vandaag behaald",
+  "{n} new today":"{n} nieuw vandaag",
   "View all your achievements":"Bekijk al je prestaties",
   "Couldn't load achievements.":"Prestaties konden niet worden geladen.",
   "Sound on — click to mute achievement chimes":"Geluid aan — klik om prestatiegeluiden te dempen",
@@ -5543,6 +5555,13 @@ function playAchSound(){
   if (!achSoundOn()) return;
   api("/api/play-sound?name=achievement", { method: "POST" }).catch(() => {});
 }
+// Earned on today's calendar date. Those stand out for the rest of the day —
+// on this page and on the status card — instead of only in the passing toast.
+function achToday(x){
+  if (!x.earned || !x.unlocked_at) return false;
+  const d = new Date(x.unlocked_at);
+  return !isNaN(d) && ymd(d) === ymd(new Date());
+}
 function achCardHTML(x, cur){
   const hidden = x.secret && !x.earned;
   const medalHTML = hidden ? "?" : achMedalInner(x);
@@ -5560,14 +5579,14 @@ function achCardHTML(x, cur){
         `<button class="ach-unclaim" data-claim="${x.id}" data-on="0">${t("Unmark")}</button>`
       : `<button class="ach-claim" data-claim="${x.id}" data-on="1">${ICON_CHECK_SM}<span>${t("I did this")}</span></button>`;
   } else if (x.earned) {
-    foot = `<div class="ach-date">${ICON_CHECK_SM}${whenTxt ? t("Unlocked {d}").replace("{d}", whenTxt) : t("Unlocked")}</div>`;
+    foot = `<div class="ach-date">${ICON_CHECK_SM}${achToday(x) ? t("Unlocked today") : whenTxt ? t("Unlocked {d}").replace("{d}", whenTxt) : t("Unlocked")}</div>`;
   } else if (!hidden && x.group !== "special" && x.threshold > 0) {
     const pct = Math.max(2, Math.min(100, Math.round(x.value / x.threshold * 100)));
     foot = `<div class="ach-prog"><div class="ach-bar"><i data-w="${pct}%"></i></div>` +
       `<div class="ach-prog-lbl">${achFmt(x.group, x.value, cur)} / ${achFmt(x.group, x.threshold, cur)}</div></div>`;
   }
   const cls = "ach" + (x.earned ? " earned" : " locked") + (hidden ? " secret" : "")
-    + (x.manual ? " support" : "") + (x.manual && x.earned ? " support-earned" : "");
+    + (x.manual ? " support" : "") + (x.manual && x.earned ? " support-earned" : "") + (achToday(x) ? " today" : "");
   const fresh = achFreshIds.has(x.id) ? `<span class="ach-fresh"></span>` : "";
   return `<div class="${cls}" data-id="${x.id}">${fresh}<div class="ach-medal">${medalHTML}</div>` +
     `<div class="ach-body"><div class="ach-name">${ahEsc(name)}</div><div class="ach-desc">${ahEsc(desc)}</div>${foot}</div></div>`;
@@ -5595,6 +5614,13 @@ function renderAchievements(a){
     `<span class="ach-progress-label">${t("{a} of {b} unlocked").replace("{a}", earned).replace("{b}", total)}</span>` +
     `<span class="ach-progress-pct" data-to="${pct}">0%</span></div>` +
     `<div class="ach-progress-bar"><i></i></div></div>`;
+  // Today's unlocks get a row of their own at the top; they also stay marked
+  // in their own group further down.
+  const today = a.achievements.filter(achToday);
+  if (today.length) {
+    html += `<div class="ach-group-head ach-today-head">${t("Earned today")}</div>` +
+      `<div class="ach-grid">${today.map(x => achCardHTML(x, cur)).join("")}</div>`;
+  }
   ACH_GROUP_ORDER.forEach(g => {
     const items = a.achievements.filter(x => x.group === g);
     if (!items.length) return;
@@ -5635,9 +5661,17 @@ function achMiniCardHTML(){
   const total = a ? a.achievements.length : 0;
   const earned = a ? a.achievements.filter(x => x.earned).length : 0;
   const dot = achFreshIds.size ? `<span class="ach-fresh"></span>` : "";
-  return `${dot}<div class="chip violet">${ICON_TROPHY}</div>` +
-    `<div class="num">${earned}</div><div class="lbl">${t("achievements")}</div>` +
-    `<div class="delta flat">${t("of {n} unlocked").replace("{n}", total)}</div>`;
+  // For the rest of the day the card shows what you earned today — the medals
+  // themselves in the corner, and the count in place of the usual sub-line.
+  const today = a ? a.achievements.filter(achToday) : [];
+  const medals = today.length
+    ? `<div class="ach-mini-medals">${today.slice(0, 3).map(x => `<span class="ach-mini-medal" title="${ahEsc(x.name)}">${achMedalInner(x)}</span>`).join("")}</div>`
+    : "";
+  const sub = today.length
+    ? `<div class="delta up">${t("{n} new today").replace("{n}", today.length)}</div>`
+    : `<div class="delta flat">${t("of {n} unlocked").replace("{n}", total)}</div>`;
+  return `${dot}${medals}<div class="chip violet">${ICON_TROPHY}</div>` +
+    `<div class="num">${earned}</div><div class="lbl">${t("achievements")}</div>` + sub;
 }
 function wireAchMiniCard(el){
   el.onclick = () => selectTab("achievements");
