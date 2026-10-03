@@ -831,7 +831,19 @@
 "Most used words": "Najčešće korištene riječi",
 "Chart in background": "Grafikon u pozadini",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Riječi koje ste u ovom razdoblju najviše diktirali — što veća riječ, to češće. Riječi od tri slova ili manje i uobičajene riječi poput „želim” ili „jer” izostavljene su.",
-"Vito character": "Vito lik"
+"Vito character": "Vito lik",
+"Main figure": "Glavni podatak",
+"days in a row": "dana zaredom",
+"New record!": "Novi rekord!",
+"Celebrate a new record": "Proslavi novi rekord",
+"1 day to go to your record": "Još 1 dan do vašeg rekorda",
+"{n} days to go to your record": "Još {n} dana do vašeg rekorda",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Broj dana zaredom u kojima ste diktirali. Do dva slobodna dana u bilo kojih sedam ne prekidaju niz, pa ga vikend ne prekida.",
+"Recent dictations": "Nedavna diktiranja",
+"vs previous period": "u odnosu na prethodno razdoblje",
+"≈ {v} by the end of the month": "≈ {v} do kraja mjeseca",
+"Animation when there's an update": "Animacija kad postoji ažuriranje"
 },
 "help": {
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetlu/tamnu postavku vašeg sustava.",

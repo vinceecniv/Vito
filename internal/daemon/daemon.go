@@ -61,6 +61,10 @@ type Status struct {
 	Credit []string `json:"credit,omitempty"`
 	// Command is the armed one-off spoken command, or "" when none is pending.
 	Command string `json:"command,omitempty"`
+	// Boot identifies this run of the daemon (set by the server). The UI reloads
+	// only when it changes: a dropped connection to the same daemon just
+	// resyncs, so a sleeping laptop or a frozen tab doesn't cost the page.
+	Boot string `json:"boot,omitempty"`
 }
 
 // Event is broadcast to the web UI over WebSocket via the OnEvent callback.

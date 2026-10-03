@@ -831,7 +831,19 @@
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Les paraules que més has dictat en aquest període: com més grans, més sovint. Les paraules de tres lletres o menys i les paraules habituals com «voler» o «perquè» no es compten.",
 "Vito character": "Personatge de Vito",
 "Dashboard": "Tauler de control",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Fes clic al botó 'Finestra separada' del tauler de control per mostrar la transcripció a part."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Fes clic al botó 'Finestra separada' del tauler de control per mostrar la transcripció a part.",
+"Main figure": "Xifra principal",
+"days in a row": "dies seguits",
+"New record!": "Nou rècord!",
+"Celebrate a new record": "Celebra un nou rècord",
+"1 day to go to your record": "Falta 1 dia per al teu rècord",
+"{n} days to go to your record": "Falten {n} dies per al teu rècord",
+"record: {n}": "rècord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Els dies seguits que has dictat. Fins a dos dies de descans cada set mantenen la ratxa, així que un cap de setmana no la trenca.",
+"Recent dictations": "Dictats recents",
+"vs previous period": "respecte al període anterior",
+"≈ {v} by the end of the month": "≈ {v} a final de mes",
+"Animation when there's an update": "Animació quan hi ha una actualització"
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

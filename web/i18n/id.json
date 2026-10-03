@@ -831,7 +831,19 @@
 "Most used words": "Kata paling sering dipakai",
 "Chart in background": "Grafik di latar belakang",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Kata yang paling sering Anda dikte dalam periode ini — makin besar, makin sering. Kata dengan tiga huruf atau kurang dan kata umum seperti ‘ingin’ atau ‘karena’ tidak disertakan.",
-"Vito character": "Karakter kartun Vito"
+"Vito character": "Karakter kartun Vito",
+"Main figure": "Angka utama",
+"days in a row": "hari berturut-turut",
+"New record!": "Rekor baru!",
+"Celebrate a new record": "Rayakan rekor baru",
+"1 day to go to your record": "1 hari lagi menuju rekormu",
+"{n} days to go to your record": "{n} hari lagi menuju rekormu",
+"record: {n}": "rekor: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Jumlah hari berturut-turut kamu mendikte. Libur hingga dua hari dalam tujuh hari tidak memutus rentetan, jadi akhir pekan tidak merusaknya.",
+"Recent dictations": "Dikte terbaru",
+"vs previous period": "dibanding periode sebelumnya",
+"≈ {v} by the end of the month": "≈ {v} pada akhir bulan",
+"Animation when there's an update": "Animasi saat ada pembaruan"
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",

@@ -1,5 +1,17 @@
 {
 "strings": {
+"Main figure": "Головний показник",
+"days in a row": "днів поспіль",
+"New record!": "Новий рекорд!",
+"Celebrate a new record": "Святкувати новий рекорд",
+"1 day to go to your record": "Ще 1 день до вашого рекорду",
+"{n} days to go to your record": "Ще {n} дні до вашого рекорду",
+"record: {n}": "рекорд: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Кількість днів поспіль, коли ви диктували. До двох вихідних на будь-які сім днів серію не перериває, тож вихідні її не зламають.",
+"Recent dictations": "Останні диктування",
+"vs previous period": "порівняно з попереднім періодом",
+"≈ {v} by the end of the month": "≈ {v} до кінця місяця",
+"Animation when there's an update": "Анімація, коли є оновлення",
 "Most used words": "Найуживаніші слова",
 "Chart in background": "Діаграма на тлі",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Слова, які ви найчастіше диктували за цей період — чим більше слово, тим частіше воно траплялося. Слова з трьох літер і менше та поширені слова на кшталт «хочу» чи «тому що» не враховуються.",

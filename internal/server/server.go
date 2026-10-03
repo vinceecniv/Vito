@@ -386,8 +386,11 @@ func (s *Server) handleWS(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
+	// Both names of this machine: opened as localhost, the page used to have its
+	// event stream refused while every HTTP call worked, and fell into a loop
+	// of reconnecting.
 	c, err := websocket.Accept(w, r, &websocket.AcceptOptions{
-		OriginPatterns: []string{fmt.Sprintf("127.0.0.1:%d", s.port)},
+		OriginPatterns: []string{fmt.Sprintf("127.0.0.1:%d", s.port), fmt.Sprintf("localhost:%d", s.port)},
 	})
 	if err != nil {
 		s.log.Debug("ws accept failed", "err", err)
@@ -428,6 +431,9 @@ func (s *Server) action(fn func() error) http.HandlerFunc {
 	}
 }
 
+// bootID is fixed when the process starts; see daemon.Status.Boot.
+var bootID = strconv.FormatInt(time.Now().UnixNano(), 36)
+
 func (s *Server) handleStatus(w http.ResponseWriter, r *http.Request) {
 	st := s.d.Status()
 	// The last recording may since have been pruned, deleted with its entry or
@@ -438,6 +444,7 @@ func (s *Server) handleStatus(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	st.Credit = s.d.CreditOut() // providers currently out of credit, for the UI card
+	st.Boot = bootID
 	s.writeJSON(w, http.StatusOK, st)
 }
 

@@ -831,7 +831,19 @@
 "Most used words": "Ən çox işlədilən sözlər",
 "Chart in background": "Arxa planda qrafik",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Bu dövrdə ən çox diktə etdiyiniz sözlər — söz nə qədər böyükdürsə, bir o qədər tez-tez işlədilib. Üç hərfli və ya daha qısa sözlər, həmçinin “istəyirəm” və ya “çünki” kimi geniş yayılmış sözlər daxil edilmir.",
-"Vito character": "Vito personajı"
+"Vito character": "Vito personajı",
+"Main figure": "Əsas göstərici",
+"days in a row": "gün ardıcıl",
+"New record!": "Yeni rekord!",
+"Celebrate a new record": "Yeni rekordu qeyd et",
+"1 day to go to your record": "Rekorda 1 gün qalıb",
+"{n} days to go to your record": "Rekorda {n} gün qalıb",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Ardıcıl diktə etdiyiniz günlər. Hər yeddi gündə ən çox iki istirahət günü seriyanı davam etdirir, belə ki, həftə sonu onu pozmur.",
+"Recent dictations": "Son diktələr",
+"vs previous period": "əvvəlki dövrlə müqayisədə",
+"≈ {v} by the end of the month": "ay sonunadək ≈ {v}",
+"Animation when there's an update": "Yeniləmə olduqda animasiya"
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

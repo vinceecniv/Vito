@@ -370,6 +370,13 @@
   .card-menu-btn:hover { color:var(--text); border-color:var(--accent); }
   .card-menu-btn svg { width:14px; height:14px; }
   .statgrid.dragging .card-menu-btn { display:none; }
+  /* Without hover (a touchscreen) the menu buttons can't appear on pointing,
+     so they stay visible, and a card's period label moves aside for them. */
+  @media (hover:none) {
+    .card-menu-btn { opacity:1; }
+    .card-scope { right:38px; }
+    .statgrid > .card:hover > .card-scope { opacity:1; }
+  }
   .statgrid > .card .h2-btns, .statgrid #chart-sub { margin-right:20px; }
   .card-menu { position:fixed; z-index:1001; min-width:190px; padding:4px; background:var(--card); border:1px solid var(--card-border);
     border-radius:10px; box-shadow:0 10px 30px rgba(20,10,40,.2); }
@@ -1252,7 +1259,9 @@
      buttons take the right-hand side. */
   .card.stat.mascot-card { display:flex; align-items:stretch; gap:12px; padding:12px 14px; min-height:190px; overflow:hidden;
     background:transparent; border-color:transparent; box-shadow:none; backdrop-filter:none; }
-  .mascot-card .vm-slot { flex:1 1 0; min-width:0; cursor:var(--cur-hand); }
+  /* A fixed height: left to the width, Vito grew with the card (nearly 600px
+     tall at three cells). */
+  .mascot-card .vm-slot { flex:1 1 0; min-width:0; height:170px; align-self:center; cursor:var(--cur-hand); }
   .mascot-card .vm-dev { flex:0 1 48%; display:flex; flex-wrap:wrap; gap:4px; align-content:center; justify-content:flex-start; }
   .mascot-card .vm-dev button { font-family:inherit; font-size:10.5px; font-weight:600; line-height:1; padding:4px 7px; border-radius:7px; border:1px dashed var(--card-border); background:transparent; color:var(--text2); cursor:var(--cur-hand); }
   .mascot-card .vm-dev button:hover { color:var(--text); border-style:solid; }
@@ -3145,7 +3154,26 @@ function setDaemonUp(up){
     // connected this session). A deliberate close mid-session offers the choice.
     if (was && !autoStartTried && !everConnected && canLaunch()) { autoStartTried = true; launchDaemon(); }
   } // down + dismissed: leave the overlay as closeVito() set it
-  if (up && was === false) location.reload(); // recovered → load fresh state
+  if (up && was === false) daemonCameBack();
+}
+// Which run of the daemon this page was loaded from (/api/status → boot).
+// Coming back after an outage, the page reloads only if the daemon really
+// restarted (a new run may also have a new token); the same daemon after a
+// dropped connection — a laptop waking up, a frozen tab — just has its state
+// fetched again, and the open section, scroll position and transcript stay.
+let bootId = null;
+async function daemonCameBack(){
+  let s;
+  // Unreachable again: the offline screen is back and will retry. Any other
+  // failure (a token the new run doesn't know) needs the page reloaded.
+  try { s = await api("/api/status"); }
+  catch (e) { if (daemonUp) location.reload(); return; }
+  if (s.boot && bootId && s.boot !== bootId) { location.reload(); return; }
+  if (s.boot) bootId = s.boot;
+  uiState = s.state; setState(s.state);
+  creditState = Array.isArray(s.credit) ? s.credit : creditState;
+  setActiveCommand(s.command || "");
+  loadStats();
 }
 async function pingDaemon(){
   try { const r = await fetch("/api/status", { headers:{ Authorization:"Bearer "+TOKEN } }); if (r.ok || r.status === 401) { setDaemonUp(true); return true; } }
@@ -4021,9 +4049,19 @@ function renderTimings(tm){
   updateLatencyTip();
 }
 
+// The live connection. A drop shows the offline screen only after it has lasted
+// a few seconds (a blip is no outage), reconnects back off up to 10 s, and a
+// reconnect after a blip resyncs, since events may have been missed meanwhile.
+let wsBackoff = 1000, wsDownTimer = null, wsEverOpen = false;
 function connectWS() {
   const ws = new WebSocket(`ws://${location.host}/ws?token=${TOKEN}`);
-  ws.onopen = () => setDaemonUp(true);
+  ws.onopen = () => {
+    wsBackoff = 1000;
+    clearTimeout(wsDownTimer); wsDownTimer = null;
+    const again = wsEverOpen; wsEverOpen = true;
+    if (!daemonUp) setDaemonUp(true);  // came back from a real outage: daemonCameBack runs
+    else if (again) daemonCameBack();  // a blip: catch up on what was missed
+  };
   ws.onmessage = (m) => {
     const e = JSON.parse(m.data);
     if (e.type === "state") {
@@ -4128,6 +4166,7 @@ function connectWS() {
     } else if (e.type === "pip") {
       togglePip(true); // requested from the tray
     } else if (e.type === "config") {
+      statsHistoryChanged(); // demo mode may have flipped: other data entirely
       loadSettings().catch(()=>{});
     } else if (e.type === "privacy") {
       loadPrivacy();
@@ -4145,7 +4184,11 @@ function connectWS() {
       }
     }
   };
-  ws.onclose = () => { setDaemonUp(false); setTimeout(connectWS, 2000); };
+  ws.onclose = () => {
+    if (!wsDownTimer && daemonUp) wsDownTimer = setTimeout(() => { wsDownTimer = null; setDaemonUp(false); }, 3000);
+    setTimeout(connectWS, wsBackoff);
+    wsBackoff = Math.min(wsBackoff * 2, 10000);
+  };
 }
 connectWS();
 
@@ -4499,6 +4542,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif}
 .pip-state.recording{background:var(--pcoral);animation:pulse 1s infinite}
 .pip-state.processing{background:var(--pviolet)}
 @keyframes pulse{50%{opacity:.35}}
+.pip-tip{position:fixed;z-index:20;max-width:220px;padding:6px 9px;border-radius:8px;font-size:11.5px;line-height:1.35;pointer-events:none;
+  background:var(--pcard);color:var(--ptext);border:1px solid var(--pborder);box-shadow:0 8px 22px rgba(0,0,0,.28);opacity:0;transition:opacity .12s}
+.pip-tip.show{opacity:1}
 .pip-icobtn{width:28px;height:28px;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--pborder);border-radius:7px;background:none;color:var(--ptext3);cursor:var(--cur-hand)}
 .pip-icobtn:hover{color:var(--pviolet);border-color:var(--pviolet)}
 .pip-icobtn.active{color:#fff;background:var(--pviolet);border-color:var(--pviolet)}
@@ -4726,6 +4772,27 @@ async function togglePip(fromTray){
   d.getElementById("pip-mascot").appendChild(makeMascot(d));
   d.getElementById("pip-mascot").hidden = !pipMascot;
   // Wire the PiP controls (handlers run in this page's context).
+  // The window's buttons get the same kind of tip as the main page, instead of
+  // the browser's grey one.
+  (function pipTips(){
+    const tip = d.createElement("div"); tip.className = "pip-tip"; d.body.appendChild(tip);
+    let timer = null;
+    d.addEventListener("mouseover", (e) => {
+      const el = e.target.closest && e.target.closest("[title], [data-tip-text]");
+      if (!el) return;
+      if (el.title) { el.dataset.tipText = el.title; if (!el.hasAttribute("aria-label")) el.setAttribute("aria-label", el.title); el.removeAttribute("title"); }
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        tip.textContent = el.dataset.tipText; tip.classList.add("show");
+        const r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight, W = d.documentElement.clientWidth;
+        tip.style.left = Math.max(6, Math.min(r.left + r.width / 2 - w / 2, W - w - 6)) + "px";
+        tip.style.top = (r.bottom + 6 + h <= d.documentElement.clientHeight ? r.bottom + 6 : r.top - h - 6) + "px";
+      }, 400);
+    });
+    d.addEventListener("mouseout", (e) => {
+      if (e.target.closest && e.target.closest("[data-tip-text]")) { clearTimeout(timer); tip.classList.remove("show"); }
+    });
+  })();
   d.getElementById("pip-toggle").onclick = () => api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
   d.getElementById("pip-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
   d.getElementById("pip-copy").onclick = async (ev) => { if (await copyTranscript(pipWin)) { flashCopied(ev.currentTarget, "copied"); pipToast("✓ " + t("Copied to clipboard")); } };
@@ -6095,11 +6162,13 @@ function resetLayout(){
 // One floating menu at a time, under the button that opened it (or above it
 // when there's no room), closed by any click elsewhere or Escape.
 let cardMenu = null;
-function closeCardMenu(){
+function closeCardMenu(refocus){
   if (!cardMenu) return;
-  cardMenu.opener.setAttribute("aria-expanded", "false");
+  const opener = cardMenu.opener;
+  opener.setAttribute("aria-expanded", "false");
   cardMenu.el.remove();
   cardMenu = null;
+  if (refocus) opener.focus();
 }
 function openCardMenu(opener, items, cls){
   const again = cardMenu && cardMenu.opener === opener;
@@ -6131,7 +6200,7 @@ function openCardMenu(opener, items, cls){
     b.setAttribute("role", "menuitem");
     if (it.sel) b.classList.add("sel");
     b.innerHTML = (it.icon || "") + (it.meta ? `<span class="meta">${ahEsc(it.meta)}</span>` : "") + `<span>${ahEsc(it.label)}</span>`;
-    b.onclick = (e) => { e.stopPropagation(); closeCardMenu(); it.run(); };
+    b.onclick = (e) => { e.stopPropagation(); closeCardMenu(e.detail === 0); it.run(); };
     el.appendChild(b);
   });
   document.body.appendChild(el);
@@ -6142,9 +6211,22 @@ function openCardMenu(opener, items, cls){
   Object.assign(el.style, { left: left + "px", top: top + "px" });
   opener.setAttribute("aria-expanded", "true");
   cardMenu = { el, opener };
+  // Keyboard: the menu takes focus; arrows, Home and End move through its
+  // buttons; Escape or Tab closes it and hands focus back to its button.
+  const btns = () => [...el.querySelectorAll("button")];
+  el.addEventListener("keydown", (e) => {
+    const list = btns(), i = list.indexOf(document.activeElement);
+    const go = (n) => { e.preventDefault(); list[(n + list.length) % list.length]?.focus(); };
+    if (e.key === "ArrowDown") go(i + 1);
+    else if (e.key === "ArrowUp") go(i - 1);
+    else if (e.key === "Home") go(0);
+    else if (e.key === "End") go(list.length - 1);
+    else if (e.key === "Escape" || e.key === "Tab") { e.preventDefault(); e.stopPropagation(); closeCardMenu(true); }
+  });
+  (el.querySelector("button.sel") || btns()[0])?.focus({ preventScroll: true });
 }
 document.addEventListener("click", (e) => { if (cardMenu && !cardMenu.el.contains(e.target)) closeCardMenu(); });
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCardMenu(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCardMenu(true); });
 // Under the grid, only while cards are hidden: an eye with the count, whose
 // menu brings each one back.
 function renderHiddenCards(){
@@ -6808,12 +6890,12 @@ function langCardHTML(ins){
   // figure and its name beneath, the rest only as colour in the bar. The
   // breakdown in words is in the card's tooltip (langBreakdown).
   return `<div class="chip coral">${icon}</div><div class="num">${pct(langs[0].count)}%</div>` +
-    `<div class="lbl lang-name">${ahEsc(langName(langs[0].code))}</div><div class="lang-bar">${seg}</div>`;
+    `<div class="lbl lang-name">${ahEsc(langShortName(langs[0].code))}</div><div class="lang-bar">${seg}</div>`;
 }
 // Every language and its share, for the languages card's tooltip.
 function langBreakdown(ins){
   const langs = ins.languages || [], total = langs.reduce((s, l) => s + l.count, 0);
-  return total ? langs.map(l => `${langName(l.code)} ${Math.round(l.count / total * 100)}%`).join(" · ") : "";
+  return total ? langs.map(l => `${langShortName(l.code)} ${Math.round(l.count / total * 100)}%`).join(" · ") : "";
 }
 // Words per dictation in a one-line head, and under it a calendar of the last
 // half year: a column per week, Monday at the top, a square per day shaded by
@@ -7258,10 +7340,13 @@ function fmtMoney(amount, cur, digits){
   catch { return (cur === "usd" ? "$" : "€") + amount.toFixed(digits); }
 }
 let lastCosts = null; // kept for the explanation popup (needs the exchange rate)
+let costsSeq = 0;
 async function loadCosts(){
   // The period travels with the request so the card can show what the window on
   // screen actually cost, next to the month-to-date figure people expect.
+  const seq = ++costsSeq;
   let c; try { c = await api("/api/costs?" + statPeriodQuery()); } catch { return; }
+  if (seq !== costsSeq) return;
   lastCosts = c;
   const cur = c.currency || "eur";
   $("cost-period-lbl").textContent = periodLabel();
@@ -7492,9 +7577,32 @@ async function compareWithPrevious(st){
 let weekCur = "eur";
 // What one bar covers, so the tooltip can name it properly.
 let chartUnit = "day";
-async function loadStats(){
+// loadStats is asked for from many places — every dictation (twice: the
+// result, then idle), a language or settings change, startup, the update
+// check — often several at once. The calls within 150 ms become one load, and
+// none happens while the dashboard isn't on screen: opening it loads anyway.
+// A sequence number drops a response overtaken by a newer request, so a slow
+// "all time" can't land under a quick "today" picked after it.
+let statsTimer = null, statsWaiters = [], statsSeq = 0;
+function loadStats(){
+  return new Promise(res => {
+    statsWaiters.push(res);
+    clearTimeout(statsTimer);
+    statsTimer = setTimeout(async () => {
+      const done = statsWaiters; statsWaiters = [];
+      if ($("tab-status").classList.contains("active")) await loadStatsNow();
+      done.forEach(f => f());
+    }, 150);
+  });
+}
+// The previous-period figures are cached (a past period doesn't change) —
+// until the history itself does.
+function statsHistoryChanged(){ prevStatsCache.clear(); }
+async function loadStatsNow(){
+  const seq = ++statsSeq;
   loadCosts();
   let st; try { st = await api("/api/stats?" + statPeriodQuery()); } catch { return; }
+  if (seq !== statsSeq) return;
   weekCur = st.currency || "eur";
   const I = {
     words:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/></svg>',
@@ -7855,7 +7963,11 @@ async function loadHotkey(){
 const ICON_KBD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>';
 const ICON_MIC2 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg>';
 function fmtHotkey(spec){ return (spec || "").split("+").map(p => p ? p[0].toUpperCase() + p.slice(1) : p).join(" + "); }
-function langName(code){
+// The plain name of a language in the interface language ("Nederlands"), for
+// the languages card and the status tag. (The pickers use langName, which adds
+// the language's own name; this one used to share that name and, declared
+// later, silently replaced it everywhere.)
+function langShortName(code){
   code = (code || "").split("-")[0];
   if (!code || code === "auto") return t("Auto");
   try { return new Intl.DisplayNames([uiLang || "en"], { type:"language" }).of(code) || code.toUpperCase(); }
@@ -7885,7 +7997,7 @@ function renderStatusTags(){
     : sm && sm.provider === "local" ? t("Vito local") + " · Parakeet" + (localStt && localStt.phase !== "running" ? " · " + localSttTag() : "")
     : sm ? sm.name : null;
   tags.push({ ico: ICON_MIC2, text: sttLabel || ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
-  tags.push({ raw: langIcon((cfg.stt && cfg.stt.language) || ""), text: langName(cfg.stt && cfg.stt.language), sec: "stt" });
+  tags.push({ raw: langIcon((cfg.stt && cfg.stt.language) || ""), text: langShortName(cfg.stt && cfg.stt.language), sec: "stt" });
   const cl = cfg.cleanup || {};
   if (!cl.enabled) tags.push({ ico: SPARK_SVG, text: t("Cleanup off"), sec: "cleanup", muted: true });
   else {
@@ -8977,7 +9089,7 @@ function historyEntryEl(e){
     let state = 0; // 0 pending, 1 committed, 2 undone
     const commit = () => {
       if (state) return; state = 1; hPendingDel.delete(commit);
-      api(`/api/history/${e.id}`, { method: "DELETE" }).then(() => { hPlayRows.delete(e.id); loadStats(); }).catch(er => toast(er.message, "err"));
+      api(`/api/history/${e.id}`, { method: "DELETE" }).then(() => { hPlayRows.delete(e.id); statsHistoryChanged(); loadStats(); }).catch(er => toast(er.message, "err"));
     };
     const undo = () => {
       if (state) return; state = 2; hPendingDel.delete(commit); clearTimeout(timer);
@@ -9087,7 +9199,7 @@ $("h-clear").onclick = async () => {
   const favNote = favs > 0 ? `<p style="color:var(--text3); font-size:12.5px; margin:8px 0 0;">${t("Your favorites are kept.")}</p>` : "";
   const m = modal(t("Clear history"),
     `<p style="color:var(--text2); font-size:13.5px; margin:0;">${toDelete} ${t("item(s) will be permanently deleted. Are you sure?")}</p>${favNote}`,
-    () => { api("/api/history", { method: "DELETE" }).then(loadHistory).then(loadStats).then(() => toast(t("History cleared"), "ok")).catch(er => toast(er.message, "err")); },
+    () => { api("/api/history", { method: "DELETE" }).then(() => { statsHistoryChanged(); return loadHistory(); }).then(loadStats).then(() => toast(t("History cleared"), "ok")).catch(er => toast(er.message, "err")); },
     "Clear all", true);
   m.querySelector("[data-ok]").insertAdjacentHTML("afterbegin", '<svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v5M14 11v5M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg> ');
 };
@@ -9232,13 +9344,32 @@ function uiZoom(){
 // Same tooltip, but with the text carried on the element — for tips that are
 // generated with their content (the stat cards) rather than keyed in HELP.
 function showTipText(target){
-  if (!helpTipsEnabled || !target.dataset.tipText) return;
+  if ((!helpTipsEnabled && !target.dataset.tipLabel) || !target.dataset.tipText) return;
   placeTip(helpTip(), target.dataset.tipText, target);
 }
 document.querySelectorAll("[data-help]").forEach(el => {
   el.addEventListener("mouseenter", () => { clearTimeout(helpTimer); helpTimer = setTimeout(() => showHelp(el), 500); });
   el.addEventListener("mouseleave", hideHelp);
 });
+// Any plain title attribute — written in the page, set by code, or put back
+// by a language switch — becomes the styled tip the moment it is pointed at,
+// so the browser's own grey tooltip never shows. (Captured before the
+// handler below, which then shows it.) These are names rather than help, so
+// they show even with help tips switched off; the name stays available to
+// screen readers as aria-label.
+document.addEventListener("mouseover", (e) => {
+  const el = e.target.closest && e.target.closest("[title]");
+  if (!el || !(el instanceof HTMLElement) || !el.title) return;
+  // A title set again (code, or a language switch) replaces the tip it became;
+  // the English source goes along, so the next language switch can translate
+  // the tip as it would have the title.
+  if (!el.dataset.tipText || el.dataset.tipLabel) {
+    el.dataset.tipText = el.title; el.dataset.tipLabel = "1";
+    if (el.dataset.i18nTitle !== undefined) el.dataset.i18nDataTipText = el.dataset.i18nTitle;
+  }
+  if (!el.hasAttribute("aria-label")) el.setAttribute("aria-label", el.title);
+  el.removeAttribute("title");
+}, true);
 // Delegated, and matching anything carrying a tip text: the stat cards are
 // re-rendered on every refresh, so per-element listeners would be lost.
 document.addEventListener("mouseover", (e) => {
@@ -9286,7 +9417,7 @@ $("s-zoom-reset").addEventListener("click", () => { applyZoom(1); try { localSto
 /* ---- init ---- */
 applyI18n(); // translate static UI for first paint (config refines it after load)
 applyStatusLayout();
-api("/api/status").then(s => { setState(s.state); setLastRecording(s.last_recording_id); creditState = Array.isArray(s.credit) ? s.credit : []; setActiveCommand(s.command || ""); applyStatusLayout(); }).catch(() => setState("idle"));
+api("/api/status").then(s => { bootId = s.boot || null; setState(s.state); setLastRecording(s.last_recording_id); creditState = Array.isArray(s.credit) ? s.credit : []; setActiveCommand(s.command || ""); applyStatusLayout(); }).catch(() => setState("idle"));
 loadSettings().catch(err => toast(t("Loading settings failed: ") + err.message, "err"));
 loadStats();
 loadPrivacy();

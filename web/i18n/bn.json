@@ -831,7 +831,19 @@
 "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "একটি ডিকটেশনের গড় দৈর্ঘ্য। গ্রিডটি দেখায় আপনি কখন ডিকটেশন দেন: উপর থেকে নিচে সপ্তাহের দিন, বাঁ থেকে ডানে ঘণ্টা — গাঢ় রঙ মানে বেশি ব্যস্ত।",
 "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "একটি ডিকটেশনের গড় দৈর্ঘ্য। গ্রিডে গত ২৬ সপ্তাহ দেখানো হয়েছে, সোমবার থেকে রবিবার পর্যন্ত প্রতিদিনের জন্য একটি করে ঘর — যত গাঢ়, তত বেশি শব্দ।",
 "Dashboard": "ড্যাশবোর্ড",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ট্রান্সক্রিপ্টটি আলাদা করে খুলতে ড্যাশবোর্ডে 'আলাদা উইন্ডো' বোতামে ক্লিক করুন।"
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ট্রান্সক্রিপ্টটি আলাদা করে খুলতে ড্যাশবোর্ডে 'আলাদা উইন্ডো' বোতামে ক্লিক করুন।",
+"Main figure": "প্রধান সংখ্যা",
+"days in a row": "টানা দিন",
+"New record!": "নতুন রেকর্ড!",
+"Celebrate a new record": "নতুন রেকর্ড উদযাপন করুন",
+"1 day to go to your record": "আপনার রেকর্ড ছুঁতে আর ১ দিন বাকি",
+"{n} days to go to your record": "আপনার রেকর্ড ছুঁতে আর {n} দিন বাকি",
+"record: {n}": "রেকর্ড: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "আপনি টানা যত দিন ডিকটেট করেছেন। প্রতি সাত দিনে দুই দিন পর্যন্ত বিরতি দিলেও ধারা চলতে থাকে, তাই সপ্তাহান্ত এটি ভাঙে না।",
+"Recent dictations": "সাম্প্রতিক ডিকটেশন",
+"vs previous period": "আগের সময়কালের তুলনায়",
+"≈ {v} by the end of the month": "মাস শেষে ≈ {v}",
+"Animation when there's an update": "আপডেট থাকলে অ্যানিমেশন"
 },
 "help": {
 "theme": "হালকা, গাঢ় বা স্বয়ংক্রিয় — স্বয়ংক্রিয় আপনার সিস্টেমের হালকা/গাঢ় সেটিং অনুসরণ করে।",

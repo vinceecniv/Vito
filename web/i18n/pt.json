@@ -831,7 +831,19 @@
 "Vito character": "Personagem do Vito",
 "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "A extensão média de um ditado. A grelha mostra as últimas 26 semanas, um quadrado por dia, de segunda a domingo — quanto mais escuro, mais palavras.",
 "Dashboard": "Painel",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Clique no botão 'Janela destacada' no Painel para destacar a transcrição."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Clique no botão 'Janela destacada' no Painel para destacar a transcrição.",
+"Main figure": "Valor principal",
+"days in a row": "dias seguidos",
+"New record!": "Novo recorde!",
+"Celebrate a new record": "Celebrar um novo recorde",
+"1 day to go to your record": "Falta 1 dia para o seu recorde",
+"{n} days to go to your record": "Faltam {n} dias para o seu recorde",
+"record: {n}": "recorde: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Os dias seguidos em que ditou. Até dois dias de pausa em cada sete mantêm a sequência, por isso um fim de semana não a interrompe.",
+"Recent dictations": "Ditados recentes",
+"vs previous period": "vs. período anterior",
+"≈ {v} by the end of the month": "≈ {v} até ao fim do mês",
+"Animation when there's an update": "Animação quando há uma atualização"
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",

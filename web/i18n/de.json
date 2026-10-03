@@ -1,5 +1,17 @@
 {
 "strings": {
+"Main figure": "Hauptzahl",
+"days in a row": "Tage in Folge",
+"New record!": "Neuer Rekord!",
+"Celebrate a new record": "Neuen Rekord feiern",
+"1 day to go to your record": "Noch 1 Tag bis zu deinem Rekord",
+"{n} days to go to your record": "Noch {n} Tage bis zu deinem Rekord",
+"record: {n}": "Rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Die Tage in Folge, an denen du diktiert hast. Bis zu zwei freie Tage pro sieben Tage unterbrechen die Serie nicht, ein Wochenende macht sie also nicht kaputt.",
+"Recent dictations": "Letzte Diktate",
+"vs previous period": "ggü. vorherigem Zeitraum",
+"≈ {v} by the end of the month": "≈ {v} bis Monatsende",
+"Animation when there's an update": "Animation bei einem Update",
 "wpm spoken": "wpm gesprochen",
 "How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Wie schnell du beim Diktieren sprichst: deine Wörter geteilt durch die Aufnahmedauer. Deine Tippgeschwindigkeit ist auf {n} wpm eingestellt.",
 "wait after stopping": "Wartezeit nach dem Stopp",

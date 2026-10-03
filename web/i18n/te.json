@@ -831,7 +831,19 @@
 "Vito character": "Vito పాత్ర (కార్టూన్ బొమ్మ)",
 "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ఒక డిక్టేషన్ సగటు నిడివి. గ్రిడ్ గత 26 వారాలను చూపుతుంది, సోమవారం నుండి ఆదివారం వరకు రోజుకు ఒక చతురస్రం — ముదురు రంగు అంటే ఎక్కువ పదాలు.",
 "Dashboard": "డాష్‌బోర్డ్",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ట్రాన్స్క్రిప్ట్‌ను బయటకు తీయడానికి డాష్‌బోర్డ్‌లోని 'వేరు విండో' బటన్‌ను నొక్కండి."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ట్రాన్స్క్రిప్ట్‌ను బయటకు తీయడానికి డాష్‌బోర్డ్‌లోని 'వేరు విండో' బటన్‌ను నొక్కండి.",
+"Main figure": "ప్రధాన సంఖ్య",
+"days in a row": "వరుస రోజులు",
+"New record!": "కొత్త రికార్డు!",
+"Celebrate a new record": "కొత్త రికార్డును జరుపుకో",
+"1 day to go to your record": "మీ రికార్డుకు 1 రోజు మిగిలి ఉంది",
+"{n} days to go to your record": "మీ రికార్డుకు {n} రోజులు మిగిలి ఉన్నాయి",
+"record: {n}": "రికార్డు: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "మీరు వరుసగా డిక్టేట్ చేసిన రోజులు. ప్రతి ఏడు రోజుల్లో రెండు రోజుల వరకు విరామం ఇచ్చినా అది కొనసాగుతుంది, కాబట్టి వారాంతం దాన్ని అంతరాయం చేయదు.",
+"Recent dictations": "ఇటీవలి డిక్టేషన్‌లు",
+"vs previous period": "మునుపటి కాలంతో పోలిస్తే",
+"≈ {v} by the end of the month": "నెల చివరికి ≈ {v}",
+"Animation when there's an update": "అప్‌డేట్ ఉన్నప్పుడు యానిమేషన్"
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

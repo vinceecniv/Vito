@@ -831,7 +831,19 @@
 "words per dictation": "ഓരോ ഡിക്ടേഷനിലെയും വാക്കുകൾ",
 "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ഒരു ഡിക്ടേഷന്റെ ശരാശരി ദൈർഘ്യം. നിങ്ങൾ എപ്പോൾ ഡിക്ടേറ്റ് ചെയ്യുന്നുവെന്ന് ഗ്രിഡ് കാണിക്കുന്നു: ആഴ്ചയിലെ ദിവസങ്ങൾ മുകളിൽ നിന്ന് താഴേക്ക്, മണിക്കൂറുകൾ ഇടത്തുനിന്ന് വലത്തേക്ക് — ഇരുണ്ടതാകുന്തോറും തിരക്ക് കൂടുതൽ.",
 "Dashboard": "ഡാഷ്ബോർഡ്",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ട്രാൻസ്ക്രിപ്റ്റ് വേറിട്ട് കാണിക്കാൻ ഡാഷ്ബോർഡിലെ 'വേറിട്ട വിൻഡോ' ബട്ടണിൽ ക്ലിക്ക് ചെയ്യുക."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ട്രാൻസ്ക്രിപ്റ്റ് വേറിട്ട് കാണിക്കാൻ ഡാഷ്ബോർഡിലെ 'വേറിട്ട വിൻഡോ' ബട്ടണിൽ ക്ലിക്ക് ചെയ്യുക.",
+"Main figure": "പ്രധാന കണക്ക്",
+"days in a row": "തുടർച്ചയായ ദിവസങ്ങൾ",
+"New record!": "പുതിയ റെക്കോർഡ്!",
+"Celebrate a new record": "പുതിയ റെക്കോർഡ് ആഘോഷിക്കുക",
+"1 day to go to your record": "നിങ്ങളുടെ റെക്കോർഡിലെത്താൻ 1 ദിവസം കൂടി",
+"{n} days to go to your record": "നിങ്ങളുടെ റെക്കോർഡിലെത്താൻ {n} ദിവസം കൂടി",
+"record: {n}": "റെക്കോർഡ്: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "നിങ്ങൾ ഡിക്ടേറ്റ് ചെയ്ത തുടർച്ചയായ ദിവസങ്ങൾ. ഏഴു ദിവസത്തിൽ രണ്ടു ദിവസം വരെ ഒഴിവാക്കിയാലും ഇത് തുടരും, അതിനാൽ ഒരു വാരാന്ത്യം ഇതിനെ മുറിക്കില്ല.",
+"Recent dictations": "സമീപകാല ഡിക്ടേഷനുകൾ",
+"vs previous period": "മുൻ കാലയളവുമായി താരതമ്യം",
+"≈ {v} by the end of the month": "മാസാവസാനത്തോടെ ≈ {v}",
+"Animation when there's an update": "അപ്ഡേറ്റ് ഉള്ളപ്പോൾ ആനിമേഷൻ"
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

@@ -831,7 +831,19 @@
 "Chart in background": "Wykres w tle",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Słowa, które dyktowałeś najczęściej w tym okresie — im większe, tym częściej. Słowa o trzech literach lub krótsze oraz popularne słowa, takie jak „chcieć” czy „ponieważ”, są pomijane.",
 "Vito character": "Postać Vito",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Średnia długość dyktowania. Siatka pokazuje ostatnie 26 tygodni, jeden kwadrat na dzień od poniedziałku do niedzieli — ciemniejszy oznacza więcej słów."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Średnia długość dyktowania. Siatka pokazuje ostatnie 26 tygodni, jeden kwadrat na dzień od poniedziałku do niedzieli — ciemniejszy oznacza więcej słów.",
+"Main figure": "Główna liczba",
+"days in a row": "dni z rzędu",
+"New record!": "Nowy rekord!",
+"Celebrate a new record": "Świętuj nowy rekord",
+"1 day to go to your record": "1 dzień do twojego rekordu",
+"{n} days to go to your record": "{n} dni do twojego rekordu",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Liczba dni z rzędu, w których dyktowałeś. Do dwóch dni przerwy na każde siedem nie przerywa serii, więc weekend jej nie psuje.",
+"Recent dictations": "Ostatnie dyktowania",
+"vs previous period": "vs poprzedni okres",
+"≈ {v} by the end of the month": "≈ {v} do końca miesiąca",
+"Animation when there's an update": "Animacja, gdy jest aktualizacja"
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

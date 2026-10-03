@@ -831,7 +831,19 @@
 "Chart in background": "Carta di latar belakang",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Perkataan yang paling kerap anda dikte dalam tempoh ini — semakin besar, semakin kerap. Perkataan tiga huruf atau kurang dan perkataan biasa seperti ‘mahu’ atau ‘kerana’ tidak dimasukkan.",
 "Vito character": "Maskot Vito",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Purata panjang satu dikte. Grid menunjukkan 26 minggu lepas, satu petak sehari dari Isnin hingga Ahad — lebih gelap bermakna lebih banyak perkataan."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Purata panjang satu dikte. Grid menunjukkan 26 minggu lepas, satu petak sehari dari Isnin hingga Ahad — lebih gelap bermakna lebih banyak perkataan.",
+"Main figure": "Angka utama",
+"days in a row": "hari berturut-turut",
+"New record!": "Rekod baharu!",
+"Celebrate a new record": "Raikan rekod baharu",
+"1 day to go to your record": "1 hari lagi untuk memecahkan rekod anda",
+"{n} days to go to your record": "{n} hari lagi untuk memecahkan rekod anda",
+"record: {n}": "rekod: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Bilangan hari berturut-turut anda mendikte. Sehingga dua hari cuti dalam setiap tujuh hari tidak memutuskannya, jadi hujung minggu tidak menamatkannya.",
+"Recent dictations": "Dikte terkini",
+"vs previous period": "berbanding tempoh sebelumnya",
+"≈ {v} by the end of the month": "≈ {v} menjelang hujung bulan",
+"Animation when there's an update": "Animasi apabila ada kemas kini"
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",

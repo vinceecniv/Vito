@@ -831,7 +831,19 @@
 "Vito character": "Figurina e Vitos",
 "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Gjatësia mesatare e një diktimi. Rrjeta tregon 26 javët e fundit, një katror për ditë nga e hëna te e diela — sa më i errët, aq më shumë fjalë.",
 "Dashboard": "Paneli",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Kliko butonin 'Dritare e shkëputur' në Panel për të nxjerrë transkriptin veç."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Kliko butonin 'Dritare e shkëputur' në Panel për të nxjerrë transkriptin veç.",
+"Main figure": "Shifra kryesore",
+"days in a row": "ditë radhazi",
+"New record!": "Rekord i ri!",
+"Celebrate a new record": "Festo rekordin e ri",
+"1 day to go to your record": "1 ditë deri te rekordi yt",
+"{n} days to go to your record": "{n} ditë deri te rekordi yt",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Ditët radhazi që ke diktuar. Deri në dy ditë pushim në çdo shtatë e mbajnë serinë, kështu që fundjava nuk e prish.",
+"Recent dictations": "Diktimet e fundit",
+"vs previous period": "krahasuar me periudhën e mëparshme",
+"≈ {v} by the end of the month": "≈ {v} deri në fund të muajit",
+"Animation when there's an update": "Animacion kur ka një përditësim"
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

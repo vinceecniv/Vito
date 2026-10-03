@@ -1,5 +1,17 @@
 {
 "strings": {
+"Main figure": "Cifra principal",
+"days in a row": "días seguidos",
+"New record!": "Novo récord!",
+"Celebrate a new record": "Celebrar un novo récord",
+"1 day to go to your record": "Queda 1 día para o teu récord",
+"{n} days to go to your record": "Quedan {n} días para o teu récord",
+"record: {n}": "récord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Os días seguidos nos que ditaches. Ata dous días de descanso de cada sete non cortan a serie, así que un fin de semana non a rompe.",
+"Recent dictations": "Ditados recentes",
+"vs previous period": "fronte ao período anterior",
+"≈ {v} by the end of the month": "≈ {v} a finais de mes",
+"Animation when there's an update": "Animación cando hai unha actualización",
 "Most used words": "Palabras máis usadas",
 "Chart in background": "Gráfico ao fondo",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "As palabras que máis ditaches neste período: canto máis grandes, con máis frecuencia. Non se inclúen as palabras de tres letras ou menos nin as palabras comúns como «quero» ou «porque».",

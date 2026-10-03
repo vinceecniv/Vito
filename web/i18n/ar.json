@@ -832,7 +832,19 @@
 "Chart in background": "المخطط في الخلفية",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "الكلمات التي أملَيتَها أكثر من غيرها في هذه الفترة — كلما كانت الكلمة أكبر، زاد تكرارها. تُستبعد الكلمات المؤلفة من ثلاثة أحرف أو أقل والكلمات الشائعة مثل «يريد» أو «لأن».",
 "Vito character": "شخصية Vito الكرتونية",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "متوسط طول الإملاء. تعرض الشبكة آخر 26 أسبوعًا، بمربع لكل يوم من الاثنين إلى الأحد — كلما كان اللون أغمق زادت الكلمات."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "متوسط طول الإملاء. تعرض الشبكة آخر 26 أسبوعًا، بمربع لكل يوم من الاثنين إلى الأحد — كلما كان اللون أغمق زادت الكلمات.",
+"Main figure": "الرقم الرئيسي",
+"days in a row": "أيام متتالية",
+"New record!": "رقم قياسي جديد!",
+"Celebrate a new record": "الاحتفال بالرقم القياسي الجديد",
+"1 day to go to your record": "بقي يوم واحد على رقمك القياسي",
+"{n} days to go to your record": "بقيت {n} أيام على رقمك القياسي",
+"record: {n}": "الرقم القياسي: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "عدد الأيام المتتالية التي أمليت فيها. يمكنك التوقف يومين كحد أقصى في كل سبعة أيام دون أن ينقطع التسلسل، فلا تكسره عطلة نهاية الأسبوع.",
+"Recent dictations": "أحدث الإملاءات",
+"vs previous period": "مقارنة بالفترة السابقة",
+"≈ {v} by the end of the month": "≈ {v} بنهاية الشهر",
+"Animation when there's an update": "حركة عند توفر تحديث"
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

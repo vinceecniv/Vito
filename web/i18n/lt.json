@@ -831,7 +831,19 @@
 "Chart in background": "Diagrama fone",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Žodžiai, kuriuos šiuo laikotarpiu diktavote dažniausiai – kuo didesnis, tuo dažnesnis. Trijų raidžių ar trumpesni žodžiai ir įprasti žodžiai, pavyzdžiui, „noriu“ ar „nes“, neįtraukti.",
 "Vito character": "Vito personažas",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Vidutinis diktavimo ilgis. Tinklelyje rodomos paskutinės 26 savaitės, kiekviena diena – kvadratėlis nuo pirmadienio iki sekmadienio; kuo tamsesnis, tuo daugiau žodžių."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Vidutinis diktavimo ilgis. Tinklelyje rodomos paskutinės 26 savaitės, kiekviena diena – kvadratėlis nuo pirmadienio iki sekmadienio; kuo tamsesnis, tuo daugiau žodžių.",
+"Main figure": "Pagrindinis rodiklis",
+"days in a row": "dienų iš eilės",
+"New record!": "Naujas rekordas!",
+"Celebrate a new record": "Švęsti naują rekordą",
+"1 day to go to your record": "Liko 1 diena iki rekordo",
+"{n} days to go to your record": "Liko {n} dienos iki rekordo",
+"record: {n}": "rekordas: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Dienos iš eilės, kai diktavote. Serija tęsiasi, jei iš bet kurių septynių dienų praleidžiate ne daugiau kaip dvi, todėl savaitgalis jos nenutraukia.",
+"Recent dictations": "Paskutiniai diktavimai",
+"vs previous period": "palyginti su ankstesniu laikotarpiu",
+"≈ {v} by the end of the month": "≈ {v} iki mėnesio pabaigos",
+"Animation when there's an update": "Animacija, kai yra naujinys"
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

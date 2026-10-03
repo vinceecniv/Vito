@@ -831,7 +831,19 @@
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Les mots que vous avez le plus dictés sur cette période — plus un mot est grand, plus il revient souvent. Les mots de trois lettres ou moins et les mots courants comme « vouloir » ou « parce que » sont exclus.",
 "Dashboard": "Tableau de bord",
 "Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Cliquez sur le bouton « Fenêtre détachée » du tableau de bord pour détacher la transcription.",
-"Vito character": "Personnage Vito"
+"Vito character": "Personnage Vito",
+"Main figure": "Chiffre principal",
+"days in a row": "jours d'affilée",
+"New record!": "Nouveau record !",
+"Celebrate a new record": "Fêter un nouveau record",
+"1 day to go to your record": "Plus qu'un jour pour battre votre record",
+"{n} days to go to your record": "Plus que {n} jours pour battre votre record",
+"record: {n}": "record : {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Le nombre de jours d'affilée où vous avez dicté. Jusqu'à deux jours de pause sur sept n'interrompent pas la série : un week-end ne la brise donc pas.",
+"Recent dictations": "Dictées récentes",
+"vs previous period": "par rapport à la période précédente",
+"≈ {v} by the end of the month": "≈ {v} d'ici la fin du mois",
+"Animation when there's an update": "Animation lorsqu'une mise à jour est disponible"
 },
 "help": {
 "theme": "Clair, sombre ou automatique — le mode automatique suit le réglage clair/sombre de votre système.",

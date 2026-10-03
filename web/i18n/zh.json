@@ -831,7 +831,19 @@
 "Chart in background": "图表显示在背景中",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "此期间你口述最多的词，字越大出现次数越多。三个字母或更短的词，以及“想要”“因为”之类的常用词不计入。",
 "Vito character": "Vito 角色",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "每次口述的平均长度。网格显示最近 26 周，每天一个方块，从星期一到星期日，颜色越深表示字数越多。"
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "每次口述的平均长度。网格显示最近 26 周，每天一个方块，从星期一到星期日，颜色越深表示字数越多。",
+"Main figure": "主要数据",
+"days in a row": "连续天数",
+"New record!": "新纪录！",
+"Celebrate a new record": "庆祝新纪录",
+"1 day to go to your record": "再坚持 1 天即可追平纪录",
+"{n} days to go to your record": "还差 {n} 天即可追平纪录",
+"record: {n}": "纪录：{n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "你连续使用听写的天数。每七天内最多可以休息两天而不中断，所以周末不会打断连续记录。",
+"Recent dictations": "最近的听写",
+"vs previous period": "与上一周期相比",
+"≈ {v} by the end of the month": "到月底 ≈ {v}",
+"Animation when there's an update": "有更新时显示动画"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

@@ -831,7 +831,19 @@
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "המילים שהכתבת הכי הרבה בתקופה זו — ככל שהמילה גדולה יותר, כך היא הופיעה לעתים קרובות יותר. מילים של שלוש אותיות או פחות ומילים נפוצות כמו ‘רוצה’ או ‘כי’ אינן נכללות.",
 "Vito character": "הדמות של Vito",
 "Dashboard": "לוח בקרה",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "לחץ על הכפתור 'חלון צף' בלוח הבקרה כדי להוציא את התמלול לחלון נפרד."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "לחץ על הכפתור 'חלון צף' בלוח הבקרה כדי להוציא את התמלול לחלון נפרד.",
+"Main figure": "נתון ראשי",
+"days in a row": "ימים ברצף",
+"New record!": "שיא חדש!",
+"Celebrate a new record": "חגוג שיא חדש",
+"1 day to go to your record": "עוד יום אחד לשיא שלך",
+"{n} days to go to your record": "עוד {n} ימים לשיא שלך",
+"record: {n}": "שיא: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "מספר הימים ברצף שבהם הכתבת. עד שני ימי הפסקה בכל שבעה ימים לא שוברים את הרצף, כך שסוף שבוע לא יפסיק אותו.",
+"Recent dictations": "הכתבות אחרונות",
+"vs previous period": "לעומת התקופה הקודמת",
+"≈ {v} by the end of the month": "≈ {v} עד סוף החודש",
+"Animation when there's an update": "אנימציה כשיש עדכון"
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

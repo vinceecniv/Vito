@@ -1,5 +1,17 @@
 {
 "strings": {
+"Main figure": "Số liệu chính",
+"days in a row": "ngày liên tiếp",
+"New record!": "Kỷ lục mới!",
+"Celebrate a new record": "Ăn mừng kỷ lục mới",
+"1 day to go to your record": "Còn 1 ngày nữa là đạt kỷ lục của bạn",
+"{n} days to go to your record": "Còn {n} ngày nữa là đạt kỷ lục của bạn",
+"record: {n}": "kỷ lục: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Số ngày liên tiếp bạn đọc chính tả. Nghỉ tối đa hai ngày trong bất kỳ bảy ngày nào vẫn giữ được chuỗi, nên cuối tuần không làm đứt chuỗi.",
+"Recent dictations": "Các bản đọc gần đây",
+"vs previous period": "so với kỳ trước",
+"≈ {v} by the end of the month": "≈ {v} đến cuối tháng",
+"Animation when there's an update": "Hiệu ứng khi có bản cập nhật",
 "Status": "Trạng thái",
 "Settings": "Cài đặt",
 "Dictionary": "Từ điển",

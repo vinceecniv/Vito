@@ -831,7 +831,19 @@
 "Most used words": "Gehien erabilitako hitzak",
 "Chart in background": "Grafikoa atzeko planoan",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Aldi honetan gehien diktatu dituzun hitzak — zenbat eta handiagoa, orduan eta maizago. Hiru letra edo gutxiagoko hitzak eta ‘nahi’ edo ‘zeren’ bezalako hitz arruntak ez dira sartzen.",
-"Vito character": "Vito pertsonaia"
+"Vito character": "Vito pertsonaia",
+"Main figure": "Datu nagusia",
+"days in a row": "egun jarraian",
+"New record!": "Errekor berria!",
+"Celebrate a new record": "Ospatu errekor berria",
+"1 day to go to your record": "Egun 1 falta da zure errekorrera iristeko",
+"{n} days to go to your record": "{n} egun falta dira zure errekorrera iristeko",
+"record: {n}": "errekorra: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Jarraian diktatu duzun egun kopurua. Zazpi egunetik bi egun arte atseden hartuz gero segida ez da eteten, beraz asteburu batek ez du apurtzen.",
+"Recent dictations": "Azken diktaketak",
+"vs previous period": "aurreko epealdiarekin alderatuta",
+"≈ {v} by the end of the month": "≈ {v} hilabete amaierarako",
+"Animation when there's an update": "Animazioa eguneratzea dagoenean"
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

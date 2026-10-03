@@ -831,7 +831,19 @@
 "Chart in background": "Chart sa background",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Ang mga salitang pinakamadalas mong idiniktar sa panahong ito — kung mas malaki, mas madalas. Hindi isinasama ang mga salitang tatlong titik pababa at ang mga karaniwang salita tulad ng ‘gusto’ o ‘dahil’.",
 "Vito character": "Karakter ni Vito",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Ang karaniwang haba ng isang diktasyon. Ipinapakita ng grid ang nakalipas na 26 na linggo, isang parisukat kada araw mula Lunes hanggang Linggo — mas madilim, mas maraming salita."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Ang karaniwang haba ng isang diktasyon. Ipinapakita ng grid ang nakalipas na 26 na linggo, isang parisukat kada araw mula Lunes hanggang Linggo — mas madilim, mas maraming salita.",
+"Main figure": "Pangunahing bilang",
+"days in a row": "araw na magkakasunod",
+"New record!": "Bagong record!",
+"Celebrate a new record": "Ipagdiwang ang bagong record",
+"1 day to go to your record": "1 araw na lang bago ang record mo",
+"{n} days to go to your record": "{n} araw na lang bago ang record mo",
+"record: {n}": "record: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Ang mga araw na magkakasunod kang nagdikta. Hanggang dalawang araw na pahinga sa bawat pito ay hindi pa rin pumuputol nito, kaya hindi ito nasisira ng weekend.",
+"Recent dictations": "Mga kamakailang diktasyon",
+"vs previous period": "kumpara sa nakaraang panahon",
+"≈ {v} by the end of the month": "≈ {v} sa katapusan ng buwan",
+"Animation when there's an update": "Animasyon kapag may update"
 },
 "help": {
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",

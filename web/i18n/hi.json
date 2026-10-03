@@ -831,7 +831,19 @@
 "Most used words": "सबसे ज़्यादा इस्तेमाल हुए शब्द",
 "Chart in background": "पृष्ठभूमि में चार्ट",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "इस अवधि में आपने जो शब्द सबसे ज़्यादा बोले — शब्द जितना बड़ा, उतनी ज़्यादा बार। तीन या उससे कम अक्षरों वाले शब्द और ‘want’ या ‘because’ जैसे आम शब्द शामिल नहीं हैं।",
-"Vito character": "Vito का किरदार"
+"Vito character": "Vito का किरदार",
+"Main figure": "मुख्य आँकड़ा",
+"days in a row": "लगातार दिन",
+"New record!": "नया रिकॉर्ड!",
+"Celebrate a new record": "नए रिकॉर्ड का जश्न मनाएँ",
+"1 day to go to your record": "आपके रिकॉर्ड तक 1 दिन बाकी",
+"{n} days to go to your record": "आपके रिकॉर्ड तक {n} दिन बाकी",
+"record: {n}": "रिकॉर्ड: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "लगातार कितने दिन आपने डिक्टेशन किया। किन्हीं भी सात दिनों में दो दिन की छुट्टी से सिलसिला नहीं टूटता, इसलिए सप्ताहांत इसे नहीं तोड़ता।",
+"Recent dictations": "हाल के डिक्टेशन",
+"vs previous period": "पिछली अवधि की तुलना में",
+"≈ {v} by the end of the month": "महीने के अंत तक ≈ {v}",
+"Animation when there's an update": "अपडेट आने पर एनिमेशन"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",

@@ -831,7 +831,19 @@
 "Chart in background": "Дыяграма на фоне",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Словы, якія вы дыктавалі найчасцей за гэты перыяд — чым большае слова, тым часцей яно ўжывалася. Словы з трох літар і менш, а таксама ўжывальныя словы, такія як «хачу» або «таму што», не ўлічваюцца.",
 "Vito character": "Персанаж Vito",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Сярэдняя даўжыня дыктоўкі. Сетка паказвае апошнія 26 тыдняў, па квадраце на дзень з панядзелка па нядзелю — чым цямней, тым больш слоў."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Сярэдняя даўжыня дыктоўкі. Сетка паказвае апошнія 26 тыдняў, па квадраце на дзень з панядзелка па нядзелю — чым цямней, тым больш слоў.",
+"Main figure": "Асноўны паказчык",
+"days in a row": "дзён запар",
+"New record!": "Новы рэкорд!",
+"Celebrate a new record": "Святкаваць новы рэкорд",
+"1 day to go to your record": "Да вашага рэкорду застаўся 1 дзень",
+"{n} days to go to your record": "Да вашага рэкорду засталося {n} дні",
+"record: {n}": "рэкорд: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Колькі дзён запар вы дыктавалі. Серыю не парушаюць да двух выходных на любыя сем дзён, таму выходныя яе не перапыняюць.",
+"Recent dictations": "Апошнія дыктоўкі",
+"vs previous period": "у параўнанні з папярэднім перыядам",
+"≈ {v} by the end of the month": "≈ {v} да канца месяца",
+"Animation when there's an update": "Анімацыя пры наяўнасці абнаўлення"
 },
 "help": {
 "theme": "Светлая, цёмная ці аўтаматычная — аўтаматычная сочыць за светлым/цёмным рэжымам вашай сістэмы.",

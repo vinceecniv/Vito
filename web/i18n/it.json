@@ -831,7 +831,19 @@
 "Most used words": "Parole più usate",
 "Chart in background": "Grafico sullo sfondo",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Le parole che hai dettato più spesso in questo periodo: più sono grandi, più compaiono. Le parole di tre lettere o meno e quelle comuni come ‘voglio’ o ‘perché’ sono escluse.",
-"Vito character": "Personaggio di Vito"
+"Vito character": "Personaggio di Vito",
+"Main figure": "Valore principale",
+"days in a row": "giorni di fila",
+"New record!": "Nuovo record!",
+"Celebrate a new record": "Festeggia un nuovo record",
+"1 day to go to your record": "Manca 1 giorno al tuo record",
+"{n} days to go to your record": "Mancano {n} giorni al tuo record",
+"record: {n}": "record: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "I giorni di fila in cui hai dettato. Fino a due giorni di pausa ogni sette non interrompono la serie, quindi un weekend non la spezza.",
+"Recent dictations": "Dettature recenti",
+"vs previous period": "rispetto al periodo precedente",
+"≈ {v} by the end of the month": "≈ {v} a fine mese",
+"Animation when there's an update": "Animazione quando c'è un aggiornamento"
 },
 "help": {
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",
