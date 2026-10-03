@@ -328,3 +328,27 @@ func TestCalendar(t *testing.T) {
 		t.Fatalf("yesterday: %d words, want 3", got)
 	}
 }
+
+func TestTopWords(t *testing.T) {
+	counts := map[string]int{}
+	countWords("De klant wil de offerte vandaag. De offerte, zei de klant, moet vandaag!", counts)
+	countWords("Don't forget the offerte for the klant — 2026 is close.", counts)
+	got := topWords(counts, 3)
+	want := []WordCount{{"klant", 3}, {"offerte", 3}, {"vandaag", 2}}
+	if len(got) != len(want) {
+		t.Fatalf("got %v, want %v", got, want)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("got %v, want %v", got, want)
+		}
+	}
+	// Short words, stopwords and numbers never count; a word said once is left out.
+	for _, w := range []string{"de", "wil", "moet", "don't", "the", "2026", "close"} {
+		for _, c := range topWords(counts, 100) {
+			if c.Word == w {
+				t.Errorf("%q should not be in the cloud", w)
+			}
+		}
+	}
+}

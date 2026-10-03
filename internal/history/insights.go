@@ -4,6 +4,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+	"unicode"
+	"unicode/utf8"
 )
 
 // Insights are the statistics that need the individual dictations rather than
@@ -27,7 +29,20 @@ type Insights struct {
 	CleanupFailed  int `json:"cleanup_failed"`  // ... or tried and failed
 
 	Languages []LangCount `json:"languages"` // most used first
+
+	// TopWords are the words used most, for the word cloud: most used first,
+	// common function words left out (see stopwords.go).
+	TopWords []WordCount `json:"top_words"`
 }
+
+// WordCount is how often one word was dictated.
+type WordCount struct {
+	Word  string `json:"word"`
+	Count int    `json:"count"`
+}
+
+// topWordsMax is how many words the cloud gets.
+const topWordsMax = 40
 
 // LangCount is how many dictations were in one language.
 type LangCount struct {
@@ -57,6 +72,7 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 	var in Insights
 	var latency, stt, cleanup []int
 	langs := map[string]int{}
+	words := map[string]int{}
 	for rows.Next() {
 		var ts, sttMS, cleanupMS, injectedMS int64
 		var lang, raw, cleaned, cleanupErr string
@@ -86,6 +102,13 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 		if lang = strings.ToLower(strings.TrimSpace(lang)); lang != "" && lang != "auto" {
 			langs[lang]++
 		}
+		// The words come from what was pasted: the cleaned text, or the raw
+		// transcript when cleanup didn't run.
+		text := cleaned
+		if strings.TrimSpace(text) == "" {
+			text = raw
+		}
+		countWords(text, words)
 	}
 	if err := rows.Err(); err != nil {
 		return Insights{}, err
@@ -104,7 +127,45 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 		}
 		return in.Languages[i].Code < in.Languages[j].Code
 	})
+	in.TopWords = topWords(words, topWordsMax)
 	return in, nil
+}
+
+// countWords adds the words of text to counts: lower-cased, split on anything
+// that isn't a letter or digit (an apostrophe inside a word is kept, so "zo'n"
+// and "don't" stay whole), and skipping words of three letters or fewer,
+// numbers and stopwords — what's left is what you actually talk about.
+func countWords(text string, counts map[string]int) {
+	for _, w := range strings.FieldsFunc(strings.ToLower(text), func(r rune) bool {
+		return !unicode.IsLetter(r) && !unicode.IsDigit(r) && r != '\'' && r != '’'
+	}) {
+		w = strings.Trim(w, "'’")
+		if utf8.RuneCountInString(w) <= 3 || stopwords[w] || strings.IndexFunc(w, unicode.IsLetter) < 0 {
+			continue
+		}
+		counts[w]++
+	}
+}
+
+// topWords returns the n most counted words, ties in alphabetical order. A word
+// said only once isn't a pattern, so it stays out.
+func topWords(counts map[string]int, n int) []WordCount {
+	var out []WordCount
+	for w, c := range counts {
+		if c > 1 {
+			out = append(out, WordCount{w, c})
+		}
+	}
+	sort.Slice(out, func(i, j int) bool {
+		if out[i].Count != out[j].Count {
+			return out[i].Count > out[j].Count
+		}
+		return out[i].Word < out[j].Word
+	})
+	if len(out) > n {
+		out = out[:n]
+	}
+	return out
 }
 
 // CalendarWeeks is how far back the calendar heatmap reaches.

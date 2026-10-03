@@ -457,6 +457,13 @@
   .lang-legend b { display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:4px; vertical-align:0; }
   /* Rhythm: twice as wide, so the week-by-hour grid has room. */
   .statgrid > .rhythm-card { grid-column:span 2; }
+  .statgrid > .cloud-card { grid-column:span 2; }
+  .cloud { display:flex; flex-wrap:wrap; justify-content:center; align-items:baseline; gap:2px 12px; margin-top:12px; line-height:1.15; }
+  .cloud span { font-weight:600; color:var(--violet); letter-spacing:-0.01em; }
+  :root[data-theme="dark"] .cloud span { color:var(--violet-l); }
+  .cloud span.alt { color:var(--coral); }
+  .cloud span.top { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800; }
+  .cloud-empty { margin-top:12px; font-size:12.5px; color:var(--text3); }
   .rhythm-head { display:flex; align-items:center; gap:10px; }
   .rhythm-head .chip { margin-bottom:0; flex:none; }
   .rhythm-head .num { font-size:24px; }
@@ -2035,6 +2042,8 @@ const TR = { nl: {
   "{p}% of dictations":"{p}% van de dictaten",
   "Languages you dictated in this period, by number of dictations.":"De talen waarin je in deze periode dicteerde, naar aantal dictaten.",
   "words per dictation":"woorden per dictaat",
+  "Most used words":"Meest gebruikte woorden",
+  "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.":"De woorden die je in deze periode het vaakst dicteerde — hoe groter, hoe vaker. Woorden van drie letters of minder en veelvoorkomende woorden zoals ‘want’ of ‘omdat’ worden weggelaten.",
   "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.":"De gemiddelde lengte van een dictaat. Het raster toont de laatste 26 weken, een vakje per dag van maandag tot zondag — hoe donkerder, hoe meer woorden.",
   "Earned today":"Vandaag behaald",
   "Unlocked today":"Vandaag behaald",
@@ -5085,12 +5094,12 @@ loadAbout();
 // level, so a statistic can't leave its block.
 const LAYOUT_GROUPS = [
   { id:"stats", label:"Statistics", keys:["credit","words","sentences","activations","spoken","saved","commands",
-    "spokenwpm","latency","cleanupfx","languages","rhythm","achievements","update"] },
+    "spokenwpm","latency","cleanupfx","languages","rhythm","wordcloud","achievements","update"] },
   { id:"wide",  label:"Cards",      keys:["stats","cost","chart","transcript"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences:"sentences cleaned", activations:"activations",
   spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
-  spokenwpm:"wpm spoken", latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation",
+  spokenwpm:"wpm spoken", latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
   stats:"Statistics", cost:"Costs", chart:"Words per day", transcript:"Live transcript" };
 // The cards and their elements. Costs and the chart are half-width and pair up
 // when they are next to each other; the statistics and the transcript always
@@ -5875,6 +5884,26 @@ function rhythmCardHTML(st){
   return `<div class="rhythm-head"><div class="chip violet">${icon}</div><div class="num">${avg}</div>` +
     `<div class="lbl">${t("words per dictation")}</div></div><div class="heat">${cells}</div>`;
 }
+// The most used words of the period, sized by how often each was dictated. The
+// order is shuffled by a hash of the word rather than by count, so the big
+// words spread through the cloud instead of piling up at the start; it is
+// stable, so a refresh doesn't reshuffle it. The five most used carry the
+// brand gradient, the rest alternate violet and coral.
+function cloudCardHTML(ins){
+  const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1-.6-7.96A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9.5z"/></svg>';
+  const head = `<div class="rhythm-head"><div class="chip coral">${icon}</div><div class="lbl">${t("Most used words")}</div></div>`;
+  const words = ins.top_words || [];
+  if (!words.length) return head + `<div class="cloud-empty">–</div>`;
+  const max = words[0].count, min = words[words.length - 1].count;
+  const top = new Set(words.slice(0, 5).map(w => w.word));
+  const cells = words.map((w, i) => ({ ...w, i, h: hashStr(w.word) })).sort((a, b) => a.h - b.h).map(w => {
+    const k = max === min ? 1 : (w.count - min) / (max - min);
+    const size = (12 + Math.sqrt(k) * 18).toFixed(1);
+    const cls = top.has(w.word) ? "top" : (w.i % 2 ? "alt" : "");
+    return `<span class="${cls}" style="font-size:${size}px;opacity:${(0.6 + 0.4 * k).toFixed(2)}" title="${ahEsc(w.word)} · ${w.count.toLocaleString(numLoc())}">${ahEsc(w.word)}</span>`;
+  }).join("");
+  return head + `<div class="cloud">${cells}</div>`;
+}
 // A small area chart for a stat card: the line in the brand gradient (coral to
 // violet) and the area under it fading from the card's own colour to nothing. It
 // sits behind the figure as the card background. Gaps (NaN: no speaking time
@@ -6264,6 +6293,8 @@ async function loadStats(){
       tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
     { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
       t("Languages you dictated in this period, by number of dictations.")) },
+    { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => setCardTip(el,
+      t("The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.")) },
     { key:"rhythm", custom:true, cardClass:"rhythm-card", html:() => rhythmCardHTML(st), wire:el => setCardTip(el,
       t("The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.")) },
     // A compact medal counter that opens the full Achievements page.

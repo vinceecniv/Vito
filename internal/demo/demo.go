@@ -384,6 +384,7 @@ func insights(now, from, today time.Time) history.Insights {
 	in.CleanupChanged = in.CleanupRuns * 72 / 100
 	nl := in.Dictations * 70 / 100
 	in.Languages = []history.LangCount{{Code: "nl", Count: nl}, {Code: "en", Count: in.Dictations - nl}}
+	in.TopWords = demoWords
 	return in
 }
 
@@ -397,4 +398,16 @@ func calendar(now time.Time) history.Calendar {
 		cal.Words = append(cal.Words, w)
 	}
 	return cal
+}
+
+// demoWords is the sample word cloud: what a consultant might dictate about.
+var demoWords = []history.WordCount{
+	{Word: "klant", Count: 64}, {Word: "offerte", Count: 51}, {Word: "planning", Count: 47},
+	{Word: "meeting", Count: 42}, {Word: "project", Count: 39}, {Word: "deadline", Count: 33},
+	{Word: "rapport", Count: 30}, {Word: "budget", Count: 27}, {Word: "team", Count: 25},
+	{Word: "presentatie", Count: 22}, {Word: "feedback", Count: 20}, {Word: "contract", Count: 18},
+	{Word: "volgende", Count: 17}, {Word: "week", Count: 16}, {Word: "release", Count: 14},
+	{Word: "factuur", Count: 13}, {Word: "agenda", Count: 12}, {Word: "voorstel", Count: 11},
+	{Word: "update", Count: 10}, {Word: "afspraak", Count: 9}, {Word: "review", Count: 8},
+	{Word: "collega", Count: 7}, {Word: "strategie", Count: 6}, {Word: "workshop", Count: 5},
 }
