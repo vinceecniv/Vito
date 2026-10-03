@@ -56,9 +56,12 @@ type Stats struct {
 
 	// The streak you are on and the longest ever (see Store.Streaks); filled in
 	// by the server, whatever the period.
-	CurrentStreak int64   `json:"current_streak"`
-	LongestStreak int64   `json:"longest_streak"`
-	AvgWords      float64 `json:"avg_words"`
+	CurrentStreak int64 `json:"current_streak"`
+	LongestStreak int64 `json:"longest_streak"`
+	// PreviousStreak is the best streak before the current one, the record it
+	// has to beat; 0 until a first streak has ended.
+	PreviousStreak int64   `json:"previous_streak"`
+	AvgWords       float64 `json:"avg_words"`
 	// Insights need the individual dictations, so they reach back only as far
 	// as the history does.
 	Insights Insights `json:"insights"`

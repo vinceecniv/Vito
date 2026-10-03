@@ -126,29 +126,48 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 // Streaks returns the streak you are on now and the longest one ever, by the
 // same rule as the streak achievements. Today counts as kept until it is over,
 // so a streak doesn't look broken in the morning before the first dictation.
-func (s *Store) Streaks(now time.Time) (current, longest int64, err error) {
+//
+// previous is the longest streak that ended before the current one began: the
+// record the current streak has to beat. A first streak has none (0), so a new
+// user isn't congratulated on beating nothing.
+func (s *Store) Streaks(now time.Time) (current, longest, previous int64, err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	rows, err := s.db.Query(`SELECT day FROM day_stats WHERE words > 0 OR uploads > 0 ORDER BY day`)
 	if err != nil {
-		return 0, 0, err
+		return 0, 0, 0, err
 	}
 	defer rows.Close()
 	var active []time.Time
 	for rows.Next() {
 		var ds string
 		if err := rows.Scan(&ds); err != nil {
-			return 0, 0, err
+			return 0, 0, 0, err
 		}
 		if d, err := time.ParseInLocation("2006-01-02", ds, time.Local); err == nil {
 			active = append(active, d)
 		}
 	}
 	if err := rows.Err(); err != nil {
-		return 0, 0, err
+		return 0, 0, 0, err
 	}
 	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
-	return currentStreak(active, today), longestStreak(active), nil
+	current = currentStreak(active, today)
+	if current > 0 {
+		// The current streak starts current-1 days before the last active day;
+		// everything before that start is history it has to beat.
+		start := active[len(active)-1].AddDate(0, 0, -int(current-1))
+		var before []time.Time
+		for _, d := range active {
+			if d.Before(start) {
+				before = append(before, d)
+			}
+		}
+		previous = longestStreak(before)
+	} else {
+		previous = longestStreak(active)
+	}
+	return current, longestStreak(active), previous, nil
 }
 
 // currentStreak is the streak that ends on the last active day and still holds
