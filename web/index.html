@@ -7136,7 +7136,11 @@ async function loadStats(){
     mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg>',
   };
   const nf = (n)=> n.toLocaleString(numLoc());
-  const nfCompact = (n) => new Intl.NumberFormat(numLoc(), { notation:"compact", maximumFractionDigits:1 }).format(n);
+  // The same short form in every language (5.3k, 1.2M), with the locale's own
+  // decimal mark: Intl's compact notation leaves thousands alone in German and
+  // others, and spells units out in some.
+  const nfCompact = (n) => { const [d, u] = n >= 1e6 ? [1e6, "M"] : [1e3, "k"];
+    return (Math.floor(n / d * 10) / 10).toLocaleString(numLoc(), { maximumFractionDigits:1 }) + u; };
   const ins = st.insights || {};
   // One value per chart bar, so a card's sparkline covers the same period and
   // buckets as the words chart. Bars still in the future (the rest of today's
