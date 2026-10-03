@@ -458,7 +458,11 @@
   /* Rhythm: twice as wide, so the week-by-hour grid has room. */
   .statgrid > .rhythm-card { grid-column:span 2; }
   .statgrid > .cloud-card { grid-column:span 2; }
-  .cloud { display:flex; flex-wrap:wrap; justify-content:center; align-items:baseline; gap:2px 12px; margin-top:12px; line-height:1.15; }
+  /* The cloud has the calendar grid's proportions (26 columns by 7 rows), so
+     this card and the calendar card are the same size; fitCloud drops the
+     words that don't fit. */
+  .cloud { display:flex; flex-wrap:wrap; justify-content:center; align-content:center; align-items:baseline; gap:0 10px;
+    margin-top:12px; line-height:1.1; aspect-ratio:26 / 7; overflow:hidden; }
   .cloud span { font-weight:600; color:var(--violet); letter-spacing:-0.01em; }
   :root[data-theme="dark"] .cloud span { color:var(--violet-l); }
   .cloud span.alt { color:var(--coral); }
@@ -5898,11 +5902,23 @@ function cloudCardHTML(ins){
   const top = new Set(words.slice(0, 5).map(w => w.word));
   const cells = words.map((w, i) => ({ ...w, i, h: hashStr(w.word) })).sort((a, b) => a.h - b.h).map(w => {
     const k = max === min ? 1 : (w.count - min) / (max - min);
-    const size = (12 + Math.sqrt(k) * 18).toFixed(1);
+    const size = (11 + Math.sqrt(k) * 13).toFixed(1);
     const cls = top.has(w.word) ? "top" : (w.i % 2 ? "alt" : "");
-    return `<span class="${cls}" style="font-size:${size}px;opacity:${(0.6 + 0.4 * k).toFixed(2)}" title="${ahEsc(w.word)} · ${w.count.toLocaleString(numLoc())}">${ahEsc(w.word)}</span>`;
+    return `<span class="${cls}" data-n="${w.count}" style="font-size:${size}px;opacity:${(0.6 + 0.4 * k).toFixed(2)}" title="${ahEsc(w.word)} · ${w.count.toLocaleString(numLoc())}">${ahEsc(w.word)}</span>`;
   }).join("");
   return head + `<div class="cloud">${cells}</div>`;
+}
+// The cloud is a fixed size, so what doesn't fit goes: the least used word
+// first, until the rest sits inside the box.
+function fitCloud(el){
+  const box = el.querySelector(".cloud");
+  if (!box) return;
+  const over = () => box.scrollHeight > box.clientHeight + 1;
+  while (over()) {
+    const spans = [...box.querySelectorAll("span")];
+    if (spans.length <= 1) break;
+    spans.reduce((a, b) => (+b.dataset.n < +a.dataset.n ? b : a)).remove();
+  }
 }
 // A small area chart for a stat card: the line in the brand gradient (coral to
 // violet) and the area under it fading from the card's own colour to nothing. It
@@ -6293,8 +6309,11 @@ async function loadStats(){
       tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
     { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
       t("Languages you dictated in this period, by number of dictations.")) },
-    { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => setCardTip(el,
-      t("The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.")) },
+    { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => { setCardTip(el,
+      t("The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.")); fitCloud(el);
+      // Rendered while the page is hidden there is nothing to measure yet; fit
+      // again once the card has a size, and whenever that size changes.
+      if (window.ResizeObserver && !el._cloudRO) { el._cloudRO = new ResizeObserver(() => fitCloud(el)); el._cloudRO.observe(el); } } },
     { key:"rhythm", custom:true, cardClass:"rhythm-card", html:() => rhythmCardHTML(st), wire:el => setCardTip(el,
       t("The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.")) },
     // A compact medal counter that opens the full Achievements page.
