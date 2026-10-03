@@ -6536,20 +6536,28 @@ async function loadStats(){
   }).join("");
   const cols = $("weekchart").querySelectorAll(".weekcol");
   if (grow) growBars(cols, heights.map(h => h + "%"));
-  // Flex hands each column a fractional width, and on a non-integer device pixel
-  // ratio those rasterise to visibly different bar widths. With two dozen thin
-  // bars that shows. Pinning every bar to the same whole number of pixels puts
-  // the remainder in the gaps instead, where it doesn't read as uneven.
-  if (unit === "hour" && cols.length) {
-    const w = Math.max(3, Math.floor(cols[0].getBoundingClientRect().width / uiZoom()) - 1);
-    cols.forEach(c => { const b = c.querySelector(".bar"); if (b) b.style.width = w + "px"; });
-  }
+  pinBarWidths();
   st.week.forEach((d,i)=>{ const col=cols[i];
     if (isPh(d)) { col.onmouseenter=()=>showPlaceholderTip(col); col.onmouseleave=hideChartTip; }
     else if (d.words > 0) { col.onmouseenter=()=>showChartTip(d,col); col.onmouseleave=hideChartTip; }
     else { col.onmouseenter=hideChartTip; } // a time unit with 0 words gets no tooltip
   });
 }
+// Flex hands each column a fractional width, and on a non-integer device pixel
+// ratio those rasterise to visibly different bar widths — with two dozen thin
+// bars, that shows. Every bar is pinned to the same whole number of pixels
+// (the narrowest column's, less one), which puts the remainder in the gaps,
+// where it doesn't read as uneven. The card can change width afterwards — its
+// width setting, a drag, the window — so this runs again whenever it does.
+function pinBarWidths(){
+  const cols = [...document.querySelectorAll("#weekchart .weekcol")];
+  if (!cols.length) return;
+  const z = uiZoom(), min = Math.min(...cols.map(c => c.getBoundingClientRect().width));
+  if (!min) return; // not laid out (the card is hidden); the observer calls again once it is
+  const w = Math.max(2, Math.floor(min / z) - 1);
+  cols.forEach(c => { const b = c.querySelector(".bar"); if (b) b.style.width = w + "px"; });
+}
+if (window.ResizeObserver) new ResizeObserver(() => pinBarWidths()).observe($("weekchart"));
 // lastChartKey identifies which set of bars is on screen; when it changes the
 // chart is a different thing, not an update of the same thing, so it grows in.
 let lastChartKey = "";
