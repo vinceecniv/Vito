@@ -1296,6 +1296,11 @@ func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
 	}
 	// Price each chart day here: the history layer tracks the billable
 	// quantities, the rates and currency live in config.
+	if s.demo() {
+		st.CurrentStreak, st.LongestStreak = 12, 23
+	} else if cur, best, err := s.hist.Streaks(time.Now()); err == nil {
+		st.CurrentStreak, st.LongestStreak = cur, best
+	}
 	sttHr, inRate, outRate, fx, currency := s.costRates()
 	aInRate, aOutRate := s.assistTokenRates(inRate, outRate)
 	st.Currency = currency

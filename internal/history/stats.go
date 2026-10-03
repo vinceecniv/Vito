@@ -52,8 +52,13 @@ type Stats struct {
 	// SpokenWPM is how fast you speak while dictating: words over recording
 	// time. AvgWords is the length of a typical dictation. Both come from the
 	// permanent day sums, so they cover any period.
-	SpokenWPM int     `json:"spoken_wpm"`
-	AvgWords  float64 `json:"avg_words"`
+	SpokenWPM int `json:"spoken_wpm"`
+
+	// The streak you are on and the longest ever (see Store.Streaks); filled in
+	// by the server, whatever the period.
+	CurrentStreak int64   `json:"current_streak"`
+	LongestStreak int64   `json:"longest_streak"`
+	AvgWords      float64 `json:"avg_words"`
 	// Insights need the individual dictations, so they reach back only as far
 	// as the history does.
 	Insights Insights `json:"insights"`

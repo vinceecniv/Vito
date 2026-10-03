@@ -49,3 +49,35 @@ func TestLongestStreak(t *testing.T) {
 		}
 	}
 }
+
+func TestCurrentStreak(t *testing.T) {
+	monday := time.Date(2026, 10, 19, 0, 0, 0, 0, time.Local)
+	on := func(offsets ...int) []time.Time {
+		var out []time.Time
+		for _, o := range offsets {
+			out = append(out, monday.AddDate(0, 0, o))
+		}
+		return out
+	}
+	cases := []struct {
+		name  string
+		days  []time.Time
+		today int
+		want  int64
+	}{
+		{"nothing", nil, 0, 0},
+		{"dictated today", on(0, 1, 2), 2, 3},
+		// Today isn't over: the streak up to yesterday still stands.
+		{"not yet today", on(0, 1, 2), 3, 3},
+		// A working week, and Saturday and Sunday off: still alive on Monday.
+		{"weekend forgiven", on(0, 1, 2, 3, 4), 7, 5},
+		// Friday was the last day; by Tuesday three days are missed.
+		{"long weekend broke it", on(0, 1, 2, 3, 4), 8, 0},
+		{"broken earlier, going again", on(0, 1, 5, 6, 7, 8), 8, 4},
+	}
+	for _, c := range cases {
+		if got := currentStreak(c.days, monday.AddDate(0, 0, c.today)); got != c.want {
+			t.Errorf("%s: got %d, want %d", c.name, got, c.want)
+		}
+	}
+}

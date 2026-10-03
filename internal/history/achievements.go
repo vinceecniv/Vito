@@ -123,6 +123,84 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 	return st, nil
 }
 
+// Streaks returns the streak you are on now and the longest one ever, by the
+// same rule as the streak achievements. Today counts as kept until it is over,
+// so a streak doesn't look broken in the morning before the first dictation.
+func (s *Store) Streaks(now time.Time) (current, longest int64, err error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	rows, err := s.db.Query(`SELECT day FROM day_stats WHERE words > 0 OR uploads > 0 ORDER BY day`)
+	if err != nil {
+		return 0, 0, err
+	}
+	defer rows.Close()
+	var active []time.Time
+	for rows.Next() {
+		var ds string
+		if err := rows.Scan(&ds); err != nil {
+			return 0, 0, err
+		}
+		if d, err := time.ParseInLocation("2006-01-02", ds, time.Local); err == nil {
+			active = append(active, d)
+		}
+	}
+	if err := rows.Err(); err != nil {
+		return 0, 0, err
+	}
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
+	return currentStreak(active, today), longestStreak(active), nil
+}
+
+// currentStreak is the streak that ends on the last active day and still holds
+// today: walked like longestStreak, with today counted as active (it isn't
+// over yet), and measured up to the last day you actually dictated.
+func currentStreak(active []time.Time, today time.Time) int64 {
+	if len(active) == 0 {
+		return 0
+	}
+	first := active[0]
+	n := daysBetween(first, today) + 1
+	if n < 1 {
+		return 0
+	}
+	on := make([]bool, n)
+	for _, d := range active {
+		if i := daysBetween(first, d); i >= 0 && i < n {
+			on[i] = true
+		}
+	}
+	on[n-1] = true
+	missed := func(from, to int) int {
+		c := 0
+		for i := from; i <= to; i++ {
+			if !on[i] {
+				c++
+			}
+		}
+		return c
+	}
+	start := 0
+	for t := range on {
+		for start <= t && !on[start] {
+			start++
+		}
+		for start <= t && missed(max(start, t-6), t) > streakMissesPerWeek {
+			start++
+			for start <= t && !on[start] {
+				start++
+			}
+		}
+	}
+	last := daysBetween(first, active[len(active)-1])
+	if last >= n {
+		last = n - 1
+	}
+	if start > last {
+		return 0
+	}
+	return int64(last - start + 1)
+}
+
 // streakMissesPerWeek is how many days in any 7 a streak may skip and survive.
 // Two, so a working week keeps a streak alive: someone who dictates Monday to
 // Friday would otherwise never get past five days. Three days off in a row — a
