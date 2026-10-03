@@ -119,7 +119,6 @@
      rests again — a continuous pulse in the corner of your eye is tiring. */
   @keyframes pipfade { 0%,62% { opacity:1; } 78% { opacity:.18; } 94%,100% { opacity:1; } }
   @media (prefers-reduced-motion:reduce){ .side-pip.active .pip-ico::after { animation:none; } }
-  .side-bottom { margin-top:auto; display:flex; flex-direction:column; gap:12px; padding:0 4px; }
   .pill { display:inline-flex; align-items:center; gap:8px; align-self:flex-start;
     padding:5px 12px; border-radius:99px; background:var(--input-bg); font-size:12px; color:var(--text2); }
   :root[data-theme="dark"] .pill { background:#262031; }
@@ -151,6 +150,9 @@
   .rs-pop .rs-foot button { background:none; border:none; padding:0; cursor:pointer; color:var(--accent);
     font-size:12px; font-weight:600; }
   .rs-pop .rs-foot button:hover { text-decoration:underline; }
+  /* The dictation state (idle, recording, processing) sits beside the live
+     transcript title, where the dictating happens. */
+  #transcript-card h2 #statuspill { margin-left:10px; font-size:11.5px; }
   .pill .dot { width:8px; height:8px; border-radius:99px; background:var(--text3); }
   .pill.recording .dot { background:var(--coral); animation:pulse 1s infinite; }
   .pill.processing .dot { background:var(--violet); animation:pulse 1.6s infinite; }
@@ -386,7 +388,6 @@
     .side-pip { display:flex; order:2; width:40px; height:40px; padding:0; margin:0;
       gap:0; justify-content:center; flex:0 0 auto; }
     .side-pip > span:last-child { display:none; }
-    .side-bottom { display:flex; order:1; width:auto; margin:0 0 0 auto; padding:0; } /* opname-indicator always visible */
     .sidebar.open .nav-item { display:flex; }
     .content { padding:20px 16px; max-width:100%; }
     .grid-2 { grid-template-columns:1fr; }
@@ -1373,9 +1374,6 @@
     <button class="side-pip" id="side-pip" data-help="pip" aria-label="Show the live transcript in its own window (always on top)">
       <span class="pip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1" fill="currentColor" stroke="none"/></svg></span>
       <span>Detached window</span></button>
-    <div class="side-bottom">
-      <span class="pill" id="statuspill"><span class="dot"></span><span id="statuslbl">idle</span></span>
-    </div>
   </aside>
 
   <main class="content">
@@ -1448,7 +1446,7 @@
           <div class="weekwrap" id="weekchart"></div>
         </div>
         <div class="card" id="transcript-card">
-          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 11h12M4 16h8"/></svg><span>Live transcript</span>
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 11h12M4 16h8"/></svg><span>Live transcript</span><span class="pill" id="statuspill"><span class="dot"></span><span id="statuslbl">idle</span></span>
             <span class="h2-btns">
               <button class="h2-btn hover-only" id="btn-play-audio" data-tip-text="Play the recording of this dictation" aria-label="Play recording" hidden></button>
               <button class="h2-btn hover-only" id="btn-upload" data-tip-text="Upload an audio file and have it transcribed" aria-label="Upload audio file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9m0 0 4 4m-4-4-4 4"/><path d="M5 5h14"/></svg></button>
