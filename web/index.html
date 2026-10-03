@@ -1377,7 +1377,7 @@
     <button class="hamburger" id="hamburger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <button class="nav-item active" data-tab="status">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>
-      Status</button>
+      Dashboard</button>
     <button class="nav-item" data-tab="history">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
       History</button>
@@ -1408,7 +1408,7 @@
     <!-- STATUS -->
     <section id="tab-status" class="active">
       <div class="page-head">
-        <div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg></span><h1>Status</h1></div><div class="sub">Overview and live dictation</div></div>
+        <div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg></span><h1>Dashboard</h1></div><div class="sub">Overview and live dictation</div></div>
         <div class="ph-right">
           <input type="hidden" id="stat-period" value="28">
           <div class="flagsel period-sel" id="statperiod-sel">
@@ -2066,6 +2066,7 @@ const TR = { nl: {
   "free":"gratis",
   "(often none for a local server)":"(vaak geen voor een lokale server)",
   "Status":"Status",
+  "Dashboard":"Dashboard",
   "Settings":"Instellingen",
   "Dictionary":"Woordenboek",
   "History":"Geschiedenis",
@@ -2462,7 +2463,7 @@ const TR = { nl: {
   "Detached window (always on top)":"Los venster (altijd bovenop)",
   "Close detached window":"Los venster sluiten",
   "Your browser doesn't support detached windows (PiP).":"Je browser ondersteunt losse vensters (PiP) niet.",
-  "Click the 'Detached window' button on the Status page to pop out the transcript.":"Klik op de knop 'Los venster' op de statuspagina om de transcriptie los te tonen.",
+  "Click the 'Detached window' button on the Dashboard to pop out the transcript.":"Klik op de knop 'Los venster' op het dashboard om de transcriptie los te tonen.",
   "Couldn't open the detached window.":"Kon het losse venster niet openen.",
   "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.":"Keyterms worden naar de spraakherkenning gestuurd als je dat in Instellingen aanzet. Dit staat los van de correcties hierboven — die worden altijd op elke dictatie toegepast.",
   "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.":"Correcties worden altijd toegepast, ongeacht de keyterms-instelling. Tip: houd in de Geschiedenis je muis boven een woord en klik erop om daar snel een correctie voor toe te voegen.",
@@ -4535,7 +4536,7 @@ async function togglePip(fromTray){
   } catch (err) {
     document.title = restoreTitle;
     // Opening requires a user gesture; a tray request without one lands here.
-    toast(fromTray ? t("Click the 'Detached window' button on the Status page to pop out the transcript.") : t("Couldn't open the detached window."), fromTray ? "info" : "err");
+    toast(fromTray ? t("Click the 'Detached window' button on the Dashboard to pop out the transcript.") : t("Couldn't open the detached window."), fromTray ? "info" : "err");
     pipWin = null; return;
   }
   // The browser commits the PiP's toplevel window title from our <title> once,
