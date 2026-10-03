@@ -5146,10 +5146,11 @@ const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences
 const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card" };
 const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud","quicksettings"];
 // The widths, in cells, each card can be set to from its menu — where a choice
-// makes sense. The cards with a chart in them can go up to three; the calendar
-// and quick settings are too cramped in one; the transcript always spans the
-// row. Until you choose, a card in LAYOUT_SPAN2 is two cells and any other one.
-const LAYOUT_WIDTHS = { words:[1,2,3], spokenwpm:[1,2,3], chart:[1,2,3], wordcloud:[1,2,3], achievements:[1,2,3],
+// makes sense. The cards with a chart in them can go up to three; the words
+// chart, the calendar and quick settings are too cramped in one; the
+// transcript always spans the row. Until you choose, a card in LAYOUT_SPAN2 is
+// two cells and any other one.
+const LAYOUT_WIDTHS = { words:[1,2,3], spokenwpm:[1,2,3], chart:[2,3], wordcloud:[1,2,3], achievements:[1,2,3],
   rhythm:[2,3], quicksettings:[2,3], transcript:[] };
 const widthsFor = (k) => LAYOUT_WIDTHS[k] || [1, 2];
 function widthOf(k){
