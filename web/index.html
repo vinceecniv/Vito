@@ -6521,8 +6521,9 @@ async function loadStats(){
   const n = st.week.length, dense = unit !== "hour" && n > 14;
   const step = dense ? Math.ceil(n / 9) : 1;
   const wrap = $("weekchart");
-  wrap.classList.toggle("dense", dense);
-  wrap.style.gap = !dense ? "" : n > 40 ? "2px" : n > 20 ? "3px" : "5px";
+  // Thin bars, hours included, get the smaller radius; the gap and widths
+  // come from pinBarWidths.
+  wrap.classList.toggle("dense", n > 14);
   wrap.innerHTML = st.week.map((d,i)=>{
     const shown = i % step === 0;
     if (isPh(d)) {
@@ -6547,19 +6548,27 @@ async function loadStats(){
     else { col.onmouseenter=hideChartTip; } // a time unit with 0 words gets no tooltip
   });
 }
-// Flex hands each column a fractional width, and on a non-integer device pixel
-// ratio those rasterise to visibly different bar widths — with two dozen thin
-// bars, that shows. Every bar is pinned to the same whole number of pixels
-// (the narrowest column's, less one), which puts the remainder in the gaps,
-// where it doesn't read as uneven. The card can change width afterwards — its
-// width setting, a drag, the window — so this runs again whenever it does.
+// The browser snaps each bar's left and right edge to the screen's pixels on
+// its own, so with columns of a fractional width — a non-integer display scale,
+// the interface zoom — some thin bars come out a pixel narrower than others.
+// The chart is therefore laid out in device pixels: one whole-pixel width for
+// every column, one whole-pixel gap, the leftover split to centre the row.
+// Every column then starts at the same fraction of a pixel and rounds alike.
+// The card can change width afterwards — its width setting, a drag, the
+// window — so this runs again whenever it does.
 function pinBarWidths(){
-  const cols = [...document.querySelectorAll("#weekchart .weekcol")];
-  if (!cols.length) return;
-  const z = uiZoom(), min = Math.min(...cols.map(c => c.getBoundingClientRect().width));
-  if (!min) return; // not laid out (the card is hidden); the observer calls again once it is
-  const w = Math.max(2, Math.floor(min / z) - 1);
-  cols.forEach(c => { const b = c.querySelector(".bar"); if (b) b.style.width = w + "px"; });
+  const wrap = $("weekchart");
+  const cols = wrap ? [...wrap.querySelectorAll(".weekcol")] : [];
+  const n = cols.length, W = wrap ? wrap.clientWidth : 0;
+  if (!n || !W) return; // not laid out (the card is hidden); the observer calls again once it is
+  const k = (window.devicePixelRatio || 1) * uiZoom(); // device pixels per CSS pixel
+  const gapCss = n > 40 ? 2 : n > 20 ? 3 : n > 14 ? 5 : 10;
+  const D = Math.floor(W * k), g = Math.max(1, Math.round(gapCss * k));
+  const b = Math.max(1, Math.floor((D - g * (n - 1)) / n));
+  const left = Math.floor((D - b * n - g * (n - 1)) / 2);
+  wrap.style.gap = g / k + "px";
+  wrap.style.paddingLeft = left / k + "px";
+  cols.forEach(c => { c.style.flex = "none"; c.style.width = b / k + "px"; const bar = c.querySelector(".bar"); if (bar) bar.style.width = ""; });
 }
 if (window.ResizeObserver) new ResizeObserver(() => pinBarWidths()).observe($("weekchart"));
 // lastChartKey identifies which set of bars is on screen; when it changes the
