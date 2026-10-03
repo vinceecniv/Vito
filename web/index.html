@@ -4790,19 +4790,38 @@ const MASCOT_CSS = `
 @keyframes vmSingHead{0%,100%{transform:rotate(-9deg) translateY(-2px)} 50%{transform:rotate(-3deg) translateY(1px)}}
 @keyframes vmSingHair{0%{transform:scaleY(.85)} 100%{transform:scaleY(1.2)}}
 @keyframes vmSong{0%{transform:translate(0,0) rotate(-15deg) scale(.6);opacity:0} 15%{opacity:1} 100%{transform:translate(var(--bx),var(--by)) rotate(15deg) scale(1.1);opacity:0}}
-/* a pirouette: halfway round he shows his back, with a wind-up key turning in it */
+/* a pirouette: halfway round he shows his back, with a hatch open on the gears inside */
 .vmascot[data-pose="spin"] .vm-body{animation:vmSpin 3s ease-in-out 1}
 .vmascot[data-pose="spin"] .vm-shadow{animation:vmSpinSh 3s ease-in-out 1}
 .vmascot[data-pose="spin"] .vm-face{animation:vmFront 3s linear 1}
 .vmascot[data-pose="spin"] .vm-back{display:inline;opacity:0;animation:vmRear 3s linear 1}
-.vmascot[data-pose="spin"] .vm-key-bow{transform-box:fill-box;transform-origin:center;animation:vmKey .45s linear infinite}
+.vmascot[data-pose="spin"] .vm-gear{transform-box:fill-box;transform-origin:center;animation:vmGear 1.4s linear infinite}
+.vmascot[data-pose="spin"] .vm-gear.ccw{animation-name:vmGearBack;animation-duration:1.05s}
+.vmascot[data-pose="spin"] .vm-gear.small{animation-duration:.8s}
 @keyframes vmSpin{0%{transform:translateY(0) scaleX(1)} 8%{transform:translateY(-6px) scaleX(.6)} 16%{transform:translateY(-9px) scaleX(0)}
   26%{transform:translateY(-4px) scaleX(-1)} 32%,62%{transform:translateY(0) scaleX(-1)} 70%{transform:translateY(-6px) scaleX(-.5)}
   76%{transform:translateY(-9px) scaleX(0)} 86%{transform:translateY(-4px) scaleX(1)} 100%{transform:translateY(0) scaleX(1)}}
 @keyframes vmSpinSh{0%,32%,62%,100%{transform:scale(1)} 16%,76%{transform:scale(.7)}}
 @keyframes vmFront{0%,15.9%{opacity:1} 16%,75.9%{opacity:0} 76%,100%{opacity:1}}
 @keyframes vmRear{0%,15.9%{opacity:0} 16%,75.9%{opacity:1} 76%,100%{opacity:0}}
-@keyframes vmKey{0%{transform:scaleX(1)} 50%{transform:scaleX(-1)} 100%{transform:scaleX(1)}}
+@keyframes vmGear{to{transform:rotate(360deg)}}
+@keyframes vmGearBack{to{transform:rotate(-360deg)}}
+.vmascot .vm-tongue,.vmascot .vm-flat{display:none}
+/* cross-eyed, tongue out */
+.vmascot[data-pose="cross"] .vm-eye-l .vm-pupil{transform:translate(4.6px,2px)}
+.vmascot[data-pose="cross"] .vm-eye-r .vm-pupil{transform:translate(-4.6px,2px)}
+.vmascot[data-pose="cross"] .vm-tongue{display:inline;transform-box:fill-box;transform-origin:center top;animation:vmTongue .5s ease-in-out 3 alternate}
+.vmascot[data-pose="cross"] .vm-tilt{animation:vmWobble .6s ease-in-out 3}
+@keyframes vmTongue{0%{transform:scaleY(.6)} 100%{transform:scaleY(1.1)}}
+@keyframes vmWobble{0%,100%{transform:rotate(0)} 25%{transform:rotate(-4deg)} 75%{transform:rotate(4deg)}}
+/* rolling the eyes: round they go, one brow up, a flat mouth */
+.vmascot[data-pose="roll"] .vm-pupil{animation:vmRoll 1.3s ease-in-out 1 .15s}
+.vmascot[data-pose="roll"] .vm-smile{display:none}
+.vmascot[data-pose="roll"] .vm-flat,.vmascot[data-pose="roll"] .vm-brows{display:inline}
+.vmascot[data-pose="roll"] .vm-brows path:last-child{transform:translateY(-3px)}
+.vmascot[data-pose="roll"] .vm-tilt{transform:rotate(-4deg)}
+@keyframes vmRoll{0%,100%{transform:translate(0,0)} 15%{transform:translate(-3.8px,0)} 35%{transform:translate(-2.7px,-3.8px)}
+  50%{transform:translate(0,-4.6px)} 65%{transform:translate(2.7px,-3.8px)} 82%{transform:translate(3.8px,0)}}
 @media (prefers-reduced-motion: reduce){
   .vmascot .vm-body,.vmascot .vm-shadow,.vmascot .vm-hair rect,.vmascot .vm-zzz text,.vmascot .vm-sweat path,.vmascot .vm-sweat2 path{animation:none}
 }`;
@@ -4820,6 +4839,16 @@ const VM_SHAPE = {
     <ellipse cx="35" cy="58" rx="12" ry="5" fill="#fff" opacity=".38" transform="rotate(-8 35 58)"/>`,
   face: "translate(60 70) scale(.85) translate(-60 -74)", shadow: 22,
 };
+// A gear for the hatch in Vito's back: n teeth around (cx, cy), outer radius r.
+function vmGear(cx, cy, r, n, fill, cls){
+  const ri = r * .74, pts = [];
+  for (let i = 0; i < n; i++) {
+    const a = i * 2 * Math.PI / n, w = Math.PI / n;
+    [[a - w * .55, ri], [a - w * .3, r], [a + w * .3, r], [a + w * .55, ri]]
+      .forEach(([t, d]) => pts.push((cx + Math.cos(t) * d).toFixed(2) + " " + (cy + Math.sin(t) * d).toFixed(2)));
+  }
+  return `<g class="vm-gear ${cls}"><path d="M${pts.join(" L")} Z" fill="${fill}"/><circle cx="${cx}" cy="${cy}" r="${(r * .28).toFixed(2)}" fill="#2B2440"/></g>`;
+}
 // Twelve bits of confetti in a ring, and the ring itself, for the party act.
 function vmBurstSVG(){
   const cols = ["#FF6B5E", "#FFC94D", "#4ADE80", "#38BDF8", "#A78BFA", "#F472B6"];
@@ -4842,6 +4871,7 @@ function mascotSVG(){
   <defs>
     <radialGradient id="${u}b" gradientUnits="userSpaceOnUse" cx="44" cy="46" r="72">
       <stop offset="0" stop-color="#FF9A8E"/><stop offset=".38" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/></radialGradient>
+    <clipPath id="${u}c"><circle cx="60" cy="76" r="16"/></clipPath>
     <linearGradient id="${u}h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF7A6B"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient>
   </defs>
   <ellipse class="vm-shadow" cx="60" cy="123" rx="${sh.shadow}" ry="4.5" fill="#2B2440" opacity=".14"/>
@@ -4852,9 +4882,17 @@ function mascotSVG(){
     <g class="vm-back">
       <g transform="rotate(-8 77 92)"><rect x="70" y="87" width="14" height="10" rx="1.5" fill="#fff" opacity=".92"/>
         <path d="M73 90.5h8M73 93.5h5" stroke="#A78BFA" stroke-width="1.1" stroke-linecap="round"/></g>
-      <rect x="57" y="72" width="6" height="12" rx="2" fill="#C99A1E"/>
-      <g class="vm-key-bow"><path d="M60 74 C46 56 30 62 35 74 C30 86 46 92 60 74 C74 92 90 86 85 74 C90 62 74 56 60 74 Z" fill="#FFC94D" stroke="#C99A1E" stroke-width="1.8" stroke-linejoin="round"/>
-        <circle cx="44" cy="74" r="3.5" fill="#C99A1E"/><circle cx="76" cy="74" r="3.5" fill="#C99A1E"/></g>
+      <g clip-path="url(#${u}c)">
+        <circle cx="60" cy="76" r="17" fill="#2B2440"/>
+        ${vmGear(53, 71, 9.5, 10, "#FFC94D", "")}
+        ${vmGear(67.5, 79.5, 7.5, 8, "#D6DCE6", "ccw")}
+        ${vmGear(52.5, 87, 5.5, 6, "#F59E0B", "ccw small")}
+        ${vmGear(70, 66.5, 4.5, 6, "#A7F3D0", "small")}
+      </g>
+      <circle cx="60" cy="76" r="17" fill="none" stroke="#E9DDFF" stroke-width="2.4"/>
+      <circle cx="60" cy="76" r="17" fill="none" stroke="#2B2440" stroke-width=".8" opacity=".3" stroke-dasharray="1.5 3"/>
+      <path d="M43.5 66 Q30 62 28 76 Q30 90 43.5 86 Q39 76 43.5 66 Z" fill="#EFE6FF" stroke="#C4B5FD" stroke-width="1.4" stroke-linejoin="round"/>
+      <circle cx="33" cy="76" r="1.6" fill="#A78BFA"/>
     </g>
     <g class="vm-face" transform="${sh.face}">
     <ellipse class="vm-cheek" cx="33" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/><ellipse class="vm-cheek" cx="87" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/>
@@ -4865,6 +4903,8 @@ function mascotSVG(){
     <g class="vm-eyes-shut" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"><path d="M38 68 Q45 73 52 68"/><path d="M68 68 Q75 73 82 68"/></g>
     <g class="vm-eyes-x" stroke="#2B2440" stroke-width="3" stroke-linecap="round"><path d="M40 63l10 10M50 63l-10 10M70 63l10 10M80 63l-10 10"/></g>
     <path class="vm-smile" d="M51 88 Q60 96 69 88" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"/>
+    <path class="vm-tongue" d="M55.5 90.5 q0 8 4.5 8 q4.5 0 4.5 -8 z" fill="#FF7A93" stroke="#E0567A" stroke-width="1"/>
+    <path class="vm-flat" d="M52 90 H68" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"/>
     <path class="vm-wavy" d="M49 90 q3.7 -4 7.3 0 t7.3 0 t7.3 0" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"/>
     <g class="vm-mouth-open"><path d="M49 86 Q60 88 71 86 Q70 101 60 101 Q50 101 49 86 Z" fill="#3A1730"/><ellipse cx="60" cy="97" rx="5.5" ry="3" fill="#FF7A93"/></g>
     <path class="vm-grin" d="M48 86 Q60 101 72 86 Z" fill="#3A1730" stroke="#3A1730" stroke-width="2" stroke-linejoin="round"/>
@@ -4954,7 +4994,7 @@ function vmFlash(kind, ms){
 // Gestures last 1.5 s; the acts below (in ms) a few seconds. A third of the
 // time it is an act, and after a few quiet minutes mostly a yawn.
 const VM_GESTURES = ["look-l", "look-r", "wink", "hop", "tilt"];
-const VM_ACTS = { bounce: 2300, eat: 3500, bubbles: 3900, yawn: 2700, hum: 4000, party: 3100, sing: 4000, spin: 3100 };
+const VM_ACTS = { bounce: 2300, eat: 3500, bubbles: 3900, yawn: 2700, hum: 4000, party: 3100, sing: 4000, spin: 3100, cross: 2000, roll: 1800 };
 let vmPoseTimer = null;
 function vmPose(name){
   clearTimeout(vmPoseTimer);
