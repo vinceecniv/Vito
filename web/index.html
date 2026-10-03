@@ -4920,7 +4920,7 @@ function vmBurstSVG(){
 function mascotSVG(){
   const u = "vm" + (++vmSeq), sh = VM_SHAPE, w = sh.hairW;
   const hair = sh.hair
-    .map(([x, h, k]) => `<rect x="${x - w / 2}" y="${sh.hairBase - h}" width="${w}" height="${h + 8}" rx="${w / 2}" stroke="#fff" stroke-width="1.6" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
+    .map(([x, h, k]) => `<rect x="${x - w / 2}" y="${sh.hairBase - h}" width="${w}" height="${h + 8}" rx="${w / 2}" stroke="#fff" stroke-opacity=".35" stroke-width="1.6" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
   const eye = (cx, side) => `<g class="vm-eye vm-eye-${side}">` +
     `<ellipse cx="${cx}" cy="68" rx="9" ry="11" fill="#fff"/>` +
     `<g class="vm-pupil"><circle cx="${cx}" cy="69" r="5.6" fill="#2B2440"/><circle cx="${cx + 2}" cy="66.5" r="1.9" fill="#fff"/></g>` +
