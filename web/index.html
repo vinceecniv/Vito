@@ -334,6 +334,11 @@
   .card-menu-btn { position:absolute; top:6px; right:6px; z-index:3; width:24px; height:24px; padding:0; border-radius:7px;
     border:1px solid var(--card-border); background:var(--card); color:var(--text3); display:flex; align-items:center; justify-content:center;
     cursor:var(--cur-hand); opacity:0; transition:opacity .15s, color .12s, border-color .12s; }
+  .card-scope { position:absolute; top:12px; right:14px; z-index:2; pointer-events:none; font-size:10.5px; font-weight:600;
+    color:var(--text3); background:var(--card); border:1px solid var(--card-border); border-radius:999px; padding:2px 8px;
+    transition:opacity .15s; }
+  /* the menu button takes the corner while you point at the card */
+  .statgrid > .card:hover > .card-scope { opacity:0; }
   .statgrid > .card:hover > .card-menu-btn, .card-menu-btn:focus-visible, .card-menu-btn[aria-expanded="true"] { opacity:1; }
   .card-menu-btn:hover { color:var(--text); border-color:var(--accent); }
   .card-menu-btn svg { width:14px; height:14px; }
@@ -5900,7 +5905,7 @@ function applyStatusLayout(){
     if (LAYOUT_STATIC[el.dataset.key]) holder.appendChild(el); else el.remove();
   }
   grid.hidden = i === 0;
-  [...grid.children].forEach(ensureCardMenuBtn);
+  [...grid.children].forEach(el => { ensureCardMenuBtn(el); ensureScopeBadge(el); });
   renderHiddenCards();
 }
 
@@ -5909,6 +5914,22 @@ function applyStatusLayout(){
 const ICON_DOTS = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>';
 const ICON_SPARK_BG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 3 5-7 4 4"/><path d="M3 21h18"/></svg>';
 const ICON_RESET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
+// Most cards follow the period picked at the top. The few that don't say
+// what they cover instead, in a small label in their corner: the calendar's
+// grid is always the last 26 weeks, achievements count all time. Cards
+// rebuild their contents, so placing them puts the label back.
+const CARD_SCOPE = {
+  rhythm: () => { try { return new Intl.NumberFormat(numLoc(), { style:"unit", unit:"week", unitDisplay:"narrow" }).format(26); } catch { return "26"; } },
+  achievements: () => t("All time"),
+};
+function ensureScopeBadge(el){
+  const f = CARD_SCOPE[el.dataset.key];
+  if (!f || el.querySelector(":scope > .card-scope")) return;
+  const b = document.createElement("span");
+  b.className = "card-scope";
+  b.textContent = f();
+  el.appendChild(b);
+}
 function ensureCardMenuBtn(el){
   if (!el || el.querySelector(":scope > .card-menu-btn")) return;
   const k = el.dataset.key;
