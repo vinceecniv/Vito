@@ -4775,9 +4775,11 @@ const MASCOT_CSS = `
 .vmascot .vm-shadow{transform-origin:60px 123px;animation:vmShadow 3.2s ease-in-out infinite}
 @keyframes vmBreath{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975)}}
 @keyframes vmShadow{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-.vmascot .vm-lid{transform-box:fill-box;transform-origin:center top;transform:scaleY(var(--lid,0));animation:vmBlink 5.3s infinite}
-.vmascot .vm-eye-r .vm-lid{animation-delay:.04s}
-@keyframes vmBlink{0%,93%,100%{transform:scaleY(var(--lid,0))}95%,97%{transform:scaleY(1)}}
+/* A blink squeezes the whole eye to a line, cartoon-style: a lid in the face
+   colour never quite matched the gradient behind it. */
+.vmascot .vm-eye{transform-box:fill-box;transform-origin:center;animation:vmBlink 5.3s infinite}
+.vmascot .vm-eye-r{animation-delay:.04s}
+@keyframes vmBlink{0%,93%,100%{transform:scaleY(1)}95%,97%{transform:scaleY(.08)}}
 .vmascot .vm-pupil{transition:transform .35s ease}
 .vmascot .vm-hair rect{transform-box:fill-box;transform-origin:center bottom;animation:vmHair 2.6s ease-in-out infinite}
 .vmascot .vm-hair rect:nth-child(2){animation-delay:.15s}.vmascot .vm-hair rect:nth-child(3){animation-delay:.3s}
@@ -5041,8 +5043,7 @@ function mascotSVG(){
     .map(([x, h, k]) => `<rect x="${x - w / 2}" y="${sh.hairBase - h}" width="${w}" height="${h + 8}" rx="${w / 2}" stroke="#fff" stroke-opacity=".35" stroke-width="1.6" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
   const eye = (cx, side) => `<g class="vm-eye vm-eye-${side}">` +
     `<ellipse cx="${cx}" cy="68" rx="9" ry="11" fill="#fff"/>` +
-    `<g class="vm-pupil"><circle cx="${cx}" cy="69" r="5.6" fill="#2B2440"/><circle cx="${cx + 2}" cy="66.5" r="1.9" fill="#fff"/></g>` +
-    `<rect class="vm-lid" x="${cx - 10}" y="56" width="20" height="24" fill="url(#${u}b)"/></g>`;
+    `<g class="vm-pupil"><circle cx="${cx}" cy="69" r="5.6" fill="#2B2440"/><circle cx="${cx + 2}" cy="66.5" r="1.9" fill="#fff"/></g></g>`;
   return `<svg viewBox="0 0 120 130" aria-hidden="true">
   <defs>
     <radialGradient id="${u}b" gradientUnits="userSpaceOnUse" cx="44" cy="46" r="72">
@@ -6196,10 +6197,9 @@ function updateCardHTML(){
       (rel.notes ? `<button class="linkbtn" id="upd-notes">${t("What's new")}</button>` : "") +
       `</div>`;
   }
-  // News gets Matrix-style rain behind it — and a development build too, so
-  // the effect can be seen without waiting for a release — unless switched
-  // off in the card's menu.
-  const rain = (has || current === "dev") && loadLayout().matrix !== false;
+  // News gets Matrix-style rain behind it, unless switched off in the card's
+  // menu.
+  const rain = has && loadLayout().matrix !== false;
   return (rain ? `<canvas class="upd-matrix" aria-hidden="true"></canvas>` : "") +
     `<div class="chip ${has ? "coral" : "violet"}">${has ? ICON_UPDATE : ICON_CHECKMARK}</div>` +
     `<div class="num upd-ver">${current}</div><div class="lbl">${t("version")}</div>` +
