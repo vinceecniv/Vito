@@ -671,7 +671,12 @@
   .tgl.disabled { opacity:.45; cursor:var(--cur-arrow); }
   /* Version card: same shell as a statistic card, different contents. */
   .card.stat .upd-ver { font-size:22px; letter-spacing:-0.01em; }
-  .upd-actions { display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
+  /* The rain sits behind the card's text, strongest on the right where the
+     text isn't. */
+  .upd-matrix { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:.55;
+    -webkit-mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 35%, #000 75%);
+            mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 35%, #000 75%); }
+  .upd-actions { position:relative; z-index:1; display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
   .linkbtn { border:0; background:none; padding:0; color:var(--accent); font-size:12px; cursor:var(--cur-hand); text-decoration:underline; text-underline-offset:2px; }
   .linkbtn:hover { color:var(--text); }
   /* Inline links in notes (About credits, tips) — the browser default blue is
@@ -6077,17 +6082,81 @@ function updateCardHTML(){
       (rel.notes ? `<button class="linkbtn" id="upd-notes">${t("What's new")}</button>` : "") +
       `</div>`;
   }
-  return `<div class="chip ${has ? "coral" : "violet"}">${has ? ICON_UPDATE : ICON_CHECKMARK}</div>` +
+  // News gets Matrix-style rain behind it — and a development build too, so
+  // the effect can be seen without waiting for a release.
+  const rain = has || current === "dev";
+  return (rain ? `<canvas class="upd-matrix" aria-hidden="true"></canvas>` : "") +
+    `<div class="chip ${has ? "coral" : "violet"}">${has ? ICON_UPDATE : ICON_CHECKMARK}</div>` +
     `<div class="num upd-ver">${current}</div><div class="lbl">${t("version")}</div>` +
     `<div class="delta flat">${sub}</div>${btns}`;
 }
 function wireUpdateCard(el){
+  const cv = el.querySelector(".upd-matrix");
+  if (cv) matrixRain(cv, el);
   const b = el.querySelector("#upd-apply");
   if (b) b.onclick = () => applyUpdate(b);
   const o = el.querySelector("#upd-open");
   if (o) o.onclick = () => window.open((updateState.release && updateState.release.url) || updateState.repo_url, "_blank");
   const n = el.querySelector("#upd-notes");
   if (n) n.onclick = () => showReleaseNotes();
+}
+
+// Matrix rain on a canvas: columns of glyphs falling, in the logo's
+// coral-to-violet from left to right, each column's head brighter. It runs at
+// about 18 frames a second, pauses while the page is hidden, stops for good
+// once the canvas leaves the page (the card is rebuilt on every refresh), and
+// draws one still frame when reduced motion is asked for.
+const MATRIX_GLYPHS = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜ0123456789VITO";
+function matrixRain(cv, card){
+  const ctx = cv.getContext("2d"); if (!ctx) return;
+  const dpr = window.devicePixelRatio || 1, FS = 12;
+  let w = 0, h = 0, drops = [];
+  const size = () => {
+    const r = card.getBoundingClientRect(), z = uiZoom();
+    w = Math.max(1, Math.round(r.width / z)); h = Math.max(1, Math.round(r.height / z));
+    cv.width = w * dpr; cv.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const cols = Math.ceil(w / FS);
+    drops = Array.from({ length: cols }, (_, i) => drops[i] ?? -Math.random() * h / FS);
+    ctx.font = `600 ${FS}px ui-monospace, monospace`;
+  };
+  size();
+  const mix = (t) => { // coral #FF6B5E -> violet #7C3AED
+    const a = [255, 107, 94], b = [124, 58, 237];
+    return a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  };
+  const head = effectiveDark() ? "rgba(255,255,255,.95)" : "rgba(43,36,64,.85)";
+  const frame = () => {
+    // Fade what was drawn instead of clearing, so each column leaves a trail.
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = "rgba(0,0,0,.14)";
+    ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = "source-over";
+    drops.forEach((y, i) => {
+      const x = i * FS, [r, g, b] = mix(drops.length > 1 ? i / (drops.length - 1) : 0);
+      const ch = MATRIX_GLYPHS[Math.floor(Math.random() * MATRIX_GLYPHS.length)];
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillText(ch, x, (y - 1) * FS);
+      ctx.fillStyle = head; // bright on dark, ink on light
+      ctx.fillText(MATRIX_GLYPHS[Math.floor(Math.random() * MATRIX_GLYPHS.length)], x, y * FS);
+      drops[i] = y * FS > h && Math.random() > .955 ? 0 : y + 1;
+    });
+  };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    for (let i = 0; i < 40; i++) frame();
+    return;
+  }
+  let last = 0, lastW = w;
+  const tick = (now) => {
+    if (!cv.isConnected) return;
+    requestAnimationFrame(tick);
+    if (document.hidden || now - last < 55) return;
+    last = now;
+    const r = card.getBoundingClientRect();
+    if (Math.abs(r.width / uiZoom() - lastW) > 2) { size(); lastW = w; }
+    frame();
+  };
+  requestAnimationFrame(tick);
 }
 
 /* ---- out-of-credit card ---- */
