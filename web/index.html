@@ -1163,9 +1163,11 @@
   /* Quick settings card: the active hotkey, speech model, language and cleanup,
      each a shortcut to its settings section, two by two. */
   .status-tags { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
-  .card.stat.mascot-card { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:10px 14px 12px; overflow:hidden; }
-  .mascot-card .vm-slot { width:92px; height:100px; flex:none; }
-  .mascot-card .vm-dev { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin-top:8px; }
+  /* Vito fills the card from top to bottom; in a development build the test
+     buttons take the right-hand side. */
+  .card.stat.mascot-card { display:flex; align-items:stretch; gap:12px; padding:12px 14px; min-height:190px; overflow:hidden; }
+  .mascot-card .vm-slot { flex:1 1 0; min-width:0; }
+  .mascot-card .vm-dev { flex:0 1 48%; display:flex; flex-wrap:wrap; gap:4px; align-content:center; justify-content:flex-start; }
   .mascot-card .vm-dev button { font-family:inherit; font-size:10.5px; font-weight:600; line-height:1; padding:4px 7px; border-radius:7px; border:1px dashed var(--card-border); background:transparent; color:var(--text2); cursor:pointer; }
   .mascot-card .vm-dev button:hover { color:var(--text); border-style:solid; }
   .qs-card .stag { min-width:0; border-radius:10px; }
@@ -5565,14 +5567,14 @@ const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences
 // their data (renderStatCards). Some cards take two cells, the transcript a
 // whole row — and it can't be hidden, it holds Start / Stop.
 const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card", mascot:"mascot-card" };
-const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud","quicksettings"];
+const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud","quicksettings","mascot"];
 // The widths, in cells, each card can be set to from its menu — where a choice
 // makes sense. The cards with a chart in them can go up to three; the words
 // chart, the calendar and quick settings are too cramped in one; the
 // transcript always spans the row. Until you choose, a card in LAYOUT_SPAN2 is
 // two cells and any other one.
 const LAYOUT_WIDTHS = { words:[1,2,3], spokenwpm:[1,2,3], chart:[2,3], wordcloud:[1,2,3], achievements:[1,2,3],
-  rhythm:[2,3], quicksettings:[2,3], transcript:[], mascot:[1,2] };
+  rhythm:[2,3], quicksettings:[2,3], transcript:[], mascot:[1,2,3] };
 const widthsFor = (k) => LAYOUT_WIDTHS[k] || [1, 2];
 // The cards that can show their trend as a chart in the background, and the
 // ones that do until you say otherwise: words for the volume and speaking rate
