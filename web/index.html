@@ -7334,19 +7334,19 @@ $("cost-card").onclick = () => showCostInfo();
 // running round, the number in gold, a flickering flame and embers rising.
 // Only once there is a record to beat — a streak that has ended, of two days
 // or more — so a new user's first streak isn't a "record". It can be switched
-// off in the card's menu; a development build shows it unless switched off.
+// off in the card's menu. A development build shows the real state too.
 //
 // Close to it — three days or fewer from beating it — the card warms up
 // instead: an amber glow, the flame lit, and how many days are left.
 //
-// A development build shows the record; clicking the card there cycles
-// record, close and plain, so each can be seen.
-let streakDevMode = "record";
+// In a development build, clicking the card cycles record, close and back to
+// the real state, so each can be seen.
+let streakDevMode = null;
 const isDevBuild = () => !!(aboutInfo && aboutInfo.version === "dev");
 function streakState(st){
   if (loadLayout().streakFx === false) return { mode: "" };
   const cur = st.current_streak || 0, prev = st.previous_streak || 0;
-  if (isDevBuild()) return { mode: streakDevMode, left: 2 };
+  if (isDevBuild() && streakDevMode) return { mode: streakDevMode, left: 2 };
   if (prev >= 2 && cur > prev) return { mode: "record" };
   const left = prev + 1 - cur;
   if (prev >= 3 && cur >= 2 && left >= 1 && left <= 3) return { mode: "near", left };
@@ -7368,7 +7368,7 @@ function markStreakRecord(mode){
     el.dataset.devWired = "1";
     el.addEventListener("click", () => {
       if (!isDevBuild() || !lastStatsForStreak) return;
-      streakDevMode = { record: "near", near: "", "": "record" }[streakDevMode];
+      streakDevMode = { record: "near", near: null }[streakDevMode] ?? (streakDevMode === null ? "record" : null);
       loadStats();
     });
   }
