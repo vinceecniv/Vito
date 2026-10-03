@@ -394,6 +394,17 @@
     .page-head h1 { line-height:28px; }
     .ph-left { --ph-icon:48px; } /* 28 + 2 + 18, the h1 drops to 24px here */
   }
+  /* Between the phone and the sidebar there is room in the top bar for the
+     pages as tabs, so the hamburger (fiddly to use) only remains on a phone:
+     the current page with its name, the others as icons named on hover. All
+     five names don't fit in most languages, Dutch included. */
+  @media (max-width:820px) and (min-width:461px){
+    .hamburger { display:none; }
+    .nav-item, .sidebar.open .nav-item { display:flex; width:auto; order:1; flex:none; padding:8px 10px; gap:0; font-size:0; }
+    .nav-item.active { gap:7px; font-size:13px; }
+    .hamburger + .nav-item { margin-left:auto; }
+    .side-pip { margin-left:6px; }
+  }
   @media (max-width:460px){
     .statgrid { grid-template-columns:repeat(2,1fr); }
     .statgrid > .span3 { grid-column:span 2; } /* two columns: three cells is the full row */
@@ -2836,6 +2847,9 @@ function applyI18n(root = document.body){
     const raw = _orig.get(n), key = raw.trim();
     if (key) n.nodeValue = raw.replace(key, t(key));
   });
+  // In the narrow top bar the pages other than the current one are icons only;
+  // their (translated) name shows on hover.
+  document.querySelectorAll(".nav-item").forEach(b => { b.title = b.textContent.trim(); });
   root.querySelectorAll("[placeholder]").forEach(el => {
     if (el.dataset.phOrig === undefined) el.dataset.phOrig = el.getAttribute("placeholder");
     el.setAttribute("placeholder", t(el.dataset.phOrig));
