@@ -787,7 +787,7 @@
      card: the newest at the top, older ones fading out towards the bottom.
      Today's carry a coral ring. */
   .ach-bg { position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;
-    display:grid; grid-template-columns:repeat(auto-fill, 26px); grid-auto-rows:26px; gap:5px; justify-content:start; align-content:start;
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(26px, 1fr)); grid-auto-rows:26px; gap:5px; justify-items:center; align-content:start;
     padding:8px 12px 0;
     -webkit-mask-image:linear-gradient(to bottom, #000 30%, rgba(0,0,0,.3) 80%, rgba(0,0,0,.1));
             mask-image:linear-gradient(to bottom, #000 30%, rgba(0,0,0,.3) 80%, rgba(0,0,0,.1)); }
