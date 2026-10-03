@@ -329,6 +329,10 @@
   /* Card sizes in the one status grid (see applyStatusLayout): most are one
      cell, the chart, costs, calendar and word cloud two, the transcript a row. */
   .statgrid > .span2 { grid-column:span 2; }
+  /* The chart and costs cards head their title with the same icon tile as the
+     statistic cards. */
+  .card-title { display:flex; align-items:center; gap:10px; min-width:0; }
+  .card-title .chip { margin-bottom:0; flex:none; }
   .statgrid > .span-full { grid-column:1 / -1; }
   /* Dragging a card, home-screen style: the card's place stays as a dashed
      outline while a lifted copy follows the pointer. */
@@ -1409,7 +1413,7 @@
       <div id="card-holder" hidden>
         <div class="card cost-card reveal" id="cost-card">
           <div class="rowflex" style="justify-content:space-between; align-items:center;">
-            <h2 style="margin:0;">Costs</h2>
+            <div class="card-title"><div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div><h2 style="margin:0;">Costs</h2></div>
             <div class="rowflex" style="gap:8px;">
               <div class="cur-toggle"><button type="button" data-cur="eur">EUR</button><button type="button" data-cur="usd">USD</button></div>
               <button type="button" class="icon-i" id="cost-info" title="How do these costs work?" aria-label="How do these costs work?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg></button>
@@ -1427,7 +1431,7 @@
           <div class="cost-proj">≈ <b id="cost-proj">–</b> <span>per month at your current usage (last 30 days)</span></div>
         </div>
         <div class="card chart-card" id="chart-card">
-          <div class="rowflex" style="justify-content:space-between;"><h2 style="margin:0;" id="chart-title">Words per day</h2><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
+          <div class="rowflex" style="justify-content:space-between;"><div class="card-title"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></div><h2 style="margin:0;" id="chart-title">Words per day</h2></div><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
           <div class="weekwrap" id="weekchart"></div>
         </div>
         <div class="card" id="transcript-card">
