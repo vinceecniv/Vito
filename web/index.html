@@ -3936,6 +3936,25 @@ function setState(state) {
 function fmtMs(ms) { return Math.round(ms / 1e6) + " ms"; }
 // renderTimings draws a segmented bar of where time went between stop-speaking
 // and the pasted output: STT → cleanup → injection.
+// The wait after stopping over the period on screen — median, slowest 5% and
+// its trend — shown when pointing at this dictation's wait in the transcript
+// card. It used to be a card of its own; next to one dictation's figure it
+// says more.
+let latencyInfo = { med: 0, p95: 0, stt: 0, cln: 0, trend: "" };
+function latencyTipText(){
+  const L = latencyInfo;
+  if (!L.med) return "";
+  return `${t("wait after stopping")} · ${periodLabel()}: ${fmtSecs(L.med)}` +
+    (L.p95 ? ` · ${t("slowest 5%: {s}").replace("{s}", fmtSecs(L.p95))}` : "") +
+    (L.trend ? ` · ${L.trend}` : "") + " — " +
+    t("Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).")
+      .replace("{a}", fmtSecs(L.stt)).replace("{b}", fmtSecs(L.cln));
+}
+function updateLatencyTip(){
+  const w = document.querySelector("#timings .twait"); if (!w) return;
+  const tip = latencyTipText();
+  if (tip) { w.dataset.tipText = tip; w.dataset.i18nDataTipText = tip; } else delete w.dataset.tipText;
+}
 function renderTimings(tm){
   const rec = (tm.recording_ms||0)/1e6, stt = tm.stt_final_ms/1e6, cln = tm.cleanup_ms/1e6;
   const inj = Math.max(0, (tm.injected_ms - tm.stt_final_ms - tm.cleanup_ms)/1e6);
@@ -3960,6 +3979,7 @@ function renderTimings(tm){
        <span class="twait">${t("wait after speaking")} ${secs(wait)}</span>
        <span class="ttot">${t("total")} ${secs(total)}</span>
      </div>`;
+  updateLatencyTip();
 }
 
 function connectWS() {
@@ -5797,12 +5817,12 @@ loadAbout();
 // chart, the costs and the live transcript alike — and any card can be dragged
 // to any place, like icons on a phone's home screen.
 const STAT_KEYS = ["credit","words","commands",
-  "latency","cleanupfx","languages","rhythm","wordcloud","achievements","update"];
+  "cleanupfx","languages","rhythm","wordcloud","achievements","update"];
 const LAYOUT_GROUPS = [
   { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript","quicksettings","mascot"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
-  latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
+  cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
   cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings", mascot:"Vito" };
 // The fixed cards are written in the page; the statistic cards are built from
 // their data (renderStatCards). Some cards take two cells, the transcript a
@@ -7300,6 +7320,7 @@ let compareSeq = 0;
 // stopping, where less is better, a drop is green and a rise coral.
 async function compareWithPrevious(st){
   const seq = ++compareSeq, p = previousPeriod();
+  latencyInfo.trend = "";
   const clear = () => document.querySelectorAll("#statgrid .stat > .cmp:not(#cost-projection)").forEach(e => e.remove());
   if (!p) { clear(); return; }
   const key = p.from + ":" + p.to;
@@ -7318,9 +7339,17 @@ async function compareWithPrevious(st){
   const rows = [
     ["words", ...pick[main], false],
     ["commands", s => s.commands, nf, false],
-    ["latency", s => (s.insights || {}).latency_median_ms, fmtSecs, true],
   ];
   const span = rangeLabel(p.from, p.to);
+  // The wait after stopping has no card; its trend goes into the transcript
+  // card's timing tooltip. Less is better there.
+  const lb = (prev.insights || {}).latency_median_ms || 0;
+  if (lb && latencyInfo.med) {
+    const pc = Math.round((latencyInfo.med - lb) / lb * 100);
+    latencyInfo.trend = (Math.abs(pc) < 1 ? "= 0%" : (pc > 0 ? "▲ " : "▼ ") + Math.abs(pc).toLocaleString(numLoc()) + "%") +
+      ` ${t("vs previous period")} (${fmtSecs(lb)})`;
+  }
+  updateLatencyTip();
   rows.forEach(([k, get, fmt, lowerIsBetter]) => {
     const el = statEls[k]; if (!el) return;
     let c = el.querySelector(":scope > .cmp");
@@ -7369,6 +7398,8 @@ async function loadStats(){
   // The period is already shown by the dropdown, so cards don't repeat it; only
   // the genuinely extra sub-lines (per-day, wpm) stay.
   statCommands = st.commands || 0;
+  latencyInfo = { med: ins.latency_median_ms || 0, p95: ins.latency_p95_ms || 0, stt: ins.stt_median_ms || 0, cln: ins.cleanup_median_ms || 0, trend: "" };
+  updateLatencyTip();
   renderStatCards([
     // A prominent warning card that only appears when a provider is out of credit.
     { key:"credit", custom:true, cardClass:"credit-card", html:creditCardHTML, wire:wireCreditCard },
@@ -7381,10 +7412,6 @@ async function loadStats(){
     { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:st.commands, format:nf, lbl:t("Vito Assist commands"),
       tip:t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.") },
     // The insights below come from the dictations still in the history.
-    { key:"latency", cls:"coral", icon:I.time, value:ins.latency_median_ms || 0, format:fmtSecs, lbl:t("wait after stopping"),
-      sub: ins.latency_p95_ms ? t("slowest 5%: {s}").replace("{s}", fmtSecs(ins.latency_p95_ms)) : "",
-      tip:t("Median time from stopping a dictation until the text is pasted. Speech recognition {a}, AI cleanup {b} (medians).")
-        .replace("{a}", fmtSecs(ins.stt_median_ms || 0)).replace("{b}", fmtSecs(ins.cleanup_median_ms || 0)) },
     { key:"cleanupfx", cls:"violet", icon:I.sent, value: ins.cleanup_runs ? Math.round(ins.cleanup_changed / ins.cleanup_runs * 100) : 0,
       format:n => ins.cleanup_runs ? n + "%" : "–", lbl:t("changed by AI cleanup"),
       sub: ins.cleanup_failed ? t("{n} failed").replace("{n}", nf(ins.cleanup_failed))
