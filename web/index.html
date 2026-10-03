@@ -272,26 +272,16 @@
     padding:0; border:none; border-radius:8px; background:none; color:var(--text3); cursor:pointer; }
   .icon-i svg { width:17px; height:17px; }
   .icon-i:hover { color:var(--accent); background:var(--nav-active-bg); }
-  /* cost card */
-  /* The currency toggle only appears on hover; visibility (not display) keeps its
-     box reserved so the card doesn't shift or jump in height when it shows. The
-     info "i" sits to its right so it stays anchored. */
-  .cost-card .cur-toggle { visibility:hidden; display:inline-flex; border:1px solid var(--card-border); border-radius:9px; overflow:hidden; }
+  /* cost card: one cell like the other statistics. The breakdown and the
+     monthly projection live in its tooltip (loadCosts). The currency toggle
+     only appears on hover; visibility (not display) keeps its box reserved so
+     the card doesn't shift when it shows. */
+  .cost-top { display:flex; justify-content:space-between; align-items:flex-start; gap:6px; }
+  .cost-tools { display:flex; align-items:center; gap:4px; }
+  .cost-card .cur-toggle { visibility:hidden; display:inline-flex; border:1px solid var(--card-border); border-radius:7px; overflow:hidden; }
   .cost-card:hover .cur-toggle, .cost-card:focus-within .cur-toggle { visibility:visible; }
-  .cost-card .cur-toggle button { border:none; background:none; padding:6px 13px; font-size:12px; font-weight:600; color:var(--text3); cursor:pointer; }
+  .cost-card .cur-toggle button { border:none; background:none; padding:3px 6px; font-size:10.5px; font-weight:600; color:var(--text3); cursor:pointer; }
   .cost-card .cur-toggle button.active { background:var(--accent); color:#fff; }
-  .cost-grid { display:flex; gap:36px; align-items:flex-start; flex-wrap:wrap; margin-top:16px; }
-  .cost-big { font-family:'Baloo 2','Sora',sans-serif; font-size:32px; font-weight:700; color:var(--text); line-height:1.05; }
-  .cost-lbl { font-size:12px; color:var(--text3); margin-top:3px; }
-  .cost-break { display:flex; flex-direction:column; gap:6px; font-size:13px; color:var(--text2); padding-top:3px; }
-  .cost-break > div { display:flex; justify-content:space-between; gap:28px; min-width:230px; }
-  .cost-break > div span:last-child { font-weight:600; color:var(--text); }
-  /* The selected period's cost sits under the month's breakdown, separated by a
-     rule: it is a second view of the same spend, not a third component of the
-     month total. */
-  .cost-period { margin-top:2px; padding-top:7px; border-top:1px solid var(--card-border); color:var(--text3); }
-  .cost-proj { margin-top:16px; padding-top:13px; border-top:1px solid var(--card-border); font-size:13px; color:var(--text3); }
-  .cost-proj b { color:var(--accent); font-size:14px; }
   .h2-btns { margin-left:auto; display:flex; gap:6px; }
   .h2-btn { width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--card-border); border-radius:8px; background:none; color:var(--text3); cursor:pointer; transition:color .12s, border-color .12s, background .12s; }
   .h2-btn:hover { color:var(--accent); border-color:var(--accent); }
@@ -327,7 +317,7 @@
   .grid-2 { grid-template-columns:repeat(2,1fr); }
   .statgrid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); }
   /* Card sizes in the one status grid (see applyStatusLayout): most are one
-     cell, the chart, costs, calendar and word cloud two, the transcript a row. */
+     cell, the chart, calendar and word cloud two, the transcript a row. */
   .statgrid > .span2 { grid-column:span 2; }
   /* The chart and costs cards head their title with the same icon tile as the
      statistic cards. */
@@ -345,7 +335,6 @@
      its content and push the whole page wider than the window. Everything here
      is allowed to shrink instead. */
   .grid > *, .statgrid > *, .settings-pane > * { min-width:0; }
-  .cost-break > div { min-width:0; }
   /* Between the sidebar breakpoint and a comfortable desktop there isn't room
      for two cards side by side next to a 216px sidebar; stack them earlier
      rather than letting the row overflow. */
@@ -1411,24 +1400,12 @@
            return there when you hide them. -->
       <div class="statgrid" id="statgrid" style="margin-bottom:20px;"></div>
       <div id="card-holder" hidden>
-        <div class="card cost-card reveal" id="cost-card">
-          <div class="rowflex" style="justify-content:space-between; align-items:center;">
-            <div class="card-title"><div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div><h2 style="margin:0;">Costs</h2></div>
-            <div class="rowflex" style="gap:8px;">
-              <div class="cur-toggle"><button type="button" data-cur="eur">EUR</button><button type="button" data-cur="usd">USD</button></div>
-              <button type="button" class="icon-i" id="cost-info" title="How do these costs work?" aria-label="How do these costs work?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg></button>
-            </div>
-          </div>
-          <div class="cost-grid">
-            <div><div class="cost-big" id="cost-month-total">–</div><div class="cost-lbl">this month so far</div></div>
-            <div class="cost-break">
-              <div><span>Speech recognition</span><span id="cost-stt">–</span></div>
-              <div><span>AI cleanup</span><span id="cost-cleanup">–</span></div>
-              <div id="cost-command-row" hidden><span>Vito Assist</span><span id="cost-command">–</span></div>
-              <div class="cost-period"><span id="cost-period-lbl">–</span><span id="cost-period">–</span></div>
-            </div>
-          </div>
-          <div class="cost-proj">≈ <b id="cost-proj">–</b> <span>per month at your current usage (last 30 days)</span></div>
+        <div class="card stat cost-card reveal" id="cost-card">
+          <div class="cost-top"><div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div><div class="cost-tools"><div class="cur-toggle"><button type="button" data-cur="eur">EUR</button><button type="button" data-cur="usd">USD</button></div>
+              <button type="button" class="icon-i" id="cost-info" title="How do these costs work?" aria-label="How do these costs work?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg></button></div></div>
+          <div class="num" id="cost-month-total">–</div>
+          <div class="lbl"><span>Costs</span> · <span>this month so far</span></div>
+          <div class="delta flat cost-period"><span id="cost-period-lbl">–</span>: <span id="cost-period">–</span></div>
         </div>
         <div class="card chart-card" id="chart-card">
           <div class="rowflex" style="justify-content:space-between;"><div class="card-title"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></div><h2 style="margin:0;" id="chart-title">Words per day</h2></div><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
@@ -5122,7 +5099,7 @@ const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences
 // their data (renderStatCards). Some cards take two cells, the transcript a
 // whole row — and it can't be hidden, it holds Start / Stop.
 const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card" };
-const LAYOUT_SPAN2 = ["cost","chart","rhythm","wordcloud"];
+const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud"];
 const LAYOUT_FULL = ["transcript"];
 const LAYOUT_PINNED = ["transcript"];
 // LAYOUT_DEFAULT is the order a saved layout fills in the cards it doesn't know
@@ -6302,16 +6279,12 @@ async function loadCosts(){
   $("cost-period-lbl").textContent = periodLabel();
   $("cost-period").textContent = fmtMoney(c.period_total || 0, cur);
   $("cost-month-total").textContent = fmtMoney(c.month_total, cur, 2);
-  $("cost-stt").textContent = fmtMoney(c.month_stt, cur, 2);
-  $("cost-cleanup").textContent = fmtMoney(c.month_cleanup, cur, 2);
-  // The Vito Assist line only appears once it has actually cost something (a
-  // command on a paid model); on the free tier it stays hidden.
-  const cmdRow = $("cost-command-row");
-  if (cmdRow) {
-    if (c.month_command > 0) { cmdRow.hidden = false; $("cost-command").textContent = fmtMoney(c.month_command, cur, 2); }
-    else cmdRow.hidden = true;
-  }
-  $("cost-proj").textContent = fmtMoney(c.projected_monthly, cur, 2);
+  // The card shows one figure; the month's breakdown and the projection are in
+  // its tooltip. The Vito Assist part only appears once it has actually cost
+  // something (a command on a paid model).
+  const parts = [`${t("Speech recognition")} ${fmtMoney(c.month_stt, cur, 2)}`, `${t("AI cleanup")} ${fmtMoney(c.month_cleanup, cur, 2)}`];
+  if (c.month_command > 0) parts.push(`Vito Assist ${fmtMoney(c.month_command, cur, 2)}`);
+  setCardTip($("cost-card"), parts.join(" · ") + ` — ≈ ${fmtMoney(c.projected_monthly, cur, 2)} ${t("per month at your current usage (last 30 days)")}`);
   document.querySelectorAll("#cost-card .cur-toggle button").forEach(b => b.classList.toggle("active", b.dataset.cur === cur));
   if (typeof buildModelCards === "function" && $("model-cards")) buildModelCards(); // re-price in the chosen currency
 }
