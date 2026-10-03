@@ -787,14 +787,17 @@
      card: the newest at the top, older ones fading out towards the bottom.
      Today's carry a coral ring. */
   .ach-bg { position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;
-    display:grid; grid-template-columns:repeat(auto-fill, 26px); grid-auto-rows:26px; gap:5px; justify-content:center; align-content:start;
-    padding:8px 10px 0;
+    display:grid; grid-template-columns:repeat(auto-fill, 26px); grid-auto-rows:26px; gap:5px; justify-content:start; align-content:start;
+    padding:8px 12px 0;
     -webkit-mask-image:linear-gradient(to bottom, #000 30%, rgba(0,0,0,.3) 80%, rgba(0,0,0,.1));
             mask-image:linear-gradient(to bottom, #000 30%, rgba(0,0,0,.3) 80%, rgba(0,0,0,.1)); }
   .ach-bg i { width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; font-style:normal;
     line-height:1; overflow:hidden; opacity:.85;
     background:linear-gradient(135deg, color-mix(in srgb,var(--coral) 18%, var(--card)), color-mix(in srgb,var(--violet) 22%, var(--card))); }
   .ach-bg i img, .ach-bg i svg { width:100%; height:100%; object-fit:contain; display:block; }
+  /* The two-by-two cells under the trophy stay empty, so the newest medal is
+     next to it rather than hidden behind it. */
+  .ach-bg .ach-bg-skip { grid-column:span 2; grid-row:span 2; }
   .ach-bg i.today { opacity:1; box-shadow:0 0 0 1.5px var(--coral), 0 0 10px var(--coral-soft); }
   .card.stat.ach-mini > .chip { background:var(--card); box-shadow:inset 0 0 0 100px var(--accent-soft), 0 0 10px 4px var(--card); }
   /* The figure sits over the medals; a halo in the card colour keeps it legible. */
@@ -5753,7 +5756,7 @@ function achMiniCardHTML(){
   const recent = a ? a.achievements.filter(x => x.earned && x.unlocked_at)
     .sort((p, q) => q.unlocked_at - p.unlocked_at).slice(0, 80) : [];
   const bg = recent.length
-    ? `<div class="ach-bg" aria-hidden="true">${recent.map((x, i) =>
+    ? `<div class="ach-bg" aria-hidden="true"><b class="ach-bg-skip"></b>${recent.map((x, i) =>
         `<i class="${achToday(x) ? "today" : ""}" style="--i:${i}">${achMedalInner(x)}</i>`).join("")}</div>`
     : "";
   const sub = today.length
