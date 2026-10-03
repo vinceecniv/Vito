@@ -486,6 +486,11 @@
   .stat .lbl { color:var(--text2); font-size:12.5px; margin-top:2px; }
   .delta { font-size:11.5px; font-weight:600; margin-top:8px; }
   .delta.up { color:var(--coral); } .delta.flat { color:var(--text3); }
+  .cmp { position:relative; z-index:1; font-size:11.5px; font-weight:600; margin-top:6px; color:var(--text3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .cmp.up { color:var(--violet); } :root[data-theme="dark"] .cmp.up { color:var(--violet-l); }
+  .cmp.good { color:#2AA46A; } .cmp.bad { color:var(--coral); }
+  .has-minis > .cmp { max-width:42%; }
+  #cost-projection { white-space:normal; }
   /* Sparkline as the card's background: it fills the lower part edge to edge
      behind the figure, so the card stays the height of the others. Same
      buckets as the words chart. */
@@ -516,7 +521,7 @@
      icons an opaque tile with a glow, as on the word-cloud and achievements
      cards — so the line running behind never cuts through a figure. */
   .card.stat:has(> .spark:not(:empty)) > .num, .card.stat:has(> .spark:not(:empty)) > .lbl,
-  .card.stat:has(> .spark:not(:empty)) > .delta, .card.stat:has(> .spark:not(:empty)) .mini-v,
+  .card.stat:has(> .spark:not(:empty)) > .delta, .card.stat:has(> .spark:not(:empty)) .mini-v, .card.stat:has(> .spark:not(:empty)) > .cmp,
   .card.stat:has(> .spark:not(:empty)) .mini-l {
     text-shadow:0 0 3px var(--card), 0 0 6px var(--card), 0 0 10px var(--card), 0 0 16px var(--card); }
   .card.stat:has(> .spark:not(:empty)) > .chip.violet, .card.stat:has(> .spark:not(:empty)) .mini-ic.violet {
@@ -1503,6 +1508,7 @@
           <div class="num" id="cost-month-total">–</div>
           <div class="lbl"><span>Costs</span> · <span>this month so far</span></div>
           <div class="delta flat cost-period"><span id="cost-period-lbl">–</span>: <span id="cost-period">–</span></div>
+          <div class="cmp" id="cost-projection" hidden></div>
         </div>
         <div class="card chart-card" id="chart-card">
           <div class="rowflex" style="justify-content:space-between;"><div class="card-title"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></div><h2 style="margin:0;" id="chart-title">Words per day</h2></div><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
@@ -2112,6 +2118,8 @@ const TR = { nl: {
   "Status":"Status",
   "Dashboard":"Dashboard",
   "Main figure":"Hoofdcijfer",
+  "vs previous period":"t.o.v. vorige periode",
+  "≈ {v} by the end of the month":"≈ {v} aan het eind van de maand",
   "Animation when there's an update":"Animatie bij een update",
   "Settings":"Instellingen",
   "Dictionary":"Woordenboek",
@@ -7148,6 +7156,14 @@ async function loadCosts(){
   $("cost-period-lbl").textContent = periodLabel();
   $("cost-period").textContent = fmtMoney(c.period_total || 0, cur);
   $("cost-month-total").textContent = fmtMoney(c.month_total, cur, 2);
+  // Where this month is heading at the pace so far — from the third day on,
+  // before that one busy morning would project a fortune.
+  const nowD = new Date(), dom = nowD.getDate(), dim = new Date(nowD.getFullYear(), nowD.getMonth() + 1, 0).getDate();
+  const pj = $("cost-projection");
+  if (pj) {
+    pj.hidden = dom < 3 || !(c.month_total > 0);
+    if (!pj.hidden) pj.textContent = t("≈ {v} by the end of the month").replace("{v}", fmtMoney(c.month_total / dom * dim, cur, 2));
+  }
   // The card shows one figure; the month's breakdown and the projection are in
   // its tooltip. The Vito Assist part only appears once it has actually cost
   // something (a command on a paid model).
@@ -7231,6 +7247,73 @@ function volumeCard(st, series, I, nf, nfCompact){
     tip: (m.compact && m.value >= 5000 ? nf(m.value) + " — " : "") + m.tip,
     minis: VOLUME_KEYS.filter(k => k !== main).map(k => F[k]) };
 }
+// The period just before the one on screen, of the same length — or null
+// where a comparison would mislead: all time has nothing before it, and today
+// is still running, so it would always trail a whole yesterday.
+function previousPeriod(){
+  const v = statPeriod(), r = v.match(RANGE_RE), DAY = 864e5;
+  const shift = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  let from, to;
+  if (r) { from = parseYmd(r[1]); to = parseYmd(r[2]); }
+  else {
+    const n = parseInt(v, 10), today = parseYmd(ymd(new Date()));
+    if (n === -1) { from = to = shift(today, -1); }
+    else if (n > 1) { to = today; from = shift(today, -(n - 1)); }
+    else return null;
+  }
+  const len = Math.round((to - from) / DAY) + 1;
+  const pTo = shift(from, -1), pFrom = shift(pTo, -(len - 1));
+  return { from: ymd(pFrom), to: ymd(pTo) };
+}
+// A past period never changes, so its figures are fetched once.
+const prevStatsCache = new Map();
+let compareSeq = 0;
+// Under the main figures, how they moved against the previous period of the
+// same length: "▲ 12%", with what it is compared to, and the earlier figure,
+// in its tooltip.
+// More is shown in the accent colour, less in grey; for the wait after
+// stopping, where less is better, a drop is green and a rise coral.
+async function compareWithPrevious(st){
+  const seq = ++compareSeq, p = previousPeriod();
+  const clear = () => document.querySelectorAll("#statgrid .stat > .cmp:not(#cost-projection)").forEach(e => e.remove());
+  if (!p) { clear(); return; }
+  const key = p.from + ":" + p.to;
+  let prev = prevStatsCache.get(key);
+  if (!prev) {
+    try { prev = await api(`/api/stats?from=${p.from}&to=${p.to}`); } catch { return; }
+    prevStatsCache.set(key, prev);
+  }
+  if (seq !== compareSeq) return;
+  const nf = (n) => Math.round(n).toLocaleString(numLoc());
+  const pick = {
+    words: [s => s.words, nf], sentences: [s => s.sentences, nf], activations: [s => s.activations, nf],
+    spoken: [s => s.spoken_seconds, fmtShortSec], saved: [s => s.saved_minutes, fmtShortMin],
+  };
+  const main = volumeMain();
+  const rows = [
+    ["words", ...pick[main], false],
+    ["commands", s => s.commands, nf, false],
+    ["spokenwpm", s => s.spoken_wpm, nf, false],
+    ["latency", s => (s.insights || {}).latency_median_ms, fmtSecs, true],
+  ];
+  const span = rangeLabel(p.from, p.to);
+  rows.forEach(([k, get, fmt, lowerIsBetter]) => {
+    const el = statEls[k]; if (!el) return;
+    let c = el.querySelector(":scope > .cmp");
+    const now = get(st) || 0, before = get(prev) || 0;
+    if (!before || !now) { if (c) c.remove(); return; }
+    const pct = (now - before) / before * 100, flat = Math.abs(pct) < 1;
+    if (!c) {
+      c = document.createElement("div");
+      const lbl = el.querySelector(":scope > .lbl");
+      lbl ? lbl.after(c) : el.appendChild(c);
+    }
+    const up = pct > 0;
+    c.className = "cmp " + (flat ? "" : lowerIsBetter ? (up ? "bad" : "good") : (up ? "up" : ""));
+    c.textContent = flat ? "= 0%" : (up ? "▲ " : "▼ ") + Math.abs(Math.round(pct)).toLocaleString(numLoc()) + "%";
+    c.dataset.tipText = `${t("vs previous period")} (${span}): ${fmt(before)}`;
+  });
+}
 // Currency of the per-day costs in the chart tooltip; refreshed with the stats.
 let weekCur = "eur";
 // What one bar covers, so the tooltip can name it properly.
@@ -7301,6 +7384,7 @@ async function loadStats(){
     // whether there is a newer one.
     { key:"update", custom:true, html:updateCardHTML },
   ]);
+  compareWithPrevious(st);
   // Days before Vito's first-ever data point (or in the future) get soft grey
   // placeholder bars with a "fills automatically" hint, so a fresh install's
   // chart looks intentional rather than broken.
