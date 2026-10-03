@@ -487,9 +487,7 @@
   .spark svg { display:block; width:100%; height:100%; }
   :root[data-theme="dark"] .spark { opacity:.5; }
   /* Languages: the top one as the figure, all of them as shares of one bar. */
-  .lang-head { min-width:0; }
-  .lang-card .num.lang-top { font-size:18px; line-height:1.2; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .lang-card .lang-head .lbl { margin-top:0; font-size:11.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lang-card .lang-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-bar { display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
   .lang-bar i { display:block; height:100%; }
   .lang-legend { margin-top:6px; font-size:11px; color:var(--text3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -5928,11 +5926,11 @@ function langCardHTML(ins){
     (rest ? `<i style="width:${rest / total * 100}%;background:var(--text3)"></i>` : "");
   // The top language already heads the card; the legend names the rest.
   const legend = shown.slice(1).map((l, i) => `<span><b style="background:${LANG_COLORS[i + 1]}"></b>${ahEsc(langName(l.code))} ${pct(l.count)}%</span>`).join(" ");
-  // Compact: the top language and its share beside the icon, then the bar and
-  // a one-line legend; whatever the legend cuts off is in its title on hover.
-  return `<div class="rhythm-head"><div class="chip coral">${icon}</div><div class="lang-head">` +
-    `<div class="num lang-top">${ahEsc(langName(langs[0].code))}</div>` +
-    `<div class="lbl">${t("{p}% of dictations").replace("{p}", pct(langs[0].count))}</div></div></div>` +
+  // Laid out like the other statistics: the top language's share as the big
+  // figure and its name beneath, then the bar and a one-line legend of the
+  // rest; whatever the legend cuts off is in its title on hover.
+  return `<div class="chip coral">${icon}</div><div class="num">${pct(langs[0].count)}%</div>` +
+    `<div class="lbl lang-name" title="${ahEsc(t("{p}% of dictations").replace("{p}", pct(langs[0].count)))}">${ahEsc(langName(langs[0].code))}</div>` +
     `<div class="lang-bar">${seg}</div><div class="lang-legend" title="${ahEsc(langs.map(l => langName(l.code) + " " + pct(l.count) + "%").join(", "))}">${legend}</div>`;
 }
 // Words per dictation in a one-line head, and under it a calendar of the last
