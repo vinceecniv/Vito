@@ -1149,6 +1149,10 @@
      each a shortcut to its settings section, two by two. */
   .status-tags { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
   .qs-card .stag { min-width:0; border-radius:10px; }
+  /* The cleanup rule set, at the right of the card's head: it decides what
+     every dictation comes out like, so it sits with the other quick settings. */
+  .qs-card .rhythm-head .lbl { flex:none; }
+  .qs-ruleset { margin-left:auto; margin-right:20px; min-width:0; border-color:var(--card-border); }
   .qs-card .stag > span:last-child { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .stag { display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border:1px solid var(--card-border); border-radius:999px; background:var(--card); color:var(--text2); font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; }
   .stag:hover { border-color:var(--accent); color:var(--text); }
@@ -1367,10 +1371,6 @@
       <span class="pip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1" fill="currentColor" stroke="none"/></svg></span>
       <span>Detached window</span></button>
     <div class="side-bottom">
-      <button class="pill pill-btn" id="ruleset-pill" data-help="prompts" aria-haspopup="true" aria-expanded="false" aria-label="Cleanup rules">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h16M4 18h9"/><path d="M17.5 15.5l3 3-4 1z"/></svg>
-        <span id="ruleset-lbl">Vito default</span>
-      </button>
       <span class="pill" id="statuspill"><span class="dot"></span><span id="statuslbl">idle</span></span>
     </div>
   </aside>
@@ -1468,7 +1468,7 @@
           <div id="timings"></div>
         </div>
         <div class="card stat qs-card" id="qs-card">
-          <div class="rhythm-head"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="9" cy="8" r="2.4" fill="var(--card)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--card)"/></svg></div><div class="lbl">Quick settings</div></div>
+          <div class="rhythm-head"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="9" cy="8" r="2.4" fill="var(--card)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--card)"/></svg></div><div class="lbl">Quick settings</div><button class="pill pill-btn qs-ruleset" id="ruleset-pill" data-help="prompts" aria-haspopup="true" aria-expanded="false" aria-label="Cleanup rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h16M4 18h9"/><path d="M17.5 15.5l3 3-4 1z"/></svg><span id="ruleset-lbl">Vito default</span></button></div>
           <div class="status-tags" id="status-tags"></div>
         </div>
       </div>
@@ -4708,7 +4708,7 @@ async function loadPromptBuiltins(){
     promptContract = d.contract || "";
   } catch {}
   const c = $("prompt-contract"); if (c) c.textContent = promptContract;
-  renderRulesetPill(); // the sidebar shows the name, so it needs the sets too
+  renderRulesetPill(); // the quick settings card shows the name, so it needs the sets too
 }
 const builtinOf = (id) => promptBuiltins.find(b => b.id === id);
 const ownOf = (id) => promptList.find(p => p.id === id);
@@ -4782,7 +4782,7 @@ function deletePrompt(){
     }, "Delete", true);
 }
 
-/* ---- the active rule set, in the sidebar ---- */
+/* ---- the active rule set, on the quick settings card ---- */
 // Which rules are running decides what every dictation comes out like, so it
 // belongs where you can see it, and switching by task (notes now, business
 // writing next) is the normal case rather than a settings trip.
@@ -4818,7 +4818,7 @@ function openRulesetPop(){
   $("ruleset-pill").setAttribute("aria-expanded", "true");
 
   // Anchored to the pill, above it when there is room and below it when there
-  // isn't — the sidebar puts it at the very bottom of a short window.
+  // isn't — the card can be anywhere on the page.
   const r = $("ruleset-pill").getBoundingClientRect(), h = pop.offsetHeight;
   const top = r.top - h - 8 >= 8 ? r.top - h - 8 : Math.min(r.bottom + 8, innerHeight - h - 8);
   pop.style.top = Math.max(8, top) + "px";
