@@ -1136,9 +1136,11 @@
   .cmd-mode.received .cmd-ico rect { animation:none; transform:scaleY(1); }
   @keyframes cmdAfterglow { 0% { box-shadow:0 10px 34px color-mix(in srgb, var(--violet) 55%, transparent); } 100% { box-shadow:0 6px 16px var(--accent-soft); } }
   @media (prefers-reduced-motion:reduce){ .cmd-mode, .cmd-mode.received { animation:none; } .cmd-mode .cmd-ico rect { animation:none; transform:scaleY(1); } }
-  /* Status-page summary tags: active hotkey, speech model, language, cleanup —
-     each a shortcut to its settings section. */
-  .status-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+  /* Quick settings card: the active hotkey, speech model, language and cleanup,
+     each a shortcut to its settings section, two by two. */
+  .status-tags { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+  .qs-card .stag { min-width:0; border-radius:10px; }
+  .qs-card .stag > span:last-child { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .stag { display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border:1px solid var(--card-border); border-radius:999px; background:var(--card); color:var(--text2); font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; }
   .stag:hover { border-color:var(--accent); color:var(--text); }
   .stag.muted { color:var(--text3); }
@@ -1459,8 +1461,11 @@
           </div>
           <div id="timings"></div>
         </div>
+        <div class="card stat qs-card" id="qs-card">
+          <div class="rhythm-head"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="9" cy="8" r="2.4" fill="var(--card)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--card)"/></svg></div><div class="lbl">Quick settings</div></div>
+          <div class="status-tags" id="status-tags"></div>
+        </div>
       </div>
-      <div class="status-tags" id="status-tags"></div>
     </section>
 
     <!-- ACHIEVEMENTS -->
@@ -5115,25 +5120,25 @@ loadAbout();
 const STAT_KEYS = ["credit","words","sentences","activations","spoken","saved","commands",
   "spokenwpm","latency","cleanupfx","languages","rhythm","wordcloud","achievements","update"];
 const LAYOUT_GROUPS = [
-  { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript"] },
+  { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript","quicksettings"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences:"sentences cleaned", activations:"activations",
   spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
   spokenwpm:"wpm spoken", latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
-  cost:"Costs", chart:"Words per day", transcript:"Live transcript" };
+  cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings" };
 // The fixed cards are written in the page; the statistic cards are built from
 // their data (renderStatCards). Some cards take two cells, the transcript a
 // whole row — and it can't be hidden, it holds Start / Stop.
-const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card" };
-const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud"];
+const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card" };
+const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud","quicksettings"];
 const LAYOUT_FULL = ["transcript"];
 const LAYOUT_PINNED = ["transcript"];
 // LAYOUT_DEFAULT is the order a saved layout fills in the cards it doesn't know
 // yet, so an existing arrangement keeps its look. LAYOUT_FRESH is what you get
 // without one, or after a reset: the transcript first, then the statistics,
 // the chart and the costs.
-const LAYOUT_DEFAULT = [...STAT_KEYS, "cost", "chart", "transcript"];
-const LAYOUT_FRESH = ["transcript", ...STAT_KEYS, "chart", "cost"];
+const LAYOUT_DEFAULT = [...STAT_KEYS, "cost", "chart", "transcript", "quicksettings"];
+const LAYOUT_FRESH = ["transcript", ...STAT_KEYS, "chart", "cost", "quicksettings"];
 let statusLayout = null;
 function loadLayout(){
   if (statusLayout) return statusLayout;
@@ -5850,15 +5855,6 @@ function fmtSecs(ms){
 // standard ones.
 function setCardTip(el, tip){
   el.dataset.tipText = tip; el.dataset.i18nDataTipText = tip; el.classList.add("has-tip");
-}
-// Language names come from Intl in the interface language, so the codes the
-// recogniser reports need no translation table of their own.
-function langName(code){
-  try {
-    const n = new Intl.DisplayNames([uiLang, "en"], { type:"language" }).of(code);
-    if (n && n !== code) return n.charAt(0).toLocaleUpperCase(uiLang) + n.slice(1);
-  } catch {}
-  return code.toUpperCase();
 }
 const LANG_COLORS = ["var(--violet)", "var(--coral)", "var(--violet-l)", "var(--coral-l)"];
 // The most used language as the figure, and every language as a share of one
