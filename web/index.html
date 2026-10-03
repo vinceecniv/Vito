@@ -490,9 +490,6 @@
   .lang-card .lang-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-bar { display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
   .lang-bar i { display:block; height:100%; }
-  .lang-legend { margin-top:6px; font-size:11px; color:var(--text3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .lang-legend span { margin-right:10px; }
-  .lang-legend b { display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:4px; vertical-align:0; }
   /* Rhythm: twice as wide, so the week-by-hour grid has room. */
   /* The cloud fills the whole card, behind the icon and title too. The card
      keeps the calendar card's size through an invisible spacer with the
@@ -5924,14 +5921,16 @@ function langCardHTML(ins){
   const shown = langs.slice(0, 4), rest = total - shown.reduce((s, l) => s + l.count, 0);
   const seg = shown.map((l, i) => `<i style="width:${l.count / total * 100}%;background:${LANG_COLORS[i]}"></i>`).join("") +
     (rest ? `<i style="width:${rest / total * 100}%;background:var(--text3)"></i>` : "");
-  // The top language already heads the card; the legend names the rest.
-  const legend = shown.slice(1).map((l, i) => `<span><b style="background:${LANG_COLORS[i + 1]}"></b>${ahEsc(langName(l.code))} ${pct(l.count)}%</span>`).join(" ");
   // Laid out like the other statistics: the top language's share as the big
-  // figure and its name beneath, then the bar and a one-line legend of the
-  // rest; whatever the legend cuts off is in its title on hover.
+  // figure and its name beneath, the rest only as colour in the bar. The
+  // breakdown in words is in the card's tooltip (langBreakdown).
   return `<div class="chip coral">${icon}</div><div class="num">${pct(langs[0].count)}%</div>` +
-    `<div class="lbl lang-name" title="${ahEsc(t("{p}% of dictations").replace("{p}", pct(langs[0].count)))}">${ahEsc(langName(langs[0].code))}</div>` +
-    `<div class="lang-bar">${seg}</div><div class="lang-legend" title="${ahEsc(langs.map(l => langName(l.code) + " " + pct(l.count) + "%").join(", "))}">${legend}</div>`;
+    `<div class="lbl lang-name">${ahEsc(langName(langs[0].code))}</div><div class="lang-bar">${seg}</div>`;
+}
+// Every language and its share, for the languages card's tooltip.
+function langBreakdown(ins){
+  const langs = ins.languages || [], total = langs.reduce((s, l) => s + l.count, 0);
+  return total ? langs.map(l => `${langName(l.code)} ${Math.round(l.count / total * 100)}%`).join(" · ") : "";
 }
 // Words per dictation in a one-line head, and under it a calendar of the last
 // half year: a column per week, Monday at the top, a square per day shaded by
@@ -6477,7 +6476,7 @@ async function loadStats(){
          : ins.cleanup_runs ? t("of {n} cleaned").replace("{n}", nf(ins.cleanup_runs)) : "",
       tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
     { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
-      t("Languages you dictated in this period, by number of dictations.")) },
+      [langBreakdown(ins), t("Languages you dictated in this period, by number of dictations.")].filter(Boolean).join(" — ")) },
     { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => { setCardTip(el,
       t("The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.")); fitCloud(el);
       // Rendered while the page is hidden there is nothing to measure yet; fit
