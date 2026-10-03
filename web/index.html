@@ -5906,6 +5906,16 @@ function fmtHMS(sec){
   if (m>0) return `${m} ${M} ${s} ${S}`;
   return `${s} ${S}`;
 }
+// The statistic cards' compact form of a duration: no space before the unit
+// and at most two units — hours and minutes from an hour up, minutes and
+// seconds below it — so "1 h 13 m 56 s" reads "1h 13m".
+function fmtShortSec(sec){
+  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+  if (h > 0) return `${h}${t("h")} ${m}${t("m")}`;
+  if (m > 0) return `${m}${t("m")} ${s}${t("s")}`;
+  return `${s}${t("s")}`;
+}
+const fmtShortMin = (min) => fmtShortSec(min * 60);
 // First paint builds the row and lets it ride the page's staggered reveal. Every
 // later refresh — a finished dictation, a changed period — keeps the cards where
 // they are and counts the numbers up to their new value: replaying the stagger
@@ -6468,9 +6478,9 @@ async function loadStats(){
     { key:"activations", spark:series(d => d.activations), cls:"violet", icon:I.act,   value:st.activations,   format:nf,          lbl:t("activations"),
       tip:`≈ ${st.activations_per_day.toFixed(1)} ${t("per day")} — ` +
           t("Average number of times a day you started a dictation, over the days you used Vito in this period.") },
-    { key:"spoken", spark:series(d => d.spoken_seconds), cls:"coral",  icon:I.mic,   value:st.spoken_seconds, format:fmtHMS,     lbl:t("spoken time"),
+    { key:"spoken", spark:series(d => d.spoken_seconds), cls:"coral",  icon:I.mic,   value:st.spoken_seconds, format:fmtShortSec, lbl:t("spoken time"),
       tip:t("How long the microphone was recording, from start to stop. Pauses and silences within a dictation count too — this is also the time your speech recognition bills for.") },
-    { key:"saved", spark:series(d => d.saved_minutes), cls:"violet", icon:I.time,  value:st.saved_minutes,  format:fmtDuration, lbl:t("saved typing time"),
+    { key:"saved", spark:series(d => d.saved_minutes), cls:"violet", icon:I.time,  value:st.saved_minutes,  format:fmtShortMin, lbl:t("saved typing time"),
       tip:t("based on {n} wpm").replace("{n}", st.typing_wpm) + " — " +
           t("What you save compared with typing it yourself: your words divided by your typing speed, minus the time you spent speaking. Set your typing speed under Settings → General.") },
     { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:st.commands, format:nf, lbl:t("Vito Assist commands"),
