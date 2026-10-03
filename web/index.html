@@ -325,10 +325,18 @@
   [hidden] { display:none !important; }
   .grid { display:grid; gap:20px; align-items:start; }
   .grid-2 { grid-template-columns:repeat(2,1fr); }
-  /* In the status page's card row, a card with no half-width partner next to
-     it takes the whole row (see applyStatusLayout). */
-  #wide-row > .span-all { grid-column:1 / -1; }
   .statgrid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); }
+  /* Card sizes in the one status grid (see applyStatusLayout): most are one
+     cell, the chart, costs, calendar and word cloud two, the transcript a row. */
+  .statgrid > .span2 { grid-column:span 2; }
+  .statgrid > .span-full { grid-column:1 / -1; }
+  /* Dragging a card, home-screen style: the card's place stays as a dashed
+     outline while a lifted copy follows the pointer. */
+  .statgrid > .card { -webkit-touch-callout:none; }
+  .statgrid.dragging, .statgrid.dragging * { user-select:none; -webkit-user-select:none; cursor:grabbing !important; }
+  .statgrid > .card.drag-src { opacity:.3; outline:2px dashed var(--accent); outline-offset:-2px; }
+  .drag-ghost { position:fixed; z-index:1000; margin:0; pointer-events:none; opacity:.95;
+    box-shadow:0 18px 44px rgba(20,10,40,.32); transform:scale(1.03) rotate(-.8deg); }
   /* Grid items default to min-width:auto, so a card can refuse to shrink below
      its content and push the whole page wider than the window. Everything here
      is allowed to shrink instead. */
@@ -456,8 +464,6 @@
   .lang-legend { display:flex; flex-wrap:wrap; gap:2px 10px; margin-top:7px; font-size:11px; color:var(--text3); }
   .lang-legend b { display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:4px; vertical-align:0; }
   /* Rhythm: twice as wide, so the week-by-hour grid has room. */
-  .statgrid > .rhythm-card { grid-column:span 2; }
-  .statgrid > .cloud-card { grid-column:span 2; }
   /* The cloud fills the whole card, behind the icon and title too. The card
      keeps the calendar card's size through an invisible spacer with the
      calendar grid's proportions (26 columns by 7 rows); fitCloud drops the
@@ -613,15 +619,6 @@
   .lay-head { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--text3); }
   .lay-row { display:flex; align-items:center; gap:10px; padding:9px 11px; border:1px solid var(--card-border); border-radius:10px; background:var(--card); }
   .lay-row.off > .lay-name { color:var(--text3); text-decoration:line-through; }
-  .lay-row.lay-parent { flex-wrap:wrap; }
-  .lay-sub { flex-basis:100%; margin:4px 0 2px 28px; }
-  .lay-sub[hidden] { display:none; }
-  .lay-row.off > .lay-sub { opacity:.55; }
-  .lay-fold { width:30px; height:30px; padding:0; border:1px solid var(--card-border); border-radius:8px; background:none; color:var(--text2);
-    cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
-  .lay-fold:hover { color:var(--text); border-color:var(--accent); }
-  .lay-fold svg { width:16px; height:16px; transition:transform .15s; }
-  .lay-fold[aria-expanded="true"] svg { transform:rotate(180deg); }
   .lay-row.dragging { position:relative; z-index:5; border-color:var(--accent); box-shadow:0 10px 26px rgba(20,10,40,.28); }
   .lay-grip { display:flex; color:var(--text3); cursor:grab; touch-action:none; }
   .lay-grip:active { cursor:grabbing; }
@@ -1404,8 +1401,12 @@
       <div id="update-banner"></div>
       <div id="linux-banner"></div>
       <div id="pwa-tip"></div>
-      <div class="grid grid-2" id="wide-row" style="align-items:stretch; margin-bottom:20px;">
-        <div class="statgrid span-all" id="statgrid"></div>
+      <!-- Every card of the status page lives in this one grid, in the order you
+           arranged it (applyStatusLayout); drag one by pressing and holding it.
+           The fixed cards below wait in the holder until they are placed, and
+           return there when you hide them. -->
+      <div class="statgrid" id="statgrid" style="margin-bottom:20px;"></div>
+      <div id="card-holder" hidden>
         <div class="card cost-card reveal" id="cost-card">
           <div class="rowflex" style="justify-content:space-between; align-items:center;">
             <h2 style="margin:0;">Costs</h2>
@@ -1429,7 +1430,7 @@
           <div class="rowflex" style="justify-content:space-between;"><h2 style="margin:0;" id="chart-title">Words per day</h2><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
           <div class="weekwrap" id="weekchart"></div>
         </div>
-        <div class="card span-all" id="transcript-card">
+        <div class="card" id="transcript-card">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 11h12M4 16h8"/></svg><span>Live transcript</span>
             <span class="h2-btns">
               <button class="h2-btn hover-only" id="btn-play-audio" data-tip-text="Play the recording of this dictation" aria-label="Play recording" hidden></button>
@@ -5101,37 +5102,47 @@ function renderAboutVersion(){
 loadAbout();
 
 /* ---- status page layout (which cards, in what order) ---- */
-// The page is one column of cards in any order — the block of statistics, the
-// costs, the chart and the live transcript. The small statistic cards live
-// inside the statistics block and are ordered there; dragging stays within a
-// level, so a statistic can't leave its block.
+// The status page is one grid of cards in any order — the statistics, the
+// chart, the costs and the live transcript alike — and any card can be dragged
+// to any place, like icons on a phone's home screen.
+const STAT_KEYS = ["credit","words","sentences","activations","spoken","saved","commands",
+  "spokenwpm","latency","cleanupfx","languages","rhythm","wordcloud","achievements","update"];
 const LAYOUT_GROUPS = [
-  { id:"stats", label:"Statistics", keys:["credit","words","sentences","activations","spoken","saved","commands",
-    "spokenwpm","latency","cleanupfx","languages","rhythm","wordcloud","achievements","update"] },
-  { id:"wide",  label:"Cards",      keys:["stats","cost","chart","transcript"] },
+  { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences:"sentences cleaned", activations:"activations",
   spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
   spokenwpm:"wpm spoken", latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
-  stats:"Statistics", cost:"Costs", chart:"Words per day", transcript:"Live transcript" };
-// The cards and their elements. Costs and the chart are half-width and pair up
-// when they are next to each other; the statistics and the transcript always
-// take a full row. The transcript can't be hidden — it holds Start / Stop.
-const LAYOUT_WIDE_EL = { stats:"statgrid", cost:"cost-card", chart:"chart-card", transcript:"transcript-card" };
-const LAYOUT_FULL = ["stats","transcript"];
+  cost:"Costs", chart:"Words per day", transcript:"Live transcript" };
+// The fixed cards are written in the page; the statistic cards are built from
+// their data (renderStatCards). Some cards take two cells, the transcript a
+// whole row — and it can't be hidden, it holds Start / Stop.
+const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card" };
+const LAYOUT_SPAN2 = ["cost","chart","rhythm","wordcloud"];
+const LAYOUT_FULL = ["transcript"];
 const LAYOUT_PINNED = ["transcript"];
-// LAYOUT_DEFAULT is the page as it was before the cards could move — the order
-// a saved layout fills its new cards in by, so an existing arrangement keeps
-// its look. LAYOUT_FRESH is what you get without one, or after a reset: the
-// transcript first, then the statistics, the chart and the costs.
-const LAYOUT_DEFAULT = LAYOUT_GROUPS.flatMap(g => g.keys);
-const LAYOUT_FRESH = [...LAYOUT_GROUPS.find(g => g.id === "stats").keys, "transcript", "stats", "chart", "cost"];
+// LAYOUT_DEFAULT is the order a saved layout fills in the cards it doesn't know
+// yet, so an existing arrangement keeps its look. LAYOUT_FRESH is what you get
+// without one, or after a reset: the transcript first, then the statistics,
+// the chart and the costs.
+const LAYOUT_DEFAULT = [...STAT_KEYS, "cost", "chart", "transcript"];
+const LAYOUT_FRESH = ["transcript", ...STAT_KEYS, "chart", "cost"];
 let statusLayout = null;
 function loadLayout(){
   if (statusLayout) return statusLayout;
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem("vito-status-layout") || "null"); } catch {}
-  const order = Array.isArray(saved && saved.order) ? saved.order.filter(k => LAYOUT_DEFAULT.includes(k)) : [...LAYOUT_FRESH];
+  let order = [...LAYOUT_FRESH];
+  if (Array.isArray(saved && saved.order)) {
+    let o = saved.order;
+    // The statistics used to be one block, "stats", among the large cards:
+    // unfold it into its cards, in the order they had inside it.
+    if (o.includes("stats")) {
+      const stats = o.filter(k => STAT_KEYS.includes(k));
+      o = o.filter(k => !STAT_KEYS.includes(k)).flatMap(k => k === "stats" ? stats : [k]);
+    }
+    order = o.filter(k => LAYOUT_DEFAULT.includes(k));
+  }
   // Anything the stored order doesn't mention is new since it was saved, and
   // belongs at its default position — right after the last of its default
   // predecessors in the saved order, wherever you moved those — rather than
@@ -5142,7 +5153,9 @@ function loadLayout(){
     for (let j = idx - 1; j >= 0; j--) insertAt = Math.max(insertAt, order.indexOf(LAYOUT_DEFAULT[j]));
     order.splice(insertAt < 0 ? order.length : insertAt + 1, 0, k);
   });
-  const hidden = Array.isArray(saved && saved.hidden) ? saved.hidden.filter(k => LAYOUT_DEFAULT.includes(k)) : [];
+  let hidden = Array.isArray(saved && saved.hidden) ? saved.hidden : [];
+  if (hidden.includes("stats")) hidden = [...hidden, ...STAT_KEYS]; // the whole block was hidden
+  hidden = hidden.filter(k => LAYOUT_DEFAULT.includes(k));
   // The version card is on by default but keeps quiet: it appears when there is
   // something to say. Set updateAlways to keep it there permanently.
   const updateAlways = !!(saved && saved.updateAlways);
@@ -5168,36 +5181,35 @@ function updateCardWanted(){
 }
 // The credit card only appears when a provider is actually out of credit.
 function creditCardWanted(){ return (creditState || []).length > 0; }
-// The wide cards stay where they are in the DOM and are placed with CSS order;
-// the statistic cards are rebuilt from their data anyway (see renderStatCards).
+// The statistic cards' elements, by key, once built (renderStatCards).
+const statEls = {};
+const cardEl = (k) => LAYOUT_STATIC[k] ? $(LAYOUT_STATIC[k]) : statEls[k];
+// Puts the cards into the grid in the saved order. Elements are moved, never
+// rebuilt, so they keep their state and listeners. A hidden statistic card is
+// taken out; a hidden fixed card waits in the holder. Cards whose data hasn't
+// arrived yet are skipped and placed by the next call.
 function applyStatusLayout(){
-  // The statistics block drops out when none of its cards is showing.
-  const wide = layoutOrderOf("wide").filter(k => k !== "stats" || layoutOrderOf("stats").length > 0);
-  // A half-width card shares a row only with the half-width card right next to
-  // it in the order; one left on its own — a neighbour hidden, or the
-  // transcript in between — stretches across the row instead of leaving a gap.
-  const alone = new Set();
-  for (let i = 0; i < wide.length; i++) {
-    if (LAYOUT_FULL.includes(wide[i])) continue;
-    if (i + 1 < wide.length && !LAYOUT_FULL.includes(wide[i+1])) { i++; continue; }
-    alone.add(wide[i]);
+  const grid = $("statgrid"), holder = $("card-holder");
+  if (!grid) return;
+  let i = 0;
+  for (const k of layoutOrderOf("cards")) {
+    const el = cardEl(k);
+    if (!el) continue;
+    el.dataset.key = k;
+    el.classList.toggle("span2", LAYOUT_SPAN2.includes(k));
+    el.classList.toggle("span-full", LAYOUT_FULL.includes(k));
+    if (grid.children[i] !== el) grid.insertBefore(el, grid.children[i] || null);
+    i++;
   }
-  Object.entries(LAYOUT_WIDE_EL).forEach(([k, id]) => {
-    const el = $(id);
-    if (!el) return;
-    const i = wide.indexOf(k);
-    el.hidden = i < 0;
-    el.style.order = i < 0 ? "" : String(i);
-    el.classList.toggle("span-all", LAYOUT_FULL.includes(k) || alone.has(k));
-  });
-  const row = $("wide-row"); if (row) row.hidden = wide.length === 0;
+  while (grid.children.length > i) {
+    const el = grid.children[i];
+    if (LAYOUT_STATIC[el.dataset.key]) holder.appendChild(el); else el.remove();
+  }
+  grid.hidden = i === 0;
 }
 function openLayoutDialog(){
   const l = loadLayout();
-  // One list of cards; the statistics row folds open to its own cards.
-  const top = LAYOUT_GROUPS.find(g => g.id === "wide").keys;
-  const rows = `<div class="lay-group" data-group="wide">` +
-    l.order.filter(k => top.includes(k)).map(k => layoutRow(k)).join("") + `</div>`;
+  const rows = `<div class="lay-group" data-group="cards">` + l.order.map(k => layoutRow(k)).join("") + `</div>`;
   const m = modal(t("Status page layout"),
     `<p class="act-note" style="margin:0 0 12px;">${t("Show or hide cards, and drag them into the order you want.")}</p>
      <div class="laylist" id="laylist">${rows}</div>`,
@@ -5214,11 +5226,6 @@ function openLayoutDialog(){
     b.closest(".lay-row").classList.toggle("off", l.hidden.includes(k));
     b.innerHTML = l.hidden.includes(k) ? LAY_EYE_OFF : LAY_EYE_ON;
     b.dataset.tipText = t(l.hidden.includes(k) ? "Show" : "Hide");
-  });
-  list.querySelectorAll(".lay-fold").forEach(b => b.onclick = () => {
-    const sub = b.closest(".lay-row").querySelector(".lay-sub");
-    sub.hidden = !sub.hidden;
-    b.setAttribute("aria-expanded", String(!sub.hidden));
   });
   const optBtn = list.querySelector(".lay-opt");
   if (optBtn) optBtn.onclick = () => {
@@ -5243,28 +5250,16 @@ function layoutRow(key){
   const opt = key === "update"
     ? `<button type="button" class="lay-opt" data-tip-text="${t("When to show this card")}">${t(l.updateAlways ? "Always" : "Only when there's an update")}</button>`
     : "";
-  // The statistics row carries its own cards in a nested list, folded shut
-  // until you open it; they reorder among themselves, never into the outer list.
-  const parent = key === "stats";
-  const fold = parent
-    ? `<button type="button" class="lay-fold" aria-expanded="false" aria-label="${t(LAYOUT_NAMES[key])}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>`
-    : "";
-  const kids = parent
-    ? `<div class="lay-group lay-sub" data-group="stats" hidden>` +
-      l.order.filter(k => LAYOUT_GROUPS.find(g => g.id === "stats").keys.includes(k)).map(k => layoutRow(k)).join("") + `</div>`
-    : "";
-  return `<div class="lay-row${parent ? " lay-parent" : ""}${off ? " off" : ""}" data-key="${key}">` +
+  return `<div class="lay-row${off ? " off" : ""}" data-key="${key}">` +
     `<span class="lay-grip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="7" r="1.5"/><circle cx="15" cy="7" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="17" r="1.5"/><circle cx="15" cy="17" r="1.5"/></svg></span>` +
-    `<span class="lay-name">${t(LAYOUT_NAMES[key])}</span>${opt}${fold}` +
+    `<span class="lay-name">${t(LAYOUT_NAMES[key])}</span>${opt}` +
     (LAYOUT_PINNED.includes(key) ? "" :
-    `<button type="button" class="lay-eye" data-tip-text="${t(off ? "Show" : "Hide")}" aria-label="${t(off ? "Show" : "Hide")}">${off ? LAY_EYE_OFF : LAY_EYE_ON}</button>`) + kids + `</div>`;
+    `<button type="button" class="lay-eye" data-tip-text="${t(off ? "Show" : "Hide")}" aria-label="${t(off ? "Show" : "Hide")}">${off ? LAY_EYE_OFF : LAY_EYE_ON}</button>`) + `</div>`;
 }
 // Dragging by the grip. Rows swap as the pointer passes a neighbour's midpoint,
 // which keeps the list readable while dragging instead of jumping at the drop.
 function wireLayoutDrag(list, l){
   let row = null, group = null, startY = 0, offset = 0;
-  // Only a list's own rows: the statistics row holds a nested list whose rows
-  // are not neighbours of the outer ones.
   const rowsOf = (g) => [...g.children].filter(c => c.classList.contains("lay-row"));
   const onMove = (ev) => {
     if (!row) return;
@@ -5768,11 +5763,8 @@ function wireAchMiniCard(el){
 // Re-render just the mini card in place (its data arrives after loadStats has
 // already drawn the row), without a second stats round-trip.
 function refreshAchMini(){
-  const grid = $("statgrid"); if (!grid) return;
-  const i = layoutOrderOf("stats").indexOf("achievements");
-  if (i < 0) return;
-  const el = grid.children[i];
-  if (el) { el.innerHTML = achMiniCardHTML(); el.classList.add("ach-mini"); wireAchMiniCard(el); }
+  const el = statEls.achievements;
+  if (el && el.isConnected) { el.innerHTML = achMiniCardHTML(); el.classList.add("ach-mini"); wireAchMiniCard(el); }
 }
 function updateAchSoundBtn(){
   const b = $("ach-sound-btn"); if (!b) return;
@@ -5962,27 +5954,22 @@ function sparkSVG(values, key, cls){
   </svg>`;
 }
 function renderStatCards(all){
-  // Only the cards you kept, in the order you put them in.
-  const order = layoutOrderOf("stats");
-  const cards = order.map(k => all.find(c => c.key === k)).filter(Boolean);
-  const grid = $("statgrid");
-  grid.hidden = cards.length === 0;
-  if (grid.childElementCount !== cards.length || grid.dataset.keys !== order.join(",")) {
-    grid.dataset.keys = order.join(",");
-    grid.innerHTML = "";
-  }
-  if (grid.childElementCount !== cards.length) {
-    grid.innerHTML = cards.map((c, i) =>
-      `<div class="card stat reveal" style="--i:${i+1}"><div class="chip ${c.cls}">${c.icon}</div>` +
-      `<div class="num"></div><div class="lbl"></div>${c.sub !== undefined ? `<div class="delta flat"></div>` : ""}` +
-      `${c.spark ? `<div class="spark"></div>` : ""}</div>`).join("");
-  }
-  cards.forEach((c, i) => {
-    const el = grid.children[i];
+  // Each statistic card is built once and kept (statEls); a refresh only
+  // updates what it shows, and applyStatusLayout puts it in its place.
+  all.forEach((c, i) => {
+    let el = statEls[c.key];
+    if (!el) {
+      el = document.createElement("div");
+      el.className = "card stat reveal";
+      el.style.setProperty("--i", i + 1);
+      if (!c.custom) el.innerHTML = `<div class="chip ${c.cls}">${c.icon}</div><div class="num"></div><div class="lbl"></div>` +
+        `${c.sub !== undefined ? `<div class="delta flat"></div>` : ""}${c.spark ? `<div class="spark"></div>` : ""}`;
+      statEls[c.key] = el;
+    }
     if (c.custom) { el.innerHTML = c.html(); if (c.cardClass) el.classList.add(c.cardClass); (c.wire || wireUpdateCard)(el); return; }
     el.querySelector(".lbl").textContent = c.lbl;
     const d = el.querySelector(".delta");
-    if (d) { if (c.sub) d.textContent = c.sub; else d.remove(); } // no sub-line: drop the row entirely
+    if (d) { d.textContent = c.sub || ""; d.hidden = !c.sub; } // no sub-line: the row goes
     tickNumber(el.querySelector(".num"), c.value, c.format);
     const sp = el.querySelector(".spark");
     if (sp) sp.innerHTML = sparkSVG(c.spark, c.key, c.cls);
@@ -5991,7 +5978,118 @@ function renderStatCards(all){
     if (c.tip) { el.dataset.tipText = c.tip; el.dataset.i18nDataTipText = c.tip; el.classList.add("has-tip"); }
     else { delete el.dataset.tipText; el.classList.remove("has-tip"); }
   });
+  applyStatusLayout();
 }
+
+// Drag a card to a new place, the way icons move on a phone's home screen:
+// press and hold it for a moment, then drag. The card's place stays as a
+// dashed outline, a lifted copy follows the pointer, and the other cards make
+// way (animated, FLIP-style) as it passes them. Letting go saves the order.
+// Holding first keeps a plain click, a text selection in the transcript and
+// scrolling on a phone working as before; buttons and fields never start a drag.
+(function wireCardDrag(){
+  const grid = $("statgrid");
+  if (!grid) return;
+  const HOLD_MS = 300, SLOP = 6;
+  const NO_DRAG = "button, a, input, select, textarea, label, [contenteditable], #transcript, .cur-toggle";
+  let timer = null, down = null, last = null, card = null, ghost = null, off = null, justDragged = false;
+
+  grid.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0 || card) return;
+    const c = e.target.closest(".statgrid > .card");
+    if (!c || e.target.closest(NO_DRAG)) return;
+    down = last = { x: e.clientX, y: e.clientY };
+    timer = setTimeout(() => begin(c), HOLD_MS);
+  });
+  addEventListener("pointermove", (e) => {
+    last = { x: e.clientX, y: e.clientY };
+    if (timer && Math.hypot(last.x - down.x, last.y - down.y) > SLOP) { clearTimeout(timer); timer = null; }
+    if (card) move();
+  });
+  addEventListener("pointerup", finish);
+  addEventListener("pointercancel", finish);
+  // A drag ends in a click on whatever is under the pointer; swallow that one.
+  grid.addEventListener("click", (e) => { if (justDragged) { e.stopPropagation(); e.preventDefault(); } }, true);
+  grid.addEventListener("contextmenu", (e) => { if (card) e.preventDefault(); });
+
+  function begin(c){
+    timer = null;
+    card = c;
+    const z = uiZoom(), r = c.getBoundingClientRect();
+    off = { x: last.x - r.left, y: last.y - r.top };
+    ghost = c.cloneNode(true);
+    ghost.removeAttribute("id");
+    ghost.querySelectorAll("[id]").forEach(n => n.removeAttribute("id"));
+    ghost.classList.add("drag-ghost");
+    ghost.classList.remove("reveal");
+    Object.assign(ghost.style, { width: r.width / z + "px", height: r.height / z + "px" });
+    document.body.appendChild(ghost);
+    c.classList.add("drag-src");
+    grid.classList.add("dragging");
+    getSelection()?.removeAllRanges();
+    if (typeof hideChartTip === "function") hideChartTip();
+    move();
+  }
+  function move(){
+    const z = uiZoom();
+    ghost.style.left = (last.x - off.x) / z + "px";
+    ghost.style.top = (last.y - off.y) / z + "px";
+    // Near the top or bottom of the window, scroll so a card can travel far.
+    if (last.y < 60) scrollBy(0, -14); else if (last.y > innerHeight - 60) scrollBy(0, 14);
+    const target = document.elementFromPoint(last.x, last.y)?.closest(".statgrid > .card");
+    if (!target || target === card) return;
+    const r = target.getBoundingClientRect();
+    // Past the middle of the card under the pointer means after it: across for
+    // cards side by side, down for one that has the row to itself.
+    const after = target.classList.contains("span-full") ? last.y > r.top + r.height / 2 : last.x > r.left + r.width / 2;
+    const ref = after ? target.nextElementSibling : target;
+    if (ref === card || ref === card.nextElementSibling) return;
+    flip(() => grid.insertBefore(card, ref));
+  }
+  // Moves the cards, then animates each from where it was to where it is now.
+  function flip(mutate){
+    const z = uiZoom(), els = [...grid.children];
+    const before = new Map(els.map(el => [el, el.getBoundingClientRect()]));
+    mutate();
+    els.forEach(el => {
+      const a = before.get(el), b = el.getBoundingClientRect();
+      const dx = (a.left - b.left) / z, dy = (a.top - b.top) / z;
+      if (!dx && !dy) return;
+      // The reveal animation holds its last transform (fill-mode both), which
+      // would override this one; it has done its job by now.
+      el.style.animation = "none";
+      el.style.transition = "none";
+      el.style.transform = `translate(${dx}px, ${dy}px)`;
+      void el.offsetWidth;
+      el.style.transition = "transform .22s ease";
+      el.style.transform = "";
+      el.addEventListener("transitionend", () => { el.style.transition = ""; }, { once: true });
+    });
+  }
+  function finish(){
+    if (timer) { clearTimeout(timer); timer = null; }
+    if (!card) return;
+    ghost.remove();
+    card.classList.remove("drag-src");
+    grid.classList.remove("dragging");
+    card = ghost = null;
+    justDragged = true;
+    setTimeout(() => { justDragged = false; }, 0);
+    // The grid holds only the cards on show; the hidden ones keep their place
+    // in the saved order, right after whatever came before them.
+    const l = loadLayout();
+    const shown = [...grid.children].map(el => el.dataset.key);
+    const order = [...shown];
+    l.order.forEach((k, i) => {
+      if (order.includes(k)) return;
+      let at = -1;
+      for (let j = i - 1; j >= 0 && at < 0; j--) at = order.indexOf(l.order[j]);
+      order.splice(at + 1, 0, k);
+    });
+    l.order = order;
+    saveLayout();
+  }
+})();
 
 // Counts an element from whatever it last showed to `to`, easing out. Skips the
 // animation on the first paint and when the value hasn't moved, so it only ever
