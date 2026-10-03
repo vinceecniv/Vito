@@ -281,7 +281,7 @@
   .cost-tools { display:flex; align-items:center; gap:4px; min-width:0; }
   .cost-card .cur-toggle { visibility:hidden; display:inline-flex; border:1px solid var(--card-border); border-radius:7px; overflow:hidden; }
   .cost-card:hover .cur-toggle, .cost-card:focus-within .cur-toggle { visibility:visible; }
-  .cost-card .cur-toggle button { border:none; background:none; padding:3px 6px; font-size:10.5px; font-weight:600; color:var(--text3); cursor:pointer; }
+  .cost-card .cur-toggle button { border:none; background:none; padding:2px 7px; font-size:12px; font-weight:700; color:var(--text3); cursor:pointer; }
   .cost-card .cur-toggle button.active { background:var(--accent); color:#fff; }
   .h2-btns { margin-left:auto; display:flex; gap:6px; }
   .h2-btn { width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--card-border); border-radius:8px; background:none; color:var(--text3); cursor:pointer; transition:color .12s, border-color .12s, background .12s; }
@@ -1402,7 +1402,7 @@
       <div class="statgrid" id="statgrid" style="margin-bottom:20px;"></div>
       <div id="card-holder" hidden>
         <div class="card stat cost-card reveal" id="cost-card">
-          <div class="cost-top"><div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div><div class="cost-tools"><div class="cur-toggle"><button type="button" data-cur="eur">EUR</button><button type="button" data-cur="usd">USD</button></div>
+          <div class="cost-top"><div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div><div class="cost-tools"><div class="cur-toggle"><button type="button" data-cur="eur" aria-label="EUR" title="EUR">€</button><button type="button" data-cur="usd" aria-label="USD" title="USD">$</button></div>
               <button type="button" class="icon-i" id="cost-info" title="How do these costs work?" aria-label="How do these costs work?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg></button></div></div>
           <div class="num" id="cost-month-total">–</div>
           <div class="lbl"><span>Costs</span> · <span>this month so far</span></div>
