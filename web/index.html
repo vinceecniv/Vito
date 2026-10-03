@@ -331,6 +331,32 @@
   .statgrid > .card { -webkit-touch-callout:none; }
   .statgrid.dragging, .statgrid.dragging * { user-select:none; -webkit-user-select:none; cursor:grabbing !important; }
   .statgrid > .card.drag-src { opacity:.3; outline:2px dashed var(--accent); outline-offset:-2px; }
+  /* Each card's own menu: a small ⋯ in its corner while you point at it. The
+     controls some cards keep top right step aside for it. */
+  .card-menu-btn { position:absolute; top:6px; right:6px; z-index:3; width:24px; height:24px; padding:0; border-radius:7px;
+    border:1px solid var(--card-border); background:var(--card); color:var(--text3); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; opacity:0; transition:opacity .15s, color .12s, border-color .12s; }
+  .statgrid > .card:hover > .card-menu-btn, .card-menu-btn:focus-visible, .card-menu-btn[aria-expanded="true"] { opacity:1; }
+  .card-menu-btn:hover { color:var(--text); border-color:var(--accent); }
+  .card-menu-btn svg { width:14px; height:14px; }
+  .statgrid.dragging .card-menu-btn { display:none; }
+  .statgrid > .card .cost-tools, .statgrid > .card .h2-btns, .statgrid #chart-sub { margin-right:20px; }
+  .card-menu { position:fixed; z-index:1001; min-width:190px; padding:4px; background:var(--card); border:1px solid var(--card-border);
+    border-radius:10px; box-shadow:0 10px 30px rgba(20,10,40,.2); }
+  .card-menu button { display:flex; width:100%; align-items:center; gap:9px; padding:8px 10px; border:none; border-radius:7px; background:none;
+    font:inherit; font-size:13px; color:var(--text); cursor:pointer; text-align:left; }
+  .card-menu button:hover { background:var(--nav-active-bg); }
+  .card-menu button.sel { color:var(--accent); font-weight:600; }
+  .card-menu button svg { width:15px; height:15px; flex:none; color:var(--text3); }
+  .card-menu .sep { height:1px; margin:4px 6px; background:var(--card-border); }
+  .card-menu .head { padding:6px 10px 3px; font-size:11px; color:var(--text3); }
+  /* Under the grid, only while cards are hidden: the way to bring them back. */
+  .hidden-cards { display:flex; justify-content:flex-end; margin:-8px 0 20px; }
+  .hidden-cards:empty { display:none; }
+  .hidden-cards button { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border:1px solid var(--card-border); border-radius:999px;
+    background:var(--card); color:var(--text3); font:inherit; font-size:12px; font-weight:600; cursor:pointer; }
+  .hidden-cards button:hover { color:var(--text); border-color:var(--accent); }
+  .hidden-cards button svg { width:14px; height:14px; }
   .drag-ghost { position:fixed; z-index:1000; margin:0; pointer-events:none; opacity:.95;
     box-shadow:0 18px 44px rgba(20,10,40,.32); transform:scale(1.03) rotate(-.8deg); }
   /* Grid items default to min-width:auto, so a card can refuse to shrink below
@@ -612,23 +638,6 @@
   .tgl input:checked + .tr { background:var(--toggle-on); }
   .tgl input:checked + .tr::after { left:19px; }
   .tgl.disabled { opacity:.45; cursor:default; }
-  /* Status page layout editor */
-  .laylist { display:flex; flex-direction:column; gap:14px; }
-  .lay-group { display:flex; flex-direction:column; gap:8px; }
-  .lay-head { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--text3); }
-  .lay-row { display:flex; align-items:center; gap:10px; padding:9px 11px; border:1px solid var(--card-border); border-radius:10px; background:var(--card); }
-  .lay-row.off > .lay-name { color:var(--text3); text-decoration:line-through; }
-  .lay-row.dragging { position:relative; z-index:5; border-color:var(--accent); box-shadow:0 10px 26px rgba(20,10,40,.28); }
-  .lay-grip { display:flex; color:var(--text3); cursor:grab; touch-action:none; }
-  .lay-grip:active { cursor:grabbing; }
-  .lay-grip svg { width:18px; height:18px; }
-  .lay-name { flex:1; min-width:0; font-size:13px; color:var(--text); }
-  .lay-eye { width:30px; height:30px; padding:0; border:1px solid var(--card-border); border-radius:8px; background:none; color:var(--text2); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
-  .lay-eye:hover { color:var(--text); border-color:var(--accent); }
-  .lay-eye svg { width:16px; height:16px; }
-  .lay-opt { border:1px solid var(--card-border); border-radius:99px; background:none; color:var(--text3); cursor:pointer;
-    font-size:11px; padding:3px 9px; white-space:nowrap; }
-  .lay-opt:hover { color:var(--text); border-color:var(--accent); }
   /* Version card: same shell as a statistic card, different contents. */
   .card.stat .upd-ver { font-size:22px; letter-spacing:-0.01em; }
   .upd-actions { display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
@@ -1232,7 +1241,6 @@
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
   .modal { width:360px; max-width:92vw; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:20px; box-shadow:0 24px 64px rgba(20,10,40,.45); }
   .modal.relnotes-modal { width:560px; }
-  .modal.layout-modal { width:600px; }
   .keyinfo .ki-guide { margin:2px 0 12px; }
   .keyinfo .ki-guide a { display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-weight:600; text-decoration:none; }
   .keyinfo .ki-guide a:hover { text-decoration:underline; }
@@ -1387,9 +1395,6 @@
             <button type="button" class="flagsel-btn" id="statperiod-btn"></button>
             <div class="flagsel-list" id="statperiod-list"></div>
           </div>
-          <button class="privacy-btn" id="layout-btn" data-tip-text="Choose which cards to show, and in what order" aria-label="Edit this page">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10a2.1 2.1 0 0 0-3-3L5 17z"/><path d="M13.5 6.5l4 4"/></svg>
-          </button>
           <button class="privacy-btn" id="privacy-btn" title="Privacy mode" aria-label="Privacy mode">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg>
           </button>
@@ -1427,6 +1432,7 @@
            The fixed cards below wait in the holder until they are placed, and
            return there when you hide them. -->
       <div class="statgrid" id="statgrid" style="margin-bottom:20px;"></div>
+      <div class="hidden-cards" id="hidden-cards"></div>
       <div id="card-holder" hidden>
         <div class="card stat cost-card reveal" id="cost-card">
           <div class="cost-top"><div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div><div class="cost-tools"><div class="cur-toggle"><button type="button" data-cur="eur" aria-label="EUR" title="EUR">€</button><button type="button" data-cur="usd" aria-label="USD" title="USD">$</button></div>
@@ -5218,106 +5224,109 @@ function applyStatusLayout(){
     if (LAYOUT_STATIC[el.dataset.key]) holder.appendChild(el); else el.remove();
   }
   grid.hidden = i === 0;
+  [...grid.children].forEach(ensureCardMenuBtn);
+  renderHiddenCards();
 }
-function openLayoutDialog(){
-  const l = loadLayout();
-  const rows = `<div class="lay-group" data-group="cards">` + l.order.map(k => layoutRow(k)).join("") + `</div>`;
-  const m = modal(t("Status page layout"),
-    `<p class="act-note" style="margin:0 0 12px;">${t("Show or hide cards, and drag them into the order you want.")}</p>
-     <div class="laylist" id="laylist">${rows}</div>`,
-    () => { saveLayout(); applyStatusLayout(); loadStats(); },
-    "Save");
-  // Wider, and lined up over the content column instead of the whole viewport.
-  const lbox = m.querySelector(".modal"); if (lbox) lbox.classList.add("layout-modal");
-  centreOverContent(m);
-  const list = m.querySelector("#laylist");
-  list.querySelectorAll(".lay-eye").forEach(b => b.onclick = () => {
-    const k = b.closest(".lay-row").dataset.key;
-    const i = l.hidden.indexOf(k);
-    if (i < 0) l.hidden.push(k); else l.hidden.splice(i, 1);
-    b.closest(".lay-row").classList.toggle("off", l.hidden.includes(k));
-    b.innerHTML = l.hidden.includes(k) ? LAY_EYE_OFF : LAY_EYE_ON;
-    b.dataset.tipText = t(l.hidden.includes(k) ? "Show" : "Hide");
+
+// The ⋯ button in a card's corner. Cards that rebuild their own contents
+// lose it, so placing them puts it back.
+const ICON_DOTS = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>';
+const ICON_RESET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
+function ensureCardMenuBtn(el){
+  if (!el || el.querySelector(":scope > .card-menu-btn")) return;
+  const k = el.dataset.key;
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "card-menu-btn";
+  b.innerHTML = ICON_DOTS;
+  b.setAttribute("aria-haspopup", "menu");
+  b.setAttribute("aria-label", t(LAYOUT_NAMES[k] || ""));
+  b.onclick = (e) => { e.stopPropagation(); openCardMenu(b, cardMenuItems(k)); };
+  el.appendChild(b);
+}
+// What a card's menu offers: hiding it (not the transcript, which holds Start
+// / Stop), the version card's choice of when it shows, and putting the whole
+// page back to the default arrangement.
+function cardMenuItems(k){
+  const l = loadLayout(), items = [];
+  if (k === "update") {
+    items.push({ head: t("When to show this card") });
+    items.push({ label: t("Always"), sel: l.updateAlways, run: () => { l.updateAlways = true; layoutChanged(); } });
+    items.push({ label: t("Only when there's an update"), sel: !l.updateAlways, run: () => { l.updateAlways = false; layoutChanged(); } });
+    items.push({ sep: true });
+  }
+  if (!LAYOUT_PINNED.includes(k)) items.push({ icon: LAY_EYE_OFF, label: t("Hide"), run: () => { l.hidden.push(k); layoutChanged(); } });
+  items.push({ icon: ICON_RESET, label: t("Reset to default"), run: resetLayout });
+  return items;
+}
+function layoutChanged(){ saveLayout(); applyStatusLayout(); }
+function resetLayout(){
+  statusLayout = { order: [...LAYOUT_FRESH], hidden: [], updateAlways: false };
+  saveLayout(); applyStatusLayout(); loadStats();
+}
+// One floating menu at a time, under the button that opened it (or above it
+// when there's no room), closed by any click elsewhere or Escape.
+let cardMenu = null;
+function closeCardMenu(){
+  if (!cardMenu) return;
+  cardMenu.opener.setAttribute("aria-expanded", "false");
+  cardMenu.el.remove();
+  cardMenu = null;
+}
+function openCardMenu(opener, items){
+  const again = cardMenu && cardMenu.opener === opener;
+  closeCardMenu();
+  if (again) return;
+  const el = document.createElement("div");
+  el.className = "card-menu";
+  el.setAttribute("role", "menu");
+  items.forEach(it => {
+    if (it.sep) { el.insertAdjacentHTML("beforeend", `<div class="sep"></div>`); return; }
+    if (it.head) { el.insertAdjacentHTML("beforeend", `<div class="head">${ahEsc(it.head)}</div>`); return; }
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("role", "menuitem");
+    if (it.sel) b.classList.add("sel");
+    b.innerHTML = (it.icon || "") + `<span>${ahEsc(it.label)}</span>`;
+    b.onclick = (e) => { e.stopPropagation(); closeCardMenu(); it.run(); };
+    el.appendChild(b);
   });
-  const optBtn = list.querySelector(".lay-opt");
-  if (optBtn) optBtn.onclick = () => {
-    l.updateAlways = !l.updateAlways;
-    optBtn.textContent = t(l.updateAlways ? "Always" : "Only when there's an update");
-  };
-  wireLayoutDrag(list, l);
-  // A reset lives next to the buttons rather than as a third row: it's rare.
-  const bar = m.querySelector(".rowflex");
-  const reset = document.createElement("button");
-  reset.className = "btn ghost small"; reset.style.marginRight = "auto";
-  reset.textContent = t("Reset to default");
-  reset.onclick = () => { statusLayout = { order: [...LAYOUT_FRESH], hidden: [] }; saveLayout(); applyStatusLayout(); loadStats(); m.remove(); };
-  bar.insertBefore(reset, bar.firstChild);
+  document.body.appendChild(el);
+  const z = uiZoom(), r = opener.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;
+  let left = r.right / z - w, top = r.bottom / z + 4;
+  if (left < 8) left = 8;
+  if (top + h > innerHeight / z - 8) top = r.top / z - h - 4;
+  Object.assign(el.style, { left: left + "px", top: top + "px" });
+  opener.setAttribute("aria-expanded", "true");
+  cardMenu = { el, opener };
 }
+document.addEventListener("click", (e) => { if (cardMenu && !cardMenu.el.contains(e.target)) closeCardMenu(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCardMenu(); });
+// Under the grid, only while cards are hidden: an eye with the count, whose
+// menu brings each one back.
+function renderHiddenCards(){
+  const box = $("hidden-cards");
+  if (!box) return;
+  const l = loadLayout();
+  const hid = l.order.filter(k => l.hidden.includes(k) && !LAYOUT_PINNED.includes(k));
+  if (!hid.length) { box.innerHTML = ""; return; }
+  box.innerHTML = `<button type="button" aria-haspopup="menu" data-tip-text="${ahEsc(t("Choose which cards to show, and in what order"))}"` +
+    ` aria-label="${ahEsc(t("Choose which cards to show, and in what order"))}">${LAY_EYE_OFF}<span>${hid.length}</span></button>`;
+  const b = box.querySelector("button");
+  b.onclick = (e) => {
+    e.stopPropagation();
+    openCardMenu(b, [
+      { head: t("Show") },
+      ...hid.map(k => ({ icon: LAY_EYE_ON, label: t(LAYOUT_NAMES[k]), run: () => { l.hidden = l.hidden.filter(x => x !== k); layoutChanged(); loadStats(); } })),
+      { sep: true },
+      { icon: ICON_RESET, label: t("Reset to default"), run: resetLayout },
+    ]);
+  };
+}
+
+// Eye icons for showing and hiding cards (the hidden-cards menu).
 const LAY_EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>';
 const LAY_EYE_OFF = LAY_EYE_ON.replace("</svg>", '<line x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg>');
-function layoutRow(key){
-  const l = loadLayout(), off = l.hidden.includes(key);
-  // The version card has one more thing to decide than the rest: whether it is
-  // always on screen or only turns up when there is an update.
-  const opt = key === "update"
-    ? `<button type="button" class="lay-opt" data-tip-text="${t("When to show this card")}">${t(l.updateAlways ? "Always" : "Only when there's an update")}</button>`
-    : "";
-  return `<div class="lay-row${off ? " off" : ""}" data-key="${key}">` +
-    `<span class="lay-grip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="7" r="1.5"/><circle cx="15" cy="7" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="17" r="1.5"/><circle cx="15" cy="17" r="1.5"/></svg></span>` +
-    `<span class="lay-name">${t(LAYOUT_NAMES[key])}</span>${opt}` +
-    (LAYOUT_PINNED.includes(key) ? "" :
-    `<button type="button" class="lay-eye" data-tip-text="${t(off ? "Show" : "Hide")}" aria-label="${t(off ? "Show" : "Hide")}">${off ? LAY_EYE_OFF : LAY_EYE_ON}</button>`) + `</div>`;
-}
-// Dragging by the grip. Rows swap as the pointer passes a neighbour's midpoint,
-// which keeps the list readable while dragging instead of jumping at the drop.
-function wireLayoutDrag(list, l){
-  let row = null, group = null, startY = 0, offset = 0;
-  const rowsOf = (g) => [...g.children].filter(c => c.classList.contains("lay-row"));
-  const onMove = (ev) => {
-    if (!row) return;
-    // The pointer moves in visual pixels; a transform is applied before the
-    // interface zoom, so the distance has to be scaled back (see uiZoom).
-    const z = uiZoom();
-    const dy = (ev.clientY - startY) / z;
-    row.style.transform = `translateY(${dy + offset}px)`;
-    const rr = row.getBoundingClientRect();
-    const mid = rr.top + rr.height / 2;
-    for (const other of rowsOf(group)) {
-      if (other === row) continue;
-      const r = other.getBoundingClientRect();
-      if (mid > r.top && mid < r.bottom) {
-        const before = other.compareDocumentPosition(row) & Node.DOCUMENT_POSITION_FOLLOWING;
-        group.insertBefore(row, before ? other : other.nextSibling);
-        // The reorder shifts the row's natural position by one slot; compensate in
-        // the opposite direction so it stays visually under the pointer instead of
-        // jumping a slot (which would re-trigger the swap and shoot to the end).
-        offset += (before ? 1 : -1) * (r.height / z + 8);
-        row.style.transform = `translateY(${dy + offset}px)`;
-        break;
-      }
-    }
-  };
-  const end = () => {
-    if (!row) return;
-    row.style.transform = ""; row.classList.remove("dragging");
-    row = null;
-    // Rebuild the saved order from what the list now shows.
-    const seen = [...list.querySelectorAll(".lay-row")].map(r => r.dataset.key);
-    l.order = seen;
-    document.removeEventListener("pointermove", onMove);
-    document.removeEventListener("pointerup", end);
-  };
-  list.querySelectorAll(".lay-grip").forEach(grip => grip.addEventListener("pointerdown", (ev) => {
-    ev.preventDefault();
-    row = grip.closest(".lay-row");
-    group = row.closest(".lay-group");
-    startY = ev.clientY; offset = 0;
-    row.classList.add("dragging");
-    document.addEventListener("pointermove", onMove);
-    document.addEventListener("pointerup", end);
-  }));
-}
-$("layout-btn").onclick = openLayoutDialog;
 
 /* ---- version & updates ---- */
 // One request at startup, answered from a day-old cache on the daemon side, so
@@ -5780,7 +5789,7 @@ function wireAchMiniCard(el){
 // already drawn the row), without a second stats round-trip.
 function refreshAchMini(){
   const el = statEls.achievements;
-  if (el && el.isConnected) { el.innerHTML = achMiniCardHTML(); el.classList.add("ach-mini"); wireAchMiniCard(el); }
+  if (el && el.isConnected) { el.innerHTML = achMiniCardHTML(); el.classList.add("ach-mini"); wireAchMiniCard(el); ensureCardMenuBtn(el); }
 }
 function updateAchSoundBtn(){
   const b = $("ach-sound-btn"); if (!b) return;
