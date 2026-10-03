@@ -6103,9 +6103,9 @@ function wireUpdateCard(el){
 
 // Matrix rain on a canvas: columns of glyphs falling, in the logo's
 // coral-to-violet from left to right, each column's head brighter. It runs at
-// about 18 frames a second, pauses while the page is hidden, stops for good
-// once the canvas leaves the page (the card is rebuilt on every refresh), and
-// draws one still frame when reduced motion is asked for.
+// about 18 frames a second, pauses while the page is hidden or the card is
+// off it, stops for good once the card is rebuilt (every refresh), and runs
+// at a third of the pace when reduced motion is asked for.
 const MATRIX_GLYPHS = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜ0123456789VITO";
 function matrixRain(cv, card){
   const ctx = cv.getContext("2d"); if (!ctx) return;
@@ -6142,15 +6142,18 @@ function matrixRain(cv, card){
       drops[i] = y * FS > h && Math.random() > .955 ? 0 : y + 1;
     });
   };
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    for (let i = 0; i < 40; i++) frame();
-    return;
-  }
+  // Reduced motion slows the rain to a drizzle rather than freezing it: a
+  // remote-desktop session asks for it by default, and the card exists to be
+  // noticed.
+  const STEP = matchMedia("(prefers-reduced-motion: reduce)").matches ? 160 : 55;
   let last = 0, lastW = w;
   const tick = (now) => {
-    if (!cv.isConnected) return;
+    // Stop for good only once the card has been rebuilt without this canvas;
+    // a card waiting off the page (it is built before it is placed, and the
+    // version card is only placed once there is news) just skips frames.
+    if (!card.contains(cv)) return;
     requestAnimationFrame(tick);
-    if (document.hidden || now - last < 55) return;
+    if (!cv.isConnected || document.hidden || now - last < STEP) return;
     last = now;
     const r = card.getBoundingClientRect();
     if (Math.abs(r.width / uiZoom() - lastW) > 2) { size(); lastW = w; }
