@@ -486,6 +486,25 @@
      buckets as the words chart. */
   .card.stat { position:relative; overflow:hidden; }
   .card.stat > .chip, .card.stat > .num, .card.stat > .lbl, .card.stat > .delta { position:relative; z-index:1; }
+  /* The words card's secondary figures: below the number when the card is one
+     cell wide, beside it (two by two) when it is wider. */
+  .card.stat.has-minis { container-type:inline-size; }
+  .minis { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:6px 12px; margin-top:12px; }
+  .mini { display:grid; grid-template-columns:22px 1fr; column-gap:7px; align-items:center; min-width:0; }
+  .mini-ic { grid-row:span 2; width:22px; height:22px; border-radius:6px; display:flex; align-items:center; justify-content:center; }
+  .mini-ic.violet { background:var(--accent-soft); color:var(--violet); }
+  .mini-ic.coral { background:var(--coral-soft); color:var(--coral); }
+  :root[data-theme="dark"] .mini-ic.violet { color:var(--violet-l); }
+  .mini-ic svg { width:13px; height:13px; }
+  .mini-v { font-size:15px; font-weight:700; line-height:1.15; font-variant-numeric:tabular-nums; }
+  .mini-l { font-size:11px; color:var(--text2); line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  @container (min-width:280px) {
+    .minis { position:absolute; top:16px; bottom:16px; right:18px; width:54%; margin:0; grid-template-columns:1fr; gap:4px; align-content:center; }
+    .mini { grid-template-columns:20px auto minmax(0,1fr); }
+    .mini .mini-ic { grid-row:auto; width:20px; height:20px; }
+    .mini .mini-l { margin-left:6px; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; line-height:1.12; }
+    .has-minis > .num, .has-minis > .lbl { max-width:42%; }
+  }
   .spark { position:absolute; left:0; right:0; bottom:0; height:calc(100% - 8px); z-index:0; pointer-events:none; opacity:.6; }
   .spark:empty { display:none; }
   .spark svg { display:block; width:100%; height:100%; }
@@ -610,13 +629,15 @@
     padding-top:10px; border-top:1px solid var(--card-border); }
   .rcal-sum { font-size:12.5px; color:var(--text2); white-space:nowrap; }
   .rcal-foot .rowflex { display:flex; gap:6px; }
-  /* On the narrow layout the picker collapses to its calendar icon: the label
-     costs a lot of the header's width, and the open list names the period
-     anyway. Same footprint as the privacy button beside it. */
+  /* On the narrow layout the picker shows the period in its short form
+     ("4w", "3–9 Sep") beside the calendar icon: the full name costs too much
+     of the header's width, but an icon alone hid which period you were on. */
+  .period-sel .flagsel-btn > .pl-short { display:none; }
   @media (max-width:820px){
     .period-sel { max-width:none; }
-    .period-sel .flagsel-btn { width:40px; padding:0; justify-content:center; }
-    .period-sel .flagsel-btn > span { display:none; }
+    .period-sel .flagsel-btn { width:auto; padding:0 12px; gap:6px; justify-content:center; }
+    .period-sel .flagsel-btn > .pl-full { display:none; }
+    .period-sel .flagsel-btn > .pl-short { display:inline; }
     .period-sel .flagsel-btn::after { display:none; }
   }
   /* Hide the native number spinners: they render with browser-default (light)
@@ -5726,20 +5747,19 @@ loadAbout();
 // The status page is one grid of cards in any order — the statistics, the
 // chart, the costs and the live transcript alike — and any card can be dragged
 // to any place, like icons on a phone's home screen.
-const STAT_KEYS = ["credit","words","sentences","activations","spoken","saved","commands",
+const STAT_KEYS = ["credit","words","commands",
   "spokenwpm","latency","cleanupfx","languages","rhythm","wordcloud","achievements","update"];
 const LAYOUT_GROUPS = [
   { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript","quicksettings","mascot"] },
 ];
-const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences:"sentences cleaned", activations:"activations",
-  spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
+const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
   spokenwpm:"wpm spoken", latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
   cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings", mascot:"Vito" };
 // The fixed cards are written in the page; the statistic cards are built from
 // their data (renderStatCards). Some cards take two cells, the transcript a
 // whole row — and it can't be hidden, it holds Start / Stop.
 const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card", mascot:"mascot-card" };
-const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud","quicksettings","mascot"];
+const LAYOUT_SPAN2 = ["words","chart","rhythm","wordcloud","quicksettings","mascot"];
 // The widths, in cells, each card can be set to from its menu — where a choice
 // makes sense. The cards with a chart in them can go up to three; the words
 // chart, the calendar and quick settings are too cramped in one; the
@@ -5751,7 +5771,7 @@ const widthsFor = (k) => LAYOUT_WIDTHS[k] || [1, 2];
 // The cards that can show their trend as a chart in the background, and the
 // ones that do until you say otherwise: words for the volume and speaking rate
 // for the pace — the others mostly repeat the words curve.
-const SPARK_KEYS = ["words","sentences","activations","spoken","saved","spokenwpm"];
+const SPARK_KEYS = ["words","spokenwpm"];
 const SPARK_DEFAULT = ["words","spokenwpm"];
 function sparkOn(k){
   const v = (loadLayout().spark || {})[k];
@@ -5797,6 +5817,12 @@ function loadLayout(){
   });
   let hidden = Array.isArray(saved && saved.hidden) ? saved.hidden : [];
   if (hidden.includes("stats")) hidden = [...hidden, ...STAT_KEYS]; // the whole block was hidden
+  // Sentences, activations, spoken and saved time used to be cards of their
+  // own; they moved into the words card. If that one was hidden while any of
+  // them was not, show it, or those figures would vanish without a choice.
+  const MERGED = ["sentences","activations","spoken","saved"];
+  if (hidden.includes("words") && MERGED.some(k => !hidden.includes(k)) && Array.isArray(saved && saved.order) && MERGED.some(k => saved.order.includes(k)))
+    hidden = hidden.filter(k => k !== "words");
   hidden = hidden.filter(k => LAYOUT_DEFAULT.includes(k));
   // The version card is on by default but keeps quiet: it appears when there is
   // something to say. Set updateAlways to keep it there permanently.
@@ -6646,7 +6672,8 @@ function renderStatCards(all){
       el.className = "card stat reveal";
       el.style.setProperty("--i", i + 1);
       if (!c.custom) el.innerHTML = `<div class="chip ${c.cls}">${c.icon}</div><div class="num"></div><div class="lbl"></div>` +
-        `${c.sub !== undefined ? `<div class="delta flat"></div>` : ""}${c.spark ? `<div class="spark"></div>` : ""}`;
+        `${c.sub !== undefined ? `<div class="delta flat"></div>` : ""}${c.minis ? `<div class="minis"></div>` : ""}${c.spark ? `<div class="spark"></div>` : ""}`;
+      if (c.minis) el.classList.add("has-minis");
       statEls[c.key] = el;
     }
     if (c.custom) { el.innerHTML = c.html(); if (c.cardClass) el.classList.add(c.cardClass); (c.wire || wireUpdateCard)(el); return; }
@@ -6654,6 +6681,11 @@ function renderStatCards(all){
     const d = el.querySelector(".delta");
     if (d) { d.textContent = c.sub || ""; d.hidden = !c.sub; } // no sub-line: the row goes
     tickNumber(el.querySelector(".num"), c.value, c.format);
+    // Secondary figures that grow with the main one: each a small line of its
+    // own with its own explanation, rather than a card each.
+    const mn = el.querySelector(".minis");
+    if (mn) mn.innerHTML = c.minis.map(m => `<div class="mini" data-tip-text="${ahEsc(m.tip)}"><span class="mini-ic ${m.cls}">${m.icon}</span>` +
+      `<span class="mini-v">${m.format(m.value)}</span><span class="mini-l">${m.lbl}</span></div>`).join("");
     const sp = el.querySelector(".spark");
     if (sp) sp.innerHTML = sparkOn(c.key) ? sparkSVG(c.spark, c.key, c.cls) : "";
     // The sub-line is terse by necessity; the explanation lives in the same
@@ -6831,6 +6863,20 @@ function rangeLabel(from, to){
   if (from === to) return f.format(a);
   return f.formatRange ? f.formatRange(a, b) : f.format(a) + " – " + f.format(b);
 }
+// The same period in as few characters as the locale allows, for the narrow
+// header: "7d", "4w", "3m", "1y" (Intl's narrow units), a range without its
+// year. Today, yesterday and all time are short enough as they are.
+function periodShort(v){
+  const r = String(v).match(RANGE_RE);
+  if (r) {
+    const f = dateFmt({ day:"numeric", month:"short" }), a = parseYmd(r[1]), b = parseYmd(r[2]);
+    return r[1] === r[2] ? f.format(a) : (f.formatRange ? f.formatRange(a, b) : f.format(a) + "–" + f.format(b));
+  }
+  const unit = { "7":["day",7], "28":["week",4], "92":["month",3], "365":["year",1] }[String(v)];
+  if (!unit) return periodLabel(v);
+  try { return new Intl.NumberFormat(numLoc(), { style:"unit", unit:unit[0], unitDisplay:"narrow" }).format(unit[1]); }
+  catch { return periodLabel(v); }
+}
 function periodLabel(value){
   const v = String(value === undefined ? ($("stat-period") || {}).value : value);
   const r = v.match(RANGE_RE);
@@ -6864,7 +6910,7 @@ function setPeriodDisplay(){
   const btn = $("statperiod-btn"), list = $("statperiod-list");
   if (!btn) return;
   const cur = statPeriod();
-  btn.innerHTML = PERIOD_ICON + "<span>" + periodLabel(cur) + "</span>";
+  btn.innerHTML = PERIOD_ICON + "<span class=\"pl-full\">" + periodLabel(cur) + "</span><span class=\"pl-short\">" + periodShort(cur) + "</span>";
   const want = RANGE_RE.test(cur) ? "range" : cur;
   list.querySelectorAll(".flagsel-opt").forEach(c => c.classList.toggle("sel", c.dataset.v === want));
 }
@@ -7064,20 +7110,22 @@ async function loadStats(){
   renderStatCards([
     // A prominent warning card that only appears when a provider is out of credit.
     { key:"credit", custom:true, cardClass:"credit-card", html:creditCardHTML, wire:wireCreditCard },
+    // Words, with what grows along with them — sentences, activations, spoken
+    // and saved time track the words almost exactly, so they are one card.
     { key:"words", spark:series(d => d.words), cls:"violet", icon:I.words, value:st.words,         format:nf,          lbl:t("words dictated"),
-      tip:t("Every word in the text Vito pasted for you in this period — after cleanup, if that was on. Privacy-mode dictations count too; only their text isn't kept.") },
-    { key:"sentences", spark:series(d => d.sentences), cls:"coral",  icon:I.sent,  value:st.sentences,     format:nf,          lbl:t("sentences cleaned"),
-      tip:t("The number of sentences in the pasted text. They are counted whether or not AI cleanup actually ran — short dictations skip that step.") },
-    // The two derived figures moved into the tooltip: the cards stay one line
-    // shorter, and the number gets the explanation it needed anyway.
-    { key:"activations", spark:series(d => d.activations), cls:"violet", icon:I.act,   value:st.activations,   format:nf,          lbl:t("activations"),
-      tip:`≈ ${st.activations_per_day.toFixed(1)} ${t("per day")} — ` +
-          t("Average number of times a day you started a dictation, over the days you used Vito in this period.") },
-    { key:"spoken", spark:series(d => d.spoken_seconds), cls:"coral",  icon:I.mic,   value:st.spoken_seconds, format:fmtShortSec, lbl:t("spoken time"),
-      tip:t("How long the microphone was recording, from start to stop. Pauses and silences within a dictation count too — this is also the time your speech recognition bills for.") },
-    { key:"saved", spark:series(d => d.saved_minutes), cls:"violet", icon:I.time,  value:st.saved_minutes,  format:fmtShortMin, lbl:t("saved typing time"),
-      tip:t("based on {n} wpm").replace("{n}", st.typing_wpm) + " — " +
-          t("What you save compared with typing it yourself: your words divided by your typing speed, minus the time you spent speaking. Set your typing speed under Settings → General.") },
+      tip:t("Every word in the text Vito pasted for you in this period — after cleanup, if that was on. Privacy-mode dictations count too; only their text isn't kept."),
+      minis:[
+        { cls:"coral", icon:I.sent, value:st.sentences, format:nf, lbl:t("sentences cleaned"),
+          tip:t("The number of sentences in the pasted text. They are counted whether or not AI cleanup actually ran — short dictations skip that step.") },
+        { cls:"violet", icon:I.act, value:st.activations, format:nf, lbl:t("activations"),
+          tip:`≈ ${st.activations_per_day.toFixed(1)} ${t("per day")} — ` +
+              t("Average number of times a day you started a dictation, over the days you used Vito in this period.") },
+        { cls:"coral", icon:I.mic, value:st.spoken_seconds, format:fmtShortSec, lbl:t("spoken time"),
+          tip:t("How long the microphone was recording, from start to stop. Pauses and silences within a dictation count too — this is also the time your speech recognition bills for.") },
+        { cls:"violet", icon:I.time, value:st.saved_minutes, format:fmtShortMin, lbl:t("saved typing time"),
+          tip:t("based on {n} wpm").replace("{n}", st.typing_wpm) + " — " +
+              t("What you save compared with typing it yourself: your words divided by your typing speed, minus the time you spent speaking. Set your typing speed under Settings → General.") },
+      ] },
     { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:st.commands, format:nf, lbl:t("Vito Assist commands"),
       tip:t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.") },
     // Speaking rate: words over recording time, next to the typing speed the
