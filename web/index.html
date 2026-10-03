@@ -4764,12 +4764,35 @@ const MASCOT_CSS = `
 }`;
 (function(){ const s = document.createElement("style"); s.textContent = MASCOT_CSS; document.head.appendChild(s); })();
 let vmSeq = 0;
-// The drawing. The body's gradient is in user space, so the eyelids that use it
-// match the face behind them exactly.
+// The drawing, in two shapes. "round" is a ball with the logo's bars as a
+// quiff; "vito" is the logo itself: the face is the triangle the five hanging
+// bars make, and the hair is those bars stood upright. The face is drawn once,
+// for the ball, and fitted into the triangle by moving it up and in, so every
+// expression works on both. The body's gradient is in user space, so the
+// eyelids that use it match the face behind them exactly.
+const VM_SHAPES = {
+  round: {
+    hair: [[41, 9, .6], [50.5, 15, 1.1], [60, 20, 1.6], [69.5, 15, 1.1], [79, 9, .6]], hairW: 9, hairBase: 34,
+    body: (g) => `<circle cx="60" cy="72" r="44" fill="${g}"/>
+    <ellipse cx="60" cy="104" rx="30" ry="9" fill="#2B2440" opacity=".08"/>
+    <ellipse cx="42" cy="47" rx="15" ry="9" fill="#fff" opacity=".38" transform="rotate(-28 42 47)"/>`,
+    face: "", shadow: 30,
+  },
+  // The logo's bars are 20, 36 and 56 long on a 20-unit pitch; the hair keeps
+  // those proportions, the face is their outline rounded off.
+  vito: {
+    hair: [[30, 10, .6], [45, 17, 1.1], [60, 26, 1.6], [75, 17, 1.1], [90, 10, .6]], hairW: 10, hairBase: 33,
+    body: (g) => `<path d="M27 30 H93 Q110 30 107 47 Q99 89 70 115 Q60 124 50 115 Q21 89 13 47 Q10 30 27 30 Z" fill="${g}"/>
+    <ellipse cx="37" cy="42" rx="14" ry="6.5" fill="#fff" opacity=".38" transform="rotate(-10 37 42)"/>`,
+    face: "translate(60 59) scale(.9) translate(-60 -74)", shadow: 21,
+  },
+};
+let vmVariant = "round";
+try { if (VM_SHAPES[localStorage.getItem("vito-mascot-variant")]) vmVariant = localStorage.getItem("vito-mascot-variant"); } catch {}
 function mascotSVG(){
-  const u = "vm" + (++vmSeq);
-  const hair = [[41, 9, .6], [50.5, 15, 1.1], [60, 20, 1.6], [69.5, 15, 1.1], [79, 9, .6]]
-    .map(([x, h, k]) => `<rect x="${x - 4.5}" y="${34 - h}" width="9" height="${h + 8}" rx="4.5" stroke="#fff" stroke-width="1.6" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
+  const u = "vm" + (++vmSeq), sh = VM_SHAPES[vmVariant] || VM_SHAPES.round, w = sh.hairW;
+  const hair = sh.hair
+    .map(([x, h, k]) => `<rect x="${x - w / 2}" y="${sh.hairBase - h}" width="${w}" height="${h + 8}" rx="${w / 2}" stroke="#fff" stroke-width="1.6" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
   const eye = (cx, side) => `<g class="vm-eye vm-eye-${side}">` +
     `<ellipse cx="${cx}" cy="68" rx="9" ry="11" fill="#fff"/>` +
     `<g class="vm-pupil"><circle cx="${cx}" cy="69" r="5.6" fill="#2B2440"/><circle cx="${cx + 2}" cy="66.5" r="1.9" fill="#fff"/></g>` +
@@ -4780,12 +4803,11 @@ function mascotSVG(){
       <stop offset="0" stop-color="#FF9A8E"/><stop offset=".38" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/></radialGradient>
     <linearGradient id="${u}h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF7A6B"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient>
   </defs>
-  <ellipse class="vm-shadow" cx="60" cy="123" rx="30" ry="4.5" fill="#2B2440" opacity=".14"/>
+  <ellipse class="vm-shadow" cx="60" cy="123" rx="${sh.shadow}" ry="4.5" fill="#2B2440" opacity=".14"/>
   <g class="vm-body"><g class="vm-tilt">
     <g class="vm-hair">${hair}</g>
-    <circle cx="60" cy="72" r="44" fill="url(#${u}b)"/>
-    <ellipse cx="60" cy="104" rx="30" ry="9" fill="#2B2440" opacity=".08"/>
-    <ellipse cx="42" cy="47" rx="15" ry="9" fill="#fff" opacity=".38" transform="rotate(-28 42 47)"/>
+    ${sh.body(`url(#${u}b)`)}
+    <g transform="${sh.face}">
     <ellipse class="vm-cheek" cx="33" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/><ellipse class="vm-cheek" cx="87" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/>
     <g class="vm-brows" fill="none" stroke="#2B2440" stroke-width="2.6" stroke-linecap="round" opacity=".8"><path d="M38 53 Q45 49 52 52"/><path d="M68 52 Q75 49 82 53"/></g>
     <g class="vm-eyes-open">${eye(45, "l")}${eye(75, "r")}</g>
@@ -4803,8 +4825,9 @@ function mascotSVG(){
     <g class="vm-crumbs" fill="#C98A4B"><circle cx="55" cy="108" r="1.2"/><circle cx="62" cy="110" r="1"/><circle cx="66" cy="107" r="1.1"/></g>
     <g class="vm-sweat"><path d="M92 48 q4 7 0 10 q-4 -3 0 -10z" fill="#7CC8FF"/></g>
     <g class="vm-sweat2"><path d="M27 54 q3.5 6 0 9 q-3.5 -3 0 -9z" fill="#7CC8FF"/></g>
+    </g>
   </g>
-  <g class="vm-bubbles" fill="rgba(170,215,255,.35)" stroke="#6FB8F5" stroke-width="1.8"><circle cx="64" cy="89" r="10" style="--bx:22px;--by:-44px"/><circle cx="64" cy="89" r="7" style="--bx:40px;--by:-24px"/><circle cx="64" cy="89" r="12" style="--bx:8px;--by:-62px"/></g>
+  <g class="vm-bubbles" transform="${sh.face}" fill="rgba(170,215,255,.35)" stroke="#6FB8F5" stroke-width="1.8"><circle cx="64" cy="89" r="10" style="--bx:22px;--by:-44px"/><circle cx="64" cy="89" r="7" style="--bx:40px;--by:-24px"/><circle cx="64" cy="89" r="12" style="--bx:8px;--by:-62px"/></g>
   </g>
   <g class="vm-notes" fill="#7C3AED" font-size="21" font-weight="700"><text x="90" y="66">♪</text><text x="97" y="54">♫</text><text x="86" y="48">♪</text></g>
   <g class="vm-dots" fill="#A78BFA"><circle cx="94" cy="30" r="3"/><circle cx="102" cy="21" r="4"/><circle cx="111" cy="10" r="5"/></g>
@@ -4840,6 +4863,14 @@ function vmRender(){
     el.style.setProperty("--mw", vm.mw.toFixed(2));
     el.style.setProperty("--lvl", vm.lvl.toFixed(2));
   });
+}
+// Switch every copy to another shape, and remember it.
+function vmSetVariant(v){
+  if (!VM_SHAPES[v]) return;
+  vmVariant = v;
+  try { localStorage.setItem("vito-mascot-variant", v); } catch {}
+  vm.els.forEach(el => { el.innerHTML = mascotSVG(); });
+  vmRender();
 }
 // A new copy of Vito for doc (this page, or the detached window's).
 function makeMascot(doc){
@@ -4927,6 +4958,7 @@ function mascotDevPanel(){
   const p = document.createElement("div");
   p.className = "vm-dev";
   [
+    ...Object.keys(VM_SHAPES).map(v => b("shape: " + v, () => vmSetVariant(v))),
     b("auto", () => { stopFake(); vm.forced = null; vm.sweat = 0; vm.lvl = 0; vm.quiet = false; vmRender(); }),
     b("calm", () => force("idle")),
     b("talk", b0talk),
