@@ -831,7 +831,19 @@
 "Chart in background": "பின்னணியில் வரைபடம்",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "இந்தக் காலகட்டத்தில் நீங்கள் அதிகமாகச் சொல்லெழுதிய சொற்கள் — பெரிதாக இருந்தால் அடிக்கடி வந்தது என்று பொருள். மூன்று எழுத்துகள் அல்லது அதற்கும் குறைவான சொற்களும் ‘வேண்டும்’ அல்லது ‘ஏனெனில்’ போன்ற பொதுவான சொற்களும் சேர்க்கப்படவில்லை.",
 "Vito character": "Vito உருவம்",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ஒரு சொல்லெழுத்தின் சராசரி நீளம். கட்டம் கடந்த 26 வாரங்களைக் காட்டுகிறது, திங்கள் முதல் ஞாயிறு வரை ஒரு நாளுக்கு ஒரு சதுரம் — அடர்த்தியான நிறம் அதிக சொற்கள் என்று பொருள்."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ஒரு சொல்லெழுத்தின் சராசரி நீளம். கட்டம் கடந்த 26 வாரங்களைக் காட்டுகிறது, திங்கள் முதல் ஞாயிறு வரை ஒரு நாளுக்கு ஒரு சதுரம் — அடர்த்தியான நிறம் அதிக சொற்கள் என்று பொருள்.",
+"Main figure": "முதன்மை எண்",
+"days in a row": "தொடர்ந்து நாட்கள்",
+"New record!": "புதிய சாதனை!",
+"Celebrate a new record": "புதிய சாதனையைக் கொண்டாடு",
+"1 day to go to your record": "உங்கள் சாதனையை எட்ட இன்னும் 1 நாள்",
+"{n} days to go to your record": "உங்கள் சாதனையை எட்ட இன்னும் {n} நாட்கள்",
+"record: {n}": "சாதனை: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "நீங்கள் தொடர்ந்து சொல்லெழுதிய நாட்கள். ஏழு நாட்களில் இரண்டு நாட்கள் வரை விடுமுறை எடுத்தாலும் தொடர் நீடிக்கும், எனவே வார இறுதி அதை முறிக்காது.",
+"Recent dictations": "சமீபத்திய சொல்லெழுத்துகள்",
+"vs previous period": "முந்தைய காலத்துடன் ஒப்பிடு",
+"≈ {v} by the end of the month": "மாத இறுதிக்குள் ≈ {v}",
+"Animation when there's an update": "புதுப்பிப்பு இருக்கும்போது அனிமேஷன்"
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

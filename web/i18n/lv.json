@@ -831,7 +831,19 @@
 "Chart in background": "Diagramma fonā",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Vārdi, ko šajā periodā diktēji visbiežāk — jo lielāks, jo biežāk. Vārdi ar trim burtiem vai mazāk un bieži lietoti vārdi, piemēram, ‘gribu’ vai ‘jo’, netiek rādīti.",
 "Vito character": "Vito tēls",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Vidējais diktāta garums. Režģis rāda pēdējās 26 nedēļas, katrai dienai no pirmdienas līdz svētdienai viens kvadrātiņš — tumšāks nozīmē vairāk vārdu."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Vidējais diktāta garums. Režģis rāda pēdējās 26 nedēļas, katrai dienai no pirmdienas līdz svētdienai viens kvadrātiņš — tumšāks nozīmē vairāk vārdu.",
+"Main figure": "Galvenais rādītājs",
+"days in a row": "dienas pēc kārtas",
+"New record!": "Jauns rekords!",
+"Celebrate a new record": "Svinēt jaunu rekordu",
+"1 day to go to your record": "Vēl 1 diena līdz rekordam",
+"{n} days to go to your record": "Vēl {n} dienas līdz rekordam",
+"record: {n}": "rekords: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Dienas pēc kārtas, kad diktēji. Līdz divām brīvdienām no jebkurām septiņām sēriju nepārtrauc, tāpēc nedēļas nogale to nesabojā.",
+"Recent dictations": "Pēdējie diktāti",
+"vs previous period": "salīdzinājumā ar iepriekšējo periodu",
+"≈ {v} by the end of the month": "≈ {v} līdz mēneša beigām",
+"Animation when there's an update": "Animācija, kad ir atjauninājums"
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

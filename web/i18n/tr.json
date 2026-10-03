@@ -1,5 +1,17 @@
 {
 "strings": {
+"Main figure": "Ana rakam",
+"days in a row": "gün üst üste",
+"New record!": "Yeni rekor!",
+"Celebrate a new record": "Yeni rekoru kutla",
+"1 day to go to your record": "Rekorunuza 1 gün kaldı",
+"{n} days to go to your record": "Rekorunuza {n} gün kaldı",
+"record: {n}": "rekor: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Üst üste dikte ettiğiniz günler. Her yedi günde en fazla iki gün ara vermek seriyi sürdürür, yani bir hafta sonu seriyi bozmaz.",
+"Recent dictations": "Son diktelar",
+"vs previous period": "önceki döneme göre",
+"≈ {v} by the end of the month": "Ay sonuna kadar ≈ {v}",
+"Animation when there's an update": "Güncelleme olduğunda animasyon",
 "Most used words": "En çok kullanılan kelimeler",
 "Chart in background": "Arka planda grafik",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Bu dönemde en çok dikte ettiğiniz kelimeler — ne kadar büyükse o kadar sık. Üç harf veya daha kısa kelimeler ile ‘istiyorum’ ya da ‘çünkü’ gibi yaygın kelimeler dahil edilmez.",

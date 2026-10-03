@@ -832,7 +832,19 @@
 "Languages you dictated in this period, by number of dictations.": "Jezici na kojima ste diktirali u ovom periodu, po broju diktata.",
 "words per dictation": "riječi po diktatu",
 "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Prosječna dužina diktata. Mreža prikazuje kada diktirate: dani u sedmici odozgo prema dolje, sati slijeva udesno — tamnije znači više aktivnosti.",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Prosječna dužina diktata. Mreža prikazuje posljednjih 26 sedmica, po jedan kvadrat za svaki dan od ponedjeljka do nedjelje — tamnije znači više riječi."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Prosječna dužina diktata. Mreža prikazuje posljednjih 26 sedmica, po jedan kvadrat za svaki dan od ponedjeljka do nedjelje — tamnije znači više riječi.",
+"Main figure": "Glavni podatak",
+"days in a row": "dana zaredom",
+"New record!": "Novi rekord!",
+"Celebrate a new record": "Proslavi novi rekord",
+"1 day to go to your record": "Još 1 dan do vašeg rekorda",
+"{n} days to go to your record": "Još {n} dana do vašeg rekorda",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Broj dana zaredom u kojima ste diktirali. Do dva slobodna dana u svakih sedam ne prekidaju niz, pa ga vikend ne prekida.",
+"Recent dictations": "Nedavni diktati",
+"vs previous period": "u odnosu na prethodno razdoblje",
+"≈ {v} by the end of the month": "≈ {v} do kraja mjeseca",
+"Animation when there's an update": "Animacija kada postoji ažuriranje"
 },
 "help": {
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetli/tamni način vašeg sistema.",

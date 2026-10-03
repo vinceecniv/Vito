@@ -1,5 +1,17 @@
 {
 "strings": {
+"Main figure": "مرکزی عدد",
+"days in a row": "مسلسل دن",
+"New record!": "نیا ریکارڈ!",
+"Celebrate a new record": "نئے ریکارڈ کا جشن منائیں",
+"1 day to go to your record": "آپ کے ریکارڈ تک 1 دن باقی",
+"{n} days to go to your record": "آپ کے ریکارڈ تک {n} دن باقی",
+"record: {n}": "ریکارڈ: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "وہ مسلسل دن جن میں آپ نے املا کروایا۔ ہر سات دن میں دو دن تک کی چھٹی سلسلہ برقرار رکھتی ہے، اس لیے ہفتہ وار تعطیل اسے نہیں توڑتی۔",
+"Recent dictations": "حالیہ املا",
+"vs previous period": "پچھلی مدت کے مقابلے میں",
+"≈ {v} by the end of the month": "مہینے کے آخر تک ≈ {v}",
+"Animation when there's an update": "اپ ڈیٹ ہونے پر اینیمیشن",
 "Dashboard": "ڈیش بورڈ",
 "Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ٹرانسکرپٹ الگ دکھانے کے لیے ڈیش بورڈ صفحے پر 'الگ ونڈو' بٹن پر کلک کریں۔",
 "Most used words": "سب سے زیادہ استعمال ہونے والے الفاظ",

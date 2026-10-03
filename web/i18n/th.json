@@ -831,7 +831,19 @@
 "{p}% of dictations": "{p}% ของคำบอก",
 "Languages you dictated in this period, by number of dictations.": "ภาษาที่คุณใช้บอกข้อความในช่วงเวลานี้ เรียงตามจำนวนคำบอก",
 "words per dictation": "คำต่อคำบอก",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ความยาวเฉลี่ยของคำบอกหนึ่งครั้ง ตารางแสดงช่วงเวลาที่คุณบอกข้อความ: วันในสัปดาห์เรียงจากบนลงล่าง ชั่วโมงเรียงจากซ้ายไปขวา — ยิ่งเข้มยิ่งมีการใช้งานมาก"
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ความยาวเฉลี่ยของคำบอกหนึ่งครั้ง ตารางแสดงช่วงเวลาที่คุณบอกข้อความ: วันในสัปดาห์เรียงจากบนลงล่าง ชั่วโมงเรียงจากซ้ายไปขวา — ยิ่งเข้มยิ่งมีการใช้งานมาก",
+"Main figure": "ตัวเลขหลัก",
+"days in a row": "วันติดต่อกัน",
+"New record!": "สถิติใหม่!",
+"Celebrate a new record": "ฉลองเมื่อทำสถิติใหม่",
+"1 day to go to your record": "อีก 1 วันถึงสถิติของคุณ",
+"{n} days to go to your record": "อีก {n} วันถึงสถิติของคุณ",
+"record: {n}": "สถิติ: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "จำนวนวันติดต่อกันที่คุณใช้บอกให้พิมพ์ หยุดได้สูงสุดสองวันในทุกเจ็ดวัน ดังนั้นสุดสัปดาห์จะไม่ทำให้สถิติขาดตอน",
+"Recent dictations": "การบอกให้พิมพ์ล่าสุด",
+"vs previous period": "เทียบกับช่วงก่อนหน้า",
+"≈ {v} by the end of the month": "≈ {v} ภายในสิ้นเดือน",
+"Animation when there's an update": "แอนิเมชันเมื่อมีอัปเดต"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",

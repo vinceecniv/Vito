@@ -831,7 +831,19 @@
 "Vito character": "Vito кейіпкері",
 "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Бір диктанттың орташа ұзындығы. Тор соңғы 26 аптаны көрсетеді: дүйсенбіден жексенбіге дейін күніне бір шаршы — түсі қою болған сайын сөз көп.",
 "Dashboard": "Басқару тақтасы",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Транскрипцияны бөлек көрсету үшін Басқару тақтасындағы 'Бөлек терезе' түймесін басыңыз."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Транскрипцияны бөлек көрсету үшін Басқару тақтасындағы 'Бөлек терезе' түймесін басыңыз.",
+"Main figure": "Негізгі көрсеткіш",
+"days in a row": "күн қатарынан",
+"New record!": "Жаңа рекорд!",
+"Celebrate a new record": "Жаңа рекордты тойлау",
+"1 day to go to your record": "Рекордқа дейін 1 күн қалды",
+"{n} days to go to your record": "Рекордқа дейін {n} күн қалды",
+"record: {n}": "рекорд: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Қатарынан диктант жасаған күндеріңіз. Кез келген жеті күнде екі күнге дейін демалсаңыз, тізбек үзілмейді, сондықтан демалыс күндері оны бұзбайды.",
+"Recent dictations": "Соңғы диктанттар",
+"vs previous period": "алдыңғы кезеңмен салыстырғанда",
+"≈ {v} by the end of the month": "≈ {v} ай соңына дейін",
+"Animation when there's an update": "Жаңарту болғанда анимация"
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",

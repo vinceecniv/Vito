@@ -831,7 +831,19 @@
 "Languages you dictated in this period, by number of dictations.": "Jazyky, ve kterých jste v tomto období diktovali, podle počtu diktátů.",
 "words per dictation": "slov na diktát",
 "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Průměrná délka diktátu. Mřížka ukazuje, kdy diktujete: dny v týdnu shora dolů, hodiny zleva doprava — tmavší znamená rušnější.",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Průměrná délka jednoho diktátu. Mřížka ukazuje posledních 26 týdnů, jeden čtvereček na den od pondělí do neděle — tmavší znamená více slov."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Průměrná délka jednoho diktátu. Mřížka ukazuje posledních 26 týdnů, jeden čtvereček na den od pondělí do neděle — tmavší znamená více slov.",
+"Main figure": "Hlavní údaj",
+"days in a row": "dní v řadě",
+"New record!": "Nový rekord!",
+"Celebrate a new record": "Oslavit nový rekord",
+"1 day to go to your record": "Do vašeho rekordu zbývá 1 den",
+"{n} days to go to your record": "Do vašeho rekordu zbývají {n} dny",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Počet dní v řadě, kdy jste diktovali. Až dva dny volna z kterýchkoli sedmi sérii nepřeruší, takže ji víkend nezruší.",
+"Recent dictations": "Poslední diktáty",
+"vs previous period": "oproti předchozímu období",
+"≈ {v} by the end of the month": "≈ {v} do konce měsíce",
+"Animation when there's an update": "Animace při dostupné aktualizaci"
 },
 "help": {
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",

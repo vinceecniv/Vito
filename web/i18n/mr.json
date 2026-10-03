@@ -831,7 +831,19 @@
 "Chart in background": "पार्श्वभूमीत चार्ट",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "या कालावधीत तुम्ही सर्वाधिक बोललेले शब्द — जितका मोठा, तितका जास्त वेळा. तीन किंवा कमी अक्षरांचे शब्द आणि ‘हवे’ किंवा ‘कारण’ यांसारखे सामान्य शब्द वगळले आहेत.",
 "Vito character": "Vito पात्र (कार्टून आकृती)",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "डिक्टेशनची सरासरी लांबी. ग्रिडमध्ये मागील २६ आठवडे दिसतात, सोमवार ते रविवार दररोजसाठी एक चौरस — जितका गडद, तितके जास्त शब्द."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "डिक्टेशनची सरासरी लांबी. ग्रिडमध्ये मागील २६ आठवडे दिसतात, सोमवार ते रविवार दररोजसाठी एक चौरस — जितका गडद, तितके जास्त शब्द.",
+"Main figure": "मुख्य आकडा",
+"days in a row": "सलग दिवस",
+"New record!": "नवा विक्रम!",
+"Celebrate a new record": "नवीन विक्रमाचा जल्लोष करा",
+"1 day to go to your record": "तुमच्या विक्रमापर्यंत १ दिवस बाकी",
+"{n} days to go to your record": "तुमच्या विक्रमापर्यंत {n} दिवस बाकी",
+"record: {n}": "विक्रम: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "तुम्ही सलग किती दिवस डिक्टेशन केले. कोणत्याही सात दिवसांत दोन दिवसांपर्यंत सुट्टी घेतली तरी मालिका चालू राहते, त्यामुळे आठवड्याच्या शेवटी ती तुटत नाही.",
+"Recent dictations": "अलीकडील डिक्टेशन",
+"vs previous period": "मागील कालावधीच्या तुलनेत",
+"≈ {v} by the end of the month": "महिनाअखेरीस ≈ {v}",
+"Animation when there's an update": "अपडेट उपलब्ध असताना अ‍ॅनिमेशन"
 },
 "help": {
 "theme": "उजळ, गडद किंवा आपोआप — आपोआप तुमच्या सिस्टीमच्या उजळ/गडद सेटिंगचे अनुसरण करते.",

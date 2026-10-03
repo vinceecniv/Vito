@@ -831,7 +831,19 @@
 "by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis દ્વારા (MIT).",
 "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "આ એન્ડપોઇન્ટ જવાબ આપે છે, પરંતુ તેમાં /chat/completions નથી. OpenAI-સુસંગત URL વાપરો — તે સામાન્ય રીતે /v1 પર પૂરો થાય છે (LM Studio: http://localhost:1234/v1).",
 "Dashboard": "ડૅશબોર્ડ",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ટ્રાન્સક્રિપ્ટ અલગ બતાવવા ડૅશબોર્ડ પરના 'અલગ વિન્ડો' બટન પર ક્લિક કરો."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ટ્રાન્સક્રિપ્ટ અલગ બતાવવા ડૅશબોર્ડ પરના 'અલગ વિન્ડો' બટન પર ક્લિક કરો.",
+"Main figure": "મુખ્ય આંકડો",
+"days in a row": "સતત દિવસો",
+"New record!": "નવો રેકોર્ડ!",
+"Celebrate a new record": "નવા રેકોર્ડની ઉજવણી કરો",
+"1 day to go to your record": "તમારા રેકોર્ડ સુધી 1 દિવસ બાકી",
+"{n} days to go to your record": "તમારા રેકોર્ડ સુધી {n} દિવસ બાકી",
+"record: {n}": "રેકોર્ડ: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "તમે સતત કેટલા દિવસ શ્રુતલેખન કર્યું. કોઈપણ સાત દિવસમાં બે દિવસ સુધીની રજા હોય તો પણ સિલસિલો ચાલુ રહે છે, એટલે સપ્તાહાંત તેને તોડતો નથી.",
+"Recent dictations": "તાજેતરના શ્રુતલેખન",
+"vs previous period": "પાછલા સમયગાળાની સરખામણીમાં",
+"≈ {v} by the end of the month": "મહિનાના અંત સુધીમાં ≈ {v}",
+"Animation when there's an update": "અપડેટ હોય ત્યારે એનિમેશન"
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",

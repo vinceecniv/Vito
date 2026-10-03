@@ -831,7 +831,19 @@
 "Languages you dictated in this period, by number of dictations.": "Keeled, milles selle perioodi jooksul dikteerisid, dikteeringute arvu järgi.",
 "words per dictation": "sõna dikteeringu kohta",
 "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Dikteeringu keskmine pikkus. Ruudustik näitab, millal sa dikteerid: nädalapäevad ülalt alla, tunnid vasakult paremale — tumedam tähendab tegusamat.",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Dikteeringu keskmine pikkus. Ruudustik näitab viimast 26 nädalat, iga päev on üks ruut, esmaspäevast pühapäevani — tumedam tähendab rohkem sõnu."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Dikteeringu keskmine pikkus. Ruudustik näitab viimast 26 nädalat, iga päev on üks ruut, esmaspäevast pühapäevani — tumedam tähendab rohkem sõnu.",
+"Main figure": "Põhinäitaja",
+"days in a row": "päeva järjest",
+"New record!": "Uus rekord!",
+"Celebrate a new record": "Tähista uut rekordit",
+"1 day to go to your record": "1 päev su rekordini",
+"{n} days to go to your record": "{n} päeva su rekordini",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Päevad järjest, mil dikteerisid. Kuni kaks vaba päeva seitsmest ei katkesta seeriat, nii et nädalavahetus seda ei riku.",
+"Recent dictations": "Viimased dikteeringud",
+"vs previous period": "võrreldes eelmise perioodiga",
+"≈ {v} by the end of the month": "≈ {v} kuu lõpuks",
+"Animation when there's an update": "Animatsioon, kui uuendus on saadaval"
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

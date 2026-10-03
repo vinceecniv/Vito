@@ -831,7 +831,19 @@
 "{p}% of dictations": "{p}% от диктовките",
 "Languages you dictated in this period, by number of dictations.": "Езици, на които сте диктували през този период, по брой диктовки.",
 "words per dictation": "думи на диктовка",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Средната дължина на една диктовка. Таблицата показва кога диктувате: дните от седмицата отгоре надолу, часовете отляво надясно — по-тъмно означава по-натоварено."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Средната дължина на една диктовка. Таблицата показва кога диктувате: дните от седмицата отгоре надолу, часовете отляво надясно — по-тъмно означава по-натоварено.",
+"Main figure": "Основна стойност",
+"days in a row": "дни поред",
+"New record!": "Нов рекорд!",
+"Celebrate a new record": "Отпразнувайте нов рекорд",
+"1 day to go to your record": "Остава 1 ден до рекорда ви",
+"{n} days to go to your record": "Остават {n} дни до рекорда ви",
+"record: {n}": "рекорд: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Дните поред, в които сте диктували. До два почивни дни във всеки седем запазват серията, така че уикендът не я прекъсва.",
+"Recent dictations": "Последни диктовки",
+"vs previous period": "спрямо предходния период",
+"≈ {v} by the end of the month": "≈ {v} до края на месеца",
+"Animation when there's an update": "Анимация при налична актуализация"
 },
 "help": {
 "theme": "Светла, тъмна или автоматична — автоматичната следва светлия/тъмния режим на системата ви.",

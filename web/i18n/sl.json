@@ -831,7 +831,19 @@
 "{p}% of dictations": "{p} % narekovanj",
 "Languages you dictated in this period, by number of dictations.": "Jeziki, v katerih ste narekovali v tem obdobju, glede na število narekovanj.",
 "words per dictation": "besed na narekovanje",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Povprečna dolžina narekovanja. Mreža prikazuje, kdaj narekujete: dnevi v tednu od zgoraj navzdol, ure od leve proti desni — temnejše pomeni več dela."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Povprečna dolžina narekovanja. Mreža prikazuje, kdaj narekujete: dnevi v tednu od zgoraj navzdol, ure od leve proti desni — temnejše pomeni več dela.",
+"Main figure": "Glavna številka",
+"days in a row": "dni zapored",
+"New record!": "Nov rekord!",
+"Celebrate a new record": "Proslavi nov rekord",
+"1 day to go to your record": "Še 1 dan do vašega rekorda",
+"{n} days to go to your record": "Dni do vašega rekorda: {n}",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Število dni zapored, ko ste narekovali. Do dva prosta dneva v katerih koli sedmih niz ohranita, zato ga vikend ne prekine.",
+"Recent dictations": "Nedavna narekovanja",
+"vs previous period": "v primerjavi s prejšnjim obdobjem",
+"≈ {v} by the end of the month": "≈ {v} do konca meseca",
+"Animation when there's an update": "Animacija ob posodobitvi"
 },
 "help": {
 "theme": "Svetla, temna ali samodejna — samodejna sledi svetli/temni nastavitvi vašega sistema.",

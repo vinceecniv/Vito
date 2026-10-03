@@ -1,5 +1,17 @@
 {
 "strings": {
+"Main figure": "Cifra principală",
+"days in a row": "zile la rând",
+"New record!": "Record nou!",
+"Celebrate a new record": "Sărbătorește un record nou",
+"1 day to go to your record": "Mai ai 1 zi până la recordul tău",
+"{n} days to go to your record": "Mai ai {n} zile până la recordul tău",
+"record: {n}": "record: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Zilele la rând în care ai dictat. Până la două zile libere din șapte nu întrerup seria, așa că un weekend nu o strică.",
+"Recent dictations": "Dictări recente",
+"vs previous period": "față de perioada anterioară",
+"≈ {v} by the end of the month": "≈ {v} până la sfârșitul lunii",
+"Animation when there's an update": "Animație când există o actualizare",
 "Most used words": "Cele mai folosite cuvinte",
 "Chart in background": "Grafic în fundal",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Cuvintele pe care le-ai dictat cel mai des în această perioadă — cu cât sunt mai mari, cu atât apar mai des. Cuvintele de trei litere sau mai puține și cuvintele uzuale, precum „vreau” sau „pentru că”, sunt omise.",

@@ -831,7 +831,19 @@
 "Most used words": "پرکاربردترین واژه‌ها",
 "Chart in background": "نمودار در پس‌زمینه",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "واژه‌هایی که در این بازه بیش از همه دیکته کرده‌اید — هرچه بزرگ‌تر، پرتکرارتر. واژه‌های سه‌حرفی یا کوتاه‌تر و واژه‌های رایج مانند «می‌خواهم» یا «چون» حذف شده‌اند.",
-"Vito character": "شخصیت کارتونی Vito"
+"Vito character": "شخصیت کارتونی Vito",
+"Main figure": "عدد اصلی",
+"days in a row": "روز پیاپی",
+"New record!": "رکورد جدید!",
+"Celebrate a new record": "جشن رکورد جدید",
+"1 day to go to your record": "۱ روز تا رکورد شما",
+"{n} days to go to your record": "{n} روز تا رکورد شما",
+"record: {n}": "رکورد: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "تعداد روزهای پیاپی که دیکته کرده‌اید. تا دو روز استراحت در هر هفت روز رشته را حفظ می‌کند، بنابراین یک آخر هفته آن را نمی‌شکند.",
+"Recent dictations": "دیکته‌های اخیر",
+"vs previous period": "نسبت به بازه قبلی",
+"≈ {v} by the end of the month": "≈ {v} تا پایان ماه",
+"Animation when there's an update": "انیمیشن هنگام وجود به‌روزرسانی"
 },
 "help": {
 "theme": "روشن، تیره یا خودکار — خودکار از حالت روشن/تیره سیستم شما پیروی می‌کند.",

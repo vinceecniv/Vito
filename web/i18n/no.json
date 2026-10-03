@@ -831,7 +831,19 @@
 "Chart in background": "Diagram i bakgrunnen",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Ordene du dikterte mest i denne perioden – jo større, desto oftere. Ord på tre bokstaver eller færre og vanlige ord som «vil» eller «fordi» er utelatt.",
 "Vito character": "Vito-figuren",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Gjennomsnittlig lengde på et diktat. Rutenettet viser de siste 26 ukene, med én rute per dag fra mandag til søndag – mørkere betyr flere ord."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Gjennomsnittlig lengde på et diktat. Rutenettet viser de siste 26 ukene, med én rute per dag fra mandag til søndag – mørkere betyr flere ord.",
+"Main figure": "Hovedtall",
+"days in a row": "dager på rad",
+"New record!": "Ny rekord!",
+"Celebrate a new record": "Feire ny rekord",
+"1 day to go to your record": "1 dag igjen til rekorden din",
+"{n} days to go to your record": "{n} dager igjen til rekorden din",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Antall dager på rad du har diktert. Opptil to fridager av syv holder rekken i gang, så en helg bryter den ikke.",
+"Recent dictations": "Siste diktater",
+"vs previous period": "mot forrige periode",
+"≈ {v} by the end of the month": "≈ {v} ved utgangen av måneden",
+"Animation when there's an update": "Animasjon når det finnes en oppdatering"
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger systemets lys/mørk-innstilling.",

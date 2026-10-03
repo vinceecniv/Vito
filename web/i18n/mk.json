@@ -831,7 +831,19 @@
 "Vito character": "Ликот на Vito",
 "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Просечната должина на диктат. Мрежата ги прикажува последните 26 недели, по еден квадрат за секој ден од понеделник до недела — потемно значи повеќе зборови.",
 "Dashboard": "Контролна табла",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Кликнете на копчето „Одвоен прозорец“ на контролната табла за да го прикажете транскриптот одвоено."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Кликнете на копчето „Одвоен прозорец“ на контролната табла за да го прикажете транскриптот одвоено.",
+"Main figure": "Главен податок",
+"days in a row": "дена по ред",
+"New record!": "Нов рекорд!",
+"Celebrate a new record": "Прослави нов рекорд",
+"1 day to go to your record": "Уште 1 ден до вашиот рекорд",
+"{n} days to go to your record": "Уште {n} дена до вашиот рекорд",
+"record: {n}": "рекорд: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Деновите по ред во кои диктиравте. До два слободни дена во секои седум го одржуваат низот, па викендот не го прекинува.",
+"Recent dictations": "Неодамнешни диктати",
+"vs previous period": "спрема претходниот период",
+"≈ {v} by the end of the month": "≈ {v} до крајот на месецот",
+"Animation when there's an update": "Анимација кога има ажурирање"
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

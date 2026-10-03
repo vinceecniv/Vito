@@ -832,7 +832,19 @@
 "Vito character": "Cymeriad Vito (y ffigur cartŵn)",
 "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Hyd cyfartalog arddywediad. Mae'r grid yn dangos y 26 wythnos diwethaf, un sgwâr y diwrnod o ddydd Llun i ddydd Sul — mae tywyllach yn golygu mwy o eiriau.",
 "Dashboard": "Dangosfwrdd",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Clicia'r botwm 'Ffenestr ar wahân' ar y Dangosfwrdd i ddangos y trawsgrifiad ar wahân."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Clicia'r botwm 'Ffenestr ar wahân' ar y Dangosfwrdd i ddangos y trawsgrifiad ar wahân.",
+"Main figure": "Prif ffigur",
+"days in a row": "diwrnod yn olynol",
+"New record!": "Record newydd!",
+"Celebrate a new record": "Dathlu record newydd",
+"1 day to go to your record": "1 diwrnod i fynd tan dy record",
+"{n} days to go to your record": "{n} diwrnod i fynd tan dy record",
+"record: {n}": "record: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Y nifer o ddiwrnodau yn olynol y gwnest arddweud. Mae hyd at ddau ddiwrnod i ffwrdd ymhob saith yn cadw'r rhediad i fynd, felly dyw penwythnos ddim yn ei dorri.",
+"Recent dictations": "Arddywediadau diweddar",
+"vs previous period": "o'i gymharu â'r cyfnod blaenorol",
+"≈ {v} by the end of the month": "≈ {v} erbyn diwedd y mis",
+"Animation when there's an update": "Animeiddiad pan fydd diweddariad"
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

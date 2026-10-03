@@ -1,5 +1,17 @@
 {
 "strings": {
+"Main figure": "Κύριο μέγεθος",
+"days in a row": "ημέρες στη σειρά",
+"New record!": "Νέο ρεκόρ!",
+"Celebrate a new record": "Γιορτή για νέο ρεκόρ",
+"1 day to go to your record": "Μένει 1 ημέρα για το ρεκόρ σας",
+"{n} days to go to your record": "Μένουν {n} ημέρες για το ρεκόρ σας",
+"record: {n}": "ρεκόρ: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Οι ημέρες στη σειρά που υπαγορεύσατε. Έως δύο ημέρες διακοπής ανά επτά δεν διακόπτουν τη σειρά, οπότε ένα Σαββατοκύριακο δεν την σπάει.",
+"Recent dictations": "Πρόσφατες υπαγορεύσεις",
+"vs previous period": "σε σχέση με την προηγούμενη περίοδο",
+"≈ {v} by the end of the month": "≈ {v} έως το τέλος του μήνα",
+"Animation when there's an update": "Animation όταν υπάρχει ενημέρωση",
 "wpm spoken": "wpm ομιλίας",
 "How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Πόσο γρήγορα μιλάτε όταν υπαγορεύετε: οι λέξεις σας διαιρεμένες με τη διάρκεια της εγγραφής. Η ταχύτητα πληκτρολόγησής σας είναι ορισμένη στα {n} wpm.",
 "wait after stopping": "αναμονή μετά τη διακοπή",

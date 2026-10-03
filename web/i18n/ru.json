@@ -831,7 +831,19 @@
 "{p}% of dictations": "{p}% диктовок",
 "Languages you dictated in this period, by number of dictations.": "Языки, на которых вы диктовали в этот период, по числу диктовок.",
 "words per dictation": "слов за диктовку",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Средняя длина диктовки. Сетка показывает, когда вы диктуете: дни недели сверху вниз, часы слева направо — чем темнее, тем больше активности."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Средняя длина диктовки. Сетка показывает, когда вы диктуете: дни недели сверху вниз, часы слева направо — чем темнее, тем больше активности.",
+"Main figure": "Главный показатель",
+"days in a row": "дней подряд",
+"New record!": "Новый рекорд!",
+"Celebrate a new record": "Отмечать новый рекорд",
+"1 day to go to your record": "Остался 1 день до вашего рекорда",
+"{n} days to go to your record": "Осталось {n} дня до вашего рекорда",
+"record: {n}": "рекорд: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Сколько дней подряд вы диктовали. Серия не прерывается, если пропустить до двух дней из любых семи, так что выходные ей не помеха.",
+"Recent dictations": "Последние диктовки",
+"vs previous period": "по сравнению с прошлым периодом",
+"≈ {v} by the end of the month": "≈ {v} к концу месяца",
+"Animation when there's an update": "Анимация при наличии обновления"
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",

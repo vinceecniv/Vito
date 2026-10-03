@@ -831,7 +831,19 @@
 "Chart in background": "ਪਿਛੋਕੜ ਵਿੱਚ ਚਾਰਟ",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "ਇਸ ਮਿਆਦ ਵਿੱਚ ਤੁਸੀਂ ਜਿਹੜੇ ਸ਼ਬਦ ਸਭ ਤੋਂ ਵੱਧ ਬੋਲੇ — ਜਿੰਨਾ ਵੱਡਾ, ਓਨੀ ਵਾਰ। ਤਿੰਨ ਅੱਖਰਾਂ ਜਾਂ ਇਸ ਤੋਂ ਛੋਟੇ ਸ਼ਬਦ ਅਤੇ ‘ਚਾਹੀਦਾ’ ਜਾਂ ‘ਕਿਉਂਕਿ’ ਵਰਗੇ ਆਮ ਸ਼ਬਦ ਸ਼ਾਮਲ ਨਹੀਂ ਕੀਤੇ ਗਏ।",
 "Vito character": "Vito ਕਾਰਟੂਨ ਪਾਤਰ",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ਇੱਕ ਡਿਕਟੇਸ਼ਨ ਦੀ ਔਸਤ ਲੰਬਾਈ। ਗਰਿੱਡ ਪਿਛਲੇ 26 ਹਫ਼ਤੇ ਦਿਖਾਉਂਦਾ ਹੈ, ਸੋਮਵਾਰ ਤੋਂ ਐਤਵਾਰ ਤੱਕ ਹਰ ਦਿਨ ਲਈ ਇੱਕ ਖਾਨਾ — ਗੂੜ੍ਹਾ ਮਤਲਬ ਵਧੇਰੇ ਸ਼ਬਦ।"
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ਇੱਕ ਡਿਕਟੇਸ਼ਨ ਦੀ ਔਸਤ ਲੰਬਾਈ। ਗਰਿੱਡ ਪਿਛਲੇ 26 ਹਫ਼ਤੇ ਦਿਖਾਉਂਦਾ ਹੈ, ਸੋਮਵਾਰ ਤੋਂ ਐਤਵਾਰ ਤੱਕ ਹਰ ਦਿਨ ਲਈ ਇੱਕ ਖਾਨਾ — ਗੂੜ੍ਹਾ ਮਤਲਬ ਵਧੇਰੇ ਸ਼ਬਦ।",
+"Main figure": "ਮੁੱਖ ਅੰਕੜਾ",
+"days in a row": "ਲਗਾਤਾਰ ਦਿਨ",
+"New record!": "ਨਵਾਂ ਰਿਕਾਰਡ!",
+"Celebrate a new record": "ਨਵੇਂ ਰਿਕਾਰਡ ਦਾ ਜਸ਼ਨ ਮਨਾਓ",
+"1 day to go to your record": "ਤੁਹਾਡੇ ਰਿਕਾਰਡ ਤੱਕ 1 ਦਿਨ ਬਾਕੀ",
+"{n} days to go to your record": "ਤੁਹਾਡੇ ਰਿਕਾਰਡ ਤੱਕ {n} ਦਿਨ ਬਾਕੀ",
+"record: {n}": "ਰਿਕਾਰਡ: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "ਤੁਸੀਂ ਲਗਾਤਾਰ ਕਿੰਨੇ ਦਿਨ ਡਿਕਟੇਟ ਕੀਤਾ। ਕਿਸੇ ਵੀ ਸੱਤ ਦਿਨਾਂ ਵਿੱਚ ਦੋ ਦਿਨ ਤੱਕ ਦੀ ਛੁੱਟੀ ਨਾਲ ਇਹ ਚੱਲਦਾ ਰਹਿੰਦਾ ਹੈ, ਇਸ ਲਈ ਵੀਕਐਂਡ ਇਸਨੂੰ ਨਹੀਂ ਤੋੜਦਾ।",
+"Recent dictations": "ਹਾਲੀਆ ਡਿਕਟੇਸ਼ਨ",
+"vs previous period": "ਪਿਛਲੀ ਮਿਆਦ ਦੇ ਮੁਕਾਬਲੇ",
+"≈ {v} by the end of the month": "ਮਹੀਨੇ ਦੇ ਅੰਤ ਤੱਕ ≈ {v}",
+"Animation when there's an update": "ਅੱਪਡੇਟ ਹੋਣ 'ਤੇ ਐਨੀਮੇਸ਼ਨ"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",

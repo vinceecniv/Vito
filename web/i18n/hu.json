@@ -831,7 +831,19 @@
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "A legtöbbször diktált szavaid ebben az időszakban – minél nagyobb, annál gyakoribb. A három vagy kevesebb betűs szavak és a gyakori szavak, például a „akar” vagy a „mert”, kimaradnak.",
 "Vito character": "Vito rajzfigura",
 "Dashboard": "Irányítópult",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Kattints a „Különálló ablak” gombra az Irányítópulton az átirat kiugratásához."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Kattints a „Különálló ablak” gombra az Irányítópulton az átirat kiugratásához.",
+"Main figure": "Fő érték",
+"days in a row": "nap egymás után",
+"New record!": "Új rekord!",
+"Celebrate a new record": "Új rekord megünneplése",
+"1 day to go to your record": "Még 1 nap a rekordodig",
+"{n} days to go to your record": "Még {n} nap a rekordodig",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Az egymást követő napok, amikor diktáltál. Minden héten legfeljebb két szabadnap belefér, így egy hétvége nem szakítja meg a sorozatot.",
+"Recent dictations": "Legutóbbi diktálások",
+"vs previous period": "az előző időszakhoz képest",
+"≈ {v} by the end of the month": "≈ {v} a hónap végéig",
+"Animation when there's an update": "Animáció, ha frissítés érhető el"
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

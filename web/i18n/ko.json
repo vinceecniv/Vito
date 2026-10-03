@@ -831,7 +831,19 @@
 "Chart in background": "배경에 차트 표시",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "이 기간에 가장 많이 받아쓴 단어입니다. 클수록 더 자주 쓴 단어예요. 세 글자 이하의 단어와 ‘want’, ‘because’ 같은 흔한 단어는 제외됩니다.",
 "Vito character": "Vito 캐릭터",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "받아쓰기 한 번의 평균 길이입니다. 격자는 최근 26주를 보여 주며, 월요일부터 일요일까지 하루에 사각형 하나씩 표시됩니다. 색이 진할수록 단어 수가 많습니다."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "받아쓰기 한 번의 평균 길이입니다. 격자는 최근 26주를 보여 주며, 월요일부터 일요일까지 하루에 사각형 하나씩 표시됩니다. 색이 진할수록 단어 수가 많습니다.",
+"Main figure": "주요 수치",
+"days in a row": "일 연속",
+"New record!": "신기록!",
+"Celebrate a new record": "신기록 축하하기",
+"1 day to go to your record": "기록까지 1일 남음",
+"{n} days to go to your record": "기록까지 {n}일 남음",
+"record: {n}": "기록: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "연속으로 받아쓰기를 한 일수입니다. 7일 중 최대 이틀까지 쉬어도 이어지므로 주말에 쉬어도 끊기지 않습니다.",
+"Recent dictations": "최근 받아쓰기",
+"vs previous period": "이전 기간 대비",
+"≈ {v} by the end of the month": "월말까지 ≈ {v}",
+"Animation when there's an update": "업데이트가 있을 때 애니메이션"
 },
 "help": {
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",

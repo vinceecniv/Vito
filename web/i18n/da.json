@@ -831,7 +831,19 @@
 "Most used words": "Mest brugte ord",
 "Chart in background": "Diagram i baggrunden",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "De ord, du har dikteret mest i denne periode — jo større, jo oftere. Ord på tre bogstaver eller færre og almindelige ord som ‘vil’ eller ‘fordi’ er udeladt.",
-"Vito character": "Vito-figur"
+"Vito character": "Vito-figur",
+"Main figure": "Hovedtal",
+"days in a row": "dage i træk",
+"New record!": "Ny rekord!",
+"Celebrate a new record": "Fejr en ny rekord",
+"1 day to go to your record": "1 dag til din rekord",
+"{n} days to go to your record": "{n} dage til din rekord",
+"record: {n}": "rekord: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "Antal dage i træk, du har dikteret. Op til to fridage inden for syv dage bryder ikke rækken, så en weekend ødelægger den ikke.",
+"Recent dictations": "Seneste diktater",
+"vs previous period": "i forhold til forrige periode",
+"≈ {v} by the end of the month": "≈ {v} ved udgangen af måneden",
+"Animation when there's an update": "Animation, når der er en opdatering"
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",

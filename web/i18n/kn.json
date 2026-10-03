@@ -831,7 +831,19 @@
 "Chart in background": "ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಚಾರ್ಟ್",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "ಈ ಅವಧಿಯಲ್ಲಿ ನೀವು ಹೆಚ್ಚು ಡಿಕ್ಟೇಟ್ ಮಾಡಿದ ಪದಗಳು — ಪದ ದೊಡ್ಡದಾಗಿದ್ದಷ್ಟೂ ಅದನ್ನು ಹೆಚ್ಚು ಬಾರಿ ಹೇಳಿದ್ದೀರಿ. ಮೂರು ಅಕ್ಷರ ಅಥವಾ ಅದಕ್ಕಿಂತ ಕಡಿಮೆ ಇರುವ ಪದಗಳು ಮತ್ತು ‘ಬೇಕು’ ಅಥವಾ ‘ಏಕೆಂದರೆ’ ಎಂಬಂತಹ ಸಾಮಾನ್ಯ ಪದಗಳನ್ನು ಬಿಟ್ಟಿದೆ.",
 "Vito character": "Vito ಪಾತ್ರ (ಕಾರ್ಟೂನ್ ಮ್ಯಾಸ್ಕಾಟ್)",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ಒಂದು ಡಿಕ್ಟೇಶನ್‌ನ ಸರಾಸರಿ ಉದ್ದ. ಗ್ರಿಡ್ ಕಳೆದ 26 ವಾರಗಳನ್ನು ತೋರಿಸುತ್ತದೆ, ಸೋಮವಾರದಿಂದ ಭಾನುವಾರದವರೆಗೆ ದಿನಕ್ಕೊಂದು ಚೌಕ — ಗಾಢವಾದಷ್ಟೂ ಹೆಚ್ಚು ಪದಗಳು."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ಒಂದು ಡಿಕ್ಟೇಶನ್‌ನ ಸರಾಸರಿ ಉದ್ದ. ಗ್ರಿಡ್ ಕಳೆದ 26 ವಾರಗಳನ್ನು ತೋರಿಸುತ್ತದೆ, ಸೋಮವಾರದಿಂದ ಭಾನುವಾರದವರೆಗೆ ದಿನಕ್ಕೊಂದು ಚೌಕ — ಗಾಢವಾದಷ್ಟೂ ಹೆಚ್ಚು ಪದಗಳು.",
+"Main figure": "ಮುಖ್ಯ ಅಂಕಿ",
+"days in a row": "ಸತತ ದಿನಗಳು",
+"New record!": "ಹೊಸ ದಾಖಲೆ!",
+"Celebrate a new record": "ಹೊಸ ದಾಖಲೆಯನ್ನು ಆಚರಿಸಿ",
+"1 day to go to your record": "ನಿಮ್ಮ ದಾಖಲೆಗೆ 1 ದಿನ ಬಾಕಿ",
+"{n} days to go to your record": "ನಿಮ್ಮ ದಾಖಲೆಗೆ {n} ದಿನಗಳು ಬಾಕಿ",
+"record: {n}": "ದಾಖಲೆ: {n}",
+"The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.": "ನೀವು ಸತತವಾಗಿ ಡಿಕ್ಟೇಟ್ ಮಾಡಿದ ದಿನಗಳು. ಯಾವುದೇ ಏಳು ದಿನಗಳಲ್ಲಿ ಎರಡು ದಿನಗಳವರೆಗಿನ ರಜೆ ಸರಣಿಯನ್ನು ಮುಂದುವರಿಸುತ್ತದೆ, ಆದ್ದರಿಂದ ವಾರಾಂತ್ಯ ಅದನ್ನು ಮುರಿಯುವುದಿಲ್ಲ.",
+"Recent dictations": "ಇತ್ತೀಚಿನ ಡಿಕ್ಟೇಶನ್‌ಗಳು",
+"vs previous period": "ಹಿಂದಿನ ಅವಧಿಗೆ ಹೋಲಿಸಿದರೆ",
+"≈ {v} by the end of the month": "ತಿಂಗಳ ಅಂತ್ಯದ ವೇಳೆಗೆ ≈ {v}",
+"Animation when there's an update": "ಅಪ್‌ಡೇಟ್ ಇದ್ದಾಗ ಅನಿಮೇಷನ್"
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",
