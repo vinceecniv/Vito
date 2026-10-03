@@ -4603,26 +4603,48 @@ const MASCOT_CSS = `
 .vmascot .vm-shadow{transform-origin:60px 123px;animation:vmShadow 3.2s ease-in-out infinite}
 @keyframes vmBreath{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975)}}
 @keyframes vmShadow{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-.vmascot .vm-lid{transform-box:fill-box;transform-origin:center top;transform:scaleY(0);animation:vmBlink 5.3s infinite}
+.vmascot .vm-lid{transform-box:fill-box;transform-origin:center top;transform:scaleY(var(--lid,0));animation:vmBlink 5.3s infinite}
 .vmascot .vm-eye-r .vm-lid{animation-delay:.04s}
-@keyframes vmBlink{0%,93%,100%{transform:scaleY(0)}95%,97%{transform:scaleY(1)}}
+@keyframes vmBlink{0%,93%,100%{transform:scaleY(var(--lid,0))}95%,97%{transform:scaleY(1)}}
 .vmascot .vm-pupil{transition:transform .35s ease}
 .vmascot .vm-hair rect{transform-box:fill-box;transform-origin:center bottom;animation:vmHair 2.6s ease-in-out infinite}
 .vmascot .vm-hair rect:nth-child(2){animation-delay:.15s}.vmascot .vm-hair rect:nth-child(3){animation-delay:.3s}
 .vmascot .vm-hair rect:nth-child(4){animation-delay:.45s}.vmascot .vm-hair rect:nth-child(5){animation-delay:.6s}
 @keyframes vmHair{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.82)}}
-.vmascot .vm-mouth-open,.vmascot .vm-grin,.vmascot .vm-wavy,.vmascot .vm-eyes-happy,.vmascot .vm-eyes-shut,.vmascot .vm-eyes-x,
+.vmascot .vm-mouth-open,.vmascot .vm-grin,.vmascot .vm-wavy,.vmascot .vm-brows,.vmascot .vm-wink,.vmascot .vm-eyes-happy,.vmascot .vm-eyes-shut,.vmascot .vm-eyes-x,
 .vmascot .vm-sweat,.vmascot .vm-sweat2,.vmascot .vm-zzz,.vmascot .vm-dots,.vmascot .vm-spark{display:none}
 /* talking: the mouth and quiff follow your voice */
 .vmascot[data-state="recording"] .vm-body{animation:none;transition:transform .09s;
   transform:translateY(calc(var(--lvl) * -5px)) scale(calc(1 + var(--lvl) * .05),calc(1 - var(--lvl) * .04))}
 .vmascot[data-state="recording"] .vm-smile{display:none}
-.vmascot[data-state="recording"] .vm-mouth-open{display:inline;transform-box:fill-box;transform-origin:center;transition:transform .08s;
-  transform:scale(calc(.75 + var(--lvl) * .35),calc(.14 + var(--lvl) * .95))}
-.vmascot[data-state="recording"] .vm-hair rect{animation:none;transition:transform .08s;transform:scaleY(calc(.55 + var(--lvl) * var(--k)))}
-.vmascot[data-state="recording"] .vm-eye{transform-box:fill-box;transform-origin:center;transform:scale(1.06)}
+/* The mouth hangs from the upper lip and opens with the level; its width
+   changes from syllable to syllable (--mw), so it reads as talking rather
+   than one long "oh". */
+.vmascot[data-state="recording"] .vm-mouth-open{display:inline;transform-box:fill-box;transform-origin:center top;transition:transform .09s;
+  transform:scale(var(--mw,1),calc(.2 + var(--lvl) * .8))}
+.vmascot[data-state="recording"] .vm-hair rect{animation:none;transition:transform .08s;transform:scaleY(calc(.75 + var(--lvl) * var(--k) * .45))}
 .vmascot[data-state="recording"][data-quiet="1"] .vm-tilt{transform:rotate(-7deg)}
 .vmascot[data-state="recording"][data-quiet="1"] .vm-pupil{transform:translate(-1.5px,-1px)}
+/* While talking the look changes every few seconds (data-talk): */
+.vmascot .vm-brows{transition:transform .3s}
+.vmascot[data-talk="chat"] .vm-tilt{transform:rotate(-5deg)}
+.vmascot[data-talk="chat"] .vm-pupil{transform:translate(-1px,0)}
+.vmascot[data-talk="explain"] .vm-tilt{transform:rotate(6deg)}
+.vmascot[data-talk="explain"] .vm-pupil{transform:translate(2.5px,-1px)}
+.vmascot[data-talk="explain"] .vm-brows{display:inline;transform:translateY(-2px)}
+.vmascot[data-talk="smile"] .vm-eyes-open{display:none}
+.vmascot[data-talk="smile"] .vm-eyes-happy{display:inline}
+.vmascot[data-talk="nod"] .vm-tilt{animation:vmNod .42s ease-in-out 3}
+.vmascot[data-talk="wink"] .vm-eye-r{display:none}
+.vmascot[data-talk="wink"] .vm-wink{display:inline}
+.vmascot[data-talk="wink"] .vm-tilt{transform:rotate(-4deg)}
+.vmascot[data-talk="eager"] .vm-tilt{transform:translateY(-3px) scale(1.04)}
+.vmascot[data-talk="eager"] .vm-brows{display:inline;transform:translateY(-3px)}
+.vmascot[data-talk="ponder"] .vm-pupil{transform:translate(-3px,-3px)}
+.vmascot[data-talk="ponder"] .vm-brows{display:inline}
+.vmascot[data-talk="ponder"] .vm-brows path:first-child{transform:translateY(-2px)}
+.vmascot[data-talk="ponder"] .vm-tilt{transform:rotate(3deg)}
+@keyframes vmNod{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(-2deg) translateY(3px)}}
 /* thinking */
 .vmascot[data-state="processing"] .vm-pupil{transform:translate(3px,-4px)}
 .vmascot[data-state="processing"] .vm-dots{display:inline}
@@ -4666,7 +4688,8 @@ const MASCOT_CSS = `
 .vmascot[data-pose="look-r"] .vm-pupil{transform:translate(4px,0)}
 .vmascot[data-pose="tilt"] .vm-tilt{transform:rotate(9deg)}
 .vmascot[data-pose="hop"] .vm-body{animation:vmHop .55s cubic-bezier(.3,1.6,.5,1) 1}
-.vmascot[data-pose="wink"] .vm-eye-r .vm-lid{animation:none;transform:scaleY(1)}
+.vmascot[data-pose="wink"] .vm-eye-r{display:none}
+.vmascot[data-pose="wink"] .vm-wink{display:inline}
 @media (prefers-reduced-motion: reduce){
   .vmascot .vm-body,.vmascot .vm-shadow,.vmascot .vm-hair rect,.vmascot .vm-zzz text,.vmascot .vm-sweat path,.vmascot .vm-sweat2 path{animation:none}
 }`;
@@ -4695,13 +4718,15 @@ function mascotSVG(){
     <ellipse cx="60" cy="104" rx="30" ry="9" fill="#2B2440" opacity=".08"/>
     <ellipse cx="42" cy="47" rx="15" ry="9" fill="#fff" opacity=".38" transform="rotate(-28 42 47)"/>
     <ellipse cx="33" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/><ellipse cx="87" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/>
+    <g class="vm-brows" fill="none" stroke="#2B2440" stroke-width="2.6" stroke-linecap="round" opacity=".8"><path d="M38 53 Q45 49 52 52"/><path d="M68 52 Q75 49 82 53"/></g>
     <g class="vm-eyes-open">${eye(45, "l")}${eye(75, "r")}</g>
+    <path class="vm-wink" d="M68 70 Q75 63 82 70" fill="none" stroke="#2B2440" stroke-width="3.2" stroke-linecap="round"/>
     <g class="vm-eyes-happy" fill="none" stroke="#2B2440" stroke-width="3.2" stroke-linecap="round"><path d="M38 70 Q45 61 52 70"/><path d="M68 70 Q75 61 82 70"/></g>
     <g class="vm-eyes-shut" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"><path d="M38 68 Q45 73 52 68"/><path d="M68 68 Q75 73 82 68"/></g>
     <g class="vm-eyes-x" stroke="#2B2440" stroke-width="3" stroke-linecap="round"><path d="M40 63l10 10M50 63l-10 10M70 63l10 10M80 63l-10 10"/></g>
     <path class="vm-smile" d="M51 88 Q60 96 69 88" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"/>
     <path class="vm-wavy" d="M49 90 q3.7 -4 7.3 0 t7.3 0 t7.3 0" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"/>
-    <g class="vm-mouth-open"><ellipse cx="60" cy="91" rx="9" ry="8" fill="#3A1730"/><ellipse cx="60" cy="95.5" rx="5.5" ry="3" fill="#FF7A93"/></g>
+    <g class="vm-mouth-open"><path d="M49 86 Q60 88 71 86 Q70 101 60 101 Q50 101 49 86 Z" fill="#3A1730"/><ellipse cx="60" cy="97" rx="5.5" ry="3" fill="#FF7A93"/></g>
     <path class="vm-grin" d="M48 86 Q60 101 72 86 Z" fill="#3A1730" stroke="#3A1730" stroke-width="2" stroke-linejoin="round"/>
     <g class="vm-sweat"><path d="M92 48 q4 7 0 10 q-4 -3 0 -10z" fill="#7CC8FF"/></g>
     <g class="vm-sweat2"><path d="M27 54 q3.5 6 0 9 q-3.5 -3 0 -9z" fill="#7CC8FF"/></g>
@@ -4715,7 +4740,7 @@ function mascotSVG(){
 // short overlays on top (happy, dizzy), sleeping when idle long enough.
 const VM_SLEEP_MS = 8 * 60 * 1000, VM_SWEAT = [45000, 90000];
 const vm = { base: "idle", lvl: 0, quiet: false, sweat: 0, pose: "", happyUntil: 0, dizzyUntil: 0, lastActive: Date.now(),
-  forced: null, els: new Set(), recTimers: [], quietSince: 0 };
+  forced: null, els: new Set(), recTimers: [], quietSince: 0, talk: "", mw: 1, mwAt: 0 };
 function vmShown(){
   if (vm.forced) return vm.forced;
   const now = Date.now();
@@ -4735,6 +4760,8 @@ function vmRender(){
     el.dataset.quiet = vm.quiet ? "1" : "0";
     el.dataset.sweat = String(vm.sweat);
     el.dataset.pose = state === "idle" ? vm.pose : "";
+    el.dataset.talk = state === "recording" && !vm.quiet ? vm.talk : "";
+    el.style.setProperty("--mw", vm.mw.toFixed(2));
     el.style.setProperty("--lvl", vm.lvl.toFixed(2));
   });
 }
@@ -4765,6 +4792,8 @@ function vmLevel(level){
   if (vm.lvl > .08) { vm.quietSince = 0; vm.quiet = false; }
   else if (!vm.quietSince) vm.quietSince = now;
   else if (now - vm.quietSince > 900) vm.quiet = true;
+  // A new syllable, a new mouth width: wide for "ee", narrow for "oo".
+  if (vm.lvl > .15 && now - vm.mwAt > 120) { vm.mw = .72 + Math.random() * .42; vm.mwAt = now; }
   vmRender();
 }
 function vmFlash(kind, ms){
@@ -4781,6 +4810,18 @@ function vmFlash(kind, ms){
   } else vmRender(); // also catches the moment it falls asleep
   setTimeout(vmTick, 6000 + Math.random() * 7000);
 })();
+// While talking, a different look every couple of seconds — chatty, explaining,
+// smiling, nodding, a wink — never the same one twice in a row.
+const VM_TALK = ["chat", "chat", "explain", "smile", "nod", "eager", "ponder", "wink", ""];
+function vmNextTalk(){
+  let n; do n = VM_TALK[Math.floor(Math.random() * VM_TALK.length)]; while (n === vm.talk);
+  vm.talk = n;
+  vmRender();
+}
+(function vmTalkTick(){
+  if (vmShown() === "recording" && !vm.quiet) vmNextTalk();
+  setTimeout(vmTalkTick, 1400 + Math.random() * 1800);
+})();
 // Developer panel, only in a development build: puts Vito in any state, and
 // can fake a voice, so every pose can be checked without dictating. English on
 // purpose — it is a tool for whoever works on Vito, not part of the interface.
@@ -4789,18 +4830,20 @@ function mascotDevPanel(){
   let fake = null;
   const stopFake = () => { if (fake) { clearInterval(fake); fake = null; } };
   const force = (s) => { stopFake(); vm.forced = s; vm.lvl = 0; vmRender(); };
+  const b0talk = () => { force("recording"); let t0 = 0; fake = setInterval(() => { t0 += .35; vmLevel(Math.max(0, 55 + 45 * Math.sin(t0) * Math.sin(t0 * 2.7))); }, 80); };
   const p = document.createElement("div");
   p.className = "vm-dev";
   [
     b("auto", () => { stopFake(); vm.forced = null; vm.sweat = 0; vm.lvl = 0; vm.quiet = false; vmRender(); }),
     b("calm", () => force("idle")),
-    b("talk", () => { force("recording"); let t0 = 0; fake = setInterval(() => { t0 += .35; vmLevel(Math.max(0, 55 + 45 * Math.sin(t0) * Math.sin(t0 * 2.7))); }, 80); }),
+    b("talk", b0talk),
     b("pause", () => { force("recording"); vm.quiet = true; vmRender(); }),
     b("think", () => force("processing")),
     b("happy", () => force("happy")),
     b("dizzy", () => force("dizzy")),
     b("sleep", () => force("sleep")),
     b("sweat 0/1/2", () => { vm.sweat = (vm.sweat + 1) % 3; vmRender(); }),
+    b("next look", () => { if (vmShown() !== "recording") b0talk(); vmNextTalk(); }),
     b("pose", () => { force("idle"); vm.pose = ["look-l", "look-r", "wink", "hop", "tilt"][Math.floor(Math.random() * 5)]; vmRender(); }),
   ].forEach(x => p.appendChild(x));
   return p;
