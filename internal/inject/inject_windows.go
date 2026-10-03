@@ -187,7 +187,7 @@ func setClipboardText(text string) error {
 		if p == 0 {
 			return fmt.Errorf("GlobalLock failed")
 		}
-		dst := unsafe.Slice((*uint16)(unsafe.Pointer(p)), len(units))
+		dst := unsafe.Slice((*uint16)(globalPtr(p)), len(units))
 		copy(dst, units)
 		procGlobalUnlock.Call(h)
 		if r, _, _ := procSetClipboardData.Call(cfUnicodeText, h); r == 0 {
@@ -196,6 +196,13 @@ func setClipboardText(text string) error {
 		return nil // ownership of h transferred to the clipboard
 	})
 }
+
+// globalPtr turns the address GlobalLock returns into a pointer. That memory
+// belongs to Windows, not to Go's heap, so the garbage collector never moves
+// it; reading the address through the variable (rather than converting the
+// uintptr directly) says so to go vet, which otherwise flags every such
+// conversion as possible misuse.
+func globalPtr(p uintptr) unsafe.Pointer { return *(*unsafe.Pointer)(unsafe.Pointer(&p)) }
 
 // ReadClipboard returns the current clipboard text (best-effort), for voice
 // commands that operate on already-copied text.
@@ -217,9 +224,10 @@ func getClipboardText() (string, bool) {
 			return nil
 		}
 		defer procGlobalUnlock.Call(h)
+		base := globalPtr(p)
 		var units []uint16
 		for i := 0; ; i++ {
-			u := *(*uint16)(unsafe.Pointer(p + uintptr(i*2)))
+			u := *(*uint16)(unsafe.Add(base, i*2))
 			if u == 0 {
 				break
 			}

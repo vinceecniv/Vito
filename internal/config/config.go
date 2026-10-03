@@ -317,7 +317,7 @@ func Default() *Config {
 			RestoreDelayMS:   300,
 		},
 		HotkeyWindows: "ctrl+alt+space",
-		History:       History{Enabled: true, MaxEntries: 500},
+		History:       History{Enabled: true, MaxEntries: 5000},
 		Tray:          Tray{Enabled: true},
 		UI:            UI{Theme: "system", Notifications: "all"},
 		Stats:         Stats{TypingSpeed: "average"},
@@ -421,6 +421,15 @@ func Load() (*Config, error) {
 	// rather than a deliberate choice, and is raised once to the new one.
 	if cfg.Cleanup.TimeoutMS == 2000 {
 		cfg.Cleanup.TimeoutMS = Default().Cleanup.TimeoutMS
+		if err := cfg.Save(); err != nil {
+			return nil, err
+		}
+	}
+	// The history used to keep 500 dictations, which a heavy user fills in a few
+	// weeks. The cap has never been settable in the UI, so an exact 500 is that
+	// old default and is raised once to the new one.
+	if cfg.History.MaxEntries == 500 {
+		cfg.History.MaxEntries = Default().History.MaxEntries
 		if err := cfg.Save(); err != nil {
 			return nil, err
 		}

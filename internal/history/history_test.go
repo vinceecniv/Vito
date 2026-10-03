@@ -58,28 +58,20 @@ func TestStoreAndStats(t *testing.T) {
 	if len(st.Week) != 30 || st.SeriesUnit != "day" {
 		t.Fatalf("series = %d bars of %q, want 30 of \"day\"", len(st.Week), st.SeriesUnit)
 	}
-	// A wider window switches to coarser buckets so the bar count stays sane.
-	wide, err := s.Stats(now, 40, 365)
-	if err != nil {
-		t.Fatalf("Stats(365): %v", err)
-	}
-	if wide.SeriesUnit != "month" || len(wide.Week) < 10 || len(wide.Week) > 13 {
-		t.Fatalf("365d series = %d bars of %q, want ~12 of \"month\"", len(wide.Week), wide.SeriesUnit)
-	}
-	// The named periods divide exactly: 4 week bars and 3 month bars.
-	quarter, err := s.Stats(now, 40, 92)
-	if err != nil {
-		t.Fatalf("Stats(92): %v", err)
-	}
-	if quarter.SeriesUnit != "month" || len(quarter.Week) != 3 {
-		t.Fatalf("3-month series = %d bars of %q, want 3 of \"month\"", len(quarter.Week), quarter.SeriesUnit)
-	}
-	weeks, err := s.Stats(now, 40, 28)
-	if err != nil {
-		t.Fatalf("Stats(28): %v", err)
-	}
-	if weeks.SeriesUnit != "week" || len(weeks.Week) != 4 {
-		t.Fatalf("4-week series = %d bars of %q, want 4 of \"week\"", len(weeks.Week), weeks.SeriesUnit)
+	// Wider windows switch to coarser buckets, as fine as their length allows:
+	// four weeks as days, three months and a year as weeks.
+	for _, c := range []struct {
+		days     int
+		unit     string
+		min, max int
+	}{{28, "day", 28, 28}, {92, "week", 14, 15}, {365, "week", 53, 54}} {
+		st, err := s.Stats(now, 40, c.days)
+		if err != nil {
+			t.Fatalf("Stats(%d): %v", c.days, err)
+		}
+		if st.SeriesUnit != c.unit || len(st.Week) < c.min || len(st.Week) > c.max {
+			t.Fatalf("%dd series = %d bars of %q, want %d-%d of %q", c.days, len(st.Week), st.SeriesUnit, c.min, c.max, c.unit)
+		}
 	}
 }
 
@@ -228,5 +220,135 @@ func TestCleanupErrorIsCapped(t *testing.T) {
 	}
 	if len(got.CleanupError) > maxCleanupError+4 {
 		t.Fatalf("stored reason is %d bytes, want it capped near %d", len(got.CleanupError), maxCleanupError)
+	}
+}
+
+func TestCapSparesTheLastThreeMonths(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("AppData", dir)
+	t.Setenv("XDG_CONFIG_HOME", dir)
+	t.Setenv("HOME", dir)
+
+	s, err := NewStore(2, 0)
+	if err != nil {
+		t.Fatalf("NewStore: %v", err)
+	}
+	defer s.Close()
+
+	now := time.Now()
+	add := func(raw string, ago time.Duration) {
+		if err := s.Append(Entry{Timestamp: now.Add(-ago), Raw: raw, Cleaned: raw, Language: "nl"}); err != nil {
+			t.Fatalf("Append: %v", err)
+		}
+	}
+	// Two entries from before the protected window, then four recent ones: the
+	// cap of two may drop the old pair, but none of the recent four.
+	add("old one", 200*24*time.Hour)
+	add("old two", 120*24*time.Hour)
+	for i := 0; i < 4; i++ {
+		add("recent", time.Duration(i+1)*24*time.Hour)
+	}
+	if n, err := s.Count("", false); err != nil || n != 4 {
+		t.Fatalf("Count: got %d (err %v), want the 4 recent entries", n, err)
+	}
+	if n, _ := s.Count("old", false); n != 0 {
+		t.Fatalf("old entries beyond the cap survived: %d", n)
+	}
+}
+
+func TestInsights(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("AppData", dir)
+	t.Setenv("XDG_CONFIG_HOME", dir)
+	t.Setenv("HOME", dir)
+
+	s, err := NewStore(500, 0)
+	if err != nil {
+		t.Fatalf("NewStore: %v", err)
+	}
+	defer s.Close()
+
+	// One day, 10:00 local.
+	at := time.Date(2026, 9, 30, 10, 0, 0, 0, time.Local)
+	add := func(e Entry) {
+		e.Timestamp = at
+		if err := s.Append(e); err != nil {
+			t.Fatalf("Append: %v", err)
+		}
+	}
+	add(Entry{Language: "nl", Raw: "een twee", Cleaned: "Een twee.", CleanupUsed: true, SttMS: 300, CleanupMS: 500, InjectedMS: 900})
+	add(Entry{Language: "nl", Raw: "drie", Cleaned: "drie", CleanupUsed: true, SttMS: 200, CleanupMS: 400, InjectedMS: 700})
+	add(Entry{Language: "en", Raw: "four", Cleaned: "four", CleanupError: "timeout", SttMS: 250, InjectedMS: 3000})
+
+	day := time.Date(2026, 9, 30, 0, 0, 0, 0, time.Local)
+	in, err := s.Insights(day, day)
+	if err != nil {
+		t.Fatalf("Insights: %v", err)
+	}
+	if in.Dictations != 3 || in.CleanupRuns != 2 || in.CleanupChanged != 1 || in.CleanupFailed != 1 {
+		t.Fatalf("counts: %+v", in)
+	}
+	if in.LatencyMedianMS != 900 || in.LatencyP95MS != 3000 || in.SttMedianMS != 250 || in.CleanupMedianMS != 400 {
+		t.Fatalf("timings: median %d p95 %d stt %d cleanup %d", in.LatencyMedianMS, in.LatencyP95MS, in.SttMedianMS, in.CleanupMedianMS)
+	}
+	if len(in.Languages) != 2 || in.Languages[0] != (LangCount{"nl", 2}) {
+		t.Fatalf("languages: %+v", in.Languages)
+	}
+	// The day after holds nothing.
+	if in, _ := s.Insights(day.AddDate(0, 0, 1), day.AddDate(0, 0, 1)); in.Dictations != 0 {
+		t.Fatalf("next day: %d dictations", in.Dictations)
+	}
+}
+
+func TestCalendar(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("AppData", dir)
+	t.Setenv("XDG_CONFIG_HOME", dir)
+	t.Setenv("HOME", dir)
+
+	s, err := NewStore(500, 0)
+	if err != nil {
+		t.Fatalf("NewStore: %v", err)
+	}
+	defer s.Close()
+
+	now := time.Date(2026, 10, 2, 15, 0, 0, 0, time.Local) // a Friday
+	if err := s.Append(Entry{Timestamp: now.Add(-24 * time.Hour), Raw: "een twee drie", Cleaned: "een twee drie"}); err != nil {
+		t.Fatalf("Append: %v", err)
+	}
+	cal, err := s.Calendar(now)
+	if err != nil {
+		t.Fatalf("Calendar: %v", err)
+	}
+	// 25 whole weeks before this one, plus Monday to Friday of this week.
+	if cal.Start != "2026-04-06" || len(cal.Words) != 25*7+5 {
+		t.Fatalf("start %s, %d days", cal.Start, len(cal.Words))
+	}
+	if got := cal.Words[len(cal.Words)-2]; got != 3 {
+		t.Fatalf("yesterday: %d words, want 3", got)
+	}
+}
+
+func TestTopWords(t *testing.T) {
+	counts := map[string]int{}
+	countWords("De klant wil de offerte vandaag. De offerte, zei de klant, moet vandaag!", counts)
+	countWords("Don't forget the offerte for the klant — 2026 is close.", counts)
+	got := topWords(counts, 3)
+	want := []WordCount{{"klant", 3}, {"offerte", 3}, {"vandaag", 2}}
+	if len(got) != len(want) {
+		t.Fatalf("got %v, want %v", got, want)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("got %v, want %v", got, want)
+		}
+	}
+	// Short words, stopwords and numbers never count; a word said once is left out.
+	for _, w := range []string{"de", "wil", "moet", "don't", "the", "2026", "close"} {
+		for _, c := range topWords(counts, 100) {
+			if c.Word == w {
+				t.Errorf("%q should not be in the cloud", w)
+			}
+		}
 	}
 }

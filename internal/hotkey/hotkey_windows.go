@@ -195,7 +195,9 @@ func parseInto(spec string, log *slog.Logger, which string) (ok bool, mods, vk u
 func hookProc(nCode uintptr, wParam uintptr, lParam uintptr) uintptr {
 	if int32(nCode) == hcAction {
 		if m := active; m != nil {
-			ks := (*kbdllHookStruct)(unsafe.Pointer(lParam))
+			// lParam is the address of a KBDLLHOOKSTRUCT owned by Windows, not
+			// Go's heap; reading it through the variable tells go vet so.
+			ks := (*kbdllHookStruct)(*(*unsafe.Pointer)(unsafe.Pointer(&lParam)))
 			switch wParam {
 			case wmKeyDown, wmSysKeyDown:
 				if m.handleKey(ks.VkCode, true, false) {

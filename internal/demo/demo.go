@@ -79,18 +79,39 @@ func Stats(now time.Time, wpm float64, days int) history.Stats {
 	if days == -1 { // "yesterday" — the sample data has no hourly detail anyway
 		days = 1
 	}
-	const dur = 24 * time.Hour
 	loc := now.Location()
 	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
 
 	from := today.AddDate(0, 0, -364) // "all time" still needs a start
 	if days > 0 {
-		from = today.Add(-time.Duration(days-1) * dur)
+		from = today.AddDate(0, 0, -(days - 1))
 	}
+	// Same buckets as the real chart, so demo mode reacts to the period
+	// dropdown exactly like live data does.
+	buckets, unit := history.ChartBuckets(now, days, FirstDay(now))
+	return stats(now, wpm, from, today, days, buckets, unit)
+}
+
+// StatsRange mirrors history.Store.StatsRange: a chosen range, from and to both
+// included. A single day has no hourly detail here, so it is one bar.
+func StatsRange(now time.Time, wpm float64, from, to time.Time) history.Stats {
+	if wpm <= 0 {
+		wpm = 40
+	}
+	buckets, unit := history.RangeBuckets(from, to)
+	days := int(to.Sub(from).Hours()/24+0.5) + 1
+	return stats(now, wpm, from, to, days, buckets, unit)
+}
+
+// stats totals the fabricated days from..today (both included) and lays them
+// out over the given bars. days is the window length, 0 for all time.
+func stats(now time.Time, wpm float64, from, today time.Time, days int, buckets []history.Bucket, unit string) history.Stats {
+	const dur = 24 * time.Hour
+	loc := now.Location()
 	var words, sent, act int
 	var durMS int64
 	first := ""
-	for d := from; !d.After(today); d = d.Add(dur) {
+	for d := from; !d.After(today); d = d.AddDate(0, 0, 1) {
 		w, sn, a, ms, _, _ := day(now, d)
 		if w == 0 {
 			continue
@@ -136,10 +157,15 @@ func Stats(now time.Time, wpm float64, days int) history.Stats {
 		FirstDay:          FirstDay(now),
 		WeekPeakIndex:     -1,
 	}
+	if durMS > 0 {
+		st.SpokenWPM = int(float64(words)/(float64(durMS)/60000.0) + 0.5)
+	}
+	if act > 0 {
+		st.AvgWords = float64(words) / float64(act)
+	}
+	st.Insights = insights(now, from, today)
+	st.Calendar = calendar(now)
 
-	// Same buckets as the real chart, so demo mode reacts to the period
-	// dropdown exactly like live data does.
-	buckets, unit := history.ChartBuckets(now, days, FirstDay(now))
 	st.SeriesUnit = unit
 	peak := -1
 	for i, b := range buckets {
@@ -338,4 +364,50 @@ func Transcript() []struct{ Raw, Cleaned string } {
 		out = append(out, struct{ Raw, Cleaned string }{t.raw, t.cleaned})
 	}
 	return out
+}
+
+// insights fabricates the per-dictation figures for from..today: mostly Dutch
+// with some English, and timings in the range a cloud setup actually shows.
+func insights(now, from, today time.Time) history.Insights {
+	var in history.Insights
+	for d := from; !d.After(today); d = d.AddDate(0, 0, 1) {
+		_, _, a, _, _, _ := day(now, d)
+		in.Dictations += a
+	}
+	if in.Dictations == 0 {
+		return in
+	}
+	in.LatencyMedianMS, in.LatencyP95MS = 1150, 2600
+	in.SttMedianMS, in.CleanupMedianMS = 420, 610
+	in.CleanupFailed = in.Dictations / 90
+	in.CleanupRuns = in.Dictations*85/100 - in.CleanupFailed
+	in.CleanupChanged = in.CleanupRuns * 72 / 100
+	nl := in.Dictations * 70 / 100
+	in.Languages = []history.LangCount{{Code: "nl", Count: nl}, {Code: "en", Count: in.Dictations - nl}}
+	in.TopWords = demoWords
+	return in
+}
+
+// calendar mirrors history.Store.Calendar over the fabricated days.
+func calendar(now time.Time) history.Calendar {
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	start := today.AddDate(0, 0, -((int(today.Weekday())+6)%7)-7*(history.CalendarWeeks-1))
+	cal := history.Calendar{Start: start.Format("2006-01-02")}
+	for d := start; !d.After(today); d = d.AddDate(0, 0, 1) {
+		w, _, _, _, _, _ := day(now, d)
+		cal.Words = append(cal.Words, w)
+	}
+	return cal
+}
+
+// demoWords is the sample word cloud: what a consultant might dictate about.
+var demoWords = []history.WordCount{
+	{Word: "klant", Count: 64}, {Word: "offerte", Count: 51}, {Word: "planning", Count: 47},
+	{Word: "meeting", Count: 42}, {Word: "project", Count: 39}, {Word: "deadline", Count: 33},
+	{Word: "rapport", Count: 30}, {Word: "budget", Count: 27}, {Word: "team", Count: 25},
+	{Word: "presentatie", Count: 22}, {Word: "feedback", Count: 20}, {Word: "contract", Count: 18},
+	{Word: "volgende", Count: 17}, {Word: "week", Count: 16}, {Word: "release", Count: 14},
+	{Word: "factuur", Count: 13}, {Word: "agenda", Count: 12}, {Word: "voorstel", Count: 11},
+	{Word: "update", Count: 10}, {Word: "afspraak", Count: 9}, {Word: "review", Count: 8},
+	{Word: "collega", Count: 7}, {Word: "strategie", Count: 6}, {Word: "workshop", Count: 5},
 }

@@ -241,17 +241,24 @@ func (s *Store) Append(e Entry) error {
 	return nil
 }
 
+// capKeepsDays is how far back the row cap never reaches: an entry younger than
+// this survives it however many came after, so a busy quarter can't push out
+// last month. The retention setting is separate and still applies.
+const capKeepsDays = 90
+
 // enforceCap trims the history to the newest maxEntries rows, never touching
-// favorites or the permanent day_stats aggregates. Caller holds s.mu.
+// favorites, entries from the last capKeepsDays, or the permanent day_stats
+// aggregates. Caller holds s.mu.
 func (s *Store) enforceCap() {
 	if s.maxEntries <= 0 {
 		return
 	}
 	// Keep the newest maxEntries rows, but never delete a favorite: they are
 	// excluded from both the deletion and the "rows to keep" count.
+	cutoff := time.Now().AddDate(0, 0, -capKeepsDays).UnixMilli()
 	_, _ = s.db.Exec(
-		`DELETE FROM history WHERE favorite=0 AND id NOT IN
-		 (SELECT id FROM history WHERE favorite=0 ORDER BY ts DESC LIMIT ?)`, s.maxEntries)
+		`DELETE FROM history WHERE favorite=0 AND ts < ? AND id NOT IN
+		 (SELECT id FROM history WHERE favorite=0 ORDER BY ts DESC LIMIT ?)`, cutoff, s.maxEntries)
 }
 
 // AppendUpload stores a transcribed audio file. It keeps the entry like any
