@@ -4779,12 +4779,13 @@ const VM_SHAPES = {
     face: "", shadow: 30,
   },
   // The logo's bars are 20, 36 and 56 long on a 20-unit pitch; the hair keeps
-  // those proportions, the face is their outline rounded off.
+  // those proportions, the face is their outline rounded off — as flat as the
+  // logo, about six tenths as high as it is wide.
   vito: {
-    hair: [[30, 10, .6], [45, 17, 1.1], [60, 26, 1.6], [75, 17, 1.1], [90, 10, .6]], hairW: 10, hairBase: 33,
-    body: (g) => `<path d="M27 30 H93 Q110 30 107 47 Q99 89 70 115 Q60 124 50 115 Q21 89 13 47 Q10 30 27 30 Z" fill="${g}"/>
-    <ellipse cx="37" cy="42" rx="14" ry="6.5" fill="#fff" opacity=".38" transform="rotate(-10 37 42)"/>`,
-    face: "translate(60 59) scale(.9) translate(-60 -74)", shadow: 21,
+    hair: [[30, 10, .6], [45, 17, 1.1], [60, 26, 1.6], [75, 17, 1.1], [90, 10, .6]], hairW: 10, hairBase: 53,
+    body: (g) => `<path d="M24 50 H96 Q110 50 106 63 Q96 90 70 110 Q60 117 50 110 Q24 90 14 63 Q10 50 24 50 Z" fill="${g}"/>
+    <ellipse cx="35" cy="58" rx="12" ry="5" fill="#fff" opacity=".38" transform="rotate(-8 35 58)"/>`,
+    face: "translate(60 70) scale(.85) translate(-60 -74)", shadow: 22,
   },
 };
 let vmVariant = "round";
