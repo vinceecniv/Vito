@@ -351,6 +351,9 @@
   .card-menu button:hover { background:var(--nav-active-bg); }
   .card-menu button.sel { color:var(--accent); font-weight:600; }
   .card-menu button svg { width:15px; height:15px; flex:none; color:var(--text3); }
+  .card-menu.recent-menu { width:min(420px, calc(100vw - 32px)); }
+  .card-menu.recent-menu button > span:last-child { min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .card-menu button .meta { flex:none; min-width:38px; font-size:11.5px; color:var(--text3); font-variant-numeric:tabular-nums; }
   .card-menu .sep { height:1px; margin:4px 6px; background:var(--card-border); }
   .card-menu .seg { display:flex; gap:4px; padding:4px; }
   .card-menu .seg button { flex:1; justify-content:center; padding:6px 0; border:1px solid var(--card-border); font-weight:600; color:var(--text2); }
@@ -563,15 +566,6 @@
   .cloud span.top { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800; }
   .cloud-empty { margin-top:12px; font-size:12.5px; color:var(--text3); }
   .rhythm-head { display:flex; align-items:center; gap:10px; }
-  .recent-card .recent-title { color:var(--text); font-weight:600; font-size:13.5px; }
-  .recent-list { margin-top:10px; display:flex; flex-direction:column; }
-  .recent-row { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:10px; padding:5px 0;
-    border-top:1px solid var(--card-border); }
-  .recent-row:first-child { border-top:none; }
-  .recent-when { font-size:11.5px; color:var(--text3); font-variant-numeric:tabular-nums; min-width:38px; }
-  .recent-text { font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .recent-copy { width:26px; height:26px; }
-  .recent-empty { font-size:13px; color:var(--text3); padding:6px 0; }
   .rhythm-head .chip { margin-bottom:0; flex:none; }
   .rhythm-head .num { font-size:24px; }
   .rhythm-head .lbl { margin-top:0; }
@@ -1535,6 +1529,7 @@
               <button class="h2-btn hover-only" id="btn-play-audio" data-tip-text="Play the recording of this dictation" aria-label="Play recording" hidden></button>
               <button class="h2-btn hover-only" id="btn-upload" data-tip-text="Upload an audio file and have it transcribed" aria-label="Upload audio file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9m0 0 4 4m-4-4-4 4"/><path d="M5 5h14"/></svg></button>
               <button class="h2-btn hover-only" id="btn-dl-audio" data-tip-text="Download the recording of this dictation (.wav)" aria-label="Download recording" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg></button>
+              <button class="h2-btn" id="btn-recent" data-tip-text="Recent dictations" aria-label="Recent dictations" aria-haspopup="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></button>
               <button class="h2-btn" id="btn-copy" data-tip-text="Copy text" aria-label="Copy text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></button>
             </span></h2>
           <div id="cmd-banner"></div>
@@ -4179,6 +4174,25 @@ function transcriptText(){
   const text = lastFinalText || curRaw || $("transcript").innerText.trim();
   return (!text || text === "Live transcript appears here while dictating.") ? "" : text;
 }
+// The transcript card's clock button: the last dictations, newest first, each
+// a click from the clipboard — for "that one from just now" without going to
+// the history, which closes the list.
+$("btn-recent").onclick = async (e) => {
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  let items = [];
+  try { items = ((await api("/api/history?limit=8")) || {}).items || []; } catch {}
+  const today = ymd(new Date()), tf = dateFmt({ hour:"2-digit", minute:"2-digit" }), df = dateFmt({ weekday:"short", hour:"2-digit", minute:"2-digit" });
+  const text = (x) => (x.cleanup_used && x.cleaned ? x.cleaned : x.raw) || "";
+  const menu = items.map(x => {
+    const d = new Date(x.timestamp);
+    return { icon: PIP_SVG.copy, meta: ymd(d) === today ? tf.format(d) : df.format(d), label: text(x),
+      run: async () => { try { await navigator.clipboard.writeText(text(x)); toast(t("Copied to clipboard"), "ok"); } catch { toast(t("Copy failed."), "err"); } } };
+  });
+  if (!menu.length) menu.push({ label: t("No dictations yet."), run: () => {} });
+  menu.push({ sep: true }, { icon: ICON_RESET, label: t("History"), run: () => document.querySelector(".nav-item[data-tab='history']").click() });
+  openCardMenu(btn, menu, "recent-menu");
+};
 async function copyTranscript(win){
   win = win || window; // clipboard needs the *focused* document — pass pipWin from the PiP
   const text = transcriptText();
@@ -5829,25 +5843,25 @@ loadAbout();
 // The status page is one grid of cards in any order — the statistics, the
 // chart, the costs and the live transcript alike — and any card can be dragged
 // to any place, like icons on a phone's home screen.
-const STAT_KEYS = ["credit","words","streak","recent","commands",
+const STAT_KEYS = ["credit","words","streak","commands",
   "cleanupfx","languages","rhythm","wordcloud","achievements","update"];
 const LAYOUT_GROUPS = [
   { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript","quicksettings","mascot"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
-  streak:"days in a row", recent:"Recent dictations", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
+  streak:"days in a row", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
   cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings", mascot:"Vito" };
 // The fixed cards are written in the page; the statistic cards are built from
 // their data (renderStatCards). Some cards take two cells, the transcript a
 // whole row — and it can't be hidden, it holds Start / Stop.
 const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card", mascot:"mascot-card" };
-const LAYOUT_SPAN2 = ["words","recent","chart","rhythm","wordcloud","quicksettings","mascot"];
+const LAYOUT_SPAN2 = ["words","chart","rhythm","wordcloud","quicksettings","mascot"];
 // The widths, in cells, each card can be set to from its menu — where a choice
 // makes sense. The cards with a chart in them can go up to three; the words
 // chart, the calendar and quick settings are too cramped in one; the
 // transcript always spans the row. Until you choose, a card in LAYOUT_SPAN2 is
 // two cells and any other one.
-const LAYOUT_WIDTHS = { words:[1,2,3], recent:[2,3], chart:[2,3], wordcloud:[1,2,3], achievements:[1,2,3],
+const LAYOUT_WIDTHS = { words:[1,2,3], chart:[2,3], wordcloud:[1,2,3], achievements:[1,2,3],
   rhythm:[2,3], quicksettings:[2,3], transcript:[], mascot:[1,2,3] };
 const widthsFor = (k) => LAYOUT_WIDTHS[k] || [1, 2];
 // The cards that can show their trend as a chart in the background, and the
@@ -6050,12 +6064,12 @@ function closeCardMenu(){
   cardMenu.el.remove();
   cardMenu = null;
 }
-function openCardMenu(opener, items){
+function openCardMenu(opener, items, cls){
   const again = cardMenu && cardMenu.opener === opener;
   closeCardMenu();
   if (again) return;
   const el = document.createElement("div");
-  el.className = "card-menu";
+  el.className = "card-menu" + (cls ? " " + cls : "");
   el.setAttribute("role", "menu");
   items.forEach(it => {
     if (it.sep) { el.insertAdjacentHTML("beforeend", `<div class="sep"></div>`); return; }
@@ -6079,7 +6093,7 @@ function openCardMenu(opener, items){
     b.type = "button";
     b.setAttribute("role", "menuitem");
     if (it.sel) b.classList.add("sel");
-    b.innerHTML = (it.icon || "") + `<span>${ahEsc(it.label)}</span>`;
+    b.innerHTML = (it.icon || "") + (it.meta ? `<span class="meta">${ahEsc(it.meta)}</span>` : "") + `<span>${ahEsc(it.label)}</span>`;
     b.onclick = (e) => { e.stopPropagation(); closeCardMenu(); it.run(); };
     el.appendChild(b);
   });
@@ -7273,33 +7287,6 @@ function showCostInfo(){
 // The card itself opens the explanation of how the costs are worked out.
 $("cost-card").onclick = () => showCostInfo();
 
-// The last five dictations, newest first, each a click from the clipboard —
-// for "that one from just now" without going to the history.
-let recentItems = [];
-function recentCardHTML(){
-  const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>';
-  const today = ymd(new Date()), tf = dateFmt({ hour:"2-digit", minute:"2-digit" }), df = dateFmt({ weekday:"short" });
-  const rows = recentItems.map(e => {
-    const d = new Date(e.timestamp), text = (e.cleanup_used && e.cleaned ? e.cleaned : e.raw) || "";
-    const when = ymd(d) === today ? tf.format(d) : df.format(d);
-    return `<div class="recent-row" data-id="${ahEsc(e.id)}"><span class="recent-when">${when}</span>` +
-      `<span class="recent-text">${ahEsc(text)}</span>` +
-      `<button type="button" class="h2-btn recent-copy" data-tip-text="${ahEsc(t("Copy text"))}" aria-label="${ahEsc(t("Copy text"))}">${PIP_SVG.copy}</button></div>`;
-  }).join("");
-  return `<div class="rhythm-head"><div class="chip violet">${icon}</div><div class="lbl recent-title">${t("Recent dictations")}</div></div>` +
-    `<div class="recent-list">${rows || `<div class="recent-empty">${t("No dictations yet.")}</div>`}</div>`;
-}
-function wireRecentCard(el){
-  el.querySelectorAll(".recent-row").forEach((row, i) => {
-    const e = recentItems[i], b = row.querySelector(".recent-copy");
-    if (!e || !b) return;
-    b.onclick = async (ev) => {
-      ev.stopPropagation();
-      try { await navigator.clipboard.writeText((e.cleanup_used && e.cleaned ? e.cleaned : e.raw) || ""); flashCopied(b, "ok"); toast(t("Copied to clipboard"), "ok"); }
-      catch { toast(t("Copy failed."), "err"); }
-    };
-  });
-}
 // The five figures the volume card can show, in the order the menu lists them.
 const VOLUME_KEYS = ["words", "sentences", "activations", "spoken", "saved"];
 function volumeMain(){
@@ -7413,9 +7400,7 @@ let weekCur = "eur";
 let chartUnit = "day";
 async function loadStats(){
   loadCosts();
-  const recentP = api("/api/history?limit=5").catch(() => null);
   let st; try { st = await api("/api/stats?" + statPeriodQuery()); } catch { return; }
-  recentItems = ((await recentP) || {}).items || [];
   weekCur = st.currency || "eur";
   const I = {
     words:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/></svg>',
@@ -7457,7 +7442,6 @@ async function loadStats(){
     { key:"streak", cls:"coral", icon:flame, value:st.current_streak || 0, format:nf, lbl:t("days in a row"),
       sub: st.longest_streak ? t("record: {n}").replace("{n}", nf(st.longest_streak)) : "",
       tip:t("The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.") },
-    { key:"recent", custom:true, cardClass:"recent-card", html:recentCardHTML, wire:wireRecentCard },
     { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:st.commands, format:nf, lbl:t("Vito Assist commands"),
       tip:t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.") },
     // The insights below come from the dictations still in the history.
