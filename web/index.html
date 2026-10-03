@@ -751,7 +751,7 @@
   :root[data-theme="dark"] .ach-date { color:var(--violet-l); }
   .ach-date svg { width:13px; height:13px; }
   .ach.secret .ach-medal { font-weight:800; color:var(--text3); }
-  .ach-fresh { position:absolute; top:10px; right:12px; width:8px; height:8px; border-radius:50%; background:var(--coral); box-shadow:0 0 0 4px var(--coral-soft); }
+  .ach-fresh { position:absolute; z-index:2; top:10px; right:12px; width:8px; height:8px; border-radius:50%; background:var(--coral); box-shadow:0 0 0 4px var(--coral-soft); }
   /* Honour-system support badges: a rotating gradient rim + a breathing glow when
      earned, so a donation reads as something special. */
   @property --ach-ang { syntax:"<angle>"; initial-value:0deg; inherits:false; }
@@ -783,11 +783,27 @@
   }
   /* Compact status card: earned count with a trophy, tappable to the full page. */
   .card.stat.ach-mini { cursor:pointer; position:relative; }
-  .ach-mini-medals { position:absolute; top:12px; right:12px; display:flex; }
-  .ach-mini-medal { width:30px; height:30px; margin-left:-8px; border-radius:9px; display:flex; align-items:center; justify-content:center;
-    font-size:16px; line-height:1; overflow:hidden; box-shadow:0 0 0 2px var(--card);
-    background:linear-gradient(135deg, color-mix(in srgb,var(--coral) 22%, var(--card)), color-mix(in srgb,var(--violet) 26%, var(--card))); }
-  .ach-mini-medal img, .ach-mini-medal svg { width:100%; height:100%; object-fit:contain; display:block; }
+  /* Behind the figure, the medals you earned most recently: a grid from the
+     bottom edge up to about the middle, the newest at the top, older ones
+     fading out towards the bottom. Today's carry a coral ring. */
+  .ach-bg { position:absolute; left:0; right:0; bottom:0; height:52%; z-index:0; pointer-events:none; overflow:hidden;
+    display:grid; grid-template-columns:repeat(auto-fill, 26px); grid-auto-rows:26px; gap:5px; justify-content:center; align-content:start;
+    padding:2px 10px 0;
+    -webkit-mask-image:linear-gradient(to bottom, #000 25%, rgba(0,0,0,.25) 85%, transparent);
+            mask-image:linear-gradient(to bottom, #000 25%, rgba(0,0,0,.25) 85%, transparent); }
+  .ach-bg i { width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; font-style:normal;
+    line-height:1; overflow:hidden; opacity:.85;
+    background:linear-gradient(135deg, color-mix(in srgb,var(--coral) 18%, var(--card)), color-mix(in srgb,var(--violet) 22%, var(--card))); }
+  .ach-bg i img, .ach-bg i svg { width:100%; height:100%; object-fit:contain; display:block; }
+  .ach-bg i.today { opacity:1; box-shadow:0 0 0 1.5px var(--coral), 0 0 10px var(--coral-soft); }
+  /* The figure sits over the medals; a halo in the card colour keeps it legible. */
+  .card.stat.ach-mini > .num, .card.stat.ach-mini > .lbl, .card.stat.ach-mini > .delta {
+    text-shadow:0 0 3px var(--card), 0 0 6px var(--card), 0 0 10px var(--card), 0 0 16px var(--card); }
+  /* Pointing at the card sets every medal bobbing, one after the other. */
+  @media (prefers-reduced-motion: no-preference) {
+    .card.stat.ach-mini:hover .ach-bg i { animation:achBob .7s ease-in-out infinite alternate; animation-delay:calc(var(--i) * 45ms); }
+  }
+  @keyframes achBob { from { transform:translateY(0) rotate(0deg) scale(1); } to { transform:translateY(-3px) rotate(-8deg) scale(1.08); } }
   /* Earned today: a coral ring and a soft glow, until the date turns over. */
   .ach.today, .ach.today.earned:hover { border-color:transparent; box-shadow:0 0 0 1.6px var(--coral), 0 8px 22px var(--coral-soft); }
   .ach.today .ach-date { color:var(--coral); }
@@ -5729,16 +5745,20 @@ function achMiniCardHTML(){
   const total = a ? a.achievements.length : 0;
   const earned = a ? a.achievements.filter(x => x.earned).length : 0;
   const dot = achFreshIds.size ? `<span class="ach-fresh"></span>` : "";
-  // For the rest of the day the card shows what you earned today — the medals
-  // themselves in the corner, and the count in place of the usual sub-line.
+  // The background: the most recently earned medals, newest first, so today's
+  // land at the top of the grid (with a ring) — no separate corner for them.
+  // For the rest of the day the sub-line counts them.
   const today = a ? a.achievements.filter(achToday) : [];
-  const medals = today.length
-    ? `<div class="ach-mini-medals">${today.slice(0, 3).map(x => `<span class="ach-mini-medal" title="${ahEsc(x.name)}">${achMedalInner(x)}</span>`).join("")}</div>`
+  const recent = a ? a.achievements.filter(x => x.earned && x.unlocked_at)
+    .sort((p, q) => q.unlocked_at - p.unlocked_at).slice(0, 36) : [];
+  const bg = recent.length
+    ? `<div class="ach-bg" aria-hidden="true">${recent.map((x, i) =>
+        `<i class="${achToday(x) ? "today" : ""}" style="--i:${i}">${achMedalInner(x)}</i>`).join("")}</div>`
     : "";
   const sub = today.length
     ? `<div class="delta up">${t("{n} new today").replace("{n}", today.length)}</div>`
     : `<div class="delta flat">${t("of {n} unlocked").replace("{n}", total)}</div>`;
-  return `${dot}${medals}<div class="chip violet">${ICON_TROPHY}</div>` +
+  return `${dot}${bg}<div class="chip violet">${ICON_TROPHY}</div>` +
     `<div class="num">${earned}</div><div class="lbl">${t("achievements")}</div>` + sub;
 }
 function wireAchMiniCard(el){
