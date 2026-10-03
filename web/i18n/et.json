@@ -131,6 +131,8 @@
 "Your browser doesn't support detached windows (PiP).": "Sinu brauser ei toeta eraldi aknaid (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Klõpsa olekulehel nuppu „Eraldi aken“, et transkriptsioon eraldi kuvada.",
 "Couldn't open the detached window.": "Eraldi akna avamine ebaõnnestus.",
+"Dashboard": "Töölaud",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Klõpsa töölaual nuppu „Eraldi aken“, et transkriptsioon eraldi kuvada.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Märksõnad saadetakse kõnetuvastusele, kui lülitad selle Seadetes sisse. See on eraldi ülaltoodud parandustest — neid rakendatakse alati igale dikteeringule.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Parandusi rakendatakse alati, olenemata märksõnade seadest. Nõuanne: liigu Ajaloos hiirega sõna kohale ja klõpsa seda, et sellele kiiresti parandus lisada.",
 "Interface language": "Liidese keel",

@@ -132,6 +132,8 @@
 "Close detached window": "关闭独立窗口",
 "Your browser doesn't support detached windows (PiP).": "你的浏览器不支持独立窗口（PiP）。",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "点击状态页面的“独立窗口”按钮，将转录内容弹出显示。",
+"Dashboard": "仪表板",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "点击仪表板上的“独立窗口”按钮，将转录内容弹出显示。",
 "Couldn't open the detached window.": "无法打开独立窗口。",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "如果你在设置中启用，关键词会被发送到语音识别。这与上方的更正无关 — 更正始终应用于每次口述。",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "无论关键词设置如何，更正始终生效。提示：在历史记录中，将鼠标悬停在某个词上并点击，即可快速为其添加更正。",

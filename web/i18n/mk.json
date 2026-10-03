@@ -829,7 +829,9 @@
 "Chart in background": "Графикон во позадина",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Зборовите што најчесто ги диктиравте во овој период — колку е поголем, толку почесто. Зборовите од три букви или помалку и вообичаените зборови како „сакам“ или „затоа што“ се изоставени.",
 "Vito character": "Ликот на Vito",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Просечната должина на диктат. Мрежата ги прикажува последните 26 недели, по еден квадрат за секој ден од понеделник до недела — потемно значи повеќе зборови."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Просечната должина на диктат. Мрежата ги прикажува последните 26 недели, по еден квадрат за секој ден од понеделник до недела — потемно значи повеќе зборови.",
+"Dashboard": "Контролна табла",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Кликнете на копчето „Одвоен прозорец“ на контролната табла за да го прикажете транскриптот одвоено."
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

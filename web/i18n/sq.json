@@ -829,7 +829,9 @@
 "Chart in background": "Grafiku në sfond",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Fjalët që ke diktuar më shpesh në këtë periudhë — sa më e madhe, aq më shpesh. Fjalët me tri shkronja ose më pak dhe fjalët e zakonshme, si ‘dua’ ose ‘sepse’, janë lënë jashtë.",
 "Vito character": "Figurina e Vitos",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Gjatësia mesatare e një diktimi. Rrjeta tregon 26 javët e fundit, një katror për ditë nga e hëna te e diela — sa më i errët, aq më shumë fjalë."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Gjatësia mesatare e një diktimi. Rrjeta tregon 26 javët e fundit, një katror për ditë nga e hëna te e diela — sa më i errët, aq më shumë fjalë.",
+"Dashboard": "Paneli",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Kliko butonin 'Dritare e shkëputur' në Panel për të nxjerrë transkriptin veç."
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

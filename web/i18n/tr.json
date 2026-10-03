@@ -143,6 +143,8 @@
 "Your browser doesn't support detached windows (PiP).": "Tarayıcınız ayrık pencereleri (PiP) desteklemiyor.",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Dökümü ayrı göstermek için Durum sayfasındaki 'Ayrık pencere' düğmesine tıklayın.",
 "Couldn't open the detached window.": "Ayrık pencere açılamadı.",
+"Dashboard": "Gösterge Paneli",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Dökümü ayrı göstermek için Gösterge Paneli sayfasındaki 'Ayrık pencere' düğmesine tıklayın.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Anahtar terimler, Ayarlar'da etkinleştirdiğinizde konuşma tanımaya gönderilir. Bu, yukarıdaki düzeltmelerden bağımsızdır — düzeltmeler her zaman her diktede uygulanır.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Düzeltmeler, anahtar terim ayarından bağımsız olarak her zaman uygulanır. İpucu: Geçmiş'te bir kelimenin üzerine gelip tıklayarak onun için hızlıca bir düzeltme ekleyebilirsiniz.",
 "Interface language": "Arayüz dili",

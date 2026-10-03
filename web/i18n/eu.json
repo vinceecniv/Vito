@@ -145,6 +145,8 @@
 "Close detached window": "Itxi leiho askea",
 "Your browser doesn't support detached windows (PiP).": "Zure nabigatzaileak ez ditu leiho askeak (PiP) onartzen.",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Egin klik Egoera orriko 'Leiho askea' botoian transkripzioa aparte erakusteko.",
+"Dashboard": "Aginte-panela",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Egin klik Aginte-panelaren 'Leiho askea' botoian transkripzioa aparte erakusteko.",
 "Couldn't open the detached window.": "Ezin izan da leiho askea ireki.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Keyterm-ak ahots-ezagutzara bidaltzen dira Ezarpenetan hori aktibatzen baduzu. Hau goiko zuzenketetatik bereizita dago — horiek beti aplikatzen dira diktaketa bakoitzean.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Zuzenketak beti aplikatzen dira, keyterm-en ezarpena edozein dela ere. Aholkua: Historian, jarri sagua hitz baten gainean eta egin klik hartarako zuzenketa bat azkar gehitzeko.",

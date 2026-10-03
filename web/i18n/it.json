@@ -1,6 +1,8 @@
 {
 "strings": {
 "Status": "Stato",
+"Dashboard": "Dashboard",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Fai clic sul pulsante 'Finestra staccata' nella Dashboard per staccare la trascrizione.",
 "Settings": "Impostazioni",
 "Dictionary": "Dizionario",
 "History": "Cronologia",

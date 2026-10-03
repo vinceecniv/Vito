@@ -126,6 +126,8 @@
 "Close detached window": "Zamknij osobne okno",
 "Your browser doesn't support detached windows (PiP).": "Twoja przeglądarka nie obsługuje osobnych okien (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Kliknij przycisk „Osobne okno” na stronie statusu, aby wyświetlić transkrypcję osobno.",
+"Dashboard": "Panel",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Kliknij przycisk „Osobne okno” w panelu, aby wyświetlić transkrypcję osobno.",
 "Couldn't open the detached window.": "Nie udało się otworzyć osobnego okna.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Słowa kluczowe są wysyłane do rozpoznawania mowy, jeśli włączysz to w Ustawieniach. Jest to niezależne od powyższych korekt — te są zawsze stosowane do każdego dyktowania.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korekty są zawsze stosowane, niezależnie od ustawienia słów kluczowych. Wskazówka: w Historii najedź na słowo i kliknij je, aby szybko dodać dla niego korektę.",

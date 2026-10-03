@@ -146,6 +146,8 @@
 "Close detached window": "Loses Fenster schließen",
 "Your browser doesn't support detached windows (PiP).": "Dein Browser unterstützt keine losen Fenster (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Klicke auf der Statusseite auf die Schaltfläche „Loses Fenster“, um das Transkript herauszulösen.",
+"Dashboard": "Dashboard",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Klicke im Dashboard auf die Schaltfläche „Loses Fenster“, um das Transkript herauszulösen.",
 "Couldn't open the detached window.": "Das lose Fenster konnte nicht geöffnet werden.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Keyterms werden an die Spracherkennung gesendet, wenn du das in den Einstellungen aktivierst. Das ist unabhängig von den Korrekturen oben — die werden immer auf jedes Diktat angewendet.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korrekturen werden immer angewendet, unabhängig von der Keyterms-Einstellung. Tipp: Fahre im Verlauf mit der Maus über ein Wort und klicke es an, um schnell eine Korrektur dafür hinzuzufügen.",

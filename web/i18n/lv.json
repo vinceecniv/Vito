@@ -126,6 +126,8 @@
 "Close detached window": "Aizvērt atsaistīto logu",
 "Your browser doesn't support detached windows (PiP).": "Tava pārlūkprogramma neatbalsta atsaistītus logus (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Noklikšķini uz pogas “Atsaistīts logs” statusa lapā, lai atsaistītu transkriptu.",
+"Dashboard": "Informācijas panelis",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Noklikšķini uz pogas “Atsaistīts logs” informācijas panelī, lai atsaistītu transkriptu.",
 "Couldn't open the detached window.": "Neizdevās atvērt atsaistīto logu.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Atslēgvārdi tiek sūtīti uz runas atpazīšanu, ja to ieslēdz sadaļā Iestatījumi. Tas nav saistīts ar iepriekš minētajām korekcijām — tās vienmēr tiek piemērotas katram diktātam.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korekcijas vienmēr tiek piemērotas neatkarīgi no atslēgvārdu iestatījuma. Padoms: sadaļā Vēsture virzi peli virs vārda un noklikšķini uz tā, lai ātri pievienotu korekciju.",

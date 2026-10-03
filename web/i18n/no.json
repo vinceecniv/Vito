@@ -132,6 +132,8 @@
 "Close detached window": "Lukk løsrevet vindu",
 "Your browser doesn't support detached windows (PiP).": "Nettleseren din støtter ikke løsrevne vinduer (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Klikk på knappen 'Løsrevet vindu' på statussiden for å vise transkripsjonen i et eget vindu.",
+"Dashboard": "Dashboard",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Klikk på knappen 'Løsrevet vindu' på Dashboard for å vise transkripsjonen i et eget vindu.",
 "Couldn't open the detached window.": "Kunne ikke åpne det løsrevne vinduet.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Keyterms sendes til talegjenkjenningen hvis du slår det på i Innstillinger. Dette er uavhengig av korreksjonene over — de brukes alltid på hver diktat.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korreksjoner brukes alltid, uansett keyterms-innstillingen. Tips: hold pekeren over et ord i Historikk og klikk på det for å raskt legge til en korreksjon for det.",

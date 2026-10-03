@@ -1,6 +1,8 @@
 {
 "strings": {
 "Status": "Būsena",
+"Dashboard": "Skydelis",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Skydelio puslapyje spustelėkite mygtuką „Atskiras langas“, kad tekstas būtų rodomas atskirai.",
 "Settings": "Nustatymai",
 "Dictionary": "Žodynas",
 "History": "Istorija",

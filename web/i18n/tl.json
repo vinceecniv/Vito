@@ -126,6 +126,8 @@
 "Close detached window": "Isara ang detached window",
 "Your browser doesn't support detached windows (PiP).": "Hindi sinusuportahan ng browser mo ang detached window (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "I-click ang 'Detached window' na button sa Status page para ilabas ang transcript.",
+"Dashboard": "Dashboard",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "I-click ang 'Detached window' na button sa Dashboard para ilabas ang transcript.",
 "Couldn't open the detached window.": "Hindi mabuksan ang detached window.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Ipinapadala ang mga keyterm sa speech recognition kapag ini-enable mo iyon sa Mga Setting. Hiwalay ito sa mga koreksyon sa itaas — palaging inilalapat ang mga iyon sa bawat diktasyon.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Palaging inilalapat ang mga koreksyon, anuman ang keyterms setting. Tip: sa Kasaysayan, i-hover ang mouse sa isang salita at i-click ito para mabilis na magdagdag ng koreksyon para dito.",

@@ -829,7 +829,9 @@
 "Most used words": "Paraules més usades",
 "Chart in background": "Gràfic de fons",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Les paraules que més has dictat en aquest període: com més grans, més sovint. Les paraules de tres lletres o menys i les paraules habituals com «voler» o «perquè» no es compten.",
-"Vito character": "Personatge de Vito"
+"Vito character": "Personatge de Vito",
+"Dashboard": "Tauler de control",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Fes clic al botó 'Finestra separada' del tauler de control per mostrar la transcripció a part."
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

@@ -1,6 +1,8 @@
 {
 "strings": {
 "Status": "وضعیت",
+"Dashboard": "داشبورد",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "برای نمایش جداگانه رونویسی، روی دکمه «پنجره جدا» در صفحه داشبورد کلیک کنید.",
 "Settings": "تنظیمات",
 "Dictionary": "واژه‌نامه",
 "History": "تاریخچه",

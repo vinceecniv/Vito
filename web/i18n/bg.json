@@ -1,5 +1,7 @@
 {
 "strings": {
+"Dashboard": "Dashboard",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Кликнете бутона „Отделен прозорец“ на страницата Dashboard, за да покажете транскрипцията отделно.",
 "Most used words": "Най-използвани думи",
 "Chart in background": "Диаграма на заден план",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Думите, които диктувахте най-често през този период — колкото по-голяма, толкова по-често. Думите от три букви или по-кратки и често срещани думи като „искам“ или „защото“ са пропуснати.",

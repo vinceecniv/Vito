@@ -829,7 +829,9 @@
 "Chart in background": "నేపథ్యంలో చార్ట్",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "ఈ కాలంలో మీరు ఎక్కువగా చెప్పిన పదాలు — ఎంత పెద్దదైతే అంత ఎక్కువసార్లు. మూడు అక్షరాలు లేదా అంతకంటే తక్కువ ఉన్న పదాలు, అలాగే ‘కావాలి’ లేదా ‘ఎందుకంటే’ వంటి సాధారణ పదాలు చేర్చబడలేదు.",
 "Vito character": "Vito పాత్ర (కార్టూన్ బొమ్మ)",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ఒక డిక్టేషన్ సగటు నిడివి. గ్రిడ్ గత 26 వారాలను చూపుతుంది, సోమవారం నుండి ఆదివారం వరకు రోజుకు ఒక చతురస్రం — ముదురు రంగు అంటే ఎక్కువ పదాలు."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ఒక డిక్టేషన్ సగటు నిడివి. గ్రిడ్ గత 26 వారాలను చూపుతుంది, సోమవారం నుండి ఆదివారం వరకు రోజుకు ఒక చతురస్రం — ముదురు రంగు అంటే ఎక్కువ పదాలు.",
+"Dashboard": "డాష్‌బోర్డ్",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ట్రాన్స్క్రిప్ట్‌ను బయటకు తీయడానికి డాష్‌బోర్డ్‌లోని 'వేరు విండో' బటన్‌ను నొక్కండి."
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

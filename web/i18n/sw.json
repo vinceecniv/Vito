@@ -132,6 +132,8 @@
 "Close detached window": "Funga dirisha huru",
 "Your browser doesn't support detached windows (PiP).": "Kivinjari chako hakiungi mkono madirisha huru (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Bofya kitufe cha 'Dirisha huru' kwenye ukurasa wa Hali ili kuonyesha nukuu tofauti.",
+"Dashboard": "Dashibodi",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Bofya kitufe cha 'Dirisha huru' kwenye ukurasa wa Dashibodi ili kuonyesha nukuu tofauti.",
 "Couldn't open the detached window.": "Imeshindwa kufungua dirisha huru.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Keyterms hutumwa kwa utambuzi wa sauti ukiwezesha hilo katika Mipangilio. Hii ni tofauti na marekebisho ya juu — hayo daima hutumika kwa kila uandishi.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Marekebisho daima hutumika, bila kujali mpangilio wa keyterms. Dokezo: katika Historia, weka kishale juu ya neno na ulibofye ili kuongeza marekebisho haraka.",

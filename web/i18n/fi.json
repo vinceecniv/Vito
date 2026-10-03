@@ -136,6 +136,8 @@
 "Close detached window": "Sulje irrallinen ikkuna",
 "Your browser doesn't support detached windows (PiP).": "Selaimesi ei tue irrallisia ikkunoita (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Napsauta Tila-sivun Irrallinen ikkuna -painiketta näyttääksesi litteroinnin erillään.",
+"Dashboard": "Kojelauta",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Napsauta Kojelaudan Irrallinen ikkuna -painiketta näyttääksesi litteroinnin erillään.",
 "Couldn't open the detached window.": "Irrallista ikkunaa ei voitu avata.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Avaintermit lähetetään puheentunnistukseen, kun otat sen käyttöön Asetuksissa. Tämä on erillään yllä olevista korjauksista — ne käytetään aina jokaiseen saneluun.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korjaukset käytetään aina avaintermiasetuksesta riippumatta. Vinkki: vie Historiassa hiiri sanan päälle ja napsauta sitä lisätäksesi sille korjauksen nopeasti.",

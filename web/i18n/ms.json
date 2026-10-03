@@ -126,6 +126,8 @@
 "Close detached window": "Tutup tetingkap terapung",
 "Your browser doesn't support detached windows (PiP).": "Pelayar anda tidak menyokong tetingkap terapung (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Klik butang 'Tetingkap terapung' pada halaman Status untuk memaparkan transkrip secara berasingan.",
+"Dashboard": "Papan pemuka",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Klik butang 'Tetingkap terapung' pada halaman Papan pemuka untuk memaparkan transkrip secara berasingan.",
 "Couldn't open the detached window.": "Tidak dapat membuka tetingkap terapung.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Keyterm dihantar ke pengecaman suara jika anda mengaktifkannya di Tetapan. Ini berasingan daripada pembetulan di atas — pembetulan sentiasa digunakan pada setiap dikte.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Pembetulan sentiasa digunakan, tanpa mengira tetapan keyterm. Petua: dalam Sejarah, tuding pada satu perkataan dan klik untuk cepat menambah pembetulan untuknya.",

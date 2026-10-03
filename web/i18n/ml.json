@@ -829,7 +829,9 @@
 "{p}% of dictations": "ഡിക്ടേഷനുകളുടെ {p}%",
 "Languages you dictated in this period, by number of dictations.": "ഈ കാലയളവിൽ നിങ്ങൾ ഡിക്ടേറ്റ് ചെയ്ത ഭാഷകൾ, ഡിക്ടേഷനുകളുടെ എണ്ണം അനുസരിച്ച്.",
 "words per dictation": "ഓരോ ഡിക്ടേഷനിലെയും വാക്കുകൾ",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ഒരു ഡിക്ടേഷന്റെ ശരാശരി ദൈർഘ്യം. നിങ്ങൾ എപ്പോൾ ഡിക്ടേറ്റ് ചെയ്യുന്നുവെന്ന് ഗ്രിഡ് കാണിക്കുന്നു: ആഴ്ചയിലെ ദിവസങ്ങൾ മുകളിൽ നിന്ന് താഴേക്ക്, മണിക്കൂറുകൾ ഇടത്തുനിന്ന് വലത്തേക്ക് — ഇരുണ്ടതാകുന്തോറും തിരക്ക് കൂടുതൽ."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ഒരു ഡിക്ടേഷന്റെ ശരാശരി ദൈർഘ്യം. നിങ്ങൾ എപ്പോൾ ഡിക്ടേറ്റ് ചെയ്യുന്നുവെന്ന് ഗ്രിഡ് കാണിക്കുന്നു: ആഴ്ചയിലെ ദിവസങ്ങൾ മുകളിൽ നിന്ന് താഴേക്ക്, മണിക്കൂറുകൾ ഇടത്തുനിന്ന് വലത്തേക്ക് — ഇരുണ്ടതാകുന്തോറും തിരക്ക് കൂടുതൽ.",
+"Dashboard": "ഡാഷ്ബോർഡ്",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ട്രാൻസ്ക്രിപ്റ്റ് വേറിട്ട് കാണിക്കാൻ ഡാഷ്ബോർഡിലെ 'വേറിട്ട വിൻഡോ' ബട്ടണിൽ ക്ലിക്ക് ചെയ്യുക."
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

@@ -135,6 +135,8 @@
 "Copy failed.": "コピーに失敗しました。",
 "Detached window (always on top)": "分離ウィンドウ（常に最前面）",
 "Close detached window": "分離ウィンドウを閉じる",
+"Dashboard": "ダッシュボード",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "文字起こしを分離表示するには、ダッシュボードの「分離ウィンドウ」ボタンをクリックしてください。",
 "Your browser doesn't support detached windows (PiP).": "お使いのブラウザは分離ウィンドウ（PiP）をサポートしていません。",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "文字起こしを分離表示するには、ステータスページの「分離ウィンドウ」ボタンをクリックしてください。",
 "Couldn't open the detached window.": "分離ウィンドウを開けませんでした。",

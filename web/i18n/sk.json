@@ -137,6 +137,8 @@
 "Close detached window": "Zavrieť samostatné okno",
 "Your browser doesn't support detached windows (PiP).": "Váš prehliadač nepodporuje samostatné okná (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Kliknite na tlačidlo „Samostatné okno“ na stránke Stav, aby sa prepis zobrazil samostatne.",
+"Dashboard": "Prehľad",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Kliknite na tlačidlo „Samostatné okno“ na stránke Prehľad, aby sa prepis zobrazil samostatne.",
 "Couldn't open the detached window.": "Samostatné okno sa nepodarilo otvoriť.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Keyterms sa odosielajú do rozpoznávania reči, ak to zapnete v Nastaveniach. Toto je nezávislé od opráv vyššie — tie sa vždy použijú na každý diktát.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Opravy sa použijú vždy, bez ohľadu na nastavenie keyterms. Tip: v Histórii prejdite myšou nad slovo a kliknite naň, aby ste preň rýchlo pridali opravu.",

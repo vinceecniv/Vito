@@ -145,6 +145,8 @@
 "Close detached window": "Închide fereastra detașată",
 "Your browser doesn't support detached windows (PiP).": "Browserul tău nu acceptă ferestre detașate (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Apasă butonul „Fereastră detașată” din pagina de stare pentru a afișa transcrierea separat.",
+"Dashboard": "Tablou de bord",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Apasă butonul „Fereastră detașată” din Tablou de bord pentru a afișa transcrierea separat.",
 "Couldn't open the detached window.": "Fereastra detașată nu a putut fi deschisă.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Keyterms sunt trimise către recunoașterea vocală dacă activezi asta în Setări. Este independent de corecțiile de mai sus — acelea se aplică întotdeauna fiecărei dictări.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Corecțiile se aplică întotdeauna, indiferent de setarea keyterms. Sfat: în Istoric, treci cu mouse-ul peste un cuvânt și apasă pe el pentru a adăuga rapid o corecție.",

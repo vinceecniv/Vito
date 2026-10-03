@@ -829,7 +829,9 @@
 "Most used words": "Πιο συχνές λέξεις",
 "Chart in background": "Γράφημα στο παρασκήνιο",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Οι λέξεις που υπαγορεύσατε περισσότερο σε αυτή την περίοδο — όσο μεγαλύτερη η λέξη, τόσο πιο συχνά. Λέξεις με τρία γράμματα ή λιγότερα και κοινές λέξεις όπως «θέλω» ή «επειδή» παραλείπονται.",
-"Vito character": "Χαρακτήρας Vito"
+"Vito character": "Χαρακτήρας Vito",
+"Dashboard": "Πίνακας ελέγχου",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Κάντε κλικ στο κουμπί «Αποσπασμένο παράθυρο» στον Πίνακα ελέγχου για να αποσπάσετε τη μεταγραφή."
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

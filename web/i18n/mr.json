@@ -126,6 +126,8 @@
 "Close detached window": "वेगळे विंडो बंद करा",
 "Your browser doesn't support detached windows (PiP).": "तुमचा ब्राउझर वेगळ्या विंडोंना (PiP) समर्थन देत नाही.",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "ट्रान्सक्रिप्ट वेगळे दाखवण्यासाठी स्थिती पृष्ठावरील 'वेगळे विंडो' बटणावर क्लिक करा.",
+"Dashboard": "डॅशबोर्ड",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ट्रान्सक्रिप्ट वेगळे दाखवण्यासाठी डॅशबोर्डवरील 'वेगळे विंडो' बटणावर क्लिक करा.",
 "Couldn't open the detached window.": "वेगळे विंडो उघडता आले नाही.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "तुम्ही सेटिंग्जमध्ये ते चालू केल्यास keyterms वाक् ओळखीकडे पाठवले जातात. हे वरील सुधारणांपासून वेगळे आहे — त्या नेहमी प्रत्येक डिक्टेशनवर लागू होतात.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "keyterms सेटिंग काहीही असो, सुधारणा नेहमी लागू होतात. टीप: इतिहासात एखाद्या शब्दावर माउस ठेवा आणि त्यावर क्लिक करून त्यासाठी झटकन सुधारणा जोडा.",

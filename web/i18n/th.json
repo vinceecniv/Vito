@@ -138,6 +138,8 @@
 "Your browser doesn't support detached windows (PiP).": "เบราว์เซอร์ของคุณไม่รองรับหน้าต่างลอย (PiP)",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "คลิกปุ่ม 'หน้าต่างลอย' ในหน้าสถานะเพื่อแสดงข้อความแยกออกมา",
 "Couldn't open the detached window.": "ไม่สามารถเปิดหน้าต่างลอยได้",
+"Dashboard": "แดชบอร์ด",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "คลิกปุ่ม 'หน้าต่างลอย' ในหน้าแดชบอร์ดเพื่อแสดงข้อความแยกออกมา",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "คำสำคัญจะถูกส่งไปยังการรู้จำเสียงพูดเมื่อคุณเปิดใช้ในการตั้งค่า ซึ่งแยกจากการแก้ไขด้านบน — การแก้ไขจะถูกใช้กับทุกคำบอกเสมอ",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "การแก้ไขจะถูกใช้เสมอ ไม่ว่าตั้งค่าคำสำคัญไว้อย่างไร เคล็ดลับ: ในหน้าประวัติ ชี้เมาส์เหนือคำแล้วคลิกเพื่อเพิ่มการแก้ไขสำหรับคำนั้นได้อย่างรวดเร็ว",
 "Interface language": "ภาษาของอินเทอร์เฟซ",

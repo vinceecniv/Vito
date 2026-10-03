@@ -1,6 +1,8 @@
 {
 "strings": {
 "Status": "Status",
+"Dashboard": "Dashboard",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Klik på knappen 'Løsrevet vindue' på dashboardet for at vise transskriptionen løsrevet.",
 "Settings": "Indstillinger",
 "Dictionary": "Ordbog",
 "History": "Historik",

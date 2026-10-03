@@ -126,6 +126,8 @@
 "Close detached window": "إغلاق النافذة المنفصلة",
 "Your browser doesn't support detached windows (PiP).": "متصفحك لا يدعم النوافذ المنفصلة (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "انقر على زر 'نافذة منفصلة' في صفحة الحالة لعرض النص في نافذة منبثقة.",
+"Dashboard": "لوحة التحكم",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "انقر على زر 'نافذة منفصلة' في لوحة التحكم لعرض النص في نافذة منبثقة.",
 "Couldn't open the detached window.": "تعذّر فتح النافذة المنفصلة.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "تُرسل المصطلحات الرئيسية إلى التعرّف على الكلام إذا فعّلت ذلك في الإعدادات. وهذا منفصل عن التصحيحات أعلاه — التي تُطبّق دائمًا على كل إملاء.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "تُطبّق التصحيحات دائمًا بغض النظر عن إعداد المصطلحات الرئيسية. تلميح: في السجل، مرّر فوق كلمة وانقر عليها لإضافة تصحيح لها بسرعة.",

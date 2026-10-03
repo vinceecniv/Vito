@@ -829,6 +829,8 @@
 "Most used words": "Mots les plus utilisés",
 "Chart in background": "Graphique en arrière-plan",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Les mots que vous avez le plus dictés sur cette période — plus un mot est grand, plus il revient souvent. Les mots de trois lettres ou moins et les mots courants comme « vouloir » ou « parce que » sont exclus.",
+"Dashboard": "Tableau de bord",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Cliquez sur le bouton « Fenêtre détachée » du tableau de bord pour détacher la transcription.",
 "Vito character": "Personnage Vito"
 },
 "help": {

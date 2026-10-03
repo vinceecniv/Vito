@@ -830,7 +830,9 @@
 "Chart in background": "Gráfico de fondo",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Las palabras que más dictaste en este periodo: cuanto más grande, más a menudo. Se omiten las palabras de tres letras o menos y las palabras comunes como «querer» o «porque».",
 "Vito character": "Personaje de Vito",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "La duración media de un dictado. La cuadrícula muestra las últimas 26 semanas, un cuadrado por día de lunes a domingo: cuanto más oscuro, más palabras."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "La duración media de un dictado. La cuadrícula muestra las últimas 26 semanas, un cuadrado por día de lunes a domingo: cuanto más oscuro, más palabras.",
+"Dashboard": "Panel",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Haz clic en 'Ventana flotante' en el Panel para mostrar la transcripción aparte."
 },
 "help": {
 "theme": "Claro, oscuro o automático — automático sigue el modo claro/oscuro de tu sistema.",

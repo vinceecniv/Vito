@@ -829,7 +829,9 @@
 "Chart in background": "Диаграмма фонда",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Осы кезеңде ең жиі айтқан сөздеріңіз — сөз неғұрлым үлкен болса, соғұрлым жиі қолданылған. Үш әріптен қысқа сөздер мен «қалау» немесе «өйткені» сияқты жиі кездесетін сөздер есепке алынбайды.",
 "Vito character": "Vito кейіпкері",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Бір диктанттың орташа ұзындығы. Тор соңғы 26 аптаны көрсетеді: дүйсенбіден жексенбіге дейін күніне бір шаршы — түсі қою болған сайын сөз көп."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Бір диктанттың орташа ұзындығы. Тор соңғы 26 аптаны көрсетеді: дүйсенбіден жексенбіге дейін күніне бір шаршы — түсі қою болған сайын сөз көп.",
+"Dashboard": "Басқару тақтасы",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Транскрипцияны бөлек көрсету үшін Басқару тақтасындағы 'Бөлек терезе' түймесін басыңыз."
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",

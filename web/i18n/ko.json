@@ -1,5 +1,7 @@
 {
 "strings": {
+"Dashboard": "대시보드",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "대시보드의 '분리 창' 버튼을 클릭하면 전사가 분리되어 표시됩니다.",
 "Custom range…": "직접 지정…",
 "Previous month": "이전 달",
 "Next month": "다음 달",

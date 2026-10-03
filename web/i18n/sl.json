@@ -131,6 +131,8 @@
 "Close detached window": "Zapri ločeno okno",
 "Your browser doesn't support detached windows (PiP).": "Vaš brskalnik ne podpira ločenih oken (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Kliknite gumb »Ločeno okno« na strani stanja, da prikažete prepis v ločenem oknu.",
+"Dashboard": "Nadzorna plošča",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Kliknite gumb »Ločeno okno« na nadzorni plošči, da prikažete prepis v ločenem oknu.",
 "Couldn't open the detached window.": "Ločenega okna ni bilo mogoče odpreti.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Ključni izrazi se pošljejo prepoznavi govora, če to vklopite v Nastavitvah. To je ločeno od popravkov zgoraj — ti se vedno uporabijo pri vsakem narekovanju.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Popravki se vedno uporabijo, ne glede na nastavitev ključnih izrazov. Namig: v Zgodovini se z miško postavite nad besedo in kliknite nanjo, da zanjo hitro dodate popravek.",

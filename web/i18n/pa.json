@@ -1,6 +1,8 @@
 {
 "strings": {
 "Status": "ਸਥਿਤੀ",
+"Dashboard": "ਡੈਸ਼ਬੋਰਡ",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ਟ੍ਰਾਂਸਕ੍ਰਿਪਟ ਵੱਖਰਾ ਦਿਖਾਉਣ ਲਈ ਡੈਸ਼ਬੋਰਡ 'ਤੇ 'ਵੱਖਰੀ ਵਿੰਡੋ' ਬਟਨ 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
 "Settings": "ਸੈਟਿੰਗਾਂ",
 "Dictionary": "ਸ਼ਬਦਕੋਸ਼",
 "History": "ਇਤਿਹਾਸ",

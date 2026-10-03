@@ -829,7 +829,9 @@
 "{p}% of dictations": "{p}% диктувань",
 "Languages you dictated in this period, by number of dictations.": "Мови, якими ви диктували за цей період, за кількістю диктувань.",
 "words per dictation": "слів на диктування",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Середня довжина диктування. Сітка показує, коли ви диктуєте: дні тижня зверху вниз, години зліва направо — що темніше, то активніше."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Середня довжина диктування. Сітка показує, коли ви диктуєте: дні тижня зверху вниз, години зліва направо — що темніше, то активніше.",
+"Dashboard": "Дашборд",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Натисніть кнопку «Окреме вікно» на сторінці «Дашборд», щоб винести транскрипт окремо."
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",

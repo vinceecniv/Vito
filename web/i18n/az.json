@@ -132,6 +132,8 @@
 "Close detached window": "Ayrı pəncərəni bağla",
 "Your browser doesn't support detached windows (PiP).": "Brauzeriniz ayrı pəncərələri (PiP) dəstəkləmir.",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Transkripti ayrıca göstərmək üçün Status səhifəsindəki 'Ayrı pəncərə' düyməsinə klikləyin.",
+"Dashboard": "Panel",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Transkripti ayrıca göstərmək üçün Panel səhifəsindəki 'Ayrı pəncərə' düyməsinə klikləyin.",
 "Couldn't open the detached window.": "Ayrı pəncərə açıla bilmədi.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Parametrlərdə aktiv etsəniz, açar terminlər nitq tanımaya göndərilir. Bu, yuxarıdakı düzəlişlərdən asılı deyil — onlar hər diktəyə həmişə tətbiq olunur.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Açar terminlər parametrindən asılı olmayaraq düzəlişlər həmişə tətbiq olunur. Məsləhət: Tarixçədə bir sözün üzərinə kursoru gətirib klikləyərək ona tez düzəliş əlavə edin.",

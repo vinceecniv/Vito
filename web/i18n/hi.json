@@ -1,5 +1,7 @@
 {
 "strings": {
+"Dashboard": "डैशबोर्ड",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ट्रांसक्रिप्ट को अलग दिखाने के लिए डैशबोर्ड पर 'अलग विंडो' बटन पर क्लिक करें।",
 "wpm spoken": "wpm बोले गए",
 "How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "डिक्टेशन करते समय आप कितनी तेज़ बोलते हैं: आपके शब्दों की संख्या को रिकॉर्डिंग के समय से भाग देकर। आपकी टाइपिंग गति {n} wpm पर सेट है।",
 "wait after stopping": "रुकने के बाद प्रतीक्षा",

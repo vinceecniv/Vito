@@ -132,6 +132,8 @@
 "Close detached window": "Đóng cửa sổ tách rời",
 "Your browser doesn't support detached windows (PiP).": "Trình duyệt của bạn không hỗ trợ cửa sổ tách rời (PiP).",
 "Click the 'Detached window' button on the Status page to pop out the transcript.": "Nhấp nút 'Cửa sổ tách rời' trên trang Trạng thái để hiển thị bản ghi riêng.",
+"Dashboard": "Bảng điều khiển",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Nhấp nút 'Cửa sổ tách rời' trên trang Bảng điều khiển để hiển thị bản ghi riêng.",
 "Couldn't open the detached window.": "Không thể mở cửa sổ tách rời.",
 "Keyterms are sent to the speech recogniser when you enable that in Settings. This is separate from the corrections above — those are always applied to every dictation.": "Keyterm được gửi đến bộ nhận dạng giọng nói khi bạn bật trong Cài đặt. Việc này tách biệt với các chỉnh sửa ở trên — chúng luôn được áp dụng cho mọi bản đọc.",
 "Corrections are always applied, regardless of the keyterms setting. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Các chỉnh sửa luôn được áp dụng, bất kể cài đặt keyterm. Mẹo: trong Lịch sử, di chuột lên một từ và nhấp vào để nhanh chóng thêm chỉnh sửa cho từ đó.",

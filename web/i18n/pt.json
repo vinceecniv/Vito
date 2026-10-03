@@ -829,7 +829,9 @@
 "Chart in background": "Gráfico em segundo plano",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "As palavras que mais ditou neste período — quanto maior, mais vezes. Palavras com três letras ou menos e palavras comuns como ‘querer’ ou ‘porque’ ficam de fora.",
 "Vito character": "Personagem do Vito",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "A extensão média de um ditado. A grelha mostra as últimas 26 semanas, um quadrado por dia, de segunda a domingo — quanto mais escuro, mais palavras."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "A extensão média de um ditado. A grelha mostra as últimas 26 semanas, um quadrado por dia, de segunda a domingo — quanto mais escuro, mais palavras.",
+"Dashboard": "Painel",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Clique no botão 'Janela destacada' no Painel para destacar a transcrição."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",

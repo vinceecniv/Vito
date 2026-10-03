@@ -829,7 +829,9 @@
 "Most used words": "Leggyakoribb szavak",
 "Chart in background": "Diagram a háttérben",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "A legtöbbször diktált szavaid ebben az időszakban – minél nagyobb, annál gyakoribb. A három vagy kevesebb betűs szavak és a gyakori szavak, például a „akar” vagy a „mert”, kimaradnak.",
-"Vito character": "Vito rajzfigura"
+"Vito character": "Vito rajzfigura",
+"Dashboard": "Irányítópult",
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Kattints a „Különálló ablak” gombra az Irányítópulton az átirat kiugratásához."
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",
