@@ -4690,6 +4690,75 @@ const MASCOT_CSS = `
 .vmascot[data-pose="hop"] .vm-body{animation:vmHop .55s cubic-bezier(.3,1.6,.5,1) 1}
 .vmascot[data-pose="wink"] .vm-eye-r{display:none}
 .vmascot[data-pose="wink"] .vm-wink{display:inline}
+/* The longer in-between acts, a few seconds each (VM_ACTS has the lengths). */
+.vmascot .vm-cookie,.vmascot .vm-crumbs,.vmascot .vm-bubbles,.vmascot .vm-mouth-o,.vmascot .vm-notes,.vmascot .vm-tear{display:none}
+.vmascot .vm-cheek{transform-box:fill-box;transform-origin:center;transition:transform .3s}
+/* bouncing ball: three bounces, each lower, squashed on landing */
+.vmascot[data-pose="bounce"] .vm-body{animation:vmBounce 2.2s 1}
+.vmascot[data-pose="bounce"] .vm-shadow{animation:vmBounceSh 2.2s 1}
+.vmascot[data-pose="bounce"] .vm-eyes-open{display:none}
+.vmascot[data-pose="bounce"] .vm-eyes-happy{display:inline}
+@keyframes vmBounce{
+  0%{transform:translateY(0) scale(1,1);animation-timing-function:ease-out}
+  7%{transform:translateY(0) scale(1.14,.85);animation-timing-function:ease-out}
+  24%{transform:translateY(-22px) scale(.94,1.07);animation-timing-function:ease-in}
+  40%{transform:translateY(0) scale(1.14,.85);animation-timing-function:ease-out}
+  54%{transform:translateY(-12px) scale(.96,1.05);animation-timing-function:ease-in}
+  67%{transform:translateY(0) scale(1.09,.9);animation-timing-function:ease-out}
+  77%{transform:translateY(-5px) scale(1,1);animation-timing-function:ease-in}
+  86%{transform:translateY(0) scale(1.04,.95);animation-timing-function:ease-out}
+  100%{transform:translateY(0) scale(1,1)}}
+@keyframes vmBounceSh{
+  0%,7%,40%,67%,86%,100%{transform:scale(1);opacity:.14}
+  24%{transform:scale(.55);opacity:.06} 54%{transform:scale(.72);opacity:.09} 77%{transform:scale(.9);opacity:.12}}
+/* a cookie, in four bites */
+.vmascot[data-pose="eat"] .vm-cookie,.vmascot[data-pose="eat"] .vm-crumbs{display:inline}
+.vmascot[data-pose="eat"] .vm-smile{display:none}
+.vmascot[data-pose="eat"] .vm-mouth-open{display:inline;transform-box:fill-box;transform-origin:center top;animation:vmChomp 3.4s linear 1 both}
+.vmascot[data-pose="eat"] .vm-pupil{transform:translate(0,3px)}
+.vmascot .vm-cookie{transform-box:fill-box;transform-origin:center;animation:vmCookie 3.4s ease-in-out 1 both}
+@keyframes vmChomp{0%,20%{transform:scale(.9,.8)} 26%,41%,56%,71%{transform:scale(.8,.14)} 33%,48%,63%{transform:scale(.85,.6)} 76%,84%,92%{transform:scale(.7,.12)} 80%,88%{transform:scale(.72,.3)} 100%{transform:scale(.7,.12)}}
+@keyframes vmCookie{0%{transform:translate(30px,16px) rotate(40deg) scale(.9);opacity:0} 8%{opacity:1}
+  20%{transform:translate(0,0) rotate(0) scale(1)} 26%{transform:translate(0,0) rotate(0) scale(.78)} 41%{transform:translate(0,0) rotate(0) scale(.56)}
+  56%{transform:translate(0,0) rotate(0) scale(.34)} 71%,100%{transform:translate(0,0) rotate(0) scale(0)}}
+.vmascot[data-pose="eat"] .vm-crumbs circle{opacity:0;animation:vmCrumb .6s ease-in 4}
+.vmascot[data-pose="eat"] .vm-crumbs circle:nth-child(1){animation-delay:.9s}
+.vmascot[data-pose="eat"] .vm-crumbs circle:nth-child(2){animation-delay:1.1s}
+.vmascot[data-pose="eat"] .vm-crumbs circle:nth-child(3){animation-delay:1.35s}
+@keyframes vmCrumb{0%{transform:translateY(0);opacity:1}100%{transform:translateY(12px);opacity:0}}
+/* blowing bubbles: puffed cheeks, a little round mouth */
+.vmascot[data-pose="bubbles"] .vm-smile{display:none}
+.vmascot[data-pose="bubbles"] .vm-mouth-o,.vmascot[data-pose="bubbles"] .vm-bubbles{display:inline}
+.vmascot[data-pose="bubbles"] .vm-cheek{transform:scale(1.3)}
+.vmascot[data-pose="bubbles"] .vm-pupil{transform:translate(2.5px,-2.5px)}
+.vmascot[data-pose="bubbles"] .vm-tilt{transform:rotate(-5deg)}
+.vmascot .vm-bubbles circle{transform-box:fill-box;transform-origin:center;opacity:0;animation:vmBubble 1.6s ease-out 2}
+.vmascot .vm-bubbles circle:nth-child(2){animation-delay:.4s}
+.vmascot .vm-bubbles circle:nth-child(3){animation-delay:.8s}
+@keyframes vmBubble{0%{transform:translate(0,0) scale(.15);opacity:0} 12%{opacity:.95}
+  88%{transform:translate(var(--bx),var(--by)) scale(1);opacity:.9} 100%{transform:translate(var(--bx),var(--by)) scale(1.3);opacity:0}}
+/* yawning: eyes shut, a stretch, a big round mouth and a tear */
+.vmascot[data-pose="yawn"] .vm-eyes-open,.vmascot[data-pose="yawn"] .vm-smile{display:none}
+.vmascot[data-pose="yawn"] .vm-eyes-shut,.vmascot[data-pose="yawn"] .vm-mouth-o,.vmascot[data-pose="yawn"] .vm-tear{display:inline}
+.vmascot[data-pose="yawn"] .vm-brows{display:inline;transform:translateY(-3px)}
+.vmascot[data-pose="yawn"] .vm-mouth-o{transform-box:fill-box;transform-origin:center top;animation:vmYawn 2.6s ease-in-out 1 both}
+.vmascot[data-pose="yawn"] .vm-body{animation:vmStretch 2.6s ease-in-out 1}
+.vmascot[data-pose="yawn"] .vm-tilt{transform:rotate(-6deg)}
+.vmascot[data-pose="yawn"] .vm-tear{animation:vmTear 2.6s ease-in 1 both}
+@keyframes vmYawn{0%{transform:scale(1,.6)} 35%,65%{transform:scale(1.9,3)} 100%{transform:scale(1,.5)}}
+@keyframes vmStretch{0%,100%{transform:scale(1,1)} 35%,65%{transform:translateY(-3px) scale(.96,1.06)}}
+@keyframes vmTear{0%,40%{opacity:0;transform:translateY(0)} 55%{opacity:1} 100%{opacity:0;transform:translateY(8px)}}
+/* humming: swaying along, notes drifting up */
+.vmascot[data-pose="hum"] .vm-eyes-open,.vmascot[data-pose="hum"] .vm-smile{display:none}
+.vmascot[data-pose="hum"] .vm-eyes-happy,.vmascot[data-pose="hum"] .vm-notes,.vmascot[data-pose="hum"] .vm-mouth-o{display:inline}
+.vmascot[data-pose="hum"] .vm-tilt{animation:vmSway 1s ease-in-out 4}
+.vmascot[data-pose="hum"] .vm-mouth-o{transform-box:fill-box;transform-origin:center;animation:vmHum .5s ease-in-out 8}
+.vmascot .vm-notes text{transform-box:fill-box;transform-origin:center;opacity:0;animation:vmNote 1.8s ease-out 2}
+.vmascot .vm-notes text:nth-child(2){animation-delay:.6s}
+.vmascot .vm-notes text:nth-child(3){animation-delay:1.2s}
+@keyframes vmSway{0%,100%{transform:rotate(-7deg)} 50%{transform:rotate(7deg)}}
+@keyframes vmHum{0%,100%{transform:scale(.8,.7)} 50%{transform:scale(1,1.1)}}
+@keyframes vmNote{0%{transform:translate(0,0) rotate(-12deg);opacity:0} 20%{opacity:1} 100%{transform:translate(14px,-30px) rotate(14deg);opacity:0}}
 @media (prefers-reduced-motion: reduce){
   .vmascot .vm-body,.vmascot .vm-shadow,.vmascot .vm-hair rect,.vmascot .vm-zzz text,.vmascot .vm-sweat path,.vmascot .vm-sweat2 path{animation:none}
 }`;
@@ -4717,7 +4786,7 @@ function mascotSVG(){
     <circle cx="60" cy="72" r="44" fill="url(#${u}b)"/>
     <ellipse cx="60" cy="104" rx="30" ry="9" fill="#2B2440" opacity=".08"/>
     <ellipse cx="42" cy="47" rx="15" ry="9" fill="#fff" opacity=".38" transform="rotate(-28 42 47)"/>
-    <ellipse cx="33" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/><ellipse cx="87" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/>
+    <ellipse class="vm-cheek" cx="33" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/><ellipse class="vm-cheek" cx="87" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/>
     <g class="vm-brows" fill="none" stroke="#2B2440" stroke-width="2.6" stroke-linecap="round" opacity=".8"><path d="M38 53 Q45 49 52 52"/><path d="M68 52 Q75 49 82 53"/></g>
     <g class="vm-eyes-open">${eye(45, "l")}${eye(75, "r")}</g>
     <path class="vm-wink" d="M68 70 Q75 63 82 70" fill="none" stroke="#2B2440" stroke-width="3.2" stroke-linecap="round"/>
@@ -4728,9 +4797,16 @@ function mascotSVG(){
     <path class="vm-wavy" d="M49 90 q3.7 -4 7.3 0 t7.3 0 t7.3 0" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"/>
     <g class="vm-mouth-open"><path d="M49 86 Q60 88 71 86 Q70 101 60 101 Q50 101 49 86 Z" fill="#3A1730"/><ellipse cx="60" cy="97" rx="5.5" ry="3" fill="#FF7A93"/></g>
     <path class="vm-grin" d="M48 86 Q60 101 72 86 Z" fill="#3A1730" stroke="#3A1730" stroke-width="2" stroke-linejoin="round"/>
+    <ellipse class="vm-mouth-o" cx="60" cy="90" rx="3.6" ry="4.2" fill="#3A1730"/>
+    <path class="vm-tear" d="M35 73 q2.6 4.5 0 6.5 q-2.6 -2 0 -6.5z" fill="#9FD3FF"/>
+    <g class="vm-cookie"><circle cx="62" cy="104" r="11" fill="#D99A5B" stroke="#B87436" stroke-width="1.4"/><circle cx="58" cy="100" r="1.8" fill="#5A3418"/><circle cx="66" cy="102" r="1.6" fill="#5A3418"/><circle cx="60" cy="108.5" r="1.5" fill="#5A3418"/><circle cx="67" cy="108" r="1.3" fill="#5A3418"/></g>
+    <g class="vm-crumbs" fill="#C98A4B"><circle cx="55" cy="108" r="1.2"/><circle cx="62" cy="110" r="1"/><circle cx="66" cy="107" r="1.1"/></g>
     <g class="vm-sweat"><path d="M92 48 q4 7 0 10 q-4 -3 0 -10z" fill="#7CC8FF"/></g>
     <g class="vm-sweat2"><path d="M27 54 q3.5 6 0 9 q-3.5 -3 0 -9z" fill="#7CC8FF"/></g>
-  </g></g>
+  </g>
+  <g class="vm-bubbles" fill="rgba(170,215,255,.35)" stroke="#6FB8F5" stroke-width="1.8"><circle cx="64" cy="89" r="10" style="--bx:22px;--by:-44px"/><circle cx="64" cy="89" r="7" style="--bx:40px;--by:-24px"/><circle cx="64" cy="89" r="12" style="--bx:8px;--by:-62px"/></g>
+  </g>
+  <g class="vm-notes" fill="#7C3AED" font-size="21" font-weight="700"><text x="90" y="66">♪</text><text x="97" y="54">♫</text><text x="86" y="48">♪</text></g>
   <g class="vm-dots" fill="#A78BFA"><circle cx="94" cy="30" r="3"/><circle cx="102" cy="21" r="4"/><circle cx="111" cy="10" r="5"/></g>
   <g class="vm-spark" fill="#FFC94D"><path d="M16 40 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/><path d="M101 36 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z"/><path d="M96 92 l1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4z"/></g>
   <g class="vm-zzz" fill="#A78BFA" font-family="'Baloo 2',sans-serif" font-weight="800"><text x="88" y="36" font-size="13">z</text><text x="94" y="28" font-size="16">z</text><text x="101" y="19" font-size="19">Z</text></g>
@@ -4802,11 +4878,28 @@ function vmFlash(kind, ms){
   setTimeout(vmRender, ms + 30);
 }
 // Now and then, while idle, a little gesture — and the slide into sleep.
+// Gestures last 1.5 s; the acts below (in ms) a few seconds. A third of the
+// time it is an act, and after a few quiet minutes mostly a yawn.
+const VM_GESTURES = ["look-l", "look-r", "wink", "hop", "tilt"];
+const VM_ACTS = { bounce: 2300, eat: 3500, bubbles: 3900, yawn: 2700, hum: 4000 };
+let vmPoseTimer = null;
+function vmPose(name){
+  clearTimeout(vmPoseTimer);
+  vm.pose = "";
+  vmRender();
+  // A frame without the pose first, so the same one twice in a row restarts.
+  requestAnimationFrame(() => {
+    vm.pose = name;
+    vmRender();
+    vmPoseTimer = setTimeout(() => { vm.pose = ""; vmRender(); }, VM_ACTS[name] || 1500);
+  });
+}
+const vmPick = (a) => a[Math.floor(Math.random() * a.length)];
 (function vmTick(){
   if (vmShown() === "idle" && !vm.forced) {
-    vm.pose = ["look-l", "look-r", "wink", "hop", "tilt"][Math.floor(Math.random() * 5)];
-    vmRender();
-    setTimeout(() => { vm.pose = ""; vmRender(); }, 1500);
+    const drowsy = Date.now() - vm.lastActive > 3 * 60 * 1000;
+    if (drowsy && Math.random() < .5) vmPose("yawn");
+    else vmPose(Math.random() < .33 ? vmPick(Object.keys(VM_ACTS)) : vmPick(VM_GESTURES));
   } else vmRender(); // also catches the moment it falls asleep
   setTimeout(vmTick, 6000 + Math.random() * 7000);
 })();
@@ -4844,7 +4937,8 @@ function mascotDevPanel(){
     b("sleep", () => force("sleep")),
     b("sweat 0/1/2", () => { vm.sweat = (vm.sweat + 1) % 3; vmRender(); }),
     b("next look", () => { if (vmShown() !== "recording") b0talk(); vmNextTalk(); }),
-    b("pose", () => { force("idle"); vm.pose = ["look-l", "look-r", "wink", "hop", "tilt"][Math.floor(Math.random() * 5)]; vmRender(); }),
+    b("gesture", () => { force("idle"); vmPose(vmPick(VM_GESTURES)); }),
+    ...Object.keys(VM_ACTS).map(a => b(a, () => { force("idle"); vmPose(a); })),
   ].forEach(x => p.appendChild(x));
   return p;
 }
