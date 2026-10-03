@@ -321,6 +321,7 @@
   /* Card sizes in the one status grid (see applyStatusLayout): most are one
      cell, the chart, calendar and word cloud two, the transcript a row. */
   .statgrid > .span2 { grid-column:span 2; }
+  .statgrid > .span3 { grid-column:span 3; }
   /* The chart and costs cards head their title with the same icon tile as the
      statistic cards. */
   .card-title { display:flex; align-items:center; gap:10px; min-width:0; }
@@ -349,6 +350,9 @@
   .card-menu button.sel { color:var(--accent); font-weight:600; }
   .card-menu button svg { width:15px; height:15px; flex:none; color:var(--text3); }
   .card-menu .sep { height:1px; margin:4px 6px; background:var(--card-border); }
+  .card-menu .seg { display:flex; gap:4px; padding:4px; }
+  .card-menu .seg button { flex:1; justify-content:center; padding:6px 0; border:1px solid var(--card-border); font-weight:600; color:var(--text2); }
+  .card-menu .seg button.sel { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
   .card-menu .head { padding:6px 10px 3px; font-size:11px; color:var(--text3); }
   /* Under the grid, only while cards are hidden: the way to bring them back. */
   .hidden-cards { display:flex; justify-content:flex-end; margin:-8px 0 20px; }
@@ -396,6 +400,7 @@
   }
   @media (max-width:460px){
     .statgrid { grid-template-columns:repeat(2,1fr); }
+    .statgrid > .span3 { grid-column:span 2; } /* two columns: three cells is the full row */
     .sidebar .brand .tile { width:34px; height:34px; }
     .sidebar .brand .wordmark { font-size:19px; }
     .sidebar .brand .brand-tag { font-size:9.5px; }
@@ -5137,6 +5142,17 @@ const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences
 // whole row — and it can't be hidden, it holds Start / Stop.
 const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card" };
 const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud","quicksettings"];
+// The widths, in cells, each card can be set to from its menu — where a choice
+// makes sense. The cards with a chart in them can go up to three; the calendar
+// and quick settings are too cramped in one; the transcript always spans the
+// row. Until you choose, a card in LAYOUT_SPAN2 is two cells and any other one.
+const LAYOUT_WIDTHS = { words:[1,2,3], spokenwpm:[1,2,3], chart:[1,2,3], wordcloud:[1,2,3], achievements:[1,2,3],
+  rhythm:[2,3], quicksettings:[2,3], transcript:[] };
+const widthsFor = (k) => LAYOUT_WIDTHS[k] || [1, 2];
+function widthOf(k){
+  const opts = widthsFor(k), w = (loadLayout().widths || {})[k];
+  return opts.includes(w) ? w : (LAYOUT_SPAN2.includes(k) ? 2 : 1);
+}
 const LAYOUT_FULL = ["transcript"];
 const LAYOUT_PINNED = ["transcript"];
 // LAYOUT_DEFAULT is the order a saved layout fills in the cards it doesn't know
@@ -5177,7 +5193,8 @@ function loadLayout(){
   // The version card is on by default but keeps quiet: it appears when there is
   // something to say. Set updateAlways to keep it there permanently.
   const updateAlways = !!(saved && saved.updateAlways);
-  statusLayout = { order, hidden, updateAlways };
+  const widths = (saved && saved.widths && typeof saved.widths === "object") ? saved.widths : {};
+  statusLayout = { order, hidden, updateAlways, widths };
   return statusLayout;
 }
 function saveLayout(){
@@ -5214,7 +5231,9 @@ function applyStatusLayout(){
     const el = cardEl(k);
     if (!el) continue;
     el.dataset.key = k;
-    el.classList.toggle("span2", LAYOUT_SPAN2.includes(k));
+    const w = widthOf(k);
+    el.classList.toggle("span2", w === 2);
+    el.classList.toggle("span3", w === 3);
     el.classList.toggle("span-full", LAYOUT_FULL.includes(k));
     if (grid.children[i] !== el) grid.insertBefore(el, grid.children[i] || null);
     i++;
@@ -5255,13 +5274,16 @@ function cardMenuItems(k){
     items.push({ label: t("Only when there's an update"), sel: !l.updateAlways, run: () => { l.updateAlways = false; layoutChanged(); } });
     items.push({ sep: true });
   }
+  const opts = widthsFor(k);
+  if (opts.length > 1) items.push({ seg: opts.map(n => ({ label: n + "×", sel: widthOf(k) === n,
+    run: () => { l.widths = Object.assign(l.widths || {}, { [k]: n }); layoutChanged(); } })) }, { sep: true });
   if (!LAYOUT_PINNED.includes(k)) items.push({ icon: LAY_EYE_OFF, label: t("Hide"), run: () => { l.hidden.push(k); layoutChanged(); } });
   items.push({ icon: ICON_RESET, label: t("Reset to default"), run: resetLayout });
   return items;
 }
 function layoutChanged(){ saveLayout(); applyStatusLayout(); }
 function resetLayout(){
-  statusLayout = { order: [...LAYOUT_FRESH], hidden: [], updateAlways: false };
+  statusLayout = { order: [...LAYOUT_FRESH], hidden: [], updateAlways: false, widths: {} };
   saveLayout(); applyStatusLayout(); loadStats();
 }
 // One floating menu at a time, under the button that opened it (or above it
@@ -5282,6 +5304,21 @@ function openCardMenu(opener, items){
   el.setAttribute("role", "menu");
   items.forEach(it => {
     if (it.sep) { el.insertAdjacentHTML("beforeend", `<div class="sep"></div>`); return; }
+    if (it.seg) {
+      // A row of choices, one selected — the card's width.
+      const row = document.createElement("div");
+      row.className = "seg";
+      it.seg.forEach(o => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = o.label;
+        if (o.sel) b.classList.add("sel");
+        b.onclick = (e) => { e.stopPropagation(); closeCardMenu(); o.run(); };
+        row.appendChild(b);
+      });
+      el.appendChild(row);
+      return;
+    }
     if (it.head) { el.insertAdjacentHTML("beforeend", `<div class="head">${ahEsc(it.head)}</div>`); return; }
     const b = document.createElement("button");
     b.type = "button";
