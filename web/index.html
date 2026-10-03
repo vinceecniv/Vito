@@ -507,6 +507,19 @@
   }
   .spark { position:absolute; left:0; right:0; bottom:0; height:calc(100% - 8px); z-index:0; pointer-events:none; opacity:.6; }
   .spark:empty { display:none; }
+  /* Over a background chart the text gets a halo in the card colour, and the
+     icons an opaque tile with a glow, as on the word-cloud and achievements
+     cards — so the line running behind never cuts through a figure. */
+  .card.stat:has(> .spark:not(:empty)) > .num, .card.stat:has(> .spark:not(:empty)) > .lbl,
+  .card.stat:has(> .spark:not(:empty)) > .delta, .card.stat:has(> .spark:not(:empty)) .mini-v,
+  .card.stat:has(> .spark:not(:empty)) .mini-l {
+    text-shadow:0 0 3px var(--card), 0 0 6px var(--card), 0 0 10px var(--card), 0 0 16px var(--card); }
+  .card.stat:has(> .spark:not(:empty)) > .chip.violet, .card.stat:has(> .spark:not(:empty)) .mini-ic.violet {
+    background:var(--card); box-shadow:inset 0 0 0 100px var(--accent-soft), 0 0 10px 4px var(--card); }
+  .card.stat:has(> .spark:not(:empty)) > .chip.coral, .card.stat:has(> .spark:not(:empty)) .mini-ic.coral {
+    background:var(--card); box-shadow:inset 0 0 0 100px var(--coral-soft), 0 0 10px 4px var(--card); }
+  .card.stat:has(> .spark:not(:empty)) .mini-ic { box-shadow:inset 0 0 0 100px var(--accent-soft), 0 0 6px 2px var(--card); }
+  .card.stat:has(> .spark:not(:empty)) .mini-ic.coral { box-shadow:inset 0 0 0 100px var(--coral-soft), 0 0 6px 2px var(--card); }
   .spark svg { display:block; width:100%; height:100%; }
   :root[data-theme="dark"] .spark { opacity:.5; }
   /* Languages: the top one as the figure, all of them as shares of one bar. */
