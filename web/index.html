@@ -4664,6 +4664,7 @@ const MASCOT_CSS = `
 .vmascot .vm-hair rect{transform-box:fill-box;transform-origin:center bottom;animation:vmHair 2.6s ease-in-out infinite}
 .vmascot .vm-hair rect:nth-child(2){animation-delay:.15s}.vmascot .vm-hair rect:nth-child(3){animation-delay:.3s}
 .vmascot .vm-hair rect:nth-child(4){animation-delay:.45s}.vmascot .vm-hair rect:nth-child(5){animation-delay:.6s}
+.vmascot .vm-hair rect:nth-child(6){animation-delay:.75s}.vmascot .vm-hair rect:nth-child(7){animation-delay:.9s}
 @keyframes vmHair{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.82)}}
 .vmascot .vm-mouth-open,.vmascot .vm-grin,.vmascot .vm-wavy,.vmascot .vm-brows,.vmascot .vm-wink,.vmascot .vm-eyes-happy,.vmascot .vm-eyes-shut,.vmascot .vm-eyes-x,
 .vmascot .vm-sweat,.vmascot .vm-sweat2,.vmascot .vm-zzz,.vmascot .vm-dots,.vmascot .vm-spark{display:none}
@@ -4886,12 +4887,12 @@ const MASCOT_CSS = `
 let vmSeq = 0;
 // The drawing: the logo itself. The face is the triangle the five hanging
 // bars make, rounded off and as flat as the logo (about six tenths as high as
-// it is wide); the hair is those bars stood upright, in the logo's 20 : 36 : 56
-// proportions. The face features are drawn around (60, 74) and fitted into the
+// it is wide); the hair is the app icon's seven bars stood upright, in its
+// 30 : 52 : 74 : 100 proportions. The face features are drawn around (60, 74) and fitted into the
 // triangle by VM_SHAPE.face. The body's gradient is in user space, so the
 // eyelids that use it match the face behind them exactly.
 const VM_SHAPE = {
-  hair: [[30, 10, .6], [45, 17, 1.1], [60, 26, 1.6], [75, 17, 1.1], [90, 10, .6]], hairW: 10, hairBase: 53,
+  hair: [[25.5, 8, .4], [37, 13.5, .8], [48.5, 19.5, 1.2], [60, 26, 1.6], [71.5, 19.5, 1.2], [83, 13.5, .8], [94.5, 8, .4]], hairW: 7.4, hairBase: 53,
   body: (g) => `<path d="M24 50 H96 Q110 50 106 63 Q96 90 70 110 Q60 117 50 110 Q24 90 14 63 Q10 50 24 50 Z" fill="${g}"/>
     <ellipse cx="35" cy="58" rx="12" ry="5" fill="#fff" opacity=".38" transform="rotate(-8 35 58)"/>`,
   face: "translate(60 70) scale(.85) translate(-60 -74)", shadow: 22,
