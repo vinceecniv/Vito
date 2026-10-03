@@ -273,17 +273,9 @@
   .icon-i svg { width:17px; height:17px; }
   .icon-i:hover { color:var(--accent); background:var(--nav-active-bg); }
   /* cost card: one cell like the other statistics. The breakdown and the
-     monthly projection live in its tooltip (loadCosts). The currency toggle
-     only appears on hover; visibility (not display) keeps its box reserved so
-     the card doesn't shift when it shows. */
-  .cost-top { display:flex; justify-content:space-between; align-items:flex-start; gap:6px; }
-  .cost-top .chip { flex:none; } /* the tools beside it must not squeeze the tile */
+     monthly projection live in its tooltip (loadCosts), the currency in its
+     menu (cardMenuItems). */
   .cost-card { cursor:pointer; } /* a click opens how the costs are worked out */
-  .cost-tools { display:flex; align-items:center; gap:4px; min-width:0; }
-  .cost-card .cur-toggle { visibility:hidden; display:inline-flex; border:1px solid var(--card-border); border-radius:7px; overflow:hidden; }
-  .cost-card:hover .cur-toggle, .cost-card:focus-within .cur-toggle { visibility:visible; }
-  .cost-card .cur-toggle button { border:none; background:none; padding:2px 7px; font-size:12px; font-weight:700; color:var(--text3); cursor:pointer; }
-  .cost-card .cur-toggle button.active { background:var(--accent); color:#fff; }
   .h2-btns { margin-left:auto; display:flex; gap:6px; }
   .h2-btn { width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--card-border); border-radius:8px; background:none; color:var(--text3); cursor:pointer; transition:color .12s, border-color .12s, background .12s; }
   .h2-btn:hover { color:var(--accent); border-color:var(--accent); }
@@ -344,7 +336,7 @@
   .card-menu-btn:hover { color:var(--text); border-color:var(--accent); }
   .card-menu-btn svg { width:14px; height:14px; }
   .statgrid.dragging .card-menu-btn { display:none; }
-  .statgrid > .card .cost-tools, .statgrid > .card .h2-btns, .statgrid #chart-sub { margin-right:20px; }
+  .statgrid > .card .h2-btns, .statgrid #chart-sub { margin-right:20px; }
   .card-menu { position:fixed; z-index:1001; min-width:190px; padding:4px; background:var(--card); border:1px solid var(--card-border);
     border-radius:10px; box-shadow:0 10px 30px rgba(20,10,40,.2); }
   .card-menu button { display:flex; width:100%; align-items:center; gap:9px; padding:8px 10px; border:none; border-radius:7px; background:none;
@@ -1446,8 +1438,7 @@
       <div class="hidden-cards" id="hidden-cards"></div>
       <div id="card-holder" hidden>
         <div class="card stat cost-card reveal" id="cost-card">
-          <div class="cost-top"><div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div><div class="cost-tools"><div class="cur-toggle"><button type="button" data-cur="eur" aria-label="EUR" title="EUR">€</button><button type="button" data-cur="usd" aria-label="USD" title="USD">$</button></div>
-              </div></div>
+          <div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div>
           <div class="num" id="cost-month-total">–</div>
           <div class="lbl"><span>Costs</span> · <span>this month so far</span></div>
           <div class="delta flat cost-period"><span id="cost-period-lbl">–</span>: <span id="cost-period">–</span></div>
@@ -5293,6 +5284,10 @@ function cardMenuItems(k){
     items.push({ label: t("Only when there's an update"), sel: !l.updateAlways, run: () => { l.updateAlways = false; layoutChanged(); } });
     items.push({ sep: true });
   }
+  if (k === "cost") {
+    const cur = (cfg && cfg.costs && cfg.costs.currency) || "eur";
+    items.push({ seg: [["eur", "€"], ["usd", "$"]].map(([c, label]) => ({ label, sel: cur === c, run: () => setCostCurrency(c) })) }, { sep: true });
+  }
   if (SPARK_KEYS.includes(k)) items.push({ icon: ICON_SPARK_BG, label: t("Chart in background"), sel: sparkOn(k),
     run: () => { l.spark = Object.assign(l.spark || {}, { [k]: !sparkOn(k) }); saveLayout(); loadStats(); } }, { sep: true });
   const opts = widthsFor(k);
@@ -6079,7 +6074,7 @@ function renderStatCards(all){
   const grid = $("statgrid");
   if (!grid) return;
   const HOLD_MS = 300, SLOP = 6;
-  const NO_DRAG = "button, a, input, select, textarea, label, [contenteditable], #transcript, .cur-toggle";
+  const NO_DRAG = "button, a, input, select, textarea, label, [contenteditable], #transcript";
   let timer = null, down = null, last = null, card = null, ghost = null, off = null, justDragged = false;
 
   grid.addEventListener("pointerdown", (e) => {
@@ -6392,15 +6387,15 @@ async function loadCosts(){
   const parts = [`${t("Speech recognition")} ${fmtMoney(c.month_stt, cur, 2)}`, `${t("AI cleanup")} ${fmtMoney(c.month_cleanup, cur, 2)}`];
   if (c.month_command > 0) parts.push(`Vito Assist ${fmtMoney(c.month_command, cur, 2)}`);
   setCardTip($("cost-card"), parts.join(" · ") + ` — ≈ ${fmtMoney(c.projected_monthly, cur, 2)} ${t("per month at your current usage (last 30 days)")}`);
-  document.querySelectorAll("#cost-card .cur-toggle button").forEach(b => b.classList.toggle("active", b.dataset.cur === cur));
   if (typeof buildModelCards === "function" && $("model-cards")) buildModelCards(); // re-price in the chosen currency
 }
-document.querySelectorAll("#cost-card .cur-toggle button").forEach(b => b.onclick = () => {
+// The display currency, from the costs card's menu.
+function setCostCurrency(cur){
   if (!cfg) return;
-  cfg.costs = Object.assign(cfg.costs || {}, { currency: b.dataset.cur });
+  cfg.costs = Object.assign(cfg.costs || {}, { currency: cur });
   saveConfig({}, "Saved");
   setTimeout(loadCosts, 300);
-});
+}
 // Explains where these amounts come from: Vito bills nothing itself, the
 // numbers are computed from usage times the configured provider rates, so they
 // are an estimate rather than an invoice.
@@ -6438,8 +6433,8 @@ function showCostInfo(){
     </div>`,
     () => {}, "Close", false, null, true);
 }
-// The card itself opens the explanation; the currency toggle on it is its own click.
-$("cost-card").onclick = (e) => { if (!e.target.closest(".cur-toggle")) showCostInfo(); };
+// The card itself opens the explanation of how the costs are worked out.
+$("cost-card").onclick = () => showCostInfo();
 
 // Currency of the per-day costs in the chart tooltip; refreshed with the stats.
 let weekCur = "eur";
