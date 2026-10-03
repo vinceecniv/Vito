@@ -4602,7 +4602,7 @@ const MASCOT_CSS = `
 .vmascot{--lvl:0;width:100%;height:100%;position:relative}
 .vmascot svg{width:100%;height:100%;display:block;overflow:visible}
 .vmascot .vm-body{transform-origin:60px 118px;animation:vmBreath 3.2s ease-in-out infinite}
-.vmascot .vm-tilt{transform-origin:60px 112px;transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+.vmascot .vm-tilt{transform-origin:60px 96px;transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
 .vmascot .vm-shadow{transform-origin:60px 123px;animation:vmShadow 3.2s ease-in-out infinite}
 @keyframes vmBreath{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975)}}
 @keyframes vmShadow{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
@@ -4676,7 +4676,7 @@ const MASCOT_CSS = `
 .vmascot[data-state="sleep"] .vm-eyes-shut,.vmascot[data-state="sleep"] .vm-zzz{display:inline}
 .vmascot[data-state="sleep"] .vm-body{animation:vmBreath 5s ease-in-out infinite}
 .vmascot[data-state="sleep"] .vm-tilt{transform:rotate(8deg) translateY(3px)}
-.vmascot[data-state="sleep"] .vm-hair rect{animation:none;transform:scaleY(.6)}
+.vmascot[data-state="sleep"] .vm-hair rect{animation:none;transform:scaleY(.85)}
 .vmascot[data-state="sleep"] .vm-zzz text{animation:vmZ 2.7s ease-in infinite;opacity:0}
 .vmascot[data-state="sleep"] .vm-zzz text:nth-child(2){animation-delay:.9s}
 .vmascot[data-state="sleep"] .vm-zzz text:nth-child(3){animation-delay:1.8s}
@@ -4761,7 +4761,7 @@ const MASCOT_CSS = `
 .vmascot[data-pose="hum"] .vm-notes text:nth-child(3){animation-delay:1.2s}
 @keyframes vmSway{0%,100%{transform:rotate(-7deg)} 50%{transform:rotate(7deg)}}
 @keyframes vmHum{0%,100%{transform:scale(.8,.7)} 50%{transform:scale(1,1.1)}}
-@keyframes vmNote{0%{transform:translate(0,0) rotate(-12deg);opacity:0} 20%{opacity:1} 100%{transform:translate(14px,-30px) rotate(14deg);opacity:0}}
+@keyframes vmNote{0%{transform:translate(0,0) rotate(-12deg);opacity:0} 20%{opacity:1} 100%{transform:translate(8px,-32px) rotate(14deg);opacity:0}}
 .vmascot .vm-burst,.vmascot .vm-song,.vmascot .vm-back{display:none}
 /* party: every colour of the rainbow, a pulse, and confetti flying out */
 .vmascot[data-pose="party"] .vm-body{animation:vmParty 3s ease-in-out 1}
@@ -4912,17 +4912,17 @@ function mascotSVG(){
     <path class="vm-tear" d="M35 73 q2.6 4.5 0 6.5 q-2.6 -2 0 -6.5z" fill="#9FD3FF"/>
     <g class="vm-cookie"><circle cx="62" cy="104" r="11" fill="#D99A5B" stroke="#B87436" stroke-width="1.4"/><circle cx="58" cy="100" r="1.8" fill="#5A3418"/><circle cx="66" cy="102" r="1.6" fill="#5A3418"/><circle cx="60" cy="108.5" r="1.5" fill="#5A3418"/><circle cx="67" cy="108" r="1.3" fill="#5A3418"/></g>
     <g class="vm-crumbs" fill="#C98A4B"><circle cx="55" cy="108" r="1.2"/><circle cx="62" cy="110" r="1"/><circle cx="66" cy="107" r="1.1"/></g>
-    <g class="vm-sweat"><path d="M92 48 q4 7 0 10 q-4 -3 0 -10z" fill="#7CC8FF"/></g>
-    <g class="vm-sweat2"><path d="M27 54 q3.5 6 0 9 q-3.5 -3 0 -9z" fill="#7CC8FF"/></g>
+    <g class="vm-sweat"><path d="M107 62 q4.5 8 0 11 q-4.5 -3 0 -11z" fill="#7CC8FF"/></g>
+    <g class="vm-sweat2"><path d="M13 65 q4 7 0 10 q-4 -3 0 -10z" fill="#7CC8FF"/></g>
     </g>
   </g>
-  <g class="vm-bubbles" transform="${sh.face}" fill="rgba(170,215,255,.35)" stroke="#6FB8F5" stroke-width="1.8"><circle cx="64" cy="89" r="10" style="--bx:22px;--by:-44px"/><circle cx="64" cy="89" r="7" style="--bx:40px;--by:-24px"/><circle cx="64" cy="89" r="12" style="--bx:8px;--by:-62px"/></g>
+  <g class="vm-bubbles" transform="${sh.face}" fill="rgba(170,215,255,.35)" stroke="#6FB8F5" stroke-width="1.8"><circle cx="64" cy="89" r="10" style="--bx:44px;--by:-14px"/><circle cx="64" cy="89" r="7" style="--bx:58px;--by:-2px"/><circle cx="64" cy="89" r="12" style="--bx:36px;--by:-30px"/></g>
   </g>
-  <g class="vm-song" font-size="20" font-weight="700"><text x="78" y="62" fill="#FF6B5E" style="--bx:26px;--by:-34px">♪</text><text x="34" y="62" fill="#7C3AED" style="--bx:-26px;--by:-30px">♫</text><text x="80" y="58" fill="#F59E0B" style="--bx:30px;--by:-14px">♬</text><text x="32" y="58" fill="#EC4899" style="--bx:-30px;--by:-12px">♪</text></g>
-  <g class="vm-notes" fill="#7C3AED" font-size="21" font-weight="700"><text x="90" y="66">♪</text><text x="97" y="54">♫</text><text x="86" y="48">♪</text></g>
-  <g class="vm-dots" fill="#A78BFA"><circle cx="94" cy="30" r="3"/><circle cx="102" cy="21" r="4"/><circle cx="111" cy="10" r="5"/></g>
-  <g class="vm-spark" fill="#FFC94D"><path d="M16 40 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/><path d="M101 36 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z"/><path d="M96 92 l1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4z"/></g>
-  <g class="vm-zzz" fill="#A78BFA" font-family="'Baloo 2',sans-serif" font-weight="800"><text x="88" y="36" font-size="13">z</text><text x="94" y="28" font-size="16">z</text><text x="101" y="19" font-size="19">Z</text></g>
+  <g class="vm-song" font-size="20" font-weight="700"><text x="104" y="76" fill="#FF6B5E" style="--bx:10px;--by:-36px">♪</text><text x="4" y="76" fill="#7C3AED" style="--bx:-10px;--by:-34px">♫</text><text x="106" y="64" fill="#F59E0B" style="--bx:14px;--by:-20px">♬</text><text x="2" y="64" fill="#EC4899" style="--bx:-14px;--by:-18px">♪</text></g>
+  <g class="vm-notes" fill="#7C3AED" font-size="21" font-weight="700"><text x="102" y="80">♪</text><text x="108" y="68">♫</text><text x="100" y="62">♪</text></g>
+  <g class="vm-dots" fill="#A78BFA"><circle cx="103" cy="42" r="3"/><circle cx="109" cy="32" r="4"/><circle cx="114" cy="19" r="5"/></g>
+  <g class="vm-spark" fill="#FFC94D"><path d="M12 36 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/><path d="M106 30 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z"/><path d="M100 90 l1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4z"/></g>
+  <g class="vm-zzz" fill="#A78BFA" font-family="'Baloo 2',sans-serif" font-weight="800"><text x="100" y="46" font-size="13">z</text><text x="105" y="36" font-size="16">z</text><text x="110" y="25" font-size="19">Z</text></g>
 </svg>`;
 }
 // The controller. Base state from the daemon (idle / recording / processing),
