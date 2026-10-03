@@ -277,7 +277,8 @@
      only appears on hover; visibility (not display) keeps its box reserved so
      the card doesn't shift when it shows. */
   .cost-top { display:flex; justify-content:space-between; align-items:flex-start; gap:6px; }
-  .cost-tools { display:flex; align-items:center; gap:4px; }
+  .cost-top .chip { flex:none; } /* the tools beside it must not squeeze the tile */
+  .cost-tools { display:flex; align-items:center; gap:4px; min-width:0; }
   .cost-card .cur-toggle { visibility:hidden; display:inline-flex; border:1px solid var(--card-border); border-radius:7px; overflow:hidden; }
   .cost-card:hover .cur-toggle, .cost-card:focus-within .cur-toggle { visibility:visible; }
   .cost-card .cur-toggle button { border:none; background:none; padding:3px 6px; font-size:10.5px; font-weight:600; color:var(--text3); cursor:pointer; }
