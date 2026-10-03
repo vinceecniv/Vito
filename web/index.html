@@ -1165,7 +1165,8 @@
   .status-tags { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
   /* Vito fills the card from top to bottom; in a development build the test
      buttons take the right-hand side. */
-  .card.stat.mascot-card { display:flex; align-items:stretch; gap:12px; padding:12px 14px; min-height:190px; overflow:hidden; }
+  .card.stat.mascot-card { display:flex; align-items:stretch; gap:12px; padding:12px 14px; min-height:190px; overflow:hidden;
+    background:transparent; border-color:transparent; box-shadow:none; backdrop-filter:none; }
   .mascot-card .vm-slot { flex:1 1 0; min-width:0; }
   .mascot-card .vm-dev { flex:0 1 48%; display:flex; flex-wrap:wrap; gap:4px; align-content:center; justify-content:flex-start; }
   .mascot-card .vm-dev button { font-family:inherit; font-size:10.5px; font-weight:600; line-height:1; padding:4px 7px; border-radius:7px; border:1px dashed var(--card-border); background:transparent; color:var(--text2); cursor:pointer; }
@@ -4582,8 +4583,8 @@ function refreshPipSettings(){
 
 /* ---- Vito, the mascot ---- */
 // A little Vito who chats along while you dictate, like Bongo Cat types along
-// with your keyboard: a round body in the logo's coral-to-violet, with the
-// logo's five bars as a quiff. Drawn in SVG, moved by CSS, so it is crisp at
+// with your keyboard: the logo come to life — its triangle as the face, in the
+// logo's coral-to-violet, its five bars as hair. Drawn in SVG, moved by CSS, so it is crisp at
 // any size and cheap to run. One controller (vm) drives every copy — the card
 // on the status page and the one in the detached window — by setting data
 // attributes and a --lvl (0–1) on each; the CSS does the rest.
@@ -4718,7 +4719,7 @@ const MASCOT_CSS = `
 .vmascot[data-pose="eat"] .vm-smile{display:none}
 .vmascot[data-pose="eat"] .vm-mouth-open{display:inline;transform-box:fill-box;transform-origin:center top;animation:vmChomp 3.4s linear 1 both}
 .vmascot[data-pose="eat"] .vm-pupil{transform:translate(0,3px)}
-.vmascot .vm-cookie{transform-box:fill-box;transform-origin:center;animation:vmCookie 3.4s ease-in-out 1 both}
+.vmascot[data-pose="eat"] .vm-cookie{transform-box:fill-box;transform-origin:center;animation:vmCookie 3.4s ease-in-out 1 both}
 @keyframes vmChomp{0%,20%{transform:scale(.9,.8)} 26%,41%,56%,71%{transform:scale(.8,.14)} 33%,48%,63%{transform:scale(.85,.6)} 76%,84%,92%{transform:scale(.7,.12)} 80%,88%{transform:scale(.72,.3)} 100%{transform:scale(.7,.12)}}
 @keyframes vmCookie{0%{transform:translate(30px,16px) rotate(40deg) scale(.9);opacity:0} 8%{opacity:1}
   20%{transform:translate(0,0) rotate(0) scale(1)} 26%{transform:translate(0,0) rotate(0) scale(.78)} 41%{transform:translate(0,0) rotate(0) scale(.56)}
@@ -4734,9 +4735,9 @@ const MASCOT_CSS = `
 .vmascot[data-pose="bubbles"] .vm-cheek{transform:scale(1.3)}
 .vmascot[data-pose="bubbles"] .vm-pupil{transform:translate(2.5px,-2.5px)}
 .vmascot[data-pose="bubbles"] .vm-tilt{transform:rotate(-5deg)}
-.vmascot .vm-bubbles circle{transform-box:fill-box;transform-origin:center;opacity:0;animation:vmBubble 1.6s ease-out 2}
-.vmascot .vm-bubbles circle:nth-child(2){animation-delay:.4s}
-.vmascot .vm-bubbles circle:nth-child(3){animation-delay:.8s}
+.vmascot[data-pose="bubbles"] .vm-bubbles circle{transform-box:fill-box;transform-origin:center;opacity:0;animation:vmBubble 1.6s ease-out 2}
+.vmascot[data-pose="bubbles"] .vm-bubbles circle:nth-child(2){animation-delay:.4s}
+.vmascot[data-pose="bubbles"] .vm-bubbles circle:nth-child(3){animation-delay:.8s}
 @keyframes vmBubble{0%{transform:translate(0,0) scale(.15);opacity:0} 12%{opacity:.95}
   88%{transform:translate(var(--bx),var(--by)) scale(1);opacity:.9} 100%{transform:translate(var(--bx),var(--by)) scale(1.3);opacity:0}}
 /* yawning: eyes shut, a stretch, a big round mouth and a tear */
@@ -4755,45 +4756,82 @@ const MASCOT_CSS = `
 .vmascot[data-pose="hum"] .vm-eyes-happy,.vmascot[data-pose="hum"] .vm-notes,.vmascot[data-pose="hum"] .vm-mouth-o{display:inline}
 .vmascot[data-pose="hum"] .vm-tilt{animation:vmSway 1s ease-in-out 4}
 .vmascot[data-pose="hum"] .vm-mouth-o{transform-box:fill-box;transform-origin:center;animation:vmHum .5s ease-in-out 8}
-.vmascot .vm-notes text{transform-box:fill-box;transform-origin:center;opacity:0;animation:vmNote 1.8s ease-out 2}
-.vmascot .vm-notes text:nth-child(2){animation-delay:.6s}
-.vmascot .vm-notes text:nth-child(3){animation-delay:1.2s}
+.vmascot[data-pose="hum"] .vm-notes text{transform-box:fill-box;transform-origin:center;opacity:0;animation:vmNote 1.8s ease-out 2}
+.vmascot[data-pose="hum"] .vm-notes text:nth-child(2){animation-delay:.6s}
+.vmascot[data-pose="hum"] .vm-notes text:nth-child(3){animation-delay:1.2s}
 @keyframes vmSway{0%,100%{transform:rotate(-7deg)} 50%{transform:rotate(7deg)}}
 @keyframes vmHum{0%,100%{transform:scale(.8,.7)} 50%{transform:scale(1,1.1)}}
 @keyframes vmNote{0%{transform:translate(0,0) rotate(-12deg);opacity:0} 20%{opacity:1} 100%{transform:translate(14px,-30px) rotate(14deg);opacity:0}}
+.vmascot .vm-burst,.vmascot .vm-song,.vmascot .vm-back{display:none}
+/* party: every colour of the rainbow, a pulse, and confetti flying out */
+.vmascot[data-pose="party"] .vm-body{animation:vmParty 3s ease-in-out 1}
+.vmascot[data-pose="party"] .vm-eyes-open,.vmascot[data-pose="party"] .vm-smile{display:none}
+.vmascot[data-pose="party"] .vm-eyes-happy,.vmascot[data-pose="party"] .vm-grin,.vmascot[data-pose="party"] .vm-burst{display:inline}
+.vmascot[data-pose="party"] .vm-burst circle{transform-box:fill-box;transform-origin:center;opacity:0;animation:vmBurst 1.2s cubic-bezier(.15,.7,.3,1) 2 .25s}
+.vmascot[data-pose="party"] .vm-burst .vm-ring{animation:vmRing 1.2s ease-out 2 .25s}
+@keyframes vmParty{0%{filter:hue-rotate(0deg) saturate(1);transform:scale(1,1)}
+  10%{transform:scale(1.14,.86)} 20%{transform:translateY(-8px) scale(.94,1.08)} 30%{transform:scale(1,1)}
+  50%{filter:hue-rotate(180deg) saturate(1.7)} 60%{transform:scale(1.1,.9)} 70%{transform:translateY(-6px) scale(.96,1.05)} 80%{transform:scale(1,1)}
+  100%{filter:hue-rotate(360deg) saturate(1);transform:scale(1,1)}}
+@keyframes vmBurst{0%{transform:translate(0,0) scale(.4);opacity:1} 70%{opacity:1} 100%{transform:translate(var(--bx),var(--by)) scale(1);opacity:0}}
+@keyframes vmRing{0%{transform:scale(.3);opacity:.9} 100%{transform:scale(6);opacity:0}}
+/* singing: head back, mouth wide on the beat, notes everywhere */
+.vmascot[data-pose="sing"] .vm-eyes-open,.vmascot[data-pose="sing"] .vm-smile{display:none}
+.vmascot[data-pose="sing"] .vm-eyes-happy,.vmascot[data-pose="sing"] .vm-song{display:inline}
+.vmascot[data-pose="sing"] .vm-brows{display:inline;transform:translateY(-4px)}
+.vmascot[data-pose="sing"] .vm-mouth-open{display:inline;transform-box:fill-box;transform-origin:center top;animation:vmSing .38s ease-in-out 10 alternate}
+.vmascot[data-pose="sing"] .vm-tilt{animation:vmSingHead 1.5s ease-in-out 3}
+.vmascot[data-pose="sing"] .vm-hair rect{animation:vmSingHair .38s ease-in-out 10 alternate}
+.vmascot[data-pose="sing"] .vm-song text{transform-box:fill-box;transform-origin:center;opacity:0;animation:vmSong 1.6s ease-out 2}
+.vmascot[data-pose="sing"] .vm-song text:nth-child(2){animation-delay:.4s}
+.vmascot[data-pose="sing"] .vm-song text:nth-child(3){animation-delay:.8s}
+.vmascot[data-pose="sing"] .vm-song text:nth-child(4){animation-delay:1.2s}
+@keyframes vmSing{0%{transform:scale(.8,.35)} 100%{transform:scale(1.1,1.05)}}
+@keyframes vmSingHead{0%,100%{transform:rotate(-9deg) translateY(-2px)} 50%{transform:rotate(-3deg) translateY(1px)}}
+@keyframes vmSingHair{0%{transform:scaleY(.85)} 100%{transform:scaleY(1.2)}}
+@keyframes vmSong{0%{transform:translate(0,0) rotate(-15deg) scale(.6);opacity:0} 15%{opacity:1} 100%{transform:translate(var(--bx),var(--by)) rotate(15deg) scale(1.1);opacity:0}}
+/* a pirouette: halfway round he shows his back, with a wind-up key turning in it */
+.vmascot[data-pose="spin"] .vm-body{animation:vmSpin 3s ease-in-out 1}
+.vmascot[data-pose="spin"] .vm-shadow{animation:vmSpinSh 3s ease-in-out 1}
+.vmascot[data-pose="spin"] .vm-face{animation:vmFront 3s linear 1}
+.vmascot[data-pose="spin"] .vm-back{display:inline;opacity:0;animation:vmRear 3s linear 1}
+.vmascot[data-pose="spin"] .vm-key-bow{transform-box:fill-box;transform-origin:center;animation:vmKey .45s linear infinite}
+@keyframes vmSpin{0%{transform:translateY(0) scaleX(1)} 8%{transform:translateY(-6px) scaleX(.6)} 16%{transform:translateY(-9px) scaleX(0)}
+  26%{transform:translateY(-4px) scaleX(-1)} 32%,62%{transform:translateY(0) scaleX(-1)} 70%{transform:translateY(-6px) scaleX(-.5)}
+  76%{transform:translateY(-9px) scaleX(0)} 86%{transform:translateY(-4px) scaleX(1)} 100%{transform:translateY(0) scaleX(1)}}
+@keyframes vmSpinSh{0%,32%,62%,100%{transform:scale(1)} 16%,76%{transform:scale(.7)}}
+@keyframes vmFront{0%,15.9%{opacity:1} 16%,75.9%{opacity:0} 76%,100%{opacity:1}}
+@keyframes vmRear{0%,15.9%{opacity:0} 16%,75.9%{opacity:1} 76%,100%{opacity:0}}
+@keyframes vmKey{0%{transform:scaleX(1)} 50%{transform:scaleX(-1)} 100%{transform:scaleX(1)}}
 @media (prefers-reduced-motion: reduce){
   .vmascot .vm-body,.vmascot .vm-shadow,.vmascot .vm-hair rect,.vmascot .vm-zzz text,.vmascot .vm-sweat path,.vmascot .vm-sweat2 path{animation:none}
 }`;
 (function(){ const s = document.createElement("style"); s.textContent = MASCOT_CSS; document.head.appendChild(s); })();
 let vmSeq = 0;
-// The drawing, in two shapes. "round" is a ball with the logo's bars as a
-// quiff; "vito" is the logo itself: the face is the triangle the five hanging
-// bars make, and the hair is those bars stood upright. The face is drawn once,
-// for the ball, and fitted into the triangle by moving it up and in, so every
-// expression works on both. The body's gradient is in user space, so the
+// The drawing: the logo itself. The face is the triangle the five hanging
+// bars make, rounded off and as flat as the logo (about six tenths as high as
+// it is wide); the hair is those bars stood upright, in the logo's 20 : 36 : 56
+// proportions. The face features are drawn around (60, 74) and fitted into the
+// triangle by VM_SHAPE.face. The body's gradient is in user space, so the
 // eyelids that use it match the face behind them exactly.
-const VM_SHAPES = {
-  round: {
-    hair: [[41, 9, .6], [50.5, 15, 1.1], [60, 20, 1.6], [69.5, 15, 1.1], [79, 9, .6]], hairW: 9, hairBase: 34,
-    body: (g) => `<circle cx="60" cy="72" r="44" fill="${g}"/>
-    <ellipse cx="60" cy="104" rx="30" ry="9" fill="#2B2440" opacity=".08"/>
-    <ellipse cx="42" cy="47" rx="15" ry="9" fill="#fff" opacity=".38" transform="rotate(-28 42 47)"/>`,
-    face: "", shadow: 30,
-  },
-  // The logo's bars are 20, 36 and 56 long on a 20-unit pitch; the hair keeps
-  // those proportions, the face is their outline rounded off — as flat as the
-  // logo, about six tenths as high as it is wide.
-  vito: {
-    hair: [[30, 10, .6], [45, 17, 1.1], [60, 26, 1.6], [75, 17, 1.1], [90, 10, .6]], hairW: 10, hairBase: 53,
-    body: (g) => `<path d="M24 50 H96 Q110 50 106 63 Q96 90 70 110 Q60 117 50 110 Q24 90 14 63 Q10 50 24 50 Z" fill="${g}"/>
+const VM_SHAPE = {
+  hair: [[30, 10, .6], [45, 17, 1.1], [60, 26, 1.6], [75, 17, 1.1], [90, 10, .6]], hairW: 10, hairBase: 53,
+  body: (g) => `<path d="M24 50 H96 Q110 50 106 63 Q96 90 70 110 Q60 117 50 110 Q24 90 14 63 Q10 50 24 50 Z" fill="${g}"/>
     <ellipse cx="35" cy="58" rx="12" ry="5" fill="#fff" opacity=".38" transform="rotate(-8 35 58)"/>`,
-    face: "translate(60 70) scale(.85) translate(-60 -74)", shadow: 22,
-  },
+  face: "translate(60 70) scale(.85) translate(-60 -74)", shadow: 22,
 };
-let vmVariant = "round";
-try { if (VM_SHAPES[localStorage.getItem("vito-mascot-variant")]) vmVariant = localStorage.getItem("vito-mascot-variant"); } catch {}
+// Twelve bits of confetti in a ring, and the ring itself, for the party act.
+function vmBurstSVG(){
+  const cols = ["#FF6B5E", "#FFC94D", "#4ADE80", "#38BDF8", "#A78BFA", "#F472B6"];
+  let out = `<circle class="vm-ring" cx="60" cy="80" r="8" fill="none" stroke="#FFC94D" stroke-width="2.5"/>`;
+  for (let i = 0; i < 12; i++) {
+    const a = i * Math.PI / 6 + .26, d = i % 2 ? 46 : 58;
+    out += `<circle cx="60" cy="80" r="${i % 3 ? 3.2 : 4.2}" fill="${cols[i % 6]}" style="--bx:${(Math.cos(a) * d).toFixed(1)}px;--by:${(Math.sin(a) * d).toFixed(1)}px"/>`;
+  }
+  return out;
+}
 function mascotSVG(){
-  const u = "vm" + (++vmSeq), sh = VM_SHAPES[vmVariant] || VM_SHAPES.round, w = sh.hairW;
+  const u = "vm" + (++vmSeq), sh = VM_SHAPE, w = sh.hairW;
   const hair = sh.hair
     .map(([x, h, k]) => `<rect x="${x - w / 2}" y="${sh.hairBase - h}" width="${w}" height="${h + 8}" rx="${w / 2}" stroke="#fff" stroke-width="1.6" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
   const eye = (cx, side) => `<g class="vm-eye vm-eye-${side}">` +
@@ -4807,10 +4845,18 @@ function mascotSVG(){
     <linearGradient id="${u}h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF7A6B"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient>
   </defs>
   <ellipse class="vm-shadow" cx="60" cy="123" rx="${sh.shadow}" ry="4.5" fill="#2B2440" opacity=".14"/>
+  <g class="vm-burst">${vmBurstSVG()}</g>
   <g class="vm-body"><g class="vm-tilt">
     <g class="vm-hair">${hair}</g>
     ${sh.body(`url(#${u}b)`)}
-    <g transform="${sh.face}">
+    <g class="vm-back">
+      <g transform="rotate(-8 77 92)"><rect x="70" y="87" width="14" height="10" rx="1.5" fill="#fff" opacity=".92"/>
+        <path d="M73 90.5h8M73 93.5h5" stroke="#A78BFA" stroke-width="1.1" stroke-linecap="round"/></g>
+      <rect x="57" y="72" width="6" height="12" rx="2" fill="#C99A1E"/>
+      <g class="vm-key-bow"><path d="M60 74 C46 56 30 62 35 74 C30 86 46 92 60 74 C74 92 90 86 85 74 C90 62 74 56 60 74 Z" fill="#FFC94D" stroke="#C99A1E" stroke-width="1.8" stroke-linejoin="round"/>
+        <circle cx="44" cy="74" r="3.5" fill="#C99A1E"/><circle cx="76" cy="74" r="3.5" fill="#C99A1E"/></g>
+    </g>
+    <g class="vm-face" transform="${sh.face}">
     <ellipse class="vm-cheek" cx="33" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/><ellipse class="vm-cheek" cx="87" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/>
     <g class="vm-brows" fill="none" stroke="#2B2440" stroke-width="2.6" stroke-linecap="round" opacity=".8"><path d="M38 53 Q45 49 52 52"/><path d="M68 52 Q75 49 82 53"/></g>
     <g class="vm-eyes-open">${eye(45, "l")}${eye(75, "r")}</g>
@@ -4832,6 +4878,7 @@ function mascotSVG(){
   </g>
   <g class="vm-bubbles" transform="${sh.face}" fill="rgba(170,215,255,.35)" stroke="#6FB8F5" stroke-width="1.8"><circle cx="64" cy="89" r="10" style="--bx:22px;--by:-44px"/><circle cx="64" cy="89" r="7" style="--bx:40px;--by:-24px"/><circle cx="64" cy="89" r="12" style="--bx:8px;--by:-62px"/></g>
   </g>
+  <g class="vm-song" font-size="20" font-weight="700"><text x="78" y="62" fill="#FF6B5E" style="--bx:26px;--by:-34px">♪</text><text x="34" y="62" fill="#7C3AED" style="--bx:-26px;--by:-30px">♫</text><text x="80" y="58" fill="#F59E0B" style="--bx:30px;--by:-14px">♬</text><text x="32" y="58" fill="#EC4899" style="--bx:-30px;--by:-12px">♪</text></g>
   <g class="vm-notes" fill="#7C3AED" font-size="21" font-weight="700"><text x="90" y="66">♪</text><text x="97" y="54">♫</text><text x="86" y="48">♪</text></g>
   <g class="vm-dots" fill="#A78BFA"><circle cx="94" cy="30" r="3"/><circle cx="102" cy="21" r="4"/><circle cx="111" cy="10" r="5"/></g>
   <g class="vm-spark" fill="#FFC94D"><path d="M16 40 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/><path d="M101 36 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z"/><path d="M96 92 l1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4z"/></g>
@@ -4866,14 +4913,6 @@ function vmRender(){
     el.style.setProperty("--mw", vm.mw.toFixed(2));
     el.style.setProperty("--lvl", vm.lvl.toFixed(2));
   });
-}
-// Switch every copy to another shape, and remember it.
-function vmSetVariant(v){
-  if (!VM_SHAPES[v]) return;
-  vmVariant = v;
-  try { localStorage.setItem("vito-mascot-variant", v); } catch {}
-  vm.els.forEach(el => { el.innerHTML = mascotSVG(); });
-  vmRender();
 }
 // A new copy of Vito for doc (this page, or the detached window's).
 function makeMascot(doc){
@@ -4915,18 +4954,19 @@ function vmFlash(kind, ms){
 // Gestures last 1.5 s; the acts below (in ms) a few seconds. A third of the
 // time it is an act, and after a few quiet minutes mostly a yawn.
 const VM_GESTURES = ["look-l", "look-r", "wink", "hop", "tilt"];
-const VM_ACTS = { bounce: 2300, eat: 3500, bubbles: 3900, yawn: 2700, hum: 4000 };
+const VM_ACTS = { bounce: 2300, eat: 3500, bubbles: 3900, yawn: 2700, hum: 4000, party: 3100, sing: 4000, spin: 3100 };
 let vmPoseTimer = null;
 function vmPose(name){
   clearTimeout(vmPoseTimer);
+  // Off first, and make the browser take that in (reading a size flushes the
+  // styles), so an act asked for while it is still running starts over
+  // instead of carrying on where it was.
   vm.pose = "";
   vmRender();
-  // A frame without the pose first, so the same one twice in a row restarts.
-  requestAnimationFrame(() => {
-    vm.pose = name;
-    vmRender();
-    vmPoseTimer = setTimeout(() => { vm.pose = ""; vmRender(); }, VM_ACTS[name] || 1500);
-  });
+  vm.els.forEach(el => el.getBoundingClientRect());
+  vm.pose = name;
+  vmRender();
+  vmPoseTimer = setTimeout(() => { vm.pose = ""; vmRender(); }, VM_ACTS[name] || 1500);
 }
 const vmPick = (a) => a[Math.floor(Math.random() * a.length)];
 (function vmTick(){
@@ -4961,7 +5001,6 @@ function mascotDevPanel(){
   const p = document.createElement("div");
   p.className = "vm-dev";
   [
-    ...Object.keys(VM_SHAPES).map(v => b("shape: " + v, () => vmSetVariant(v))),
     b("auto", () => { stopFake(); vm.forced = null; vm.sweat = 0; vm.lvl = 0; vm.quiet = false; vmRender(); }),
     b("calm", () => force("idle")),
     b("talk", b0talk),
