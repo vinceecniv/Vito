@@ -819,6 +819,11 @@
      next to it rather than hidden behind it. */
   .ach-bg .ach-bg-skip { grid-column:span 2; grid-row:span 2; }
   .ach-bg i.today { opacity:1; box-shadow:0 0 0 1.5px var(--coral), 0 0 10px var(--coral-soft); }
+  /* A veil in the card colour over the medals where the figure and its label
+     sit (lower left), so they read cleanly; the medals stay vivid elsewhere.
+     Painted after the grid, under the text (z-index 0 against its 1). */
+  .card.stat.ach-mini::after { content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(ellipse 80% 62% at 18% 78%, color-mix(in srgb, var(--card) 90%, transparent) 42%, transparent 100%); }
   .card.stat.ach-mini > .chip { background:var(--card); box-shadow:inset 0 0 0 100px var(--accent-soft), 0 0 10px 4px var(--card); }
   /* The figure sits over the medals; a halo in the card colour keeps it legible. */
   .card.stat.ach-mini > .num, .card.stat.ach-mini > .lbl, .card.stat.ach-mini > .delta {
