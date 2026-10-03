@@ -1167,7 +1167,7 @@
      buttons take the right-hand side. */
   .card.stat.mascot-card { display:flex; align-items:stretch; gap:12px; padding:12px 14px; min-height:190px; overflow:hidden;
     background:transparent; border-color:transparent; box-shadow:none; backdrop-filter:none; }
-  .mascot-card .vm-slot { flex:1 1 0; min-width:0; }
+  .mascot-card .vm-slot { flex:1 1 0; min-width:0; cursor:pointer; }
   .mascot-card .vm-dev { flex:0 1 48%; display:flex; flex-wrap:wrap; gap:4px; align-content:center; justify-content:flex-start; }
   .mascot-card .vm-dev button { font-family:inherit; font-size:10.5px; font-weight:600; line-height:1; padding:4px 7px; border-radius:7px; border:1px dashed var(--card-border); background:transparent; color:var(--text2); cursor:pointer; }
   .mascot-card .vm-dev button:hover { color:var(--text); border-style:solid; }
@@ -4287,7 +4287,7 @@ const PIP_SVG = { copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColo
   open:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4h6v6M20 4l-8 8M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></svg>',
   gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 0 1-4 0v-.2A1.6 1.6 0 0 0 8 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.9A1.6 1.6 0 0 0 2 13.5H2a2 2 0 0 1 0-4h.2A1.6 1.6 0 0 0 3.6 8.5a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H8a1.6 1.6 0 0 0 1-1.5V2a2 2 0 0 1 4 0v.2a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1H22a2 2 0 0 1 0 4h-.2a1.6 1.6 0 0 0-1.5 1z"/></svg>' };
 const PIP_CSS = `*{margin:0;box-sizing:border-box}
-.pip-mascot{position:absolute;right:10px;bottom:54px;width:64px;height:70px;pointer-events:none;z-index:2;opacity:.95}
+.pip-mascot{position:absolute;right:46px;bottom:3px;width:58px;height:62px;pointer-events:none}
 /* A class that sets display (e.g. .pip-btn's inline-flex) outranks the browser's
    bare [hidden] rule, so hidden buttons would still show. Settle it once. */
 [hidden]{display:none!important}
@@ -4521,13 +4521,13 @@ async function togglePip(fromTray){
         swRow("pip-set-viz", t("Audio visualisation")) +
       `</div>` +
       `<div class="pip-bursts" id="pip-bursts"><div class="pip-wave" id="pip-wave"></div></div>` +
-      `<div class="pip-mascot" id="pip-mascot"></div>` +
       `<div class="pip-cmd" id="pip-cmd"></div>` +
       `<div class="pip-body" id="pip-body"></div>` +
       `<div class="pip-ctrl">` +
         `<button class="pip-btn primary" id="pip-toggle">${ICON_REC + " " + t("Start recording")}</button>` +
         `<button class="pip-btn" id="pip-cancel" hidden>${t("Cancel")}</button>` +
         `<button class="pip-icobtn" id="pip-copy" title="${t("Copy text")}" style="margin-left:auto">${PIP_SVG.copy}</button>` +
+        `<div class="pip-mascot" id="pip-mascot"></div>` +
       `</div>` +
     `</div>`;
   d.getElementById("pip-mascot").appendChild(makeMascot(d));
@@ -4822,6 +4822,12 @@ const MASCOT_CSS = `
 .vmascot[data-pose="roll"] .vm-tilt{transform:rotate(-4deg)}
 @keyframes vmRoll{0%,100%{transform:translate(0,0)} 15%{transform:translate(-3.8px,0)} 35%{transform:translate(-2.7px,-3.8px)}
   50%{transform:translate(0,-4.6px)} 65%{transform:translate(2.7px,-3.8px)} 82%{transform:translate(3.8px,0)}}
+/* following the pointer (vmFollow sets --px/--py) */
+.vmascot[data-look="1"] .vm-pupil{transform:translate(var(--px,0px),var(--py,0px));transition:transform .08s}
+/* the pointer near his mouth: open wide, as if to take a bite */
+.vmascot[data-state="idle"][data-pose=""][data-nom="1"] .vm-smile{display:none}
+.vmascot[data-state="idle"][data-pose=""][data-nom="1"] .vm-mouth-open{display:inline;transform-box:fill-box;transform-origin:center top;animation:vmNom .22s ease-out both}
+@keyframes vmNom{0%{transform:scale(.7,.2)} 100%{transform:scale(1.05,1)}}
 @media (prefers-reduced-motion: reduce){
   .vmascot .vm-body,.vmascot .vm-shadow,.vmascot .vm-hair rect,.vmascot .vm-zzz text,.vmascot .vm-sweat path,.vmascot .vm-sweat2 path{animation:none}
 }`;
@@ -5010,7 +5016,7 @@ function vmPose(name){
 }
 const vmPick = (a) => a[Math.floor(Math.random() * a.length)];
 (function vmTick(){
-  if (vmShown() === "idle" && !vm.forced) {
+  if (vmShown() === "idle" && !vm.forced && !vm.pose) {
     const drowsy = Date.now() - vm.lastActive > 3 * 60 * 1000;
     if (drowsy && Math.random() < .5) vmPose("yawn");
     else vmPose(Math.random() < .33 ? vmPick(Object.keys(VM_ACTS)) : vmPick(VM_GESTURES));
@@ -5058,6 +5064,35 @@ function mascotDevPanel(){
 }
 
 $("vm-slot").appendChild(makeMascot(document));
+// Over the card, Vito's eyes follow the pointer, and his mouth opens when it
+// comes near. The eyes sit at about
+// (60, 65) in the drawing; the pupils move up to 4 units towards the pointer,
+// less when it is close.
+(function vmFollow(){
+  const card = $("mascot-card"), el = card && card.querySelector(".vmascot");
+  if (!el) return;
+  card.addEventListener("mousemove", (e) => {
+    const svg = el.querySelector("svg"); if (!svg) return;
+    const r = svg.getBoundingClientRect(), k = Math.min(r.width / 120, r.height / 130);
+    if (!k) return;
+    const x = (e.clientX - r.left - (r.width - 120 * k) / 2) / k, y = (e.clientY - r.top - (r.height - 130 * k) / 2) / k;
+    const dx = x - 60, dy = y - 65, len = Math.hypot(dx, dy) || 1, m = Math.min(4, len / 10);
+    el.style.setProperty("--px", (dx / len * m).toFixed(2) + "px");
+    el.style.setProperty("--py", (dy / len * m * .8).toFixed(2) + "px");
+    el.dataset.look = "1";
+    el.dataset.nom = Math.hypot(x - 60, y - 84) < 15 ? "1" : "";
+  });
+  card.addEventListener("mouseleave", () => { el.dataset.look = ""; el.dataset.nom = ""; });
+  // A click wakes him and gets one of his acts, never the same one twice.
+  let lastAct = "";
+  card.addEventListener("click", (e) => {
+    if (e.target.closest("button")) return;
+    vm.lastActive = Date.now();
+    if (vmShown() !== "idle") { vmRender(); if (vmShown() !== "idle") return; }
+    lastAct = vmPick(Object.keys(VM_ACTS).filter(a => a !== lastAct));
+    vmPose(lastAct);
+  });
+})();
 
 /* ---- PiP audio bursts ---- */
 // Each level tick can launch a gradient streak from the bottom edge at a random
