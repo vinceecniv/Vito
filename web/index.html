@@ -4611,7 +4611,7 @@ const MASCOT_CSS = `
 .vmascot .vm-hair rect:nth-child(2){animation-delay:.15s}.vmascot .vm-hair rect:nth-child(3){animation-delay:.3s}
 .vmascot .vm-hair rect:nth-child(4){animation-delay:.45s}.vmascot .vm-hair rect:nth-child(5){animation-delay:.6s}
 @keyframes vmHair{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.82)}}
-.vmascot .vm-mouth-open,.vmascot .vm-grin,.vmascot .vm-eyes-happy,.vmascot .vm-eyes-shut,.vmascot .vm-eyes-x,
+.vmascot .vm-mouth-open,.vmascot .vm-grin,.vmascot .vm-wavy,.vmascot .vm-eyes-happy,.vmascot .vm-eyes-shut,.vmascot .vm-eyes-x,
 .vmascot .vm-sweat,.vmascot .vm-sweat2,.vmascot .vm-zzz,.vmascot .vm-dots,.vmascot .vm-spark{display:none}
 /* talking: the mouth and quiff follow your voice */
 .vmascot[data-state="recording"] .vm-body{animation:none;transition:transform .09s;
@@ -4641,7 +4641,8 @@ const MASCOT_CSS = `
 @keyframes vmHop{0%,100%{transform:translateY(0) scale(1,1)}30%{transform:translateY(0) scale(1.08,.9)}60%{transform:translateY(-12px) scale(.95,1.06)}}
 @keyframes vmTwinkle{0%,100%{transform:scale(.3);opacity:0}50%{transform:scale(1);opacity:1}}
 /* dizzy */
-.vmascot[data-state="dizzy"] .vm-eyes-open{display:none}
+.vmascot[data-state="dizzy"] .vm-eyes-open,.vmascot[data-state="dizzy"] .vm-smile{display:none}
+.vmascot[data-state="dizzy"] .vm-wavy{display:inline}
 .vmascot[data-state="dizzy"] .vm-eyes-x{display:inline}
 .vmascot[data-state="dizzy"] .vm-tilt{animation:vmShake .5s ease-in-out 3}
 @keyframes vmShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}75%{transform:rotate(9deg)}}
@@ -4675,8 +4676,8 @@ let vmSeq = 0;
 // match the face behind them exactly.
 function mascotSVG(){
   const u = "vm" + (++vmSeq);
-  const hair = [[40, 10, .6], [50, 16, 1.1], [60, 22, 1.6], [70, 16, 1.1], [80, 10, .6]]
-    .map(([x, h, k]) => `<rect x="${x - 3.5}" y="${34 - h}" width="7" height="${h + 6}" rx="3.5" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
+  const hair = [[41, 9, .6], [50.5, 15, 1.1], [60, 20, 1.6], [69.5, 15, 1.1], [79, 9, .6]]
+    .map(([x, h, k]) => `<rect x="${x - 4.5}" y="${34 - h}" width="9" height="${h + 8}" rx="4.5" stroke="#fff" stroke-width="1.6" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
   const eye = (cx, side) => `<g class="vm-eye vm-eye-${side}">` +
     `<ellipse cx="${cx}" cy="68" rx="9" ry="11" fill="#fff"/>` +
     `<g class="vm-pupil"><circle cx="${cx}" cy="69" r="5.6" fill="#2B2440"/><circle cx="${cx + 2}" cy="66.5" r="1.9" fill="#fff"/></g>` +
@@ -4685,7 +4686,7 @@ function mascotSVG(){
   <defs>
     <radialGradient id="${u}b" gradientUnits="userSpaceOnUse" cx="44" cy="46" r="72">
       <stop offset="0" stop-color="#FF9A8E"/><stop offset=".38" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/></radialGradient>
-    <linearGradient id="${u}h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#E6DAFF"/></linearGradient>
+    <linearGradient id="${u}h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF7A6B"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient>
   </defs>
   <ellipse class="vm-shadow" cx="60" cy="123" rx="30" ry="4.5" fill="#2B2440" opacity=".14"/>
   <g class="vm-body"><g class="vm-tilt">
@@ -4699,6 +4700,7 @@ function mascotSVG(){
     <g class="vm-eyes-shut" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"><path d="M38 68 Q45 73 52 68"/><path d="M68 68 Q75 73 82 68"/></g>
     <g class="vm-eyes-x" stroke="#2B2440" stroke-width="3" stroke-linecap="round"><path d="M40 63l10 10M50 63l-10 10M70 63l10 10M80 63l-10 10"/></g>
     <path class="vm-smile" d="M51 88 Q60 96 69 88" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"/>
+    <path class="vm-wavy" d="M49 90 q3.7 -4 7.3 0 t7.3 0 t7.3 0" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"/>
     <g class="vm-mouth-open"><ellipse cx="60" cy="91" rx="9" ry="8" fill="#3A1730"/><ellipse cx="60" cy="95.5" rx="5.5" ry="3" fill="#FF7A93"/></g>
     <path class="vm-grin" d="M48 86 Q60 101 72 86 Z" fill="#3A1730" stroke="#3A1730" stroke-width="2" stroke-linejoin="round"/>
     <g class="vm-sweat"><path d="M92 48 q4 7 0 10 q-4 -3 0 -10z" fill="#7CC8FF"/></g>
@@ -4725,7 +4727,10 @@ function vmShown(){
 function vmRender(){
   const state = vmShown();
   vm.els.forEach(el => {
-    if (!el.isConnected) { vm.els.delete(el); return; }
+    // A copy is dropped once it has left its page (the detached window closed),
+    // not before it was ever put in one — it is styled before it is placed.
+    if (!el.isConnected) { if (el._vmPlaced) vm.els.delete(el); return; }
+    el._vmPlaced = true;
     el.dataset.state = state;
     el.dataset.quiet = vm.quiet ? "1" : "0";
     el.dataset.sweat = String(vm.sweat);
@@ -4739,7 +4744,7 @@ function makeMascot(doc){
   el.className = "vmascot";
   el.innerHTML = mascotSVG();
   vm.els.add(el);
-  vmRender();
+  requestAnimationFrame(vmRender);
   return el;
 }
 function vmBase(state){
@@ -4788,7 +4793,7 @@ function mascotDevPanel(){
   p.className = "vm-dev";
   [
     b("auto", () => { stopFake(); vm.forced = null; vm.sweat = 0; vm.lvl = 0; vm.quiet = false; vmRender(); }),
-    b("idle", () => force("idle")),
+    b("calm", () => force("idle")),
     b("talk", () => { force("recording"); let t0 = 0; fake = setInterval(() => { t0 += .35; vmLevel(Math.max(0, 55 + 45 * Math.sin(t0) * Math.sin(t0 * 2.7))); }, 80); }),
     b("pause", () => { force("recording"); vm.quiet = true; vmRender(); }),
     b("think", () => force("processing")),
