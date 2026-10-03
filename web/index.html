@@ -2107,6 +2107,7 @@ const TR = { nl: {
   "Status":"Status",
   "Dashboard":"Dashboard",
   "Main figure":"Hoofdcijfer",
+  "Animation when there's an update":"Animatie bij een update",
   "Settings":"Instellingen",
   "Dictionary":"Woordenboek",
   "History":"Geschiedenis",
@@ -5849,7 +5850,8 @@ function loadLayout(){
   const widths = (saved && saved.widths && typeof saved.widths === "object") ? saved.widths : {};
   const spark = (saved && saved.spark && typeof saved.spark === "object") ? saved.spark : {};
   const main = saved && typeof saved.main === "string" ? saved.main : "";
-  statusLayout = { order, hidden, updateAlways, widths, spark, main };
+  const matrix = !(saved && saved.matrix === false);
+  statusLayout = { order, hidden, updateAlways, widths, spark, main, matrix };
   return statusLayout;
 }
 function saveLayout(){
@@ -5929,6 +5931,8 @@ function cardMenuItems(k){
     items.push({ label: t("Always"), sel: l.updateAlways, run: () => { l.updateAlways = true; layoutChanged(); } });
     items.push({ label: t("Only when there's an update"), sel: !l.updateAlways, run: () => { l.updateAlways = false; layoutChanged(); } });
     items.push({ sep: true });
+    items.push({ icon: ICON_SPARK_BG, label: t("Animation when there's an update"), sel: l.matrix !== false,
+      run: () => { l.matrix = l.matrix === false; saveLayout(); loadStats(); } }, { sep: true });
   }
   if (k === "cost") {
     const cur = (cfg && cfg.costs && cfg.costs.currency) || "eur";
@@ -6096,8 +6100,9 @@ function updateCardHTML(){
       `</div>`;
   }
   // News gets Matrix-style rain behind it — and a development build too, so
-  // the effect can be seen without waiting for a release.
-  const rain = has || current === "dev";
+  // the effect can be seen without waiting for a release — unless switched
+  // off in the card's menu.
+  const rain = (has || current === "dev") && loadLayout().matrix !== false;
   return (rain ? `<canvas class="upd-matrix" aria-hidden="true"></canvas>` : "") +
     `<div class="chip ${has ? "coral" : "violet"}">${has ? ICON_UPDATE : ICON_CHECKMARK}</div>` +
     `<div class="num upd-ver">${current}</div><div class="lbl">${t("version")}</div>` +
