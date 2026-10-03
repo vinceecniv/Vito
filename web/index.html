@@ -5797,12 +5797,12 @@ loadAbout();
 // chart, the costs and the live transcript alike — and any card can be dragged
 // to any place, like icons on a phone's home screen.
 const STAT_KEYS = ["credit","words","commands",
-  "spokenwpm","latency","cleanupfx","languages","rhythm","wordcloud","achievements","update"];
+  "latency","cleanupfx","languages","rhythm","wordcloud","achievements","update"];
 const LAYOUT_GROUPS = [
   { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript","quicksettings","mascot"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
-  spokenwpm:"wpm spoken", latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
+  latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
   cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings", mascot:"Vito" };
 // The fixed cards are written in the page; the statistic cards are built from
 // their data (renderStatCards). Some cards take two cells, the transcript a
@@ -5814,14 +5814,14 @@ const LAYOUT_SPAN2 = ["words","chart","rhythm","wordcloud","quicksettings","masc
 // chart, the calendar and quick settings are too cramped in one; the
 // transcript always spans the row. Until you choose, a card in LAYOUT_SPAN2 is
 // two cells and any other one.
-const LAYOUT_WIDTHS = { words:[1,2,3], spokenwpm:[1,2,3], chart:[2,3], wordcloud:[1,2,3], achievements:[1,2,3],
+const LAYOUT_WIDTHS = { words:[1,2,3], chart:[2,3], wordcloud:[1,2,3], achievements:[1,2,3],
   rhythm:[2,3], quicksettings:[2,3], transcript:[], mascot:[1,2,3] };
 const widthsFor = (k) => LAYOUT_WIDTHS[k] || [1, 2];
 // The cards that can show their trend as a chart in the background, and the
 // ones that do until you say otherwise: words for the volume and speaking rate
 // for the pace — the others mostly repeat the words curve.
-const SPARK_KEYS = ["words","spokenwpm"];
-const SPARK_DEFAULT = ["words","spokenwpm"];
+const SPARK_KEYS = ["words"];
+const SPARK_DEFAULT = ["words"];
 function sparkOn(k){
   const v = (loadLayout().spark || {})[k];
   return typeof v === "boolean" ? v : SPARK_DEFAULT.includes(k);
@@ -5893,7 +5893,8 @@ function layoutOrderOf(group){
   const keys = LAYOUT_GROUPS.find(g => g.id === group).keys;
   return l.order.filter(k => keys.includes(k) && (!l.hidden.includes(k) || LAYOUT_PINNED.includes(k))
     && (k !== "update" || updateCardWanted())
-    && (k !== "credit" || creditCardWanted()));
+    && (k !== "credit" || creditCardWanted())
+    && (k !== "commands" || commandsCardWanted()));
 }
 // The version card shows itself when it has news, or always if you asked it to.
 function updateCardWanted(){
@@ -5902,6 +5903,10 @@ function updateCardWanted(){
 }
 // The credit card only appears when a provider is actually out of credit.
 function creditCardWanted(){ return (creditState || []).length > 0; }
+// The Vito Assist card only appears once there were commands in the period:
+// for anyone not using Assist it would only ever say 0.
+let statCommands = 0;
+function commandsCardWanted(){ return statCommands > 0; }
 // The statistic cards' elements, by key, once built (renderStatCards).
 const statEls = {};
 const cardEl = (k) => LAYOUT_STATIC[k] ? $(LAYOUT_STATIC[k]) : statEls[k];
@@ -7251,8 +7256,12 @@ function volumeCard(st, series, I, nf, nfCompact){
     activations: { cls:"violet", icon:I.act, value:st.activations, format:nf, compact:true, lbl:t("activations"), spark:series(d => d.activations),
       tip:`≈ ${st.activations_per_day.toFixed(1)} ${t("per day")} — ` +
           t("Average number of times a day you started a dictation, over the days you used Vito in this period.") },
-    spoken: { cls:"coral", icon:I.mic, value:st.spoken_seconds, format:fmtShortSec, lbl:t("spoken time"), spark:series(d => d.spoken_seconds),
-      tip:t("How long the microphone was recording, from start to stop. Pauses and silences within a dictation count too — this is also the time your speech recognition bills for.") },
+    // Spoken time carries the speaking rate (words over recording time), which
+    // used to be a card of its own.
+    spoken: { cls:"coral", icon:I.mic, value:st.spoken_seconds, format:fmtShortSec, spark:series(d => d.spoken_seconds),
+      lbl:t("spoken time") + (st.spoken_wpm ? ` · ${nf(st.spoken_wpm)} wpm` : ""),
+      tip:t("How long the microphone was recording, from start to stop. Pauses and silences within a dictation count too — this is also the time your speech recognition bills for.") +
+        (st.spoken_wpm ? " " + t("How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.").replace("{n}", st.typing_wpm) : "") },
     saved: { cls:"violet", icon:I.time, value:st.saved_minutes, format:fmtShortMin, lbl:t("saved typing time"), spark:series(d => d.saved_minutes),
       tip:t("based on {n} wpm").replace("{n}", st.typing_wpm) + " — " +
           t("What you save compared with typing it yourself: your words divided by your typing speed, minus the time you spent speaking. Set your typing speed under Settings → General.") },
@@ -7309,7 +7318,6 @@ async function compareWithPrevious(st){
   const rows = [
     ["words", ...pick[main], false],
     ["commands", s => s.commands, nf, false],
-    ["spokenwpm", s => s.spoken_wpm, nf, false],
     ["latency", s => (s.insights || {}).latency_median_ms, fmtSecs, true],
   ];
   const span = rangeLabel(p.from, p.to);
@@ -7360,6 +7368,7 @@ async function loadStats(){
   const series = (f) => past.map(f);
   // The period is already shown by the dropdown, so cards don't repeat it; only
   // the genuinely extra sub-lines (per-day, wpm) stay.
+  statCommands = st.commands || 0;
   renderStatCards([
     // A prominent warning card that only appears when a provider is out of credit.
     { key:"credit", custom:true, cardClass:"credit-card", html:creditCardHTML, wire:wireCreditCard },
@@ -7371,10 +7380,6 @@ async function loadStats(){
     volumeCard(st, series, I, nf, nfCompact),
     { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:st.commands, format:nf, lbl:t("Vito Assist commands"),
       tip:t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.") },
-    // Speaking rate: words over recording time, next to the typing speed the
-    // saved-time card assumes.
-    { key:"spokenwpm", spark:series(d => d.spoken_seconds >= 10 ? d.words / (d.spoken_seconds / 60) : NaN), cls:"violet", icon:I.mic, value:st.spoken_wpm || 0, format:n => n ? nf(n) : "–", lbl:t("wpm spoken"),
-      tip:t("How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.").replace("{n}", st.typing_wpm) },
     // The insights below come from the dictations still in the history.
     { key:"latency", cls:"coral", icon:I.time, value:ins.latency_median_ms || 0, format:fmtSecs, lbl:t("wait after stopping"),
       sub: ins.latency_p95_ms ? t("slowest 5%: {s}").replace("{s}", fmtSecs(ins.latency_p95_ms)) : "",
