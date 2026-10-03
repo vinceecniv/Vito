@@ -4542,6 +4542,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif}
 .pip-state.recording{background:var(--pcoral);animation:pulse 1s infinite}
 .pip-state.processing{background:var(--pviolet)}
 @keyframes pulse{50%{opacity:.35}}
+.pip-tip{position:fixed;z-index:20;max-width:220px;padding:6px 9px;border-radius:8px;font-size:11.5px;line-height:1.35;pointer-events:none;
+  background:var(--pcard);color:var(--ptext);border:1px solid var(--pborder);box-shadow:0 8px 22px rgba(0,0,0,.28);opacity:0;transition:opacity .12s}
+.pip-tip.show{opacity:1}
 .pip-icobtn{width:28px;height:28px;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--pborder);border-radius:7px;background:none;color:var(--ptext3);cursor:var(--cur-hand)}
 .pip-icobtn:hover{color:var(--pviolet);border-color:var(--pviolet)}
 .pip-icobtn.active{color:#fff;background:var(--pviolet);border-color:var(--pviolet)}
@@ -4769,6 +4772,27 @@ async function togglePip(fromTray){
   d.getElementById("pip-mascot").appendChild(makeMascot(d));
   d.getElementById("pip-mascot").hidden = !pipMascot;
   // Wire the PiP controls (handlers run in this page's context).
+  // The window's buttons get the same kind of tip as the main page, instead of
+  // the browser's grey one.
+  (function pipTips(){
+    const tip = d.createElement("div"); tip.className = "pip-tip"; d.body.appendChild(tip);
+    let timer = null;
+    d.addEventListener("mouseover", (e) => {
+      const el = e.target.closest && e.target.closest("[title], [data-tip-text]");
+      if (!el) return;
+      if (el.title) { el.dataset.tipText = el.title; if (!el.hasAttribute("aria-label")) el.setAttribute("aria-label", el.title); el.removeAttribute("title"); }
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        tip.textContent = el.dataset.tipText; tip.classList.add("show");
+        const r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight, W = d.documentElement.clientWidth;
+        tip.style.left = Math.max(6, Math.min(r.left + r.width / 2 - w / 2, W - w - 6)) + "px";
+        tip.style.top = (r.bottom + 6 + h <= d.documentElement.clientHeight ? r.bottom + 6 : r.top - h - 6) + "px";
+      }, 400);
+    });
+    d.addEventListener("mouseout", (e) => {
+      if (e.target.closest && e.target.closest("[data-tip-text]")) { clearTimeout(timer); tip.classList.remove("show"); }
+    });
+  })();
   d.getElementById("pip-toggle").onclick = () => api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
   d.getElementById("pip-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
   d.getElementById("pip-copy").onclick = async (ev) => { if (await copyTranscript(pipWin)) { flashCopied(ev.currentTarget, "copied"); pipToast("✓ " + t("Copied to clipboard")); } };
@@ -9320,13 +9344,32 @@ function uiZoom(){
 // Same tooltip, but with the text carried on the element — for tips that are
 // generated with their content (the stat cards) rather than keyed in HELP.
 function showTipText(target){
-  if (!helpTipsEnabled || !target.dataset.tipText) return;
+  if ((!helpTipsEnabled && !target.dataset.tipLabel) || !target.dataset.tipText) return;
   placeTip(helpTip(), target.dataset.tipText, target);
 }
 document.querySelectorAll("[data-help]").forEach(el => {
   el.addEventListener("mouseenter", () => { clearTimeout(helpTimer); helpTimer = setTimeout(() => showHelp(el), 500); });
   el.addEventListener("mouseleave", hideHelp);
 });
+// Any plain title attribute — written in the page, set by code, or put back
+// by a language switch — becomes the styled tip the moment it is pointed at,
+// so the browser's own grey tooltip never shows. (Captured before the
+// handler below, which then shows it.) These are names rather than help, so
+// they show even with help tips switched off; the name stays available to
+// screen readers as aria-label.
+document.addEventListener("mouseover", (e) => {
+  const el = e.target.closest && e.target.closest("[title]");
+  if (!el || !(el instanceof HTMLElement) || !el.title) return;
+  // A title set again (code, or a language switch) replaces the tip it became;
+  // the English source goes along, so the next language switch can translate
+  // the tip as it would have the title.
+  if (!el.dataset.tipText || el.dataset.tipLabel) {
+    el.dataset.tipText = el.title; el.dataset.tipLabel = "1";
+    if (el.dataset.i18nTitle !== undefined) el.dataset.i18nDataTipText = el.dataset.i18nTitle;
+  }
+  if (!el.hasAttribute("aria-label")) el.setAttribute("aria-label", el.title);
+  el.removeAttribute("title");
+}, true);
 // Delegated, and matching anything carrying a tip text: the stat cards are
 // re-rendered on every refresh, so per-element listeners would be lost.
 document.addEventListener("mouseover", (e) => {
