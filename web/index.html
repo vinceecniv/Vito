@@ -5676,7 +5676,10 @@ async function loadAbout(){
   try { if (a.commit_time) when = ` <span style="color:var(--text3); font-weight:400;">(${new Date(a.commit_time).toLocaleDateString(numLoc())})</span>`; } catch {}
   aboutInfo = a;
   setAssetVer(a.version);
-  if (a.version === "dev" && !document.querySelector("#mascot-card .vm-dev")) $("mascot-card").appendChild(mascotDevPanel());
+  // The mascot's test buttons: a development build, and only when asked for
+  // with localStorage["vito-mascot-dev"] = "1".
+  let vmDev = false; try { vmDev = localStorage.getItem("vito-mascot-dev") === "1"; } catch {}
+  if (a.version === "dev" && vmDev && !document.querySelector("#mascot-card .vm-dev")) $("mascot-card").appendChild(mascotDevPanel());
   box.innerHTML =
     row(t("Version"), `<span id="about-version">${a.version || "—"}</span>`) +
     row(t("Git commit"), commit + when) +
