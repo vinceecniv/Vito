@@ -458,11 +458,20 @@
   /* Rhythm: twice as wide, so the week-by-hour grid has room. */
   .statgrid > .rhythm-card { grid-column:span 2; }
   .statgrid > .cloud-card { grid-column:span 2; }
-  /* The cloud has the calendar grid's proportions (26 columns by 7 rows), so
-     this card and the calendar card are the same size; fitCloud drops the
+  /* The cloud fills the whole card, behind the icon and title too. The card
+     keeps the calendar card's size through an invisible spacer with the
+     calendar grid's proportions (26 columns by 7 rows); fitCloud drops the
      words that don't fit. */
-  .cloud { display:flex; flex-wrap:wrap; justify-content:center; align-content:center; align-items:baseline; gap:0 10px;
-    margin-top:12px; line-height:1.1; aspect-ratio:26 / 7; overflow:hidden; }
+  .cloud-spacer { margin-top:12px; aspect-ratio:26 / 7; }
+  .cloud { position:absolute; inset:0; padding:8px 12px; z-index:0; display:flex; flex-wrap:wrap; justify-content:center;
+    align-content:center; align-items:baseline; gap:0 10px; line-height:1.1; overflow:hidden; }
+  /* The head sits over the cloud; a halo in the card colour keeps it readable
+     whatever word runs behind it. */
+  .cloud-card .rhythm-head { position:relative; z-index:1; pointer-events:none; }
+  .cloud-card .rhythm-head .lbl { color:var(--text); font-weight:600;
+    text-shadow:0 0 3px var(--card), 0 0 6px var(--card), 0 0 10px var(--card), 0 0 16px var(--card); }
+  .cloud-card .rhythm-head .chip { background:var(--card);
+    box-shadow:inset 0 0 0 100px var(--coral-soft), 0 0 10px 4px var(--card); }
   .cloud span { font-weight:600; color:var(--violet); letter-spacing:-0.01em; }
   :root[data-theme="dark"] .cloud span { color:var(--violet-l); }
   .cloud span.alt { color:var(--coral); }
@@ -5906,7 +5915,7 @@ function cloudCardHTML(ins){
     const cls = top.has(w.word) ? "top" : (w.i % 2 ? "alt" : "");
     return `<span class="${cls}" data-n="${w.count}" style="font-size:${size}px;opacity:${(0.6 + 0.4 * k).toFixed(2)}" title="${ahEsc(w.word)} · ${w.count.toLocaleString(numLoc())}">${ahEsc(w.word)}</span>`;
   }).join("");
-  return head + `<div class="cloud">${cells}</div>`;
+  return head + `<div class="cloud-spacer"></div><div class="cloud">${cells}</div>`;
 }
 // The cloud is a fixed size, so what doesn't fit goes: the least used word
 // first, until the rest sits inside the box.
