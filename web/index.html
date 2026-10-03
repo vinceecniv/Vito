@@ -1163,6 +1163,11 @@
   /* Quick settings card: the active hotkey, speech model, language and cleanup,
      each a shortcut to its settings section, two by two. */
   .status-tags { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+  .card.stat.mascot-card { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:10px 14px 12px; overflow:hidden; }
+  .mascot-card .vm-slot { width:92px; height:100px; flex:none; }
+  .mascot-card .vm-dev { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin-top:8px; }
+  .mascot-card .vm-dev button { font-family:inherit; font-size:10.5px; font-weight:600; line-height:1; padding:4px 7px; border-radius:7px; border:1px dashed var(--card-border); background:transparent; color:var(--text2); cursor:pointer; }
+  .mascot-card .vm-dev button:hover { color:var(--text); border-style:solid; }
   .qs-card .stag { min-width:0; border-radius:10px; }
   /* The cleanup rule set, at the right of the card's head: it decides what
      every dictation comes out like, so it sits with the other quick settings. */
@@ -1478,6 +1483,7 @@
           </div>
           <div id="timings"></div>
         </div>
+        <div class="card stat mascot-card" id="mascot-card"><div class="vm-slot" id="vm-slot"></div></div>
         <div class="card stat qs-card" id="qs-card">
           <div class="rhythm-head"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="9" cy="8" r="2.4" fill="var(--card)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--card)"/></svg></div><div class="lbl">Quick settings</div><button class="pill pill-btn qs-ruleset" id="ruleset-pill" data-help="prompts" aria-haspopup="true" aria-expanded="false" aria-label="Cleanup rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h16M4 18h9"/><path d="M17.5 15.5l3 3-4 1z"/></svg><span id="ruleset-lbl">Vito default</span></button></div>
           <div class="status-tags" id="status-tags"></div>
@@ -3850,6 +3856,7 @@ function setState(state) {
   $("btn-cancel").hidden = state !== "recording";
   if (state !== "recording") { $("meter").style.height = "0"; $("meter").classList.remove("clip"); pipWave(0); trWave(0); }
   if (state === "idle") loadStats();
+  vmBase(state === "recording" || state === "processing" ? state : "idle");
 }
 function fmtMs(ms) { return Math.round(ms / 1e6) + " ms"; }
 // renderTimings draws a segmented bar of where time went between stop-speaking
@@ -3941,6 +3948,7 @@ function connectWS() {
       }
       if (e.timings) renderTimings(e.timings);
       setLastRecording(e.recording_id);
+      vmFlash("happy", 2200);
       loadStats();
       // A finished dictation may have just crossed a milestone; check quietly and
       // let celebrateNew announce anything new.
@@ -3967,7 +3975,9 @@ function connectWS() {
       const mm = $("mt-meter"); if (mm) { mm.style.width = e.level + "%"; mm.classList.toggle("clip", !!e.clip); }
       pipWave(lvl);
       trWave(lvl);
+      if (rec) vmLevel(lvl);
     } else if (e.type === "error") {
+      vmFlash("dizzy", 1800);
       if (e.credit) {
         const msg = t("Your {p} account is out of credit. Top up to keep dictating.").replace("{p}", e.credit);
         $("transcript").textContent = "⚠ " + msg;
@@ -4274,6 +4284,7 @@ const PIP_SVG = { copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColo
   open:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4h6v6M20 4l-8 8M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></svg>',
   gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 0 1-4 0v-.2A1.6 1.6 0 0 0 8 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.9A1.6 1.6 0 0 0 2 13.5H2a2 2 0 0 1 0-4h.2A1.6 1.6 0 0 0 3.6 8.5a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H8a1.6 1.6 0 0 0 1-1.5V2a2 2 0 0 1 4 0v.2a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1H22a2 2 0 0 1 0 4h-.2a1.6 1.6 0 0 0-1.5 1z"/></svg>' };
 const PIP_CSS = `*{margin:0;box-sizing:border-box}
+.pip-mascot{position:absolute;right:10px;bottom:54px;width:64px;height:70px;pointer-events:none;z-index:2;opacity:.95}
 /* A class that sets display (e.g. .pip-btn's inline-flex) outranks the browser's
    bare [hidden] rule, so hidden buttons would still show. Settle it once. */
 [hidden]{display:none!important}
@@ -4488,7 +4499,7 @@ async function togglePip(fromTray){
   // unfocused opener tab, so it's invisible in practice.
   setTimeout(() => { if (document.title === PIP_WINDOW_TITLE) document.title = restoreTitle; }, 600);
   const d = pipWin.document;
-  const style = d.createElement("style"); style.textContent = PIP_CSS; d.head.appendChild(style);
+  const style = d.createElement("style"); style.textContent = PIP_CSS + MASCOT_CSS; d.head.appendChild(style);
   d.documentElement.dataset.theme = effectiveDark() ? "dark" : "light";
   d.title = "Vito — live";
   const swRow = (id, label) => `<label class="pip-set-row"><span>${label}</span><span class="pip-sw"><input type="checkbox" id="${id}"><span class="tr"></span></span></label>`;
@@ -4507,6 +4518,7 @@ async function togglePip(fromTray){
         swRow("pip-set-viz", t("Audio visualisation")) +
       `</div>` +
       `<div class="pip-bursts" id="pip-bursts"><div class="pip-wave" id="pip-wave"></div></div>` +
+      `<div class="pip-mascot" id="pip-mascot"></div>` +
       `<div class="pip-cmd" id="pip-cmd"></div>` +
       `<div class="pip-body" id="pip-body"></div>` +
       `<div class="pip-ctrl">` +
@@ -4515,6 +4527,7 @@ async function togglePip(fromTray){
         `<button class="pip-icobtn" id="pip-copy" title="${t("Copy text")}" style="margin-left:auto">${PIP_SVG.copy}</button>` +
       `</div>` +
     `</div>`;
+  d.getElementById("pip-mascot").appendChild(makeMascot(d));
   // Wire the PiP controls (handlers run in this page's context).
   d.getElementById("pip-toggle").onclick = () => api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
   d.getElementById("pip-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
@@ -4564,6 +4577,231 @@ function refreshPipSettings(){
   }
   set("pip-set-viz", pipViz);
 }
+
+/* ---- Vito, the mascot ---- */
+// A little Vito who chats along while you dictate, like Bongo Cat types along
+// with your keyboard: a round body in the logo's coral-to-violet, with the
+// logo's five bars as a quiff. Drawn in SVG, moved by CSS, so it is crisp at
+// any size and cheap to run. One controller (vm) drives every copy — the card
+// on the status page and the one in the detached window — by setting data
+// attributes and a --lvl (0–1) on each; the CSS does the rest.
+//
+// What it does:
+//   idle        breathes, blinks, now and then looks around, winks, hops
+//   recording   mouth opens with your voice, quiff bounces like an equaliser;
+//               a pause in speech tilts the head as if listening
+//   processing  looks up, thinking bubbles
+//   happy       after a dictation: ^^ eyes, a hop, sparkles
+//   dizzy       after an error: X eyes and a shake
+//   sleep       after long without dictating: eyes shut, Zzz
+//   sweat       a drop after 45 s of talking, a second after 90 s
+const MASCOT_CSS = `
+.vmascot{--lvl:0;width:100%;height:100%;position:relative}
+.vmascot svg{width:100%;height:100%;display:block;overflow:visible}
+.vmascot .vm-body{transform-origin:60px 118px;animation:vmBreath 3.2s ease-in-out infinite}
+.vmascot .vm-tilt{transform-origin:60px 112px;transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+.vmascot .vm-shadow{transform-origin:60px 123px;animation:vmShadow 3.2s ease-in-out infinite}
+@keyframes vmBreath{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.975)}}
+@keyframes vmShadow{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.vmascot .vm-lid{transform-box:fill-box;transform-origin:center top;transform:scaleY(0);animation:vmBlink 5.3s infinite}
+.vmascot .vm-eye-r .vm-lid{animation-delay:.04s}
+@keyframes vmBlink{0%,93%,100%{transform:scaleY(0)}95%,97%{transform:scaleY(1)}}
+.vmascot .vm-pupil{transition:transform .35s ease}
+.vmascot .vm-hair rect{transform-box:fill-box;transform-origin:center bottom;animation:vmHair 2.6s ease-in-out infinite}
+.vmascot .vm-hair rect:nth-child(2){animation-delay:.15s}.vmascot .vm-hair rect:nth-child(3){animation-delay:.3s}
+.vmascot .vm-hair rect:nth-child(4){animation-delay:.45s}.vmascot .vm-hair rect:nth-child(5){animation-delay:.6s}
+@keyframes vmHair{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.82)}}
+.vmascot .vm-mouth-open,.vmascot .vm-grin,.vmascot .vm-eyes-happy,.vmascot .vm-eyes-shut,.vmascot .vm-eyes-x,
+.vmascot .vm-sweat,.vmascot .vm-sweat2,.vmascot .vm-zzz,.vmascot .vm-dots,.vmascot .vm-spark{display:none}
+/* talking: the mouth and quiff follow your voice */
+.vmascot[data-state="recording"] .vm-body{animation:none;transition:transform .09s;
+  transform:translateY(calc(var(--lvl) * -5px)) scale(calc(1 + var(--lvl) * .05),calc(1 - var(--lvl) * .04))}
+.vmascot[data-state="recording"] .vm-smile{display:none}
+.vmascot[data-state="recording"] .vm-mouth-open{display:inline;transform-box:fill-box;transform-origin:center;transition:transform .08s;
+  transform:scale(calc(.75 + var(--lvl) * .35),calc(.14 + var(--lvl) * .95))}
+.vmascot[data-state="recording"] .vm-hair rect{animation:none;transition:transform .08s;transform:scaleY(calc(.55 + var(--lvl) * var(--k)))}
+.vmascot[data-state="recording"] .vm-eye{transform-box:fill-box;transform-origin:center;transform:scale(1.06)}
+.vmascot[data-state="recording"][data-quiet="1"] .vm-tilt{transform:rotate(-7deg)}
+.vmascot[data-state="recording"][data-quiet="1"] .vm-pupil{transform:translate(-1.5px,-1px)}
+/* thinking */
+.vmascot[data-state="processing"] .vm-pupil{transform:translate(3px,-4px)}
+.vmascot[data-state="processing"] .vm-dots{display:inline}
+.vmascot[data-state="processing"] .vm-dots circle{animation:vmDot 1.2s ease-in-out infinite}
+.vmascot[data-state="processing"] .vm-dots circle:nth-child(2){animation-delay:.2s}
+.vmascot[data-state="processing"] .vm-dots circle:nth-child(3){animation-delay:.4s}
+.vmascot[data-state="processing"] .vm-tilt{transform:rotate(5deg)}
+@keyframes vmDot{0%,100%{opacity:.25}50%{opacity:1}}
+/* happy */
+.vmascot[data-state="happy"] .vm-eyes-open,.vmascot[data-state="happy"] .vm-smile{display:none}
+.vmascot[data-state="happy"] .vm-eyes-happy,.vmascot[data-state="happy"] .vm-grin,.vmascot[data-state="happy"] .vm-spark{display:inline}
+.vmascot[data-state="happy"] .vm-body{animation:vmHop .55s cubic-bezier(.3,1.6,.5,1) 2}
+.vmascot[data-state="happy"] .vm-spark path{transform-box:fill-box;transform-origin:center;animation:vmTwinkle .9s ease-in-out infinite}
+.vmascot[data-state="happy"] .vm-spark path:nth-child(2){animation-delay:.3s}
+.vmascot[data-state="happy"] .vm-spark path:nth-child(3){animation-delay:.6s}
+@keyframes vmHop{0%,100%{transform:translateY(0) scale(1,1)}30%{transform:translateY(0) scale(1.08,.9)}60%{transform:translateY(-12px) scale(.95,1.06)}}
+@keyframes vmTwinkle{0%,100%{transform:scale(.3);opacity:0}50%{transform:scale(1);opacity:1}}
+/* dizzy */
+.vmascot[data-state="dizzy"] .vm-eyes-open{display:none}
+.vmascot[data-state="dizzy"] .vm-eyes-x{display:inline}
+.vmascot[data-state="dizzy"] .vm-tilt{animation:vmShake .5s ease-in-out 3}
+@keyframes vmShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}75%{transform:rotate(9deg)}}
+/* sleeping */
+.vmascot[data-state="sleep"] .vm-eyes-open{display:none}
+.vmascot[data-state="sleep"] .vm-eyes-shut,.vmascot[data-state="sleep"] .vm-zzz{display:inline}
+.vmascot[data-state="sleep"] .vm-body{animation:vmBreath 5s ease-in-out infinite}
+.vmascot[data-state="sleep"] .vm-tilt{transform:rotate(8deg) translateY(3px)}
+.vmascot[data-state="sleep"] .vm-hair rect{animation:none;transform:scaleY(.6)}
+.vmascot[data-state="sleep"] .vm-zzz text{animation:vmZ 2.7s ease-in infinite;opacity:0}
+.vmascot[data-state="sleep"] .vm-zzz text:nth-child(2){animation-delay:.9s}
+.vmascot[data-state="sleep"] .vm-zzz text:nth-child(3){animation-delay:1.8s}
+@keyframes vmZ{0%{opacity:0;transform:translate(0,0)}25%{opacity:1}100%{opacity:0;transform:translate(10px,-22px)}}
+/* sweat */
+.vmascot[data-sweat="1"] .vm-sweat,.vmascot[data-sweat="2"] .vm-sweat,.vmascot[data-sweat="2"] .vm-sweat2{display:inline}
+.vmascot .vm-sweat path,.vmascot .vm-sweat2 path{animation:vmDrip 1.6s ease-in infinite}
+.vmascot .vm-sweat2 path{animation-delay:.7s}
+@keyframes vmDrip{0%{transform:translateY(-3px);opacity:0}20%{opacity:1}100%{transform:translateY(10px);opacity:0}}
+/* the little in-between poses while idle */
+.vmascot[data-pose="look-l"] .vm-pupil{transform:translate(-4px,0)}
+.vmascot[data-pose="look-r"] .vm-pupil{transform:translate(4px,0)}
+.vmascot[data-pose="tilt"] .vm-tilt{transform:rotate(9deg)}
+.vmascot[data-pose="hop"] .vm-body{animation:vmHop .55s cubic-bezier(.3,1.6,.5,1) 1}
+.vmascot[data-pose="wink"] .vm-eye-r .vm-lid{animation:none;transform:scaleY(1)}
+@media (prefers-reduced-motion: reduce){
+  .vmascot .vm-body,.vmascot .vm-shadow,.vmascot .vm-hair rect,.vmascot .vm-zzz text,.vmascot .vm-sweat path,.vmascot .vm-sweat2 path{animation:none}
+}`;
+(function(){ const s = document.createElement("style"); s.textContent = MASCOT_CSS; document.head.appendChild(s); })();
+let vmSeq = 0;
+// The drawing. The body's gradient is in user space, so the eyelids that use it
+// match the face behind them exactly.
+function mascotSVG(){
+  const u = "vm" + (++vmSeq);
+  const hair = [[40, 10, .6], [50, 16, 1.1], [60, 22, 1.6], [70, 16, 1.1], [80, 10, .6]]
+    .map(([x, h, k]) => `<rect x="${x - 3.5}" y="${34 - h}" width="7" height="${h + 6}" rx="3.5" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
+  const eye = (cx, side) => `<g class="vm-eye vm-eye-${side}">` +
+    `<ellipse cx="${cx}" cy="68" rx="9" ry="11" fill="#fff"/>` +
+    `<g class="vm-pupil"><circle cx="${cx}" cy="69" r="5.6" fill="#2B2440"/><circle cx="${cx + 2}" cy="66.5" r="1.9" fill="#fff"/></g>` +
+    `<rect class="vm-lid" x="${cx - 10}" y="56" width="20" height="24" fill="url(#${u}b)"/></g>`;
+  return `<svg viewBox="0 0 120 130" aria-hidden="true">
+  <defs>
+    <radialGradient id="${u}b" gradientUnits="userSpaceOnUse" cx="44" cy="46" r="72">
+      <stop offset="0" stop-color="#FF9A8E"/><stop offset=".38" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/></radialGradient>
+    <linearGradient id="${u}h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#E6DAFF"/></linearGradient>
+  </defs>
+  <ellipse class="vm-shadow" cx="60" cy="123" rx="30" ry="4.5" fill="#2B2440" opacity=".14"/>
+  <g class="vm-body"><g class="vm-tilt">
+    <g class="vm-hair">${hair}</g>
+    <circle cx="60" cy="72" r="44" fill="url(#${u}b)"/>
+    <ellipse cx="60" cy="104" rx="30" ry="9" fill="#2B2440" opacity=".08"/>
+    <ellipse cx="42" cy="47" rx="15" ry="9" fill="#fff" opacity=".38" transform="rotate(-28 42 47)"/>
+    <ellipse cx="33" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/><ellipse cx="87" cy="85" rx="7" ry="4.5" fill="#FFB3C1" opacity=".6"/>
+    <g class="vm-eyes-open">${eye(45, "l")}${eye(75, "r")}</g>
+    <g class="vm-eyes-happy" fill="none" stroke="#2B2440" stroke-width="3.2" stroke-linecap="round"><path d="M38 70 Q45 61 52 70"/><path d="M68 70 Q75 61 82 70"/></g>
+    <g class="vm-eyes-shut" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"><path d="M38 68 Q45 73 52 68"/><path d="M68 68 Q75 73 82 68"/></g>
+    <g class="vm-eyes-x" stroke="#2B2440" stroke-width="3" stroke-linecap="round"><path d="M40 63l10 10M50 63l-10 10M70 63l10 10M80 63l-10 10"/></g>
+    <path class="vm-smile" d="M51 88 Q60 96 69 88" fill="none" stroke="#2B2440" stroke-width="3" stroke-linecap="round"/>
+    <g class="vm-mouth-open"><ellipse cx="60" cy="91" rx="9" ry="8" fill="#3A1730"/><ellipse cx="60" cy="95.5" rx="5.5" ry="3" fill="#FF7A93"/></g>
+    <path class="vm-grin" d="M48 86 Q60 101 72 86 Z" fill="#3A1730" stroke="#3A1730" stroke-width="2" stroke-linejoin="round"/>
+    <g class="vm-sweat"><path d="M92 48 q4 7 0 10 q-4 -3 0 -10z" fill="#7CC8FF"/></g>
+    <g class="vm-sweat2"><path d="M27 54 q3.5 6 0 9 q-3.5 -3 0 -9z" fill="#7CC8FF"/></g>
+  </g></g>
+  <g class="vm-dots" fill="#A78BFA"><circle cx="94" cy="30" r="3"/><circle cx="102" cy="21" r="4"/><circle cx="111" cy="10" r="5"/></g>
+  <g class="vm-spark" fill="#FFC94D"><path d="M16 40 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/><path d="M101 36 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z"/><path d="M96 92 l1.4 3.4 3.4 1.4 -3.4 1.4 -1.4 3.4 -1.4 -3.4 -3.4 -1.4 3.4 -1.4z"/></g>
+  <g class="vm-zzz" fill="#A78BFA" font-family="'Baloo 2',sans-serif" font-weight="800"><text x="88" y="36" font-size="13">z</text><text x="94" y="28" font-size="16">z</text><text x="101" y="19" font-size="19">Z</text></g>
+</svg>`;
+}
+// The controller. Base state from the daemon (idle / recording / processing),
+// short overlays on top (happy, dizzy), sleeping when idle long enough.
+const VM_SLEEP_MS = 8 * 60 * 1000, VM_SWEAT = [45000, 90000];
+const vm = { base: "idle", lvl: 0, quiet: false, sweat: 0, pose: "", happyUntil: 0, dizzyUntil: 0, lastActive: Date.now(),
+  forced: null, els: new Set(), recTimers: [], quietSince: 0 };
+function vmShown(){
+  if (vm.forced) return vm.forced;
+  const now = Date.now();
+  if (now < vm.dizzyUntil) return "dizzy";
+  if (now < vm.happyUntil) return "happy";
+  if (vm.base === "idle" && now - vm.lastActive > VM_SLEEP_MS) return "sleep";
+  return vm.base;
+}
+function vmRender(){
+  const state = vmShown();
+  vm.els.forEach(el => {
+    if (!el.isConnected) { vm.els.delete(el); return; }
+    el.dataset.state = state;
+    el.dataset.quiet = vm.quiet ? "1" : "0";
+    el.dataset.sweat = String(vm.sweat);
+    el.dataset.pose = state === "idle" ? vm.pose : "";
+    el.style.setProperty("--lvl", vm.lvl.toFixed(2));
+  });
+}
+// A new copy of Vito for doc (this page, or the detached window's).
+function makeMascot(doc){
+  const el = doc.createElement("div");
+  el.className = "vmascot";
+  el.innerHTML = mascotSVG();
+  vm.els.add(el);
+  vmRender();
+  return el;
+}
+function vmBase(state){
+  if (state === vm.base) return;
+  vm.base = state;
+  vm.lastActive = Date.now();
+  vm.recTimers.forEach(clearTimeout); vm.recTimers = [];
+  if (state === "recording") {
+    vm.sweat = 0;
+    VM_SWEAT.forEach((ms, i) => vm.recTimers.push(setTimeout(() => { vm.sweat = i + 1; vmRender(); }, ms)));
+  } else if (state === "idle") { vm.sweat = 0; vm.lvl = 0; vm.quiet = false; }
+  vmRender();
+}
+function vmLevel(level){
+  vm.lvl = Math.max(0, Math.min(1, (level || 0) / 100));
+  // A pause in speech: after ~0.9 s quiet the head tilts as if listening.
+  const now = Date.now();
+  if (vm.lvl > .08) { vm.quietSince = 0; vm.quiet = false; }
+  else if (!vm.quietSince) vm.quietSince = now;
+  else if (now - vm.quietSince > 900) vm.quiet = true;
+  vmRender();
+}
+function vmFlash(kind, ms){
+  vm[kind === "happy" ? "happyUntil" : "dizzyUntil"] = Date.now() + ms;
+  vmRender();
+  setTimeout(vmRender, ms + 30);
+}
+// Now and then, while idle, a little gesture — and the slide into sleep.
+(function vmTick(){
+  if (vmShown() === "idle" && !vm.forced) {
+    vm.pose = ["look-l", "look-r", "wink", "hop", "tilt"][Math.floor(Math.random() * 5)];
+    vmRender();
+    setTimeout(() => { vm.pose = ""; vmRender(); }, 1500);
+  } else vmRender(); // also catches the moment it falls asleep
+  setTimeout(vmTick, 6000 + Math.random() * 7000);
+})();
+// Developer panel, only in a development build: puts Vito in any state, and
+// can fake a voice, so every pose can be checked without dictating. English on
+// purpose — it is a tool for whoever works on Vito, not part of the interface.
+function mascotDevPanel(){
+  const b = (label, run) => { const x = document.createElement("button"); x.type = "button"; x.textContent = label; x.onclick = (e) => { e.stopPropagation(); run(); }; return x; };
+  let fake = null;
+  const stopFake = () => { if (fake) { clearInterval(fake); fake = null; } };
+  const force = (s) => { stopFake(); vm.forced = s; vm.lvl = 0; vmRender(); };
+  const p = document.createElement("div");
+  p.className = "vm-dev";
+  [
+    b("auto", () => { stopFake(); vm.forced = null; vm.sweat = 0; vm.lvl = 0; vm.quiet = false; vmRender(); }),
+    b("idle", () => force("idle")),
+    b("talk", () => { force("recording"); let t0 = 0; fake = setInterval(() => { t0 += .35; vmLevel(Math.max(0, 55 + 45 * Math.sin(t0) * Math.sin(t0 * 2.7))); }, 80); }),
+    b("pause", () => { force("recording"); vm.quiet = true; vmRender(); }),
+    b("think", () => force("processing")),
+    b("happy", () => force("happy")),
+    b("dizzy", () => force("dizzy")),
+    b("sleep", () => force("sleep")),
+    b("sweat 0/1/2", () => { vm.sweat = (vm.sweat + 1) % 3; vmRender(); }),
+    b("pose", () => { force("idle"); vm.pose = ["look-l", "look-r", "wink", "hop", "tilt"][Math.floor(Math.random() * 5)]; vmRender(); }),
+  ].forEach(x => p.appendChild(x));
+  return p;
+}
+
+$("vm-slot").appendChild(makeMascot(document));
 
 /* ---- PiP audio bursts ---- */
 // Each level tick can launch a gradient streak from the bottom edge at a random
@@ -5093,6 +5331,7 @@ async function loadAbout(){
   try { if (a.commit_time) when = ` <span style="color:var(--text3); font-weight:400;">(${new Date(a.commit_time).toLocaleDateString(numLoc())})</span>`; } catch {}
   aboutInfo = a;
   setAssetVer(a.version);
+  if (a.version === "dev" && !document.querySelector("#mascot-card .vm-dev")) $("mascot-card").appendChild(mascotDevPanel());
   box.innerHTML =
     row(t("Version"), `<span id="about-version">${a.version || "—"}</span>`) +
     row(t("Git commit"), commit + when) +
@@ -5146,11 +5385,11 @@ const LAYOUT_GROUPS = [
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", sentences:"sentences cleaned", activations:"activations",
   spoken:"spoken time", saved:"saved typing time", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
   spokenwpm:"wpm spoken", latency:"wait after stopping", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
-  cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings" };
+  cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings", mascot:"Vito" };
 // The fixed cards are written in the page; the statistic cards are built from
 // their data (renderStatCards). Some cards take two cells, the transcript a
 // whole row — and it can't be hidden, it holds Start / Stop.
-const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card" };
+const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card", mascot:"mascot-card" };
 const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud","quicksettings"];
 // The widths, in cells, each card can be set to from its menu — where a choice
 // makes sense. The cards with a chart in them can go up to three; the words
@@ -5158,7 +5397,7 @@ const LAYOUT_SPAN2 = ["chart","rhythm","wordcloud","quicksettings"];
 // transcript always spans the row. Until you choose, a card in LAYOUT_SPAN2 is
 // two cells and any other one.
 const LAYOUT_WIDTHS = { words:[1,2,3], spokenwpm:[1,2,3], chart:[2,3], wordcloud:[1,2,3], achievements:[1,2,3],
-  rhythm:[2,3], quicksettings:[2,3], transcript:[] };
+  rhythm:[2,3], quicksettings:[2,3], transcript:[], mascot:[1,2] };
 const widthsFor = (k) => LAYOUT_WIDTHS[k] || [1, 2];
 // The cards that can show their trend as a chart in the background, and the
 // ones that do until you say otherwise: words for the volume and speaking rate
@@ -5179,8 +5418,8 @@ const LAYOUT_PINNED = ["transcript"];
 // yet, so an existing arrangement keeps its look. LAYOUT_FRESH is what you get
 // without one, or after a reset: the transcript first, then the statistics,
 // the chart and the costs.
-const LAYOUT_DEFAULT = [...STAT_KEYS, "cost", "chart", "transcript", "quicksettings"];
-const LAYOUT_FRESH = ["transcript", ...STAT_KEYS, "chart", "cost", "quicksettings"];
+const LAYOUT_DEFAULT = [...STAT_KEYS, "cost", "chart", "transcript", "quicksettings", "mascot"];
+const LAYOUT_FRESH = ["transcript", ...STAT_KEYS, "chart", "cost", "quicksettings", "mascot"];
 let statusLayout = null;
 function loadLayout(){
   if (statusLayout) return statusLayout;
