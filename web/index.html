@@ -2721,6 +2721,7 @@ const TR = { nl: {
   "Show key":"Key tonen",
   "Hide key":"Key verbergen",
   "Audio visualisation":"Audio-visualisatie",
+  "Vito character":"Vito-figuurtje",
   "Demo mode":"Demo-modus",
   "Turn off demo mode":"Demo-modus uitzetten",
   "Demo mode off":"Demo-modus uit",
@@ -4287,7 +4288,8 @@ const PIP_SVG = { copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColo
   open:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4h6v6M20 4l-8 8M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></svg>',
   gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 0 1-4 0v-.2A1.6 1.6 0 0 0 8 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.9A1.6 1.6 0 0 0 2 13.5H2a2 2 0 0 1 0-4h.2A1.6 1.6 0 0 0 3.6 8.5a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H8a1.6 1.6 0 0 0 1-1.5V2a2 2 0 0 1 4 0v.2a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1H22a2 2 0 0 1 0 4h-.2a1.6 1.6 0 0 0-1.5 1z"/></svg>' };
 const PIP_CSS = `*{margin:0;box-sizing:border-box}
-.pip-mascot{position:absolute;right:46px;bottom:3px;width:58px;height:62px;pointer-events:none}
+.pip-mascot{position:absolute;right:44px;bottom:4px;width:86px;height:92px;pointer-events:none}
+.pip-mascot[hidden]{display:none}
 /* A class that sets display (e.g. .pip-btn's inline-flex) outranks the browser's
    bare [hidden] rule, so hidden buttons would still show. Settle it once. */
 [hidden]{display:none!important}
@@ -4519,6 +4521,7 @@ async function togglePip(fromTray){
         swRow("pip-set-cleanup", t("AI cleanup")) +
         swRow("pip-set-enter", t("Enter after text")) +
         swRow("pip-set-viz", t("Audio visualisation")) +
+        swRow("pip-set-mascot", t("Vito character")) +
       `</div>` +
       `<div class="pip-bursts" id="pip-bursts"><div class="pip-wave" id="pip-wave"></div></div>` +
       `<div class="pip-cmd" id="pip-cmd"></div>` +
@@ -4531,6 +4534,7 @@ async function togglePip(fromTray){
       `</div>` +
     `</div>`;
   d.getElementById("pip-mascot").appendChild(makeMascot(d));
+  d.getElementById("pip-mascot").hidden = !pipMascot;
   // Wire the PiP controls (handlers run in this page's context).
   d.getElementById("pip-toggle").onclick = () => api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
   d.getElementById("pip-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
@@ -4556,6 +4560,11 @@ async function togglePip(fromTray){
     try { localStorage.setItem("vito-pip-viz", pipViz ? "1" : "0"); } catch {}
     pipWave(0);
   };
+  d.getElementById("pip-set-mascot").onchange = (e) => {
+    pipMascot = e.target.checked;
+    try { localStorage.setItem("vito-pip-mascot", pipMascot ? "1" : "0"); } catch {}
+    d.getElementById("pip-mascot").hidden = !pipMascot;
+  };
   pipWin.addEventListener("pagehide", () => { pipWin = null; updatePipBtn(); });
   updatePipBtn();
   refreshPipSettings(); // switches reflect reality before the panel is first opened
@@ -4579,6 +4588,7 @@ function refreshPipSettings(){
     set("pip-set-enter", cfg.injection && cfg.injection.append_enter);
   }
   set("pip-set-viz", pipViz);
+  set("pip-set-mascot", pipMascot);
 }
 
 /* ---- Vito, the mascot ---- */
@@ -5118,6 +5128,8 @@ function trWave(level){
   el.style.opacity = ".55";
 }
 let pipViz = localStorage.getItem("vito-pip-viz") !== "0";
+// Vito sitting on the detached window's bottom bar; on unless switched off there.
+let pipMascot = localStorage.getItem("vito-pip-mascot") !== "0";
 function pipWave(level){
   if (!pipWin || pipWin.closed) return;
   const el = pipWin.document.getElementById("pip-wave");
