@@ -278,6 +278,7 @@
      the card doesn't shift when it shows. */
   .cost-top { display:flex; justify-content:space-between; align-items:flex-start; gap:6px; }
   .cost-top .chip { flex:none; } /* the tools beside it must not squeeze the tile */
+  .cost-card { cursor:pointer; } /* a click opens how the costs are worked out */
   .cost-tools { display:flex; align-items:center; gap:4px; min-width:0; }
   .cost-card .cur-toggle { visibility:hidden; display:inline-flex; border:1px solid var(--card-border); border-radius:7px; overflow:hidden; }
   .cost-card:hover .cur-toggle, .cost-card:focus-within .cur-toggle { visibility:visible; }
@@ -1403,7 +1404,7 @@
       <div id="card-holder" hidden>
         <div class="card stat cost-card reveal" id="cost-card">
           <div class="cost-top"><div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div><div class="cost-tools"><div class="cur-toggle"><button type="button" data-cur="eur" aria-label="EUR" title="EUR">€</button><button type="button" data-cur="usd" aria-label="USD" title="USD">$</button></div>
-              <button type="button" class="icon-i" id="cost-info" title="How do these costs work?" aria-label="How do these costs work?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg></button></div></div>
+              </div></div>
           <div class="num" id="cost-month-total">–</div>
           <div class="lbl"><span>Costs</span> · <span>this month so far</span></div>
           <div class="delta flat cost-period"><span id="cost-period-lbl">–</span>: <span id="cost-period">–</span></div>
@@ -6332,7 +6333,8 @@ function showCostInfo(){
     </div>`,
     () => {}, "Close", false, null, true);
 }
-$("cost-info").onclick = showCostInfo;
+// The card itself opens the explanation; the currency toggle on it is its own click.
+$("cost-card").onclick = (e) => { if (!e.target.closest(".cur-toggle")) showCostInfo(); };
 
 // Currency of the per-day costs in the chart tooltip; refreshed with the stats.
 let weekCur = "eur";
