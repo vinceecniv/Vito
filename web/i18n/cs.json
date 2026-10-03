@@ -1,5 +1,9 @@
 {
 "strings": {
+"Most used words": "Nejpoužívanější slova",
+"Chart in background": "Graf na pozadí",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Slova, která jste v tomto období diktovali nejčastěji – čím větší, tím častěji. Slova o třech a méně písmenech a běžná slova, jako „chtít“ nebo „protože“, jsou vynechána.",
+"Vito character": "Postavička Vita",
 "Status": "Stav",
 "Settings": "Nastavení",
 "Dictionary": "Slovník",
@@ -824,7 +828,8 @@
 "{p}% of dictations": "{p} % diktátů",
 "Languages you dictated in this period, by number of dictations.": "Jazyky, ve kterých jste v tomto období diktovali, podle počtu diktátů.",
 "words per dictation": "slov na diktát",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Průměrná délka diktátu. Mřížka ukazuje, kdy diktujete: dny v týdnu shora dolů, hodiny zleva doprava — tmavší znamená rušnější."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Průměrná délka diktátu. Mřížka ukazuje, kdy diktujete: dny v týdnu shora dolů, hodiny zleva doprava — tmavší znamená rušnější.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Průměrná délka jednoho diktátu. Mřížka ukazuje posledních 26 týdnů, jeden čtvereček na den od pondělí do neděle — tmavší znamená více slov."
 },
 "help": {
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",

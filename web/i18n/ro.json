@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "Cele mai folosite cuvinte",
+"Chart in background": "Grafic în fundal",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Cuvintele pe care le-ai dictat cel mai des în această perioadă — cu cât sunt mai mari, cu atât apar mai des. Cuvintele de trei litere sau mai puține și cuvintele uzuale, precum „vreau” sau „pentru că”, sunt omise.",
+"Vito character": "Personajul Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Lungimea medie a unei dictări. Grila arată ultimele 26 de săptămâni, câte un pătrat pe zi, de luni până duminică — cu cât e mai închis la culoare, cu atât sunt mai multe cuvinte.",
 "wpm spoken": "wpm vorbite",
 "How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Cât de repede vorbești când dictezi: cuvintele tale împărțite la durata înregistrării. Viteza ta de tastare este setată la {n} wpm.",
 "wait after stopping": "așteptare după oprire",

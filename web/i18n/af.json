@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "Mees gebruikte woorde",
+"Chart in background": "Grafiek op die agtergrond",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Die woorde wat jy in hierdie tydperk die meeste gedikteer het — hoe groter, hoe meer. Woorde van drie letters of minder en algemene woorde soos ‘want’ of ‘omdat’ word weggelaat.",
+"Vito character": "Vito-karakter",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Die gemiddelde lengte van 'n diktaat. Die rooster wys die afgelope 26 weke, 'n blokkie per dag van Maandag tot Sondag — donkerder beteken meer woorde.",
 "Custom range…": "Eie reeks…",
 "Previous month": "Vorige maand",
 "Next month": "Volgende maand",

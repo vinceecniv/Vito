@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% dyktowań",
 "Languages you dictated in this period, by number of dictations.": "Języki, w których dyktowałeś w tym okresie, według liczby dyktowań.",
 "words per dictation": "słów na dyktowanie",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Średnia długość dyktowania. Siatka pokazuje, kiedy dyktujesz: dni tygodnia od góry do dołu, godziny od lewej do prawej — ciemniejszy kolor oznacza większy ruch."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Średnia długość dyktowania. Siatka pokazuje, kiedy dyktujesz: dni tygodnia od góry do dołu, godziny od lewej do prawej — ciemniejszy kolor oznacza większy ruch.",
+"Most used words": "Najczęściej używane słowa",
+"Chart in background": "Wykres w tle",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Słowa, które dyktowałeś najczęściej w tym okresie — im większe, tym częściej. Słowa o trzech literach lub krótsze oraz popularne słowa, takie jak „chcieć” czy „ponieważ”, są pomijane.",
+"Vito character": "Postać Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Średnia długość dyktowania. Siatka pokazuje ostatnie 26 tygodni, jeden kwadrat na dzień od poniedziałku do niedzieli — ciemniejszy oznacza więcej słów."
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

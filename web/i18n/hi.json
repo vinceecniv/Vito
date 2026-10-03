@@ -824,7 +824,12 @@
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "Google द्वारा (स्थिर Apache-2.0 के अंतर्गत, एनिमेशन CC BY 4.0 के अंतर्गत), और इन्हें चलाने के लिए",
 "by Airbnb (MIT). Country flags are": "Airbnb द्वारा (MIT)। देशों के झंडे",
 "by Panayiotis Lipiridis (MIT).": "Panayiotis Lipiridis द्वारा (MIT) से हैं।",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "यह एंडपॉइंट जवाब देता है, लेकिन इसमें /chat/completions नहीं है। OpenAI-संगत URL का उपयोग करें — यह आमतौर पर /v1 पर समाप्त होता है (LM Studio: http://localhost:1234/v1)।"
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "यह एंडपॉइंट जवाब देता है, लेकिन इसमें /chat/completions नहीं है। OpenAI-संगत URL का उपयोग करें — यह आमतौर पर /v1 पर समाप्त होता है (LM Studio: http://localhost:1234/v1)।",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "एक डिक्टेशन की औसत लंबाई। ग्रिड पिछले 26 हफ़्तों को दिखाता है, सोमवार से रविवार तक हर दिन के लिए एक वर्ग — जितना गहरा रंग, उतने ज़्यादा शब्द।",
+"Most used words": "सबसे ज़्यादा इस्तेमाल हुए शब्द",
+"Chart in background": "पृष्ठभूमि में चार्ट",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "इस अवधि में आपने जो शब्द सबसे ज़्यादा बोले — शब्द जितना बड़ा, उतनी ज़्यादा बार। तीन या उससे कम अक्षरों वाले शब्द और ‘want’ या ‘because’ जैसे आम शब्द शामिल नहीं हैं।",
+"Vito character": "Vito का किरदार"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",

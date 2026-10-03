@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p} % diktavimų",
 "Languages you dictated in this period, by number of dictations.": "Kalbos, kuriomis diktavote per šį laikotarpį, pagal diktavimų skaičių.",
 "words per dictation": "žodžių per diktavimą",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Vidutinis diktavimo ilgis. Tinklelis rodo, kada diktuojate: savaitės dienos iš viršaus į apačią, valandos iš kairės į dešinę — tamsesnė spalva reiškia daugiau veiklos."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Vidutinis diktavimo ilgis. Tinklelis rodo, kada diktuojate: savaitės dienos iš viršaus į apačią, valandos iš kairės į dešinę — tamsesnė spalva reiškia daugiau veiklos.",
+"Most used words": "Dažniausi žodžiai",
+"Chart in background": "Diagrama fone",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Žodžiai, kuriuos šiuo laikotarpiu diktavote dažniausiai – kuo didesnis, tuo dažnesnis. Trijų raidžių ar trumpesni žodžiai ir įprasti žodžiai, pavyzdžiui, „noriu“ ar „nes“, neįtraukti.",
+"Vito character": "Vito personažas",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Vidutinis diktavimo ilgis. Tinklelyje rodomos paskutinės 26 savaitės, kiekviena diena – kvadratėlis nuo pirmadienio iki sekmadienio; kuo tamsesnis, tuo daugiau žodžių."
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% số bản đọc",
 "Languages you dictated in this period, by number of dictations.": "Các ngôn ngữ bạn đã đọc trong khoảng thời gian này, theo số lượng bản đọc.",
 "words per dictation": "từ mỗi bản đọc",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Độ dài trung bình của một bản đọc. Lưới cho thấy bạn đọc vào lúc nào: các ngày trong tuần từ trên xuống dưới, giờ từ trái sang phải — màu càng đậm càng bận."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Độ dài trung bình của một bản đọc. Lưới cho thấy bạn đọc vào lúc nào: các ngày trong tuần từ trên xuống dưới, giờ từ trái sang phải — màu càng đậm càng bận.",
+"Most used words": "Những từ dùng nhiều nhất",
+"Chart in background": "Biểu đồ ở nền",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Những từ bạn đọc nhiều nhất trong khoảng thời gian này — chữ càng to thì càng xuất hiện thường xuyên. Các từ có ba chữ cái trở xuống và những từ thông dụng như ‘muốn’ hay ‘vì’ sẽ bị bỏ qua.",
+"Vito character": "Nhân vật hoạt hình Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Độ dài trung bình của một bản đọc. Lưới hiển thị 26 tuần gần nhất, mỗi ô là một ngày từ thứ Hai đến Chủ nhật — màu càng đậm nghĩa là càng nhiều từ."
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",

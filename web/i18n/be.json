@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% дыктовак",
 "Languages you dictated in this period, by number of dictations.": "Мовы, на якіх вы дыктавалі ў гэты перыяд, паводле колькасці дыктовак.",
 "words per dictation": "слоў на дыктоўку",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Сярэдняя даўжыня дыктоўкі. Сетка паказвае, калі вы дыктуеце: дні тыдня зверху ўніз, гадзіны злева направа — чым цямней, тым больш актыўна."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Сярэдняя даўжыня дыктоўкі. Сетка паказвае, калі вы дыктуеце: дні тыдня зверху ўніз, гадзіны злева направа — чым цямней, тым больш актыўна.",
+"Most used words": "Найчасцей ужываныя словы",
+"Chart in background": "Дыяграма на фоне",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Словы, якія вы дыктавалі найчасцей за гэты перыяд — чым большае слова, тым часцей яно ўжывалася. Словы з трох літар і менш, а таксама ўжывальныя словы, такія як «хачу» або «таму што», не ўлічваюцца.",
+"Vito character": "Персанаж Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Сярэдняя даўжыня дыктоўкі. Сетка паказвае апошнія 26 тыдняў, па квадраце на дзень з панядзелка па нядзелю — чым цямней, тым больш слоў."
 },
 "help": {
 "theme": "Светлая, цёмная ці аўтаматычная — аўтаматычная сочыць за светлым/цёмным рэжымам вашай сістэмы.",

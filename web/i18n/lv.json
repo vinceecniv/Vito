@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% diktātu",
 "Languages you dictated in this period, by number of dictations.": "Valodas, kurās diktēji šajā periodā, pēc diktātu skaita.",
 "words per dictation": "vārdi vienā diktātā",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Vidējais diktāta garums. Režģis parāda, kad tu diktē: nedēļas dienas no augšas uz leju, stundas no kreisās uz labo — tumšāks nozīmē aktīvāk."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Vidējais diktāta garums. Režģis parāda, kad tu diktē: nedēļas dienas no augšas uz leju, stundas no kreisās uz labo — tumšāks nozīmē aktīvāk.",
+"Most used words": "Visbiežāk lietotie vārdi",
+"Chart in background": "Diagramma fonā",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Vārdi, ko šajā periodā diktēji visbiežāk — jo lielāks, jo biežāk. Vārdi ar trim burtiem vai mazāk un bieži lietoti vārdi, piemēram, ‘gribu’ vai ‘jo’, netiek rādīti.",
+"Vito character": "Vito tēls",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Vidējais diktāta garums. Režģis rāda pēdējās 26 nedēļas, katrai dienai no pirmdienas līdz svētdienai viens kvadrātiņš — tumšāks nozīmē vairāk vārdu."
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

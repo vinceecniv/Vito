@@ -1,5 +1,9 @@
 {
 "strings": {
+"Most used words": "Enim kasutatud sõnad",
+"Chart in background": "Diagramm taustal",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Sõnad, mida selle perioodi jooksul kõige rohkem dikteerisid — mida suurem, seda sagedamini. Kuni kolmetähelised sõnad ja tavalised sõnad nagu „tahan“ või „sest“ on välja jäetud.",
+"Vito character": "Vito tegelane",
 "Status": "Olek",
 "Settings": "Seaded",
 "Dictionary": "Sõnastik",
@@ -824,7 +828,8 @@
 "{p}% of dictations": "{p}% dikteeringutest",
 "Languages you dictated in this period, by number of dictations.": "Keeled, milles selle perioodi jooksul dikteerisid, dikteeringute arvu järgi.",
 "words per dictation": "sõna dikteeringu kohta",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Dikteeringu keskmine pikkus. Ruudustik näitab, millal sa dikteerid: nädalapäevad ülalt alla, tunnid vasakult paremale — tumedam tähendab tegusamat."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Dikteeringu keskmine pikkus. Ruudustik näitab, millal sa dikteerid: nädalapäevad ülalt alla, tunnid vasakult paremale — tumedam tähendab tegusamat.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Dikteeringu keskmine pikkus. Ruudustik näitab viimast 26 nädalat, iga päev on üks ruut, esmaspäevast pühapäevani — tumedam tähendab rohkem sõnu."
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

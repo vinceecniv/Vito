@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "Самые частые слова",
+"Chart in background": "График на фоне",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Слова, которые вы чаще всего диктовали за этот период: чем крупнее слово, тем чаще оно встречалось. Слова из трёх букв и короче, а также распространённые слова вроде «хочу» или «потому что» не учитываются.",
+"Vito character": "Персонаж Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Средняя длина диктовки. Сетка показывает последние 26 недель: один квадрат на каждый день с понедельника по воскресенье — чем темнее, тем больше слов.",
 "Status": "Статус",
 "Settings": "Настройки",
 "Dictionary": "Словарь",

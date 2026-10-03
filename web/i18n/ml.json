@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "ഏറ്റവും കൂടുതൽ ഉപയോഗിച്ച വാക്കുകൾ",
+"Chart in background": "പശ്ചാത്തലത്തിൽ ചാർട്ട്",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "ഈ കാലയളവിൽ നിങ്ങൾ ഏറ്റവും കൂടുതൽ പറഞ്ഞെഴുതിച്ച വാക്കുകൾ — വലുതായാൽ കൂടുതൽ തവണ. മൂന്നോ അതിൽ കുറവോ അക്ഷരങ്ങളുള്ള വാക്കുകളും ‘വേണം’ അല്ലെങ്കിൽ ‘കാരണം’ പോലുള്ള സാധാരണ വാക്കുകളും ഒഴിവാക്കിയിരിക്കുന്നു.",
+"Vito character": "Vito കഥാപാത്രം",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ഒരു ഡിക്റ്റേഷന്റെ ശരാശരി ദൈർഘ്യം. ഗ്രിഡ് കഴിഞ്ഞ 26 ആഴ്ചകൾ കാണിക്കുന്നു, തിങ്കൾ മുതൽ ഞായർ വരെ ഓരോ ദിവസത്തിനും ഒരു ചതുരം — കടുപ്പം കൂടിയാൽ കൂടുതൽ വാക്കുകൾ.",
 "Custom range…": "ഇഷ്ടാനുസൃത കാലയളവ്…",
 "Previous month": "മുൻ മാസം",
 "Next month": "അടുത്ത മാസം",

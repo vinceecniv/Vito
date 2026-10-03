@@ -824,7 +824,12 @@
 "{p}% of dictations": "a diktálások {p}%-a",
 "Languages you dictated in this period, by number of dictations.": "Az ebben az időszakban használt diktálási nyelvek a diktálások száma szerint.",
 "words per dictation": "szó diktálásonként",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "A diktálások átlagos hossza. A rács azt mutatja, mikor diktálsz: fent-lent a hét napjai, balról jobbra az órák — minél sötétebb, annál forgalmasabb."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "A diktálások átlagos hossza. A rács azt mutatja, mikor diktálsz: fent-lent a hét napjai, balról jobbra az órák — minél sötétebb, annál forgalmasabb.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "A diktálások átlagos hossza. A rács az elmúlt 26 hetet mutatja, naponta egy négyzettel, hétfőtől vasárnapig — minél sötétebb, annál több szó.",
+"Most used words": "Leggyakoribb szavak",
+"Chart in background": "Diagram a háttérben",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "A legtöbbször diktált szavaid ebben az időszakban – minél nagyobb, annál gyakoribb. A három vagy kevesebb betűs szavak és a gyakori szavak, például a „akar” vagy a „mert”, kimaradnak.",
+"Vito character": "Vito rajzfigura"
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

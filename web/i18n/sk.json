@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "Najpoužívanejšie slová",
+"Chart in background": "Graf na pozadí",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Slová, ktoré ste v tomto období diktovali najčastejšie – čím väčšie, tým častejšie. Slová s tromi alebo menej písmenami a bežné slová, ako „chcieť“ alebo „pretože“, sú vynechané.",
+"Vito character": "Postavička Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Priemerná dĺžka diktátu. Mriežka zobrazuje posledných 26 týždňov, štvorček na každý deň od pondelka do nedele – tmavší znamená viac slov.",
 "Custom range…": "Vlastné obdobie…",
 "Previous month": "Predchádzajúci mesiac",
 "Next month": "Nasledujúci mesiac",

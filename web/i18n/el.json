@@ -824,7 +824,12 @@
 "What to do with playing media": "Τι να γίνεται με τα πολυμέσα που αναπαράγονται",
 "not used yet": "δεν έχει χρησιμοποιηθεί ακόμα",
 "Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.": "Η επιφάνεια εργασίας σας διαφημίζει αυτή τη διαδρομή, αλλά μόνο μια πραγματική προσπάθεια δείχνει αν λειτουργεί, οπότε το Vito τη δοκιμάζει πρώτα όταν υπαγορεύετε. Αν δεν λειτουργεί, οι υπαγορεύσεις σας πηγαίνουν στο πρόχειρο.",
-"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Αυτό το endpoint ανταποκρίνεται, αλλά δεν διαθέτει /chat/completions. Χρησιμοποιήστε το URL που είναι συμβατό με το OpenAI — συνήθως τελειώνει σε /v1 (LM Studio: http://localhost:1234/v1)."
+"This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).": "Αυτό το endpoint ανταποκρίνεται, αλλά δεν διαθέτει /chat/completions. Χρησιμοποιήστε το URL που είναι συμβατό με το OpenAI — συνήθως τελειώνει σε /v1 (LM Studio: http://localhost:1234/v1).",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Το μέσο μήκος μιας υπαγόρευσης. Το πλέγμα δείχνει τις τελευταίες 26 εβδομάδες, ένα τετράγωνο ανά ημέρα από Δευτέρα έως Κυριακή — όσο πιο σκούρο, τόσο περισσότερες λέξεις.",
+"Most used words": "Πιο συχνές λέξεις",
+"Chart in background": "Γράφημα στο παρασκήνιο",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Οι λέξεις που υπαγορεύσατε περισσότερο σε αυτή την περίοδο — όσο μεγαλύτερη η λέξη, τόσο πιο συχνά. Λέξεις με τρία γράμματα ή λιγότερα και κοινές λέξεις όπως «θέλω» ή «επειδή» παραλείπονται.",
+"Vito character": "Χαρακτήρας Vito"
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

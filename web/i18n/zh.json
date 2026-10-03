@@ -824,7 +824,12 @@
 "{p}% of dictations": "占口述的 {p}%",
 "Languages you dictated in this period, by number of dictations.": "你在此期间使用的口述语言，按口述次数排序。",
 "words per dictation": "每次口述字数",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "每次口述的平均长度。网格显示你口述的时间：从上到下为星期，从左到右为小时 — 颜色越深越繁忙。"
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "每次口述的平均长度。网格显示你口述的时间：从上到下为星期，从左到右为小时 — 颜色越深越繁忙。",
+"Most used words": "最常用的词",
+"Chart in background": "图表显示在背景中",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "此期间你口述最多的词，字越大出现次数越多。三个字母或更短的词，以及“想要”“因为”之类的常用词不计入。",
+"Vito character": "Vito 角色",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "每次口述的平均长度。网格显示最近 26 周，每天一个方块，从星期一到星期日，颜色越深表示字数越多。"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

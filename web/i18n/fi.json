@@ -1,5 +1,9 @@
 {
 "strings": {
+"Most used words": "Eniten käytetyt sanat",
+"Chart in background": "Kaavio taustalla",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Sanat, joita saneli eniten tällä jaksolla — mitä isompi, sitä useammin. Enintään kolmikirjaimiset sanat ja yleiset sanat, kuten ”haluan” tai ”koska”, on jätetty pois.",
+"Vito character": "Vito-hahmo",
 "Custom range…": "Mukautettu aikaväli…",
 "Previous month": "Edellinen kuukausi",
 "Next month": "Seuraava kuukausi",
@@ -824,7 +828,8 @@
 "{p}% of dictations": "{p} % saneluista",
 "Languages you dictated in this period, by number of dictations.": "Kielet, joilla sanelit tällä jaksolla, sanelujen määrän mukaan.",
 "words per dictation": "sanaa per sanelu",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Sanelun keskimääräinen pituus. Ruudukko näyttää, milloin sanelet: viikonpäivät ylhäältä alas, tunnit vasemmalta oikealle — tummempi tarkoittaa vilkkaampaa."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Sanelun keskimääräinen pituus. Ruudukko näyttää, milloin sanelet: viikonpäivät ylhäältä alas, tunnit vasemmalta oikealle — tummempi tarkoittaa vilkkaampaa.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Sanelun keskimääräinen pituus. Ruudukko näyttää viimeiset 26 viikkoa, yksi ruutu päivää kohden maanantaista sunnuntaihin — tummempi tarkoittaa enemmän sanoja."
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

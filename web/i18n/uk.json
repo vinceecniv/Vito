@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "Найуживаніші слова",
+"Chart in background": "Діаграма на тлі",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Слова, які ви найчастіше диктували за цей період — чим більше слово, тим частіше воно траплялося. Слова з трьох літер і менше та поширені слова на кшталт «хочу» чи «тому що» не враховуються.",
+"Vito character": "Персонаж Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Середня довжина диктування. Сітка показує останні 26 тижнів, по квадратику на день від понеділка до неділі — чим темніший, тим більше слів.",
 "Credits": "Подяки",
 "Achievement medals and animations use": "Медалі за досягнення та анімації використовують",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "від Google (статичні — за ліцензією Apache-2.0, анімації — за CC BY 4.0), а відтворюються за допомогою",

@@ -824,7 +824,12 @@
 "{p}% of dictations": "받아쓰기의 {p}%",
 "Languages you dictated in this period, by number of dictations.": "이 기간에 받아쓰기한 언어를 받아쓰기 횟수순으로 보여 줍니다.",
 "words per dictation": "받아쓰기당 단어 수",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "받아쓰기 한 번의 평균 길이입니다. 격자는 받아쓰기하는 시간대를 보여 줍니다: 위에서 아래로 요일, 왼쪽에서 오른쪽으로 시간이며, 색이 진할수록 더 붐빕니다."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "받아쓰기 한 번의 평균 길이입니다. 격자는 받아쓰기하는 시간대를 보여 줍니다: 위에서 아래로 요일, 왼쪽에서 오른쪽으로 시간이며, 색이 진할수록 더 붐빕니다.",
+"Most used words": "가장 많이 쓴 단어",
+"Chart in background": "배경에 차트 표시",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "이 기간에 가장 많이 받아쓴 단어입니다. 클수록 더 자주 쓴 단어예요. 세 글자 이하의 단어와 ‘want’, ‘because’ 같은 흔한 단어는 제외됩니다.",
+"Vito character": "Vito 캐릭터",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "받아쓰기 한 번의 평균 길이입니다. 격자는 최근 26주를 보여 주며, 월요일부터 일요일까지 하루에 사각형 하나씩 표시됩니다. 색이 진할수록 단어 수가 많습니다."
 },
 "help": {
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",

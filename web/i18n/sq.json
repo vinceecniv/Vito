@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% e diktimeve",
 "Languages you dictated in this period, by number of dictations.": "Gjuhët në të cilat ke diktuar në këtë periudhë, sipas numrit të diktimeve.",
 "words per dictation": "fjalë për diktim",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Gjatësia mesatare e një diktimi. Rrjeta tregon kur diktove: ditët e javës nga lart poshtë, orët nga e majta djathtas — sa më e errët, aq më i ngarkuar."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Gjatësia mesatare e një diktimi. Rrjeta tregon kur diktove: ditët e javës nga lart poshtë, orët nga e majta djathtas — sa më e errët, aq më i ngarkuar.",
+"Most used words": "Fjalët më të përdorura",
+"Chart in background": "Grafiku në sfond",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Fjalët që ke diktuar më shpesh në këtë periudhë — sa më e madhe, aq më shpesh. Fjalët me tri shkronja ose më pak dhe fjalët e zakonshme, si ‘dua’ ose ‘sepse’, janë lënë jashtë.",
+"Vito character": "Figurina e Vitos",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Gjatësia mesatare e një diktimi. Rrjeta tregon 26 javët e fundit, një katror për ditë nga e hëna te e diela — sa më i errët, aq më shumë fjalë."
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

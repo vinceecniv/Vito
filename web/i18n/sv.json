@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p} % av dikteringarna",
 "Languages you dictated in this period, by number of dictations.": "Språk du dikterade på under perioden, efter antal dikteringar.",
 "words per dictation": "ord per diktering",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Den genomsnittliga längden på en diktering. Rutnätet visar när du dikterar: veckodagar uppifrån och ned, timmar från vänster till höger — mörkare betyder mer aktivitet."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Den genomsnittliga längden på en diktering. Rutnätet visar när du dikterar: veckodagar uppifrån och ned, timmar från vänster till höger — mörkare betyder mer aktivitet.",
+"Most used words": "Mest använda ord",
+"Chart in background": "Diagram i bakgrunden",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Orden du dikterade mest under perioden – ju större, desto oftare. Ord på tre bokstäver eller färre och vanliga ord som ‘vill’ eller ‘eftersom’ är utelämnade.",
+"Vito character": "Vito-figur",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Den genomsnittliga längden på en diktering. Rutnätet visar de senaste 26 veckorna, en ruta per dag från måndag till söndag – mörkare betyder fler ord."
 },
 "help": {
 "theme": "Ljust, mörkt eller automatiskt — automatiskt följer systemets ljus/mörk-inställning.",

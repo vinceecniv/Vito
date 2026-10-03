@@ -824,7 +824,12 @@
 "{p}% of dictations": "சொல்லெழுத்துக்களில் {p}%",
 "Languages you dictated in this period, by number of dictations.": "இந்தக் காலத்தில் நீங்கள் சொல்லெழுதிய மொழிகள், சொல்லெழுத்துக்களின் எண்ணிக்கையின்படி.",
 "words per dictation": "ஒரு சொல்லெழுத்துக்கான சொற்கள்",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ஒரு சொல்லெழுத்தின் சராசரி நீளம். கட்டம் நீங்கள் எப்போது சொல்லெழுதுகிறீர்கள் என்பதைக் காட்டுகிறது: வார நாட்கள் மேலிருந்து கீழாக, மணிநேரங்கள் இடமிருந்து வலமாக — அடர்த்தியான நிறம் அதிக பரபரப்பு."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ஒரு சொல்லெழுத்தின் சராசரி நீளம். கட்டம் நீங்கள் எப்போது சொல்லெழுதுகிறீர்கள் என்பதைக் காட்டுகிறது: வார நாட்கள் மேலிருந்து கீழாக, மணிநேரங்கள் இடமிருந்து வலமாக — அடர்த்தியான நிறம் அதிக பரபரப்பு.",
+"Most used words": "அதிகம் பயன்படுத்தப்பட்ட சொற்கள்",
+"Chart in background": "பின்னணியில் வரைபடம்",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "இந்தக் காலகட்டத்தில் நீங்கள் அதிகமாகச் சொல்லெழுதிய சொற்கள் — பெரிதாக இருந்தால் அடிக்கடி வந்தது என்று பொருள். மூன்று எழுத்துகள் அல்லது அதற்கும் குறைவான சொற்களும் ‘வேண்டும்’ அல்லது ‘ஏனெனில்’ போன்ற பொதுவான சொற்களும் சேர்க்கப்படவில்லை.",
+"Vito character": "Vito உருவம்",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ஒரு சொல்லெழுத்தின் சராசரி நீளம். கட்டம் கடந்த 26 வாரங்களைக் காட்டுகிறது, திங்கள் முதல் ஞாயிறு வரை ஒரு நாளுக்கு ஒரு சதுரம் — அடர்த்தியான நிறம் அதிக சொற்கள் என்று பொருள்."
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

@@ -824,7 +824,12 @@
 "{p}% of dictations": "ਡਿਕਟੇਸ਼ਨਾਂ ਦਾ {p}%",
 "Languages you dictated in this period, by number of dictations.": "ਇਸ ਮਿਆਦ ਵਿੱਚ ਤੁਸੀਂ ਜਿਨ੍ਹਾਂ ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ ਡਿਕਟੇਸ਼ਨ ਕੀਤੀ, ਡਿਕਟੇਸ਼ਨਾਂ ਦੀ ਗਿਣਤੀ ਅਨੁਸਾਰ।",
 "words per dictation": "ਪ੍ਰਤੀ ਡਿਕਟੇਸ਼ਨ ਸ਼ਬਦ",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ਇੱਕ ਡਿਕਟੇਸ਼ਨ ਦੀ ਔਸਤ ਲੰਬਾਈ। ਗਰਿੱਡ ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਕਦੋਂ ਡਿਕਟੇਸ਼ਨ ਕਰਦੇ ਹੋ: ਹਫ਼ਤੇ ਦੇ ਦਿਨ ਉੱਪਰ ਤੋਂ ਹੇਠਾਂ, ਘੰਟੇ ਖੱਬੇ ਤੋਂ ਸੱਜੇ — ਗੂੜ੍ਹਾ ਮਤਲਬ ਵਧੇਰੇ ਰੁਝੇਵਾਂ।"
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ਇੱਕ ਡਿਕਟੇਸ਼ਨ ਦੀ ਔਸਤ ਲੰਬਾਈ। ਗਰਿੱਡ ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਕਦੋਂ ਡਿਕਟੇਸ਼ਨ ਕਰਦੇ ਹੋ: ਹਫ਼ਤੇ ਦੇ ਦਿਨ ਉੱਪਰ ਤੋਂ ਹੇਠਾਂ, ਘੰਟੇ ਖੱਬੇ ਤੋਂ ਸੱਜੇ — ਗੂੜ੍ਹਾ ਮਤਲਬ ਵਧੇਰੇ ਰੁਝੇਵਾਂ।",
+"Most used words": "ਸਭ ਤੋਂ ਵੱਧ ਵਰਤੇ ਸ਼ਬਦ",
+"Chart in background": "ਪਿਛੋਕੜ ਵਿੱਚ ਚਾਰਟ",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "ਇਸ ਮਿਆਦ ਵਿੱਚ ਤੁਸੀਂ ਜਿਹੜੇ ਸ਼ਬਦ ਸਭ ਤੋਂ ਵੱਧ ਬੋਲੇ — ਜਿੰਨਾ ਵੱਡਾ, ਓਨੀ ਵਾਰ। ਤਿੰਨ ਅੱਖਰਾਂ ਜਾਂ ਇਸ ਤੋਂ ਛੋਟੇ ਸ਼ਬਦ ਅਤੇ ‘ਚਾਹੀਦਾ’ ਜਾਂ ‘ਕਿਉਂਕਿ’ ਵਰਗੇ ਆਮ ਸ਼ਬਦ ਸ਼ਾਮਲ ਨਹੀਂ ਕੀਤੇ ਗਏ।",
+"Vito character": "Vito ਕਾਰਟੂਨ ਪਾਤਰ",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ਇੱਕ ਡਿਕਟੇਸ਼ਨ ਦੀ ਔਸਤ ਲੰਬਾਈ। ਗਰਿੱਡ ਪਿਛਲੇ 26 ਹਫ਼ਤੇ ਦਿਖਾਉਂਦਾ ਹੈ, ਸੋਮਵਾਰ ਤੋਂ ਐਤਵਾਰ ਤੱਕ ਹਰ ਦਿਨ ਲਈ ਇੱਕ ਖਾਨਾ — ਗੂੜ੍ਹਾ ਮਤਲਬ ਵਧੇਰੇ ਸ਼ਬਦ।"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",

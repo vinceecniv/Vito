@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}٪ از دیکته‌ها",
 "Languages you dictated in this period, by number of dictations.": "زبان‌هایی که در این بازه دیکته کردید، به ترتیب تعداد دیکته‌ها.",
 "words per dictation": "کلمه در هر دیکته",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "میانگین طول یک دیکته. جدول نشان می‌دهد چه زمانی دیکته می‌کنید: روزهای هفته از بالا به پایین، ساعت‌ها از چپ به راست — هرچه تیره‌تر، شلوغ‌تر."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "میانگین طول یک دیکته. جدول نشان می‌دهد چه زمانی دیکته می‌کنید: روزهای هفته از بالا به پایین، ساعت‌ها از چپ به راست — هرچه تیره‌تر، شلوغ‌تر.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "میانگین طول یک دیکته. شبکه ۲۶ هفتهٔ گذشته را نشان می‌دهد، با یک مربع برای هر روز از دوشنبه تا یکشنبه — هرچه تیره‌تر، کلمات بیشتر.",
+"Most used words": "پرکاربردترین واژه‌ها",
+"Chart in background": "نمودار در پس‌زمینه",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "واژه‌هایی که در این بازه بیش از همه دیکته کرده‌اید — هرچه بزرگ‌تر، پرتکرارتر. واژه‌های سه‌حرفی یا کوتاه‌تر و واژه‌های رایج مانند «می‌خواهم» یا «چون» حذف شده‌اند.",
+"Vito character": "شخصیت کارتونی Vito"
 },
 "help": {
 "theme": "روشن، تیره یا خودکار — خودکار از حالت روشن/تیره سیستم شما پیروی می‌کند.",

@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% dels dictats",
 "Languages you dictated in this period, by number of dictations.": "Idiomes en què has dictat en aquest període, segons el nombre de dictats.",
 "words per dictation": "paraules per dictat",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "La durada mitjana d'un dictat. La quadrícula mostra quan dictes: els dies de la setmana de dalt a baix, les hores d'esquerra a dreta — com més fosc, més activitat."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "La durada mitjana d'un dictat. La quadrícula mostra quan dictes: els dies de la setmana de dalt a baix, les hores d'esquerra a dreta — com més fosc, més activitat.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "La durada mitjana d'un dictat. La quadrícula mostra les últimes 26 setmanes, un quadrat per dia de dilluns a diumenge — com més fosc, més paraules.",
+"Most used words": "Paraules més usades",
+"Chart in background": "Gràfic de fons",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Les paraules que més has dictat en aquest període: com més grans, més sovint. Les paraules de tres lletres o menys i les paraules habituals com «voler» o «perquè» no es compten.",
+"Vito character": "Personatge de Vito"
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

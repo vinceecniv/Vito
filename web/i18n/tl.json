@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% ng mga diktasyon",
 "Languages you dictated in this period, by number of dictations.": "Mga wikang ginamit mo sa pagdidikta sa panahong ito, ayon sa bilang ng diktasyon.",
 "words per dictation": "salita bawat diktasyon",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Ang karaniwang haba ng isang diktasyon. Ipinapakita ng grid kung kailan ka nagdidikta: mga araw ng linggo mula itaas pababa, mga oras mula kaliwa pakanan — mas madilim, mas abala."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Ang karaniwang haba ng isang diktasyon. Ipinapakita ng grid kung kailan ka nagdidikta: mga araw ng linggo mula itaas pababa, mga oras mula kaliwa pakanan — mas madilim, mas abala.",
+"Most used words": "Mga pinakamadalas gamitin na salita",
+"Chart in background": "Chart sa background",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Ang mga salitang pinakamadalas mong idiniktar sa panahong ito — kung mas malaki, mas madalas. Hindi isinasama ang mga salitang tatlong titik pababa at ang mga karaniwang salita tulad ng ‘gusto’ o ‘dahil’.",
+"Vito character": "Karakter ni Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Ang karaniwang haba ng isang diktasyon. Ipinapakita ng grid ang nakalipas na 26 na linggo, isang parisukat kada araw mula Lunes hanggang Linggo — mas madilim, mas maraming salita."
 },
 "help": {
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",

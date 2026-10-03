@@ -824,7 +824,12 @@
 "{p}% of dictations": "ಡಿಕ್ಟೇಶನ್‌ಗಳ {p}%",
 "Languages you dictated in this period, by number of dictations.": "ಈ ಅವಧಿಯಲ್ಲಿ ನೀವು ಡಿಕ್ಟೇಶನ್ ಮಾಡಿದ ಭಾಷೆಗಳು, ಡಿಕ್ಟೇಶನ್‌ಗಳ ಸಂಖ್ಯೆಯ ಪ್ರಕಾರ.",
 "words per dictation": "ಪ್ರತಿ ಡಿಕ್ಟೇಶನ್‌ಗೆ ಪದಗಳು",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ಡಿಕ್ಟೇಶನ್‌ನ ಸರಾಸರಿ ಉದ್ದ. ಗ್ರಿಡ್ ನೀವು ಯಾವಾಗ ಡಿಕ್ಟೇಶನ್ ಮಾಡುತ್ತೀರಿ ಎಂದು ತೋರಿಸುತ್ತದೆ: ವಾರದ ದಿನಗಳು ಮೇಲಿನಿಂದ ಕೆಳಗೆ, ಗಂಟೆಗಳು ಎಡದಿಂದ ಬಲಕ್ಕೆ — ಗಾಢವಾದಷ್ಟು ಹೆಚ್ಚು ಚಟುವಟಿಕೆ."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "ಡಿಕ್ಟೇಶನ್‌ನ ಸರಾಸರಿ ಉದ್ದ. ಗ್ರಿಡ್ ನೀವು ಯಾವಾಗ ಡಿಕ್ಟೇಶನ್ ಮಾಡುತ್ತೀರಿ ಎಂದು ತೋರಿಸುತ್ತದೆ: ವಾರದ ದಿನಗಳು ಮೇಲಿನಿಂದ ಕೆಳಗೆ, ಗಂಟೆಗಳು ಎಡದಿಂದ ಬಲಕ್ಕೆ — ಗಾಢವಾದಷ್ಟು ಹೆಚ್ಚು ಚಟುವಟಿಕೆ.",
+"Most used words": "ಹೆಚ್ಚು ಬಳಸಿದ ಪದಗಳು",
+"Chart in background": "ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಚಾರ್ಟ್",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "ಈ ಅವಧಿಯಲ್ಲಿ ನೀವು ಹೆಚ್ಚು ಡಿಕ್ಟೇಟ್ ಮಾಡಿದ ಪದಗಳು — ಪದ ದೊಡ್ಡದಾಗಿದ್ದಷ್ಟೂ ಅದನ್ನು ಹೆಚ್ಚು ಬಾರಿ ಹೇಳಿದ್ದೀರಿ. ಮೂರು ಅಕ್ಷರ ಅಥವಾ ಅದಕ್ಕಿಂತ ಕಡಿಮೆ ಇರುವ ಪದಗಳು ಮತ್ತು ‘ಬೇಕು’ ಅಥವಾ ‘ಏಕೆಂದರೆ’ ಎಂಬಂತಹ ಸಾಮಾನ್ಯ ಪದಗಳನ್ನು ಬಿಟ್ಟಿದೆ.",
+"Vito character": "Vito ಪಾತ್ರ (ಕಾರ್ಟೂನ್ ಮ್ಯಾಸ್ಕಾಟ್)",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ಒಂದು ಡಿಕ್ಟೇಶನ್‌ನ ಸರಾಸರಿ ಉದ್ದ. ಗ್ರಿಡ್ ಕಳೆದ 26 ವಾರಗಳನ್ನು ತೋರಿಸುತ್ತದೆ, ಸೋಮವಾರದಿಂದ ಭಾನುವಾರದವರೆಗೆ ದಿನಕ್ಕೊಂದು ಚೌಕ — ಗಾಢವಾದಷ್ಟೂ ಹೆಚ್ಚು ಪದಗಳು."
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

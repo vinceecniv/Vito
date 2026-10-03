@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "คำที่ใช้บ่อยที่สุด",
+"Chart in background": "แสดงแผนภูมิเป็นพื้นหลัง",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "คำที่คุณพูดบ่อยที่สุดในช่วงเวลานี้ ยิ่งตัวใหญ่ยิ่งพูดบ่อย คำที่มีสามตัวอักษรหรือน้อยกว่า และคำทั่วไปอย่าง ‘อยาก’ หรือ ‘เพราะ’ จะไม่ถูกนับรวม",
+"Vito character": "ตัวการ์ตูน Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "ความยาวเฉลี่ยของการพูดแต่ละครั้ง ตารางแสดง 26 สัปดาห์ล่าสุด หนึ่งช่องต่อหนึ่งวัน ตั้งแต่วันจันทร์ถึงวันอาทิตย์ ยิ่งสีเข้มยิ่งมีคำมาก",
 "Custom range…": "ช่วงเวลาที่กำหนดเอง…",
 "Previous month": "เดือนก่อนหน้า",
 "Next month": "เดือนถัดไป",

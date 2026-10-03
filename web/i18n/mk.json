@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% од диктатите",
 "Languages you dictated in this period, by number of dictations.": "Јазиците на кои диктиравте во овој период, по број на диктати.",
 "words per dictation": "зборови по диктат",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Просечната должина на диктат. Мрежата покажува кога диктирате: денови во неделата одозгора надолу, часови од лево кон десно — потемно значи позафатено."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Просечната должина на диктат. Мрежата покажува кога диктирате: денови во неделата одозгора надолу, часови од лево кон десно — потемно значи позафатено.",
+"Most used words": "Најупотребувани зборови",
+"Chart in background": "Графикон во позадина",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Зборовите што најчесто ги диктиравте во овој период — колку е поголем, толку почесто. Зборовите од три букви или помалку и вообичаените зборови како „сакам“ или „затоа што“ се изоставени.",
+"Vito character": "Ликот на Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Просечната должина на диктат. Мрежата ги прикажува последните 26 недели, по еден квадрат за секој ден од понеделник до недела — потемно значи повеќе зборови."
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

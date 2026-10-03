@@ -1,5 +1,9 @@
 {
 "strings": {
+"Most used words": "સૌથી વધુ વપરાયેલા શબ્દો",
+"Chart in background": "પૃષ્ઠભૂમિમાં ચાર્ટ",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "આ સમયગાળામાં તમે સૌથી વધુ બોલેલા શબ્દો — જેટલો મોટો, તેટલો વધુ વાર. ત્રણ કે તેથી ઓછા અક્ષરોના શબ્દો અને ‘જોઈએ’ કે ‘કારણ કે’ જેવા સામાન્ય શબ્દો બાકાત રાખવામાં આવ્યા છે.",
+"Vito character": "Vito પાત્ર (કાર્ટૂન આકૃતિ)",
 "wpm spoken": "wpm બોલાયા",
 "How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "શ્રુતલેખન કરતી વખતે તમે કેટલી ઝડપથી બોલો છો: તમારા શબ્દો ભાગ્યા રેકોર્ડિંગના સમયથી. તમારી ટાઇપિંગ ઝડપ {n} wpm પર સેટ કરેલી છે.",
 "wait after stopping": "રોક્યા પછીની રાહ",
@@ -14,6 +18,7 @@
 "Languages you dictated in this period, by number of dictations.": "આ સમયગાળામાં તમે જે ભાષાઓમાં શ્રુતલેખન કર્યું, શ્રુતલેખનની સંખ્યા પ્રમાણે.",
 "words per dictation": "શબ્દો પ્રતિ શ્રુતલેખન",
 "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "શ્રુતલેખનની સરેરાશ લંબાઈ. ગ્રીડ બતાવે છે કે તમે ક્યારે શ્રુતલેખન કરો છો: અઠવાડિયાના દિવસો ઉપરથી નીચે, કલાકો ડાબેથી જમણે — જેટલું ઘેરું તેટલી વધુ પ્રવૃત્તિ.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "શ્રુતલેખનની સરેરાશ લંબાઈ. ગ્રીડ છેલ્લા 26 અઠવાડિયા બતાવે છે, સોમવારથી રવિવાર સુધી દરરોજ માટે એક ચોરસ — જેટલું ઘેરું તેટલા વધુ શબ્દો.",
 "Custom range…": "કસ્ટમ શ્રેણી…",
 "Previous month": "પાછલો મહિનો",
 "Next month": "આગલો મહિનો",

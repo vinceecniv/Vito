@@ -824,7 +824,12 @@
 "{p}% of dictations": "diktələrin {p}%-i",
 "Languages you dictated in this period, by number of dictations.": "Bu dövrdə diktə etdiyiniz dillər, diktə sayına görə.",
 "words per dictation": "diktə başına söz",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Diktənin orta uzunluğu. Cədvəl nə vaxt diktə etdiyinizi göstərir: həftənin günləri yuxarıdan aşağı, saatlar soldan sağa — tünd rəng daha yüklü vaxtdır."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Diktənin orta uzunluğu. Cədvəl nə vaxt diktə etdiyinizi göstərir: həftənin günləri yuxarıdan aşağı, saatlar soldan sağa — tünd rəng daha yüklü vaxtdır.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Diktənin orta uzunluğu. Cədvəl son 26 həftəni göstərir: bazar ertəsindən bazara qədər hər gün üçün bir kvadrat — tünd rəng daha çox söz deməkdir.",
+"Most used words": "Ən çox işlədilən sözlər",
+"Chart in background": "Arxa planda qrafik",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Bu dövrdə ən çox diktə etdiyiniz sözlər — söz nə qədər böyükdürsə, bir o qədər tez-tez işlədilib. Üç hərfli və ya daha qısa sözlər, həmçinin “istəyirəm” və ya “çünki” kimi geniş yayılmış sözlər daxil edilmir.",
+"Vito character": "Vito personajı"
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

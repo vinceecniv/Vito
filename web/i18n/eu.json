@@ -824,7 +824,12 @@
 "{p}% of dictations": "diktaketen %{p}",
 "Languages you dictated in this period, by number of dictations.": "Aldi honetan diktatu dituzun hizkuntzak, diktaketa kopuruaren arabera.",
 "words per dictation": "hitz diktaketako",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Diktaketa baten batez besteko luzera. Sareak noiz diktatzen duzun erakusten du: asteko egunak goitik behera, orduak ezkerretik eskuinera — ilunagoa, okupatuagoa."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Diktaketa baten batez besteko luzera. Sareak noiz diktatzen duzun erakusten du: asteko egunak goitik behera, orduak ezkerretik eskuinera — ilunagoa, okupatuagoa.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Diktaketa baten batez besteko luzera. Sareak azken 26 asteak erakusten ditu, egun bakoitzeko lauki bat astelehenetik igandera — ilunagoa, hitz gehiago.",
+"Most used words": "Gehien erabilitako hitzak",
+"Chart in background": "Grafikoa atzeko planoan",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Aldi honetan gehien diktatu dituzun hitzak — zenbat eta handiagoa, orduan eta maizago. Hiru letra edo gutxiagoko hitzak eta ‘nahi’ edo ‘zeren’ bezalako hitz arruntak ez dira sartzen.",
+"Vito character": "Vito pertsonaia"
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

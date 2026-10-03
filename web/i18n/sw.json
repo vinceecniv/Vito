@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% ya uandishi",
 "Languages you dictated in this period, by number of dictations.": "Lugha ulizoandika kwa sauti katika kipindi hiki, kulingana na idadi ya uandishi.",
 "words per dictation": "maneno kwa kila uandishi",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Urefu wa wastani wa uandishi mmoja. Jedwali linaonyesha ni lini unaandika kwa sauti: siku za wiki kutoka juu hadi chini, saa kutoka kushoto kwenda kulia — rangi nzito zaidi inamaanisha shughuli nyingi zaidi."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Urefu wa wastani wa uandishi mmoja. Jedwali linaonyesha ni lini unaandika kwa sauti: siku za wiki kutoka juu hadi chini, saa kutoka kushoto kwenda kulia — rangi nzito zaidi inamaanisha shughuli nyingi zaidi.",
+"Most used words": "Maneno yaliyotumika zaidi",
+"Chart in background": "Chati chinyuma",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Maneno uliyoyaandika kwa sauti zaidi katika kipindi hiki — kadiri yanavyokuwa makubwa, ndivyo yanavyotokea mara nyingi zaidi. Maneno ya herufi tatu au chini na maneno ya kawaida kama ‘nataka’ au ‘kwa sababu’ hayajajumuishwa.",
+"Vito character": "Mhusika wa katuni wa Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Urefu wa wastani wa uandishi mmoja kwa sauti. Jedwali linaonyesha wiki 26 zilizopita, kisanduku kimoja kwa siku kuanzia Jumatatu hadi Jumapili — rangi iliyokolea zaidi inamaanisha maneno mengi zaidi."
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

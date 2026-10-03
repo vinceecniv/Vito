@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% delle dettature",
 "Languages you dictated in this period, by number of dictations.": "Le lingue in cui hai dettato in questo periodo, in base al numero di dettature.",
 "words per dictation": "parole per dettatura",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "La lunghezza media di una dettatura. La griglia mostra quando detti: giorni della settimana dall'alto verso il basso, ore da sinistra a destra — più scuro significa più attività."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "La lunghezza media di una dettatura. La griglia mostra quando detti: giorni della settimana dall'alto verso il basso, ore da sinistra a destra — più scuro significa più attività.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "La lunghezza media di una dettatura. La griglia mostra le ultime 26 settimane, un quadratino per giorno da lunedì a domenica: più è scuro, più parole ci sono.",
+"Most used words": "Parole più usate",
+"Chart in background": "Grafico sullo sfondo",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Le parole che hai dettato più spesso in questo periodo: più sono grandi, più compaiono. Le parole di tre lettere o meno e quelle comuni come ‘voglio’ o ‘perché’ sono escluse.",
+"Vito character": "Personaggio di Vito"
 },
 "help": {
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",

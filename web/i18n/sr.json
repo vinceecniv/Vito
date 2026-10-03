@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% diktata",
 "Languages you dictated in this period, by number of dictations.": "Jezici na kojima ste diktirali u ovom periodu, po broju diktata.",
 "words per dictation": "reči po diktatu",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Prosečna dužina diktata. Mreža prikazuje kada diktirate: dani u nedelji odozgo nadole, sati s leva na desno — tamnije znači življe."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Prosečna dužina diktata. Mreža prikazuje kada diktirate: dani u nedelji odozgo nadole, sati s leva na desno — tamnije znači življe.",
+"Most used words": "Najčešće korišćene reči",
+"Chart in background": "Grafikon u pozadini",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Reči koje ste u ovom periodu najviše diktirali — što su veće, to se češće javljaju. Reči od tri slova ili manje i uobičajene reči poput „želim“ ili „jer“ su izostavljene.",
+"Vito character": "Vito lik",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Prosečna dužina jednog diktata. Mreža prikazuje poslednjih 26 nedelja, po jedan kvadrat za svaki dan od ponedeljka do nedelje — tamnije znači više reči."
 },
 "help": {
 "theme": "Svetla, tamna ili automatska — automatska prati svetlu/tamnu postavku vašeg sistema.",

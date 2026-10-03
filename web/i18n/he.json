@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% מההכתבות",
 "Languages you dictated in this period, by number of dictations.": "השפות שבהן הכתבת בתקופה זו, לפי מספר ההכתבות.",
 "words per dictation": "מילים להכתבה",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "האורך הממוצע של הכתבה. הרשת מראה מתי אתה מכתיב: ימי השבוע מלמעלה למטה, שעות משמאל לימין — כהה יותר פירושו עמוס יותר."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "האורך הממוצע של הכתבה. הרשת מראה מתי אתה מכתיב: ימי השבוע מלמעלה למטה, שעות משמאל לימין — כהה יותר פירושו עמוס יותר.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "האורך הממוצע של הכתבה. הרשת מציגה את 26 השבועות האחרונים, ריבוע לכל יום מיום שני עד יום ראשון — כהה יותר פירושו יותר מילים.",
+"Most used words": "המילים הנפוצות ביותר",
+"Chart in background": "תרשים ברקע",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "המילים שהכתבת הכי הרבה בתקופה זו — ככל שהמילה גדולה יותר, כך היא הופיעה לעתים קרובות יותר. מילים של שלוש אותיות או פחות ומילים נפוצות כמו ‘רוצה’ או ‘כי’ אינן נכללות.",
+"Vito character": "הדמות של Vito"
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

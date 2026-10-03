@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "よく使った単語",
+"Chart in background": "背景にグラフを表示",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "この期間に最もよく口述した単語です。大きいほど頻度が高くなります。3文字以下の単語や、「したい」「なぜなら」のようなよくある単語は除外されます。",
+"Vito character": "Vitoのキャラクター",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "口述1回あたりの平均の長さです。グリッドは直近26週間を表し、月曜から日曜まで1日につき1マスで、色が濃いほど単語数が多くなります。",
 "Custom range…": "期間を指定…",
 "Previous month": "前の月",
 "Next month": "次の月",

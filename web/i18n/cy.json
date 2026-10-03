@@ -824,7 +824,13 @@
 "{p}% of dictations": "{p}% o'r arddywediadau",
 "Languages you dictated in this period, by number of dictations.": "Yr ieithoedd yr arddywedaist ynddynt yn y cyfnod hwn, yn ôl nifer yr arddywediadau.",
 "words per dictation": "geiriau fesul arddywediad",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Hyd cyfartalog arddywediad. Mae'r grid yn dangos pryd rwyt ti'n arddweud: dyddiau'r wythnos o'r top i'r gwaelod, oriau o'r chwith i'r dde — po dywyllaf, y prysuraf."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Hyd cyfartalog arddywediad. Mae'r grid yn dangos pryd rwyt ti'n arddweud: dyddiau'r wythnos o'r top i'r gwaelod, oriau o'r chwith i'r dde — po dywyllaf, y prysuraf.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Hyd cyfartalog arddywediad. Mae'r grid yn dangos y 26 wythnos diwethaf, sgwâr ar gyfer pob diwrnod o ddydd Llun i ddydd Sul — mae tywyllach yn golygu mwy o eiriau.",
+"Most used words": "Geiriau a ddefnyddir fwyaf",
+"Chart in background": "Siart yn y cefndir",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Y geiriau a arddywedoch fwyaf yn y cyfnod hwn — po fwyaf yw'r gair, y amlaf y'i defnyddiwyd. Mae geiriau o dair llythyren neu lai a geiriau cyffredin fel ‘eisiau’ neu ‘achos’ wedi'u gadael allan.",
+"Vito character": "Cymeriad Vito (y ffigur cartŵn)",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Hyd cyfartalog arddywediad. Mae'r grid yn dangos y 26 wythnos diwethaf, un sgwâr y diwrnod o ddydd Llun i ddydd Sul — mae tywyllach yn golygu mwy o eiriau."
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

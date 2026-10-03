@@ -824,7 +824,13 @@
 "{p}% of dictations": "{p}% من الإملاءات",
 "Languages you dictated in this period, by number of dictations.": "اللغات التي أملَيت بها في هذه الفترة، مرتّبة حسب عدد الإملاءات.",
 "words per dictation": "كلمات لكل إملاء",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "متوسط طول الإملاء. تُظهر الشبكة متى تُملي: أيام الأسبوع من الأعلى إلى الأسفل، والساعات من اليسار إلى اليمين — كلما كان اللون أغمق كان النشاط أكثر."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "متوسط طول الإملاء. تُظهر الشبكة متى تُملي: أيام الأسبوع من الأعلى إلى الأسفل، والساعات من اليسار إلى اليمين — كلما كان اللون أغمق كان النشاط أكثر.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "متوسط طول الإملاء. تعرض الشبكة آخر 26 أسبوعًا، بمربّع لكل يوم من الاثنين إلى الأحد — كلما كان اللون أغمق كانت الكلمات أكثر.",
+"Most used words": "الكلمات الأكثر استخدامًا",
+"Chart in background": "المخطط في الخلفية",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "الكلمات التي أملَيتَها أكثر من غيرها في هذه الفترة — كلما كانت الكلمة أكبر، زاد تكرارها. تُستبعد الكلمات المؤلفة من ثلاثة أحرف أو أقل والكلمات الشائعة مثل «يريد» أو «لأن».",
+"Vito character": "شخصية Vito الكرتونية",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "متوسط طول الإملاء. تعرض الشبكة آخر 26 أسبوعًا، بمربع لكل يوم من الاثنين إلى الأحد — كلما كان اللون أغمق زادت الكلمات."
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "En çok kullanılan kelimeler",
+"Chart in background": "Arka planda grafik",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Bu dönemde en çok dikte ettiğiniz kelimeler — ne kadar büyükse o kadar sık. Üç harf veya daha kısa kelimeler ile ‘istiyorum’ ya da ‘çünkü’ gibi yaygın kelimeler dahil edilmez.",
+"Vito character": "Vito karakteri",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Bir diktenin ortalama uzunluğu. Izgara son 26 haftayı gösterir; Pazartesi’den Pazar’a her gün için bir kare — ne kadar koyuysa o kadar çok kelime.",
 "Custom range…": "Özel aralık…",
 "Previous month": "Önceki ay",
 "Next month": "Sonraki ay",

@@ -1,5 +1,10 @@
 {
 "strings": {
+"Most used words": "Najpogosteje uporabljene besede",
+"Chart in background": "Graf v ozadju",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Besede, ki ste jih v tem obdobju najpogosteje narekovali – večja ko je beseda, pogosteje se pojavlja. Besede s tremi črkami ali manj in pogoste besede, kot sta »hočem« ali »ker«, so izpuščene.",
+"Vito character": "Lik Vito",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Povprečna dolžina narekovanja. Mreža prikazuje zadnjih 26 tednov, en kvadratek na dan od ponedeljka do nedelje – temnejši pomeni več besed.",
 "Status": "Stanje",
 "Settings": "Nastavitve",
 "Dictionary": "Slovar",

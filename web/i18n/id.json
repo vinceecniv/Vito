@@ -824,7 +824,12 @@
 "{p}% of dictations": "{p}% dari dikte",
 "Languages you dictated in this period, by number of dictations.": "Bahasa yang Anda gunakan untuk mendikte pada periode ini, menurut jumlah dikte.",
 "words per dictation": "kata per dikte",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Panjang rata-rata sebuah dikte. Kisi menunjukkan kapan Anda mendikte: hari dari atas ke bawah, jam dari kiri ke kanan — makin gelap makin sibuk."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Panjang rata-rata sebuah dikte. Kisi menunjukkan kapan Anda mendikte: hari dari atas ke bawah, jam dari kiri ke kanan — makin gelap makin sibuk.",
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Panjang rata-rata sebuah dikte. Kisi menunjukkan 26 minggu terakhir, satu kotak per hari dari Senin sampai Minggu — makin gelap makin banyak kata.",
+"Most used words": "Kata paling sering dipakai",
+"Chart in background": "Grafik di latar belakang",
+"The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Kata yang paling sering Anda dikte dalam periode ini — makin besar, makin sering. Kata dengan tiga huruf atau kurang dan kata umum seperti ‘ingin’ atau ‘karena’ tidak disertakan.",
+"Vito character": "Karakter kartun Vito"
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",
