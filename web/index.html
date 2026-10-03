@@ -491,8 +491,12 @@
   /* The chart fills whatever height the card has: side by side with the cost
      card the row stretches to the taller of the two, and a fixed-height chart
      would leave a large empty gap under the bars. */
-  .chart-card { display:flex; flex-direction:column; }
-  .weekwrap { display:flex; align-items:flex-end; gap:10px; flex:1; min-height:130px; margin-top:6px; }
+  /* In the status grid the chart shares a row with the statistic cards, so it
+     must not be taller than they are: the same padding, and a chart that is
+     only as tall as it needs to be — it grows with the row, never the row
+     with it. */
+  .chart-card { display:flex; flex-direction:column; padding:18px 20px; }
+  .weekwrap { display:flex; align-items:flex-end; gap:10px; flex:1; min-height:72px; margin-top:10px; }
   /* min-width:0 is essential: a flex item won't shrink below its content by
      default, so a column labelled "12" came out wider than one labelled "6".
      The label may now overflow its column — harmless, since only every third
