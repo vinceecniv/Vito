@@ -6003,12 +6003,21 @@ const LAYOUT_PINNED = ["transcript"];
 // without one, or after a reset: the transcript first, then the statistics,
 // the chart and the costs.
 const LAYOUT_DEFAULT = [...STAT_KEYS, "cost", "chart", "transcript", "quicksettings", "mascot"];
-const LAYOUT_FRESH = ["transcript", ...STAT_KEYS, "chart", "cost", "quicksettings", "mascot"];
+// The arrangement a new user starts with (and Reset to default returns to):
+// the transcript, then words with saved time as their main figure across the
+// row, Vito, the word cloud and the rest — tuned by hand on a real dashboard.
+// The cards that only appear when they have news (Vito Assist, the version,
+// out of credit) take their place when they do.
+const LAYOUT_FRESH = ["transcript", "words", "mascot", "wordcloud", "commands", "achievements", "streak", "cleanupfx",
+  "chart", "rhythm", "languages", "cost", "quicksettings", "update", "credit"];
+const freshLayout = () => ({ order: [...LAYOUT_FRESH], hidden: [], updateAlways: true,
+  widths: { words: 3, chart: 2, mascot: 1, streak: 1 }, spark: {}, main: "saved", matrix: true, streakFx: true });
 let statusLayout = null;
 function loadLayout(){
   if (statusLayout) return statusLayout;
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem("vito-status-layout") || "null"); } catch {}
+  if (!saved || !Array.isArray(saved.order)) saved = freshLayout();
   let order = [...LAYOUT_FRESH];
   if (Array.isArray(saved && saved.order)) {
     let o = saved.order;
@@ -6050,8 +6059,29 @@ function loadLayout(){
   statusLayout = { order, hidden, updateAlways, widths, spark, main, matrix, streakFx };
   return statusLayout;
 }
+// The layout lives in the browser and, a moment after each change, in Vito's
+// own config too (PUT /api/ui/dashboard): so it survives a change of browser
+// and goes along with a backup.
+let layoutSyncTimer = null;
 function saveLayout(){
   try { localStorage.setItem("vito-status-layout", JSON.stringify(statusLayout)); } catch {}
+  clearTimeout(layoutSyncTimer);
+  layoutSyncTimer = setTimeout(() => api("/api/ui/dashboard", { method: "PUT", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(statusLayout) }).catch(() => {}), 800);
+}
+// With the settings loaded: a browser without a layout of its own takes the
+// one in the config (a new browser, or after a restore); a browser with one
+// the config doesn't have yet (from before the layout was kept there) hands
+// it over.
+function syncLayoutWithConfig(){
+  const remote = cfg && cfg.ui && cfg.ui.dashboard;
+  let local = null; try { local = localStorage.getItem("vito-status-layout"); } catch {}
+  if (!local && remote && typeof remote === "object") {
+    try { localStorage.setItem("vito-status-layout", JSON.stringify(remote)); } catch {}
+    statusLayout = null; applyStatusLayout(); loadStats();
+  } else if (local && !remote) {
+    loadLayout(); saveLayout();
+  }
 }
 const layoutVisible = (key) => !loadLayout().hidden.includes(key);
 // Keys of one group, in the saved order, hidden ones dropped.
@@ -6176,7 +6206,7 @@ function cardMenuItems(k){
 }
 function layoutChanged(){ saveLayout(); applyStatusLayout(); }
 function resetLayout(){
-  statusLayout = { order: [...LAYOUT_FRESH], hidden: [], updateAlways: false, widths: {}, spark: {} };
+  statusLayout = freshLayout();
   saveLayout(); applyStatusLayout(); loadStats();
 }
 // One floating menu at a time, under the button that opened it (or above it
@@ -7885,6 +7915,7 @@ async function loadSettings() {
   loadingSettings = true;
   cfg = await api("/api/config");
   maybeShowWelcome();
+  syncLayoutWithConfig();
   const devs = await api("/api/devices").catch(() => ({ input: [], output: [] }));
   const fill = (sel, list, current) => {
     sel.innerHTML = '<option value="">' + t("system default") + '</option>';
