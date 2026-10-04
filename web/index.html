@@ -536,7 +536,6 @@
   .cmp.up { color:var(--violet); } :root[data-theme="dark"] .cmp.up { color:var(--violet-l); }
   .cmp.good { color:#2AA46A; } .cmp.bad { color:var(--coral); }
   .has-minis > .cmp { max-width:42%; }
-  #cost-projection { white-space:normal; }
   /* Sparkline as the card's background: it fills the lower part edge to edge
      behind the figure, so the card stays the height of the others. Same
      buckets as the words chart. */
@@ -1567,8 +1566,6 @@
           <div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div>
           <div class="num" id="cost-month-total">–</div>
           <div class="lbl"><span>Costs</span> · <span>this month so far</span></div>
-          <div class="delta flat cost-period"><span id="cost-period-lbl">–</span>: <span id="cost-period">–</span></div>
-          <div class="cmp" id="cost-projection" hidden></div>
         </div>
         <div class="card chart-card" id="chart-card">
           <div class="rowflex" style="justify-content:space-between;"><div class="card-title"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></div><h2 style="margin:0;" id="chart-title">Words per day</h2></div><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
@@ -7401,23 +7398,19 @@ async function loadCosts(){
   if (seq !== costsSeq) return;
   lastCosts = c;
   const cur = c.currency || "eur";
-  $("cost-period-lbl").textContent = periodLabel();
-  $("cost-period").textContent = fmtMoney(c.period_total || 0, cur);
   $("cost-month-total").textContent = fmtMoney(c.month_total, cur, 2);
-  // Where this month is heading at the pace so far — from the third day on,
-  // before that one busy morning would project a fortune.
+  // The card shows this month's figure and nothing else, so it is no taller
+  // than the others; the rest is in its tooltip: what the period on screen
+  // cost, where the month is heading at the pace so far (from the third day
+  // on — before that one busy morning would project a fortune), and the
+  // month's split. The Vito Assist part only appears once it has actually
+  // cost something (a command on a paid model).
   const nowD = new Date(), dom = nowD.getDate(), dim = new Date(nowD.getFullYear(), nowD.getMonth() + 1, 0).getDate();
-  const pj = $("cost-projection");
-  if (pj) {
-    pj.hidden = dom < 3 || !(c.month_total > 0);
-    if (!pj.hidden) pj.textContent = t("≈ {v} by the end of the month").replace("{v}", fmtMoney(c.month_total / dom * dim, cur, 2));
-  }
-  // The card shows one figure; the month's breakdown and the projection are in
-  // its tooltip. The Vito Assist part only appears once it has actually cost
-  // something (a command on a paid model).
+  const tip = [`${periodLabel()}: ${fmtMoney(c.period_total || 0, cur)}`];
+  if (dom >= 3 && c.month_total > 0) tip.push(t("≈ {v} by the end of the month").replace("{v}", fmtMoney(c.month_total / dom * dim, cur, 2)));
   const parts = [`${t("Speech recognition")} ${fmtMoney(c.month_stt, cur, 2)}`, `${t("AI cleanup")} ${fmtMoney(c.month_cleanup, cur, 2)}`];
   if (c.month_command > 0) parts.push(`Vito Assist ${fmtMoney(c.month_command, cur, 2)}`);
-  setCardTip($("cost-card"), parts.join(" · ") + ` — ≈ ${fmtMoney(c.projected_monthly, cur, 2)} ${t("per month at your current usage (last 30 days)")}`);
+  setCardTip($("cost-card"), tip.join(" · ") + " — " + parts.join(" · "));
   if (typeof buildModelCards === "function" && $("model-cards")) buildModelCards(); // re-price in the chosen currency
 }
 // The display currency, from the costs card's menu.
@@ -7580,7 +7573,7 @@ let compareSeq = 0;
 async function compareWithPrevious(st){
   const seq = ++compareSeq, p = previousPeriod();
   latencyInfo.trend = "";
-  const clear = () => document.querySelectorAll("#statgrid .stat > .cmp:not(#cost-projection)").forEach(e => e.remove());
+  const clear = () => document.querySelectorAll("#statgrid .stat > .cmp").forEach(e => e.remove());
   if (!p) { clear(); return; }
   const key = p.from + ":" + p.to;
   let prev = prevStatsCache.get(key);
