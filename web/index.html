@@ -311,7 +311,10 @@
   [hidden] { display:none !important; }
   .grid { display:grid; gap:20px; align-items:start; }
   .grid-2 { grid-template-columns:repeat(2,1fr); }
-  .statgrid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); }
+  /* Dense: a gap left where a two-cell card didn't fit at the end of a row is
+     filled by the next card that does, so no layout — the default at any
+     width, or your own after a card grew — ends up with holes. */
+  .statgrid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); grid-auto-flow:row dense; }
   /* Card sizes in the one status grid (see applyStatusLayout): most are one
      cell, the chart, calendar and word cloud two, the transcript a row. */
   .statgrid > .span2 { grid-column:span 2; }
@@ -599,6 +602,10 @@
   .cloud span.alt { color:var(--coral); }
   .cloud span.top { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800; }
   .cloud-empty { margin-top:12px; font-size:12.5px; color:var(--text3); }
+  .quiet-today { display:flex; align-items:center; gap:14px; margin-top:8px; }
+  .quiet-vito { width:74px; height:80px; flex:none; }
+  .quiet-line { font-size:13.5px; line-height:1.45; color:var(--text2); }
+  .quiet-line b { color:var(--text); font-weight:600; white-space:nowrap; }
   .rhythm-head { display:flex; align-items:center; gap:10px; }
   .rhythm-head .chip { margin-bottom:0; flex:none; }
   .rhythm-head .num { font-size:24px; }
@@ -2165,6 +2172,14 @@ const TR = { nl: {
   "Dashboard":"Dashboard",
   "Main figure":"Hoofdcijfer",
   "days in a row":"dagen op rij",
+  "Dictate today to start a streak":"Dicteer vandaag om een reeks te beginnen",
+  "Nothing cleaned up in this period yet":"Nog niets opgeschoond in deze periode",
+  "No languages detected in this period yet":"Nog geen talen herkend in deze periode",
+  "Your most used words appear here once you dictate.":"Je meest gebruikte woorden verschijnen hier zodra je dicteert.",
+  "Quiet so far today. Press {k} and say something!":"Nog stil vandaag. Druk op {k} en zeg eens wat!",
+  "The first word of the day is yours. {k} and off you go.":"Het eerste woord van de dag is aan jou. {k} en gaan.",
+  "Vito is warmed up and waiting. {k}?":"Vito is opgewarmd en wacht op je. {k}?",
+  "Nothing said yet today — the floor is yours.":"Nog niets gezegd vandaag — het woord is aan jou.",
   "New record!":"Nieuw record!",
   "Celebrate a new record":"Nieuw record vieren",
   "1 day to go to your record":"Nog 1 dag tot je record",
@@ -6881,7 +6896,8 @@ function langCardHTML(ins){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9s1.3-6.4 3.8-9z"/></svg>';
   const langs = ins.languages || [];
   const total = langs.reduce((s, l) => s + l.count, 0);
-  if (!total) return `<div class="chip coral">${icon}</div><div class="num">–</div><div class="lbl">${t("Languages")}</div>`;
+  if (!total) return `<div class="chip coral">${icon}</div><div class="num">–</div><div class="lbl">${t("Languages")}</div>` +
+    `<div class="delta flat">${t("No languages detected in this period yet")}</div>`;
   const pct = (n) => Math.round(n / total * 100);
   const shown = langs.slice(0, 4), rest = total - shown.reduce((s, l) => s + l.count, 0);
   const seg = shown.map((l, i) => `<i style="width:${l.count / total * 100}%;background:${LANG_COLORS[i]}"></i>`).join("") +
@@ -6923,11 +6939,36 @@ function rhythmCardHTML(st){
 // words spread through the cloud instead of piling up at the start; it is
 // stable, so a refresh doesn't reshuffle it. The five most used carry the
 // brand gradient, the rest alternate violet and coral.
+// Today, before the first dictation — a state you pass every morning, so it
+// gets something friendlier than a dash: Vito waiting (a real one, so he
+// perks up as you start talking) and a line that changes from day to day,
+// with your own hotkey in it.
+const QUIET_LINES = [
+  "Quiet so far today. Press {k} and say something!",
+  "The first word of the day is yours. {k} and off you go.",
+  "Vito is warmed up and waiting. {k}?",
+  "Nothing said yet today — the floor is yours.",
+];
+function hotkeyHint(){
+  const hk = hkInfo || {};
+  const spec = hk.os === "windows" ? (hk.toggle && (hk.toggle.spec || hk.toggle.configured)) || ""
+    : (hk.supported && hk.toggle ? hk.toggle.spec : "");
+  if (!spec) return "";
+  return hk.os === "windows" ? fmtHotkey(spec) : fmtPortalShortcut(spec);
+}
+function quietTodayHTML(){
+  const d = new Date(), day = d.getFullYear() * 400 + d.getMonth() * 31 + d.getDate();
+  const k = hotkeyHint();
+  let lines = QUIET_LINES.filter(l => k || !l.includes("{k}"));
+  const line = t(lines[day % lines.length]).replace("{k}", k ? `<b>${ahEsc(k)}</b>` : "");
+  return `<div class="quiet-today"><div class="quiet-vito" id="quiet-vito"></div><div class="quiet-line">${line}</div></div>`;
+}
 function cloudCardHTML(ins){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1-.6-7.96A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9.5z"/></svg>';
   const head = `<div class="rhythm-head"><div class="chip coral">${icon}</div><div class="lbl">${t("Most used words")}</div></div>`;
   const words = ins.top_words || [];
-  if (!words.length) return head + `<div class="cloud-empty">–</div>`;
+  if (!words.length) return statPeriod() === "1" ? head + quietTodayHTML()
+    : head + `<div class="cloud-empty">${t("Your most used words appear here once you dictate.")}</div>`;
   const max = words[0].count, min = words[words.length - 1].count;
   const top = new Set(words.slice(0, 5).map(w => w.word));
   const cells = words.map((w, i) => ({ ...w, i, h: hashStr(w.word) })).sort((a, b) => a.h - b.h).map(w => {
@@ -7441,7 +7482,8 @@ function streakSub(st, nf){
   const s = streakState(st);
   if (s.mode === "record") return "🏆 " + t("New record!");
   if (s.mode === "near") return s.left === 1 ? t("1 day to go to your record") : t("{n} days to go to your record").replace("{n}", s.left);
-  return st.longest_streak ? t("record: {n}").replace("{n}", nf(st.longest_streak)) : "";
+  if (st.longest_streak) return t("record: {n}").replace("{n}", nf(st.longest_streak));
+  return (st.current_streak || 0) ? "" : t("Dictate today to start a streak");
 }
 let lastStatsForStreak = null;
 function markStreakRecord(mode){
@@ -7650,11 +7692,11 @@ async function loadStatsNow(){
     { key:"cleanupfx", cls:"violet", icon:I.sent, value: ins.cleanup_runs ? Math.round(ins.cleanup_changed / ins.cleanup_runs * 100) : 0,
       format:n => ins.cleanup_runs ? n + "%" : "–", lbl:t("changed by AI cleanup"),
       sub: ins.cleanup_failed ? t("{n} failed").replace("{n}", nf(ins.cleanup_failed))
-         : ins.cleanup_runs ? t("of {n} cleaned").replace("{n}", nf(ins.cleanup_runs)) : "",
+         : ins.cleanup_runs ? t("of {n} cleaned").replace("{n}", nf(ins.cleanup_runs)) : t("Nothing cleaned up in this period yet"),
       tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
     { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
       [langBreakdown(ins), t("Languages you dictated in this period, by number of dictations.")].filter(Boolean).join(" — ")) },
-    { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => { setCardTip(el,
+    { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => { const qv = el.querySelector("#quiet-vito"); if (qv) qv.appendChild(makeMascot(document)); setCardTip(el,
       t("The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.")); fitCloud(el);
       // Rendered while the page is hidden there is nothing to measure yet; fit
       // again once the card has a size, and whenever that size changes.
