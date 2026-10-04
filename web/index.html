@@ -603,7 +603,16 @@
   .cloud span.top { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800; }
   .cloud-empty { margin-top:12px; font-size:12.5px; color:var(--text3); }
   .quiet-today { display:flex; align-items:center; gap:14px; margin-top:8px; }
-  .quiet-vito { width:74px; height:80px; flex:none; }
+  /* The app icon talking, as on vito.talk: the bars bounce like an equaliser. */
+  .quiet-icon { flex:none; width:58px; height:58px; border-radius:15px; display:inline-flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,#FF6B5E,#7C3AED); box-shadow:0 10px 24px rgba(124,58,237,.3), 0 0 0 1px rgba(255,255,255,.15) inset; }
+  .quiet-icon svg { width:40px; height:40px; }
+  .vito-talk rect { transform-box:fill-box; transform-origin:center; animation:vBar .9s ease-in-out infinite; }
+  .vito-talk rect:nth-of-type(1), .vito-talk rect:nth-of-type(7) { animation-delay:.3s; animation-duration:.8s; }
+  .vito-talk rect:nth-of-type(2), .vito-talk rect:nth-of-type(6) { animation-delay:.15s; animation-duration:1.05s; }
+  .vito-talk rect:nth-of-type(3), .vito-talk rect:nth-of-type(5) { animation-delay:.45s; animation-duration:.7s; }
+  .vito-talk rect:nth-of-type(4) { animation-delay:0s; animation-duration:.95s; }
+  @keyframes vBar { 0%,100% { transform:scaleY(1); } 50% { transform:scaleY(.45); } }
   .quiet-line { font-size:13.5px; line-height:1.45; color:var(--text2); }
   .quiet-line b { color:var(--text); font-weight:600; white-space:nowrap; }
   .rhythm-head { display:flex; align-items:center; gap:10px; }
@@ -6940,9 +6949,9 @@ function rhythmCardHTML(st){
 // stable, so a refresh doesn't reshuffle it. The five most used carry the
 // brand gradient, the rest alternate violet and coral.
 // Today, before the first dictation — a state you pass every morning, so it
-// gets something friendlier than a dash: Vito waiting (a real one, so he
-// perks up as you start talking) and a line that changes from day to day,
-// with your own hotkey in it.
+// gets something friendlier than a dash: the app icon with its bars talking,
+// as in the download section of vito.talk, and a line that changes from day
+// to day, with your own hotkey in it.
 const QUIET_LINES = [
   "Quiet so far today. Press {k} and say something!",
   "The first word of the day is yours. {k} and off you go.",
@@ -6961,7 +6970,9 @@ function quietTodayHTML(){
   const k = hotkeyHint();
   let lines = QUIET_LINES.filter(l => k || !l.includes("{k}"));
   const line = t(lines[day % lines.length]).replace("{k}", k ? `<b>${ahEsc(k)}</b>` : "");
-  return `<div class="quiet-today"><div class="quiet-vito" id="quiet-vito"></div><div class="quiet-line">${line}</div></div>`;
+  const bars = [[10,16],[22,28],[34,40],[46,54],[58,40],[70,28],[82,16]].map(([x, h]) => `<rect x="${x}" y="24" width="8" height="${h}" rx="4"/>`).join("");
+  return `<div class="quiet-today"><span class="quiet-icon"><svg viewBox="0 0 100 100" fill="#fff" class="vito-talk" aria-hidden="true">${bars}</svg></span>` +
+    `<div class="quiet-line">${line}</div></div>`;
 }
 function cloudCardHTML(ins){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1-.6-7.96A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9.5z"/></svg>';
@@ -7696,7 +7707,7 @@ async function loadStatsNow(){
       tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
     { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
       [langBreakdown(ins), t("Languages you dictated in this period, by number of dictations.")].filter(Boolean).join(" — ")) },
-    { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => { const qv = el.querySelector("#quiet-vito"); if (qv) qv.appendChild(makeMascot(document)); setCardTip(el,
+    { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => { setCardTip(el,
       t("The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.")); fitCloud(el);
       // Rendered while the page is hidden there is nothing to measure yet; fit
       // again once the card has a size, and whenever that size changes.
