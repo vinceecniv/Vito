@@ -843,7 +843,15 @@
 "Recent dictations": "Seneste diktater",
 "vs previous period": "i forhold til forrige periode",
 "≈ {v} by the end of the month": "≈ {v} ved udgangen af måneden",
-"Animation when there's an update": "Animation, når der er en opdatering"
+"Animation when there's an update": "Animation, når der er en opdatering",
+"Dictate today to start a streak": "Diktér i dag for at starte en stime",
+"Nothing cleaned up in this period yet": "Intet er ryddet op i denne periode endnu",
+"No languages detected in this period yet": "Ingen sprog registreret i denne periode endnu",
+"Your most used words appear here once you dictate.": "Dine mest brugte ord vises her, så snart du dikterer.",
+"Quiet so far today. Press {k} and say something!": "Der har været stille i dag indtil videre. Tryk på {k} og sig noget!",
+"The first word of the day is yours. {k} and off you go.": "Dagens første ord er dit. Tryk {k}, og så er du i gang.",
+"Vito is warmed up and waiting. {k}?": "Vito er varmet op og venter. {k}?",
+"Nothing said yet today — the floor is yours.": "Intet sagt i dag endnu — ordet er dit."
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",

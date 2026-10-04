@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "今日口述して連続記録を始めましょう",
+"Nothing cleaned up in this period yet": "この期間はまだ整形されたものがありません",
+"No languages detected in this period yet": "この期間はまだ検出された言語がありません",
+"Your most used words appear here once you dictate.": "口述すると、よく使う言葉がここに表示されます。",
+"Quiet so far today. Press {k} and say something!": "今日はまだ静かですね。{k}を押して、何か話しかけてみましょう！",
+"The first word of the day is yours. {k} and off you go.": "今日最初のひと言はあなたのものです。{k}を押してどうぞ。",
+"Vito is warmed up and waiting. {k}?": "Vitoは準備万端でお待ちしています。{k}を押しませんか？",
+"Nothing said yet today — the floor is yours.": "今日はまだ誰も話していません。さあ、あなたの出番です。",
 "Main figure": "メインの数値",
 "days in a row": "日連続",
 "New record!": "新記録！",

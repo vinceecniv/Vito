@@ -843,7 +843,15 @@
 "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "A lonxitude media dun ditado. A grade mostra cando ditas: os días da semana de arriba abaixo, as horas de esquerda a dereita — canto máis escuro, máis actividade.",
 "The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "A lonxitude media dun ditado. A grade mostra as últimas 26 semanas, un cadrado por día de luns a domingo — canto máis escuro, máis palabras.",
 "Dashboard": "Dashboard",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Fai clic no botón «Xanela flotante» do Dashboard para amosar a transcrición á parte."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Fai clic no botón «Xanela flotante» do Dashboard para amosar a transcrición á parte.",
+"Dictate today to start a streak": "Dita hoxe para comezar unha serie",
+"Nothing cleaned up in this period yet": "Aínda non se limpou nada neste período",
+"No languages detected in this period yet": "Aínda non se detectou ningún idioma neste período",
+"Your most used words appear here once you dictate.": "As túas palabras máis usadas aparecerán aquí en canto dites.",
+"Quiet so far today. Press {k} and say something!": "Todo tranquilo por hoxe. Preme {k} e di algo!",
+"The first word of the day is yours. {k} and off you go.": "A primeira palabra do día é túa. {k} e adiante.",
+"Vito is warmed up and waiting. {k}?": "Vito xa quentou motores e está esperando. {k}?",
+"Nothing said yet today — the floor is yours.": "Aínda non se dixo nada hoxe — a palabra é túa."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a configuración clara/escura do teu sistema.",

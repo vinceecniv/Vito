@@ -843,7 +843,15 @@
 "Recent dictations": "Dictats recents",
 "vs previous period": "respecte al període anterior",
 "≈ {v} by the end of the month": "≈ {v} a final de mes",
-"Animation when there's an update": "Animació quan hi ha una actualització"
+"Animation when there's an update": "Animació quan hi ha una actualització",
+"Dictate today to start a streak": "Dicta avui per començar una ratxa",
+"Nothing cleaned up in this period yet": "Encara no s'ha netejat res en aquest període",
+"No languages detected in this period yet": "Encara no s'ha detectat cap llengua en aquest període",
+"Your most used words appear here once you dictate.": "Les paraules que més fas servir apareixeran aquí quan dictis.",
+"Quiet so far today. Press {k} and say something!": "Avui encara tot en silenci. Prem {k} i digues alguna cosa!",
+"The first word of the day is yours. {k} and off you go.": "La primera paraula del dia és teva. {k} i endavant!",
+"Vito is warmed up and waiting. {k}?": "Vito ja està escalfat i t'espera. {k}?",
+"Nothing said yet today — the floor is yours.": "Encara no s'ha dit res avui — la paraula és teva."
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

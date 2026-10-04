@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "Narekujte danes in začnite niz",
+"Nothing cleaned up in this period yet": "V tem obdobju še ni ničesar počiščenega",
+"No languages detected in this period yet": "V tem obdobju še ni zaznanih jezikov",
+"Your most used words appear here once you dictate.": "Vaše najpogosteje uporabljene besede se prikažejo tukaj, ko začnete narekovati.",
+"Quiet so far today. Press {k} and say something!": "Danes je zaenkrat tiho. Pritisnite {k} in recite kaj!",
+"The first word of the day is yours. {k} and off you go.": "Prva beseda dneva je vaša. {k} in že gre.",
+"Vito is warmed up and waiting. {k}?": "Vito je ogret in čaka. {k}?",
+"Nothing said yet today — the floor is yours.": "Danes še ni bilo rečeno nič — beseda je vaša.",
 "Most used words": "Najpogosteje uporabljene besede",
 "Chart in background": "Graf v ozadju",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Besede, ki ste jih v tem obdobju najpogosteje narekovali – večja ko je beseda, pogosteje se pojavlja. Besede s tremi črkami ali manj in pogoste besede, kot sta »hočem« ali »ker«, so izpuščene.",

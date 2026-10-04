@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "स्ट्रीक शुरू करने के लिए आज बोलकर लिखवाएँ",
+"Nothing cleaned up in this period yet": "इस अवधि में अभी तक कुछ भी साफ़ नहीं किया गया",
+"No languages detected in this period yet": "इस अवधि में अभी तक कोई भाषा पहचानी नहीं गई",
+"Your most used words appear here once you dictate.": "जब आप बोलकर लिखवाएँगे, तो आपके सबसे ज़्यादा इस्तेमाल किए गए शब्द यहाँ दिखेंगे।",
+"Quiet so far today. Press {k} and say something!": "आज अब तक सन्नाटा है। {k} दबाइए और कुछ बोलिए!",
+"The first word of the day is yours. {k} and off you go.": "दिन का पहला शब्द आपका है। {k} दबाइए और शुरू हो जाइए।",
+"Vito is warmed up and waiting. {k}?": "Vito तैयार है और इंतज़ार कर रहा है। {k}?",
+"Nothing said yet today — the floor is yours.": "आज अभी तक कुछ नहीं बोला गया — मंच आपका है।",
 "Dashboard": "डैशबोर्ड",
 "Click the 'Detached window' button on the Dashboard to pop out the transcript.": "ट्रांसक्रिप्ट को अलग दिखाने के लिए डैशबोर्ड पर 'अलग विंडो' बटन पर क्लिक करें।",
 "wpm spoken": "wpm बोले गए",

@@ -843,7 +843,15 @@
 "Recent dictations": "Legutóbbi diktálások",
 "vs previous period": "az előző időszakhoz képest",
 "≈ {v} by the end of the month": "≈ {v} a hónap végéig",
-"Animation when there's an update": "Animáció, ha frissítés érhető el"
+"Animation when there's an update": "Animáció, ha frissítés érhető el",
+"Dictate today to start a streak": "Diktálj ma, és indítsd el a sorozatot",
+"Nothing cleaned up in this period yet": "Ebben az időszakban még nincs semmi megtisztítva",
+"No languages detected in this period yet": "Ebben az időszakban még nem észleltünk nyelvet",
+"Your most used words appear here once you dictate.": "A leggyakrabban használt szavaid itt jelennek meg, amint diktálsz.",
+"Quiet so far today. Press {k} and say something!": "Eddig csend van ma. Nyomd meg a(z) {k} gombot, és mondj valamit!",
+"The first word of the day is yours. {k} and off you go.": "A nap első szava a tiéd. {k}, és már mehet is!",
+"Vito is warmed up and waiting. {k}?": "Vito bemelegített, és már vár. {k}?",
+"Nothing said yet today — the floor is yours.": "Ma még nem hangzott el semmi — tiéd a szó."
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

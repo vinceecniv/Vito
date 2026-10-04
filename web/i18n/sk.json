@@ -843,7 +843,15 @@
 "Recent dictations": "Posledné diktáty",
 "vs previous period": "oproti predchádzajúcemu obdobiu",
 "≈ {v} by the end of the month": "≈ {v} do konca mesiaca",
-"Animation when there's an update": "Animácia, keď je dostupná aktualizácia"
+"Animation when there's an update": "Animácia, keď je dostupná aktualizácia",
+"Dictate today to start a streak": "Nadiktujte niečo dnes a začnite sériu",
+"Nothing cleaned up in this period yet": "V tomto období sa zatiaľ nič nevyčistilo",
+"No languages detected in this period yet": "V tomto období sa zatiaľ nezistili žiadne jazyky",
+"Your most used words appear here once you dictate.": "Vaše najpoužívanejšie slová sa tu zobrazia, hneď ako začnete diktovať.",
+"Quiet so far today. Press {k} and say something!": "Dnes je zatiaľ ticho. Stlačte {k} a povedzte niečo!",
+"The first word of the day is yours. {k} and off you go.": "Prvé slovo dňa patrí vám. Stačí {k} a môžete začať.",
+"Vito is warmed up and waiting. {k}?": "Vito je zahriaty a čaká. Stlačíte {k}?",
+"Nothing said yet today — the floor is yours.": "Dnes sa zatiaľ nič nepovedalo — slovo je vaše."
 },
 "help": {
 "theme": "Svetlá, tmavá alebo automatická — automatická sleduje svetlý/tmavý režim vášho systému.",

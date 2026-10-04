@@ -844,7 +844,15 @@
 "{p}% of dictations": "املاؤں کا {p}٪",
 "Languages you dictated in this period, by number of dictations.": "اس مدت میں آپ نے جن زبانوں میں املا کیا، املاؤں کی تعداد کے لحاظ سے۔",
 "words per dictation": "فی املا الفاظ",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "املا کی اوسط لمبائی۔ گرڈ دکھاتا ہے کہ آپ کب املا کرتے ہیں: ہفتے کے دن اوپر سے نیچے، گھنٹے بائیں سے دائیں — جتنا گہرا رنگ، اتنی زیادہ سرگرمی۔"
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "املا کی اوسط لمبائی۔ گرڈ دکھاتا ہے کہ آپ کب املا کرتے ہیں: ہفتے کے دن اوپر سے نیچے، گھنٹے بائیں سے دائیں — جتنا گہرا رنگ، اتنی زیادہ سرگرمی۔",
+"Dictate today to start a streak": "سلسلہ شروع کرنے کے لیے آج ڈکٹیٹ کریں",
+"Nothing cleaned up in this period yet": "اس مدت میں ابھی تک کچھ صاف نہیں کیا گیا",
+"No languages detected in this period yet": "اس مدت میں ابھی تک کوئی زبان نہیں ملی",
+"Your most used words appear here once you dictate.": "ڈکٹیٹ کرتے ہی آپ کے سب سے زیادہ استعمال ہونے والے الفاظ یہاں نظر آئیں گے۔",
+"Quiet so far today. Press {k} and say something!": "آج اب تک خاموشی ہے۔ {k} دبائیں اور کچھ کہیں!",
+"The first word of the day is yours. {k} and off you go.": "آج کا پہلا لفظ آپ کا ہے۔ {k} دبائیں اور شروع ہو جائیں۔",
+"Vito is warmed up and waiting. {k}?": "Vito تیار ہے اور انتظار کر رہا ہے۔ {k}؟",
+"Nothing said yet today — the floor is yours.": "آج ابھی تک کچھ نہیں کہا گیا — اب آپ کی باری ہے۔"
 },
 "help": {
 "theme": "روشن، گہرا یا خودکار — خودکار آپ کے سسٹم کی روشن/گہری ترتیب کے مطابق چلتا ہے۔",

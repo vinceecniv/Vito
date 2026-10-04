@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "Diktera idag för att starta en svit",
+"Nothing cleaned up in this period yet": "Inget har rensats upp under den här perioden ännu",
+"No languages detected in this period yet": "Inga språk har identifierats under den här perioden ännu",
+"Your most used words appear here once you dictate.": "Dina mest använda ord dyker upp här när du har dikterat.",
+"Quiet so far today. Press {k} and say something!": "Tyst än så länge idag. Tryck på {k} och säg något!",
+"The first word of the day is yours. {k} and off you go.": "Dagens första ord är ditt. Tryck {k} och kör!",
+"Vito is warmed up and waiting. {k}?": "Vito är igång och väntar. Redo att köra med {k}?",
+"Nothing said yet today — the floor is yours.": "Inget sagt ännu idag — scenen är din.",
 "Status": "Status",
 "Dashboard": "Dashboard",
 "Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Klicka på knappen 'Löst fönster' på Dashboard för att visa transkriptionen fristående.",

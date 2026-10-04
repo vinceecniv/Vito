@@ -843,7 +843,15 @@
 "Recent dictations": "Azken diktaketak",
 "vs previous period": "aurreko epealdiarekin alderatuta",
 "≈ {v} by the end of the month": "≈ {v} hilabete amaierarako",
-"Animation when there's an update": "Animazioa eguneratzea dagoenean"
+"Animation when there's an update": "Animazioa eguneratzea dagoenean",
+"Dictate today to start a streak": "Diktatu gaur segida bati ekiteko",
+"Nothing cleaned up in this period yet": "Oraindik ez da ezer garbitu aldi honetan",
+"No languages detected in this period yet": "Oraindik ez da hizkuntzarik detektatu aldi honetan",
+"Your most used words appear here once you dictate.": "Gehien erabiltzen dituzun hitzak hemen agertuko dira diktatzen duzunean.",
+"Quiet so far today. Press {k} and say something!": "Gaur oraingoz isilik dago dena. Sakatu {k} eta esan zerbait!",
+"The first word of the day is yours. {k} and off you go.": "Eguneko lehen hitza zurea da. {k} eta aurrera!",
+"Vito is warmed up and waiting. {k}?": "Vito berotuta dago eta zain. {k}?",
+"Nothing said yet today — the floor is yours.": "Gaur oraindik ez da ezer esan — hitza zurea da."
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

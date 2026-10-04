@@ -844,7 +844,15 @@
 "Recent dictations": "Arddywediadau diweddar",
 "vs previous period": "o'i gymharu â'r cyfnod blaenorol",
 "≈ {v} by the end of the month": "≈ {v} erbyn diwedd y mis",
-"Animation when there's an update": "Animeiddiad pan fydd diweddariad"
+"Animation when there's an update": "Animeiddiad pan fydd diweddariad",
+"Dictate today to start a streak": "Arddywed heddiw i ddechrau cyfres",
+"Nothing cleaned up in this period yet": "Dim wedi'i lanhau yn y cyfnod hwn eto",
+"No languages detected in this period yet": "Dim ieithoedd wedi'u canfod yn y cyfnod hwn eto",
+"Your most used words appear here once you dictate.": "Bydd dy eiriau mwyaf cyffredin yn ymddangos yma unwaith y byddi'n arddweud.",
+"Quiet so far today. Press {k} and say something!": "Tawel hyd yma heddiw. Gwasga {k} a dywed rywbeth!",
+"The first word of the day is yours. {k} and off you go.": "Dy gyfle di yw gair cyntaf y dydd. {k} ac i ffwrdd â ti.",
+"Vito is warmed up and waiting. {k}?": "Mae Vito wedi cynhesu ac yn aros. {k}?",
+"Nothing said yet today — the floor is yours.": "Dim wedi'i ddweud eto heddiw — dy dro di yw hi."
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

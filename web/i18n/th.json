@@ -843,7 +843,15 @@
 "Recent dictations": "การบอกให้พิมพ์ล่าสุด",
 "vs previous period": "เทียบกับช่วงก่อนหน้า",
 "≈ {v} by the end of the month": "≈ {v} ภายในสิ้นเดือน",
-"Animation when there's an update": "แอนิเมชันเมื่อมีอัปเดต"
+"Animation when there's an update": "แอนิเมชันเมื่อมีอัปเดต",
+"Dictate today to start a streak": "พูดบอกวันนี้เพื่อเริ่มสถิติต่อเนื่อง",
+"Nothing cleaned up in this period yet": "ยังไม่มีข้อความที่ปรับแต่งในช่วงเวลานี้",
+"No languages detected in this period yet": "ยังไม่พบภาษาใดในช่วงเวลานี้",
+"Your most used words appear here once you dictate.": "คำที่คุณใช้บ่อยที่สุดจะปรากฏที่นี่เมื่อคุณเริ่มพูดบอก",
+"Quiet so far today. Press {k} and say something!": "วันนี้ยังเงียบอยู่เลย กด {k} แล้วพูดอะไรสักหน่อยสิ!",
+"The first word of the day is yours. {k} and off you go.": "คำแรกของวันเป็นของคุณ กด {k} แล้วเริ่มได้เลย",
+"Vito is warmed up and waiting. {k}?": "Vito พร้อมและรออยู่แล้ว กด {k} ไหม?",
+"Nothing said yet today — the floor is yours.": "วันนี้ยังไม่มีใครพูดอะไรเลย เวทีเป็นของคุณ"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",

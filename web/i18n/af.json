@@ -843,7 +843,15 @@
 "{p}% of dictations": "{p}% van diktate",
 "Languages you dictated in this period, by number of dictations.": "Tale waarin jy gedurende hierdie tydperk gedikteer het, volgens die aantal diktate.",
 "words per dictation": "woorde per diktaat",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Die gemiddelde lengte van 'n diktaat. Die rooster wys wanneer jy dikteer: weekdae van bo na onder, ure van links na regs — donkerder beteken besiger."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Die gemiddelde lengte van 'n diktaat. Die rooster wys wanneer jy dikteer: weekdae van bo na onder, ure van links na regs — donkerder beteken besiger.",
+"Dictate today to start a streak": "Dikteer vandag om 'n reeks te begin",
+"Nothing cleaned up in this period yet": "Nog niks in hierdie tydperk opgeskoon nie",
+"No languages detected in this period yet": "Nog geen tale in hierdie tydperk bespeur nie",
+"Your most used words appear here once you dictate.": "Jou mees gebruikte woorde verskyn hier sodra jy dikteer.",
+"Quiet so far today. Press {k} and say something!": "Nog stil vandag. Druk {k} en sê iets!",
+"The first word of the day is yours. {k} and off you go.": "Die eerste woord van die dag is joune. {k} en weg is jy.",
+"Vito is warmed up and waiting. {k}?": "Vito is warm en wag. {k}?",
+"Nothing said yet today — the floor is yours.": "Nog niks gesê vandag nie — die vloer is joune."
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

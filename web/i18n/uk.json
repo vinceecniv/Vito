@@ -843,7 +843,15 @@
 "words per dictation": "слів на диктування",
 "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Середня довжина диктування. Сітка показує, коли ви диктуєте: дні тижня зверху вниз, години зліва направо — що темніше, то активніше.",
 "Dashboard": "Дашборд",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Натисніть кнопку «Окреме вікно» на сторінці «Дашборд», щоб винести транскрипт окремо."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Натисніть кнопку «Окреме вікно» на сторінці «Дашборд», щоб винести транскрипт окремо.",
+"Dictate today to start a streak": "Надиктуйте щось сьогодні, щоб почати серію",
+"Nothing cleaned up in this period yet": "За цей період ще нічого не відредаговано",
+"No languages detected in this period yet": "За цей період ще не визначено жодної мови",
+"Your most used words appear here once you dictate.": "Ваші найуживаніші слова з’являться тут, щойно ви почнете диктувати.",
+"Quiet so far today. Press {k} and say something!": "Поки що тихо. Натисніть {k} і скажіть щось!",
+"The first word of the day is yours. {k} and off you go.": "Перше слово дня за вами. Натискайте {k} — і вперед.",
+"Vito is warmed up and waiting. {k}?": "Vito вже розігрітий і чекає. Натиснемо {k}?",
+"Nothing said yet today — the floor is yours.": "Сьогодні ще нічого не сказано — слово за вами."
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",

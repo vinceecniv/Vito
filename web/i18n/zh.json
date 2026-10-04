@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "今天口述一次，开启连续记录",
+"Nothing cleaned up in this period yet": "此期间还没有清理过的内容",
+"No languages detected in this period yet": "此期间还没有检测到语言",
+"Your most used words appear here once you dictate.": "开始口述后，你最常用的词会显示在这里。",
+"Quiet so far today. Press {k} and say something!": "今天还静悄悄的。按下 {k}，说点什么吧！",
+"The first word of the day is yours. {k} and off you go.": "今天的第一句话留给你。按下 {k}，开口吧。",
+"Vito is warmed up and waiting. {k}?": "Vito 已经热好身，随时待命。按下 {k}？",
+"Nothing said yet today — the floor is yours.": "今天还没人开口 — 现在轮到你了。",
 "Custom range…": "自定义范围…",
 "Previous month": "上个月",
 "Next month": "下个月",

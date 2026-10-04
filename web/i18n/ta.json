@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "தொடர் நாட்களைத் தொடங்க இன்று சொல்லெழுதுங்கள்",
+"Nothing cleaned up in this period yet": "இந்தக் காலத்தில் இன்னும் எதுவும் சீர்படுத்தப்படவில்லை",
+"No languages detected in this period yet": "இந்தக் காலத்தில் இன்னும் எந்த மொழியும் கண்டறியப்படவில்லை",
+"Your most used words appear here once you dictate.": "நீங்கள் சொல்லெழுதியதும் அதிகம் பயன்படுத்திய சொற்கள் இங்கே தோன்றும்.",
+"Quiet so far today. Press {k} and say something!": "இன்று இதுவரை அமைதிதான். {k} அழுத்தி ஏதாவது சொல்லுங்கள்!",
+"The first word of the day is yours. {k} and off you go.": "இன்றைய முதல் சொல் உங்களுடையது. {k} அழுத்துங்கள், தொடங்குங்கள்.",
+"Vito is warmed up and waiting. {k}?": "Vito தயாராகக் காத்திருக்கிறது. {k}?",
+"Nothing said yet today — the floor is yours.": "இன்று இன்னும் யாரும் பேசவில்லை — மேடை உங்களுடையது.",
 "Earned today": "இன்று பெற்றவை",
 "Unlocked today": "இன்று திறக்கப்பட்டது",
 "{n} new today": "இன்று {n} புதியவை",

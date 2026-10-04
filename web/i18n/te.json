@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "స్ట్రీక్ ప్రారంభించడానికి ఈరోజు డిక్టేట్ చేయండి",
+"Nothing cleaned up in this period yet": "ఈ కాలంలో ఇంకా ఏదీ శుభ్రం చేయబడలేదు",
+"No languages detected in this period yet": "ఈ కాలంలో ఇంకా ఏ భాషలూ గుర్తించబడలేదు",
+"Your most used words appear here once you dictate.": "మీరు డిక్టేట్ చేసిన వెంటనే, మీరు ఎక్కువగా వాడే పదాలు ఇక్కడ కనిపిస్తాయి.",
+"Quiet so far today. Press {k} and say something!": "ఈరోజు ఇప్పటివరకు ప్రశాంతంగా ఉంది. {k} నొక్కి ఏదైనా చెప్పండి!",
+"The first word of the day is yours. {k} and off you go.": "ఈరోజు మొదటి మాట మీదే. {k} నొక్కండి, ఇక మొదలుపెట్టండి.",
+"Vito is warmed up and waiting. {k}?": "Vito సిద్ధంగా ఉండి ఎదురుచూస్తోంది. {k}?",
+"Nothing said yet today — the floor is yours.": "ఈరోజు ఇంకా ఏమీ చెప్పలేదు — ఇప్పుడు మీ వంతు.",
 "Status": "స్థితి",
 "Settings": "సెట్టింగ్‌లు",
 "Dictionary": "నిఘంటువు",

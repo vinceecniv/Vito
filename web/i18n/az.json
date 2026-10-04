@@ -843,7 +843,15 @@
 "Recent dictations": "Son diktələr",
 "vs previous period": "əvvəlki dövrlə müqayisədə",
 "≈ {v} by the end of the month": "ay sonunadək ≈ {v}",
-"Animation when there's an update": "Yeniləmə olduqda animasiya"
+"Animation when there's an update": "Yeniləmə olduqda animasiya",
+"Dictate today to start a streak": "Seriyaya başlamaq üçün bu gün diktə edin",
+"Nothing cleaned up in this period yet": "Bu dövrdə hələ heç nə təmizlənməyib",
+"No languages detected in this period yet": "Bu dövrdə hələ heç bir dil aşkarlanmayıb",
+"Your most used words appear here once you dictate.": "Ən çox işlətdiyiniz sözlər diktə etdikdən sonra burada görünəcək.",
+"Quiet so far today. Press {k} and say something!": "Bu gün hələ sakitlikdir. {k} basın və nəsə deyin!",
+"The first word of the day is yours. {k} and off you go.": "Günün ilk sözü sizindir. {k} basın, buyurun.",
+"Vito is warmed up and waiting. {k}?": "Vito hazırdır və gözləyir. {k}?",
+"Nothing said yet today — the floor is yours.": "Bu gün hələ heç nə deyilməyib — söz sizindir."
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

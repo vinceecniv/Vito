@@ -843,7 +843,15 @@
 "Recent dictations": "Dikte terkini",
 "vs previous period": "berbanding tempoh sebelumnya",
 "≈ {v} by the end of the month": "≈ {v} menjelang hujung bulan",
-"Animation when there's an update": "Animasi apabila ada kemas kini"
+"Animation when there's an update": "Animasi apabila ada kemas kini",
+"Dictate today to start a streak": "Dikte hari ini untuk memulakan rentetan",
+"Nothing cleaned up in this period yet": "Belum ada yang dibersihkan dalam tempoh ini",
+"No languages detected in this period yet": "Belum ada bahasa dikesan dalam tempoh ini",
+"Your most used words appear here once you dictate.": "Perkataan yang paling kerap anda guna akan muncul di sini selepas anda mendikte.",
+"Quiet so far today. Press {k} and say something!": "Sunyi sahaja setakat hari ini. Tekan {k} dan katakan sesuatu!",
+"The first word of the day is yours. {k} and off you go.": "Perkataan pertama hari ini milik anda. Tekan {k} dan mulakan.",
+"Vito is warmed up and waiting. {k}?": "Vito sudah bersedia dan menunggu. {k}?",
+"Nothing said yet today — the floor is yours.": "Belum ada apa-apa dikatakan hari ini — giliran anda untuk bercakap."
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",

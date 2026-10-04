@@ -844,6 +844,15 @@
 "vs previous period": "vs. período anterior",
 "≈ {v} by the end of the month": "≈ {v} até ao fim do mês",
 "Animation when there's an update": "Animação quando há uma atualização"
+,
+"Dictate today to start a streak": "Dite hoje para começar uma sequência",
+"Nothing cleaned up in this period yet": "Ainda nada foi limpo neste período",
+"No languages detected in this period yet": "Ainda não foram detetados idiomas neste período",
+"Your most used words appear here once you dictate.": "As suas palavras mais usadas aparecem aqui assim que ditar.",
+"Quiet so far today. Press {k} and say something!": "Está tudo calmo por hoje. Prima {k} e diga alguma coisa!",
+"The first word of the day is yours. {k} and off you go.": "A primeira palavra do dia é sua. {k} e toca a falar.",
+"Vito is warmed up and waiting. {k}?": "O Vito já aqueceu e está à espera. {k}?",
+"Nothing said yet today — the floor is yours.": "Ainda não se disse nada hoje — a palavra é sua."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",

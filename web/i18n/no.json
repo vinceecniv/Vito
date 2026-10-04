@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "Dikter i dag for å starte en rekke",
+"Nothing cleaned up in this period yet": "Ingenting er ryddet opp i denne perioden ennå",
+"No languages detected in this period yet": "Ingen språk er registrert i denne perioden ennå",
+"Your most used words appear here once you dictate.": "Ordene du bruker mest dukker opp her så snart du begynner å diktere.",
+"Quiet so far today. Press {k} and say something!": "Stille så langt i dag. Trykk {k} og si noe!",
+"The first word of the day is yours. {k} and off you go.": "Dagens første ord er ditt. {k}, så er du i gang.",
+"Vito is warmed up and waiting. {k}?": "Vito er varm og klar. {k}?",
+"Nothing said yet today — the floor is yours.": "Ingenting sagt i dag ennå — ordet er ditt.",
 "Status": "Status",
 "Settings": "Innstillinger",
 "Dictionary": "Ordbok",

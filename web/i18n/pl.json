@@ -843,7 +843,15 @@
 "Recent dictations": "Ostatnie dyktowania",
 "vs previous period": "vs poprzedni okres",
 "≈ {v} by the end of the month": "≈ {v} do końca miesiąca",
-"Animation when there's an update": "Animacja, gdy jest aktualizacja"
+"Animation when there's an update": "Animacja, gdy jest aktualizacja",
+"Dictate today to start a streak": "Podyktuj coś dziś, aby zacząć serię",
+"Nothing cleaned up in this period yet": "W tym okresie nic jeszcze nie poprawiono",
+"No languages detected in this period yet": "W tym okresie nie wykryto jeszcze żadnych języków",
+"Your most used words appear here once you dictate.": "Twoje najczęściej używane słowa pojawią się tutaj, gdy zaczniesz dyktować.",
+"Quiet so far today. Press {k} and say something!": "Jak dotąd cicho. Naciśnij {k} i powiedz coś!",
+"The first word of the day is yours. {k} and off you go.": "Pierwsze słowo dnia należy do ciebie. {k} i działaj.",
+"Vito is warmed up and waiting. {k}?": "Vito jest rozgrzany i czeka. {k}?",
+"Nothing said yet today — the floor is yours.": "Dziś jeszcze nic nie padło — oddajemy ci głos."
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

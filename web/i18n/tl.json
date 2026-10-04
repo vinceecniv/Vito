@@ -843,7 +843,15 @@
 "Recent dictations": "Mga kamakailang diktasyon",
 "vs previous period": "kumpara sa nakaraang panahon",
 "≈ {v} by the end of the month": "≈ {v} sa katapusan ng buwan",
-"Animation when there's an update": "Animasyon kapag may update"
+"Animation when there's an update": "Animasyon kapag may update",
+"Dictate today to start a streak": "Mag-dictate ngayon para magsimula ng streak",
+"Nothing cleaned up in this period yet": "Wala pang naayos sa panahong ito",
+"No languages detected in this period yet": "Wala pang natukoy na wika sa panahong ito",
+"Your most used words appear here once you dictate.": "Lalabas dito ang mga pinakamadalas mong gamiting salita kapag nag-dictate ka na.",
+"Quiet so far today. Press {k} and say something!": "Tahimik pa hanggang ngayon. Pindutin ang {k} at magsalita ka na!",
+"The first word of the day is yours. {k} and off you go.": "Sa iyo ang unang salita ng araw. {k}, at simulan mo na.",
+"Vito is warmed up and waiting. {k}?": "Handa na si Vito at naghihintay. {k}?",
+"Nothing said yet today — the floor is yours.": "Wala pang nasasabi ngayong araw — ikaw na ang magsalita."
 },
 "help": {
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",

@@ -1,5 +1,13 @@
 {
 "strings": {
+    "Dictate today to start a streak": "Серияны бастау үшін бүгін диктовка жасаңыз",
+    "Nothing cleaned up in this period yet": "Бұл кезеңде әлі ештеңе тазаланған жоқ",
+    "No languages detected in this period yet": "Бұл кезеңде әлі тілдер анықталған жоқ",
+    "Your most used words appear here once you dictate.": "Диктовка жасай бастағаннан кейін ең жиі қолданылатын сөздеріңіз осы жерде көрінеді.",
+    "Quiet so far today. Press {k} and say something!": "Бүгін әзірге тып-тыныш. {k} басып, бірдеңе айтыңыз!",
+    "The first word of the day is yours. {k} and off you go.": "Күннің алғашқы сөзі сізге тиесілі. {k} басыңыз да, бастаңыз.",
+    "Vito is warmed up and waiting. {k}?": "Vito дайын, күтіп тұр. {k} басамыз ба?",
+    "Nothing said yet today — the floor is yours.": "Бүгін әлі ештеңе айтылған жоқ — сөз кезегі сізде.",
 "wpm spoken": "wpm сөйлеу",
 "How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.": "Диктант кезінде қаншалықты жылдам сөйлейсіз: сөздер санын жазу уақытына бөлгенде шығатын көрсеткіш. Теру жылдамдығыңыз {n} wpm болып орнатылған.",
 "wait after stopping": "тоқтатқаннан кейінгі күту",

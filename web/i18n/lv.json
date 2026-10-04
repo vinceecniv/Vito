@@ -843,7 +843,15 @@
 "Recent dictations": "Pēdējie diktāti",
 "vs previous period": "salīdzinājumā ar iepriekšējo periodu",
 "≈ {v} by the end of the month": "≈ {v} līdz mēneša beigām",
-"Animation when there's an update": "Animācija, kad ir atjauninājums"
+"Animation when there's an update": "Animācija, kad ir atjauninājums",
+"Dictate today to start a streak": "Diktē šodien, lai sāktu sēriju",
+"Nothing cleaned up in this period yet": "Šajā periodā vēl nekas nav sakārtots",
+"No languages detected in this period yet": "Šajā periodā vēl nav noteikta neviena valoda",
+"Your most used words appear here once you dictate.": "Šeit parādīsies tavi visbiežāk lietotie vārdi, tiklīdz sāksi diktēt.",
+"Quiet so far today. Press {k} and say something!": "Šodien vēl klusums. Nospied {k} un pasaki ko!",
+"The first word of the day is yours. {k} and off you go.": "Dienas pirmais vārds pieder tev. Nospied {k} un uz priekšu!",
+"Vito is warmed up and waiting. {k}?": "Vito ir iesildījies un gaida. Nospied {k}?",
+"Nothing said yet today — the floor is yours.": "Šodien vēl nekas nav teikts — vārds ir tavs."
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

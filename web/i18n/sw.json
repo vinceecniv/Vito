@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "Andika kwa sauti leo ili kuanza mfululizo",
+"Nothing cleaned up in this period yet": "Bado hakuna kilichosafishwa katika kipindi hiki",
+"No languages detected in this period yet": "Bado hakuna lugha zilizotambuliwa katika kipindi hiki",
+"Your most used words appear here once you dictate.": "Maneno unayotumia zaidi yataonekana hapa mara tu utakapoanza kuandika kwa sauti.",
+"Quiet so far today. Press {k} and say something!": "Kimya hadi sasa leo. Bonyeza {k} useme kitu!",
+"The first word of the day is yours. {k} and off you go.": "Neno la kwanza la siku ni lako. Bonyeza {k} nawe uanze safari.",
+"Vito is warmed up and waiting. {k}?": "Vito iko tayari na inakusubiri. {k}?",
+"Nothing said yet today — the floor is yours.": "Bado hakuna kilichosemwa leo — jukwaa ni lako.",
 "Custom range…": "Kipindi maalum…",
 "Previous month": "Mwezi uliopita",
 "Next month": "Mwezi unaofuata",

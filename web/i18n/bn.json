@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "ধারা শুরু করতে আজ ডিকটেট করুন",
+"Nothing cleaned up in this period yet": "এই সময়কালে এখনও কিছু পরিষ্কার করা হয়নি",
+"No languages detected in this period yet": "এই সময়কালে এখনও কোনো ভাষা শনাক্ত হয়নি",
+"Your most used words appear here once you dictate.": "আপনি ডিকটেট করলেই আপনার সবচেয়ে বেশি ব্যবহৃত শব্দগুলো এখানে দেখা যাবে।",
+"Quiet so far today. Press {k} and say something!": "আজ এখনও সব চুপচাপ। {k} চাপুন আর কিছু বলে ফেলুন!",
+"The first word of the day is yours. {k} and off you go.": "আজকের প্রথম কথাটা আপনারই। {k} চাপুন, শুরু করে দিন।",
+"Vito is warmed up and waiting. {k}?": "Vito তৈরি হয়ে অপেক্ষা করছে। {k} চাপবেন?",
+"Nothing said yet today — the floor is yours.": "আজ এখনও কিছু বলা হয়নি — এবার আপনার পালা।",
 "Most used words": "সবচেয়ে বেশি ব্যবহৃত শব্দ",
 "Chart in background": "ব্যাকগ্রাউন্ডে চার্ট",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "এই সময়কালে আপনি যে শব্দগুলো সবচেয়ে বেশি বলেছেন — শব্দ যত বড়, তত বেশি বার। তিন অক্ষর বা তার কম দৈর্ঘ্যের শব্দ এবং ‘চাই’ বা ‘কারণ’-এর মতো সাধারণ শব্দ বাদ দেওয়া হয়েছে।",

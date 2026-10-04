@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "Padiktuokite šiandien, kad pradėtumėte seriją",
+"Nothing cleaned up in this period yet": "Šiuo laikotarpiu dar nieko netvarkyta",
+"No languages detected in this period yet": "Šiuo laikotarpiu dar neaptikta jokių kalbų",
+"Your most used words appear here once you dictate.": "Dažniausiai vartojami žodžiai čia atsiras, kai tik pradėsite diktuoti.",
+"Quiet so far today. Press {k} and say something!": "Kol kas šiandien tylu. Paspauskite {k} ir ką nors pasakykite!",
+"The first word of the day is yours. {k} and off you go.": "Pirmasis dienos žodis – jūsų. Paspauskite {k} ir pirmyn.",
+"Vito is warmed up and waiting. {k}?": "Vito jau apšilęs ir laukia. {k}?",
+"Nothing said yet today — the floor is yours.": "Šiandien dar nieko nepasakyta – žodis jūsų.",
 "Status": "Būsena",
 "Dashboard": "Skydelis",
 "Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Skydelio puslapyje spustelėkite mygtuką „Atskiras langas“, kad tekstas būtų rodomas atskirai.",

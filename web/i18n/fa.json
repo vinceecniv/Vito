@@ -843,7 +843,15 @@
 "Recent dictations": "دیکته‌های اخیر",
 "vs previous period": "نسبت به بازه قبلی",
 "≈ {v} by the end of the month": "≈ {v} تا پایان ماه",
-"Animation when there's an update": "انیمیشن هنگام وجود به‌روزرسانی"
+"Animation when there's an update": "انیمیشن هنگام وجود به‌روزرسانی",
+"Dictate today to start a streak": "امروز دیکته کنید تا یک رشته‌ی روزانه شروع شود",
+"Nothing cleaned up in this period yet": "در این بازه هنوز چیزی پاک‌سازی نشده است",
+"No languages detected in this period yet": "در این بازه هنوز زبانی شناسایی نشده است",
+"Your most used words appear here once you dictate.": "به محض اینکه دیکته کنید، پرکاربردترین واژه‌هایتان اینجا نمایش داده می‌شوند.",
+"Quiet so far today. Press {k} and say something!": "تا اینجا امروز ساکت بوده. {k} را بزنید و حرفی بزنید!",
+"The first word of the day is yours. {k} and off you go.": "اولین حرف امروز مال شماست. {k} را بزنید و شروع کنید.",
+"Vito is warmed up and waiting. {k}?": "Vito آماده و گرم منتظر است. {k}؟",
+"Nothing said yet today — the floor is yours.": "امروز هنوز حرفی زده نشده — نوبت شماست."
 },
 "help": {
 "theme": "روشن، تیره یا خودکار — خودکار از حالت روشن/تیره سیستم شما پیروی می‌کند.",
