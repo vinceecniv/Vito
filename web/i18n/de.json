@@ -843,7 +843,15 @@
 "Most used words": "Meistgenutzte Wörter",
 "Chart in background": "Diagramm im Hintergrund",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Die Wörter, die du in diesem Zeitraum am häufigsten diktiert hast — je größer, desto häufiger. Wörter mit drei oder weniger Buchstaben und gebräuchliche Wörter wie „wollen“ oder „weil“ werden ausgelassen.",
-"Vito character": "Vito-Figur"
+"Vito character": "Vito-Figur",
+"Dictate today to start a streak": "Diktiere heute, um eine Serie zu starten",
+"Nothing cleaned up in this period yet": "In diesem Zeitraum wurde noch nichts bereinigt",
+"No languages detected in this period yet": "In diesem Zeitraum wurden noch keine Sprachen erkannt",
+"Your most used words appear here once you dictate.": "Deine meistgenutzten Wörter erscheinen hier, sobald du diktierst.",
+"Quiet so far today. Press {k} and say something!": "Heute ist es noch still. Drück {k} und sag etwas!",
+"The first word of the day is yours. {k} and off you go.": "Das erste Wort des Tages gehört dir. {k} und los geht's.",
+"Vito is warmed up and waiting. {k}?": "Vito ist warmgelaufen und wartet. {k}?",
+"Nothing said yet today — the floor is yours.": "Heute wurde noch nichts gesagt – du hast das Wort."
 },
 "help": {
 "theme": "Hell, dunkel oder automatisch — automatisch folgt der Hell/Dunkel-Einstellung deines Systems.",

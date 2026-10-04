@@ -531,6 +531,23 @@ func (d *Daemon) UpdateConfig(cfg *config.Config) {
 	d.emit(Event{Type: "config"})
 }
 
+// SetDashboard stores the web UI's dashboard layout in the config file. Unlike
+// UpdateConfig it announces nothing: the layout changes with every card moved,
+// and only the page that moved it cares.
+func (d *Daemon) SetDashboard(raw []byte) error {
+	d.mu.Lock()
+	c := *d.cfg
+	d.mu.Unlock()
+	c.UI.Dashboard = append([]byte(nil), raw...)
+	if err := c.Save(); err != nil {
+		return err
+	}
+	d.mu.Lock()
+	d.cfg = &c
+	d.mu.Unlock()
+	return nil
+}
+
 // NotifySettingsChanged tells listeners to re-read settings that live outside
 // the config file. Autostart is an OS-level setting, so changing it emits no
 // config event of its own — and without this the tray's checkbox keeps showing

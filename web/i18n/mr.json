@@ -843,7 +843,15 @@
 "Recent dictations": "अलीकडील डिक्टेशन",
 "vs previous period": "मागील कालावधीच्या तुलनेत",
 "≈ {v} by the end of the month": "महिनाअखेरीस ≈ {v}",
-"Animation when there's an update": "अपडेट उपलब्ध असताना अ‍ॅनिमेशन"
+"Animation when there's an update": "अपडेट उपलब्ध असताना अ‍ॅनिमेशन",
+"Dictate today to start a streak": "सलग दिवसांची मालिका सुरू करण्यासाठी आज डिक्टेशन करा",
+"Nothing cleaned up in this period yet": "या कालावधीत अजून काहीही सुधारलेले नाही",
+"No languages detected in this period yet": "या कालावधीत अजून कोणत्याही भाषा ओळखल्या गेलेल्या नाहीत",
+"Your most used words appear here once you dictate.": "तुम्ही डिक्टेशन केल्यावर तुमचे सर्वाधिक वापरलेले शब्द इथे दिसतील.",
+"Quiet so far today. Press {k} and say something!": "आज आतापर्यंत शांतता आहे. {k} दाबा आणि काहीतरी बोला!",
+"The first word of the day is yours. {k} and off you go.": "दिवसाचा पहिला शब्द तुमचाच. {k} दाबा आणि सुरुवात करा.",
+"Vito is warmed up and waiting. {k}?": "Vito तयार आहे आणि वाट पाहत आहे. {k}?",
+"Nothing said yet today — the floor is yours.": "आज अजून काही बोललेले नाही — आता तुमची पाळी."
 },
 "help": {
 "theme": "उजळ, गडद किंवा आपोआप — आपोआप तुमच्या सिस्टीमच्या उजळ/गडद सेटिंगचे अनुसरण करते.",

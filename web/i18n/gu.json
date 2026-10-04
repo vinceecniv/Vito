@@ -843,7 +843,15 @@
 "Recent dictations": "તાજેતરના શ્રુતલેખન",
 "vs previous period": "પાછલા સમયગાળાની સરખામણીમાં",
 "≈ {v} by the end of the month": "મહિનાના અંત સુધીમાં ≈ {v}",
-"Animation when there's an update": "અપડેટ હોય ત્યારે એનિમેશન"
+"Animation when there's an update": "અપડેટ હોય ત્યારે એનિમેશન",
+"Dictate today to start a streak": "સિલસિલો શરૂ કરવા આજે શ્રુતલેખન કરો",
+"Nothing cleaned up in this period yet": "આ સમયગાળામાં હજી કંઈ સુધારવામાં આવ્યું નથી",
+"No languages detected in this period yet": "આ સમયગાળામાં હજી કોઈ ભાષા ઓળખાઈ નથી",
+"Your most used words appear here once you dictate.": "તમે શ્રુતલેખન કરશો કે તરત તમારા સૌથી વધુ વપરાયેલા શબ્દો અહીં દેખાશે.",
+"Quiet so far today. Press {k} and say something!": "આજે અત્યાર સુધી શાંતિ છે. {k} દબાવો અને કંઈક બોલો!",
+"The first word of the day is yours. {k} and off you go.": "દિવસનો પહેલો શબ્દ તમારો. {k} દબાવો અને શરૂ કરો.",
+"Vito is warmed up and waiting. {k}?": "Vito તૈયાર છે અને રાહ જોઈ રહ્યું છે. {k}?",
+"Nothing said yet today — the floor is yours.": "આજે હજી કંઈ બોલાયું નથી — મંચ તમારો છે."
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",

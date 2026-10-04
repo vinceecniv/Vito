@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "Diktoje sot për të nisur një seri",
+"Nothing cleaned up in this period yet": "Ende asgjë e pastruar në këtë periudhë",
+"No languages detected in this period yet": "Ende nuk është zbuluar asnjë gjuhë në këtë periudhë",
+"Your most used words appear here once you dictate.": "Fjalët që përdor më shpesh shfaqen këtu sapo të diktosh.",
+"Quiet so far today. Press {k} and say something!": "Qetësi deri tani sot. Shtyp {k} dhe thuaj diçka!",
+"The first word of the day is yours. {k} and off you go.": "Fjala e parë e ditës është e jotja. {k} dhe fillo!",
+"Vito is warmed up and waiting. {k}?": "Vito është ngrohur dhe po të pret. {k}?",
+"Nothing said yet today — the floor is yours.": "Sot ende nuk është thënë asgjë — fjala është e jotja.",
 "Custom range…": "Periudhë e personalizuar…",
 "Previous month": "Muaji i mëparshëm",
 "Next month": "Muaji tjetër",

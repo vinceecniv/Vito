@@ -843,7 +843,15 @@
 "Recent dictations": "ಇತ್ತೀಚಿನ ಡಿಕ್ಟೇಶನ್‌ಗಳು",
 "vs previous period": "ಹಿಂದಿನ ಅವಧಿಗೆ ಹೋಲಿಸಿದರೆ",
 "≈ {v} by the end of the month": "ತಿಂಗಳ ಅಂತ್ಯದ ವೇಳೆಗೆ ≈ {v}",
-"Animation when there's an update": "ಅಪ್‌ಡೇಟ್ ಇದ್ದಾಗ ಅನಿಮೇಷನ್"
+"Animation when there's an update": "ಅಪ್‌ಡೇಟ್ ಇದ್ದಾಗ ಅನಿಮೇಷನ್",
+"Dictate today to start a streak": "ಸರಣಿ ಆರಂಭಿಸಲು ಇಂದು ಡಿಕ್ಟೇಟ್ ಮಾಡಿ",
+"Nothing cleaned up in this period yet": "ಈ ಅವಧಿಯಲ್ಲಿ ಇನ್ನೂ ಏನನ್ನೂ ಸ್ವಚ್ಛಗೊಳಿಸಿಲ್ಲ",
+"No languages detected in this period yet": "ಈ ಅವಧಿಯಲ್ಲಿ ಇನ್ನೂ ಯಾವ ಭಾಷೆಯೂ ಪತ್ತೆಯಾಗಿಲ್ಲ",
+"Your most used words appear here once you dictate.": "ನೀವು ಡಿಕ್ಟೇಟ್ ಮಾಡಿದ ನಂತರ ನಿಮ್ಮ ಹೆಚ್ಚು ಬಳಸಿದ ಪದಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.",
+"Quiet so far today. Press {k} and say something!": "ಇಂದು ಇಲ್ಲಿಯವರೆಗೆ ಎಲ್ಲವೂ ಶಾಂತ. {k} ಒತ್ತಿ ಏನಾದರೂ ಹೇಳಿ!",
+"The first word of the day is yours. {k} and off you go.": "ದಿನದ ಮೊದಲ ಮಾತು ನಿಮ್ಮದೇ. {k} ಒತ್ತಿ, ಶುರು ಮಾಡಿ.",
+"Vito is warmed up and waiting. {k}?": "Vito ಸಿದ್ಧವಾಗಿ ಕಾಯುತ್ತಿದೆ. {k}?",
+"Nothing said yet today — the floor is yours.": "ಇಂದು ಇನ್ನೂ ಯಾರೂ ಏನೂ ಹೇಳಿಲ್ಲ — ವೇದಿಕೆ ನಿಮ್ಮದು."
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

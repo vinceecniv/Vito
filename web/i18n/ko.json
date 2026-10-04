@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "오늘 받아쓰기를 시작해 연속 기록을 만들어 보세요",
+"Nothing cleaned up in this period yet": "이 기간에는 아직 정리된 내용이 없어요",
+"No languages detected in this period yet": "이 기간에는 아직 감지된 언어가 없어요",
+"Your most used words appear here once you dictate.": "받아쓰기를 하면 가장 많이 쓴 단어가 여기에 표시돼요.",
+"Quiet so far today. Press {k} and say something!": "오늘은 아직 조용하네요. {k}을(를) 누르고 한마디 해 보세요!",
+"The first word of the day is yours. {k} and off you go.": "오늘의 첫마디는 당신 몫이에요. {k}을(를) 누르고 시작해 보세요.",
+"Vito is warmed up and waiting. {k}?": "Vito는 준비를 마치고 기다리고 있어요. {k}?",
+"Nothing said yet today — the floor is yours.": "오늘은 아직 아무 말도 없었어요 — 이제 당신 차례예요.",
 "Dashboard": "대시보드",
 "Click the 'Detached window' button on the Dashboard to pop out the transcript.": "대시보드의 '분리 창' 버튼을 클릭하면 전사가 분리되어 표시됩니다.",
 "Custom range…": "직접 지정…",

@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "Hãy đọc chính tả hôm nay để bắt đầu chuỗi ngày",
+"Nothing cleaned up in this period yet": "Chưa có gì được dọn dẹp trong khoảng thời gian này",
+"No languages detected in this period yet": "Chưa phát hiện ngôn ngữ nào trong khoảng thời gian này",
+"Your most used words appear here once you dictate.": "Những từ bạn dùng nhiều nhất sẽ xuất hiện ở đây khi bạn bắt đầu đọc chính tả.",
+"Quiet so far today. Press {k} and say something!": "Hôm nay vẫn yên ắng quá. Nhấn {k} và nói gì đó đi!",
+"The first word of the day is yours. {k} and off you go.": "Lời đầu tiên trong ngày thuộc về bạn. Nhấn {k} và bắt đầu thôi.",
+"Vito is warmed up and waiting. {k}?": "Vito đã khởi động xong và đang chờ bạn. {k} nhé?",
+"Nothing said yet today — the floor is yours.": "Hôm nay chưa ai nói gì cả — đến lượt bạn rồi.",
 "Main figure": "Số liệu chính",
 "days in a row": "ngày liên tiếp",
 "New record!": "Kỷ lục mới!",

@@ -844,7 +844,15 @@
 "Recent dictations": "Nedavni diktati",
 "vs previous period": "u odnosu na prethodno razdoblje",
 "≈ {v} by the end of the month": "≈ {v} do kraja mjeseca",
-"Animation when there's an update": "Animacija kada postoji ažuriranje"
+"Animation when there's an update": "Animacija kada postoji ažuriranje",
+"Dictate today to start a streak": "Diktirajte danas da započnete niz",
+"Nothing cleaned up in this period yet": "U ovom razdoblju još ništa nije očišćeno",
+"No languages detected in this period yet": "U ovom razdoblju još nije otkriven nijedan jezik",
+"Your most used words appear here once you dictate.": "Vaše najčešće korištene riječi pojavit će se ovdje čim počnete diktirati.",
+"Quiet so far today. Press {k} and say something!": "Danas je do sada tiho. Pritisnite {k} i recite nešto!",
+"The first word of the day is yours. {k} and off you go.": "Prva riječ dana pripada vama. {k} i krećete.",
+"Vito is warmed up and waiting. {k}?": "Vito se zagrijao i čeka. {k}?",
+"Nothing said yet today — the floor is yours.": "Danas još ništa nije rečeno — riječ je vaša."
 },
 "help": {
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetli/tamni način vašeg sistema.",

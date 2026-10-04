@@ -843,7 +843,15 @@
 "{p}% of dictations": "diktelerin %{p}'i",
 "Languages you dictated in this period, by number of dictations.": "Bu dönemde dikte ettiğiniz diller, dikte sayısına göre.",
 "words per dictation": "dikte başına kelime",
-"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Bir diktenin ortalama uzunluğu. Izgara ne zaman dikte ettiğinizi gösterir: hafta içi günler yukarıdan aşağıya, saatler soldan sağa — koyu renk daha yoğun demektir."
+"The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Bir diktenin ortalama uzunluğu. Izgara ne zaman dikte ettiğinizi gösterir: hafta içi günler yukarıdan aşağıya, saatler soldan sağa — koyu renk daha yoğun demektir.",
+"Dictate today to start a streak": "Seri başlatmak için bugün dikte edin",
+"Nothing cleaned up in this period yet": "Bu dönemde henüz temizlenen bir şey yok",
+"No languages detected in this period yet": "Bu dönemde henüz algılanan dil yok",
+"Your most used words appear here once you dictate.": "En çok kullandığınız kelimeler, dikte etmeye başlayınca burada görünür.",
+"Quiet so far today. Press {k} and say something!": "Bugün şimdilik sessiz. {k} tuşlarına basın ve bir şeyler söyleyin!",
+"The first word of the day is yours. {k} and off you go.": "Günün ilk sözü sizin. {k} deyin, gerisi gelir.",
+"Vito is warmed up and waiting. {k}?": "Vito ısındı ve bekliyor. {k}?",
+"Nothing said yet today — the floor is yours.": "Bugün henüz hiçbir şey söylenmedi — söz sizde."
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",

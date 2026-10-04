@@ -843,7 +843,15 @@
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Οι λέξεις που υπαγορεύσατε περισσότερο σε αυτή την περίοδο — όσο μεγαλύτερη η λέξη, τόσο πιο συχνά. Λέξεις με τρία γράμματα ή λιγότερα και κοινές λέξεις όπως «θέλω» ή «επειδή» παραλείπονται.",
 "Vito character": "Χαρακτήρας Vito",
 "Dashboard": "Πίνακας ελέγχου",
-"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Κάντε κλικ στο κουμπί «Αποσπασμένο παράθυρο» στον Πίνακα ελέγχου για να αποσπάσετε τη μεταγραφή."
+"Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Κάντε κλικ στο κουμπί «Αποσπασμένο παράθυρο» στον Πίνακα ελέγχου για να αποσπάσετε τη μεταγραφή.",
+"Dictate today to start a streak": "Υπαγορεύστε σήμερα για να ξεκινήσετε μια σειρά",
+"Nothing cleaned up in this period yet": "Δεν έχει γίνει ακόμη καθαρισμός σε αυτήν την περίοδο",
+"No languages detected in this period yet": "Δεν έχουν εντοπιστεί ακόμη γλώσσες σε αυτήν την περίοδο",
+"Your most used words appear here once you dictate.": "Οι λέξεις που χρησιμοποιείτε περισσότερο θα εμφανιστούν εδώ μόλις υπαγορεύσετε.",
+"Quiet so far today. Press {k} and say something!": "Ησυχία μέχρι τώρα σήμερα. Πατήστε {k} και πείτε κάτι!",
+"The first word of the day is yours. {k} and off you go.": "Η πρώτη κουβέντα της ημέρας είναι δική σας. Πατήστε {k} και ξεκινήστε.",
+"Vito is warmed up and waiting. {k}?": "Το Vito είναι ζεσταμένο και περιμένει. {k};",
+"Nothing said yet today — the floor is yours.": "Δεν έχει ειπωθεί τίποτα σήμερα — έχετε τον λόγο."
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

@@ -118,6 +118,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/devices", s.auth(s.handleDevices))
 	mux.HandleFunc("GET /api/config", s.auth(s.handleGetConfig))
 	mux.HandleFunc("PUT /api/config", s.auth(s.handlePutConfig))
+	mux.HandleFunc("PUT /api/ui/dashboard", s.auth(s.handlePutDashboard))
 	mux.HandleFunc("GET /api/hotkey", s.auth(s.handleGetHotkey))
 	mux.HandleFunc("POST /api/accessibility", s.auth(s.handleRequestAccessibility))
 	mux.HandleFunc("POST /api/hotkey/configure", s.auth(s.handleConfigureHotkey))
@@ -478,6 +479,21 @@ func (s *Server) handleGetConfig(w http.ResponseWriter, r *http.Request) {
 
 // handlePutConfig validates, saves and applies a new configuration without
 // restart. Port and token changes take effect on the next restart.
+// handlePutDashboard stores the dashboard layout the page sends (see
+// config.UI.Dashboard). It has to be a JSON object; the daemon keeps it as is.
+func (s *Server) handlePutDashboard(w http.ResponseWriter, r *http.Request) {
+	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 64<<10))
+	if err != nil || !json.Valid(body) || len(bytes.TrimSpace(body)) == 0 || bytes.TrimSpace(body)[0] != '{' {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "expected a JSON object"})
+		return
+	}
+	if err := s.d.SetDashboard(body); err != nil {
+		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
 func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	current := s.d.Config()
 	// Decoding into cfg writes through the slice headers it shares with current,
@@ -494,6 +510,9 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	}
 	// The local API is not allowed to move or re-key the server itself.
 	cfg.Server = current.Server
+	// The dashboard layout has its own endpoint; a settings save carries the
+	// copy the page loaded, which may be older than a layout saved since.
+	cfg.UI.Dashboard = current.UI.Dashboard
 	// In demo mode the UI is showing (and would send back) the sample
 	// dictionary, so keep the real one — saving any settings change from a demo
 	// must not overwrite the user's keyterms and corrections.

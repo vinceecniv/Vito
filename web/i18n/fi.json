@@ -843,7 +843,15 @@
 "Languages you dictated in this period, by number of dictations.": "Kielet, joilla sanelit tällä jaksolla, sanelujen määrän mukaan.",
 "words per dictation": "sanaa per sanelu",
 "The average length of a dictation. The grid shows when you dictate: weekdays top to bottom, hours left to right — darker is busier.": "Sanelun keskimääräinen pituus. Ruudukko näyttää, milloin sanelet: viikonpäivät ylhäältä alas, tunnit vasemmalta oikealle — tummempi tarkoittaa vilkkaampaa.",
-"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Sanelun keskimääräinen pituus. Ruudukko näyttää viimeiset 26 viikkoa, yksi ruutu päivää kohden maanantaista sunnuntaihin — tummempi tarkoittaa enemmän sanoja."
+"The average length of a dictation. The grid shows the last 26 weeks, a square per day from Monday to Sunday — darker means more words.": "Sanelun keskimääräinen pituus. Ruudukko näyttää viimeiset 26 viikkoa, yksi ruutu päivää kohden maanantaista sunnuntaihin — tummempi tarkoittaa enemmän sanoja.",
+"Dictate today to start a streak": "Sanele tänään aloittaaksesi putken",
+"Nothing cleaned up in this period yet": "Mitään ei ole vielä siistitty tällä jaksolla",
+"No languages detected in this period yet": "Kieliä ei ole vielä tunnistettu tällä jaksolla",
+"Your most used words appear here once you dictate.": "Eniten käyttämäsi sanat näkyvät täällä, kun alat sanella.",
+"Quiet so far today. Press {k} and say something!": "Tänään on ollut hiljaista. Paina {k} ja sano jotain!",
+"The first word of the day is yours. {k} and off you go.": "Päivän ensimmäinen sana on sinun. {k} ja menoksi.",
+"Vito is warmed up and waiting. {k}?": "Vito on lämmennyt ja odottaa. {k}?",
+"Nothing said yet today — the floor is yours.": "Tänään ei ole vielä sanottu mitään — puheenvuoro on sinun."
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

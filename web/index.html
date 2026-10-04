@@ -311,7 +311,10 @@
   [hidden] { display:none !important; }
   .grid { display:grid; gap:20px; align-items:start; }
   .grid-2 { grid-template-columns:repeat(2,1fr); }
-  .statgrid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); }
+  /* Dense: a gap left where a two-cell card didn't fit at the end of a row is
+     filled by the next card that does, so no layout — the default at any
+     width, or your own after a card grew — ends up with holes. */
+  .statgrid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); grid-auto-flow:row dense; }
   /* Card sizes in the one status grid (see applyStatusLayout): most are one
      cell, the chart, calendar and word cloud two, the transcript a row. */
   .statgrid > .span2 { grid-column:span 2; }
@@ -533,7 +536,6 @@
   .cmp.up { color:var(--violet); } :root[data-theme="dark"] .cmp.up { color:var(--violet-l); }
   .cmp.good { color:#2AA46A; } .cmp.bad { color:var(--coral); }
   .has-minis > .cmp { max-width:42%; }
-  #cost-projection { white-space:normal; }
   /* Sparkline as the card's background: it fills the lower part edge to edge
      behind the figure, so the card stays the height of the others. Same
      buckets as the words chart. */
@@ -599,6 +601,18 @@
   .cloud span.alt { color:var(--coral); }
   .cloud span.top { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800; }
   .cloud-empty { margin-top:12px; font-size:12.5px; color:var(--text3); }
+  .quiet-today { display:flex; align-items:center; gap:14px; margin-top:8px; }
+  /* The app icon talking, as on vito.talk: the bars bounce like an equaliser. */
+  .quiet-icon { flex:none; width:64px; height:64px; display:inline-flex; align-items:center; justify-content:center; }
+  .quiet-icon svg { width:64px; height:64px; }
+  .vito-talk rect { transform-box:fill-box; transform-origin:center; animation:vBar .9s ease-in-out infinite; }
+  .vito-talk rect:nth-of-type(1), .vito-talk rect:nth-of-type(7) { animation-delay:.3s; animation-duration:.8s; }
+  .vito-talk rect:nth-of-type(2), .vito-talk rect:nth-of-type(6) { animation-delay:.15s; animation-duration:1.05s; }
+  .vito-talk rect:nth-of-type(3), .vito-talk rect:nth-of-type(5) { animation-delay:.45s; animation-duration:.7s; }
+  .vito-talk rect:nth-of-type(4) { animation-delay:0s; animation-duration:.95s; }
+  @keyframes vBar { 0%,100% { transform:scaleY(1); } 50% { transform:scaleY(.45); } }
+  .quiet-line { font-size:13.5px; line-height:1.45; color:var(--text2); }
+  .quiet-line b { color:var(--text); font-weight:600; white-space:nowrap; }
   .rhythm-head { display:flex; align-items:center; gap:10px; }
   .rhythm-head .chip { margin-bottom:0; flex:none; }
   .rhythm-head .num { font-size:24px; }
@@ -1552,8 +1566,6 @@
           <div class="chip coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg></div>
           <div class="num" id="cost-month-total">–</div>
           <div class="lbl"><span>Costs</span> · <span>this month so far</span></div>
-          <div class="delta flat cost-period"><span id="cost-period-lbl">–</span>: <span id="cost-period">–</span></div>
-          <div class="cmp" id="cost-projection" hidden></div>
         </div>
         <div class="card chart-card" id="chart-card">
           <div class="rowflex" style="justify-content:space-between;"><div class="card-title"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></div><h2 style="margin:0;" id="chart-title">Words per day</h2></div><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
@@ -2165,6 +2177,14 @@ const TR = { nl: {
   "Dashboard":"Dashboard",
   "Main figure":"Hoofdcijfer",
   "days in a row":"dagen op rij",
+  "Dictate today to start a streak":"Dicteer vandaag om een reeks te beginnen",
+  "Nothing cleaned up in this period yet":"Nog niets opgeschoond in deze periode",
+  "No languages detected in this period yet":"Nog geen talen herkend in deze periode",
+  "Your most used words appear here once you dictate.":"Je meest gebruikte woorden verschijnen hier zodra je dicteert.",
+  "Quiet so far today. Press {k} and say something!":"Nog stil vandaag. Druk op {k} en zeg eens wat!",
+  "The first word of the day is yours. {k} and off you go.":"Het eerste woord van de dag is aan jou. {k} en gaan.",
+  "Vito is warmed up and waiting. {k}?":"Vito is opgewarmd en wacht op je. {k}?",
+  "Nothing said yet today — the floor is yours.":"Nog niets gezegd vandaag — het woord is aan jou.",
   "New record!":"Nieuw record!",
   "Celebrate a new record":"Nieuw record vieren",
   "1 day to go to your record":"Nog 1 dag tot je record",
@@ -5983,12 +6003,21 @@ const LAYOUT_PINNED = ["transcript"];
 // without one, or after a reset: the transcript first, then the statistics,
 // the chart and the costs.
 const LAYOUT_DEFAULT = [...STAT_KEYS, "cost", "chart", "transcript", "quicksettings", "mascot"];
-const LAYOUT_FRESH = ["transcript", ...STAT_KEYS, "chart", "cost", "quicksettings", "mascot"];
+// The arrangement a new user starts with (and Reset to default returns to):
+// the transcript, then words with saved time as their main figure across the
+// row, Vito, the word cloud and the rest — tuned by hand on a real dashboard.
+// The cards that only appear when they have news (Vito Assist, the version,
+// out of credit) take their place when they do.
+const LAYOUT_FRESH = ["transcript", "words", "mascot", "wordcloud", "commands", "achievements", "streak", "cleanupfx",
+  "chart", "rhythm", "languages", "cost", "quicksettings", "update", "credit"];
+const freshLayout = () => ({ order: [...LAYOUT_FRESH], hidden: [], updateAlways: true,
+  widths: { words: 3, chart: 2, mascot: 1, streak: 1 }, spark: {}, main: "saved", matrix: true, streakFx: true });
 let statusLayout = null;
 function loadLayout(){
   if (statusLayout) return statusLayout;
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem("vito-status-layout") || "null"); } catch {}
+  if (!saved || !Array.isArray(saved.order)) saved = freshLayout();
   let order = [...LAYOUT_FRESH];
   if (Array.isArray(saved && saved.order)) {
     let o = saved.order;
@@ -6030,8 +6059,29 @@ function loadLayout(){
   statusLayout = { order, hidden, updateAlways, widths, spark, main, matrix, streakFx };
   return statusLayout;
 }
+// The layout lives in the browser and, a moment after each change, in Vito's
+// own config too (PUT /api/ui/dashboard): so it survives a change of browser
+// and goes along with a backup.
+let layoutSyncTimer = null;
 function saveLayout(){
   try { localStorage.setItem("vito-status-layout", JSON.stringify(statusLayout)); } catch {}
+  clearTimeout(layoutSyncTimer);
+  layoutSyncTimer = setTimeout(() => api("/api/ui/dashboard", { method: "PUT", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(statusLayout) }).catch(() => {}), 800);
+}
+// With the settings loaded: a browser without a layout of its own takes the
+// one in the config (a new browser, or after a restore); a browser with one
+// the config doesn't have yet (from before the layout was kept there) hands
+// it over.
+function syncLayoutWithConfig(){
+  const remote = cfg && cfg.ui && cfg.ui.dashboard;
+  let local = null; try { local = localStorage.getItem("vito-status-layout"); } catch {}
+  if (!local && remote && typeof remote === "object") {
+    try { localStorage.setItem("vito-status-layout", JSON.stringify(remote)); } catch {}
+    statusLayout = null; applyStatusLayout(); loadStats();
+  } else if (local && !remote) {
+    loadLayout(); saveLayout();
+  }
 }
 const layoutVisible = (key) => !loadLayout().hidden.includes(key);
 // Keys of one group, in the saved order, hidden ones dropped.
@@ -6156,7 +6206,7 @@ function cardMenuItems(k){
 }
 function layoutChanged(){ saveLayout(); applyStatusLayout(); }
 function resetLayout(){
-  statusLayout = { order: [...LAYOUT_FRESH], hidden: [], updateAlways: false, widths: {}, spark: {} };
+  statusLayout = freshLayout();
   saveLayout(); applyStatusLayout(); loadStats();
 }
 // One floating menu at a time, under the button that opened it (or above it
@@ -6881,7 +6931,8 @@ function langCardHTML(ins){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9s1.3-6.4 3.8-9z"/></svg>';
   const langs = ins.languages || [];
   const total = langs.reduce((s, l) => s + l.count, 0);
-  if (!total) return `<div class="chip coral">${icon}</div><div class="num">–</div><div class="lbl">${t("Languages")}</div>`;
+  if (!total) return `<div class="chip coral">${icon}</div><div class="num">–</div><div class="lbl">${t("Languages")}</div>` +
+    `<div class="delta flat">${t("No languages detected in this period yet")}</div>`;
   const pct = (n) => Math.round(n / total * 100);
   const shown = langs.slice(0, 4), rest = total - shown.reduce((s, l) => s + l.count, 0);
   const seg = shown.map((l, i) => `<i style="width:${l.count / total * 100}%;background:${LANG_COLORS[i]}"></i>`).join("") +
@@ -6923,11 +6974,39 @@ function rhythmCardHTML(st){
 // words spread through the cloud instead of piling up at the start; it is
 // stable, so a refresh doesn't reshuffle it. The five most used carry the
 // brand gradient, the rest alternate violet and coral.
+// Today, before the first dictation — a state you pass every morning, so it
+// gets something friendlier than a dash: the logo's bars talking in its
+// gradient, as in the download section of vito.talk, and a line that changes from day
+// to day, with your own hotkey in it.
+const QUIET_LINES = [
+  "Quiet so far today. Press {k} and say something!",
+  "The first word of the day is yours. {k} and off you go.",
+  "Vito is warmed up and waiting. {k}?",
+  "Nothing said yet today — the floor is yours.",
+];
+function hotkeyHint(){
+  const hk = hkInfo || {};
+  const spec = hk.os === "windows" ? (hk.toggle && (hk.toggle.spec || hk.toggle.configured)) || ""
+    : (hk.supported && hk.toggle ? hk.toggle.spec : "");
+  if (!spec) return "";
+  return hk.os === "windows" ? fmtHotkey(spec) : fmtPortalShortcut(spec);
+}
+function quietTodayHTML(){
+  const d = new Date(), day = d.getFullYear() * 400 + d.getMonth() * 31 + d.getDate();
+  const k = hotkeyHint();
+  let lines = QUIET_LINES.filter(l => k || !l.includes("{k}"));
+  const line = t(lines[day % lines.length]).replace("{k}", k ? `<b>${ahEsc(k)}</b>` : "");
+  const bars = [[10,16],[22,28],[34,40],[46,54],[58,40],[70,28],[82,16]].map(([x, h]) => `<rect x="${x}" y="24" width="8" height="${h}" rx="4"/>`).join("");
+  return `<div class="quiet-today"><span class="quiet-icon"><svg viewBox="0 0 100 100" fill="url(#quietGrad)" class="vito-talk" aria-hidden="true">` +
+    `<defs><linearGradient id="quietGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs>${bars}</svg></span>` +
+    `<div class="quiet-line">${line}</div></div>`;
+}
 function cloudCardHTML(ins){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1-.6-7.96A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9.5z"/></svg>';
   const head = `<div class="rhythm-head"><div class="chip coral">${icon}</div><div class="lbl">${t("Most used words")}</div></div>`;
   const words = ins.top_words || [];
-  if (!words.length) return head + `<div class="cloud-empty">–</div>`;
+  if (!words.length) return statPeriod() === "1" ? head + quietTodayHTML()
+    : head + `<div class="cloud-empty">${t("Your most used words appear here once you dictate.")}</div>`;
   const max = words[0].count, min = words[words.length - 1].count;
   const top = new Set(words.slice(0, 5).map(w => w.word));
   const cells = words.map((w, i) => ({ ...w, i, h: hashStr(w.word) })).sort((a, b) => a.h - b.h).map(w => {
@@ -7349,23 +7428,19 @@ async function loadCosts(){
   if (seq !== costsSeq) return;
   lastCosts = c;
   const cur = c.currency || "eur";
-  $("cost-period-lbl").textContent = periodLabel();
-  $("cost-period").textContent = fmtMoney(c.period_total || 0, cur);
   $("cost-month-total").textContent = fmtMoney(c.month_total, cur, 2);
-  // Where this month is heading at the pace so far — from the third day on,
-  // before that one busy morning would project a fortune.
+  // The card shows this month's figure and nothing else, so it is no taller
+  // than the others; the rest is in its tooltip: what the period on screen
+  // cost, where the month is heading at the pace so far (from the third day
+  // on — before that one busy morning would project a fortune), and the
+  // month's split. The Vito Assist part only appears once it has actually
+  // cost something (a command on a paid model).
   const nowD = new Date(), dom = nowD.getDate(), dim = new Date(nowD.getFullYear(), nowD.getMonth() + 1, 0).getDate();
-  const pj = $("cost-projection");
-  if (pj) {
-    pj.hidden = dom < 3 || !(c.month_total > 0);
-    if (!pj.hidden) pj.textContent = t("≈ {v} by the end of the month").replace("{v}", fmtMoney(c.month_total / dom * dim, cur, 2));
-  }
-  // The card shows one figure; the month's breakdown and the projection are in
-  // its tooltip. The Vito Assist part only appears once it has actually cost
-  // something (a command on a paid model).
+  const tip = [`${periodLabel()}: ${fmtMoney(c.period_total || 0, cur)}`];
+  if (dom >= 3 && c.month_total > 0) tip.push(t("≈ {v} by the end of the month").replace("{v}", fmtMoney(c.month_total / dom * dim, cur, 2)));
   const parts = [`${t("Speech recognition")} ${fmtMoney(c.month_stt, cur, 2)}`, `${t("AI cleanup")} ${fmtMoney(c.month_cleanup, cur, 2)}`];
   if (c.month_command > 0) parts.push(`Vito Assist ${fmtMoney(c.month_command, cur, 2)}`);
-  setCardTip($("cost-card"), parts.join(" · ") + ` — ≈ ${fmtMoney(c.projected_monthly, cur, 2)} ${t("per month at your current usage (last 30 days)")}`);
+  setCardTip($("cost-card"), tip.join(" · ") + " — " + parts.join(" · "));
   if (typeof buildModelCards === "function" && $("model-cards")) buildModelCards(); // re-price in the chosen currency
 }
 // The display currency, from the costs card's menu.
@@ -7441,7 +7516,8 @@ function streakSub(st, nf){
   const s = streakState(st);
   if (s.mode === "record") return "🏆 " + t("New record!");
   if (s.mode === "near") return s.left === 1 ? t("1 day to go to your record") : t("{n} days to go to your record").replace("{n}", s.left);
-  return st.longest_streak ? t("record: {n}").replace("{n}", nf(st.longest_streak)) : "";
+  if (st.longest_streak) return t("record: {n}").replace("{n}", nf(st.longest_streak));
+  return (st.current_streak || 0) ? "" : t("Dictate today to start a streak");
 }
 let lastStatsForStreak = null;
 function markStreakRecord(mode){
@@ -7527,7 +7603,7 @@ let compareSeq = 0;
 async function compareWithPrevious(st){
   const seq = ++compareSeq, p = previousPeriod();
   latencyInfo.trend = "";
-  const clear = () => document.querySelectorAll("#statgrid .stat > .cmp:not(#cost-projection)").forEach(e => e.remove());
+  const clear = () => document.querySelectorAll("#statgrid .stat > .cmp").forEach(e => e.remove());
   if (!p) { clear(); return; }
   const key = p.from + ":" + p.to;
   let prev = prevStatsCache.get(key);
@@ -7650,7 +7726,7 @@ async function loadStatsNow(){
     { key:"cleanupfx", cls:"violet", icon:I.sent, value: ins.cleanup_runs ? Math.round(ins.cleanup_changed / ins.cleanup_runs * 100) : 0,
       format:n => ins.cleanup_runs ? n + "%" : "–", lbl:t("changed by AI cleanup"),
       sub: ins.cleanup_failed ? t("{n} failed").replace("{n}", nf(ins.cleanup_failed))
-         : ins.cleanup_runs ? t("of {n} cleaned").replace("{n}", nf(ins.cleanup_runs)) : "",
+         : ins.cleanup_runs ? t("of {n} cleaned").replace("{n}", nf(ins.cleanup_runs)) : t("Nothing cleaned up in this period yet"),
       tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
     { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
       [langBreakdown(ins), t("Languages you dictated in this period, by number of dictations.")].filter(Boolean).join(" — ")) },
@@ -7839,6 +7915,7 @@ async function loadSettings() {
   loadingSettings = true;
   cfg = await api("/api/config");
   maybeShowWelcome();
+  syncLayoutWithConfig();
   const devs = await api("/api/devices").catch(() => ({ input: [], output: [] }));
   const fill = (sel, list, current) => {
     sel.innerHTML = '<option value="">' + t("system default") + '</option>';

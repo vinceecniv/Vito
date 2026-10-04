@@ -844,7 +844,15 @@
 "Recent dictations": "أحدث الإملاءات",
 "vs previous period": "مقارنة بالفترة السابقة",
 "≈ {v} by the end of the month": "≈ {v} بنهاية الشهر",
-"Animation when there's an update": "حركة عند توفر تحديث"
+"Animation when there's an update": "حركة عند توفر تحديث",
+"Dictate today to start a streak": "أملِ اليوم لتبدأ سلسلة أيام متتالية",
+"Nothing cleaned up in this period yet": "لم يتم تنقيح أي شيء في هذه الفترة بعد",
+"No languages detected in this period yet": "لم يتم رصد أي لغات في هذه الفترة بعد",
+"Your most used words appear here once you dictate.": "ستظهر هنا الكلمات الأكثر استخدامًا لديك بمجرد أن تبدأ الإملاء.",
+"Quiet so far today. Press {k} and say something!": "الهدوء يعمّ اليوم حتى الآن. اضغط {k} وقل شيئًا!",
+"The first word of the day is yours. {k} and off you go.": "كلمة اليوم الأولى لك. اضغط {k} وانطلق.",
+"Vito is warmed up and waiting. {k}?": "Vito جاهز ومتحمّس في انتظارك. {k}؟",
+"Nothing said yet today — the floor is yours.": "لم يُقل شيء اليوم بعد — الكلمة لك."
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

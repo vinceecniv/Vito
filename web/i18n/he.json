@@ -843,7 +843,15 @@
 "Recent dictations": "הכתבות אחרונות",
 "vs previous period": "לעומת התקופה הקודמת",
 "≈ {v} by the end of the month": "≈ {v} עד סוף החודש",
-"Animation when there's an update": "אנימציה כשיש עדכון"
+"Animation when there's an update": "אנימציה כשיש עדכון",
+"Dictate today to start a streak": "הכתיבו היום כדי להתחיל רצף",
+"Nothing cleaned up in this period yet": "עדיין לא נוקה דבר בתקופה הזו",
+"No languages detected in this period yet": "עדיין לא זוהו שפות בתקופה הזו",
+"Your most used words appear here once you dictate.": "המילים הנפוצות שלכם יופיעו כאן ברגע שתתחילו להכתיב.",
+"Quiet so far today. Press {k} and say something!": "שקט עד כה היום. לחצו על {k} ותגידו משהו!",
+"The first word of the day is yours. {k} and off you go.": "המילה הראשונה של היום שלכם. {k} ואתם בדרך.",
+"Vito is warmed up and waiting. {k}?": "Vito כבר התחמם וממתין. {k}?",
+"Nothing said yet today — the floor is yours.": "עוד לא נאמר דבר היום — הבמה שלכם."
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

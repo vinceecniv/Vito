@@ -187,6 +187,11 @@ type UI struct {
 	// welcome card back, and localStorage (keyed by the unchanged 127.0.0.1 origin)
 	// would otherwise silently remember "seen" across a clean reinstall.
 	WelcomeDone bool `json:"welcome_done"`
+	// Dashboard is the dashboard's card layout — order, widths, hidden cards and
+	// the cards' own options — as the web UI stores it. Kept here, besides in
+	// the browser, so it survives a change of browser and travels with a
+	// backup. Opaque to the daemon; set only through PUT /api/ui/dashboard.
+	Dashboard json.RawMessage `json:"dashboard,omitempty"`
 }
 
 // Update controls the version check. It is the one thing Vito asks the outside

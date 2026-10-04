@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "ഒരു തുടർച്ച തുടങ്ങാൻ ഇന്ന് ഡിക്ടേറ്റ് ചെയ്യൂ",
+"Nothing cleaned up in this period yet": "ഈ കാലയളവിൽ ഇതുവരെ ഒന്നും ശുദ്ധീകരിച്ചിട്ടില്ല",
+"No languages detected in this period yet": "ഈ കാലയളവിൽ ഇതുവരെ ഭാഷകളൊന്നും കണ്ടെത്തിയിട്ടില്ല",
+"Your most used words appear here once you dictate.": "നിങ്ങൾ ഡിക്ടേറ്റ് ചെയ്തുകഴിഞ്ഞാൽ ഏറ്റവും കൂടുതൽ ഉപയോഗിച്ച വാക്കുകൾ ഇവിടെ കാണാം.",
+"Quiet so far today. Press {k} and say something!": "ഇന്ന് ഇതുവരെ നിശ്ശബ്ദം. {k} അമർത്തി എന്തെങ്കിലും പറയൂ!",
+"The first word of the day is yours. {k} and off you go.": "ഇന്നത്തെ ആദ്യ വാക്ക് നിങ്ങളുടേതാണ്. {k} അമർത്തൂ, തുടങ്ങാം.",
+"Vito is warmed up and waiting. {k}?": "Vito തയ്യാറായി കാത്തിരിക്കുകയാണ്. {k} അമർത്തുന്നോ?",
+"Nothing said yet today — the floor is yours.": "ഇന്ന് ഇതുവരെ ഒന്നും പറഞ്ഞിട്ടില്ല — ഇനി നിങ്ങളുടെ ഊഴം.",
 "Most used words": "ഏറ്റവും കൂടുതൽ ഉപയോഗിച്ച വാക്കുകൾ",
 "Chart in background": "പശ്ചാത്തലത്തിൽ ചാർട്ട്",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "ഈ കാലയളവിൽ നിങ്ങൾ ഏറ്റവും കൂടുതൽ പറഞ്ഞെഴുതിച്ച വാക്കുകൾ — വലുതായാൽ കൂടുതൽ തവണ. മൂന്നോ അതിൽ കുറവോ അക്ഷരങ്ങളുള്ള വാക്കുകളും ‘വേണം’ അല്ലെങ്കിൽ ‘കാരണം’ പോലുള്ള സാധാരണ വാക്കുകളും ഒഴിവാക്കിയിരിക്കുന്നു.",

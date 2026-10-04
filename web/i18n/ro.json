@@ -843,7 +843,15 @@
 "Next month": "Luna următoare",
 "Pick a start date": "Alege o dată de început",
 "Pick an end date": "Alege o dată de sfârșit",
-"Apply": "Aplică"
+"Apply": "Aplică",
+"Dictate today to start a streak": "Dictează azi ca să începi o serie",
+"Nothing cleaned up in this period yet": "Încă nu s-a curățat nimic în această perioadă",
+"No languages detected in this period yet": "Încă nu s-a detectat nicio limbă în această perioadă",
+"Your most used words appear here once you dictate.": "Cuvintele tale cele mai folosite apar aici după ce dictezi.",
+"Quiet so far today. Press {k} and say something!": "Liniște până acum azi. Apasă {k} și spune ceva!",
+"Vito is warmed up and waiting. {k}?": "Vito e încălzit și așteaptă. {k}?",
+"Nothing said yet today — the floor is yours.": "Încă nu s-a spus nimic azi — cuvântul îți aparține.",
+"The first word of the day is yours. {k} and off you go.": "Primul cuvânt al zilei e al tău. {k} și hai, la drum!"
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",

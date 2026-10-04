@@ -1,5 +1,13 @@
 {
 "strings": {
+"Dictate today to start a streak": "Mendikte hari ini untuk memulai rentetan",
+"Nothing cleaned up in this period yet": "Belum ada yang dirapikan pada periode ini",
+"No languages detected in this period yet": "Belum ada bahasa terdeteksi pada periode ini",
+"Your most used words appear here once you dictate.": "Kata-kata yang paling sering kamu pakai akan muncul di sini setelah kamu mendikte.",
+"Quiet so far today. Press {k} and say something!": "Masih sepi hari ini. Tekan {k} dan ucapkan sesuatu!",
+"The first word of the day is yours. {k} and off you go.": "Kata pertama hari ini jadi milikmu. Tekan {k} dan silakan mulai.",
+"Vito is warmed up and waiting. {k}?": "Vito sudah siap dan menunggu. {k}?",
+"Nothing said yet today — the floor is yours.": "Belum ada yang diucapkan hari ini — silakan, giliranmu bicara.",
 "Custom range…": "Rentang kustom…",
 "Previous month": "Bulan sebelumnya",
 "Next month": "Bulan berikutnya",

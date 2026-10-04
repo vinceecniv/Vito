@@ -843,7 +843,15 @@
 "Recent dictations": "Viimased dikteeringud",
 "vs previous period": "võrreldes eelmise perioodiga",
 "≈ {v} by the end of the month": "≈ {v} kuu lõpuks",
-"Animation when there's an update": "Animatsioon, kui uuendus on saadaval"
+"Animation when there's an update": "Animatsioon, kui uuendus on saadaval",
+"Dictate today to start a streak": "Dikteeri täna, et seeria alustada",
+"Nothing cleaned up in this period yet": "Selles perioodis pole veel midagi puhastatud",
+"No languages detected in this period yet": "Selles perioodis pole veel keeli tuvastatud",
+"Your most used words appear here once you dictate.": "Sinu enim kasutatud sõnad ilmuvad siia, kui oled dikteerinud.",
+"Quiet so far today. Press {k} and say something!": "Täna on seni vaikne. Vajuta {k} ja ütle midagi!",
+"The first word of the day is yours. {k} and off you go.": "Päeva esimene sõna kuulub sulle. {k} ja mine!",
+"Vito is warmed up and waiting. {k}?": "Vito on soojenenud ja ootab. {k}?",
+"Nothing said yet today — the floor is yours.": "Täna pole veel midagi öeldud — sõna on sinul."
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

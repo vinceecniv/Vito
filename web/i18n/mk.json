@@ -843,7 +843,15 @@
 "Recent dictations": "Неодамнешни диктати",
 "vs previous period": "спрема претходниот период",
 "≈ {v} by the end of the month": "≈ {v} до крајот на месецот",
-"Animation when there's an update": "Анимација кога има ажурирање"
+"Animation when there's an update": "Анимација кога има ажурирање",
+"Dictate today to start a streak": "Диктирајте денес за да започнете серија",
+"Nothing cleaned up in this period yet": "Во овој период сè уште нема ништо исчистено",
+"No languages detected in this period yet": "Во овој период сè уште нема откриени јазици",
+"Your most used words appear here once you dictate.": "Вашите најчесто користени зборови ќе се појават овде штом ќе почнете да диктирате.",
+"Quiet so far today. Press {k} and say something!": "Засега тивко денес. Притиснете {k} и кажете нешто!",
+"The first word of the day is yours. {k} and off you go.": "Првиот збор на денот е ваш. {k} и тргнувате.",
+"Vito is warmed up and waiting. {k}?": "Vito е загреан и чека. {k}?",
+"Nothing said yet today — the floor is yours.": "Денес сè уште ништо не е кажано — зборот е ваш."
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

@@ -843,7 +843,15 @@
 "Recent dictations": "Последние диктовки",
 "vs previous period": "по сравнению с прошлым периодом",
 "≈ {v} by the end of the month": "≈ {v} к концу месяца",
-"Animation when there's an update": "Анимация при наличии обновления"
+"Animation when there's an update": "Анимация при наличии обновления",
+"Dictate today to start a streak": "Продиктуйте что-нибудь сегодня, чтобы начать серию",
+"Nothing cleaned up in this period yet": "За этот период пока ничего не очищено",
+"No languages detected in this period yet": "За этот период языки пока не определены",
+"Your most used words appear here once you dictate.": "Ваши самые частые слова появятся здесь, как только вы начнёте диктовать.",
+"Quiet so far today. Press {k} and say something!": "Пока тишина. Нажмите {k} и скажите что-нибудь!",
+"The first word of the day is yours. {k} and off you go.": "Первое слово дня за вами. Нажмите {k} — и вперёд.",
+"Vito is warmed up and waiting. {k}?": "Vito уже разогрелся и ждёт. Нажмём {k}?",
+"Nothing said yet today — the floor is yours.": "Сегодня ещё ничего не сказано — слово за вами."
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",
