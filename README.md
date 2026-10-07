@@ -236,6 +236,13 @@ Vito is **simple to use, but powerful under the hood.**
 - 🔒 **Offline speech recognition** — a local engine Vito installs for you: free, private, no account.
 - 📁 **Upload an audio file** to have it transcribed to text.
 
+### Dashboard
+- 📊 **A dashboard you arrange yourself** — drag cards around like icons on a phone, make each one, two or three cells wide, hide what you don't need. Your layout is kept with your settings, so it survives a new browser and goes along with a backup.
+- 📅 **Any period** — today, the last weeks or months, all time, or any from–to range in a calendar — with the change against the period before (*▲ 12%*).
+- 📈 **Statistics that say something** — words dictated with sentences, activations, spoken and saved time; your speaking rate; how often AI cleanup changed your text; the languages you dictate in; a word cloud of what you talk about; a 26-week calendar; and costs with where the month is heading.
+- 🔥 **A streak to keep alive** — two days off in any seven are forgiven, so a weekend never breaks it — with a celebration when you beat your record.
+- 🎭 **Meet Vito** — the logo with a face, who chats along while you dictate, reacts to what happens, gets up to tricks in between and falls asleep when you leave him alone.
+
 ### Interface
 - 🌗 **Light & dark mode**, switching automatically with your OS preference.
 - 🌍 **UI translated into 60 languages.**
@@ -252,7 +259,6 @@ Vito is **simple to use, but powerful under the hood.**
 - 📖 **Dictionary** for names, jargon and common mishearings — corrected automatically.
 - 🔊 **Play back and save** your recordings.
 - 🏆 **Achievements & gamification** to track milestones.
-- 📊 **Detailed statistics** on usage and cost.
 
 ### System & maintenance
 - 🚀 **Start with your computer**, so Vito is always ready.
@@ -262,7 +268,7 @@ Vito is **simple to use, but powerful under the hood.**
 - 🐧 **Linux-friendly** — detects missing utilities/libraries and explains how to bind hotkeys in each desktop environment.
 
 <p align="center">
-  <img src="assets/marketing/app-status.png" alt="Vito status screen" width="88%">
+  <img src="assets/marketing/app-status.png" alt="Vito's dashboard" width="88%">
 </p>
 
 ---
