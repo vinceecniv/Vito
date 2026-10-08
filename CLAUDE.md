@@ -77,6 +77,20 @@ on CPU, 0.25 s on Vulkan; Whisper large-v3-turbo ≈ 4–9 s on CPU, 0.4 s on CU
 Whisper is the better engine for Dutch with English jargon; Parakeet for CPU.
 Benchmark only on an idle machine — a background encode inflated numbers 2×.
 
+## Vito updates itself
+
+`internal/update.Auto` (setting `update.auto`, nil = on, only while the check is
+on) downloads a newer release in the background, verifies it against the
+`<asset>.sha256` published beside it, and installs it once the daemon has been
+idle for 3 minutes: Windows runs the setup silently (only for a copy with
+`unins*.exe` beside it; `[Run]` restarts Vito), Linux swaps `$APPIMAGE` and
+re-execs, macOS replaces the `.app` from the `.dmg` and `open -n`s it. Flatpak,
+distro packages and `dev` builds are left alone. The replaced version is noted
+in `<UserConfigDir>/vito/updated-from` and reported once as `updated_from` in
+`/api/update`. Keep the asset names (`Vito-Setup-<v>.exe`,
+`Vito-<v>-<arch>.AppImage`, `Vito-<v>.dmg`, each with `.sha256`) stable — the
+updater looks them up by name.
+
 ## Releases (Windows)
 
 Versions are calendar-based: `year.month`, plus a counter for further releases

@@ -202,10 +202,16 @@ type Update struct {
 	// Check enables the daily version check. Nil-safe: zero value means "not set
 	// yet", which Load turns into true.
 	Check *bool `json:"check,omitempty"`
+	// Auto installs a found update by itself once Vito is idle. Nil means on;
+	// it does nothing while Check is off.
+	Auto *bool `json:"auto,omitempty"`
 }
 
 // CheckEnabled reports whether the version check should run.
 func (u Update) CheckEnabled() bool { return u.Check == nil || *u.Check }
+
+// AutoEnabled reports whether updates install themselves.
+func (u Update) AutoEnabled() bool { return u.CheckEnabled() && (u.Auto == nil || *u.Auto) }
 
 // Backup controls the automatic rolling local backups. A full backup can always
 // be exported by hand from the settings page; this is the safety net that keeps
