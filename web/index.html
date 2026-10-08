@@ -1476,21 +1476,22 @@
 
   /* In the browser without the app (standalone/backend.js): what only the app
      can do is left out rather than shown switched off. */
-  .web-banner, .web-only { display:none; }
+  .web-only, .web-only-inline { display:none; }
   .standalone .web-only { display:block; }
+  .standalone .web-only-inline { display:contents; }
   .standalone .helper-only { display:none !important; }
-  .web-banner a.btn { text-decoration:none; white-space:nowrap; }
-  .web-banner-actions { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
-  .web-banner-actions .linkbtn { font-size:12px; }
-  .standalone .web-banner { display:flex; }
-  .standalone #settabs [data-sec="activation"], .standalone #settabs [data-sec="audio"],
-  .standalone #settabs [data-sec="cleanup"], .standalone #settabs [data-sec="assist"],
+  a.btn.js-get-app { text-decoration:none; }
+  .app-more { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:16px; }
+  .app-more .grow { flex:1 1 280px; }
+  .app-more .rowflex { gap:8px; flex-wrap:wrap; }
+  .standalone #settabs [data-sec="activation"], .standalone #settabs [data-sec="assist"],
   .standalone #settabs [data-sec="output"], .standalone #settabs [data-sec="backup"],
   .standalone #settabs [data-sec="linux"],
-  .standalone .settings-pane > .card[data-sec="activation"], .standalone .settings-pane > .card[data-sec="audio"],
-  .standalone .settings-pane > .card[data-sec="cleanup"], .standalone .settings-pane > .card[data-sec="assist"],
+  .standalone .settings-pane > .card[data-sec="activation"], .standalone .settings-pane > .card[data-sec="assist"],
   .standalone .settings-pane > .card[data-sec="output"], .standalone .settings-pane > .card[data-sec="backup"],
   .standalone .settings-pane > .card[data-sec="linux"],
+  .standalone [data-help="level"], .standalone #s-inputlevel, .standalone [data-help="media"], .standalone #mediaaction-sel,
+  .standalone #btn-mictest, .standalone [data-help="output"], .standalone [data-help="output"] + .isel, .standalone [data-sound="command"],
   .standalone label:has(#s-autostart), .standalone label:has(#s-tray), .standalone label:has(#s-trviz),
   .standalone [data-help="notifications"], .standalone #notify-sel,
   .standalone label:has(#s-updatecheck), .standalone label:has(#s-updateauto), .standalone #upd-auto-note,
@@ -1534,19 +1535,6 @@
         <span>You're looking at sample data, not your own dictations. Enter an API key under Settings to get started — demo mode then switches itself off.</span>
       </div>
       <button class="btn ghost small" id="demo-off">Turn off demo mode</button>
-    </div>
-    <!-- In the browser without the app: what this is, and the way to the app. -->
-    <div class="demo-banner web-banner" id="web-banner">
-      <span class="demo-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8"/></svg></span>
-      <div class="demo-txt">
-        <b>Vito in your browser</b>
-        <span>Speech recognition runs on this device and your dictations stay in this browser. Press <b id="web-hotkey">Ctrl + Alt + Space</b> in this tab or the microphone button; the text lands on your clipboard. The Vito app adds a hotkey that works in every program, typing straight into it, and better speech models.</span>
-      </div>
-      <div class="web-banner-actions">
-        <a class="btn primary small" id="web-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
-        <button type="button" class="linkbtn" id="web-find-app">I have the app</button>
-        <button type="button" class="btn primary small" id="web-to-app" hidden>Move to the app</button>
-      </div>
     </div>
     <!-- STATUS -->
     <section id="tab-status" class="active">
@@ -1594,7 +1582,12 @@
         </div>
         <p class="welcome-tip helper-only"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/></svg> Tip: each API-key field on the settings page has a 'Get a key' button with step-by-step instructions to request that key.</p>
         <div class="welcome-actions">
-          <button class="btn" id="welcome-settings">Go to settings</button>
+          <span class="web-only-inline">
+            <a class="btn js-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
+            <button type="button" class="btn js-to-app" hidden>Move to the app</button>
+            <button type="button" class="btn ghost js-find-app">I have the app</button>
+          </span>
+          <button class="btn helper-only" id="welcome-settings">Go to settings</button>
           <button class="btn ghost" id="welcome-ok">Got it</button>
         </div>
       </div>
@@ -1684,6 +1677,14 @@
         <button type="button" data-sec="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>About</span></button>
       </div>
       <div class="settings-pane">
+        <div class="banner tip app-more web-only">
+          <span class="grow"><b>Hey, there's more when you install Vito.</b> The app adds a hotkey that works in every program, types the text straight into it, Vito Assist voice commands, more and better speech models, sync between computers and automatic backups.</span>
+          <span class="rowflex">
+            <a class="btn primary small js-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
+            <button type="button" class="btn primary small js-to-app" hidden>Move to the app</button>
+            <button type="button" class="btn ghost small js-find-app">I have the app</button>
+          </span>
+        </div>
         <div class="card" data-sec="general">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span>General</span></h2>
           <div class="subhead">Display</div>
@@ -2892,6 +2893,9 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "Hey, there's more when you install Vito.":"Hé, er is meer als je Vito installeert.",
+  "The app adds a hotkey that works in every program, types the text straight into it, Vito Assist voice commands, more and better speech models, sync between computers and automatic backups.":"De app voegt een sneltoets toe die in elk programma werkt, typt de tekst er direct in, en heeft Vito Assist-spraakcommando's, meer en betere spraakmodellen, synchronisatie tussen computers en automatische back-ups.",
+  "Your browser's language ({l}) isn't one Whistle knows yet, so speech recognition is set to English. You can change it under Settings → Speech recognition.":"De taal van je browser ({l}) kent Whistle nog niet, dus de spraakherkenning staat op Engels. Je kunt dit wijzigen onder Instellingen → Spraakherkenning.",
   "Sync between computers":"Synchroniseren tussen computers",
   "Keep your dictations, statistics, achievements and dictionary the same on every computer, through your own Dropbox or OneDrive. Vito only sees its own folder there (Apps/Vito), and there is no Vito server in between.":"Houd je dictaten, statistieken, prestaties en woordenboek gelijk op al je computers, via je eigen Dropbox of OneDrive. Vito ziet daar alleen zijn eigen map (Apps/Vito), en er zit geen Vito-server tussen.",
   "Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.":"Instellingen en API-sleutels blijven per computer: microfoons, sneltoetsen en diensten verschillen vaak per computer.",
@@ -2929,9 +2933,6 @@ const TR = { nl: {
   "The text lands on your clipboard — paste it wherever you like. Your dictations stay in this browser.":"De tekst komt op je klembord — plak hem waar je wilt. Je dictaten blijven in deze browser.",
   "Like it? The Vito app types straight into any program, with a hotkey that works everywhere.":"Bevalt het? De Vito-app typt direct in elk programma, met een sneltoets die overal werkt.",
   "Installing it as an app gives Vito its own window: pin it to the taskbar or Start menu and open straight to it, without hunting for a browser tab. Your dictations stay where they are.":"Als app geïnstalleerd krijgt Vito een eigen venster: zet het vast op de taakbalk of in het Startmenu en open het direct, zonder een browsertabblad te zoeken. Je dictaten blijven waar ze zijn.",
-  "Vito in your browser":"Vito in je browser",
-  "Speech recognition runs on this device and your dictations stay in this browser. Press":"Spraakherkenning draait op dit apparaat en je dictaten blijven in deze browser. Druk in dit tabblad op",
-  "in this tab or the microphone button; the text lands on your clipboard. The Vito app adds a hotkey that works in every program, typing straight into it, and better speech models.":"of op de microfoonknop; de tekst komt op je klembord. De Vito-app voegt een sneltoets toe die in elk programma werkt, typt de tekst er direct in, en heeft betere spraakmodellen.",
   "Get the app":"Download de app",
   "in this tab":"in dit tabblad",
   "Tidied by rules":"Opgeschoond met regels",
@@ -4365,7 +4366,8 @@ async function findApp(quiet){
     const h = await r.json();
     if (h.app !== "vito") throw new Error("not Vito");
     try { localStorage.setItem("vito-web-app", "1"); } catch {}
-    $("web-get-app").hidden = true; $("web-find-app").hidden = true; $("web-to-app").hidden = false;
+    document.querySelectorAll(".js-get-app, .js-find-app").forEach(el => el.hidden = true);
+    document.querySelectorAll(".js-to-app").forEach(el => el.hidden = false);
     return true;
   } catch {
     if (!quiet) toast(t("The Vito app doesn't answer on this computer. Is it running?"), "err", 6000);
@@ -4384,8 +4386,13 @@ function moveToApp(){
   toast(t("Opened in the app — confirm there what to take over."), "ok", 6000);
 }
 if (STANDALONE) {
-  $("web-find-app").onclick = () => findApp(false);
-  $("web-to-app").onclick = moveToApp;
+  document.querySelectorAll(".js-find-app").forEach(b => b.onclick = () => findApp(false));
+  document.querySelectorAll(".js-to-app").forEach(b => b.onclick = moveToApp);
+  // A browser language Whistle doesn't speak: say why it is English.
+  VitoStandalone.ready.then(() => {
+    const l = VitoStandalone.unsupportedLang;
+    if (l) setTimeout(() => toast(t("Your browser's language ({l}) isn't one Whistle knows yet, so speech recognition is set to English. You can change it under Settings → Speech recognition.").replace("{l}", langName(l) || l), "info", 9000), 1200);
+  });
   let known = false; try { known = localStorage.getItem("vito-web-app") === "1"; } catch {}
   if (known) findApp(true);
 }
@@ -8440,7 +8447,6 @@ function cleanupProviderLabel(cl){
 }
 function renderStatusTags(){
   const box = $("status-tags"); if (!box || !cfg) return;
-  if (STANDALONE && $("web-hotkey")) $("web-hotkey").textContent = fmtHotkey(webHotkey());
   const hk = hkInfo || {}, tags = [];
   const portalSpec = hk.os !== "windows" && hk.supported && hk.toggle ? hk.toggle.spec : "";
   if (STANDALONE) {
@@ -9702,7 +9708,7 @@ function renderPwaTip(){
     </div>`;
     $("pwa-install").onclick = async () => { deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==="accepted"){deferredPrompt=null; el.innerHTML="";} };
     $("pwa-x").onclick = () => { localStorage.setItem("vito-pwa-dismissed","1"); el.innerHTML=""; };
-  } else if (!("serviceWorker" in navigator) || !pwaCapableBrowser()) {
+  } else if (!STANDALONE && (!("serviceWorker" in navigator) || !pwaCapableBrowser())) {
     el.innerHTML = `<div class="banner warn"><span class="grow">${t("This browser doesn't fully support installing as an app (PWA). Use")} <b>Chrome</b> ${t("or")} <b>Edge</b> ${t("for the app experience.")}</span>
       <button class="x" id="pwa-x" title="${t("Close")}">×</button></div>`;
     $("pwa-x").onclick = () => { localStorage.setItem("vito-pwa-dismissed","1"); el.innerHTML=""; };

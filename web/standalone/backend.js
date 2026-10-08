@@ -7,8 +7,9 @@
 // in a worker (whistle-worker.js) for the speech recognition.
 //
 // What needs the helper — a global hotkey, typing into other apps, the better
-// local models, cloud speech services, AI cleanup — answers as unsupported,
-// and index.html hides those settings.
+// local models, cloud speech services, Vito Assist, sync — answers as
+// unsupported, and index.html hides those settings. AI cleanup does work: the
+// providers accept calls straight from a browser with the user's own key.
 //
 // The figures (stats, streaks, achievements) are ports of internal/history;
 // keep them in step when those change.
@@ -24,32 +25,38 @@
   const read = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } };
   const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } };
 
-  let DEFAULTS = null, ACH = [], cfg = null;
+  let DEFAULTS = null, ACH = [], cfg = null, CLEANUP = {};
+  let privacyUntil = read("vito-web-privacy", 0); // ms; -1 = until switched off
   let history = read(LS_HISTORY, []);   // newest first
   let days = read(LS_DAYS, {});         // "yyyy-mm-dd" -> {words, sentences, activations, duration_ms}
   let unlocked = read(LS_UNLOCKED, {}); // id -> unix ms
 
   const ready = (async () => {
-    const [d, a] = await Promise.all([
+    const [d, a, c] = await Promise.all([
       fetch(BASE + "defaults.json").then((r) => r.json()),
       fetch(BASE + "achievements.json").then((r) => r.json()).catch(() => ({})),
+      fetch(BASE + "cleanup.json").then((r) => r.json()).catch(() => ({})),
     ]);
     DEFAULTS = d; ACH = a.list || []; ACH_IMAGES = a.images || []; ACH_ANIMATED = a.animated || [];
-    cfg = merge(structuredClone(DEFAULTS), read(LS_CONFIG, {}));
+    CLEANUP = c;
+    const saved = read(LS_CONFIG, {});
+    cfg = merge(structuredClone(DEFAULTS), saved);
+    // A first visit speaks the browser's preferred language when Whistle knows
+    // it, and English otherwise — saying so, since the user may not expect it.
+    if (!(saved.stt && saved.stt.language)) {
+      const want = String((navigator.languages && navigator.languages[0]) || navigator.language || "en").slice(0, 2).toLowerCase();
+      cfg.stt.language = WHISTLE_LANGS.includes(want) ? want : "en";
+      if (!WHISTLE_LANGS.includes(want)) unsupportedLang = want;
+      saveConfig();
+    }
     // What the browser can do, whatever an older saved config says.
     cfg.stt.provider = "whistle"; cfg.stt.model = "whistle";
-    cfg.cleanup.enabled = false; cfg.history.store_audio = false;
-    if (!WHISTLE_LANGS.includes(cfg.stt.language)) cfg.stt.language = guessLang();
+    cfg.history.store_audio = false;
+    if (!WHISTLE_LANGS.includes(cfg.stt.language)) cfg.stt.language = "en";
   })();
 
   const WHISTLE_LANGS = ["nl", "en", "de", "fr", "es", "it", "pl"];
-  function guessLang() {
-    for (const l of navigator.languages || [navigator.language || "en"]) {
-      const c = String(l).slice(0, 2).toLowerCase();
-      if (WHISTLE_LANGS.includes(c)) return c;
-    }
-    return "en";
-  }
+  let unsupportedLang = "";
 
   function merge(base, over) {
     if (!over || typeof over !== "object" || Array.isArray(over)) return over === undefined ? base : over;
@@ -162,6 +169,7 @@ registerProcessor("vito-pcm",P)`;
     if (state !== "idle") return;
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("This browser cannot record audio.");
     setState("recording");
+    playSound("start");
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: {
         deviceId: cfg.audio.input_device ? { ideal: cfg.audio.input_device } : undefined,
@@ -225,7 +233,7 @@ registerProcessor("vito-pcm",P)`;
   function cancel() {
     const r = rec;
     rec = null;
-    if (r) release(r);
+    if (r) { release(r); playSound("cancel"); }
     pendingStop = null;
     if (worker) worker.postMessage({ type: "abort" });
     if (state !== "idle") setState("idle");
@@ -244,40 +252,147 @@ registerProcessor("vito-pcm",P)`;
 
   async function finish(r, text, language) {
     const sttMS = performance.now() - r.stopped;
-    let raw = ruleCleanup(plain(applyDictionary(text)));
-    if (!raw) {
+    let raw = plain(applyDictionary(text));
+    if (!raw.trim()) {
       setState("idle");
+      playSound("cancel");
       emit({ type: "error", error: "No speech recognised." });
       return;
     }
+    // AI cleanup when it is set up, as the daemon does it; the rules when not,
+    // or when it fails — the text always arrives.
+    let cleaned = "", cleanupErr = "", cleanupMS = 0;
+    const cl = cfg.cleanup || {};
+    if (cl.enabled && cleanupConfigured(cl) && countWords(raw) >= (cl.min_words || 0)) {
+      const t0 = performance.now();
+      try { cleaned = plain(await aiCleanup(raw, language)); }
+      catch (e) { cleanupErr = (e && e.message) || String(e); }
+      cleanupMS = performance.now() - t0;
+    }
+    if (!cleaned) raw = ruleCleanup(raw);
+    const out = cleaned || raw;
     let copied = false;
-    try { await navigator.clipboard.writeText(raw); copied = true; } catch {}
+    try { await navigator.clipboard.writeText(out); copied = true; } catch {}
     const injectedMS = performance.now() - r.stopped;
     const durMS = Math.round(r.samples / RATE * 1000);
     const ms = (v) => Math.round(v) * 1e6; // Go's time.Duration is nanoseconds
-    lastTimings = { recording_ms: ms(durMS), stt_final_ms: ms(sttMS), cleanup_ms: 0, injected_ms: ms(injectedMS) };
-    const entry = record({ raw, language, duration_ms: durMS, stt_ms: Math.round(sttMS), injected_ms: Math.round(injectedMS) });
-    emit({ type: "final", raw, cleaned: "", text: raw, timings: lastTimings, entry_id: entry ? entry.id : "" });
+    lastTimings = { recording_ms: ms(durMS), stt_final_ms: ms(sttMS), cleanup_ms: ms(cleanupMS), injected_ms: ms(injectedMS) };
+    const entry = record({ raw, cleaned, cleanup_error: cleanupErr, language, duration_ms: durMS, stt_ms: Math.round(sttMS),
+      cleanup_ms: Math.round(cleanupMS), injected_ms: Math.round(injectedMS) });
+    playSound(cleanupErr ? "warn" : "done");
+    emit({ type: "final", raw, cleaned, text: out, timings: lastTimings, entry_id: entry ? entry.id : "",
+      cleanup_failed: !!cleanupErr, cleanup_error: cleanupErr });
     setState("idle");
     if (copied) emit({ type: "copied" });
+  }
+
+  // ---- AI cleanup: internal/cleanup, called from the browser ----
+  const cleanupConfigured = (cl) => cl.provider === "anthropic" ? !!cl.api_key : !!(cl.openai_base_url && cl.openai_model);
+  function cleanupRules(cl) {
+    const id = cl.active_prompt || "";
+    const b = (CLEANUP.builtins || []).find((x) => x.id === id);
+    const own = (cl.prompts || []).find((x) => x.id === id);
+    const rules = ((b && b.rules) || (own && own.rules) || "").trim() || CLEANUP.default_rules || "";
+    return rules + "\n" + (CLEANUP.contract || "");
+  }
+  function userPrompt(text, language) {
+    let u = "Language: " + language + "\n";
+    const cs = (cfg.dictionary && cfg.dictionary.corrections) || [];
+    if (cs.length) u += "Corrections (misheard -> intended):\n" + cs.map((c) => "- " + JSON.stringify(c.wrong) + " -> " + JSON.stringify(c.right) + "\n").join("");
+    return u + "Transcript:\n" + text;
+  }
+  const maxTokens = (text) => Math.min(4096, Math.floor(text.length / 2) + 2048);
+  const stripThinking = (s) => (s || "").replace(/<(think|thinking)>[\s\S]*?<\/(think|thinking)>/g, "").trim();
+  async function aiCleanup(text, language) {
+    const cl = cfg.cleanup, ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), cl.timeout_ms || 5000);
+    try {
+      let resp, body;
+      if (cl.provider === "anthropic") {
+        resp = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", signal: ctl.signal,
+          headers: { "content-type": "application/json", "x-api-key": cl.api_key, "anthropic-version": "2023-06-01",
+            "anthropic-dangerous-direct-browser-access": "true" },
+          body: JSON.stringify({ model: cl.model, max_tokens: maxTokens(text), temperature: 0, system: cleanupRules(cl),
+            messages: [{ role: "user", content: userPrompt(text, language) }] }) });
+        body = await resp.json().catch(() => ({}));
+        if (!resp.ok) throw new Error("Anthropic: " + ((body.error && body.error.message) || resp.status));
+        if (body.stop_reason === "max_tokens") throw new Error("the answer was cut off");
+        return stripThinking((body.content || []).filter((b) => b.type === "text").map((b) => b.text).join(""));
+      }
+      const req = { model: cl.openai_model, temperature: 0, max_tokens: maxTokens(text),
+        messages: [{ role: "system", content: cleanupRules(cl) }, { role: "user", content: userPrompt(text, language) }] };
+      if (cl.reasoning_effort) req.reasoning_effort = cl.reasoning_effort;
+      resp = await fetch(cl.openai_base_url.replace(/\/+$/, "") + "/chat/completions", { method: "POST", signal: ctl.signal,
+        headers: Object.assign({ "Content-Type": "application/json" }, cl.openai_key ? { Authorization: "Bearer " + cl.openai_key } : {}),
+        body: JSON.stringify(req) });
+      body = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error("HTTP " + resp.status + ": " + ((body.error && body.error.message) || ""));
+      const ch = (body.choices || [])[0];
+      if (!ch) throw new Error("no answer");
+      if (ch.finish_reason === "length") throw new Error("the answer was cut off");
+      return stripThinking(ch.message && ch.message.content);
+    } catch (e) {
+      if (e.name === "AbortError") throw new Error("timed out");
+      if (e instanceof TypeError) throw new Error("the provider can't be reached from the browser");
+      throw e;
+    } finally { clearTimeout(timer); }
+  }
+  async function testKey(b) {
+    const key = (b.key || "").trim();
+    let url, headers = {};
+    if (b.provider === "anthropic" || b.provider === "cleanup") {
+      if (!key) return { ok: false, error: "empty" };
+      url = "https://api.anthropic.com/v1/models?limit=1";
+      headers = { "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" };
+    } else if (b.provider === "openai") {
+      const base = (b.baseURL || "").trim().replace(/\/+$/, "");
+      if (!base) return { ok: false, error: "empty" };
+      url = base + "/models";
+      if (key) headers.Authorization = "Bearer " + key;
+    } else return { ok: false, error: "status", status: 0 };
+    try {
+      const r = await fetch(url, { headers });
+      if (r.ok) return { ok: true };
+      if (r.status === 401 || r.status === 403) return { ok: false, error: "unauthorized" };
+      return { ok: false, error: "status", status: r.status };
+    } catch { return { ok: false, error: "network" }; }
+  }
+
+  // ---- feedback sounds (assets/sounds, copied next to this file) ----
+  let audioCtx = null;
+  const soundBuf = {};
+  async function playSound(name, volume) {
+    if (volume === undefined && !(cfg.audio && cfg.audio.sounds_enabled)) return;
+    try {
+      audioCtx = audioCtx || new AudioContext();
+      if (!soundBuf[name]) soundBuf[name] = await fetch(BASE + "sounds/" + name + ".wav").then((r) => r.arrayBuffer()).then((b) => audioCtx.decodeAudioData(b));
+      const src = audioCtx.createBufferSource(), gain = audioCtx.createGain();
+      gain.gain.value = volume !== undefined ? volume : (cfg.audio.sounds_volume ?? 1);
+      src.buffer = soundBuf[name]; src.connect(gain).connect(audioCtx.destination); src.start();
+    } catch {}
   }
 
   // ---- history and the permanent day sums ----
   const newID = () => [...crypto.getRandomValues(new Uint8Array(8))].map((b) => b.toString(16).padStart(2, "0")).join("");
   function record(e) {
     const now = new Date();
-    const words = countWords(e.raw), sentences = countSentences(e.raw);
+    const text = e.cleaned || e.raw;
+    const words = countWords(text), sentences = countSentences(text);
     const d = days[dayKey(now)] || (days[dayKey(now)] = { words: 0, sentences: 0, activations: 0, duration_ms: 0 });
     d.words += words; d.sentences += sentences; d.activations++; d.duration_ms += e.duration_ms;
     write(LS_DAYS, days);
     if (cfg.history && cfg.history.enabled === false) return null;
+    if (privacyOn()) return null; // privacy mode: the sums count, the words are not kept
     const entry = { id: newID(), timestamp: now.toISOString(), duration_ms: e.duration_ms, language: e.language || "",
-      source: "stream", raw: e.raw, cleanup_used: false, stt_ms: e.stt_ms, cleanup_ms: 0, injected_ms: e.injected_ms,
+      source: "stream", raw: e.raw, cleaned: e.cleaned || undefined, cleanup_used: !!e.cleaned,
+      cleanup_error: e.cleanup_error || undefined, stt_ms: e.stt_ms, cleanup_ms: e.cleanup_ms || 0, injected_ms: e.injected_ms,
       words, sentences, favorite: false };
     history.unshift(entry);
     pruneHistory();
     return entry;
   }
+  const privacyOn = () => privacyUntil === -1 || privacyUntil > Date.now();
+  const privacyJSON = () => ({ enabled: privacyOn(), until_ms: privacyUntil > 0 && privacyOn() ? privacyUntil : 0 });
   function pruneHistory() {
     const max = Math.min(MAX_HISTORY, (cfg.history && cfg.history.max_entries) || MAX_HISTORY);
     if (history.length > max) {
@@ -545,7 +660,7 @@ registerProcessor("vito-pcm",P)`;
       const keep = cfg.ui && cfg.ui.dashboard;
       cfg = merge(structuredClone(DEFAULTS), body || {});
       cfg.ui = cfg.ui || {}; if (keep !== undefined) cfg.ui.dashboard = keep;
-      cfg.stt.provider = "whistle"; cfg.stt.model = "whistle"; cfg.cleanup.enabled = false;
+      cfg.stt.provider = "whistle"; cfg.stt.model = "whistle";
       saveConfig(); pruneHistory();
       return ok();
     }
@@ -598,7 +713,15 @@ registerProcessor("vito-pcm",P)`;
       return ok();
     }
     if (p === "/api/local-stt") return { phase: "unsupported", installed: false };
-    if (p === "/api/privacy") return { enabled: false, until_ms: 0 };
+    if (p === "/api/privacy") {
+      if (method === "PUT") {
+        privacyUntil = !(body && body.enabled) ? 0 : body.minutes > 0 ? Date.now() + body.minutes * 60000 : -1;
+        write("vito-web-privacy", privacyUntil);
+      }
+      return privacyJSON();
+    }
+    if (p === "/api/cleanup/prompts") return { builtins: CLEANUP.builtins || [], contract: CLEANUP.contract || "" };
+    if (p === "/api/test-key") return testKey(body || {});
     if (p === "/api/input-level") return { supported: false };
     if (p === "/api/autostart") return { supported: false, enabled: false };
     if (p === "/api/hotkey") return { os: "web", supported: false, toggle: {}, cancel: {}, configurable: false, accessibility: true };
@@ -611,7 +734,8 @@ registerProcessor("vito-pcm",P)`;
       return { input, output: [] };
     }
     if (p === "/api/backups") return { backups: [] };
-    if (p === "/api/play-sound" || p === "/api/credit/dismiss") return ok();
+    if (p === "/api/play-sound") { const v = parseFloat(q.get("volume")); playSound(q.get("name"), isNaN(v) ? (cfg.audio.sounds_volume ?? 1) : v); return ok(); }
+    if (p === "/api/credit/dismiss") return ok();
     if (p === "/api/ui") return { source: "web", api: 0 };
     if (p === "/api/linux-tools") return {};
     return helperOnly();
@@ -636,6 +760,8 @@ registerProcessor("vito-pcm",P)`;
       return { source, config: cfg, history, days, achievements: unlocked };
     },
     get state() { return state; },
+    // The browser's language when Whistle can't do it, on the first visit only.
+    get unsupportedLang() { return unsupportedLang; },
   };
 
   // internal/history/stopwords.go

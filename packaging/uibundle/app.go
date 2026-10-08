@@ -14,7 +14,9 @@ import (
 	"sort"
 	"strings"
 
+	"vito/assets"
 	"vito/internal/achievements"
+	"vito/internal/cleanup"
 	"vito/internal/config"
 	"vito/web"
 )
@@ -73,6 +75,24 @@ func app(args []string) error {
 	}
 	if err := writeFile(filepath.Join(sa, "achievements.json"), ach); err != nil {
 		return err
+	}
+	// The cleanup rule sets and the contract, for AI cleanup from the browser.
+	var builtins []map[string]string
+	for _, b := range cleanup.Builtins() {
+		builtins = append(builtins, map[string]string{"id": b.ID, "name": b.Name, "description": b.Description, "rules": b.Rules})
+	}
+	cl, err := json.Marshal(map[string]any{"builtins": builtins, "contract": cleanup.Contract(), "default_rules": cleanup.DefaultRules})
+	if err != nil {
+		return err
+	}
+	if err := writeFile(filepath.Join(sa, "cleanup.json"), cl); err != nil {
+		return err
+	}
+	for name, wav := range map[string][]byte{"start": assets.SoundStart, "done": assets.SoundDone, "cancel": assets.SoundCancel,
+		"achievement": assets.SoundAchievement, "command": assets.SoundCommand, "warn": assets.SoundWarn} {
+		if err := writeFile(filepath.Join(sa, "sounds", name+".wav"), wav); err != nil {
+			return err
+		}
 	}
 	for _, f := range needleFiles {
 		data, err := fetchPinned(needleBase+f.name, f.sha256)
