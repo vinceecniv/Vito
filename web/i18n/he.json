@@ -1009,6 +1009,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito שומר את הקבצים שלו בתוך תיקייה בשם “Vito Sync”.",
 "Path of the folder": "נתיב התיקייה",
 "Use this folder": "השתמשו בתיקייה זו",
+"Made for the computer": "נבנה למחשב",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "Vito נבנה להכתבה ליד מחשב. בטלפון או בטאבלט הוא עובד, אבל לא במיטבו: אין קיצור מקשים, והטקסט מגיע ללוח במקום ישר לאפליקציה שלכם. כפתור ההכתבה של המקלדת עצמה נוח כאן לרוב יותר.",
 "Or another folder": "או תיקייה אחרת",
 "Folder": "תיקייה",
 "No folder window on this system — type or paste the path.": "אין במערכת זו חלון לבחירת תיקייה — הקלידו או הדביקו את הנתיב.",

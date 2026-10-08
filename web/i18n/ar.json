@@ -1010,6 +1010,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "ينشئ Vito ملفاته في مجلد باسم «Vito Sync» داخله.",
 "Path of the folder": "مسار المجلد",
 "Use this folder": "استخدم هذا المجلد",
+"Made for the computer": "مصمَّم للكمبيوتر",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "صُمِّم Vito للإملاء على الكمبيوتر. يعمل على الهاتف أو الجهاز اللوحي، لكن ليس بأفضل أداء: لا يوجد اختصار لوحة مفاتيح، ويصل النص إلى الحافظة بدلًا من تطبيقك مباشرة. غالبًا ما يكون زر الإملاء في لوحة المفاتيح نفسها أنسب هنا.",
 "Or another folder": "أو مجلد آخر",
 "Folder": "المجلد",
 "No folder window on this system — type or paste the path.": "لا توجد نافذة لاختيار المجلدات على هذا النظام — اكتب المسار أو الصقه.",

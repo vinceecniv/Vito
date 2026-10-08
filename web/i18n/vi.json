@@ -18,6 +18,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito đặt các tệp của mình trong một thư mục tên “Vito Sync” bên trong đó.",
 "Path of the folder": "Đường dẫn của thư mục",
 "Use this folder": "Dùng thư mục này",
+"Made for the computer": "Được làm cho máy tính",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "Vito được xây dựng để đọc chính tả trên máy tính. Trên điện thoại hoặc máy tính bảng nó vẫn chạy, nhưng không tốt nhất: không có phím tắt, và văn bản vào bộ nhớ tạm thay vì vào thẳng ứng dụng của bạn. Ở đây, nút đọc chính tả của chính bàn phím thường tiện hơn.",
 "Or another folder": "Hoặc thư mục khác",
 "Folder": "Thư mục",
 "No folder window on this system — type or paste the path.": "Hệ thống này không có cửa sổ chọn thư mục — hãy gõ hoặc dán đường dẫn.",

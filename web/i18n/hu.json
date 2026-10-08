@@ -1009,6 +1009,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "A Vito a fájljait egy „Vito Sync” nevű mappába teszi benne.",
 "Path of the folder": "A mappa elérési útja",
 "Use this folder": "Mappa használata",
+"Made for the computer": "Számítógépre készült",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "A Vito számítógépes diktáláshoz készült. Telefonon vagy táblagépen is működik, de nem a legjobban: nincs gyorsbillentyű, és a szöveg a vágólapra kerül, nem közvetlenül az alkalmazásodba. Itt gyakran kényelmesebb a saját billentyűzeted diktálás gombja.",
 "Or another folder": "Vagy egy másik mappa",
 "Folder": "Mappa",
 "No folder window on this system — type or paste the path.": "Ezen a rendszeren nincs mappaválasztó ablak — írd be vagy illeszd be az elérési utat.",

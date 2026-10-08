@@ -2907,6 +2907,8 @@ const TR = { nl: {
   "Everything you dictate lands here: searchable, with a star for the keepers. Say something — anything — and your first sentence shows up within seconds.":"Alles wat je dicteert komt hier te staan: doorzoekbaar, met een ster voor de blijvertjes. Zeg iets — maakt niet uit wat — en binnen een paar seconden staat je eerste zin hier.",
   "Start your first dictation":"Start je eerste dictaat",
   "or press {k}":"of druk op {k}",
+  "Made for the computer":"Gemaakt voor de computer",
+  "Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.":"Vito is gemaakt om op een computer te dicteren. Op een telefoon of tablet werkt het wel, maar niet optimaal: er is geen sneltoets, en de tekst komt op je klembord in plaats van direct in je app. De dicteerknop van je eigen toetsenbord is hier vaak handiger.",
   "Nothing that says “{q}”.":"Niets waarin “{q}” staat.",
   "Maybe you put it differently? The search looks in both the raw and the cleaned text.":"Misschien zei je het net anders? De zoekfunctie kijkt in zowel de ruwe als de opgeschoonde tekst.",
   "Give a dictation a star and it waits for you here — and is never cleaned up automatically.":"Geef een dictaat een ster en het staat hier voor je klaar — en wordt nooit automatisch opgeruimd.",
@@ -10380,6 +10382,22 @@ let deferredPrompt = null;
 const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 function renderPwaTip(){
   const el = $("pwa-tip");
+  // On a phone or tablet the honest tip is a different one: Vito is made for
+  // a computer, and an app window to pin to the taskbar means nothing there.
+  if (STANDALONE && TOUCH_ONLY) {
+    // Above the welcome card: on a phone this is the first thing to know.
+    const wc = $("welcome-card"); if (wc && el.nextElementSibling !== wc) wc.before(el);
+    if (localStorage.getItem("vito-mobile-dismissed")) { el.innerHTML = ""; return; }
+    el.innerHTML = `<div class="banner tip pwa-explain">
+      <div class="pwa-head">
+        <span class="pwa-title">${ICON_BULB} ${t("Made for the computer")}</span>
+        <button class="x" id="pwa-x" title="${t("Close")}">×</button>
+      </div>
+      <p>${t("Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.")}</p>
+    </div>`;
+    $("pwa-x").onclick = () => { try { localStorage.setItem("vito-mobile-dismissed", "1"); } catch {} el.innerHTML = ""; };
+    return;
+  }
   if (isStandalone() || localStorage.getItem("vito-pwa-dismissed")) { el.innerHTML = ""; return; }
   if (deferredPrompt) {
     el.innerHTML = `<div class="banner tip pwa-explain">

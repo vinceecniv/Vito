@@ -1009,6 +1009,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito salva i suoi file in una cartella chiamata “Vito Sync” al suo interno.",
 "Path of the folder": "Percorso della cartella",
 "Use this folder": "Usa questa cartella",
+"Made for the computer": "Fatto per il computer",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "Vito è pensato per dettare al computer. Su telefono o tablet funziona, ma non al meglio: non c'è una scorciatoia da tastiera e il testo finisce negli appunti invece che direttamente nella tua app. Qui il pulsante di dettatura della tua tastiera è spesso più comodo.",
 "Or another folder": "Oppure un'altra cartella",
 "Folder": "Cartella",
 "No folder window on this system — type or paste the path.": "Nessuna finestra per le cartelle su questo sistema: digita o incolla il percorso.",

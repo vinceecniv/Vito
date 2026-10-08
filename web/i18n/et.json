@@ -1009,6 +1009,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito paneb oma failid selle sees olevasse kausta nimega „Vito Sync“.",
 "Path of the folder": "Kausta tee",
 "Use this folder": "Kasuta seda kausta",
+"Made for the computer": "Tehtud arvuti jaoks",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "Vito on loodud arvuti taga dikteerimiseks. Telefonis või tahvelarvutis see töötab, kuid mitte parimal moel: kiirklahvi pole ja tekst jõuab lõikelauale, mitte otse sinu rakendusse. Siin on sageli mugavam sinu klaviatuuri enda dikteerimisnupp.",
 "Or another folder": "Või muu kaust",
 "Folder": "Kaust",
 "No folder window on this system — type or paste the path.": "Selles süsteemis pole kaustaakent — kirjuta või kleebi tee.",

@@ -1020,6 +1020,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito अपनी फ़ाइलें उसके अंदर “Vito Sync” नाम के फ़ोल्डर में रखता है।",
 "Path of the folder": "फ़ोल्डर का पाथ",
 "Use this folder": "यह फ़ोल्डर इस्तेमाल करें",
+"Made for the computer": "कंप्यूटर के लिए बना",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "Vito कंप्यूटर पर डिक्टेशन के लिए बना है। फ़ोन या टैबलेट पर यह चलता है, पर सबसे अच्छे ढंग से नहीं: कोई हॉटकी नहीं है, और टेक्स्ट सीधे आपके ऐप में जाने के बजाय क्लिपबोर्ड पर आता है। यहाँ आपके कीबोर्ड का अपना डिक्टेशन बटन अक्सर ज़्यादा सुविधाजनक है।",
 "Or another folder": "या कोई दूसरा फ़ोल्डर",
 "Folder": "फ़ोल्डर",
 "No folder window on this system — type or paste the path.": "इस सिस्टम पर फ़ोल्डर चुनने की विंडो नहीं है — पथ टाइप या पेस्ट करें।",

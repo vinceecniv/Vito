@@ -1009,6 +1009,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito кладёт свои файлы внутрь неё, в папку «Vito Sync».",
 "Path of the folder": "Путь к папке",
 "Use this folder": "Использовать эту папку",
+"Made for the computer": "Создано для компьютера",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "Vito создан для диктовки за компьютером. На телефоне или планшете он работает, но не лучшим образом: нет горячей клавиши, и текст попадает в буфер обмена, а не сразу в ваше приложение. Кнопка диктовки на самой клавиатуре здесь часто удобнее.",
 "Or another folder": "Или другая папка",
 "Folder": "Папка",
 "No folder window on this system — type or paste the path.": "В этой системе нет окна выбора папки — введите или вставьте путь.",

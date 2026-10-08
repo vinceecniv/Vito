@@ -1009,6 +1009,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito deda savo failus į jame esantį aplanką „Vito Sync“.",
 "Path of the folder": "Aplanko kelias",
 "Use this folder": "Naudoti šį aplanką",
+"Made for the computer": "Sukurta kompiuteriui",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "Vito sukurta diktuoti prie kompiuterio. Telefone ar planšetėje ji veikia, bet ne geriausiai: nėra spartiojo klavišo, o tekstas patenka į iškarpinę, o ne tiesiai į jūsų programėlę. Čia dažnai patogesnis pačios klaviatūros diktavimo mygtukas.",
 "Or another folder": "Arba kitas aplankas",
 "Folder": "Aplankas",
 "No folder window on this system — type or paste the path.": "Šioje sistemoje nėra aplanko pasirinkimo lango — įveskite arba įklijuokite kelią.",

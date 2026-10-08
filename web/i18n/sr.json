@@ -1009,6 +1009,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito smešta svoje datoteke u fasciklu pod nazivom „Vito Sync“ unutar nje.",
 "Path of the folder": "Putanja fascikle",
 "Use this folder": "Koristi ovu fasciklu",
+"Made for the computer": "Napravljeno za računar",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "Vito je napravljen za diktiranje za računarom. Na telefonu ili tabletu radi, ali ne najbolje: nema prečice, a tekst završava u ostavi umesto direktno u vašoj aplikaciji. Dugme za diktiranje na vašoj tastaturi ovde je često praktičnije.",
 "Or another folder": "Ili druga fascikla",
 "Folder": "Fascikla",
 "No folder window on this system — type or paste the path.": "Na ovom sistemu nema prozora za izbor fascikle — upišite ili nalepite putanju.",

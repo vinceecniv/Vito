@@ -1020,6 +1020,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito は、その中の「Vito Sync」というフォルダにファイルを保存します。",
 "Path of the folder": "フォルダのパス",
 "Use this folder": "このフォルダを使う",
+"Made for the computer": "パソコン向けに作られています",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "Vito はパソコンで音声入力するために作られています。スマートフォンやタブレットでも動きますが、最適ではありません。ホットキーがなく、テキストはアプリに直接入らずクリップボードに入ります。ここではキーボード自体の音声入力ボタンのほうが便利なことが多いです。",
 "Or another folder": "または別のフォルダ",
 "Folder": "フォルダ",
 "No folder window on this system — type or paste the path.": "このシステムにはフォルダ選択ウィンドウがありません。パスを入力するか貼り付けてください。",

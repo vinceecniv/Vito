@@ -1020,6 +1020,8 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito അതിനുള്ളിൽ “Vito Sync” എന്ന ഫോൾഡറിൽ അതിന്റെ ഫയലുകൾ സൂക്ഷിക്കുന്നു.",
 "Path of the folder": "ഫോൾഡറിന്റെ പാത്ത്",
 "Use this folder": "ഈ ഫോൾഡർ ഉപയോഗിക്കുക",
+"Made for the computer": "കമ്പ്യൂട്ടറിനായി നിർമ്മിച്ചത്",
+"Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.": "കമ്പ്യൂട്ടറിൽ ഡിക്റ്റേറ്റ് ചെയ്യാനാണ് Vito നിർമ്മിച്ചത്. ഫോണിലോ ടാബ്‌ലെറ്റിലോ ഇത് പ്രവർത്തിക്കും, പക്ഷേ ഏറ്റവും മികച്ച രീതിയിലല്ല: ഹോട്ട്‌കീ ഇല്ല, ടെക്സ്റ്റ് നേരിട്ട് നിങ്ങളുടെ ആപ്പിലേക്ക് പോകാതെ ക്ലിപ്പ്‌ബോർഡിലാണ് എത്തുന്നത്. ഇവിടെ നിങ്ങളുടെ കീബോർഡിന്റെ സ്വന്തം ഡിക്റ്റേഷൻ ബട്ടൺ പലപ്പോഴും കൂടുതൽ സൗകര്യപ്രദമാണ്.",
 "Or another folder": "അല്ലെങ്കിൽ മറ്റൊരു ഫോൾഡർ",
 "Folder": "ഫോൾഡർ",
 "No folder window on this system — type or paste the path.": "ഈ സിസ്റ്റത്തിൽ ഫോൾഡർ തിരഞ്ഞെടുക്കാനുള്ള വിൻഡോ ഇല്ല — പാത്ത് ടൈപ്പ് ചെയ്യുകയോ ഒട്ടിക്കുകയോ ചെയ്യുക.",
