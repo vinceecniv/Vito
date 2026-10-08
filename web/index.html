@@ -3110,7 +3110,15 @@ async function api(path, opts = {}) {
   let res;
   try { res = await fetch(path, opts); }
   catch (e) { setDaemonUp(false); throw new Error(t("Background process unreachable")); }
-  const body = await res.json().catch(() => ({}));
+  // An empty answer is an empty object; one that isn't JSON is an error, not
+  // an empty object — a response cut off by the daemon restarting used to come
+  // back as {} and be taken for the real thing (a config without its settings).
+  const text = await res.text().catch(() => "");
+  let body = {};
+  if (text) {
+    try { body = JSON.parse(text); }
+    catch { if (res.ok) throw new Error(t("Background process unreachable")); }
+  }
   if (!res.ok) throw new Error(body.error || res.statusText);
   return body;
 }
@@ -8012,10 +8020,19 @@ let loadingSettings = false;
 // change in that page was then dropped without a word.
 async function loadSettings() {
   loadingSettings = true;
-  try { await fillSettings(); } finally { loadingSettings = false; }
+  try { await fillSettings(); }
+  catch (err) {
+    // Most often the daemon was just restarting: try once more shortly.
+    if (!loadSettings.retry) loadSettings.retry = setTimeout(() => { loadSettings.retry = null; loadSettings().catch(() => {}); }, 1500);
+    throw err;
+  }
+  finally { loadingSettings = false; }
 }
 async function fillSettings() {
-  cfg = await api("/api/config");
+  // Only a complete config replaces the one the page has.
+  const c = await api("/api/config");
+  if (!c || typeof c.audio !== "object" || typeof c.stt !== "object") throw new Error(t("Background process unreachable"));
+  cfg = c;
   maybeShowWelcome();
   syncLayoutWithConfig();
   const devs = await api("/api/devices").catch(() => ({ input: [], output: [] }));
