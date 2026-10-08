@@ -1511,7 +1511,26 @@
   .standalone .web-only-inline { display:contents; }
   .standalone .helper-only { display:none !important; }
   a.btn.js-get-app { text-decoration:none; }
-  .help-web { display:none; }
+  .help-web, .dl-web { display:none; }
+  .standalone .dl-web { display:flex; color:#fff; border-color:transparent; background:var(--grad); box-shadow:0 4px 14px rgba(124,58,237,.3); }
+  .standalone .dl-web:hover { filter:brightness(1.08); color:#fff; }
+  .install-banner { position:relative; display:flex; gap:16px; align-items:flex-start; border-radius:16px; padding:18px 20px; margin-bottom:18px;
+    color:#fff; background:linear-gradient(135deg,#7C3AED,#5B21B6); box-shadow:0 10px 30px rgba(91,33,182,.25); overflow:hidden; }
+  .install-banner.done { background:linear-gradient(135deg,#FF6B5E,#7C3AED); }
+  .install-banner[hidden] { display:none; }
+  .ib-ico { flex:none; width:42px; height:42px; border-radius:12px; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; font-size:22px; }
+  .ib-body { flex:1; min-width:0; }
+  .ib-title { font-family:'Baloo 2',sans-serif; font-weight:700; font-size:19px; line-height:1.25; }
+  .ib-text { font-size:13.5px; line-height:1.55; opacity:.95; margin-top:4px; }
+  .ib-steps { margin:8px 0 0; padding-left:18px; font-size:13px; line-height:1.55; }
+  .ib-actions { display:flex; gap:9px; flex-wrap:wrap; align-items:center; margin-top:12px; }
+  .ib-actions .btn { background:#fff; color:var(--violet); border-color:#fff; }
+  .ib-actions .btn.ghost { background:transparent; color:#fff; border-color:rgba(255,255,255,.6); }
+  .ib-search { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; opacity:.9; }
+  .ib-search i { width:8px; height:8px; border-radius:50%; background:#fff; animation:ibPulse 1.4s ease-in-out infinite; }
+  @keyframes ibPulse { 0%,100% { opacity:.25; transform:scale(.8); } 50% { opacity:1; transform:scale(1.15); } }
+  .ib-x { position:absolute; top:10px; right:10px; background:rgba(255,255,255,.18); border:none; color:#fff; width:28px; height:28px; border-radius:8px; cursor:var(--cur-hand); font-size:16px; }
+  .confetti-bit { position:fixed; width:9px; height:14px; border-radius:2px; pointer-events:none; z-index:400; }
   .standalone .help-web { display:flex; color:var(--violet); border-color:color-mix(in srgb, var(--violet) 40%, transparent);
     background:color-mix(in srgb, var(--violet) 12%, var(--card)); }
   .standalone .help-web:hover, .standalone .help-web.on { background:var(--violet); color:#fff; border-color:transparent; }
@@ -1594,6 +1613,8 @@
 
   <main class="content">
     <!-- Demo banner: outside the sections so it shows on every tab. -->
+    <!-- Browser version: from download to a connected app (renderInstallBanner). -->
+    <div class="install-banner" id="install-banner" hidden></div>
     <div class="demo-banner" id="demo-banner" hidden>
       <span class="demo-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></span>
       <div class="demo-txt">
@@ -1614,6 +1635,9 @@
           </div>
           <button class="privacy-btn" id="privacy-btn" title="Privacy mode" aria-label="Privacy mode">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg>
+          </button>
+          <button class="privacy-btn dl-web" id="dl-web" title="Get the Vito app" aria-label="Get the Vito app">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>
           </button>
           <button class="privacy-btn help-web" id="help-web" title="How Vito in the browser works" aria-label="How Vito in the browser works">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.8"/><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"/></svg>
@@ -2974,6 +2998,21 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "Connected to the Vito app!":"Verbonden met de Vito-app!",
+  "From now on you dictate into any program with your hotkey. Take what you dictated here along:":"Vanaf nu dicteer je in elk programma met je sneltoets. Neem mee wat je hier al dicteerde:",
+  "Open the app":"Open de app",
+  "Downloaded! Now install it":"Gedownload! Nu nog installeren",
+  "I've installed it":"Ik heb hem geïnstalleerd",
+  "Download again":"Opnieuw downloaden",
+  "Looking for the app…":"Zoeken naar de app…",
+  "Open Vito-Setup from your downloads.":"Open Vito-Setup uit je downloads.",
+  "Does Windows warn you? Choose More info → Run anyway.":"Waarschuwt Windows? Kies Meer info → Toch uitvoeren.",
+  "Vito starts by itself when it is installed.":"Vito start vanzelf als hij geïnstalleerd is.",
+  "Open the Vito disk image from your downloads.":"Open de Vito-schijfkopie uit je downloads.",
+  "Drag Vito to Applications and open it there.":"Sleep Vito naar Apps en open hem daar.",
+  "The first time: right-click → Open, as Vito isn't notarised yet.":"De eerste keer: rechtsklik → Open, omdat Vito nog niet genotariseerd is.",
+  "Make the AppImage executable (chmod +x) and start it.":"Maak de AppImage uitvoerbaar (chmod +x) en start hem.",
+  "Or install the Flatpak with the two commands in the download window.":"Of installeer de Flatpak met de twee commando's uit het downloadvenster.",
   "Try Vito right here, no installing and no account.":"Probeer Vito meteen hier, zonder installeren en zonder account.",
   "Result":"Resultaat",
   "Private":"Privé",
@@ -4642,9 +4681,11 @@ async function findApp(quiet){
     const r = await fetch(APP_URL + "/api/hello", { targetAddressSpace: "loopback" });
     const h = await r.json();
     if (h.app !== "vito") throw new Error("not Vito");
+    const first = (() => { try { return localStorage.getItem("vito-web-app") !== "1"; } catch { return false; } })();
     try { localStorage.setItem("vito-web-app", "1"); } catch {}
     document.querySelectorAll(".js-get-app, .js-find-app").forEach(el => el.hidden = true);
     document.querySelectorAll(".js-to-app").forEach(el => el.hidden = false);
+    if (first) appFound();
     return true;
   } catch {
     // The browser may also have kept the page from asking (Chrome and Edge
@@ -4656,6 +4697,84 @@ async function findApp(quiet){
 // moveToApp posts everything the browser kept to the app, in a new tab on the
 // app's own page, which asks what to take over. A form post rather than a
 // fetch: it is a navigation, so the app can show its page straight away.
+// ---- from download to a connected app ----
+// After a download the banner says what to do next and the page looks for the
+// app by itself every few seconds, so installing is the last thing to do.
+// When it answers for the first time, that is worth a little party.
+const IB_STEPS = {
+  windows: ["Open Vito-Setup from your downloads.", "Does Windows warn you? Choose More info → Run anyway.", "Vito starts by itself when it is installed."],
+  macos: ["Open the Vito disk image from your downloads.", "Drag Vito to Applications and open it there.", "The first time: right-click → Open, as Vito isn't notarised yet."],
+  linux: ["Make the AppImage executable (chmod +x) and start it.", "Or install the Flatpak with the two commands in the download window."],
+};
+let ibTimer = null;
+const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+const lsSet = (k, v) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} };
+function renderInstallBanner(){
+  const el = $("install-banner"); if (!el || !STANDALONE) return;
+  let dl = null; try { dl = JSON.parse(lsGet("vito-web-dl") || "null"); } catch {}
+  const found = lsGet("vito-web-app") === "1", party = lsGet("vito-web-party") === "1", done = lsGet("vito-web-ib-done") === "1";
+  clearInterval(ibTimer); ibTimer = null;
+  if (done || (!dl && !party)) { el.hidden = true; return; }
+  el.hidden = false;
+  if (party) {
+    el.className = "install-banner done";
+    el.innerHTML = `<button class="ib-x" aria-label="${t("Close")}">×</button><span class="ib-ico">🎉</span><div class="ib-body">
+      <div class="ib-title">${t("Connected to the Vito app!")}</div>
+      <div class="ib-text">${t("From now on you dictate into any program with your hotkey. Take what you dictated here along:")}</div>
+      <div class="ib-actions"><button class="btn small" id="ib-move">${t("Move to the app")}</button><button class="btn ghost small" id="ib-open">${t("Open the app")}</button></div></div>`;
+    $("ib-move").onclick = () => { moveToApp(); lsSet("vito-web-ib-done", "1"); renderInstallBanner(); };
+    $("ib-open").onclick = () => { window.open(APP_URL + "/", "_blank"); lsSet("vito-web-ib-done", "1"); renderInstallBanner(); };
+  } else {
+    el.className = "install-banner";
+    const steps = (IB_STEPS[dl.os] || IB_STEPS.windows).map(x => `<li>${t(x)}</li>`).join("");
+    el.innerHTML = `<button class="ib-x" aria-label="${t("Close")}">×</button><span class="ib-ico">⬇</span><div class="ib-body">
+      <div class="ib-title">${t("Downloaded! Now install it")}</div>
+      <ol class="ib-steps">${steps}</ol>
+      <div class="ib-actions"><button class="btn small" id="ib-check">${t("I've installed it")}</button>
+        <button class="btn ghost small" id="ib-again">${t("Download again")}</button>
+        <span class="ib-search"><i></i>${t("Looking for the app…")}</span></div></div>`;
+    $("ib-check").onclick = () => findApp(false);
+    $("ib-again").onclick = showDownload;
+    // Look by itself while the page is in view; the first look may make
+    // Chrome or Edge ask once whether vito.talk may reach the app.
+    ibTimer = setInterval(() => { if (!document.hidden) findApp(true); }, 5000);
+  }
+  el.querySelector(".ib-x").onclick = () => { lsSet("vito-web-ib-done", "1"); renderInstallBanner(); };
+}
+function appFound(){
+  lsSet("vito-web-party", "1");
+  lsSet("vito-web-ib-done", null);
+  renderInstallBanner();
+  celebrate($("install-banner"));
+  // Vito himself is pleased too.
+  if (typeof vmPose === "function") { vmFlash("happy", 5000); vmPose("party"); }
+  selectTab("status");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function celebrate(near){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const r = (near && !near.hidden ? near : document.body).getBoundingClientRect();
+  const colors = ["#FF6B5E", "#7C3AED", "#A78BFA", "#FFB347", "#4ADE80", "#38BDF8", "#F472B6"];
+  for (let i = 0; i < 70; i++) {
+    const b = document.createElement("i");
+    b.className = "confetti-bit";
+    b.style.background = colors[i % colors.length];
+    b.style.left = (r.left + r.width * (0.2 + Math.random() * 0.6)) + "px";
+    b.style.top = (r.top + 30) + "px";
+    document.body.appendChild(b);
+    const dx = (Math.random() - 0.5) * 900, up = 160 + Math.random() * 260, down = 500 + Math.random() * 400;
+    b.animate([
+      { transform: "translate(0,0) rotate(0deg)", opacity: 1 },
+      { transform: `translate(${dx * 0.6}px,${-up}px) rotate(${Math.random() * 540}deg)`, opacity: 1, offset: 0.35 },
+      { transform: `translate(${dx}px,${down}px) rotate(${Math.random() * 1080}deg)`, opacity: 0 },
+    ], { duration: 2200 + Math.random() * 1200, easing: "cubic-bezier(.2,.7,.4,1)" }).onfinish = () => b.remove();
+  }
+}
+if (STANDALONE) {
+  $("dl-web").onclick = showDownload;
+  renderInstallBanner();
+}
+
 function moveToApp(){
   // Nothing kept here yet: then there is nothing to take over, just the app.
   const data = VitoStandalone.export();
@@ -6497,6 +6616,11 @@ flatpak install --user vito io.github.vinceecniv.vito</pre>`,
   const show = (k) => {
     back.querySelectorAll("[data-os]").forEach(b => b.classList.toggle("sel", b.dataset.os === k));
     back.querySelector("#dl-pane").innerHTML = panes[k];
+    // A download starts the way to the app: the banner takes over from here.
+    back.querySelectorAll(".js-dl").forEach(a => a.addEventListener("click", () => {
+      try { localStorage.setItem("vito-web-dl", JSON.stringify({ os: k, at: Date.now() })); } catch {}
+      setTimeout(() => { back.remove(); renderInstallBanner(); }, 400);
+    }));
   };
   back.querySelectorAll("[data-os]").forEach(b => b.onclick = () => show(b.dataset.os));
   show(os === "other" ? "windows" : os);
