@@ -489,7 +489,8 @@
   /* Bar and pane share a max-width so the underline ends flush with the card
      instead of running off across empty space. 800px fits all six tabs in both
      languages without scrolling on desktop. */
-  .settabs { display:flex; flex-wrap:wrap; gap:2px 6px; width:fit-content; min-width:min(800px,100%); max-width:100%;
+  /* No wider than the cards below them: past that the tabs wrap. */
+  .settabs { display:flex; flex-wrap:wrap; gap:2px 6px; width:fit-content; min-width:min(800px,100%); max-width:min(800px,100%);
     margin-bottom:24px; border-bottom:1px solid var(--card-border); }
   .settabs::-webkit-scrollbar { display:none; }
   /* The tab bar (or the dropdown that replaces it) stays in view while a long
@@ -2958,6 +2959,7 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "Vito in your browser — always the newest":"Vito in je browser — altijd de nieuwste",
   "A hotkey that works everywhere":"Een sneltoets die overal werkt",
   "— also when Vito isn't the window in front.":"— ook als Vito niet het venster vooraan is.",
   "Types straight into any program":"Typt direct in elk programma",
@@ -6638,6 +6640,12 @@ async function loadAbout(){
   // with localStorage["vito-mascot-dev"] = "1".
   let vmDev = false; try { vmDev = localStorage.getItem("vito-mascot-dev") === "1"; } catch {}
   if (a.version === "dev" && vmDev && !document.querySelector("#mascot-card .vm-dev")) $("mascot-card").appendChild(mascotDevPanel());
+  // The browser version has no build of its own to describe: it is whatever
+  // vito.talk serves, always the newest.
+  if (STANDALONE) {
+    box.innerHTML = row(t("Version"), t("Vito in your browser — always the newest")) + row(t("License"), a.license || "MIT");
+    return;
+  }
   box.innerHTML =
     row(t("Version"), `<span id="about-version">${a.version || "—"}</span>`) +
     row(t("Git commit"), commit + when) +
@@ -6823,6 +6831,7 @@ function layoutOrderOf(group){
 }
 // The version card shows itself when it has news, or always if you asked it to.
 function updateCardWanted(){
+  if (STANDALONE) return false; // the page on vito.talk is always the latest
   if (loadLayout().updateAlways) return true;
   return !!(updateState && updateState.release && updateState.release.available);
 }

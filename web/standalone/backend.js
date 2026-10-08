@@ -224,7 +224,10 @@ registerProcessor("vito-pcm",P)`;
     ws.onopen = () => { ws.send(JSON.stringify(start)); queue.forEach((b) => ws.send(b)); queue = null; };
     ws.onmessage = (ev) => {
       let m; try { m = JSON.parse(ev.data); } catch { return; }
-      if (m.error_message) { failed = new Error("Soniox: " + m.error_message); end(); return; }
+      if (m.error_message) {
+        failed = looksLikeCredit(m.error_code === 402 ? 402 : 400, m.error_message) ? new CreditError("Soniox", m.error_message) : new Error("Soniox: " + m.error_message);
+        end(); return;
+      }
       let t = "";
       for (const tk of m.tokens || []) {
         if (tk.is_final) { final += tk.text; if (tk.language && tk.text.trim()) langs[tk.language] = (langs[tk.language] || 0) + 1; }
@@ -286,7 +289,11 @@ registerProcessor("vito-pcm",P)`;
             { method: "POST", body: fd, headers: key ? { Authorization: "Bearer " + key } : {}, signal: AbortSignal.timeout(90000) });
         } catch { throw new Error("The speech endpoint can't be reached from the browser."); }
         const body = await resp.json().catch(() => ({}));
-        if (!resp.ok) throw new Error("Speech endpoint: HTTP " + resp.status + (body.error && body.error.message ? " — " + body.error.message : ""));
+        if (!resp.ok) {
+          const msg = (body.error && body.error.message) || "";
+          if (looksLikeCredit(resp.status, msg)) throw new CreditError(sttName(), msg);
+          throw new Error(sttName() + ": HTTP " + resp.status + (msg ? " — " + msg : ""));
+        }
         return { text: (body.text || "").trim(), language: body.language || cfg.stt.language };
       },
       abort() {},
@@ -367,8 +374,13 @@ registerProcessor("vito-pcm",P)`;
     r.stopped = performance.now();
     setState("processing");
     let res;
-    try { res = await r.engine.stop(); }
-    catch (e) { playSound("cancel"); setState("idle"); emit({ type: "error", error: (e && e.message) || String(e) }); return; }
+    try { res = await r.engine.stop(); markCredit(sttName(), false); }
+    catch (e) {
+      playSound("cancel"); setState("idle");
+      if (e instanceof CreditError) { markCredit(e.provider, true); emit({ type: "error", error: e.message, credit: e.provider }); }
+      else emit({ type: "error", error: (e && e.message) || String(e) });
+      return;
+    }
     finish(r, res.text || "", res.language || cfg.stt.language);
   }
 
@@ -427,15 +439,18 @@ registerProcessor("vito-pcm",P)`;
     // AI cleanup when it is set up, as the daemon does it; the rules when not,
     // or when it fails — the text always arrives. A command runs even below the
     // word threshold, on Assist's own model when it has one.
-    let cleaned = "", cleanupErr = "", cleanupMS = 0;
+    let cleaned = "", cleanupErr = "", cleanupMS = 0, cleanupCredit = "";
     let useCfg = cl;
     if (instruction && cfg.assist && cfg.assist.use_cleanup_model === false) {
       useCfg = Object.assign({}, cfg.assist.cleanup, { enabled: true, timeout_ms: (cfg.assist.cleanup && cfg.assist.cleanup.timeout_ms) || cl.timeout_ms });
     }
     if (cleanupOn && (instruction || countWords(raw) >= (cl.min_words || 0))) {
       const t0 = performance.now();
-      try { cleaned = plain(await aiCleanup(raw, language, useCfg, instruction)); }
-      catch (e) { cleanupErr = (e && e.message) || String(e); }
+      try { cleaned = plain(await aiCleanup(raw, language, useCfg, instruction)); markCredit(cleanupName(useCfg), false); }
+      catch (e) {
+        cleanupErr = (e && e.message) || String(e);
+        if (e instanceof CreditError) { cleanupCredit = e.provider; markCredit(e.provider, true); }
+      }
       cleanupMS = performance.now() - t0;
     }
     if (!cleaned) raw = ruleCleanup(raw);
@@ -454,7 +469,7 @@ registerProcessor("vito-pcm",P)`;
       cleanup_ms: Math.round(cleanupMS), injected_ms: Math.round(injectedMS), command_text: instruction, clipboard: clipboardIn });
     playSound(cleanupErr ? "warn" : "done");
     emit({ type: "final", raw, cleaned, text: out, timings: lastTimings, entry_id: entry ? entry.id : "",
-      cleanup_failed: !!cleanupErr, cleanup_error: cleanupErr });
+      cleanup_failed: !!cleanupErr, cleanup_error: cleanupErr, cleanup_credit: cleanupCredit || undefined });
     setState("idle");
     if (copied) emit({ type: "copied" });
   }
@@ -472,6 +487,38 @@ registerProcessor("vito-pcm",P)`;
     }
     return "";
   }
+
+  // ---- out of credit: internal/apierr and the daemon's bookkeeping ----
+  // A provider whose balance ran out is told apart from any other failure, so
+  // the page can say "top up" instead of a raw error. It stays flagged until a
+  // request to it succeeds again; a dismissal hides it until it runs out anew.
+  const BILLING_WORDS = ["insufficient", "credit balance", "out of credit", "no credit", "insufficient funds",
+    "billing", "payment required", "top up", "top-up"];
+  const looksLikeCredit = (status, body) => status === 402 ||
+    (status >= 400 && status < 500 && BILLING_WORDS.some((w) => String(body || "").toLowerCase().includes(w)));
+  class CreditError extends Error { constructor(provider, detail) { super(provider + " account is out of credit" + (detail ? ": " + detail : "")); this.provider = provider; } }
+  const creditOut = new Set(read("vito-web-credit", [])), creditHush = new Set(read("vito-web-credit-hush", []));
+  const saveCredit = () => { write("vito-web-credit", [...creditOut]); write("vito-web-credit-hush", [...creditHush]); };
+  function markCredit(provider, out) {
+    if (!provider) return;
+    const changed = out ? !creditOut.has(provider) : creditOut.has(provider);
+    if (out) { creditOut.add(provider); creditHush.delete(provider); } else { creditOut.delete(provider); creditHush.delete(provider); }
+    if (changed) { saveCredit(); emit({ type: "credit" }); }
+  }
+  const creditList = () => [...creditOut].filter((p) => !creditHush.has(p));
+  const cleanupName = (cl) => {
+    if (cl.provider === "anthropic") return "Anthropic";
+    const b = (cl.openai_base_url || "").toLowerCase();
+    return b.includes("groq.com") ? "Groq" : b.includes("openai.com") ? "OpenAI"
+      : /localhost|127\.0\.0\.1|0\.0\.0\.0/.test(b) ? "Local model" : "AI cleanup";
+  };
+  const sttName = () => {
+    if (cfg.stt.provider === "soniox") return "Soniox";
+    if (cfg.stt.provider === "whistle") return "Whistle";
+    const b = (cfg.stt.openai_base_url || "").toLowerCase();
+    return b.includes("groq.com") ? "Groq" : b.includes("openai.com") ? "OpenAI"
+      : /localhost|127\.0\.0\.1|0\.0\.0\.0/.test(b) ? "Local speech model" : "Speech endpoint";
+  };
 
   // ---- AI cleanup: internal/cleanup, called from the browser ----
   const cleanupConfigured = (cl) => cl.provider === "anthropic" ? !!cl.api_key : !!(cl.openai_base_url && cl.openai_model);
@@ -505,7 +552,11 @@ registerProcessor("vito-pcm",P)`;
           body: JSON.stringify({ model: cl.model, max_tokens: maxTokens(text), temperature: 0, system: systemPrompt(cl, instruction),
             messages: [{ role: "user", content: userPrompt(text, language) }] }) });
         body = await resp.json().catch(() => ({}));
-        if (!resp.ok) throw new Error("Anthropic: " + ((body.error && body.error.message) || resp.status));
+        if (!resp.ok) {
+          const msg = (body.error && body.error.message) || String(resp.status);
+          if (looksLikeCredit(resp.status, msg)) throw new CreditError("Anthropic", msg);
+          throw new Error("Anthropic: " + msg);
+        }
         if (body.stop_reason === "max_tokens") throw new Error("the answer was cut off");
         return stripThinking((body.content || []).filter((b) => b.type === "text").map((b) => b.text).join(""));
       }
@@ -516,12 +567,17 @@ registerProcessor("vito-pcm",P)`;
         headers: Object.assign({ "Content-Type": "application/json" }, cl.openai_key ? { Authorization: "Bearer " + cl.openai_key } : {}),
         body: JSON.stringify(req) });
       body = await resp.json().catch(() => ({}));
-      if (!resp.ok) throw new Error("HTTP " + resp.status + ": " + ((body.error && body.error.message) || ""));
+      if (!resp.ok) {
+        const msg = (body.error && body.error.message) || "";
+        if (looksLikeCredit(resp.status, msg)) throw new CreditError(cleanupName(cl), msg);
+        throw new Error("HTTP " + resp.status + ": " + msg);
+      }
       const ch = (body.choices || [])[0];
       if (!ch) throw new Error("no answer");
       if (ch.finish_reason === "length") throw new Error("the answer was cut off");
       return stripThinking(ch.message && ch.message.content);
     } catch (e) {
+      if (e instanceof CreditError) throw e;
       if (e.name === "AbortError") throw new Error("timed out");
       if (e instanceof TypeError) throw new Error("the provider can't be reached from the browser");
       throw e;
@@ -858,7 +914,7 @@ registerProcessor("vito-pcm",P)`;
     const u = new URL(path, location.href), q = u.searchParams, p = u.pathname.replace(/^.*?\/api\//, "/api/");
     const m = (re) => re.exec(p);
     let r;
-    if (p === "/api/status") return { state, last_timings: lastTimings, boot: "web", web: true, command: pendingCmd };
+    if (p === "/api/status") return { state, last_timings: lastTimings, boot: "web", web: true, command: pendingCmd, credit: creditList() };
     if (p === "/api/config") {
       if (method === "GET") return cfg;
       const keep = cfg.ui && cfg.ui.dashboard;
@@ -939,7 +995,12 @@ registerProcessor("vito-pcm",P)`;
     }
     if (p === "/api/backups") return { backups: [] };
     if (p === "/api/play-sound") { const v = parseFloat(q.get("volume")); playSound(q.get("name"), isNaN(v) ? (cfg.audio.sounds_volume ?? 1) : v); return ok(); }
-    if (p === "/api/credit/dismiss") return ok();
+    if (p === "/api/credit/dismiss") {
+      let changed = false;
+      for (const pr of creditOut) if ((!body || !body.provider || body.provider === pr) && !creditHush.has(pr)) { creditHush.add(pr); changed = true; }
+      if (changed) { saveCredit(); emit({ type: "credit" }); }
+      return ok();
+    }
     if (p === "/api/ui") return { source: "web", api: 0 };
     if (p === "/api/linux-tools") return {};
     return helperOnly();
