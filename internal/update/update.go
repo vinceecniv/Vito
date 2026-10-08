@@ -29,6 +29,12 @@ const Repo = "vinceecniv/vito"
 
 const apiURL = "https://api.github.com/repos/" + Repo + "/releases/latest"
 
+// asset is one file attached to a release.
+type asset struct {
+	url  string
+	size int64
+}
+
 // Release is what the UI needs to know about the newest published version.
 type Release struct {
 	Version     string    `json:"version"`               // e.g. "2026.8"
@@ -39,8 +45,9 @@ type Release struct {
 	// Installer names the Windows setup asset, when the release has one.
 	Installer     string `json:"installer,omitempty"`
 	InstallerSize int64  `json:"installer_size,omitempty"`
-	installerURL  string
-	checksumURL   string
+	// assets are every file of the release by name; each download is checked
+	// against "<name>.sha256" beside it.
+	assets map[string]asset
 }
 
 // Checker caches the last answer so opening the status page doesn't fire a
@@ -48,6 +55,7 @@ type Release struct {
 type Checker struct {
 	Current string // the running version
 	Client  *http.Client
+	API     string // the latest-release endpoint; a test points it elsewhere
 
 	mu      sync.Mutex
 	last    *Release
@@ -59,7 +67,7 @@ type Checker struct {
 const MaxAge = 24 * time.Hour
 
 func NewChecker(current string) *Checker {
-	return &Checker{Current: current, Client: &http.Client{Timeout: 15 * time.Second}}
+	return &Checker{Current: current, API: apiURL, Client: &http.Client{Timeout: 15 * time.Second}}
 }
 
 // Cached returns the last result without going near the network.
@@ -97,7 +105,7 @@ func (c *Checker) Check(ctx context.Context, force bool) (*Release, error) {
 }
 
 func (c *Checker) fetch(ctx context.Context) (*Release, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, apiURL, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.API, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -144,12 +152,11 @@ func (c *Checker) fetch(ctx context.Context) (*Release, error) {
 		PublishedAt: out.PublishedAt,
 	}
 	rel.Available = Newer(rel.Version, c.Current)
+	rel.assets = map[string]asset{}
 	for _, a := range out.Assets {
-		switch {
-		case strings.HasSuffix(a.Name, ".exe"):
-			rel.Installer, rel.installerURL, rel.InstallerSize = a.Name, a.URL, a.Size
-		case strings.HasSuffix(a.Name, ".sha256"):
-			rel.checksumURL = a.URL
+		rel.assets[a.Name] = asset{url: a.URL, size: a.Size}
+		if strings.HasSuffix(a.Name, ".exe") {
+			rel.Installer, rel.InstallerSize = a.Name, a.Size
 		}
 	}
 	return rel, nil
@@ -196,18 +203,42 @@ func parse(v string) ([3]int, bool) {
 // checksum published beside the asset is the only thing standing between a
 // tampered download and running it.
 func (c *Checker) Download(ctx context.Context, rel *Release, onProgress func(frac float64)) (string, error) {
-	if rel == nil || rel.installerURL == "" {
+	if rel == nil || rel.Installer == "" {
 		return "", fmt.Errorf("this release has no installer to download")
 	}
-	if rel.checksumURL == "" {
-		return "", fmt.Errorf("this release has no checksum published; refusing to run an unverified installer")
+	return c.DownloadAsset(ctx, rel, rel.Installer, onProgress)
+}
+
+// HasAsset reports whether the release carries a file of that name.
+func (r *Release) HasAsset(name string) bool {
+	if r == nil {
+		return false
 	}
-	want, err := c.fetchChecksum(ctx, rel.checksumURL)
+	_, ok := r.assets[name]
+	return ok
+}
+
+// DownloadAsset fetches one file of the release to a temporary directory and
+// checks it against the "<name>.sha256" published beside it — the AppImage and
+// the disk image are verified exactly like the installer.
+func (c *Checker) DownloadAsset(ctx context.Context, rel *Release, name string, onProgress func(frac float64)) (string, error) {
+	if rel == nil {
+		return "", fmt.Errorf("no release")
+	}
+	a, ok := rel.assets[name]
+	if !ok {
+		return "", fmt.Errorf("this release has no %s", name)
+	}
+	sumAsset, ok := rel.assets[name+".sha256"]
+	if !ok {
+		return "", fmt.Errorf("this release has no checksum for %s; refusing an unverified download", name)
+	}
+	want, err := c.fetchChecksum(ctx, sumAsset.url)
 	if err != nil {
 		return "", err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, rel.installerURL, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, a.url, nil)
 	if err != nil {
 		return "", err
 	}
@@ -224,7 +255,7 @@ func (c *Checker) Download(ctx context.Context, rel *Release, onProgress func(fr
 	if err != nil {
 		return "", err
 	}
-	path := filepath.Join(dir, filepath.Base(rel.Installer))
+	path := filepath.Join(dir, filepath.Base(name))
 	f, err := os.Create(path)
 	if err != nil {
 		return "", err
@@ -241,8 +272,8 @@ func (c *Checker) Download(ctx context.Context, rel *Release, onProgress func(fr
 			}
 			sum.Write(buf[:n])
 			got += int64(n)
-			if onProgress != nil && rel.InstallerSize > 0 {
-				onProgress(float64(got) / float64(rel.InstallerSize))
+			if onProgress != nil && a.size > 0 {
+				onProgress(float64(got) / float64(a.size))
 			}
 		}
 		if rerr == io.EOF {
@@ -255,6 +286,10 @@ func (c *Checker) Download(ctx context.Context, rel *Release, onProgress func(fr
 	}
 	if err := f.Close(); err != nil {
 		return "", err
+	}
+	if a.size > 0 && got != a.size {
+		os.RemoveAll(dir)
+		return "", fmt.Errorf("download incomplete: %d of %d bytes", got, a.size)
 	}
 	if have := hex.EncodeToString(sum.Sum(nil)); !strings.EqualFold(have, want) {
 		os.RemoveAll(dir)

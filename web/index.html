@@ -1676,6 +1676,8 @@
             <div class="flagsel-list" id="typespeed-list"></div>
           </div>
           <label class="tgl" data-help="updatecheck"><input type="checkbox" id="s-updatecheck"><span class="tr"></span> Check for updates</label>
+          <label class="tgl" data-help="updateauto"><input type="checkbox" id="s-updateauto"><span class="tr"></span> Install updates automatically</label>
+          <p class="act-note" id="upd-auto-note" style="margin:2px 0 8px;" hidden></p>
           <label class="tgl" data-help="demo"><input type="checkbox" id="s-demo"><span class="tr"></span> Demo mode (sample data)</label>
         </div>
         <div class="card" data-sec="activation" hidden>
@@ -2495,6 +2497,11 @@ const TR = { nl: {
   "Vito is installing the update and will restart.":"Vito installeert de update en start opnieuw op.",
   "What's new in {v}":"Wat is er nieuw in {v}","This release has no notes.":"Bij deze release staan geen notities.",
   "View on GitHub":"Bekijken op GitHub","Check for updates":"Controleren op updates",
+  "Install updates automatically":"Updates automatisch installeren",
+  "This copy of Vito is updated by your system (Flatpak, package manager or app store), not by Vito itself.":"Deze Vito wordt bijgewerkt door je systeem (Flatpak, pakketbeheerder of app store), niet door Vito zelf.",
+  "Downloading version {v}…":"Versie {v} downloaden…",
+  "Version {v} is ready and installs as soon as Vito has been idle for a few minutes.":"Versie {v} staat klaar en wordt geïnstalleerd zodra Vito een paar minuten niets te doen heeft.",
+  "The last automatic update failed:":"De laatste automatische update is mislukt:",
   "When to show this card":"Wanneer deze kaart getoond wordt",
   "Always":"Altijd","Only when there's an update":"Alleen bij een update",
   "Vito has been updated to {v}.":"Vito is bijgewerkt naar versie {v}.",
@@ -6439,6 +6446,7 @@ async function loadUpdate(force){
   applyStatusLayout();
   if ($("tab-status").classList.contains("active")) loadStats();
   renderAboutVersion();
+  renderAutoUpdateNote();
   announceUpdated();
   return updateState;
 }
@@ -6451,7 +6459,7 @@ function announceUpdated(){
   let seen = null;
   try { seen = localStorage.getItem("vito-seen-version"); } catch { return; }
   try { localStorage.setItem("vito-seen-version", u.current); } catch {}
-  if (!seen || seen === u.current) return;
+  if (seen === u.current || (!seen && !u.updated_from)) return;
   const rel = (u.release && u.release.version === u.current) ? u.release : null;
   showUpdatedBanner(u.current, rel);
 }
@@ -8137,6 +8145,8 @@ async function fillSettings() {
   setNotifyDisplay((cfg.ui && cfg.ui.notifications) || "all");
   $("s-demo").checked = !!cfg.demo;
   $("s-updatecheck").checked = !(cfg.update && cfg.update.check === false);
+  $("s-updateauto").checked = !(cfg.update && cfg.update.auto === false);
+  renderAutoUpdateNote();
   $("s-autobackup").checked = !(cfg.backup && cfg.backup.auto === false);
   if ($("s-ptt")) $("s-ptt").checked = cfg.push_to_talk !== false; // default on
   if (typeof renderBackupAutoNote === "function") renderBackupAutoNote();
@@ -8607,7 +8617,7 @@ function collectSettings() {
     tray: Object.assign(cfg.tray || {}, { enabled: $("s-tray").checked }),
     stats: Object.assign(cfg.stats || {}, { typing_speed: $("s-typespeed").value }),
     ui: Object.assign(cfg.ui || {}, { notifications: $("s-notify").value }),
-    update: Object.assign(cfg.update || {}, { check: $("s-updatecheck").checked }),
+    update: Object.assign(cfg.update || {}, { check: $("s-updatecheck").checked, auto: $("s-updateauto").checked }),
     backup: Object.assign(cfg.backup || {}, { auto: $("s-autobackup").checked }),
     push_to_talk: $("s-ptt") ? $("s-ptt").checked : cfg.push_to_talk,
     demo: $("s-demo").checked,
@@ -8621,8 +8631,9 @@ function autoSaveSettings() {
 }
 // s-typespeed / s-notify are custom icon dropdowns (hidden inputs) — they call
 // autoSaveSettings() themselves on pick, so they're not in this change list.
-["s-input","s-output","s-model","s-sounds","s-eu","s-keyterms","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-demo"]
+["s-input","s-output","s-model","s-sounds","s-eu","s-keyterms","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-updateauto","s-demo"]
   .forEach(id => $(id).addEventListener("change", autoSaveSettings));
+["s-updatecheck","s-updateauto"].forEach(id => $(id).addEventListener("change", renderAutoUpdateNote));
 // The Assist toggle also flips its model section and refreshes the "which model" note.
 $("s-assist-usecleanup").addEventListener("change", () => { syncAssistMode(); autoSaveSettings(); });
 // The auto-backup toggle saves like the rest, and refreshes its own note.
@@ -8639,6 +8650,20 @@ function bkWhen(ms){
 function bkInfoWhen(info){
   const ms = (info.created_at && Date.parse(info.created_at)) || info.mod_millis;
   return bkWhen(ms);
+}
+// Under the toggle: what the automatic update is doing, or why it cannot here.
+function renderAutoUpdateNote(){
+  const el = $("upd-auto-note"), box = $("s-updateauto"); if (!el || !box) return;
+  box.disabled = !$("s-updatecheck").checked;
+  const a = (updateState && updateState.auto) || {};
+  let msg = "";
+  if (a.state === "unmanaged") { msg = t("This copy of Vito is updated by your system (Flatpak, package manager or app store), not by Vito itself."); box.disabled = true; }
+  else if (box.disabled || !box.checked) msg = "";
+  else if (a.state === "downloading") msg = t("Downloading version {v}…").replace("{v}", a.version || "");
+  else if (a.state === "ready") msg = t("Version {v} is ready and installs as soon as Vito has been idle for a few minutes.").replace("{v}", a.version || "");
+  else if (a.state === "error") msg = t("The last automatic update failed:") + " " + (a.error || "");
+  el.textContent = msg;
+  el.hidden = !msg;
 }
 function renderBackupAutoNote(){
   const on = $("s-autobackup") && $("s-autobackup").checked;
@@ -9507,6 +9532,7 @@ const HELP = {
   appendenter:{nl:"Drukt na de tekst automatisch op Enter — handig om invoer meteen te verzenden, bijvoorbeeld in een Claude Code-sessie of chat.",en:"Presses Enter after the text — handy to submit input right away, e.g. in a Claude Code session or chat."},
   hotkey:{nl:"De globale toetsencombinatie om een dictaat te starten en stoppen. Klik het vak en druk je gewenste combinatie.",en:"The global key combination to start and stop a dictation. Click the box and press your desired combination."},
   history:{nl:"Bewaar je dictaten lokaal zodat je ze kunt terugzien, doorzoeken en kopiëren.",en:"Keep your dictations locally so you can review, search and copy them."},
+  updateauto:{nl:"Een nieuwe versie wordt op de achtergrond gedownload, gecontroleerd en geïnstalleerd zodra Vito een paar minuten niets te doen heeft. Vito herstart daarbij vanzelf; je instellingen en geschiedenis blijven staan. Uit betekent dat je zelf op Nu bijwerken klikt.",en:"A new version is downloaded in the background, verified, and installed once Vito has had nothing to do for a few minutes. Vito restarts by itself; your settings and history stay as they are. Off means you click Update now yourself."},
   updatecheck:{nl:"Kijkt eens per dag bij GitHub of er een nieuwe versie van Vito is. Dit is het enige dat Vito uit zichzelf naar buiten vraagt; er gaat niets mee behalve het versienummer dat je draait. Uit betekent dat je zelf moet kijken.",en:"Asks GitHub once a day whether a newer Vito has been released. This is the only thing Vito asks the outside world on its own, and it sends nothing but the version you are running. Off means you check yourself."},
   storeaudio:{nl:"Bewaart naast de tekst ook de audio-opname van je laatste 10 dictaten, zodat je ze kunt terugluisteren of downloaden (.wav). De opnames blijven lokaal op je computer. Zet je dit uit, dan worden de bewaarde opnames meteen verwijderd — net als bij het wissen van je geschiedenis. In privacy-modus wordt er nooit audio bewaard.",en:"Also keeps the audio recording of your last 10 dictations alongside the text, so you can listen back or download it (.wav). The recordings stay local on your computer. Switching this off deletes the kept recordings right away — as does clearing your history. In privacy mode audio is never kept."},
   retention:{nl:"Verwijdert dictaten die ouder zijn dan de gekozen periode automatisch, zodat je geschiedenis niet eindeloos groeit. Als favoriet gemarkeerde items (met een ster) blijven altijd bewaard, inclusief hun opname. 'Nooit' schakelt dit uit.",en:"Automatically deletes dictations older than the chosen period so your history doesn't grow forever. Entries you star as favorites are always kept, including their recording. 'Never' turns this off."},

@@ -60,6 +60,9 @@ type Server struct {
 	port     int
 	updates  *update.Checker
 	ui       *uibundle.Manager
+	auto     *update.Auto
+	// updatedFrom is the version this start replaced, when it was an update.
+	updatedFrom string
 
 	fxMu   sync.Mutex
 	fxRate float64   // cached USD→EUR
@@ -79,6 +82,12 @@ func New(d *daemon.Daemon, log *slog.Logger, audioCtx *audio.Context, hist *hist
 	if fetch {
 		go s.ui.Run(context.Background())
 	}
+	s.updatedFrom = update.TakeUpdatedFrom(Version)
+	s.auto = update.NewAuto(s.updates, log,
+		func() bool { return d.Config().Update.AutoEnabled() },
+		func() bool { return d.Status().State == daemon.StateIdle },
+		d.Shutdown)
+	go s.auto.Run(context.Background())
 	return s
 }
 
@@ -1552,6 +1561,10 @@ func (s *Server) handleUpdate(w http.ResponseWriter, r *http.Request) {
 		"checking":  s.d.Config().Update.CheckEnabled(),
 		"repo":      "https://github.com/" + update.Repo,
 		"repo_url":  "https://github.com/" + update.Repo + "/releases",
+		"auto":      s.auto.Status(),
+	}
+	if s.updatedFrom != "" {
+		out["updated_from"] = s.updatedFrom
 	}
 	if !s.d.Config().Update.CheckEnabled() {
 		s.writeJSON(w, http.StatusOK, out)
@@ -1593,7 +1606,9 @@ func (s *Server) handleUpdateApply(w http.ResponseWriter, r *http.Request) {
 		s.writeJSON(w, http.StatusBadGateway, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}
+	update.MarkUpdating(Version)
 	if err := update.Apply(path); err != nil {
+		update.ClearMark()
 		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}
