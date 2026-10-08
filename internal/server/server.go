@@ -506,7 +506,12 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 		Keyterms:    append([]string(nil), current.Dictionary.Keyterms...),
 		Corrections: append([]config.Correction(nil), current.Dictionary.Corrections...),
 	}
+	// The dashboard layout is a byte slice too: copy it out, and give the
+	// decode a fresh one to fill, or decoding writes the page's copy into the
+	// live config's bytes and corrupts it for every later save.
+	savedDashboard := append(json.RawMessage(nil), current.UI.Dashboard...)
 	cfg := current // start from current so omitted fields keep their value
+	cfg.UI.Dashboard = nil
 	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<20)).Decode(&cfg); err != nil {
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "invalid JSON: " + err.Error()})
 		return
@@ -515,7 +520,7 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	cfg.Server = current.Server
 	// The dashboard layout has its own endpoint; a settings save carries the
 	// copy the page loaded, which may be older than a layout saved since.
-	cfg.UI.Dashboard = current.UI.Dashboard
+	cfg.UI.Dashboard = savedDashboard
 	// In demo mode the UI is showing (and would send back) the sample
 	// dictionary, so keep the real one — saving any settings change from a demo
 	// must not overwrite the user's keyterms and corrections.
