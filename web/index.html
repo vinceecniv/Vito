@@ -2823,6 +2823,9 @@ const TR = { nl: {
   "About":"Over",
   "Version":"Versie",
   "Git commit":"Git-commit",
+  "Interface":"Interface",
+  "downloaded":"gedownload",
+  "built in":"ingebouwd",
   "License":"Licentie",
   "Personal, cross-platform voice dictation: press a hotkey, speak, and get clean text where your cursor is.":"Persoonlijke, cross-platform spraakdictatie: druk een sneltoets, spreek, en krijg schone tekst waar je cursor staat.",
   "Theme":"Thema",
@@ -4247,6 +4250,11 @@ function connectWS() {
       onPlaybackStream(e.playback || {});
     } else if (e.type === "upload") {
       setUploadProgress(e.upload || {});
+    } else if (e.type === "ui") {
+      // A newer interface has been downloaded. Take it the next time the window
+      // is out of sight, so nothing changes under the user's hands.
+      uiUpdated = true;
+      if (document.hidden) location.reload();
     } else if (e.type === "whistle") {
       whistleSt = e.whistle || whistleSt;
       renderWhistle();
@@ -6023,10 +6031,17 @@ async function loadAbout(){
   box.innerHTML =
     row(t("Version"), `<span id="about-version">${a.version || "—"}</span>`) +
     row(t("Git commit"), commit + when) +
+    // The interface can be newer than the program: it is downloaded from
+    // vito.talk between releases (internal/uibundle).
+    row(t("Interface"), a.ui && a.ui.source === "bundle"
+      ? `<code>${escapeHtml(a.ui.version)}</code> <span style="color:var(--text3); font-weight:400;">(${t("downloaded")})</span>`
+      : t("built in")) +
     row(t("License"), a.license || "—");
   renderAboutVersion();
 }
 let aboutInfo = null;
+let uiUpdated = false;
+document.addEventListener("visibilitychange", () => { if (uiUpdated && document.hidden) location.reload(); });
 // The version row says what it is and, once the check has answered, how it
 // stands: up to date, or a newer one waiting with its notes a click away.
 function renderAboutVersion(){

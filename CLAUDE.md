@@ -12,6 +12,25 @@ seems not to change, check the hook ran — don't debug the CSS first.
 
 The user usually views the app as an installed PWA, which caches aggressively.
 
+## The UI can also be downloaded
+
+A release daemon serves a newer interface between releases: `internal/uibundle`
+fetches `https://vito.talk/ui/ui.json` (+ `.sig`, ed25519) at start and every 6 h,
+verifies it and the zip's sha256, unpacks to `<UserCacheDir>/vito/ui/<version>/`
+and serves it from the next page load. The embedded `web.Files` is the fallback;
+`/?ui=builtin` pins a browser to it, `/?ui=auto` releases it. Every UI handler
+reads through `s.uiFS(r)` — never from `web.*` directly.
+
+A `dev` build never serves a download (set `VITO_UI_URL` to test one), so local
+edits stay visible. A bundle is served only when `min_api <= uibundle.API <=
+api`: **raise `uibundle.API` when the UI starts depending on something new in
+the daemon**, or a published interface will call routes older daemons lack.
+
+Publish with `pwsh -File scripts/publish-ui.ps1 [-Push]` (builds into
+`../Vito-Web/ui` via `go run ./packaging/uibundle build`). The private key is
+`~/.vito-signing/ui-ed25519.key` on the Windows build machine; losing it means
+shipping a release with a new public key.
+
 ## Translations
 
 The interface ships in 60 languages. English is the source language: the code
