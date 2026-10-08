@@ -3494,7 +3494,9 @@ function buildModelCards(){
     $("s-model").value = c.dataset.id;
     // The provider follows the card, so choosing a model is the whole decision —
     // and its settings unfold, since that is where you go next.
-    if (cfg) cfg.stt.provider = c.dataset.provider;
+    // Provider and model follow the card at once, so whatever reads them
+    // (quick settings, the status tag) is right before the save comes back.
+    if (cfg) { cfg.stt.provider = c.dataset.provider; cfg.stt.model = c.dataset.id; renderStatusTags(); }
     panelOpen[c.dataset.provider] = true;
     updateKeytermsNotice();
     buildModelCards();
@@ -7911,8 +7913,15 @@ function showChartTip(d, col){
 /* ---- settings ---- */
 let cfg = null;
 let loadingSettings = false;
+// While the form is being filled from the config, its change events must not
+// save it back. The flag is cleared however loading ends: a load that failed
+// halfway — the daemon restarting, say — used to leave it set, and every
+// change in that page was then dropped without a word.
 async function loadSettings() {
   loadingSettings = true;
+  try { await fillSettings(); } finally { loadingSettings = false; }
+}
+async function fillSettings() {
   cfg = await api("/api/config");
   maybeShowWelcome();
   syncLayoutWithConfig();
@@ -8019,7 +8028,6 @@ async function loadSettings() {
   await loadAutostart();
   loadInputLevel();
   loadHotkey();
-  loadingSettings = false;
 }
 
 /* ---- activation / global hotkey ---- */
