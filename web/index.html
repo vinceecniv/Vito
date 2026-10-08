@@ -1146,6 +1146,7 @@
   .tag { background:var(--input-bg); border:1px solid var(--input-border); color:var(--text2); border-radius:99px;
     padding:5px 12px; font:inherit; font-size:12px; cursor:var(--cur-hand); }
   .tag:hover { border-color:var(--violet); color:var(--accent); }
+  .tag.sel { border-color:var(--violet); color:var(--accent); background:color-mix(in srgb, var(--violet) 12%, var(--input-bg)); font-weight:600; }
   .flag { width:18px; height:13px; border-radius:2px; flex:0 0 18px; box-shadow:0 0 0 1px rgba(0,0,0,.06); vertical-align:middle; }
   .opt-ic { width:17px; height:17px; flex:0 0 17px; }
   .btn-ico { width:16px; height:16px; vertical-align:-3px; margin-right:2px; }
@@ -1484,10 +1485,10 @@
   .app-more { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:16px; }
   .app-more .grow { flex:1 1 280px; }
   .app-more .rowflex { gap:8px; flex-wrap:wrap; }
-  .standalone #settabs [data-sec="activation"], .standalone #settabs [data-sec="assist"],
+  .standalone #settabs [data-sec="assist"],
   .standalone #settabs [data-sec="output"], .standalone #settabs [data-sec="backup"],
   .standalone #settabs [data-sec="linux"],
-  .standalone .settings-pane > .card[data-sec="activation"], .standalone .settings-pane > .card[data-sec="assist"],
+  .standalone .settings-pane > .card[data-sec="assist"],
   .standalone .settings-pane > .card[data-sec="output"], .standalone .settings-pane > .card[data-sec="backup"],
   .standalone .settings-pane > .card[data-sec="linux"],
   .standalone [data-help="level"], .standalone #s-inputlevel, .standalone [data-help="media"], .standalone #mediaaction-sel,
@@ -1561,7 +1562,7 @@
         <p class="welcome-intro">Try Vito right here: the speech recognition runs in your browser, and nothing you say is uploaded.</p>
         <ol class="welcome-steps">
           <li>The speech model downloads once (18 MB); after that it even works offline.</li>
-          <li>Press the microphone button or Ctrl + Alt + Space, speak, and press it again when you're done.</li>
+          <li>Press the microphone button or your hotkey (Ctrl + Alt + Space; another one under Settings → Activation), speak, and press it again when you're done.</li>
           <li>The text lands on your clipboard — paste it wherever you like. Your dictations stay in this browser.</li>
           <li>Like it? The Vito app types straight into any program, with a hotkey that works everywhere.</li>
         </ol>
@@ -2893,6 +2894,11 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "Start and stop dictating with a key combination while this tab has focus. If one does nothing, another program has claimed it — pick a different one.":"Start en stop het dicteren met een toetscombinatie terwijl dit tabblad actief is. Doet een combinatie niets, dan heeft een ander programma hem al geclaimd — kies dan een andere.",
+  "Press your own combination":"Eigen combinatie indrukken",
+  "Press the combination now…":"Druk nu de combinatie in…",
+  "Use Ctrl, Alt or Shift with it, or a function key.":"Gebruik er Ctrl, Alt of Shift bij, of een functietoets.",
+  "Escape cancels a dictation. A hotkey that works in every program, also when Vito isn't in front, comes with the app.":"Escape annuleert een dictaat. Een sneltoets die in elk programma werkt, ook als Vito niet vooraan staat, krijg je met de app.",
   "Hey, there's more when you install Vito.":"Hé, er is meer als je Vito installeert.",
   "The app adds a hotkey that works in every program, types the text straight into it, Vito Assist voice commands, more and better speech models, sync between computers and automatic backups.":"De app voegt een sneltoets toe die in elk programma werkt, typt de tekst er direct in, en heeft Vito Assist-spraakcommando's, meer en betere spraakmodellen, synchronisatie tussen computers en automatische back-ups.",
   "Your browser's language ({l}) isn't one Whistle knows yet, so speech recognition is set to English. You can change it under Settings → Speech recognition.":"De taal van je browser ({l}) kent Whistle nog niet, dus de spraakherkenning staat op Engels. Je kunt dit wijzigen onder Instellingen → Spraakherkenning.",
@@ -2929,7 +2935,7 @@ const TR = { nl: {
   "Take over":"Overnemen",
   "Try Vito right here: the speech recognition runs in your browser, and nothing you say is uploaded.":"Probeer Vito meteen hier: de spraakherkenning draait in je browser en niets van wat je zegt wordt geüpload.",
   "The speech model downloads once (18 MB); after that it even works offline.":"Het spraakmodel wordt één keer gedownload (18 MB); daarna werkt het zelfs offline.",
-  "Press the microphone button or Ctrl + Alt + Space, speak, and press it again when you're done.":"Druk op de microfoonknop of Ctrl + Alt + Spatie, praat, en druk nog eens als je klaar bent.",
+  "Press the microphone button or your hotkey (Ctrl + Alt + Space; another one under Settings → Activation), speak, and press it again when you're done.":"Druk op de microfoonknop of je sneltoets (Ctrl + Alt + Spatie; een andere kies je onder Instellingen → Activering), praat, en druk nog eens als je klaar bent.",
   "The text lands on your clipboard — paste it wherever you like. Your dictations stay in this browser.":"De tekst komt op je klembord — plak hem waar je wilt. Je dictaten blijven in deze browser.",
   "Like it? The Vito app types straight into any program, with a hotkey that works everywhere.":"Bevalt het? De Vito-app typt direct in elk programma, met een sneltoets die overal werkt.",
   "Installing it as an app gives Vito its own window: pin it to the taskbar or Start menu and open straight to it, without hunting for a browser tab. Your dictations stay where they are.":"Als app geïnstalleerd krijgt Vito een eigen venster: zet het vast op de taakbalk of in het Startmenu en open het direct, zonder een browsertabblad te zoeken. Je dictaten blijven waar ze zijn.",
@@ -4293,6 +4299,46 @@ function renderTimings(tm){
 // a few seconds (a blip is no outage), reconnects back off up to 10 s, and a
 // reconnect after a blip resyncs, since events may have been missed meanwhile.
 let wsBackoff = 1000, wsDownTimer = null, wsEverOpen = false;
+// The browser's Activation section: a few ready-made combinations, or one of
+// your own. Whatever the app or another program claims system-wide (Claude
+// takes Ctrl+Alt+Space) never reaches the page, so a choice matters here.
+const WEB_HOTKEYS = ["ctrl+alt+space", "ctrl+shift+space", "ctrl+alt+d", "ctrl+shift+d", "alt+shift+v", "f2", "f9"];
+let hkCapturing = false;
+function renderWebActivation(){
+  const box = $("activation-body"); if (!box) return;
+  const cur = webHotkey();
+  const opts = WEB_HOTKEYS.includes(cur) ? WEB_HOTKEYS : WEB_HOTKEYS.concat(cur);
+  box.innerHTML = `<p class="act-note" style="margin:0 0 10px;">${t("Start and stop dictating with a key combination while this tab has focus. If one does nothing, another program has claimed it — pick a different one.")}</p>
+    <label class="fld">${t("Hotkey")}</label>
+    <div class="rowflex" style="gap:8px; flex-wrap:wrap;">${opts.map(k => `<button type="button" class="tag${k === cur ? " sel" : ""}" data-webhk="${k}">${fmtHotkey(k)}</button>`).join("")}</div>
+    <div class="rowflex" style="gap:9px; align-items:center; margin-top:12px;">
+      <button type="button" class="btn ghost small" id="webhk-own">${t("Press your own combination")}</button>
+      <span class="act-note" id="webhk-hint"></span>
+    </div>
+    <p class="act-note" style="margin:12px 0 0;">${t("Escape cancels a dictation. A hotkey that works in every program, also when Vito isn't in front, comes with the app.")}</p>`;
+  box.querySelectorAll("[data-webhk]").forEach(b => b.onclick = () => setWebHotkey(b.dataset.webhk));
+  $("webhk-own").onclick = () => {
+    hkCapturing = true;
+    $("webhk-hint").textContent = t("Press the combination now…");
+    const grab = (ev) => {
+      ev.preventDefault(); ev.stopPropagation();
+      if (["Control", "Alt", "Shift", "Meta", "AltGraph"].includes(ev.key)) return;
+      document.removeEventListener("keydown", grab, true);
+      hkCapturing = false;
+      if (ev.key === "Escape") { $("webhk-hint").textContent = ""; return; }
+      const key = ev.key === " " ? "space" : ev.key.toLowerCase();
+      const mods = [ev.ctrlKey && "ctrl", ev.altKey && "alt", ev.shiftKey && "shift", ev.metaKey && "win"].filter(Boolean);
+      // A bare letter would fire while typing anywhere on the page; a function key is fine.
+      if (!mods.length && !/^f\d{1,2}$/.test(key)) { $("webhk-hint").textContent = t("Use Ctrl, Alt or Shift with it, or a function key."); return; }
+      setWebHotkey([...mods, key].join("+"));
+    };
+    document.addEventListener("keydown", grab, true);
+  };
+}
+async function setWebHotkey(spec){
+  await saveConfig({ hotkey_windows: spec }, "Hotkey saved");
+  renderWebActivation(); renderStatusTags();
+}
 // In the browser the hotkey only works while this tab has focus: the same
 // combination as the app's (Ctrl+Alt+Space by default) toggles, Escape cancels.
 function webHotkey(){ return (cfg && cfg.hotkey_windows) || "ctrl+alt+space"; }
@@ -4303,6 +4349,7 @@ function hotkeyMatches(ev, spec){
   return k === key && ev.ctrlKey === want.ctrl && ev.altKey === want.alt && ev.shiftKey === want.shift && ev.metaKey === want.meta;
 }
 if (STANDALONE) document.addEventListener("keydown", (ev) => {
+  if (hkCapturing) return;
   if (hotkeyMatches(ev, webHotkey())) { ev.preventDefault(); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); }
   else if (ev.key === "Escape" && uiState === "recording") api("/api/cancel", { method: "POST" }).catch(() => {});
 });
@@ -8421,6 +8468,7 @@ const withWin = (s) => s.replace("{win}", WINKEY);
 // Windows doesn't, so the activation copy differs on those two points only.
 let hkIsMac = false;
 async function loadHotkey(){
+  if (STANDALONE) { renderWebActivation(); renderStatusTags(); return; }
   try { hkInfo = await api("/api/hotkey"); } catch { return; }
   renderActivation(hkInfo);
   renderStatusTags();
@@ -8450,7 +8498,7 @@ function renderStatusTags(){
   const hk = hkInfo || {}, tags = [];
   const portalSpec = hk.os !== "windows" && hk.supported && hk.toggle ? hk.toggle.spec : "";
   if (STANDALONE) {
-    tags.push({ ico: ICON_KBD, text: fmtHotkey(webHotkey()) + " · " + t("in this tab"), sec: "general" });
+    tags.push({ ico: ICON_KBD, text: fmtHotkey(webHotkey()) + " · " + t("in this tab"), sec: "activation" });
   } else if (hk.os === "windows") {
     const spec = (hk.toggle && (hk.toggle.spec || hk.toggle.configured)) || "";
     tags.push({ ico: ICON_KBD, text: spec ? fmtHotkey(spec) : t("No hotkey set"), sec: "activation" });
