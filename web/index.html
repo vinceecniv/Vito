@@ -4,21 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#FAF6EF">
+<!-- The browser version hands its data to the app with a form post from
+     https://vito.talk to http://127.0.0.1, which the default policy sends with
+     Origin: null — and the app only takes it from the Vito website. This
+     policy names the origin, and never more than the origin, cross-site. -->
+<meta name="referrer" content="origin-when-cross-origin">
 <title>Vito — Voice In, Text Out</title>
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
   /* Self-hosted fonts (variable, latin subset) — served by the daemon so the
      UI renders identically offline and never depends on the Google Fonts CDN,
      which many browsers' tracking protection blocks. */
   @font-face {
     font-family:'Sora'; font-style:normal; font-weight:400 600;
-    font-display:swap; src:url(/fonts-sora.woff2) format('woff2');
+    font-display:swap; src:url(fonts-sora.woff2) format('woff2');
   }
   @font-face {
     font-family:'Baloo 2'; font-style:normal; font-weight:600 700;
-    font-display:swap; src:url(/fonts-baloo2.woff2) format('woff2');
+    font-display:swap; src:url(fonts-baloo2.woff2) format('woff2');
   }
   :root {
     --coral:#FF6B5E; --violet:#7C3AED; --violet-l:#A78BFA; --coral-l:#FF8A7E;
@@ -162,7 +167,9 @@
   .theme-toggle svg { width:16px; height:16px; }
 
   /* ---- content ---- */
-  .content { flex:1; padding:32px 36px; max-width:1000px; }
+  /* On a wide screen the column sits in the middle of the space beside the
+     sidebar rather than against it. */
+  .content { flex:1; padding:32px 36px; max-width:1000px; margin-inline:auto; }
   .page-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; gap:16px; position:relative; z-index:5; }
   /* Explicit line heights: title 32 + gap 2 + subtitle 18 = 52, exactly the
      icon tile beside it. Left to the font's own metrics the block ends up a few
@@ -487,7 +494,8 @@
   /* Bar and pane share a max-width so the underline ends flush with the card
      instead of running off across empty space. 800px fits all six tabs in both
      languages without scrolling on desktop. */
-  .settabs { display:flex; flex-wrap:wrap; gap:2px 6px; width:fit-content; min-width:min(800px,100%); max-width:100%;
+  /* No wider than the cards below them: past that the tabs wrap. */
+  .settabs { display:flex; flex-wrap:wrap; gap:2px 6px; width:fit-content; min-width:min(800px,100%); max-width:min(800px,100%);
     margin-bottom:24px; border-bottom:1px solid var(--card-border); }
   .settabs::-webkit-scrollbar { display:none; }
   /* The tab bar (or the dropdown that replaces it) stays in view while a long
@@ -517,7 +525,7 @@
   .setsec-sel .flagsel-btn svg, .setsec-sel .flagsel-opt svg { width:16px; height:16px; flex:0 0 16px; color:var(--text3); }
   .setsec-sel .flagsel-opt.sel svg { color:var(--accent); }
   #tab-settings { position:relative; }
-  #tab-settings.settabs-narrow .settabs { position:absolute; left:0; right:0; visibility:hidden; pointer-events:none; width:auto; max-width:none; }
+  #tab-settings.settabs-narrow .settabs { position:absolute; left:0; right:0; visibility:hidden; pointer-events:none; width:auto; max-width:min(800px,100%); }
   #tab-settings.settabs-narrow .setsec-sel { display:block; }
   @media (max-width:820px){
     .setsec-sel, .settings-pane { max-width:100%; }
@@ -601,6 +609,14 @@
   .cloud span.alt { color:var(--coral); }
   .cloud span.top { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800; }
   .cloud-empty { margin-top:12px; font-size:12.5px; color:var(--text3); }
+  .hist-empty { display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; padding:34px 16px 30px; }
+  .hist-empty.small { padding:22px 16px; }
+  .hist-empty .he-logo { width:84px; height:84px; margin-bottom:2px; }
+  .hist-empty .he-title { font-family:'Baloo 2',sans-serif; font-weight:700; font-size:20px; color:var(--text); }
+  .hist-empty.small .he-title { font-size:16px; }
+  .hist-empty .he-sub { color:var(--text2); font-size:13px; line-height:1.55; max-width:440px; }
+  .hist-empty .btn { margin-top:10px; }
+  .hist-empty .he-key { color:var(--text3); font-size:12px; }
   .quiet-today { display:flex; align-items:center; gap:14px; margin-top:8px; }
   /* The app icon talking, as on vito.talk: the bars bounce like an equaliser. */
   .quiet-icon { flex:none; width:64px; height:64px; display:inline-flex; align-items:center; justify-content:center; }
@@ -1146,6 +1162,7 @@
   .tag { background:var(--input-bg); border:1px solid var(--input-border); color:var(--text2); border-radius:99px;
     padding:5px 12px; font:inherit; font-size:12px; cursor:var(--cur-hand); }
   .tag:hover { border-color:var(--violet); color:var(--accent); }
+  .tag.sel { border-color:var(--violet); color:var(--accent); background:color-mix(in srgb, var(--violet) 12%, var(--input-bg)); font-weight:600; }
   .flag { width:18px; height:13px; border-radius:2px; flex:0 0 18px; box-shadow:0 0 0 1px rgba(0,0,0,.06); vertical-align:middle; }
   .opt-ic { width:17px; height:17px; flex:0 0 17px; }
   .btn-ico { width:16px; height:16px; vertical-align:-3px; margin-right:2px; }
@@ -1321,6 +1338,14 @@
   .mc-panel-body { padding:2px 14px 14px; }
   .mc-panel.closed .mc-panel-body { display:none; }
   .prov-settings > .act-note:first-child { margin-top:4px; }
+  .am-head { display:flex; align-items:center; gap:14px; margin:18px 0 4px; padding-top:16px; border-top:1px dashed var(--card-border); }
+  .am-head > div { flex:1; display:flex; flex-direction:column; gap:3px; }
+  .am-head span { color:var(--text2); font-size:12.5px; line-height:1.5; }
+  .modelcard.am-card { cursor:default; opacity:.92; background:var(--input-bg); }
+  .modelcard.am-card:hover { transform:none; }
+  .am-badge { display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--violet); background:color-mix(in srgb, var(--violet) 12%, transparent); border-radius:99px; padding:2px 8px; }
+  .am-badge::before { content:"⬇"; font-size:10px; }
   .modelcard { display:flex; flex-direction:column; gap:5px; width:100%; text-align:left; cursor:var(--cur-hand);
     padding:12px 14px; border:1px solid var(--input-border); border-radius:11px; background:var(--input-bg); font:inherit; color:var(--text); }
   .modelcard:hover { border-color:var(--accent); }
@@ -1373,6 +1398,11 @@
   .kt-empty { color:var(--text3); font-size:12.5px; padding:4px 0; }
 
   /* modal (keyterm add/edit) */
+  /* Dialogs centre over the content column, not the whole window: beside the
+     sidebar, which the padding keeps them clear of (see the breakpoints). */
+  .modal-backdrop, #offline-overlay { --side:216px; }
+  @media (min-width:821px){ .modal-backdrop, #offline-overlay { padding-left:var(--side); } }
+  @media (max-width:980px){ .modal-backdrop, #offline-overlay { --side:180px; } }
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
   .modal { width:360px; max-width:92vw; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:20px; box-shadow:0 24px 64px rgba(20,10,40,.45); }
   .modal.relnotes-modal { width:560px; }
@@ -1473,6 +1503,92 @@
     filter:blur(6px); opacity:0; transition:height 130ms ease-out,opacity 260ms ease-out; }
   :root:not([data-theme="dark"]) .tr-field .pip-wave { mix-blend-mode:multiply; }
   @media (prefers-reduced-motion:reduce){ .tr-field .pip-wave { transition:none; } }
+
+  /* In the browser without the app (standalone/backend.js): what only the app
+     can do is left out rather than shown switched off. */
+  .web-only, .web-only-inline { display:none; }
+  .standalone .web-only { display:block; }
+  .standalone .web-only-inline { display:contents; }
+  .standalone .helper-only { display:none !important; }
+  a.btn.js-get-app { text-decoration:none; }
+  .sync-cands { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+  .sync-cand, .sync-on { display:flex; align-items:center; gap:12px; text-align:left; padding:10px 12px; border-radius:10px;
+    border:1px solid var(--input-border); background:var(--input-bg); color:var(--text); font:inherit; }
+  .sync-cand { cursor:var(--cur-hand); }
+  .sync-cand:hover { border-color:var(--violet); }
+  .sync-cand svg, .sync-on svg { width:22px; height:22px; flex:none; color:var(--violet); }
+  .sync-cand span, .sync-on span { display:flex; flex-direction:column; min-width:0; }
+  .sync-cand small, .sync-on small { color:var(--text3); font-size:11.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .help-web, .dl-web { display:none; }
+  .standalone .dl-web { display:flex; color:#fff; border-color:transparent; background:var(--grad); box-shadow:0 4px 14px rgba(124,58,237,.3); }
+  .standalone .dl-web:hover { filter:brightness(1.08); color:#fff; }
+  .install-banner { position:relative; display:flex; gap:16px; align-items:flex-start; border-radius:16px; padding:18px 20px; margin-bottom:18px;
+    color:#fff; background:linear-gradient(135deg,#7C3AED,#5B21B6); box-shadow:0 10px 30px rgba(91,33,182,.25); overflow:hidden; }
+  .install-banner.done { background:linear-gradient(135deg,#FF6B5E,#7C3AED); }
+  .install-banner[hidden] { display:none; }
+  .ib-ico { flex:none; width:42px; height:42px; border-radius:12px; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; font-size:22px; }
+  .ib-body { flex:1; min-width:0; }
+  .ib-title { font-family:'Baloo 2',sans-serif; font-weight:700; font-size:19px; line-height:1.25; }
+  .ib-text { font-size:13.5px; line-height:1.55; opacity:.95; margin-top:4px; }
+  .ib-steps { margin:8px 0 0; padding-left:18px; font-size:13px; line-height:1.55; }
+  .ib-actions { display:flex; gap:9px; flex-wrap:wrap; align-items:center; margin-top:12px; }
+  .ib-actions .btn { background:#fff; color:var(--violet); border-color:#fff; }
+  .ib-actions .btn.ghost { background:transparent; color:#fff; border-color:rgba(255,255,255,.6); }
+  .ib-search { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; opacity:.9; }
+  .ib-search i { width:8px; height:8px; border-radius:50%; background:#fff; animation:ibPulse 1.4s ease-in-out infinite; }
+  @keyframes ibPulse { 0%,100% { opacity:.25; transform:scale(.8); } 50% { opacity:1; transform:scale(1.15); } }
+  .ib-x { position:absolute; top:10px; right:10px; background:rgba(255,255,255,.18); border:none; color:#fff; width:28px; height:28px; border-radius:8px; cursor:var(--cur-hand); font-size:16px; }
+  .confetti-bit { position:fixed; width:9px; height:14px; border-radius:2px; pointer-events:none; z-index:400; }
+  .standalone .help-web { display:flex; color:var(--violet); border-color:color-mix(in srgb, var(--violet) 40%, transparent);
+    background:color-mix(in srgb, var(--violet) 12%, var(--card)); }
+  .standalone .help-web:hover, .standalone .help-web.on { background:var(--violet); color:#fff; border-color:transparent; }
+  @keyframes helpPing { 0%,100% { box-shadow:0 0 0 0 rgba(124,58,237,.0); } 40% { box-shadow:0 0 0 8px rgba(124,58,237,.28); } }
+  .help-web.ping { animation:helpPing .9s ease-out 2; }
+  .wl-bar { display:block; height:6px; border-radius:99px; background:rgba(255,255,255,.25); margin:6px 0 2px; overflow:hidden; max-width:320px; }
+  .wl-bar i { display:block; height:100%; background:#fff; border-radius:99px; transition:width .2s; }
+  .welcome-steps .linkbtn, .wl-grid .linkbtn { color:#fff; text-decoration:underline; font:inherit; padding:0; }
+  .wl-grid { position:relative; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; max-width:760px; margin:4px 0 12px; }
+  @media (max-width:640px){ .wl-grid { grid-template-columns:1fr; } }
+  .wl-item { display:flex; gap:11px; align-items:flex-start; background:rgba(255,255,255,.12); border-radius:12px; padding:10px 12px; }
+  .wl-item > div { display:flex; flex-direction:column; gap:1px; font-size:13px; line-height:1.45; min-width:0; }
+  .wl-item b { font-size:13.5px; }
+  .wl-item span:not(.wl-ico):not(.wl-bar) { opacity:.92; }
+  .wl-ico { flex:none; width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.2); }
+  .wl-ico svg { width:17px; height:17px; }
+  .wl-note { position:relative; margin:0 0 4px; font-size:12.5px; line-height:1.5; opacity:.9; max-width:900px; }
+  .modal.dl-modal { width:460px; padding:24px; }
+  .dl-modal h3 { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
+  .dl-ver { font-size:11px; font-weight:600; color:var(--violet); background:color-mix(in srgb, var(--violet) 12%, transparent); border-radius:99px; padding:2px 8px; }
+  .dl-why { list-style:none; margin:0 0 18px; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .dl-why li { display:flex; gap:11px; align-items:flex-start; font-size:13px; line-height:1.5; color:var(--text2); }
+  .dl-why b { color:var(--text); font-weight:600; }
+  .dl-ico { flex:none; width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    color:var(--violet); background:color-mix(in srgb, var(--violet) 12%, transparent); }
+  .dl-ico svg { width:17px; height:17px; }
+  .dl-tabs { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin:0 0 18px; }
+  .dl-os { display:flex; flex-direction:column; align-items:center; gap:8px; padding:14px 8px 12px; border-radius:12px;
+    border:1.5px solid var(--input-border); background:var(--input-bg); color:var(--text2); font:inherit; font-size:13px; font-weight:600; cursor:var(--cur-hand); }
+  .dl-os svg { width:26px; height:26px; }
+  .dl-os:hover { border-color:var(--violet); color:var(--accent); }
+  .dl-os.sel { border-color:var(--violet); color:var(--violet); background:color-mix(in srgb, var(--violet) 10%, var(--card)); box-shadow:0 0 0 3px color-mix(in srgb, var(--violet) 14%, transparent); }
+  .dl-pane a.btn { display:flex; justify-content:center; text-decoration:none; width:100%; box-sizing:border-box; }
+  .dl-pane p { margin:12px 0 0; line-height:1.55; }
+  .dl-all { margin:18px 0 0; padding-top:14px; border-top:1px solid var(--card-border); font-size:12.5px; }
+  .dl-pane pre { background:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:8px 10px; font-size:11.5px; overflow:auto; margin:8px 0 0; }
+  .banner.app-more { flex-direction:column; align-items:flex-start; gap:14px; padding:18px 20px; margin-bottom:18px; line-height:1.6; }
+  .app-more .grow { flex:none; }
+  .app-more .rowflex { gap:10px; flex-wrap:wrap; margin-top:6px; }
+  .standalone #settabs [data-sec="output"], .standalone #settabs [data-sec="backup"],
+  .standalone #settabs [data-sec="linux"],
+
+  .standalone .settings-pane > .card[data-sec="output"], .standalone .settings-pane > .card[data-sec="backup"],
+  .standalone .settings-pane > .card[data-sec="linux"],
+  .standalone [data-help="level"], .standalone #s-inputlevel, .standalone [data-help="media"], .standalone #mediaaction-sel,
+  .standalone #btn-mictest, .standalone [data-help="output"], .standalone [data-help="output"] + .isel,
+  .standalone label:has(#s-autostart), .standalone label:has(#s-tray), .standalone label:has(#s-trviz),
+  .standalone [data-help="notifications"], .standalone #notify-sel,
+  .standalone label:has(#s-updatecheck), .standalone label:has(#s-updateauto), .standalone #upd-auto-note,
+  .standalone label:has(#s-demo), .standalone #cost-card, .standalone #whistle-remove { display:none !important; }
 </style>
 </head>
 <body>
@@ -1505,6 +1621,8 @@
 
   <main class="content">
     <!-- Demo banner: outside the sections so it shows on every tab. -->
+    <!-- Browser version: from download to a connected app (renderInstallBanner). -->
+    <div class="install-banner" id="install-banner" hidden></div>
     <div class="demo-banner" id="demo-banner" hidden>
       <span class="demo-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></span>
       <div class="demo-txt">
@@ -1526,6 +1644,12 @@
           <button class="privacy-btn" id="privacy-btn" title="Privacy mode" aria-label="Privacy mode">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg>
           </button>
+          <button class="privacy-btn dl-web" id="dl-web" title="Get the Vito app" aria-label="Get the Vito app">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>
+          </button>
+          <button class="privacy-btn help-web" id="help-web" title="How Vito in the browser works" aria-label="How Vito in the browser works">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.8"/><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"/></svg>
+          </button>
         </div>
       </div>
       <div class="welcome-card" id="welcome-card" hidden>
@@ -1534,6 +1658,17 @@
           <span class="welcome-logo"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
           <div><div class="welcome-title">Welcome to Vito</div><div class="welcome-sub">Voice In, Text Out — your voice becomes clean text</div></div>
         </div>
+        <div class="web-only">
+        <p class="welcome-intro">Try Vito right here, no installing and no account.</p>
+        <div class="wl-grid">
+          <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg></span><div><b>Speech model</b><span id="wl-model" data-noi18n></span></div></div>
+          <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></span><div><b>Start</b><span id="wl-start" data-noi18n></span></div></div>
+          <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg></span><div><b>Result</b><span>The text lands on your clipboard.</span></div></div>
+          <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><div><b>Private</b><span>Your dictations stay in this browser.</span></div></div>
+        </div>
+        <p class="wl-note"><b>Good to know:</b> in the browser Vito uses Whistle, a small speech model — fine for trying, not the best recognition. Better: Soniox with your own key, or the Vito app.</p>
+        </div>
+        <div class="helper-only">
         <p class="welcome-intro">Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:</p>
         <ol class="welcome-steps">
           <li>Choose how your speech becomes text, under Settings → Speech recognition:
@@ -1546,9 +1681,15 @@
           <li>Set your start/stop hotkey under Settings → Activation and review the other settings.</li>
           <li>Press your hotkey, speak, and Vito pastes the text where your cursor is.</li>
         </ol>
-        <p class="welcome-tip"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/></svg> Tip: each API-key field on the settings page has a 'Get a key' button with step-by-step instructions to request that key.</p>
+        </div>
+        <p class="welcome-tip helper-only"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/></svg> Tip: each API-key field on the settings page has a 'Get a key' button with step-by-step instructions to request that key.</p>
         <div class="welcome-actions">
-          <button class="btn" id="welcome-settings">Go to settings</button>
+          <span class="web-only-inline">
+            <a class="btn js-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
+            <button type="button" class="btn js-to-app" hidden>Move to the app</button>
+            <button type="button" class="btn ghost js-find-app">I have the app</button>
+          </span>
+          <button class="btn helper-only" id="welcome-settings">Go to settings</button>
           <button class="btn ghost" id="welcome-ok">Got it</button>
         </div>
       </div>
@@ -1638,6 +1779,14 @@
         <button type="button" data-sec="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>About</span></button>
       </div>
       <div class="settings-pane">
+        <div class="banner tip app-more web-only">
+          <span class="grow"><b>Hey, there's more when you install Vito.</b> The app adds a hotkey that works in every program, types the text straight into it, more and better speech models, sync between computers and automatic backups.</span>
+          <span class="rowflex">
+            <a class="btn primary small js-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
+            <button type="button" class="btn primary small js-to-app" hidden>Move to the app</button>
+            <button type="button" class="btn ghost small js-find-app">I have the app</button>
+          </span>
+        </div>
         <div class="card" data-sec="general">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span>General</span></h2>
           <div class="subhead">Display</div>
@@ -1676,6 +1825,8 @@
             <div class="flagsel-list" id="typespeed-list"></div>
           </div>
           <label class="tgl" data-help="updatecheck"><input type="checkbox" id="s-updatecheck"><span class="tr"></span> Check for updates</label>
+          <label class="tgl" data-help="updateauto"><input type="checkbox" id="s-updateauto"><span class="tr"></span> Install updates automatically</label>
+          <p class="act-note" id="upd-auto-note" style="margin:2px 0 8px;" hidden></p>
           <label class="tgl" data-help="demo"><input type="checkbox" id="s-demo"><span class="tr"></span> Demo mode (sample data)</label>
         </div>
         <div class="card" data-sec="activation" hidden>
@@ -1781,6 +1932,16 @@
           </div>
           <label class="fld" data-help="sttopenaimodel">Model</label>
           <input type="text" id="s-sttopenaimodel" placeholder="whisper-large-v3-turbo" autocomplete="off">
+          </div>
+          <div class="prov-settings" id="prov-whistle" hidden>
+          <p class="act-note" style="margin:0 0 8px;">Runs on this computer, free, and your audio never leaves it: Cactus Compute's Whistle, a speech model of 17 MB. Text appears while you speak, cut at your pauses.</p>
+          <p class="act-note" style="margin:0 0 8px;"><b>Languages (7):</b> English, Dutch, German, French, Spanish, Italian, Polish. Keyterms from your dictionary are used.</p>
+          <div class="act-note" id="whistle-status" style="margin:0 0 8px; padding:9px 12px; border-radius:9px; background:var(--card-border); color:var(--text2);"></div>
+          <div class="up-prog" id="whistle-bar" hidden style="margin:0 0 10px;"><div class="up-bar"><i></i></div></div>
+          <div class="rowflex" style="gap:9px; align-items:center;">
+            <button type="button" class="mini-btn" id="whistle-install">Download</button>
+            <button type="button" class="mini-btn" id="whistle-remove">Remove</button>
+          </div>
           </div>
           <div class="prov-settings" id="prov-local" hidden>
           <p class="act-note" style="margin:0 0 8px;">Runs on this computer, free, and your audio never leaves it. Vito installs and runs the engine itself: parakeet.cpp with NVIDIA's Parakeet TDT 0.6B v3.</p>
@@ -2018,6 +2179,12 @@
             <button class="btn ghost small" id="bk-now"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z"/><path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg> Back up now</button>
           </div>
         </div>
+        <div class="card" data-sec="backup" hidden>
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.5 1.5A3.8 3.8 0 0 1 17.5 18z"/><path d="M10 13.5l2-2 2 2M12 11.5V16"/></svg><span>Sync between computers</span></h2>
+          <p class="act-note" style="margin:2px 0 0;">Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.</p>
+          <p class="act-note" style="margin:8px 0 0;">Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.</p>
+          <div id="sync-body" style="margin-top:14px;"></div>
+        </div>
         <div class="card" data-sec="about" hidden>
           <div class="about-head">
             <span class="about-logo"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
@@ -2113,7 +2280,16 @@
 </div>
 
 <script>
+// Opened from the website rather than from the Vito app on this computer: the
+// app puts its token in place of the placeholder below, the website leaves it,
+// and then the browser does the daemon's work itself (standalone/backend.js).
+window.VITO_STANDALONE = "__VITO_TOKEN__".indexOf("__VITO" + "_TOKEN__") === 0;
+if (window.VITO_STANDALONE) document.write('<script src="standalone/backend.js"><\/script>');
+</script>
+<script>
 const TOKEN = "__VITO_TOKEN__";
+const STANDALONE = !!window.VITO_STANDALONE;
+if (STANDALONE) document.documentElement.classList.add("standalone");
 const $ = (id) => document.getElementById(id);
 
 /* ---- i18n (source strings are English; every other language via a map) ---- */
@@ -2176,6 +2352,23 @@ const TR = { nl: {
   "Status":"Status",
   "Dashboard":"Dashboard",
   "Main figure":"Hoofdcijfer",
+  "On this computer, free, nothing leaves it. A download of 18 MB.":"Op deze computer, gratis, er gaat niets de deur uit. Een download van 18 MB.",
+  "Requires: nothing but the small download below — no account, no key, no server of your own.":"Nodig: alleen de kleine download hieronder — geen account, geen sleutel, geen eigen server.",
+  "Best for: trying Vito, and dictating offline":"Ideaal voor: Vito uitproberen, en offline dicteren",
+  "7 languages: English, Dutch, German, French, Spanish, Italian, Polish":"7 talen: Engels, Nederlands, Duits, Frans, Spaans, Italiaans, Pools",
+  "Live transcript while you speak":"Live transcript terwijl je praat",
+  "Less accurate than Parakeet or Soniox, mostly with names and jargon":"Minder nauwkeurig dan Parakeet of Soniox, vooral bij namen en vakjargon",
+  "Not downloaded":"Niet gedownload",
+  "Ready":"Klaar",
+  "Ready — runs on this computer, nothing leaves it.":"Klaar — draait op deze computer, er gaat niets de deur uit.",
+  "Not downloaded yet. A download of about 18 MB, once.":"Nog niet gedownload. Een eenmalige download van ongeveer 18 MB.",
+  "Downloading Whistle…":"Whistle downloaden…",
+  "Remove Whistle?":"Whistle verwijderen?",
+  "Deletes the Whistle model from this computer. You can download it again at any time.":"Verwijdert het Whistle-model van deze computer. Je kunt het op elk moment opnieuw downloaden.",
+  "Runs on this computer, free, and your audio never leaves it: Cactus Compute's Whistle, a speech model of 17 MB. Text appears while you speak, cut at your pauses.":"Draait op deze computer, gratis, en je audio gaat nooit de deur uit: Whistle van Cactus Compute, een spraakmodel van 17 MB. De tekst verschijnt terwijl je praat, geknipt op je pauzes.",
+  "Languages (7):":"Talen (7):",
+  "English, Dutch, German, French, Spanish, Italian, Polish. Keyterms from your dictionary are used.":"Engels, Nederlands, Duits, Frans, Spaans, Italiaans, Pools. Sleutelwoorden uit je woordenboek worden gebruikt.",
+
   "days in a row":"dagen op rij",
   "Dictate today to start a streak":"Dicteer vandaag om een reeks te beginnen",
   "Nothing cleaned up in this period yet":"Nog niets opgeschoond in deze periode",
@@ -2468,6 +2661,11 @@ const TR = { nl: {
   "Vito is installing the update and will restart.":"Vito installeert de update en start opnieuw op.",
   "What's new in {v}":"Wat is er nieuw in {v}","This release has no notes.":"Bij deze release staan geen notities.",
   "View on GitHub":"Bekijken op GitHub","Check for updates":"Controleren op updates",
+  "Install updates automatically":"Updates automatisch installeren",
+  "This copy of Vito is updated by your system (Flatpak, package manager or app store), not by Vito itself.":"Deze Vito wordt bijgewerkt door je systeem (Flatpak, pakketbeheerder of app store), niet door Vito zelf.",
+  "Downloading version {v}…":"Versie {v} downloaden…",
+  "Version {v} is ready and installs as soon as Vito has been idle for a few minutes.":"Versie {v} staat klaar en wordt geïnstalleerd zodra Vito een paar minuten niets te doen heeft.",
+  "The last automatic update failed:":"De laatste automatische update is mislukt:",
   "When to show this card":"Wanneer deze kaart getoond wordt",
   "Always":"Altijd","Only when there's an update":"Alleen bij een update",
   "Vito has been updated to {v}.":"Vito is bijgewerkt naar versie {v}.",
@@ -2660,9 +2858,20 @@ const TR = { nl: {
   "Clear":"Wissen",
   "Kopieer":"Kopieer",
   "Copy":"Kopiëren",
+  "Error":"Fout",
   "Delete":"Verwijderen",
   "No dictations yet.":"Nog geen dictaten.",
   "No favorites yet.":"Nog geen favorieten.",
+  "It's awfully quiet in here…":"Het is hier nog akelig stil…",
+  "A blank page. Exciting!":"Een leeg blad. Spannend!",
+  "Not a word yet. Vito is sitting here with pen and paper.":"Nog geen woord gezegd. Vito zit hier klaar met pen en papier.",
+  "Your history is waiting for its first sentence.":"Je geschiedenis wacht op zijn eerste zin.",
+  "Everything you dictate lands here: searchable, with a star for the keepers. Say something — anything — and your first sentence shows up within seconds.":"Alles wat je dicteert komt hier te staan: doorzoekbaar, met een ster voor de blijvertjes. Zeg iets — maakt niet uit wat — en binnen een paar seconden staat je eerste zin hier.",
+  "Start your first dictation":"Start je eerste dictaat",
+  "or press {k}":"of druk op {k}",
+  "Nothing that says “{q}”.":"Niets waarin “{q}” staat.",
+  "Maybe you put it differently? The search looks in both the raw and the cleaned text.":"Misschien zei je het net anders? De zoekfunctie kijkt in zowel de ruwe als de opgeschoonde tekst.",
+  "Give a dictation a star and it waits for you here — and is never cleaned up automatically.":"Geef een dictaat een ster en het staat hier voor je klaar — en wordt nooit automatisch opgeruimd.",
   "Favorite":"Favoriet",
   "Favorites":"Favorieten",
   "Add to favorites":"Toevoegen aan favorieten",
@@ -2796,6 +3005,129 @@ const TR = { nl: {
   "About":"Over",
   "Version":"Versie",
   "Git commit":"Git-commit",
+  "Interface":"Interface",
+  "Connected to the Vito app!":"Verbonden met de Vito-app!",
+  "From now on you dictate into any program with your hotkey. Take what you dictated here along:":"Vanaf nu dicteer je in elk programma met je sneltoets. Neem mee wat je hier al dicteerde:",
+  "Open the app":"Open de app",
+  "Downloaded! Now install it":"Gedownload! Nu nog installeren",
+  "I've installed it":"Ik heb hem geïnstalleerd",
+  "Download again":"Opnieuw downloaden",
+  "Looking for the app…":"Zoeken naar de app…",
+  "Open Vito-Setup from your downloads.":"Open Vito-Setup uit je downloads.",
+  "Does Windows warn you? Choose More info → Run anyway.":"Waarschuwt Windows? Kies Meer info → Toch uitvoeren.",
+  "Vito starts by itself when it is installed.":"Vito start vanzelf als hij geïnstalleerd is.",
+  "Open the Vito disk image from your downloads.":"Open de Vito-schijfkopie uit je downloads.",
+  "Drag Vito to Applications and open it there.":"Sleep Vito naar Apps en open hem daar.",
+  "The first time: right-click → Open, as Vito isn't notarised yet.":"De eerste keer: rechtsklik → Open, omdat Vito nog niet genotariseerd is.",
+  "Make the AppImage executable (chmod +x) and start it.":"Maak de AppImage uitvoerbaar (chmod +x) en start hem.",
+  "Or install the Flatpak with the two commands in the download window.":"Of installeer de Flatpak met de twee commando's uit het downloadvenster.",
+  "Try Vito right here, no installing and no account.":"Probeer Vito meteen hier, zonder installeren en zonder account.",
+  "Result":"Resultaat",
+  "Private":"Privé",
+  "The text lands on your clipboard.":"De tekst komt op je klembord.",
+  "Your dictations stay in this browser.":"Je dictaten blijven in deze browser.",
+  "Good to know:":"Goed om te weten:",
+  "in the browser Vito uses Whistle, a small speech model — fine for trying, not the best recognition. Better: Soniox with your own key, or the Vito app.":"in de browser gebruikt Vito Whistle, een klein spraakmodel — prima om te proberen, maar niet de beste herkenning. Beter: Soniox met je eigen sleutel, of de Vito-app.",
+  "Using {p}.":"Via {p}.",
+  "Loaded — works offline too.":"Geladen — werkt ook offline.",
+  "Downloading (18 MB, once)…":"Downloaden (18 MB, eenmalig)…",
+  "Downloads once (18 MB).":"Wordt één keer gedownload (18 MB).",
+  "{start} or {key} · {change}":"{start} of {key} · {change}",
+  "Move over anyway":"Toch overzetten",
+  "Vito in your browser — always the newest":"Vito in je browser — altijd de nieuwste",
+  "A hotkey that works everywhere":"Een sneltoets die overal werkt",
+  "— also when Vito isn't the window in front.":"— ook als Vito niet het venster vooraan is.",
+  "Types straight into any program":"Typt direct in elk programma",
+  "— your mail, chat or document; no pasting.":"— je mail, chat of document; geen plakken meer.",
+  "Better speech models":"Betere spraakmodellen",
+  "— up to 60 languages, on your own computer or in the cloud.":"— tot 60 talen, op je eigen computer of in de cloud.",
+  "Sync and backups":"Synchronisatie en back-ups",
+  "— the same history and dictionary on every computer, through your own Dropbox or OneDrive.":"— dezelfde geschiedenis en hetzelfde woordenboek op al je computers, via je eigen Dropbox of OneDrive.",
+  "Always ready":"Altijd paraat",
+  "— starts with your computer and waits in the background, updates itself.":"— start met je computer, wacht op de achtergrond en werkt zichzelf bij.",
+  "Vito Assist needs AI cleanup: switch it on under Settings → AI cleanup.":"Vito Assist heeft AI-opschoning nodig: zet die aan onder Instellingen → AI-opschoning.",
+  "The browser didn't let Vito read the clipboard.":"De browser liet Vito het klembord niet lezen.",
+  "There is no text on the clipboard for this command.":"Er staat geen tekst op het klembord voor deze opdracht.",
+  "With the app":"Met de app",
+  "your own server":"je eigen server",
+  "More speech models in the Vito app":"Meer spraakmodellen in de Vito-app",
+  "Install the app and choose from these too: a larger model on your own computer, or AssemblyAI's most accurate realtime model.":"Installeer de app en kies ook uit deze: een groter model op je eigen computer, of het nauwkeurigste realtime model van AssemblyAI.",
+  "How Vito in the browser works":"Zo werkt Vito in de browser",
+  "Try again":"Opnieuw proberen",
+  "change":"wijzigen",
+  "The text is ready — the browser only lets it onto the clipboard after a click.":"De tekst staat klaar — de browser zet hem pas na een klik op het klembord.",
+  "Get the Vito app":"De Vito-app downloaden",
+  "We picked your system; another one is a click away.":"We hebben je systeem al gekozen; een ander is één klik verderop.",
+  "The Vito app is for desktop computers: Windows, macOS and Linux.":"De Vito-app is voor computers: Windows, macOS en Linux.",
+  "Download for Windows":"Downloaden voor Windows",
+  "Windows 10 and 11. Vito isn't code-signed yet, so Windows may warn you: choose More info → Run anyway.":"Windows 10 en 11. Vito is nog niet digitaal ondertekend, dus Windows kan waarschuwen: kies Meer info → Toch uitvoeren.",
+  "Download for macOS":"Downloaden voor macOS",
+  "One download for Apple Silicon and Intel. The first time, open it with right-click → Open, as Vito isn't notarised yet.":"Eén download voor Apple Silicon en Intel. Open hem de eerste keer met rechtsklik → Open, omdat Vito nog niet genotariseerd is.",
+  "Download the AppImage (x86-64)":"AppImage downloaden (x86-64)",
+  "Make it executable and run it. Or install the Flatpak:":"Maak hem uitvoerbaar en start hem. Of installeer de Flatpak:",
+  "All downloads and release notes":"Alle downloads en release notes",
+  "Start and stop dictating with a key combination while this tab has focus. If one does nothing, another program has claimed it — pick a different one.":"Start en stop het dicteren met een toetscombinatie terwijl dit tabblad actief is. Doet een combinatie niets, dan heeft een ander programma hem al geclaimd — kies dan een andere.",
+  "Press your own combination":"Eigen combinatie indrukken",
+  "Press the combination now…":"Druk nu de combinatie in…",
+  "Use Ctrl, Alt or Shift with it, or a function key.":"Gebruik er Ctrl, Alt of Shift bij, of een functietoets.",
+  "Escape cancels a dictation. A hotkey that works in every program, also when Vito isn't in front, comes with the app.":"Escape annuleert een dictaat. Een sneltoets die in elk programma werkt, ook als Vito niet vooraan staat, krijg je met de app.",
+  "Hey, there's more when you install Vito.":"Hé, er is meer als je Vito installeert.",
+  "The app adds a hotkey that works in every program, types the text straight into it, more and better speech models, sync between computers and automatic backups.":"De app voegt een sneltoets toe die in elk programma werkt, typt de tekst er direct in, en heeft meer en betere spraakmodellen, synchronisatie tussen computers en automatische back-ups.",
+  "Which languages?":"Welke talen?",
+  "Picked from your browser's settings. You can change both later under Settings.":"Gekozen op basis van de instellingen van je browser. Je kunt ze later allebei wijzigen onder Instellingen.",
+  "Another language…":"Andere taal…",
+  "The language you speak":"De taal die je spreekt",
+  "Vito's interface is available in {n} languages.":"De interface van Vito is beschikbaar in {n} talen.",
+  "These are the {n} languages the speech model in your browser knows. With the Vito app installed you can dictate in 60 languages.":"Dit zijn de {n} talen die het spraakmodel in je browser kent. Met de Vito-app geïnstalleerd dicteer je in 60 talen.",
+  "{l} is not among the browser's languages yet.":"{l} zit nog niet bij de talen in de browser.",
+  "Get started":"Aan de slag",
+  "Sync between computers":"Synchroniseren tussen computers",
+  "Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.":"Houd je dictaten, statistieken en kosten, prestaties, woordenboek en opschoonregels gelijk op al je computers, via een map die je eigen sync-app gelijk houdt — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing of een netwerkschijf. Vito praat hiervoor met geen enkele server.",
+  "Found on this computer":"Gevonden op deze computer",
+  "No sync app found in its usual place. Choose its folder yourself.":"Geen sync-app gevonden op de gebruikelijke plek. Kies de map zelf.",
+  "Other folder…":"Andere map…",
+  "Vito puts its files in a folder called “Vito Sync” inside it.":"Vito zet zijn bestanden daarin in een map “Vito Sync”.",
+  "Path of the folder":"Pad van de map",
+  "Use this folder":"Deze map gebruiken",
+  "Choose the folder your sync app keeps in sync":"Kies de map die je sync-app gelijk houdt",
+  "No other computer here yet. Choose the same folder on your other computer to sync with it.":"Nog geen andere computer. Kies op je andere computer dezelfde map om ermee te synchroniseren.",
+  "Stop syncing":"Stoppen met synchroniseren",
+  "This computer stops syncing. What is already here stays, and so does the folder.":"Deze computer stopt met synchroniseren. Wat hier al staat blijft, net als de map.",
+  "Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.":"Een dictaat verwijderen of een ster geven gaat ook mee. Instellingen en API-sleutels blijven per computer: microfoons, sneltoetsen en diensten verschillen vaak per computer.",
+  "not yet":"nog niet",
+  "this computer is called":"deze computer heet",
+  "Syncing…":"Bezig met synchroniseren…",
+  "Last synced:":"Laatst gesynchroniseerd:",
+  "Other computers":"Andere computers",
+  "Sync now":"Nu synchroniseren",
+  "Synced":"Gesynchroniseerd",
+  "Stop syncing?":"Stoppen met synchroniseren?",
+  "Connected — Vito now keeps this computer in sync.":"Verbonden — Vito houdt deze computer nu gelijk.",
+  "I have the app":"Ik heb de app",
+  "Move to the app":"Overzetten naar de app",
+  "The Vito app doesn't answer on this computer. Is it running?":"De Vito-app reageert niet op deze computer. Draait hij?",
+  "Opened in the app — confirm there what to take over.":"Geopend in de app — bevestig daar wat je wilt overnemen.",
+  "Take over from the browser?":"Overnemen uit de browser?",
+  "Vito in your browser sent what it kept. Dictations already here are skipped, so doing this twice changes nothing.":"Vito in je browser heeft gestuurd wat het bewaarde. Dictaten die hier al staan worden overgeslagen, dus twee keer doen verandert niets.",
+  "dictations":"dictaten",
+  "words over":"woorden over",
+  "days":"dagen",
+  "Add the dictionary":"Woordenboek toevoegen",
+  "Use the language and appearance from the browser":"Taal en weergave uit de browser overnemen",
+  "Taken over: {n} dictations.":"Overgenomen: {n} dictaten.",
+  "Take over":"Overnemen",
+  "The speech model downloads once (18 MB); after that it even works offline.":"Het spraakmodel wordt één keer gedownload (18 MB); daarna werkt het zelfs offline.",
+  "Installing it as an app gives Vito its own window: pin it to the taskbar or Start menu and open straight to it, without hunting for a browser tab. Your dictations stay where they are.":"Als app geïnstalleerd krijgt Vito een eigen venster: zet het vast op de taakbalk of in het Startmenu en open het direct, zonder een browsertabblad te zoeken. Je dictaten blijven waar ze zijn.",
+  "Get the app":"Download de app",
+  "in this tab":"in dit tabblad",
+  "Tidied by rules":"Opgeschoond met regels",
+  "Copied — paste it wherever you like.":"Gekopieerd — plak het waar je wilt.",
+  "This needs the Vito app on your computer.":"Hiervoor is de Vito-app op je computer nodig.",
+  "Microphone access was denied.":"Toegang tot de microfoon is geweigerd.",
+  "No speech recognised.":"Geen spraak herkend.",
+  "This browser cannot record audio.":"Deze browser kan geen geluid opnemen.",
+  "downloaded":"gedownload",
+  "built in":"ingebouwd",
   "License":"Licentie",
   "Personal, cross-platform voice dictation: press a hotkey, speak, and get clean text where your cursor is.":"Persoonlijke, cross-platform spraakdictatie: druk een sneltoets, spreek, en krijg schone tekst waar je cursor staat.",
   "Theme":"Thema",
@@ -2970,7 +3302,7 @@ async function loadTranslations(lang){
     // cache:"reload" skips the browser's HTTP cache. Without it, a copy stored
     // under an earlier (long) max-age keeps being served after an update, and
     // the interface silently stays in the previous version's language.
-    const r = await fetch("/i18n/" + encodeURIComponent(lang) + ".json", { cache: "reload" });
+    const r = await fetch("i18n/" + encodeURIComponent(lang) + ".json", { cache: "reload" });
     if (!r.ok) return;
     const d = await r.json();
     if (d && d.strings) TR[lang] = d.strings;
@@ -2980,7 +3312,7 @@ async function loadTranslations(lang){
 const _orig = new WeakMap();
 function applyI18n(root = document.body){
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-  const nodes = []; while (w.nextNode()) { const p = w.currentNode.parentNode; if (p && (p.tagName === "SCRIPT" || p.tagName === "STYLE")) continue; nodes.push(w.currentNode); }
+  const nodes = []; while (w.nextNode()) { const p = w.currentNode.parentNode; if (p && (p.tagName === "SCRIPT" || p.tagName === "STYLE" || (p.closest && p.closest("[data-noi18n]")))) continue; nodes.push(w.currentNode); }
   nodes.forEach(n => {
     if (!_orig.has(n)) _orig.set(n, n.nodeValue);
     const raw = _orig.get(n), key = raw.trim();
@@ -3018,6 +3350,8 @@ async function setUiLang(choice, persist){
   if (typeof buildPeriodDropdown === "function") buildPeriodDropdown();
   if (typeof loadAbout === "function") loadAbout(); // its rows are built with t(), re-render them
   if (typeof syncSetSecUI === "function") syncSetSecUI(); // re-clone the now-translated tab labels
+  if (typeof renderPwaTip === "function") renderPwaTip(); // built with t() too
+  if (typeof renderWelcomeWeb === "function") renderWelcomeWeb();
   if ($("tab-status").classList.contains("active")) loadStats();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { lang: choice });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
@@ -3079,11 +3413,20 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(t
 applyTheme();
 
 async function api(path, opts = {}) {
+  if (STANDALONE) return VitoStandalone.api(path, opts);
   opts.headers = Object.assign({ "Authorization": "Bearer " + TOKEN }, opts.headers || {});
   let res;
   try { res = await fetch(path, opts); }
   catch (e) { setDaemonUp(false); throw new Error(t("Background process unreachable")); }
-  const body = await res.json().catch(() => ({}));
+  // An empty answer is an empty object; one that isn't JSON is an error, not
+  // an empty object — a response cut off by the daemon restarting used to come
+  // back as {} and be taken for the real thing (a config without its settings).
+  const text = await res.text().catch(() => "");
+  let body = {};
+  if (text) {
+    try { body = JSON.parse(text); }
+    catch { if (res.ok) throw new Error(t("Background process unreachable")); }
+  }
   if (!res.ok) throw new Error(body.error || res.statusText);
   return body;
 }
@@ -3097,7 +3440,11 @@ async function api(path, opts = {}) {
 // values land, then solve for the one that aligns with the content edge.
 function positionToasts(){
   const box = $("toasts"), c = document.querySelector(".content"); if (!c) return;
-  const target = c.getBoundingClientRect().right - 24; // sit just inside the content edge
+  // Line up with the right edge of the cards on the page in view: the
+  // settings column is narrower than the rest, so measure that when it shows.
+  const pane = document.querySelector("section.active .settings-pane");
+  const target = pane ? pane.getBoundingClientRect().right
+    : c.getBoundingClientRect().right - parseFloat(getComputedStyle(c).paddingRight) * uiZoom();
   const prev = box.style.right;
   box.style.right = "0px";   const at0 = box.getBoundingClientRect().right;
   box.style.right = "100px"; const at100 = box.getBoundingClientRect().right;
@@ -3196,6 +3543,7 @@ async function daemonCameBack(){
   loadStats();
 }
 async function pingDaemon(){
+  if (STANDALONE) { setDaemonUp(true); return true; }
   try { const r = await fetch("/api/status", { headers:{ Authorization:"Bearer "+TOKEN } }); if (r.ok || r.status === 401) { setDaemonUp(true); return true; } }
   catch {}
   setDaemonUp(false); return false;
@@ -3221,17 +3569,22 @@ const OS_LANG = (navigator.language || "").slice(0, 2).toLowerCase();
 // list — each with a real flag (served from /flags) and a localized name below.
 const SONIOX_LANGS = ["en","nl","de","fr","es","it","pt","pl","ru","uk","cs","sk","sv","da","no","fi","el","hu","ro","bg","hr","sr","sl","bs","sq","mk","be","lt","lv","et","ca","eu","gl","cy","tr","az","kk","ar","he","fa","ur","hi","bn","gu","pa","mr","kn","ml","ta","te","zh","ja","ko","vi","th","id","ms","tl","af","sw"];
 // Parakeet TDT 0.6B v3's 25 languages, minus Maltese (no flag in LANG_DATA).
+const WHISTLE_LANGS = ["nl","en","de","fr","es","it","pl"];
 const PARAKEET_LANGS = ["nl","en","de","fr","es","it","pt","pl","cs","sk","hu","ro","bg","hr","sl","el","sv","da","fi","et","lv","lt","ru","uk"];
 // The marks on the cards: the providers' own icons (web/logos), Vito's bars for
 // its own engine, and a server icon for an endpoint that could be anything.
 const LOGO_VITO = '<span class="mc-logo vito"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>';
 const LOGO_SERVER = '<span class="mc-logo plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>';
-const LOGO_IMG = (name) => `<span class="mc-logo"><img src="/logos/${name}.png" alt=""></span>`;
+const LOGO_IMG = (name) => `<span class="mc-logo"><img src="logos/${name}.png" alt=""></span>`;
 const GEAR_SVG = '<svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
-const SPEECH_MODELS = [
+const SPEECH_MODELS_ALL = [
   // The engine Vito installs and runs itself (see internal/localstt) comes
   // first: it is the one choice that needs no account and sends nothing away.
   // The picker's languages are the model's 25, minus Maltese, which has no flag here.
+  { id:"whistle", provider:"whistle", name:"Whistle (small, built-in)", price:0, langs:WHISTLE_LANGS, logo:LOGO_VITO,
+    sub:"On this computer, free, nothing leaves it. A download of 18 MB.",
+    needs:"Requires: nothing but the small download below — no account, no key, no server of your own.",
+    bullets:["Best for: trying Vito, and dictating offline", "7 languages: English, Dutch, German, French, Spanish, Italian, Polish", "Live transcript while you speak", "Less accurate than Parakeet or Soniox, mostly with names and jargon"] },
   { id:"vito-local", provider:"local", name:"Vito local (Parakeet)", price:0, langs:PARAKEET_LANGS, logo:LOGO_VITO,
     sub:"On this computer, free, nothing leaves it. One download of about 1 GB.",
     needs:"Requires: nothing but the one-time download below — no account, no key, no server of your own.",
@@ -3256,7 +3609,13 @@ const SPEECH_MODELS = [
     needs:"Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.",
     bullets:["Best for: privacy — runs on your own machine", "Any language the model supports", "No live transcript: the text arrives after you stop", "Keyterms sent as prompt (Whisper)"] },
 ];
-const PROVIDER_NAMES = { assemblyai:"AssemblyAI", soniox:"Soniox", openai:"Speech endpoint", local:"Vito local" };
+// In the browser: Whistle, and the services a page can reach itself — Soniox
+// (its WebSocket takes the key in a message) and OpenAI-compatible endpoints.
+// Parakeet runs on the computer and AssemblyAI hands out no browser tokens:
+// those come with the app.
+const WEB_STT = ["whistle", "soniox", "openai"];
+const SPEECH_MODELS = STANDALONE ? SPEECH_MODELS_ALL.filter(m => WEB_STT.includes(m.provider)) : SPEECH_MODELS_ALL;
+const PROVIDER_NAMES = { assemblyai:"AssemblyAI", soniox:"Soniox", openai:"Speech endpoint", local:"Vito local", whistle:"Whistle" };
 // The endpoint provider is named after what is behind the URL, as the daemon
 // names it in the out-of-credit card and the cleanup side names its own.
 function sttEndpointName(){
@@ -3281,6 +3640,7 @@ function sttEndpointRateUSD(){
 function providerReady(p){
   if (!cfg) return false;
   if (p === "local") return !!(localStt && localStt.installed);
+  if (p === "whistle") return !!(whistleSt && whistleSt.phase === "ready");
   const v = p === "soniox" ? cfg.stt.soniox_api_key : p === "openai" ? cfg.stt.openai_base_url : cfg.stt.api_key;
   return !!(v || "").trim();
 }
@@ -3333,7 +3693,7 @@ function flag(code){
   if (code === "auto") return AUTO_GLOBE;
   const d = LANG_DATA[code] || LANG_DATA[code.split("_")[0]];
   if (!d || !d.cc) return null;
-  return `<img class="flag" src="/flags/${d.cc}.svg" alt="" loading="lazy">`;
+  return `<img class="flag" src="flags/${d.cc}.svg" alt="" loading="lazy">`;
 }
 // Every language's own name. Endonyms don't depend on the interface language,
 // so this one table serves all 60 of them — a Japanese user recognises 日本語
@@ -3436,9 +3796,25 @@ function modelPrice(usd){
 }
 // The parts of a card that change while you type or while the local engine
 // installs, kept apart so they can be refreshed in place.
+// In the browser: the models the app adds, as plain cards — nothing to set up
+// or pick here, just what each is good at and that it comes with the app.
+function appModelsHTML(){
+  const cards = SPEECH_MODELS_ALL.filter(m => !WEB_STT.includes(m.provider)).map(m => `
+    <div class="modelcard am-card">
+      <span class="mc-head"><b>${m.logo || ""}<span>${t(m.name)}</span></b><span class="mc-price">${m.provider === "openai" ? t("your own server") : cardPrice(m)}</span></span>
+      <span class="mc-tagrow"><span class="am-badge">${t("With the app")}</span></span>
+      <span class="mc-sub">${t(m.sub)}</span>
+      <span class="mc-list">${m.bullets.map(b => `<span>${t(b)}</span>`).join("")}</span>
+    </div>`).join("");
+  return `<div class="am-head">
+      <div><b>${t("More speech models in the Vito app")}</b>
+      <span>${t("Install the app and choose from these too: a larger model on your own computer, or AssemblyAI's most accurate realtime model.")}</span></div>
+      <button type="button" class="btn primary small am-get">${t("Get the app")}</button>
+    </div>${cards}`;
+}
 const cardPrice = (m) => { const rate = m.provider === "openai" ? sttEndpointRateUSD() : m.price; return rate > 0 ? `${modelPrice(rate)}<em>/${t("hr")}</em>` : t("free"); };
-const cardTag = (m) => m.provider === "openai" ? sttEndpointName() : m.provider === "local" ? localSttTag() : PROVIDER_NAMES[m.provider];
-const cardMissing = (m) => m.provider === "local" ? "Not installed" : m.provider === "openai" ? "Endpoint missing" : "API key missing";
+const cardTag = (m) => m.provider === "openai" ? sttEndpointName() : m.provider === "local" ? localSttTag() : m.provider === "whistle" ? whistleTag() : PROVIDER_NAMES[m.provider];
+const cardMissing = (m) => m.provider === "local" ? "Not installed" : m.provider === "whistle" ? "Not downloaded" : m.provider === "openai" ? "Endpoint missing" : "API key missing";
 const providerLabel = (p) => p === "local" ? t("Vito local") : p === "openai" ? t("Speech endpoint") : PROVIDER_NAMES[p];
 // Which fold-outs the user opened or closed this session; unset means "open if
 // it is the active provider", which is what a fresh page shows.
@@ -3454,7 +3830,7 @@ function buildModelCards(){
   box.dataset.sig = sig;
   // The settings blocks are inside the cards from the previous render; park
   // them first, or replacing the cards' HTML would take them along.
-  const PROVIDERS = ["local", "soniox", "assemblyai", "openai"], holder = $("prov-holder");
+  const PROVIDERS = ["whistle", "local", "soniox", "assemblyai", "openai"], holder = $("prov-holder");
   PROVIDERS.forEach(p => { const b = $("prov-" + p); if (b && holder) holder.appendChild(b); });
   // A provider's settings sit under its selected card, or under its last card
   // when none of its cards is selected (AssemblyAI has two).
@@ -3477,6 +3853,7 @@ function buildModelCards(){
     </div>` : "";
     return `<div class="mc-wrap${m.id === cur ? " sel" : ""}" data-id="${m.id}">${card}${panel}</div>`;
   }).join("");
+  if (STANDALONE) { box.insertAdjacentHTML("beforeend", appModelsHTML()); box.querySelectorAll(".am-get").forEach(b => b.onclick = showDownload); }
   // Move the settings blocks into their panels: the nodes move, so their ids,
   // values and listeners come along.
   PROVIDERS.forEach(p => {
@@ -3489,13 +3866,17 @@ function buildModelCards(){
     b.closest(".mc-panel").classList.toggle("closed", !open);
     b.setAttribute("aria-expanded", String(open));
   });
-  box.querySelectorAll(".modelcard").forEach(c => c.onclick = () => {
+  box.querySelectorAll(".modelcard:not(.am-card)").forEach(c => c.onclick = () => {
     if (c.disabled) return;
     $("s-model").value = c.dataset.id;
     // The provider follows the card, so choosing a model is the whole decision —
     // and its settings unfold, since that is where you go next.
-    if (cfg) cfg.stt.provider = c.dataset.provider;
+    // Provider and model follow the card at once, so whatever reads them
+    // (quick settings, the status tag) is right before the save comes back.
+    if (cfg) { cfg.stt.provider = c.dataset.provider; cfg.stt.model = c.dataset.id; renderStatusTags(); }
     panelOpen[c.dataset.provider] = true;
+    // Whistle is small enough to fetch the moment you pick it: no second step.
+    if (c.dataset.provider === "whistle" && whistleSt && ["absent", "error"].includes(whistleSt.phase)) installWhistle();
     updateKeytermsNotice();
     buildModelCards();
     buildLangDropdown();
@@ -3655,6 +4036,58 @@ function syncSttEndpointUI(){
 // Its state comes from /api/local-stt once, then follows "local_stt" events:
 // install progress, the process starting, running, or dying.
 let localStt = null;
+// Whistle, the small built-in model: a download of 18 MB, then ready. Nothing
+// to start — each clip runs on its own.
+let whistleSt = null;
+async function loadWhistle(){
+  whistleSt = await api("/api/whistle").catch(() => null);
+  renderWhistle();
+  buildModelCards();
+}
+function whistleTag(){
+  const s = whistleSt;
+  if (!s) return "Whistle";
+  switch (s.phase) {
+    case "unsupported": return t("Not available on this system");
+    case "ready": return t("Ready");
+    case "downloading": return t("Downloading…") + " " + Math.round(100 * (s.done || 0) / (s.total || 1)) + "%";
+    case "error": return t("Error");
+    default: return t("Not downloaded");
+  }
+}
+function renderWhistle(){
+  renderWelcomeWeb();
+  const s = whistleSt, box = $("whistle-status"), bar = $("whistle-bar");
+  if (!box) return;
+  if (!s) { box.textContent = t("Status unavailable."); return; }
+  const pct = Math.round(100 * (s.done || 0) / (s.total || 1));
+  box.textContent = {
+    unsupported: t("There is no build of this engine for your system."),
+    ready: "✓ " + t("Ready — runs on this computer, nothing leaves it."),
+    downloading: t("Downloading…") + " " + pct + "%",
+    error: "✗ " + (s.error || t("Error")),
+  }[s.phase] || t("Not downloaded yet. A download of about 18 MB, once.");
+  bar.hidden = s.phase !== "downloading";
+  bar.querySelector("i").style.width = pct + "%";
+  $("whistle-install").hidden = ["unsupported", "ready", "downloading"].includes(s.phase);
+  $("whistle-remove").hidden = s.phase !== "ready";
+}
+async function installWhistle(){
+  try {
+    const r = await api("/api/whistle/install", { method:"POST" });
+    if (!r.ok) { toast("✗ " + (r.error || t("Install failed.")), "err"); return; }
+    toast(t("Downloading Whistle…"), "info");
+  } catch { toast(t("Install failed."), "err"); }
+}
+function removeWhistle(){
+  modal(t("Remove Whistle?"), `<p class="ki-note">${t("Deletes the Whistle model from this computer. You can download it again at any time.")}</p>`,
+    async () => {
+      try {
+        const r = await api("/api/whistle/remove", { method:"POST" });
+        if (!r.ok) toast("✗ " + (r.error || t("Remove failed.")), "err");
+      } catch { toast(t("Remove failed."), "err"); }
+    }, "Remove", true);
+}
 async function loadLocalStt(){
   localStt = await api("/api/local-stt").catch(() => null);
   renderLocalStt();
@@ -3915,6 +4348,7 @@ function selectTab(name){
   if (!TABS.includes(name)) name = "status";
   document.querySelectorAll(".nav-item").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
   document.querySelectorAll("main section").forEach(s => s.classList.toggle("active", s.id === "tab-" + name));
+  positionToasts(); // the column changes width between pages
   if (name === "history") loadHistory();
   if (name === "achievements") loadAchievements();
   // Coming back to Status replays the chart's build-up, the same way opening the
@@ -3992,7 +4426,8 @@ const SETTABS_MAX_LINES = 2;
 function fitSetTabs(){
   const sec = $("tab-settings"), bar = $("settabs");
   if (!sec.clientWidth) return; // the settings page isn't showing; it is checked when it does
-  const btns = [...bar.children].filter(b => !b.hidden);
+  // Tabs hidden by CSS (the browser version leaves some out) take no line.
+  const btns = [...bar.children].filter(b => !b.hidden && getComputedStyle(b).display !== "none");
   const lines = new Set(btns.map(b => b.offsetTop)).size;
   sec.classList.toggle("settabs-narrow", lines > SETTABS_MAX_LINES);
 }
@@ -4073,7 +4508,347 @@ function renderTimings(tm){
 // a few seconds (a blip is no outage), reconnects back off up to 10 s, and a
 // reconnect after a blip resyncs, since events may have been missed meanwhile.
 let wsBackoff = 1000, wsDownTimer = null, wsEverOpen = false;
+// The browser's Activation section: a few ready-made combinations, or one of
+// your own. Whatever the app or another program claims system-wide (Claude
+// takes Ctrl+Alt+Space) never reaches the page, so a choice matters here.
+const WEB_HOTKEYS = ["ctrl+alt+space", "ctrl+shift+space", "ctrl+alt+d", "ctrl+shift+d", "alt+shift+v", "f2", "f9"];
+let hkCapturing = false;
+function renderWebActivation(){
+  const box = $("activation-body"); if (!box) return;
+  const cur = webHotkey();
+  const opts = WEB_HOTKEYS.includes(cur) ? WEB_HOTKEYS : WEB_HOTKEYS.concat(cur);
+  box.innerHTML = `<p class="act-note" style="margin:0 0 10px;">${t("Start and stop dictating with a key combination while this tab has focus. If one does nothing, another program has claimed it — pick a different one.")}</p>
+    <label class="fld">${t("Hotkey")}</label>
+    <div class="rowflex" style="gap:8px; flex-wrap:wrap;">${opts.map(k => `<button type="button" class="tag${k === cur ? " sel" : ""}" data-webhk="${k}">${fmtHotkey(k)}</button>`).join("")}</div>
+    <div class="rowflex" style="gap:9px; align-items:center; margin-top:12px;">
+      <button type="button" class="btn ghost small" id="webhk-own">${t("Press your own combination")}</button>
+      <span class="act-note" id="webhk-hint"></span>
+    </div>
+    <p class="act-note" style="margin:12px 0 0;">${t("Escape cancels a dictation. A hotkey that works in every program, also when Vito isn't in front, comes with the app.")}</p>`;
+  box.querySelectorAll("[data-webhk]").forEach(b => b.onclick = () => setWebHotkey(b.dataset.webhk));
+  $("webhk-own").onclick = () => {
+    hkCapturing = true;
+    $("webhk-hint").textContent = t("Press the combination now…");
+    const grab = (ev) => {
+      ev.preventDefault(); ev.stopPropagation();
+      if (["Control", "Alt", "Shift", "Meta", "AltGraph"].includes(ev.key)) return;
+      document.removeEventListener("keydown", grab, true);
+      hkCapturing = false;
+      if (ev.key === "Escape") { $("webhk-hint").textContent = ""; return; }
+      const key = ev.key === " " ? "space" : ev.key.toLowerCase();
+      const mods = [ev.ctrlKey && "ctrl", ev.altKey && "alt", ev.shiftKey && "shift", ev.metaKey && "win"].filter(Boolean);
+      // A bare letter would fire while typing anywhere on the page; a function key is fine.
+      if (!mods.length && !/^f\d{1,2}$/.test(key)) { $("webhk-hint").textContent = t("Use Ctrl, Alt or Shift with it, or a function key."); return; }
+      setWebHotkey([...mods, key].join("+"));
+    };
+    document.addEventListener("keydown", grab, true);
+  };
+}
+async function setWebHotkey(spec){
+  await saveConfig({ hotkey_windows: spec }, "Hotkey saved");
+  renderWebActivation(); renderStatusTags();
+}
+// In the browser the hotkey only works while this tab has focus: the same
+// combination as the app's (Ctrl+Alt+Space by default) toggles, Escape cancels.
+function webHotkey(){ return (cfg && cfg.hotkey_windows) || "ctrl+alt+space"; }
+function hotkeyMatches(ev, spec){
+  const parts = spec.toLowerCase().split("+"), key = parts.pop();
+  const want = { ctrl: parts.includes("ctrl"), alt: parts.includes("alt"), shift: parts.includes("shift"), meta: parts.includes("win") || parts.includes("cmd") || parts.includes("meta") };
+  const k = ev.key === " " ? "space" : ev.key.toLowerCase();
+  return k === key && ev.ctrlKey === want.ctrl && ev.altKey === want.alt && ev.shiftKey === want.shift && ev.metaKey === want.meta;
+}
+// showLangPicker asks, on the first visit, which language the interface
+// should be in and which one you will speak — offering the languages the
+// browser says you prefer, and English, as buttons.
+const WHISTLE_STT = ["nl", "en", "de", "fr", "es", "it", "pl"];
+function browserLangs(){
+  const out = [];
+  for (const l of navigator.languages || [navigator.language || "en"]) {
+    const c = String(l).slice(0, 2).toLowerCase();
+    if (c && !out.includes(c)) out.push(c);
+  }
+  return out;
+}
+// preferLang is the first of the browser's languages in list, but one other
+// than English before English: a browser that lists both was set up by
+// someone who speaks the other, English being everyone's second language.
+function preferLang(list){
+  const mine = browserLangs().filter(c => list.includes(c));
+  return mine.find(c => c !== "en") || mine[0] || "en";
+}
+async function showLangPicker(first){
+  // The first time, the interface follows that rule too — unless a language
+  // was already chosen.
+  let chosen = ""; try { chosen = localStorage.getItem("vito-lang") || ""; } catch {}
+  if (first && !chosen && preferLang(UI_LANGS) !== uiLang) await setUiLang(preferLang(UI_LANGS), true);
+  const pref = browserLangs();
+  const uiMine = pref.filter(c => UI_LANGS.includes(c));
+  const uiOpts = [...uiMine.filter(c => c !== "en"), "en"];
+  // Every language Whistle knows, the browser's own first — and of those, one
+  // other than English before English: a browser that lists both was set up by
+  // someone who speaks the other one, English being everyone's second.
+  const mine = pref.filter(c => WHISTLE_STT.includes(c));
+  const sttOpts = [...mine.filter(c => c !== "en"), ...mine.filter(c => c === "en"), ...WHISTLE_STT.filter(c => !mine.includes(c))];
+  const missing = pref.filter(c => !WHISTLE_STT.includes(c));
+  const curUi = uiLang, curStt = (cfg.stt && cfg.stt.language) || "en";
+  const name = (c) => LANG_ENDONYM[c] || (c === "en" ? "English" : langName(c));
+  const btn = (kind, c, cur) => `<button type="button" class="tag lp-opt${c === cur ? " sel" : ""}" data-kind="${kind}" data-code="${c}">${langIcon(c)} <span data-noi18n>${ahEsc(name(c))}</span></button>`;
+  const others = UI_LANGS.filter(c => !uiOpts.includes(c)).map(c => `<option value="${c}">${ahEsc(langName(c))}</option>`).join("");
+  modal(t("Which languages?"),
+    `<p class="ki-note">${t("Picked from your browser's settings. You can change both later under Settings.")}</p>
+     <label class="fld">${t("Interface language")}</label>
+     <div class="rowflex lp-row" style="gap:8px; flex-wrap:wrap;">${uiOpts.map(c => btn("ui", c, curUi)).join("")}
+       <select id="lp-more" style="width:auto; min-width:150px;"><option value="">${t("Another language…")}</option>${others}</select></div>
+     <p class="act-note" style="margin:6px 0 0;">${t("Vito's interface is available in {n} languages.").replace("{n}", UI_LANGS.length)}</p>
+     <label class="fld" style="margin-top:16px;">${t("The language you speak")}</label>
+     <div class="rowflex lp-row" style="gap:8px; flex-wrap:wrap;">${sttOpts.map(c => btn("stt", c, curStt)).join("")}</div>` +
+    `<p class="act-note" style="margin:8px 0 0;">${t("These are the {n} languages the speech model in your browser knows. With the Vito app installed you can dictate in 60 languages.").replace("{n}", WHISTLE_STT.length)}` +
+    (missing.length ? " " + t("{l} is not among the browser's languages yet.").replace("{l}", missing.map(name).join(", ")) : "") + `</p>`,
+    () => { try { localStorage.setItem("vito-web-langs", "1"); } catch {} },
+    "Get started", false, () => { try { localStorage.setItem("vito-web-langs", "1"); } catch {} }, true);
+  const back = document.querySelector(".modal-backdrop:last-of-type");
+  const pickUi = async (c) => {
+    back.remove();
+    await setUiLang(c, true);
+    showLangPicker(); // again, now in the chosen language
+  };
+  back.querySelectorAll(".lp-opt").forEach(b => b.onclick = async () => {
+    const c = b.dataset.code;
+    if (b.dataset.kind === "ui") return pickUi(c);
+    back.querySelectorAll('.lp-opt[data-kind="stt"]').forEach(x => x.classList.toggle("sel", x === b));
+    if (typeof setLang === "function") setLang(c);
+    await saveConfig({ stt: Object.assign({}, cfg.stt, { language: c }) }, "Saved");
+    renderStatusTags();
+  });
+  back.querySelector("#lp-more").onchange = (e) => { if (e.target.value) pickUi(e.target.value); };
+}
+// webGesture tells the browser engine which window the user just acted in.
+// Audio has to be opened there: a browser only lets a page record and play
+// right after its own user did something, and a click in the floating window
+// is not one in this tab — recording from here then captured silence.
+function webGesture(w){ if (STANDALONE) VitoStandalone.gestureWindow = w; }
+if (STANDALONE) document.addEventListener("keydown", (ev) => {
+  if (hkCapturing) return;
+  if (hotkeyMatches(ev, webHotkey())) { ev.preventDefault(); webGesture(window); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); }
+  else if (ev.key === "Escape" && uiState === "recording") api("/api/cancel", { method: "POST" }).catch(() => {});
+});
+// ---- cloud sync (internal/cloudsync) ----
+let syncSt = null;
+async function loadSync(){
+  if (STANDALONE) return;
+  try { syncSt = await api("/api/sync"); } catch { return; }
+  renderSync();
+}
+function renderSync(){
+  const box = $("sync-body"); if (!box || !syncSt) return;
+  const st = syncSt;
+  const ICON_FOLDER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>';
+  const connect = async (folder) => {
+    try {
+      const r = await api("/api/sync/connect", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ folder }) });
+      if (!r.ok) throw new Error(r.error);
+      syncSt = r.sync || syncSt; renderSync();
+      toast(t("Connected — Vito now keeps this computer in sync."), "ok", 6000);
+    } catch (e) { toast(e.message, "err", 7000); }
+  };
+  if (!st.folder) {
+    const cands = st.candidates || [];
+    box.innerHTML =
+      (cands.length ? `<div class="subhead">${t("Found on this computer")}</div>
+        <div class="sync-cands">${cands.map((c, i) => `<button type="button" class="sync-cand" data-i="${i}">${ICON_FOLDER}<span><b>${ahEsc(c.name)}</b><small>${ahEsc(c.path)}</small></span></button>`).join("")}</div>`
+        : `<p class="act-note" style="margin:0;">${t("No sync app found in its usual place. Choose its folder yourself.")}</p>`) +
+      `<div class="rowflex" style="gap:9px; margin-top:12px; align-items:center;">
+        <button type="button" class="btn ${cands.length ? "ghost" : "primary"} small" id="sync-pick">${t("Other folder…")}</button>
+        <span class="act-note" style="margin:0;">${t("Vito puts its files in a folder called “Vito Sync” inside it.")}</span></div>
+      <div class="rowflex" id="sync-typed" style="gap:9px; margin-top:10px;" hidden>
+        <input type="text" id="sync-path" placeholder="${t("Path of the folder")}" style="flex:1; min-width:220px;">
+        <button type="button" class="btn primary small" id="sync-use">${t("Use this folder")}</button></div>`;
+    box.querySelectorAll(".sync-cand").forEach(b => b.onclick = () => connect(cands[+b.dataset.i].path));
+    $("sync-pick").onclick = async () => {
+      try {
+        const r = await api("/api/sync/pick", { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: t("Choose the folder your sync app keeps in sync") }) });
+        if (r.ok && r.path) return connect(r.path);
+        if (!r.ok && r.error === "no_picker") { $("sync-typed").hidden = false; $("sync-path").focus(); return; }
+        if (!r.ok) throw new Error(r.error);
+      } catch (e) { toast(e.message, "err"); }
+    };
+    $("sync-use").onclick = () => { const p = $("sync-path").value.trim(); if (p) connect(p); };
+    return;
+  }
+  const when = st.last ? new Date(st.last).toLocaleString(numLoc(), { dateStyle: "medium", timeStyle: "short" }) : t("not yet");
+  const devs = (st.devices || []).map(d => `<li>${ahEsc(d.name)} <span style="color:var(--text3);">— ${new Date(d.updated).toLocaleString(numLoc(), { dateStyle: "medium", timeStyle: "short" })}</span></li>`).join("");
+  box.innerHTML =
+    `<div class="sync-on">${ICON_FOLDER}<span><b>${ahEsc(st.folder)}</b><small>${t("this computer is called")} ${ahEsc(st.device || "")}</small></span></div>` +
+    `<p class="act-note" style="margin:8px 0 0;">${st.syncing ? t("Syncing…") : t("Last synced:") + " " + when}</p>` +
+    (st.error ? `<div class="ki-warn" style="margin-top:10px;">⚠ ${ahEsc(st.error)}</div>` : "") +
+    (devs ? `<div class="subhead" style="margin-top:14px;">${t("Other computers")}</div><ul style="margin:4px 0 0; padding-left:18px;">${devs}</ul>`
+      : `<p class="act-note" style="margin:8px 0 0;">${t("No other computer here yet. Choose the same folder on your other computer to sync with it.")}</p>`) +
+    `<div class="rowflex" style="gap:9px; margin-top:12px;">
+      <button class="btn primary small" id="sync-now"${st.syncing ? " disabled" : ""}>${t("Sync now")}</button>
+      <button class="btn ghost small" id="sync-off">${t("Stop syncing")}</button></div>`;
+  $("sync-now").onclick = () => { $("sync-now").disabled = true; api("/api/sync/now", { method: "POST" }).then(r => { syncSt = r.sync || syncSt; renderSync(); if (r.ok) { toast(t("Synced"), "ok"); statsHistoryChanged(); loadStats(); } else toast(r.error, "err"); }).catch(e => toast(e.message, "err")); };
+  $("sync-off").onclick = () => modal(t("Stop syncing?"), `<p class="ki-note">${t("This computer stops syncing. What is already here stays, and so does the folder.")}</p>`,
+    () => { api("/api/sync/disconnect", { method: "POST" }).then(loadSync).catch(e => toast(e.message, "err")); }, "Stop syncing", true);
+}
+if (!STANDALONE) loadSync();
+
+// ---- from the browser to the app ----
+// The app answers /api/hello to this website only. Asking can make the browser
+// ask the user for access to local devices, so it happens when they say they
+// have the app — and on later visits once it was found.
+const APP_URL = "http://127.0.0.1:4573";
+async function findApp(quiet){
+  try {
+    // Chrome and Edge treat 127.0.0.1 as its own "loopback" space and ask the
+    // user once before a website may reach it; other browsers just allow it.
+    const r = await fetch(APP_URL + "/api/hello", { targetAddressSpace: "loopback" });
+    const h = await r.json();
+    if (h.app !== "vito") throw new Error("not Vito");
+    const first = (() => { try { return localStorage.getItem("vito-web-app") !== "1"; } catch { return false; } })();
+    try { localStorage.setItem("vito-web-app", "1"); } catch {}
+    document.querySelectorAll(".js-get-app, .js-find-app").forEach(el => el.hidden = true);
+    document.querySelectorAll(".js-to-app").forEach(el => el.hidden = false);
+    if (first) appFound();
+    return true;
+  } catch {
+    // The browser may also have kept the page from asking (Chrome and Edge
+    // ask once). Moving the data over doesn't need that permission, so offer it.
+    if (!quiet) actionToast(t("The Vito app doesn't answer on this computer. Is it running?"), t("Move over anyway"), moveToApp, 9000, "err");
+    return false;
+  }
+}
+// moveToApp posts everything the browser kept to the app, in a new tab on the
+// app's own page, which asks what to take over. A form post rather than a
+// fetch: it is a navigation, so the app can show its page straight away.
+// ---- from download to a connected app ----
+// After a download the banner says what to do next and the page looks for the
+// app by itself every few seconds, so installing is the last thing to do.
+// When it answers for the first time, that is worth a little party.
+const IB_STEPS = {
+  windows: ["Open Vito-Setup from your downloads.", "Does Windows warn you? Choose More info → Run anyway.", "Vito starts by itself when it is installed."],
+  macos: ["Open the Vito disk image from your downloads.", "Drag Vito to Applications and open it there.", "The first time: right-click → Open, as Vito isn't notarised yet."],
+  linux: ["Make the AppImage executable (chmod +x) and start it.", "Or install the Flatpak with the two commands in the download window."],
+};
+let ibTimer = null;
+const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+const lsSet = (k, v) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} };
+function renderInstallBanner(){
+  const el = $("install-banner"); if (!el || !STANDALONE) return;
+  let dl = null; try { dl = JSON.parse(lsGet("vito-web-dl") || "null"); } catch {}
+  const found = lsGet("vito-web-app") === "1", party = lsGet("vito-web-party") === "1", done = lsGet("vito-web-ib-done") === "1";
+  clearInterval(ibTimer); ibTimer = null;
+  if (done || (!dl && !party)) { el.hidden = true; return; }
+  el.hidden = false;
+  if (party) {
+    el.className = "install-banner done";
+    el.innerHTML = `<button class="ib-x" aria-label="${t("Close")}">×</button><span class="ib-ico">🎉</span><div class="ib-body">
+      <div class="ib-title">${t("Connected to the Vito app!")}</div>
+      <div class="ib-text">${t("From now on you dictate into any program with your hotkey. Take what you dictated here along:")}</div>
+      <div class="ib-actions"><button class="btn small" id="ib-move">${t("Move to the app")}</button><button class="btn ghost small" id="ib-open">${t("Open the app")}</button></div></div>`;
+    $("ib-move").onclick = () => { moveToApp(); lsSet("vito-web-ib-done", "1"); renderInstallBanner(); };
+    $("ib-open").onclick = () => { window.open(APP_URL + "/", "_blank"); lsSet("vito-web-ib-done", "1"); renderInstallBanner(); };
+  } else {
+    el.className = "install-banner";
+    const steps = (IB_STEPS[dl.os] || IB_STEPS.windows).map(x => `<li>${t(x)}</li>`).join("");
+    el.innerHTML = `<button class="ib-x" aria-label="${t("Close")}">×</button><span class="ib-ico">⬇</span><div class="ib-body">
+      <div class="ib-title">${t("Downloaded! Now install it")}</div>
+      <ol class="ib-steps">${steps}</ol>
+      <div class="ib-actions"><button class="btn small" id="ib-check">${t("I've installed it")}</button>
+        <button class="btn ghost small" id="ib-again">${t("Download again")}</button>
+        <span class="ib-search"><i></i>${t("Looking for the app…")}</span></div></div>`;
+    $("ib-check").onclick = () => findApp(false);
+    $("ib-again").onclick = showDownload;
+    // Look by itself while the page is in view; the first look may make
+    // Chrome or Edge ask once whether vito.talk may reach the app.
+    ibTimer = setInterval(() => { if (!document.hidden) findApp(true); }, 5000);
+  }
+  el.querySelector(".ib-x").onclick = () => { lsSet("vito-web-ib-done", "1"); renderInstallBanner(); };
+}
+function appFound(){
+  lsSet("vito-web-party", "1");
+  lsSet("vito-web-ib-done", null);
+  renderInstallBanner();
+  celebrate($("install-banner"));
+  // Vito himself is pleased too.
+  if (typeof vmPose === "function") { vmFlash("happy", 5000); vmPose("party"); }
+  selectTab("status");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function celebrate(near){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const r = (near && !near.hidden ? near : document.body).getBoundingClientRect();
+  const colors = ["#FF6B5E", "#7C3AED", "#A78BFA", "#FFB347", "#4ADE80", "#38BDF8", "#F472B6"];
+  for (let i = 0; i < 70; i++) {
+    const b = document.createElement("i");
+    b.className = "confetti-bit";
+    b.style.background = colors[i % colors.length];
+    b.style.left = (r.left + r.width * (0.2 + Math.random() * 0.6)) + "px";
+    b.style.top = (r.top + 30) + "px";
+    document.body.appendChild(b);
+    const dx = (Math.random() - 0.5) * 900, up = 160 + Math.random() * 260, down = 500 + Math.random() * 400;
+    b.animate([
+      { transform: "translate(0,0) rotate(0deg)", opacity: 1 },
+      { transform: `translate(${dx * 0.6}px,${-up}px) rotate(${Math.random() * 540}deg)`, opacity: 1, offset: 0.35 },
+      { transform: `translate(${dx}px,${down}px) rotate(${Math.random() * 1080}deg)`, opacity: 0 },
+    ], { duration: 2200 + Math.random() * 1200, easing: "cubic-bezier(.2,.7,.4,1)" }).onfinish = () => b.remove();
+  }
+}
+if (STANDALONE) {
+  $("dl-web").onclick = showDownload;
+  renderInstallBanner();
+}
+
+function moveToApp(){
+  // Nothing kept here yet: then there is nothing to take over, just the app.
+  const data = VitoStandalone.export();
+  const d = data.config && data.config.dictionary || {};
+  if (!(data.history || []).length && !Object.keys(data.days || {}).length && !(d.keyterms || []).length && !(d.corrections || []).length) {
+    window.open(APP_URL + "/", "_blank");
+    return;
+  }
+  const f = document.createElement("form");
+  f.method = "POST"; f.action = APP_URL + "/handover"; f.target = "_blank";
+  const i = document.createElement("input");
+  i.type = "hidden"; i.name = "data"; i.value = JSON.stringify(data);
+  f.appendChild(i); document.body.appendChild(f); f.submit(); f.remove();
+  toast(t("Opened in the app — confirm there what to take over."), "ok", 6000);
+}
+if (STANDALONE) {
+  document.querySelectorAll(".js-find-app").forEach(b => b.onclick = () => findApp(false));
+  document.querySelectorAll(".js-to-app").forEach(b => b.onclick = moveToApp);
+  // The first visit starts with choosing the languages.
+  VitoStandalone.ready.then(() => {
+    let done = false; try { done = localStorage.getItem("vito-web-langs") === "1"; } catch {}
+    if (done) return;
+    const wait = () => cfg ? showLangPicker(true) : setTimeout(wait, 200);
+    setTimeout(wait, 400);
+  });
+  let known = false; try { known = localStorage.getItem("vito-web-app") === "1"; } catch {}
+  if (known) findApp(true);
+}
+// The other end: the app's page, opened by that form post with ?handover=<id>.
+async function offerHandover(){
+  const id = new URLSearchParams(location.search).get("handover");
+  if (!id || STANDALONE) return;
+  history.replaceState(null, "", location.pathname);
+  let h; try { h = await api("/api/handover/" + encodeURIComponent(id)); } catch (e) { toast(e.message, "err", 6000); return; }
+  const n = (v) => Number(v || 0).toLocaleString(numLoc());
+  const box = (id, label, on) => `<label class="tgl" style="margin-top:8px;"><input type="checkbox" id="${id}"${on ? " checked" : ""}><span class="tr"></span> ${label}</label>`;
+  modal(t("Take over from the browser?"),
+    `<p class="ki-note">${t("Vito in your browser sent what it kept. Dictations already here are skipped, so doing this twice changes nothing.")}</p>
+     <p class="ki-note"><b>${n(h.entries)}</b> ${t("dictations")} · <b>${n(h.words)}</b> ${t("words over")} <b>${n(h.days)}</b> ${t("days")}</p>` +
+    (h.keyterms || h.corrections ? box("ho-dict", t("Add the dictionary") + ` (${n(h.keyterms + h.corrections)})`, true) : "") +
+    (h.settings ? box("ho-set", t("Use the language and appearance from the browser"), false) : ""),
+    () => {
+      const body = { dictionary: !!($("ho-dict") && $("ho-dict").checked), settings: !!($("ho-set") && $("ho-set").checked) };
+      api("/api/handover/" + encodeURIComponent(id) + "/apply", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+        .then(r => { toast(t("Taken over: {n} dictations.").replace("{n}", n(r.added)), "ok"); statsHistoryChanged(); loadStats(); if (body.dictionary || body.settings) loadSettings(); })
+        .catch(e => toast(e.message, "err"));
+    }, "Take over");
+}
 function connectWS() {
+  if (STANDALONE) { VitoStandalone.connect(handleEvent); return; }
   const ws = new WebSocket(`ws://${location.host}/ws?token=${TOKEN}`);
   ws.onopen = () => {
     wsBackoff = 1000;
@@ -4082,8 +4857,16 @@ function connectWS() {
     if (!daemonUp) setDaemonUp(true);  // came back from a real outage: daemonCameBack runs
     else if (again) daemonCameBack();  // a blip: catch up on what was missed
   };
-  ws.onmessage = (m) => {
-    const e = JSON.parse(m.data);
+  ws.onmessage = (m) => handleEvent(JSON.parse(m.data));
+  ws.onclose = () => {
+    if (!wsDownTimer && daemonUp) wsDownTimer = setTimeout(() => { wsDownTimer = null; setDaemonUp(false); }, 3000);
+    setTimeout(connectWS, wsBackoff);
+    wsBackoff = Math.min(wsBackoff * 2, 10000);
+  };
+}
+// handleEvent takes one event from the daemon (or, in the browser, from
+// standalone/backend.js).
+function handleEvent(e) {
     if (e.type === "state") {
       uiState = e.state; setState(e.state);
       if (e.state === "recording") { showTranscriptHint(LISTENING_HINT); lastFinalText = ""; curPartial = ""; curRaw = ""; curCleaned = ""; }
@@ -4151,6 +4934,16 @@ function connectWS() {
       onPlaybackStream(e.playback || {});
     } else if (e.type === "upload") {
       setUploadProgress(e.upload || {});
+    } else if (e.type === "ui") {
+      // A newer interface has been downloaded. Take it the next time the window
+      // is out of sight, so nothing changes under the user's hands.
+      uiUpdated = true;
+      if (document.hidden) location.reload();
+    } else if (e.type === "whistle") {
+      whistleSt = e.whistle || whistleSt;
+      renderWhistle();
+      buildModelCards();
+      if (cfg && cfg.stt && cfg.stt.provider === "whistle") renderStatusTags();
     } else if (e.type === "local_stt") {
       localStt = e.local_stt || localStt;
       renderLocalStt();
@@ -4168,6 +4961,15 @@ function connectWS() {
       pipWave(lvl);
       trWave(lvl);
       if (rec) vmLevel(lvl);
+    } else if (e.type === "sync") {
+      const was = syncSt && syncSt.last;
+      syncSt = e.sync || syncSt; renderSync();
+      if (syncSt && syncSt.last && syncSt.last !== was) { statsHistoryChanged(); loadStats(); }
+    } else if (e.type === "copy-failed") {
+      actionToast(t("The text is ready — the browser only lets it onto the clipboard after a click."), t("Copy"),
+        () => navigator.clipboard.writeText(e.text).then(() => toast(t("Copied — paste it wherever you like."), "ok")).catch(er => toast(er.message, "err")), 15000, "info");
+    } else if (e.type === "copied") {
+      toast(t("Copied — paste it wherever you like."), "ok");
     } else if (e.type === "error") {
       vmFlash("dizzy", 1800);
       if (e.credit) {
@@ -4176,7 +4978,7 @@ function connectWS() {
         toast("⚠ " + msg, "err", 7000);
         refreshCredit();
       } else {
-        $("transcript").textContent = "⚠ " + e.error;
+        $("transcript").textContent = "⚠ " + t(e.error || "");
       }
       syncPip();
     } else if (e.type === "credit") {
@@ -4203,16 +5005,10 @@ function connectWS() {
         clearInterval(micCountdown); if (st) st.textContent = "✗"; if (btn) btn.disabled = false; toast("Mic-test: " + (e.error || ""), "err");
       }
     }
-  };
-  ws.onclose = () => {
-    if (!wsDownTimer && daemonUp) wsDownTimer = setTimeout(() => { wsDownTimer = null; setDaemonUp(false); }, 3000);
-    setTimeout(connectWS, wsBackoff);
-    wsBackoff = Math.min(wsBackoff * 2, 10000);
-  };
 }
 connectWS();
 
-$("btn-toggle").onclick = () => api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
+$("btn-toggle").onclick = () => { webGesture(window); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); };
 $("btn-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
 
 /* ---- copy transcript (shared by the card button and the PiP window) ---- */
@@ -4813,7 +5609,9 @@ async function togglePip(fromTray){
       if (e.target.closest && e.target.closest("[data-tip-text]")) { clearTimeout(timer); tip.classList.remove("show"); }
     });
   })();
-  d.getElementById("pip-toggle").onclick = () => api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
+  d.getElementById("pip-toggle").onclick = () => { webGesture(pipWin); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); };
+  // The in-tab hotkey works in the floating window too.
+  if (STANDALONE) d.addEventListener("keydown", (ev) => { if (!hkCapturing && hotkeyMatches(ev, webHotkey())) { ev.preventDefault(); webGesture(pipWin); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); } });
   d.getElementById("pip-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
   d.getElementById("pip-copy").onclick = async (ev) => { if (await copyTranscript(pipWin)) { flashCopied(ev.currentTarget, "copied"); pipToast("✓ " + t("Copied to clipboard")); } };
   d.getElementById("pip-open").onclick = () => { try { window.focus(); } catch {} selectTab("status"); };
@@ -5717,6 +6515,8 @@ $("s-sonioxkey").addEventListener("paste", () => setTimeout(() => testKey("sonio
 // A key arriving or leaving flips which model cards are selectable.
 $("test-sttopenaikey").onclick = () => testKey("openai", "s-sttopenaikey", "test-sttopenaikey", { baseUrl: $("s-sttbaseurl").value.trim(), name: sttEndpointName() });
 $("localstt-install").onclick = installLocalStt;
+$("whistle-install").onclick = installWhistle;
+$("whistle-remove").onclick = removeWhistle;
 $("localstt-remove").onclick = removeLocalStt;
 $("s-localvariant").addEventListener("change", autoSaveSettings);
 $("info-sttopenaikey").onclick = () => showKeyInfo($("s-sttpreset").value === "openai" ? "openai" : "groq");
@@ -5729,6 +6529,14 @@ $("s-openaikey").addEventListener("paste", () => setTimeout(testOpenAI, 250));
 
 /* ---- welcome / onboarding card ---- */
 function dismissWelcome(){
+  // In the browser the card moves into the ? button instead: it is the
+  // manual of this version and should stay at hand.
+  if (STANDALONE) {
+    $("welcome-card").hidden = true;
+    if (cfg && cfg.ui && !cfg.ui.welcome_done) { cfg.ui.welcome_done = true; api("/api/welcome-done", { method:"POST" }).catch(()=>{}); }
+    const h = $("help-web"); h.classList.remove("on", "ping"); void h.offsetWidth; h.classList.add("ping");
+    return;
+  }
   modal(t("Close the welcome card?"),
     `<p style="color:var(--text2);font-size:13px;line-height:1.55;margin:0;">${t("Are you sure you want to close this card? It won't be shown again.")}</p>`,
     () => {
@@ -5744,6 +6552,104 @@ function dismissWelcome(){
 $("welcome-ok").onclick = dismissWelcome;
 $("welcome-dismiss").onclick = dismissWelcome;
 $("welcome-settings").onclick = () => selectTab("settings");
+$("help-web").onclick = () => {
+  const c = $("welcome-card"), show = c.hidden;
+  c.hidden = !show; $("help-web").classList.toggle("on", show);
+  if (show) { renderWelcomeWeb(); c.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+};
+// The browser version's welcome steps that change: the model's download, and
+// the hotkey in use.
+function renderWelcomeWeb(){
+  if (!STANDALONE) return;
+  const m = $("wl-model"), st = whistleSt || {};
+  if (m) {
+    const pct = Math.round(100 * (st.done || 0) / (st.total || 1));
+    m.innerHTML = cfg && cfg.stt && cfg.stt.provider !== "whistle" ? ahEsc(t("Using {p}.").replace("{p}", PROVIDER_NAMES[cfg.stt.provider] || cfg.stt.provider))
+      : st.phase === "ready" ? "✓ " + t("Loaded — works offline too.")
+      : st.phase === "downloading" ? t("Downloading (18 MB, once)…") + " " + pct + "%" + `<span class="wl-bar"><i style="width:${pct}%"></i></span>`
+      : st.phase === "error" ? "✗ " + ahEsc(st.error || t("Error")) + ` <button type="button" class="linkbtn" id="wl-retry">${t("Try again")}</button>`
+      : t("Downloads once (18 MB).");
+    const r = $("wl-retry"); if (r) r.onclick = () => api("/api/whistle/install", { method: "POST" });
+  }
+  const s = $("wl-start");
+  if (s) {
+    s.innerHTML = t("{start} or {key} · {change}")
+      .replace("{start}", "<b>" + ahEsc(t("Start recording")) + "</b>")
+      .replace("{key}", "<b>" + ahEsc(fmtHotkey(webHotkey())) + "</b>")
+      .replace("{change}", `<button type="button" class="linkbtn" id="wl-hotkey">${t("change")}</button>`);
+    $("wl-hotkey").onclick = () => { selectTab("settings"); selectSetSection("activation"); };
+  }
+}
+
+// ---- getting the app: a picker per system, the right one already chosen ----
+const APP_REPO = "vinceecniv/vito";
+// What the app adds over this page, for the download picker.
+const DL_BENEFITS = [
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>',
+    "A hotkey that works everywhere", "— also when Vito isn't the window in front."],
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+    "Types straight into any program", "— your mail, chat or document; no pasting."],
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg>',
+    "Better speech models", "— up to 60 languages, on your own computer or in the cloud."],
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.5 1.5A3.8 3.8 0 0 1 17.5 18z"/><path d="M10 13.5l2-2 2 2M12 11.5V16"/></svg>',
+    "Sync and backups", "— the same history and dictionary on every computer, through your own Dropbox or OneDrive."],
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    "Always ready", "— starts with your computer and waits in the background, updates itself."],
+];
+const OS_ICONS = {
+  windows: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M6.555 1.375 0 2.237v5.45h6.555zM0 13.795l6.555.933V8.313H0zm7.278-5.4.026 6.378L16 16V8.395zM16 0 7.33 1.244v6.414H16z"/></svg>',
+  macos: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/></svg>',
+};
+let latestRelease = null;
+function guessOS(){
+  const p = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || "").toLowerCase();
+  if (/android|iphone|ipad|cros/.test((navigator.userAgent || "").toLowerCase())) return "other";
+  if (p.includes("win")) return "windows";
+  if (p.includes("mac")) return "macos";
+  if (p.includes("linux") || p.includes("x11")) return "linux";
+  return "windows";
+}
+async function showDownload(){
+  if (!latestRelease) {
+    try { latestRelease = await (await fetch("https://api.github.com/repos/" + APP_REPO + "/releases/latest")).json(); } catch {}
+  }
+  const rel = latestRelease || {}, all = "https://github.com/" + APP_REPO + "/releases" + (rel.tag_name ? "/latest" : "");
+  const asset = (re) => ((rel.assets || []).find(a => re.test(a.name)) || {}).browser_download_url || all;
+  const ver = (rel.tag_name || "").replace(/^v/, "");
+  const panes = {
+    windows: `<a class="btn primary js-dl" href="${asset(/^Vito-Setup-.*\.exe$/)}">${t("Download for Windows")}</a>
+      <p class="act-note">${t("Windows 10 and 11. Vito isn't code-signed yet, so Windows may warn you: choose More info → Run anyway.")}</p>`,
+    macos: `<a class="btn primary js-dl" href="${asset(/^Vito-.*\.dmg$/)}">${t("Download for macOS")}</a>
+      <p class="act-note">${t("One download for Apple Silicon and Intel. The first time, open it with right-click → Open, as Vito isn't notarised yet.")}</p>`,
+    linux: `<a class="btn primary js-dl" href="${asset(/x86_64\.AppImage$/)}">${t("Download the AppImage (x86-64)")}</a>
+      <p class="act-note">${t("Make it executable and run it. Or install the Flatpak:")}</p>
+      <pre>flatpak remote-add --user --if-not-exists vito https://vinceecniv.github.io/Vito/vito.flatpakrepo
+flatpak install --user vito io.github.vinceecniv.vito</pre>`,
+  };
+  const os = guessOS();
+  const tabs = [["windows", "Windows", OS_ICONS.windows], ["macos", "macOS", OS_ICONS.macos], ["linux", "Linux", TUX_SVG]];
+  modal(t("Get the Vito app") + (ver ? ` <span class="dl-ver">${ver}</span>` : ""),
+    (os === "other" ? `<p class="ki-note">${t("The Vito app is for desktop computers: Windows, macOS and Linux.")}</p>` : "") +
+    `<ul class="dl-why">${DL_BENEFITS.map(([ico, b, s]) => `<li><span class="dl-ico">${ico}</span><span><b>${t(b)}</b> ${t(s)}</span></li>`).join("")}</ul>
+     <div class="dl-tabs">${tabs.map(([k, n, ico]) => `<button type="button" class="dl-os" data-os="${k}">${ico}<span>${n}</span></button>`).join("")}</div>
+     <div class="dl-pane" id="dl-pane"></div>
+     <p class="dl-all"><a href="${all}" target="_blank" rel="noopener">${t("All downloads and release notes")}</a></p>`,
+    () => {}, "Close", false, null, true);
+  const back = document.querySelector(".modal-backdrop:last-of-type");
+  back.querySelector(".modal").classList.add("dl-modal");
+  const show = (k) => {
+    back.querySelectorAll("[data-os]").forEach(b => b.classList.toggle("sel", b.dataset.os === k));
+    back.querySelector("#dl-pane").innerHTML = panes[k];
+    // A download starts the way to the app: the banner takes over from here.
+    back.querySelectorAll(".js-dl").forEach(a => a.addEventListener("click", () => {
+      try { localStorage.setItem("vito-web-dl", JSON.stringify({ os: k, at: Date.now() })); } catch {}
+      setTimeout(() => { back.remove(); renderInstallBanner(); }, 400);
+    }));
+  };
+  back.querySelectorAll("[data-os]").forEach(b => b.onclick = () => show(b.dataset.os));
+  show(os === "other" ? "windows" : os);
+}
+document.querySelectorAll(".js-get-app").forEach(a => a.onclick = (e) => { if (STANDALONE) { e.preventDefault(); showDownload(); } });
 // The card is hidden by default (so it never flashes on refresh); loadSettings
 // calls this once the config is in, revealing it only when it hasn't been
 // dismissed yet — a state that lives in the config, so wiping settings resets it.
@@ -5917,13 +6823,26 @@ async function loadAbout(){
   // with localStorage["vito-mascot-dev"] = "1".
   let vmDev = false; try { vmDev = localStorage.getItem("vito-mascot-dev") === "1"; } catch {}
   if (a.version === "dev" && vmDev && !document.querySelector("#mascot-card .vm-dev")) $("mascot-card").appendChild(mascotDevPanel());
+  // The browser version has no build of its own to describe: it is whatever
+  // vito.talk serves, always the newest.
+  if (STANDALONE) {
+    box.innerHTML = row(t("Version"), t("Vito in your browser — always the newest")) + row(t("License"), a.license || "MIT");
+    return;
+  }
   box.innerHTML =
     row(t("Version"), `<span id="about-version">${a.version || "—"}</span>`) +
     row(t("Git commit"), commit + when) +
+    // The interface can be newer than the program: it is downloaded from
+    // vito.talk between releases (internal/uibundle).
+    row(t("Interface"), a.ui && a.ui.source === "bundle"
+      ? `<code>${escapeHtml(a.ui.version)}</code> <span style="color:var(--text3); font-weight:400;">(${t("downloaded")})</span>`
+      : t("built in")) +
     row(t("License"), a.license || "—");
   renderAboutVersion();
 }
 let aboutInfo = null;
+let uiUpdated = false;
+document.addEventListener("visibilitychange", () => { if (uiUpdated && document.hidden) location.reload(); });
 // The version row says what it is and, once the check has answered, how it
 // stands: up to date, or a newer one waiting with its notes a click away.
 function renderAboutVersion(){
@@ -6095,6 +7014,7 @@ function layoutOrderOf(group){
 }
 // The version card shows itself when it has news, or always if you asked it to.
 function updateCardWanted(){
+  if (STANDALONE) return false; // the page on vito.talk is always the latest
   if (loadLayout().updateAlways) return true;
   return !!(updateState && updateState.release && updateState.release.available);
 }
@@ -6321,6 +7241,7 @@ async function loadUpdate(force){
   applyStatusLayout();
   if ($("tab-status").classList.contains("active")) loadStats();
   renderAboutVersion();
+  renderAutoUpdateNote();
   announceUpdated();
   return updateState;
 }
@@ -6333,7 +7254,7 @@ function announceUpdated(){
   let seen = null;
   try { seen = localStorage.getItem("vito-seen-version"); } catch { return; }
   try { localStorage.setItem("vito-seen-version", u.current); } catch {}
-  if (!seen || seen === u.current) return;
+  if (seen === u.current || (!seen && !u.updated_from)) return;
   const rel = (u.release && u.release.version === u.current) ? u.release : null;
   showUpdatedBanner(u.current, rel);
 }
@@ -6605,7 +7526,7 @@ function setAssetVer(v){
 }
 // A medal is its shipped image when one exists, otherwise its emoji.
 function achMedalInner(x){
-  if (achImages.has(x.id)) return `<img src="/achievements/${x.id}.png${assetV()}" alt="" loading="lazy">`;
+  if (achImages.has(x.id)) return `<img src="achievements/${x.id}.png${assetV()}" alt="" loading="lazy">`;
   return ahEsc(x.icon);
 }
 // The medal art is a static PNG; the ones with a Lottie come alive on unlock and
@@ -6617,7 +7538,7 @@ function ensureLottie(){
   if (_lottieLoad) return _lottieLoad;
   _lottieLoad = new Promise((res, rej) => {
     const s = document.createElement("script");
-    s.src = "/achievements/lottie.min.js";
+    s.src = "achievements/lottie.min.js";
     s.onload = () => res(window.lottie); s.onerror = rej;
     document.head.appendChild(s);
   });
@@ -6629,7 +7550,7 @@ function mountLottie(container, id, loop){
     container.innerHTML = ""; // swap the static PNG for the animation once it's ready
     container._anim = lottie.loadAnimation({
       container, renderer: "svg", loop: !!loop, autoplay: true,
-      path: "/achievements/lottie/" + id + ".json" + assetV(),
+      path: "achievements/lottie/" + id + ".json" + assetV(),
     });
   }).catch(() => {}); // no player, no problem — the static PNG stays
 }
@@ -6872,7 +7793,7 @@ if ($("ach-content")) {
     if (e.relatedTarget && card.contains(e.relatedTarget)) return; // still inside the card
     const medal = card.querySelector(".ach-medal"); if (!medal || !medal._anim) return;
     unmountLottie(medal);
-    medal.innerHTML = achImages.has(card.dataset.id) ? `<img src="/achievements/${card.dataset.id}.png${assetV()}" alt="" loading="lazy">` : "";
+    medal.innerHTML = achImages.has(card.dataset.id) ? `<img src="achievements/${card.dataset.id}.png${assetV()}" alt="" loading="lazy">` : "";
   });
   // Claiming / unmarking the honour-system donation badges.
   $("ach-content").addEventListener("click", (e) => {
@@ -6990,6 +7911,36 @@ function hotkeyHint(){
     : (hk.supported && hk.toggle ? hk.toggle.spec : "");
   if (!spec) return "";
   return hk.os === "windows" ? fmtHotkey(spec) : fmtPortalShortcut(spec);
+}
+// The history with nothing in it — the first visit for most people, so an
+// invitation rather than a shrug. Searching and favourites get their own line.
+const HIST_EMPTY_LINES = [
+  "It's awfully quiet in here…",
+  "A blank page. Exciting!",
+  "Not a word yet. Vito is sitting here with pen and paper.",
+  "Your history is waiting for its first sentence.",
+];
+function historyEmptyHTML(){
+  if (hQuery) return `<div class="hist-empty small"><div class="he-title">${t("Nothing that says “{q}”.").replace("{q}", ahEsc(hQuery))}</div><div class="he-sub">${t("Maybe you put it differently? The search looks in both the raw and the cleaned text.")}</div></div>`;
+  if (hFavOnly) return `<div class="hist-empty small"><div class="he-title">${t("No favorites yet.")}</div><div class="he-sub">${t("Give a dictation a star and it waits for you here — and is never cleaned up automatically.")}</div></div>`;
+  const k = STANDALONE ? fmtHotkey(webHotkey()) : hotkeyHint();
+  const line = HIST_EMPTY_LINES[Math.floor(Math.random() * HIST_EMPTY_LINES.length)];
+  const bars = [[10,16],[22,28],[34,40],[46,54],[58,40],[70,28],[82,16]].map(([x, h]) => `<rect x="${x}" y="24" width="8" height="${h}" rx="4"/>`).join("");
+  return `<div class="hist-empty">
+    <svg viewBox="0 0 100 100" fill="url(#heGrad)" class="vito-talk he-logo" aria-hidden="true"><defs><linearGradient id="heGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs>${bars}</svg>
+    <div class="he-title">${t(line)}</div>
+    <div class="he-sub">${t("Everything you dictate lands here: searchable, with a star for the keepers. Say something — anything — and your first sentence shows up within seconds.")}</div>
+    <button type="button" class="btn primary" id="he-start">${t("Start your first dictation")}</button>
+    ${k ? `<div class="he-key">${t("or press {k}").replace("{k}", "<b>" + ahEsc(k) + "</b>")}</div>` : ""}
+  </div>`;
+}
+function wireHistoryEmpty(){
+  const b = $("he-start"); if (!b) return;
+  b.onclick = () => {
+    if (typeof webGesture === "function") webGesture(window);
+    selectTab("status");
+    api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
+  };
 }
 function quietTodayHTML(){
   const d = new Date(), day = d.getFullYear() * 400 + d.getMonth() * 31 + d.getDate();
@@ -7462,7 +8413,7 @@ function showCostInfo(){
   // For the endpoint provider a zero is the real rate (a server of your own),
   // not a missing one to paper over with the default.
   const prov = (cfg && cfg.stt && cfg.stt.provider) || "";
-  const endpoint = prov === "openai" || prov === "local";
+  const endpoint = prov === "openai" || prov === "local" || prov === "whistle";
   const stt = endpoint ? (c.stt_per_hour_usd || 0) : (c.stt_per_hour_usd || rates.stt_per_hour_usd || 0.15);
   const cin = c.cleanup_in_per_mtok_usd || rates.cleanup_in_per_mtok_usd || 1.0;
   const cout = c.cleanup_out_per_mtok_usd || rates.cleanup_out_per_mtok_usd || 5.0;
@@ -7911,9 +8862,25 @@ function showChartTip(d, col){
 /* ---- settings ---- */
 let cfg = null;
 let loadingSettings = false;
+// While the form is being filled from the config, its change events must not
+// save it back. The flag is cleared however loading ends: a load that failed
+// halfway — the daemon restarting, say — used to leave it set, and every
+// change in that page was then dropped without a word.
 async function loadSettings() {
   loadingSettings = true;
-  cfg = await api("/api/config");
+  try { await fillSettings(); }
+  catch (err) {
+    // Most often the daemon was just restarting: try once more shortly.
+    if (!loadSettings.retry) loadSettings.retry = setTimeout(() => { loadSettings.retry = null; loadSettings().catch(() => {}); }, 1500);
+    throw err;
+  }
+  finally { loadingSettings = false; }
+}
+async function fillSettings() {
+  // Only a complete config replaces the one the page has.
+  const c = await api("/api/config");
+  if (!c || typeof c.audio !== "object" || typeof c.stt !== "object") throw new Error(t("Background process unreachable"));
+  cfg = c;
   maybeShowWelcome();
   syncLayoutWithConfig();
   const devs = await api("/api/devices").catch(() => ({ input: [], output: [] }));
@@ -7961,6 +8928,7 @@ async function loadSettings() {
   promptActive = cfg.cleanup.active_prompt || "";
   renderPromptPicker();
   loadLocalStt();
+  loadWhistle();
   // Vito's own sets come from the daemon, not the page: they are the prompts the
   // running build actually uses, and would drift if the UI kept its own copy.
   loadPromptBuiltins().then(renderPromptPicker);
@@ -8002,6 +8970,8 @@ async function loadSettings() {
   setNotifyDisplay((cfg.ui && cfg.ui.notifications) || "all");
   $("s-demo").checked = !!cfg.demo;
   $("s-updatecheck").checked = !(cfg.update && cfg.update.check === false);
+  $("s-updateauto").checked = !(cfg.update && cfg.update.auto === false);
+  renderAutoUpdateNote();
   $("s-autobackup").checked = !(cfg.backup && cfg.backup.auto === false);
   if ($("s-ptt")) $("s-ptt").checked = cfg.push_to_talk !== false; // default on
   if (typeof renderBackupAutoNote === "function") renderBackupAutoNote();
@@ -8019,7 +8989,6 @@ async function loadSettings() {
   await loadAutostart();
   loadInputLevel();
   loadHotkey();
-  loadingSettings = false;
 }
 
 /* ---- activation / global hotkey ---- */
@@ -8031,6 +9000,7 @@ const withWin = (s) => s.replace("{win}", WINKEY);
 // Windows doesn't, so the activation copy differs on those two points only.
 let hkIsMac = false;
 async function loadHotkey(){
+  if (STANDALONE) { renderWebActivation(); renderStatusTags(); return; }
   try { hkInfo = await api("/api/hotkey"); } catch { return; }
   renderActivation(hkInfo);
   renderStatusTags();
@@ -8059,7 +9029,10 @@ function renderStatusTags(){
   const box = $("status-tags"); if (!box || !cfg) return;
   const hk = hkInfo || {}, tags = [];
   const portalSpec = hk.os !== "windows" && hk.supported && hk.toggle ? hk.toggle.spec : "";
-  if (hk.os === "windows") {
+  if (STANDALONE) {
+    renderWelcomeWeb();
+    tags.push({ ico: ICON_KBD, text: fmtHotkey(webHotkey()) + " · " + t("in this tab"), sec: "activation" });
+  } else if (hk.os === "windows") {
     const spec = (hk.toggle && (hk.toggle.spec || hk.toggle.configured)) || "";
     tags.push({ ico: ICON_KBD, text: spec ? fmtHotkey(spec) : t("No hotkey set"), sec: "activation" });
   } else if (portalSpec) {
@@ -8072,11 +9045,13 @@ function renderStatusTags(){
   // URL (and which model) is what tells you something.
   const sttLabel = sm && sm.provider === "openai" ? sttEndpointName() + (cfg.stt.openai_model ? " · " + cfg.stt.openai_model : "")
     : sm && sm.provider === "local" ? t("Vito local") + " · Parakeet" + (localStt && localStt.phase !== "running" ? " · " + localSttTag() : "")
+    : sm && sm.provider === "whistle" ? "Whistle" + (whistleSt && whistleSt.phase !== "ready" ? " · " + whistleTag() : "")
     : sm ? sm.name : null;
   tags.push({ ico: ICON_MIC2, text: sttLabel || ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
   tags.push({ raw: langIcon((cfg.stt && cfg.stt.language) || ""), text: langShortName(cfg.stt && cfg.stt.language), sec: "stt" });
   const cl = cfg.cleanup || {};
-  if (!cl.enabled) tags.push({ ico: SPARK_SVG, text: t("Cleanup off"), sec: "cleanup", muted: true });
+  if (STANDALONE) tags.push({ ico: SPARK_SVG, text: t("Tidied by rules"), sec: "stt", muted: true });
+  else if (!cl.enabled) tags.push({ ico: SPARK_SVG, text: t("Cleanup off"), sec: "cleanup", muted: true });
   else {
     const model = cl.provider === "openai" ? cl.openai_model : cl.model;
     tags.push({ ico: SPARK_SVG, text: cleanupProviderLabel(cl) + (model ? " · " + model : ""), sec: "cleanup" });
@@ -8472,7 +9447,7 @@ function collectSettings() {
     tray: Object.assign(cfg.tray || {}, { enabled: $("s-tray").checked }),
     stats: Object.assign(cfg.stats || {}, { typing_speed: $("s-typespeed").value }),
     ui: Object.assign(cfg.ui || {}, { notifications: $("s-notify").value }),
-    update: Object.assign(cfg.update || {}, { check: $("s-updatecheck").checked }),
+    update: Object.assign(cfg.update || {}, { check: $("s-updatecheck").checked, auto: $("s-updateauto").checked }),
     backup: Object.assign(cfg.backup || {}, { auto: $("s-autobackup").checked }),
     push_to_talk: $("s-ptt") ? $("s-ptt").checked : cfg.push_to_talk,
     demo: $("s-demo").checked,
@@ -8486,8 +9461,9 @@ function autoSaveSettings() {
 }
 // s-typespeed / s-notify are custom icon dropdowns (hidden inputs) — they call
 // autoSaveSettings() themselves on pick, so they're not in this change list.
-["s-input","s-output","s-model","s-sounds","s-eu","s-keyterms","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-demo"]
+["s-input","s-output","s-model","s-sounds","s-eu","s-keyterms","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-updateauto","s-demo"]
   .forEach(id => $(id).addEventListener("change", autoSaveSettings));
+["s-updatecheck","s-updateauto"].forEach(id => $(id).addEventListener("change", renderAutoUpdateNote));
 // The Assist toggle also flips its model section and refreshes the "which model" note.
 $("s-assist-usecleanup").addEventListener("change", () => { syncAssistMode(); autoSaveSettings(); });
 // The auto-backup toggle saves like the rest, and refreshes its own note.
@@ -8504,6 +9480,20 @@ function bkWhen(ms){
 function bkInfoWhen(info){
   const ms = (info.created_at && Date.parse(info.created_at)) || info.mod_millis;
   return bkWhen(ms);
+}
+// Under the toggle: what the automatic update is doing, or why it cannot here.
+function renderAutoUpdateNote(){
+  const el = $("upd-auto-note"), box = $("s-updateauto"); if (!el || !box) return;
+  box.disabled = !$("s-updatecheck").checked;
+  const a = (updateState && updateState.auto) || {};
+  let msg = "";
+  if (a.state === "unmanaged") { msg = t("This copy of Vito is updated by your system (Flatpak, package manager or app store), not by Vito itself."); box.disabled = true; }
+  else if (box.disabled || !box.checked) msg = "";
+  else if (a.state === "downloading") msg = t("Downloading version {v}…").replace("{v}", a.version || "");
+  else if (a.state === "ready") msg = t("Version {v} is ready and installs as soon as Vito has been idle for a few minutes.").replace("{v}", a.version || "");
+  else if (a.state === "error") msg = t("The last automatic update failed:") + " " + (a.error || "");
+  el.textContent = msg;
+  el.hidden = !msg;
 }
 function renderBackupAutoNote(){
   const on = $("s-autobackup") && $("s-autobackup").checked;
@@ -9235,7 +10225,7 @@ async function loadHistoryNow() {
   catch { d = { total: 0, items: [] }; }
   hTotal = d.total || 0;
   updateHistoryCount();
-  if (!hTotal) { list.innerHTML = '<p class="sub" style="color:var(--text3)">' + t(hFavOnly ? "No favorites yet." : "No dictations yet.") + '</p>'; renderPlayback(); return; }
+  if (!hTotal) { list.innerHTML = historyEmptyHTML(); wireHistoryEmpty(); renderPlayback(); return; }
   appendHistoryEntries(d.items || []);
   hLoaded = (d.items || []).length;
   renderPlayback(); // a recording playing through a reload keeps its controls lit
@@ -9293,12 +10283,13 @@ function renderPwaTip(){
         <span class="pwa-title">${ICON_BULB} ${t("Give Vito its own app window")}</span>
         <button class="x" id="pwa-x" title="${t("Close")}">×</button>
       </div>
-      <p>${t("Vito itself runs in the background with a tray icon — this page is how you manage it and dictate. Installing it as an app gives this interface its own window: pin it to the taskbar or Start menu and open straight to Vito, without hunting for a browser tab. It stays exactly the same interface, served from your own computer.")}</p>
+      <p>${STANDALONE ? t("Installing it as an app gives Vito its own window: pin it to the taskbar or Start menu and open straight to it, without hunting for a browser tab. Your dictations stay where they are.")
+        : t("Vito itself runs in the background with a tray icon — this page is how you manage it and dictate. Installing it as an app gives this interface its own window: pin it to the taskbar or Start menu and open straight to Vito, without hunting for a browser tab. It stays exactly the same interface, served from your own computer.")}</p>
       <div class="pwa-actions"><button class="btn primary small" id="pwa-install">${t("Install app")}</button></div>
     </div>`;
     $("pwa-install").onclick = async () => { deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==="accepted"){deferredPrompt=null; el.innerHTML="";} };
     $("pwa-x").onclick = () => { localStorage.setItem("vito-pwa-dismissed","1"); el.innerHTML=""; };
-  } else if (!("serviceWorker" in navigator) || !pwaCapableBrowser()) {
+  } else if (!STANDALONE && (!("serviceWorker" in navigator) || !pwaCapableBrowser())) {
     el.innerHTML = `<div class="banner warn"><span class="grow">${t("This browser doesn't fully support installing as an app (PWA). Use")} <b>Chrome</b> ${t("or")} <b>Edge</b> ${t("for the app experience.")}</span>
       <button class="x" id="pwa-x" title="${t("Close")}">×</button></div>`;
     $("pwa-x").onclick = () => { localStorage.setItem("vito-pwa-dismissed","1"); el.innerHTML=""; };
@@ -9311,7 +10302,7 @@ function pwaCapableBrowser(){
 }
 window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredPrompt = e; renderPwaTip(); });
 window.addEventListener("appinstalled", () => { deferredPrompt = null; $("pwa-tip").innerHTML = ""; });
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(()=>{});
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
 
 /* ---- staggered reveal: tag static tiles per section with an order index ---- */
 function tagReveals(){
@@ -9372,6 +10363,7 @@ const HELP = {
   appendenter:{nl:"Drukt na de tekst automatisch op Enter — handig om invoer meteen te verzenden, bijvoorbeeld in een Claude Code-sessie of chat.",en:"Presses Enter after the text — handy to submit input right away, e.g. in a Claude Code session or chat."},
   hotkey:{nl:"De globale toetsencombinatie om een dictaat te starten en stoppen. Klik het vak en druk je gewenste combinatie.",en:"The global key combination to start and stop a dictation. Click the box and press your desired combination."},
   history:{nl:"Bewaar je dictaten lokaal zodat je ze kunt terugzien, doorzoeken en kopiëren.",en:"Keep your dictations locally so you can review, search and copy them."},
+  updateauto:{nl:"Een nieuwe versie wordt op de achtergrond gedownload, gecontroleerd en geïnstalleerd zodra Vito een paar minuten niets te doen heeft. Vito herstart daarbij vanzelf; je instellingen en geschiedenis blijven staan. Uit betekent dat je zelf op Nu bijwerken klikt.",en:"A new version is downloaded in the background, verified, and installed once Vito has had nothing to do for a few minutes. Vito restarts by itself; your settings and history stay as they are. Off means you click Update now yourself."},
   updatecheck:{nl:"Kijkt eens per dag bij GitHub of er een nieuwe versie van Vito is. Dit is het enige dat Vito uit zichzelf naar buiten vraagt; er gaat niets mee behalve het versienummer dat je draait. Uit betekent dat je zelf moet kijken.",en:"Asks GitHub once a day whether a newer Vito has been released. This is the only thing Vito asks the outside world on its own, and it sends nothing but the version you are running. Off means you check yourself."},
   storeaudio:{nl:"Bewaart naast de tekst ook de audio-opname van je laatste 10 dictaten, zodat je ze kunt terugluisteren of downloaden (.wav). De opnames blijven lokaal op je computer. Zet je dit uit, dan worden de bewaarde opnames meteen verwijderd — net als bij het wissen van je geschiedenis. In privacy-modus wordt er nooit audio bewaard.",en:"Also keeps the audio recording of your last 10 dictations alongside the text, so you can listen back or download it (.wav). The recordings stay local on your computer. Switching this off deletes the kept recordings right away — as does clearing your history. In privacy mode audio is never kept."},
   retention:{nl:"Verwijdert dictaten die ouder zijn dan de gekozen periode automatisch, zodat je geschiedenis niet eindeloos groeit. Als favoriet gemarkeerde items (met een ster) blijven altijd bewaard, inclusief hun opname. 'Nooit' schakelt dit uit.",en:"Automatically deletes dictations older than the chosen period so your history doesn't grow forever. Entries you star as favorites are always kept, including their recording. 'Never' turns this off."},
@@ -9503,6 +10495,7 @@ loadUpdate();
 // announces) earned milestones without opening the Achievements page.
 loadAchievements(true);
 renderPwaTip();
+offerHandover();
 restoreLastTab(); // all module-scope state is initialized by now — safe to open History/Achievements
 </script>
 </body>

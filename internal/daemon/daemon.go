@@ -31,6 +31,7 @@ import (
 	"vito/internal/media"
 	"vito/internal/notify"
 	"vito/internal/stt"
+	"vito/internal/whistle"
 )
 
 type State string
@@ -92,6 +93,7 @@ type Event struct {
 	Upload *UploadStatus `json:"upload,omitempty"`
 	// LocalSTT is the managed local speech engine's state, on every change.
 	LocalSTT *localstt.Status `json:"local_stt,omitempty"`
+	Whistle  *whistle.Status  `json:"whistle,omitempty"`
 	// CleanupFailed marks a final where the AI cleanup pass was attempted but
 	// errored/timed out, so the raw transcript was injected instead. The web UI
 	// surfaces this as a toast.
@@ -173,10 +175,16 @@ type Daemon struct {
 	// "local"). It is always constructed, so the settings page can offer it,
 	// and only started when the config selects it.
 	local *localstt.Manager
+	// whistle is the small built-in speech model (provider "whistle"): runs
+	// in-process per clip, so there is nothing to start, only to download.
+	whistle *whistle.Manager
 }
 
 // LocalSTT exposes the managed local engine to the HTTP layer.
 func (d *Daemon) LocalSTT() *localstt.Manager { return d.local }
+
+// Whistle is the built-in small speech model, for the HTTP layer.
+func (d *Daemon) Whistle() *whistle.Manager { return d.whistle }
 
 // resolveSTT turns the configured provider into what the stt package can act
 // on. The managed local engine is not a provider there at all: it is an
@@ -207,6 +215,8 @@ func sttProviderName(cfg config.STT) string {
 		return "Soniox"
 	case "openai":
 		return stt.OpenAIName(cfg)
+	case "whistle":
+		return "Whistle"
 	}
 	return "AssemblyAI"
 }
@@ -369,6 +379,8 @@ func New(cfg *config.Config, log *slog.Logger, audioCtx *audio.Context, hist *hi
 	d := &Daemon{cfg: cfg, log: log, audioCtx: audioCtx, hist: hist, state: StateIdle}
 	d.player = audio.NewPlayer(func(string) { d.stopPlayback() })
 	d.local = localstt.New(log, func(st localstt.Status) { d.emit(Event{Type: "local_stt", LocalSTT: &st}) })
+	d.whistle = whistle.NewManager(log, func(st whistle.Status) { d.emit(Event{Type: "whistle", Whistle: &st}) })
+	stt.WhistleEngine = d.whistle.Engine
 	d.local.SetDesired(cfg.STT.Provider == "local", cfg.STT.LocalVariant)
 	go d.retentionLoop()
 	return d
@@ -1105,6 +1117,9 @@ func (d *Daemon) finish(s *session) {
 
 	// Deterministic corrections run always, so raw mode benefits too.
 	raw = dictionary.Apply(raw, cfg.Dictionary.Corrections)
+	// Characters many apps cannot show (a non-breaking hyphen comes out as a box
+	// in Notepad) become their plain equivalents, in what is pasted and kept.
+	raw = cleanup.Plain(raw)
 
 	// A spoken command ("Vito, vertaal naar Duits") arms the next dictation and is
 	// not itself pasted; the following dictation carries it into the cleanup pass.
@@ -1195,7 +1210,7 @@ func (d *Daemon) finish(s *session) {
 				d.markCredit(p, true)
 			}
 		} else {
-			cleaned = out
+			cleaned = cleanup.Plain(out)
 			cleanupUsed = true
 			d.markCredit(cleanup.ProviderName(cleanCfg), false) // a successful pass clears any prior flag
 		}

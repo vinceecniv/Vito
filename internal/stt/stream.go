@@ -34,6 +34,8 @@ func NewStream(cfg config.STT, keyterms []string, log *slog.Logger, onPartial fu
 		return newSonioxStream(cfg, keyterms, log, onPartial)
 	case "openai":
 		return newOpenAIStream(cfg, keyterms, log)
+	case "whistle":
+		return newWhistleStream(cfg, keyterms, log, onPartial)
 	default:
 		return newAssemblyAIStream(cfg, keyterms, log, onPartial)
 	}
@@ -56,6 +58,11 @@ func FinishTimeout(cfg config.STT) time.Duration {
 	if !HasPartials(cfg) {
 		return 120 * time.Second
 	}
+	if cfg.Provider == "whistle" {
+		// Segments still queued when you stop are transcribed then, on this
+		// machine's CPU.
+		return 60 * time.Second
+	}
 	return 8 * time.Second
 }
 
@@ -68,6 +75,8 @@ func Fallback(cfg config.STT, keyterms []string) Transcriber {
 	switch cfg.Provider {
 	case "openai":
 		return nil
+	case "whistle":
+		return whistleFile{lang: whistleLang(cfg), keywords: keyterms}
 	case "soniox":
 		return newSonioxFileClient(cfg, keyterms)
 	default:

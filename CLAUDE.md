@@ -12,6 +12,68 @@ seems not to change, check the hook ran — don't debug the CSS first.
 
 The user usually views the app as an installed PWA, which caches aggressively.
 
+## The UI can also be downloaded
+
+A release daemon serves a newer interface between releases: `internal/uibundle`
+fetches `https://vito.talk/ui/ui.json` (+ `.sig`, ed25519) at start and every 6 h,
+verifies it and the zip's sha256, unpacks to `<UserCacheDir>/vito/ui/<version>/`
+and serves it from the next page load. The embedded `web.Files` is the fallback;
+`/?ui=builtin` pins a browser to it, `/?ui=auto` releases it. Every UI handler
+reads through `s.uiFS(r)` — never from `web.*` directly.
+
+A `dev` build never serves a download (set `VITO_UI_URL` to test one), so local
+edits stay visible. A bundle names the release it updates (`app`, default the
+latest `v*` tag) and is served only by that exact version, so after the next
+release the newer built-in interface wins until a bundle for it is published.
+It also needs `min_api <= uibundle.API <= api`: **raise `uibundle.API` when the UI starts depending on something new in
+the daemon**, or a published interface will call routes older daemons lack.
+
+Publish with `pwsh -File scripts/publish-ui.ps1 [-Push]` (builds into
+`../Vito-Web/ui` via `go run ./packaging/uibundle build`). The private key is
+`~/.vito-signing/ui-ed25519.key` on the Windows build machine; losing it means
+shipping a release with a new public key.
+
+## Vito in the browser (vito.talk/app)
+
+The same `index.html` runs without the app. When the page is not served by the
+daemon, `__VITO_TOKEN__` is still the placeholder; then `STANDALONE` is true,
+`standalone/backend.js` answers every `api()` call and stands in for the
+WebSocket (localStorage for config, history and day sums), and
+`standalone/whistle-worker.js` runs Whistle as WebAssembly, cut at pauses like
+`internal/stt/whistle_stream.go` (the engine's own streaming mode is ~2× slower
+than realtime in WASM). Its stats/streaks/achievements are ports of
+`internal/history` — keep them in step. Settings that need the app are hidden by
+CSS under `.standalone`; `.web-only`/`.helper-only` swap text.
+
+Asset URLs in `index.html` must stay **relative** (`i18n/…`, not `/i18n/…`): the
+browser version lives under `/app/`.
+
+Build the site with `go run ./packaging/uibundle app -out <dir>` (adds the
+default config, the achievement list and the pinned needle WASM). Test it
+locally by serving `<dir>` under `/app/` and opening it in headless Edge with
+`--use-file-for-fake-audio-capture=<wav>` as the microphone.
+
+From the browser to the app: the daemon answers `GET /api/hello` to
+`https://vito.talk` only (plus `VITO_WEB_ORIGIN`), and `POST /handover` parks
+the browser's data for the app's own page to confirm (`internal/server/handover.go`,
+`history.Import`, idempotent per source).
+
+## Sync
+
+`internal/cloudsync` syncs through a **folder** the user's own sync app keeps
+the same everywhere (Dropbox, OneDrive, Nextcloud, iCloud Drive, Syncthing, a
+network share) — no accounts, tokens or server. `Candidates()` finds the usual
+folders; `PickFolder` opens the system's picker. Vito works in `<folder>/Vito
+Sync`, writing beside the target and renaming into place.
+
+Each computer writes only `devices/<id>.json` and `history/<id>/<yyyy-mm>.json`
+and imports the others' (`history.Import` with `SyncSource`), so a sync app
+never sees two computers change one file. Entries taken over are marked by
+`origin` and never re-shared. The device file also carries all day_stats
+columns (costs, Assist, uploads), the user's deletions and star changes
+(`sync_deleted`/`sync_favorite`; automatic pruning is not synced), and the
+dictionary and cleanup rule sets (newest wins after a first merge).
+
 ## Translations
 
 The interface ships in 60 languages. English is the source language: the code
@@ -57,6 +119,20 @@ Measured on this machine (i9-10920X, 12 threads): Parakeet ≈ 1 s per dictation
 on CPU, 0.25 s on Vulkan; Whisper large-v3-turbo ≈ 4–9 s on CPU, 0.4 s on CUDA.
 Whisper is the better engine for Dutch with English jargon; Parakeet for CPU.
 Benchmark only on an idle machine — a background encode inflated numbers 2×.
+
+## Vito updates itself
+
+`internal/update.Auto` (setting `update.auto`, nil = on, only while the check is
+on) downloads a newer release in the background, verifies it against the
+`<asset>.sha256` published beside it, and installs it once the daemon has been
+idle for 3 minutes: Windows runs the setup silently (only for a copy with
+`unins*.exe` beside it; `[Run]` restarts Vito), Linux swaps `$APPIMAGE` and
+re-execs, macOS replaces the `.app` from the `.dmg` and `open -n`s it. Flatpak,
+distro packages and `dev` builds are left alone. The replaced version is noted
+in `<UserConfigDir>/vito/updated-from` and reported once as `updated_from` in
+`/api/update`. Keep the asset names (`Vito-Setup-<v>.exe`,
+`Vito-<v>-<arch>.AppImage`, `Vito-<v>.dmg`, each with `.sha256`) stable — the
+updater looks them up by name.
 
 ## Releases (Windows)
 

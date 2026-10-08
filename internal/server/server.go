@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"log/slog"
 	"net"
 	"net/http"
@@ -22,6 +23,7 @@ import (
 	"regexp"
 	"runtime"
 	"runtime/debug"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -35,6 +37,7 @@ import (
 	"vito/internal/autostart"
 	"vito/internal/backup"
 	"vito/internal/cleanup"
+	"vito/internal/cloudsync"
 	"vito/internal/config"
 	"vito/internal/daemon"
 	"vito/internal/demo"
@@ -43,6 +46,7 @@ import (
 	"vito/internal/inject"
 	"vito/internal/selfexe"
 	"vito/internal/stt"
+	"vito/internal/uibundle"
 	"vito/internal/update"
 	"vito/web"
 )
@@ -57,6 +61,11 @@ type Server struct {
 	token    string
 	port     int
 	updates  *update.Checker
+	ui       *uibundle.Manager
+	sync     *cloudsync.Engine
+	auto     *update.Auto
+	// updatedFrom is the version this start replaced, when it was an update.
+	updatedFrom string
 
 	fxMu   sync.Mutex
 	fxRate float64   // cached USD→EUR
@@ -67,6 +76,22 @@ func New(d *daemon.Daemon, log *slog.Logger, audioCtx *audio.Context, hist *hist
 	s := &Server{d: d, log: log, audioCtx: audioCtx, hist: hist, hk: hk, hub: newHub(), token: token, port: port,
 		updates: update.NewChecker(Version)}
 	d.OnEvent = func(e daemon.Event) { s.hub.broadcast(e) }
+	// A build made by hand ("dev") keeps serving its own interface, or every
+	// change to web/ would be hidden behind the published one; VITO_UI_URL
+	// opts it in for testing.
+	fetch := Version != "dev" || os.Getenv("VITO_UI_URL") != ""
+	s.ui = uibundle.New(log, Version, fetch, func() bool { return d.Config().Update.CheckEnabled() },
+		func(st uibundle.Status) { s.hub.broadcast(map[string]any{"type": "ui", "ui": st}) })
+	if fetch {
+		go s.ui.Run(context.Background())
+	}
+	s.startSync()
+	s.updatedFrom = update.TakeUpdatedFrom(Version)
+	s.auto = update.NewAuto(s.updates, log,
+		func() bool { return d.Config().Update.AutoEnabled() },
+		func() bool { return d.Status().State == daemon.StateIdle },
+		d.Shutdown)
+	go s.auto.Run(context.Background())
 	return s
 }
 
@@ -96,13 +121,13 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /ws", s.handleWS)
 
 	// PWA assets: public (no token) so the browser can install and cache them.
-	mux.HandleFunc("GET /manifest.webmanifest", s.static("application/manifest+json", web.Manifest, false))
-	mux.HandleFunc("GET /sw.js", s.static("text/javascript", web.ServiceWorker, false))
-	mux.HandleFunc("GET /favicon.svg", s.static("image/svg+xml", web.Favicon, true))
-	mux.HandleFunc("GET /icon-192.png", s.static("image/png", web.Icon192, true))
-	mux.HandleFunc("GET /icon-512.png", s.static("image/png", web.Icon512, true))
-	mux.HandleFunc("GET /fonts-baloo2.woff2", s.static("font/woff2", web.FontBaloo2, true))
-	mux.HandleFunc("GET /fonts-sora.woff2", s.static("font/woff2", web.FontSora, true))
+	mux.HandleFunc("GET /manifest.webmanifest", s.static("manifest.webmanifest", "application/manifest+json", false))
+	mux.HandleFunc("GET /sw.js", s.static("sw.js", "text/javascript", false))
+	mux.HandleFunc("GET /favicon.svg", s.static("favicon.svg", "image/svg+xml", true))
+	mux.HandleFunc("GET /icon-192.png", s.static("icon-192.png", "image/png", true))
+	mux.HandleFunc("GET /icon-512.png", s.static("icon-512.png", "image/png", true))
+	mux.HandleFunc("GET /fonts-baloo2.woff2", s.static("fonts-baloo2.woff2", "font/woff2", true))
+	mux.HandleFunc("GET /fonts-sora.woff2", s.static("fonts-sora.woff2", "font/woff2", true))
 	mux.HandleFunc("GET /flags/{name}", s.handleFlag)
 	mux.HandleFunc("GET /logos/{name}", s.handleLogo)
 	mux.HandleFunc("GET /i18n/{name}", s.handleI18n)
@@ -131,8 +156,25 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/local-stt", s.auth(s.handleLocalSTT))
 	mux.HandleFunc("POST /api/local-stt/install", s.auth(s.handleLocalSTTInstall))
 	mux.HandleFunc("POST /api/local-stt/remove", s.auth(s.handleLocalSTTRemove))
+	mux.HandleFunc("GET /api/whistle", s.auth(s.handleWhistle))
+	mux.HandleFunc("POST /api/whistle/install", s.auth(s.handleWhistleInstall))
+	mux.HandleFunc("POST /api/whistle/remove", s.auth(s.handleWhistleRemove))
 	mux.HandleFunc("GET /api/cleanup/prompts", s.auth(s.handleBuiltinPrompts))
 	mux.HandleFunc("GET /api/about", s.auth(s.handleAbout))
+	mux.HandleFunc("GET /api/ui", s.auth(s.handleUI))
+	// The browser version finding the app, and handing its data over (handover.go).
+	mux.HandleFunc("GET /api/hello", s.handleHello)
+	mux.HandleFunc("OPTIONS /api/hello", s.handleHello)
+	mux.HandleFunc("POST /handover", s.handleHandover)
+	mux.HandleFunc("GET /api/handover/{id}", s.auth(s.handleHandoverSummary))
+	// Cloud sync (sync.go).
+	mux.HandleFunc("GET /api/sync", s.auth(s.handleSyncStatus))
+	mux.HandleFunc("POST /api/sync/connect", s.auth(s.handleSyncConnect))
+	mux.HandleFunc("POST /api/sync/now", s.auth(s.handleSyncNow))
+	mux.HandleFunc("POST /api/sync/disconnect", s.auth(s.handleSyncDisconnect))
+	mux.HandleFunc("POST /api/sync/pick", s.auth(s.handleSyncPick))
+	mux.HandleFunc("POST /api/handover/{id}/apply", s.auth(s.handleHandoverApply))
+	mux.HandleFunc("POST /api/ui/check", s.auth(s.handleUICheck))
 	mux.HandleFunc("GET /api/linux-tools", s.auth(s.handleLinuxTools))
 	mux.HandleFunc("GET /api/autostart", s.auth(s.handleGetAutostart))
 	mux.HandleFunc("PUT /api/autostart", s.auth(s.handlePutAutostart))
@@ -173,6 +215,11 @@ func (s *Server) ownOrigin() string {
 // pass through to token auth.
 func (s *Server) rejectCrossOrigin(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// The two routes for the website check its origin themselves.
+		if r.URL.Path == "/api/hello" || r.URL.Path == "/handover" {
+			next.ServeHTTP(w, r)
+			return
+		}
 		if origin := r.Header.Get("Origin"); origin != "" && origin != s.ownOrigin() {
 			http.Error(w, "cross-origin requests are not allowed", http.StatusForbidden)
 			return
@@ -193,26 +240,86 @@ func (s *Server) auth(next http.HandlerFunc) http.HandlerFunc {
 
 // handleIndex serves the web UI with the auth token injected (design §2:
 // the UI receives the token in the page, never via CORS).
+//
+// ?ui=builtin pins this browser to the interface embedded in the binary (a
+// cookie, so the assets the page then loads come from the same copy) and
+// ?ui=auto releases it — the way back when a downloaded interface misbehaves.
 func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
-	page := bytes.ReplaceAll(web.Index, []byte("__VITO_TOKEN__"), []byte(s.token))
+	switch r.URL.Query().Get("ui") {
+	case "builtin":
+		http.SetCookie(w, &http.Cookie{Name: uiCookie, Value: "builtin", Path: "/", HttpOnly: true, SameSite: http.SameSiteStrictMode})
+		r.AddCookie(&http.Cookie{Name: uiCookie, Value: "builtin"})
+	case "auto":
+		http.SetCookie(w, &http.Cookie{Name: uiCookie, Path: "/", MaxAge: -1})
+		r.Header.Del("Cookie")
+	}
+	page, err := fs.ReadFile(s.uiFS(r), "index.html")
+	if err != nil {
+		page = web.Index
+	}
+	page = bytes.ReplaceAll(page, []byte("__VITO_TOKEN__"), []byte(s.token))
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Cache-Control", "no-store")
 	_, _ = w.Write(page)
 }
 
-// static serves an embedded asset with the given content type. cacheable assets
-// get a long cache lifetime; the service worker must not be cached so updates
-// propagate.
-func (s *Server) static(contentType string, body []byte, cacheable bool) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", contentType)
-		if cacheable {
-			w.Header().Set("Cache-Control", "public, max-age=86400")
-		} else {
-			w.Header().Set("Cache-Control", "no-cache")
-		}
-		_, _ = w.Write(body)
+const uiCookie = "vito_ui"
+
+// uiFS is the interface this request is served from: the downloaded one
+// (internal/uibundle) unless the browser asked for the built-in one.
+func (s *Server) uiFS(r *http.Request) fs.FS {
+	if c, err := r.Cookie(uiCookie); err == nil && c.Value == "builtin" {
+		return uibundle.Builtin()
 	}
+	return s.ui.FS()
+}
+
+// serveUI writes one file of the interface, or a 404.
+func (s *Server) serveUI(w http.ResponseWriter, r *http.Request, name, contentType, cacheControl string) {
+	data, err := fs.ReadFile(s.uiFS(r), name)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", contentType)
+	w.Header().Set("Cache-Control", cacheControl)
+	_, _ = w.Write(data)
+}
+
+// static serves a top-level asset of the interface. cacheable assets get a
+// long cache lifetime; the service worker must not be cached so updates
+// propagate.
+func (s *Server) static(name, contentType string, cacheable bool) http.HandlerFunc {
+	cc := "no-cache"
+	if cacheable {
+		cc = "public, max-age=86400"
+	}
+	return func(w http.ResponseWriter, r *http.Request) { s.serveUI(w, r, name, contentType, cc) }
+}
+
+// handleUI reports which interface is served and when it was last checked.
+func (s *Server) handleUI(w http.ResponseWriter, r *http.Request) {
+	s.writeJSON(w, http.StatusOK, s.uiStatus(r))
+}
+
+func (s *Server) uiStatus(r *http.Request) uibundle.Status {
+	st := s.ui.Status()
+	if c, err := r.Cookie(uiCookie); err == nil && c.Value == "builtin" {
+		st.Source, st.Version = "builtin", ""
+	}
+	return st
+}
+
+// handleUICheck looks for a newer interface now instead of at the next
+// six-hourly check.
+func (s *Server) handleUICheck(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Minute)
+	defer cancel()
+	if err := s.ui.Check(ctx); err != nil {
+		s.writeJSON(w, http.StatusOK, map[string]any{"ok": false, "error": err.Error(), "ui": s.uiStatus(r)})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "ui": s.uiStatus(r)})
 }
 
 var flagName = regexp.MustCompile(`^[a-z]{2}(-[a-z]+)?\.svg$`)
@@ -226,17 +333,10 @@ func (s *Server) handleI18n(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	data, err := web.I18n.ReadFile("i18n/" + name)
-	if err != nil {
-		http.NotFound(w, r)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	// Must revalidate: these files are baked into the binary and change with it,
-	// and a day-old copy of a language file leaves the interface half-translated
-	// after an update — with no way for the user to tell why.
-	w.Header().Set("Cache-Control", "no-cache")
-	_, _ = w.Write(data)
+	// Must revalidate: these files change with the interface, and a day-old
+	// copy of a language file leaves it half-translated after an update — with
+	// no way for the user to tell why.
+	s.serveUI(w, r, "i18n/"+name, "application/json; charset=utf-8", "no-cache")
 }
 
 var achAssetName = regexp.MustCompile(`^[a-z0-9._-]+$`)
@@ -260,14 +360,7 @@ func (s *Server) handleAchievementAsset(w http.ResponseWriter, r *http.Request) 
 		http.NotFound(w, r)
 		return
 	}
-	data, err := web.Achievements.ReadFile("achievements/" + name)
-	if err != nil {
-		http.NotFound(w, r)
-		return
-	}
-	w.Header().Set("Content-Type", ct)
-	w.Header().Set("Cache-Control", "public, max-age=86400")
-	_, _ = w.Write(data)
+	s.serveUI(w, r, "achievements/"+name, ct, "public, max-age=86400")
 }
 
 // handleAchievementLottie serves one embedded medal animation (Lottie JSON).
@@ -277,24 +370,21 @@ func (s *Server) handleAchievementLottie(w http.ResponseWriter, r *http.Request)
 		http.NotFound(w, r)
 		return
 	}
-	data, err := web.Achievements.ReadFile("achievements/lottie/" + name)
-	if err != nil {
-		http.NotFound(w, r)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Cache-Control", "public, max-age=86400")
-	_, _ = w.Write(data)
+	s.serveUI(w, r, "achievements/lottie/"+name, "application/json", "public, max-age=86400")
 }
 
 // achievementImages lists the ids that have a medal PNG shipped; achievementLotties
 // lists those that also have an unlock animation. The UI uses the PNG for every
 // medal and plays the animation, when present, on unlock and hover.
-func achievementImages() []string  { return achAssetIDs("achievements", ".png") }
-func achievementLotties() []string { return achAssetIDs("achievements/lottie", ".json") }
+func (s *Server) achievementImages(r *http.Request) []string {
+	return achAssetIDs(s.uiFS(r), "achievements", ".png")
+}
+func (s *Server) achievementLotties(r *http.Request) []string {
+	return achAssetIDs(s.uiFS(r), "achievements/lottie", ".json")
+}
 
-func achAssetIDs(dir, ext string) []string {
-	entries, err := web.Achievements.ReadDir(dir)
+func achAssetIDs(fsys fs.FS, dir, ext string) []string {
+	entries, err := fs.ReadDir(fsys, dir)
 	if err != nil {
 		return nil
 	}
@@ -339,6 +429,8 @@ func (s *Server) handleAbout(w http.ResponseWriter, r *http.Request) {
 		"commit_time": ctime,
 		"modified":    modified,
 		"license":     "MIT",
+		"api":         uibundle.API,
+		"ui":          s.uiStatus(r),
 	})
 }
 
@@ -350,14 +442,7 @@ func (s *Server) handleFlag(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	data, err := web.Flags.ReadFile("flags/" + name)
-	if err != nil {
-		http.NotFound(w, r)
-		return
-	}
-	w.Header().Set("Content-Type", "image/svg+xml")
-	w.Header().Set("Cache-Control", "public, max-age=86400")
-	_, _ = w.Write(data)
+	s.serveUI(w, r, "flags/"+name, "image/svg+xml", "public, max-age=86400")
 }
 
 // logoName restricts a logo request to a bare "<name>.png", like flagName.
@@ -370,14 +455,7 @@ func (s *Server) handleLogo(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	data, err := web.Logos.ReadFile("logos/" + name)
-	if err != nil {
-		http.NotFound(w, r)
-		return
-	}
-	w.Header().Set("Content-Type", "image/png")
-	w.Header().Set("Cache-Control", "public, max-age=86400")
-	_, _ = w.Write(data)
+	s.serveUI(w, r, "logos/"+name, "image/png", "public, max-age=86400")
 }
 
 // handleWS upgrades the web UI's event stream. Token arrives as a query
@@ -503,16 +581,30 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 		Keyterms:    append([]string(nil), current.Dictionary.Keyterms...),
 		Corrections: append([]config.Correction(nil), current.Dictionary.Corrections...),
 	}
+	// The dashboard layout is a byte slice too: copy it out, and give the
+	// decode a fresh one to fill, or decoding writes the page's copy into the
+	// live config's bytes and corrupts it for every later save.
+	savedDashboard := append(json.RawMessage(nil), current.UI.Dashboard...)
 	cfg := current // start from current so omitted fields keep their value
+	cfg.UI.Dashboard = nil
 	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<20)).Decode(&cfg); err != nil {
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "invalid JSON: " + err.Error()})
 		return
 	}
 	// The local API is not allowed to move or re-key the server itself.
 	cfg.Server = current.Server
+	// Sync has its own endpoints; a settings save only stamps a dictionary
+	// change, so the newest one wins across computers.
+	cfg.Sync = current.Sync
+	if !slices.Equal(cfg.Dictionary.Keyterms, savedDict.Keyterms) || !slices.Equal(cfg.Dictionary.Corrections, savedDict.Corrections) {
+		cfg.Sync.DictionaryAt = time.Now().UnixMilli()
+	}
+	if !slices.Equal(cfg.Cleanup.Prompts, current.Cleanup.Prompts) {
+		cfg.Sync.PromptsAt = time.Now().UnixMilli()
+	}
 	// The dashboard layout has its own endpoint; a settings save carries the
 	// copy the page loaded, which may be older than a layout saved since.
-	cfg.UI.Dashboard = current.UI.Dashboard
+	cfg.UI.Dashboard = savedDashboard
 	// In demo mode the UI is showing (and would send back) the sample
 	// dictionary, so keep the real one — saving any settings change from a demo
 	// must not overwrite the user's keyterms and corrections.
@@ -696,8 +788,8 @@ func (s *Server) costRates() (sttHr, inRate, outRate, fx float64, currency strin
 		// Taken as is, zero included: a server of your own is free, and "unknown
 		// rate, assume the default" would bill it at AssemblyAI's price.
 		sttHr = stt.OpenAIRateUSD(cfg.STT)
-	case "local":
-		sttHr = 0 // Vito's own engine on this machine
+	case "local", "whistle":
+		sttHr = 0 // a model on this machine
 	default:
 		sttHr = nonZero(sttRateUSD(cfg.STT), nonZero(c.SttPerHourUSD, 0.15))
 	}
@@ -903,8 +995,8 @@ func (s *Server) handleAchievements(w http.ResponseWriter, r *http.Request) {
 		"savings":      st.SubscriptionSavings,
 		"months":       months,
 		"sub_monthly":  subMonthly,
-		"images":       achievementImages(),
-		"animated":     achievementLotties(),
+		"images":       s.achievementImages(r),
+		"animated":     s.achievementLotties(r),
 		"achievements": items,
 	})
 }
@@ -974,6 +1066,29 @@ func (s *Server) handleBuiltinPrompts(w http.ResponseWriter, r *http.Request) {
 // handleLocalSTT reports the managed local speech engine: whether this machine
 // has a build, whether it is installed, and what it is doing right now. The
 // page reads it once and then follows the "local_stt" events.
+// handleWhistle reports the built-in small model: whether this platform has an
+// engine, and whether it is downloaded. Install and remove answer at once;
+// progress follows as "whistle" events.
+func (s *Server) handleWhistle(w http.ResponseWriter, r *http.Request) {
+	s.writeJSON(w, http.StatusOK, s.d.Whistle().Status())
+}
+
+func (s *Server) handleWhistleInstall(w http.ResponseWriter, r *http.Request) {
+	if err := s.d.Whistle().Install(); err != nil {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
+func (s *Server) handleWhistleRemove(w http.ResponseWriter, r *http.Request) {
+	if err := s.d.Whistle().Remove(); err != nil {
+		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
 func (s *Server) handleLocalSTT(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, s.d.LocalSTT().Status())
 }
@@ -1476,6 +1591,10 @@ func (s *Server) handleUpdate(w http.ResponseWriter, r *http.Request) {
 		"checking":  s.d.Config().Update.CheckEnabled(),
 		"repo":      "https://github.com/" + update.Repo,
 		"repo_url":  "https://github.com/" + update.Repo + "/releases",
+		"auto":      s.auto.Status(),
+	}
+	if s.updatedFrom != "" {
+		out["updated_from"] = s.updatedFrom
 	}
 	if !s.d.Config().Update.CheckEnabled() {
 		s.writeJSON(w, http.StatusOK, out)
@@ -1517,7 +1636,9 @@ func (s *Server) handleUpdateApply(w http.ResponseWriter, r *http.Request) {
 		s.writeJSON(w, http.StatusBadGateway, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}
+	update.MarkUpdating(Version)
 	if err := update.Apply(path); err != nil {
+		update.ClearMark()
 		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}

@@ -24,3 +24,4 @@ Thumbs.db
 # AppImage build tree
 /build/
 packaging/flatpak/build.yml
+.claude/worktrees/

@@ -202,10 +202,16 @@ type Update struct {
 	// Check enables the daily version check. Nil-safe: zero value means "not set
 	// yet", which Load turns into true.
 	Check *bool `json:"check,omitempty"`
+	// Auto installs a found update by itself once Vito is idle. Nil means on;
+	// it does nothing while Check is off.
+	Auto *bool `json:"auto,omitempty"`
 }
 
 // CheckEnabled reports whether the version check should run.
 func (u Update) CheckEnabled() bool { return u.Check == nil || *u.Check }
+
+// AutoEnabled reports whether updates install themselves.
+func (u Update) AutoEnabled() bool { return u.CheckEnabled() && (u.Auto == nil || *u.Auto) }
 
 // Backup controls the automatic rolling local backups. A full backup can always
 // be exported by hand from the settings page; this is the safety net that keeps
@@ -262,12 +268,28 @@ type Config struct {
 	Costs      Costs   `json:"costs"`
 	Update     Update  `json:"update"`
 	Backup     Backup  `json:"backup"`
+	Sync       Sync    `json:"sync,omitzero"`
 	// Demo fills the UI with fabricated English sample data — statistics, costs,
 	// history, dictionary and a replayed live transcript — for screenshots and
 	// demos. Deliberately file-only (no setting in the UI) so it can't be turned
 	// on by accident. Your real history and dictionary are left untouched: they
 	// are hidden while it's on, not replaced.
 	Demo bool `json:"demo"`
+}
+
+// Sync shares dictations, day sums, achievements and the dictionary between
+// computers through a folder that a sync app (Dropbox, OneDrive, Nextcloud,
+// iCloud Drive, Syncthing…) keeps the same everywhere (internal/cloudsync).
+// Set by its own endpoints, never by a settings save.
+type Sync struct {
+	Folder     string `json:"folder,omitempty"` // the chosen folder; Vito works in its "Vito Sync"; "" is off
+	DeviceID   string `json:"device_id,omitempty"`
+	DeviceName string `json:"device_name,omitempty"`
+	// DictionaryAt and PromptsAt are when the dictionary and the user's own
+	// cleanup rule sets last changed here (unix ms). The newest change wins
+	// across computers.
+	DictionaryAt int64 `json:"dictionary_at,omitempty"`
+	PromptsAt    int64 `json:"prompts_at,omitempty"`
 }
 
 // PushToTalkEnabled reports whether the hold-to-talk behaviour is on.

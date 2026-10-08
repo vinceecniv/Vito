@@ -68,7 +68,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 	}
 	// The managed engine decodes nothing but WAV, and Vito has no decoder of
 	// its own to hand it anything else. Said up front, before the upload.
-	if cfg.STT.Provider == "local" && !strings.EqualFold(filepath.Ext(name), ".wav") {
+	if (cfg.STT.Provider == "local" || cfg.STT.Provider == "whistle") && !strings.EqualFold(filepath.Ext(name), ".wav") {
 		err := fmt.Errorf("de lokale spraakherkenning accepteert alleen WAV-bestanden")
 		d.emitUpload(UploadStatus{Phase: "error", Name: name, Error: err.Error()})
 		return UploadResult{}, err
@@ -101,7 +101,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 		durationMS = out.DurationMS
 	}
 
-	raw := dictionary.Apply(strings.TrimSpace(out.Text), cfg.Dictionary.Corrections)
+	raw := cleanup.Plain(dictionary.Apply(strings.TrimSpace(out.Text), cfg.Dictionary.Corrections))
 	if raw == "" {
 		err := fmt.Errorf("geen spraak herkend in dit bestand")
 		d.emitUpload(UploadStatus{Phase: "error", Name: name, Error: err.Error()})
@@ -127,7 +127,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 				d.markCredit(p, true)
 			}
 		} else {
-			cleaned, cleanupUsed = out, true
+			cleaned, cleanupUsed = cleanup.Plain(out), true
 			d.markCredit(cleanup.ProviderName(cfg.Cleanup), false)
 		}
 	}
@@ -186,6 +186,8 @@ func uploadReady(cfg config.STT) error {
 			return fmt.Errorf("geen spraak-endpoint ingesteld")
 		}
 		return nil
+	case "whistle":
+		return nil // TranscribeFile says so if the model isn't downloaded
 	}
 	if strings.TrimSpace(cfg.APIKey) == "" {
 		return fmt.Errorf("geen AssemblyAI API-key ingesteld")

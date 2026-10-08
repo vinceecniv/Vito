@@ -120,6 +120,10 @@ func NewStore(maxEntries, retentionDays int) (*Store, error) {
 	// The failed-cleanup reason (added later than the table); older rows keep ''
 	// — the reason was never stored back then, not even for the ones that failed.
 	_, _ = db.Exec("ALTER TABLE history ADD COLUMN cleanup_error TEXT NOT NULL DEFAULT ''")
+	// Where an entry came from when it was not dictated here: 'web:<id>' for a
+	// browser hand-over, 'sync:<device>' for another computer (see import.go).
+	_, _ = db.Exec("ALTER TABLE history ADD COLUMN origin TEXT NOT NULL DEFAULT ''")
+	migrateImport(func(q string) error { _, err := db.Exec(q); return err })
 	s := &Store{db: db, maxEntries: maxEntries, retentionDays: retentionDays}
 	s.importLegacy(filepath.Join(base, "history.jsonl"))
 	s.backfillDayStats()
@@ -563,6 +567,7 @@ func (s *Store) Clear() ([]string, error) {
 	if _, err := s.db.Exec(`DELETE FROM history WHERE favorite=0`); err != nil {
 		return nil, err
 	}
+	s.noteDeleted(ids) // gone on the other computers too
 	return ids, nil
 }
 
@@ -572,6 +577,9 @@ func (s *Store) Delete(id string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	_, err := s.db.Exec(`DELETE FROM history WHERE id=?`, id)
+	if err == nil {
+		s.noteDeleted([]string{id}) // gone on the other computers too
+	}
 	return err
 }
 
@@ -596,6 +604,10 @@ func (s *Store) SetFavorite(id string, on bool) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	_, err := s.db.Exec(`UPDATE history SET favorite=? WHERE id=?`, b2i(on), id)
+	if err == nil {
+		// For sync: the latest star change wins on every computer.
+		_, _ = s.db.Exec(`INSERT OR REPLACE INTO sync_favorite (id, favorite, at) VALUES (?,?,?)`, id, b2i(on), time.Now().UnixMilli())
+	}
 	return err
 }
 
