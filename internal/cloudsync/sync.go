@@ -1,6 +1,8 @@
 // Package cloudsync keeps Vito's dictations, statistics, achievements and
-// dictionary the same on every computer, through an app folder in the user's
-// own Dropbox or OneDrive. There is no Vito server in between.
+// dictionary the same on every computer, through a folder the user's own sync
+// app (Dropbox, OneDrive, Nextcloud, iCloud Drive, Syncthing, a network share)
+// keeps the same everywhere. Vito only reads and writes files there; there is
+// no Vito server and no account in between.
 //
 // Every computer writes only its own files and reads everyone else's, so two
 // computers never write the same file and nothing needs locking:
@@ -37,6 +39,16 @@ import (
 	"vito/internal/history"
 )
 
+// readme is put in the sync folder, for whoever finds it there.
+const readme = `This folder is kept by Vito (https://vito.talk) to keep your dictations,
+statistics, achievements and dictionary the same on every computer.
+
+Each computer writes only its own files here and reads the others'. Your sync
+app moves them between computers; Vito itself talks to no server.
+
+Don't edit these files. To stop syncing, use Settings → Backup in Vito.
+`
+
 // DeviceDoc is devices/<id>.json.
 type DeviceDoc struct {
 	Device       string                     `json:"device"`
@@ -53,26 +65,18 @@ type DeviceDoc struct {
 
 // Status is what the settings page shows.
 type Status struct {
-	Provider  string         `json:"provider,omitempty"`
-	Account   string         `json:"account,omitempty"`
-	Device    string         `json:"device,omitempty"`
-	Syncing   bool           `json:"syncing"`
-	Last      int64          `json:"last,omitempty"` // unix ms of the last good sync
-	Error     string         `json:"error,omitempty"`
-	NeedsAuth bool           `json:"needs_auth,omitempty"`
-	Devices   []DeviceInfo   `json:"devices,omitempty"`
-	Providers []ProviderInfo `json:"providers"`
+	Folder     string       `json:"folder,omitempty"`
+	Device     string       `json:"device,omitempty"`
+	Syncing    bool         `json:"syncing"`
+	Last       int64        `json:"last,omitempty"` // unix ms of the last good sync
+	Error      string       `json:"error,omitempty"`
+	Devices    []DeviceInfo `json:"devices,omitempty"`
+	Candidates []Candidate  `json:"candidates"` // sync folders found on this computer
 }
 
 type DeviceInfo struct {
 	Name    string `json:"name"`
 	Updated int64  `json:"updated"`
-}
-
-type ProviderInfo struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	Available bool   `json:"available"` // this build has an app registration for it
 }
 
 // state is what this computer remembers between syncs, next to the config.
@@ -109,10 +113,9 @@ func (e *Engine) Status() Status {
 	st := e.st
 	e.mu.Unlock()
 	c := e.config().Sync
-	st.Provider, st.Account, st.Device = c.Provider, c.Account, c.DeviceName
-	st.Providers = nil
-	for _, p := range Providers() {
-		st.Providers = append(st.Providers, ProviderInfo{p.ID, p.Name, p.ClientID != ""})
+	st.Folder, st.Device = c.Folder, c.DeviceName
+	if st.Folder == "" {
+		st.Candidates = Candidates()
 	}
 	return st
 }
@@ -150,7 +153,7 @@ func (e *Engine) Run(ctx context.Context) {
 			case <-time.After(20 * time.Second):
 			}
 		}
-		if e.config().Sync.Provider != "" {
+		if e.config().Sync.Folder != "" {
 			if err := e.SyncNow(ctx); err != nil {
 				e.log.Info("sync failed", "err", err)
 			}
@@ -159,13 +162,19 @@ func (e *Engine) Run(ctx context.Context) {
 	}
 }
 
-// Connect stores a freshly authorised provider and syncs.
-func (e *Engine) Connect(ctx context.Context, p *Provider, refresh string) error {
-	r := Open(p, refresh, nil)
-	account, _ := r.Account(ctx)
+// Connect starts syncing through folder, after checking Vito can write there.
+func (e *Engine) Connect(folder string) error {
+	folder = filepath.Clean(strings.TrimSpace(folder))
+	r, err := openFolder(folder)
+	if err != nil {
+		return err
+	}
+	if err := r.Put(context.Background(), "README.txt", []byte(readme)); err != nil {
+		return fmt.Errorf("Vito can't write in %s: %w", folder, err)
+	}
 	host, _ := os.Hostname()
-	err := e.update(func(c *config.Config) {
-		c.Sync.Provider, c.Sync.RefreshToken, c.Sync.Account = p.ID, refresh, account
+	err = e.update(func(c *config.Config) {
+		c.Sync.Folder = folder
 		if c.Sync.DeviceID == "" {
 			b := make([]byte, 8)
 			_, _ = rand.Read(b)
@@ -184,10 +193,10 @@ func (e *Engine) Connect(ctx context.Context, p *Provider, refresh string) error
 	return nil
 }
 
-// Disconnect forgets the provider. What is in the cloud and what was synced
-// here stays.
+// Disconnect stops syncing. What is in the folder and what was synced here
+// stays.
 func (e *Engine) Disconnect() error {
-	err := e.update(func(c *config.Config) { c.Sync.Provider, c.Sync.RefreshToken, c.Sync.Account = "", "", "" })
+	err := e.update(func(c *config.Config) { c.Sync.Folder = "" })
 	e.set(func(s *Status) { *s = Status{} })
 	return err
 }
@@ -227,22 +236,20 @@ func (e *Engine) SyncNow(ctx context.Context) error {
 	e.running.Lock()
 	defer e.running.Unlock()
 	c := e.config().Sync
-	p := ProviderByID(c.Provider)
-	if p == nil || c.RefreshToken == "" {
-		return errors.New("sync is not connected")
+	if c.Folder == "" {
+		return errors.New("sync is not set up")
 	}
 	e.set(func(s *Status) { s.Syncing = true })
-	remote := Open(p, c.RefreshToken, func(tok string) {
-		_ = e.update(func(cc *config.Config) { cc.Sync.RefreshToken = tok })
-	})
-	devices, err := e.sync(ctx, remote, c)
+	var devices []DeviceInfo
+	remote, err := openFolder(c.Folder)
+	if err == nil {
+		devices, err = e.sync(ctx, remote, c)
+	}
 	e.set(func(s *Status) {
 		s.Syncing = false
-		s.Error, s.NeedsAuth = "", false
+		s.Error = ""
 		if err != nil {
 			s.Error = err.Error()
-			var ae *AuthError
-			s.NeedsAuth = errors.As(err, &ae)
 			return
 		}
 		s.Last = time.Now().UnixMilli()

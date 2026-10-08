@@ -3,8 +3,7 @@ package server
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"html"
+	"errors"
 	"net/http"
 	"time"
 
@@ -13,9 +12,8 @@ import (
 	"vito/internal/daemon"
 )
 
-// Cloud sync's routes (internal/cloudsync). Connecting runs in the browser:
-// the page asks for the provider's sign-in URL and opens it, the provider
-// sends the browser back to /oauth/callback, and that page closes the loop.
+// Sync's routes (internal/cloudsync): a folder that the user's own sync app
+// keeps the same on every computer.
 
 func (s *Server) startSync() {
 	s.sync = cloudsync.New(s.log, s.hist, s.d.Config, s.updateConfig,
@@ -54,50 +52,39 @@ func (s *Server) handleSyncStatus(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) handleSyncConnect(w http.ResponseWriter, r *http.Request) {
 	var body struct {
-		Provider string `json:"provider"`
+		Folder string `json:"folder"`
 	}
 	_ = json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<12)).Decode(&body)
-	p := cloudsync.ProviderByID(body.Provider)
-	if p == nil {
-		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "unknown provider"})
+	if err := s.sync.Connect(body.Folder); err != nil {
+		s.writeJSON(w, http.StatusOK, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}
-	u, err := cloudsync.BeginAuth(p)
-	if err != nil {
-		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
-		return
-	}
-	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "url": u})
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "sync": s.sync.Status()})
 }
 
-// handleOAuthCallback is where the provider sends the browser back. It needs
-// no token: the state it carries was handed out by BeginAuth and works once.
-func (s *Server) handleOAuthCallback(w http.ResponseWriter, r *http.Request) {
-	q := r.URL.Query()
-	page := func(title, msg string) {
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.Header().Set("Cache-Control", "no-store")
-		fmt.Fprintf(w, `<!doctype html><meta charset="utf-8"><title>Vito</title>
-<body style="font-family:system-ui,sans-serif;max-width:32em;margin:15vh auto;padding:0 1em;color:#2B2440;background:#FAF6EF">
-<h2>%s</h2><p>%s</p><p><a href="http://127.0.0.1:%d/">Vito</a></p></body>`, html.EscapeString(title), html.EscapeString(msg), s.port)
+// handleSyncPick opens the system's own folder picker, on this computer —
+// the page can't: a browser never hands a website a real path.
+func (s *Server) handleSyncPick(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		Title string `json:"title"`
+		Start string `json:"start"`
 	}
-	if e := q.Get("error"); e != "" {
-		page("Not connected", q.Get("error_description")+" ("+e+")")
-		return
+	_ = json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<12)).Decode(&body)
+	if body.Title == "" {
+		body.Title = "Choose the folder your sync app keeps in sync"
 	}
-	ctx, cancel := context.WithTimeout(r.Context(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(r.Context(), 10*time.Minute)
 	defer cancel()
-	p, refresh, err := cloudsync.FinishAuth(ctx, q.Get("state"), q.Get("code"))
+	p, err := cloudsync.PickFolder(ctx, body.Title, body.Start)
+	if errors.Is(err, cloudsync.ErrNoPicker) {
+		s.writeJSON(w, http.StatusOK, map[string]any{"ok": false, "error": "no_picker"})
+		return
+	}
 	if err != nil {
-		page("Not connected", err.Error())
+		s.writeJSON(w, http.StatusOK, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}
-	if err := s.sync.Connect(ctx, p, refresh); err != nil {
-		page("Not connected", err.Error())
-		return
-	}
-	// Back to the settings page, which picks the new state up from the event.
-	http.Redirect(w, r, fmt.Sprintf("http://127.0.0.1:%d/?synced=%s", s.port, p.ID), http.StatusSeeOther)
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "path": p})
 }
 
 func (s *Server) handleSyncNow(w http.ResponseWriter, r *http.Request) {

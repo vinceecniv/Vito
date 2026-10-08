@@ -172,7 +172,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("POST /api/sync/connect", s.auth(s.handleSyncConnect))
 	mux.HandleFunc("POST /api/sync/now", s.auth(s.handleSyncNow))
 	mux.HandleFunc("POST /api/sync/disconnect", s.auth(s.handleSyncDisconnect))
-	mux.HandleFunc("GET /oauth/callback", s.handleOAuthCallback)
+	mux.HandleFunc("POST /api/sync/pick", s.auth(s.handleSyncPick))
 	mux.HandleFunc("POST /api/handover/{id}/apply", s.auth(s.handleHandoverApply))
 	mux.HandleFunc("POST /api/ui/check", s.auth(s.handleUICheck))
 	mux.HandleFunc("GET /api/linux-tools", s.auth(s.handleLinuxTools))

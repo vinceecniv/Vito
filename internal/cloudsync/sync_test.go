@@ -3,6 +3,7 @@ package cloudsync
 import (
 	"context"
 	"io"
+	"io/fs"
 	"log/slog"
 	"path/filepath"
 	"slices"
@@ -47,7 +48,6 @@ func (m *memRemote) List(_ context.Context, dir string) ([]string, error) {
 	}
 	return out, nil
 }
-func (m *memRemote) Account(context.Context) (string, error) { return "test", nil }
 
 type computer struct {
 	e   *Engine
@@ -66,7 +66,7 @@ func newComputer(t *testing.T, id string) *computer {
 	}
 	t.Cleanup(func() { h.Close() })
 	c := &computer{h: h, cfg: *config.Default()}
-	c.cfg.Sync = config.Sync{Provider: "test", DeviceID: id, DeviceName: id}
+	c.cfg.Sync = config.Sync{Folder: "test", DeviceID: id, DeviceName: id}
 	c.e = New(slog.New(slog.NewTextHandler(io.Discard, nil)), h,
 		func() config.Config { return c.cfg },
 		func(f func(*config.Config)) error { f(&c.cfg); return nil }, nil)
@@ -131,4 +131,33 @@ func TestTwoComputers(t *testing.T) {
 	if n, w, act := a.totals(t); n != 4 || w != 7 || act != 4 {
 		t.Fatalf("a after b's new dictation: %d entries, %d words, %d activations; want 4, 7, 4", n, w, act)
 	}
+}
+
+// The same two computers through a real folder, as a sync app would share it.
+func TestTwoComputersThroughAFolder(t *testing.T) {
+	shared := t.TempDir()
+	r, err := openFolder(shared)
+	if err != nil {
+		t.Fatal(err)
+	}
+	now := time.Now()
+	a := newComputer(t, "aaaa")
+	a.h.Append(history.Entry{ID: "a1", Timestamp: now, Raw: "een twee drie", DurationMS: 1000})
+	b := newComputer(t, "bbbb")
+	b.h.Append(history.Entry{ID: "b1", Timestamp: now, Raw: "vier", DurationMS: 1000})
+	a.sync(t, r)
+	b.sync(t, r)
+	a.sync(t, r)
+	for name, c := range map[string]*computer{"a": a, "b": b} {
+		if n, w, _ := c.totals(t); n != 2 || w != 4 {
+			t.Fatalf("%s: %d entries, %d words; want 2, 4", name, n, w)
+		}
+	}
+	// Nothing half-written is left for the sync app to pick up.
+	_ = filepath.WalkDir(filepath.Join(shared, SubFolder), func(p string, d fs.DirEntry, err error) error {
+		if err == nil && strings.HasSuffix(p, ".tmp") {
+			t.Fatalf("temporary file left behind: %s", p)
+		}
+		return nil
+	})
 }

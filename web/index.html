@@ -1511,6 +1511,14 @@
   .standalone .web-only-inline { display:contents; }
   .standalone .helper-only { display:none !important; }
   a.btn.js-get-app { text-decoration:none; }
+  .sync-cands { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+  .sync-cand, .sync-on { display:flex; align-items:center; gap:12px; text-align:left; padding:10px 12px; border-radius:10px;
+    border:1px solid var(--input-border); background:var(--input-bg); color:var(--text); font:inherit; }
+  .sync-cand { cursor:var(--cur-hand); }
+  .sync-cand:hover { border-color:var(--violet); }
+  .sync-cand svg, .sync-on svg { width:22px; height:22px; flex:none; color:var(--violet); }
+  .sync-cand span, .sync-on span { display:flex; flex-direction:column; min-width:0; }
+  .sync-cand small, .sync-on small { color:var(--text3); font-size:11.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .help-web, .dl-web { display:none; }
   .standalone .dl-web { display:flex; color:#fff; border-color:transparent; background:var(--grad); box-shadow:0 4px 14px rgba(124,58,237,.3); }
   .standalone .dl-web:hover { filter:brightness(1.08); color:#fff; }
@@ -2173,7 +2181,7 @@
         </div>
         <div class="card" data-sec="backup" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.5 1.5A3.8 3.8 0 0 1 17.5 18z"/><path d="M10 13.5l2-2 2 2M12 11.5V16"/></svg><span>Sync between computers</span></h2>
-          <p class="act-note" style="margin:2px 0 0;">Keep your dictations, statistics, achievements and dictionary the same on every computer, through your own Dropbox or OneDrive. Vito only sees its own folder there (Apps/Vito), and there is no Vito server in between.</p>
+          <p class="act-note" style="margin:2px 0 0;">Keep your dictations, statistics, achievements and dictionary the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.</p>
           <p class="act-note" style="margin:8px 0 0;">Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.</p>
           <div id="sync-body" style="margin-top:14px;"></div>
         </div>
@@ -3074,22 +3082,26 @@ const TR = { nl: {
   "{l} is not among the browser's languages yet.":"{l} zit nog niet bij de talen in de browser.",
   "Get started":"Aan de slag",
   "Sync between computers":"Synchroniseren tussen computers",
-  "Keep your dictations, statistics, achievements and dictionary the same on every computer, through your own Dropbox or OneDrive. Vito only sees its own folder there (Apps/Vito), and there is no Vito server in between.":"Houd je dictaten, statistieken, prestaties en woordenboek gelijk op al je computers, via je eigen Dropbox of OneDrive. Vito ziet daar alleen zijn eigen map (Apps/Vito), en er zit geen Vito-server tussen.",
+  "Keep your dictations, statistics, achievements and dictionary the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.":"Houd je dictaten, statistieken, prestaties en woordenboek gelijk op al je computers, via een map die je eigen sync-app gelijk houdt — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing of een netwerkschijf. Vito praat hiervoor met geen enkele server.",
+  "Found on this computer":"Gevonden op deze computer",
+  "No sync app found in its usual place. Choose its folder yourself.":"Geen sync-app gevonden op de gebruikelijke plek. Kies de map zelf.",
+  "Other folder…":"Andere map…",
+  "Vito puts its files in a folder called “Vito Sync” inside it.":"Vito zet zijn bestanden daarin in een map “Vito Sync”.",
+  "Path of the folder":"Pad van de map",
+  "Use this folder":"Deze map gebruiken",
+  "Choose the folder your sync app keeps in sync":"Kies de map die je sync-app gelijk houdt",
+  "No other computer here yet. Choose the same folder on your other computer to sync with it.":"Nog geen andere computer. Kies op je andere computer dezelfde map om ermee te synchroniseren.",
+  "Stop syncing":"Stoppen met synchroniseren",
+  "This computer stops syncing. What is already here stays, and so does the folder.":"Deze computer stopt met synchroniseren. Wat hier al staat blijft, net als de map.",
   "Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.":"Instellingen en API-sleutels blijven per computer: microfoons, sneltoetsen en diensten verschillen vaak per computer.",
-  "Connect {p}":"Verbind {p}",
-  "A greyed-out service isn't set up in this version of Vito yet.":"Een grijze dienst is in deze versie van Vito nog niet ingericht.",
   "not yet":"nog niet",
-  "Connected to {p}":"Verbonden met {p}",
   "this computer is called":"deze computer heet",
   "Syncing…":"Bezig met synchroniseren…",
   "Last synced:":"Laatst gesynchroniseerd:",
   "Other computers":"Andere computers",
-  "Sign in again":"Opnieuw inloggen",
   "Sync now":"Nu synchroniseren",
-  "Disconnect":"Ontkoppelen",
   "Synced":"Gesynchroniseerd",
   "Stop syncing?":"Stoppen met synchroniseren?",
-  "This computer stops syncing. What is already here stays, and so do the files in your cloud storage.":"Deze computer stopt met synchroniseren. Wat hier al staat blijft, net als de bestanden in je cloudopslag.",
   "Connected — Vito now keeps this computer in sync.":"Verbonden — Vito houdt deze computer nu gelijk.",
   "I have the app":"Ik heb de app",
   "Move to the app":"Overzetten naar de app",
@@ -4629,45 +4641,57 @@ async function loadSync(){
 }
 function renderSync(){
   const box = $("sync-body"); if (!box || !syncSt) return;
-  const st = syncSt, prov = (st.providers || []).find(p => p.id === st.provider);
-  if (!st.provider) {
-    box.innerHTML = `<div class="rowflex" style="gap:9px;">` + (st.providers || []).map(p =>
-      `<button class="btn ${p.available ? "primary" : "ghost"} small" data-sync-connect="${p.id}"${p.available ? "" : " disabled"}>${t("Connect {p}").replace("{p}", p.name)}</button>`).join("") + `</div>` +
-      ((st.providers || []).some(p => !p.available) ? `<p class="act-note" style="margin:8px 0 0;">${t("A greyed-out service isn't set up in this version of Vito yet.")}</p>` : "");
-    box.querySelectorAll("[data-sync-connect]").forEach(b => b.onclick = async () => {
-      try { const r = await api("/api/sync/connect", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ provider: b.dataset.syncConnect }) });
-        if (!r.ok) throw new Error(r.error); window.open(r.url, "_blank"); }
-      catch (e) { toast(e.message, "err"); }
-    });
+  const st = syncSt;
+  const ICON_FOLDER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>';
+  const connect = async (folder) => {
+    try {
+      const r = await api("/api/sync/connect", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ folder }) });
+      if (!r.ok) throw new Error(r.error);
+      syncSt = r.sync || syncSt; renderSync();
+      toast(t("Connected — Vito now keeps this computer in sync."), "ok", 6000);
+    } catch (e) { toast(e.message, "err", 7000); }
+  };
+  if (!st.folder) {
+    const cands = st.candidates || [];
+    box.innerHTML =
+      (cands.length ? `<div class="subhead">${t("Found on this computer")}</div>
+        <div class="sync-cands">${cands.map((c, i) => `<button type="button" class="sync-cand" data-i="${i}">${ICON_FOLDER}<span><b>${ahEsc(c.name)}</b><small>${ahEsc(c.path)}</small></span></button>`).join("")}</div>`
+        : `<p class="act-note" style="margin:0;">${t("No sync app found in its usual place. Choose its folder yourself.")}</p>`) +
+      `<div class="rowflex" style="gap:9px; margin-top:12px; align-items:center;">
+        <button type="button" class="btn ${cands.length ? "ghost" : "primary"} small" id="sync-pick">${t("Other folder…")}</button>
+        <span class="act-note" style="margin:0;">${t("Vito puts its files in a folder called “Vito Sync” inside it.")}</span></div>
+      <div class="rowflex" id="sync-typed" style="gap:9px; margin-top:10px;" hidden>
+        <input type="text" id="sync-path" placeholder="${t("Path of the folder")}" style="flex:1; min-width:220px;">
+        <button type="button" class="btn primary small" id="sync-use">${t("Use this folder")}</button></div>`;
+    box.querySelectorAll(".sync-cand").forEach(b => b.onclick = () => connect(cands[+b.dataset.i].path));
+    $("sync-pick").onclick = async () => {
+      try {
+        const r = await api("/api/sync/pick", { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: t("Choose the folder your sync app keeps in sync") }) });
+        if (r.ok && r.path) return connect(r.path);
+        if (!r.ok && r.error === "no_picker") { $("sync-typed").hidden = false; $("sync-path").focus(); return; }
+        if (!r.ok) throw new Error(r.error);
+      } catch (e) { toast(e.message, "err"); }
+    };
+    $("sync-use").onclick = () => { const p = $("sync-path").value.trim(); if (p) connect(p); };
     return;
   }
   const when = st.last ? new Date(st.last).toLocaleString(numLoc(), { dateStyle: "medium", timeStyle: "short" }) : t("not yet");
   const devs = (st.devices || []).map(d => `<li>${ahEsc(d.name)} <span style="color:var(--text3);">— ${new Date(d.updated).toLocaleString(numLoc(), { dateStyle: "medium", timeStyle: "short" })}</span></li>`).join("");
   box.innerHTML =
-    `<p class="act-note" style="margin:0;">${t("Connected to {p}").replace("{p}", "<b>" + ahEsc(prov ? prov.name : st.provider) + "</b>")}${st.account ? " (" + ahEsc(st.account) + ")" : ""} · ${t("this computer is called")} <b>${ahEsc(st.device || "")}</b></p>` +
-    `<p class="act-note" style="margin:6px 0 0;">${st.syncing ? t("Syncing…") : t("Last synced:") + " " + when}</p>` +
+    `<div class="sync-on">${ICON_FOLDER}<span><b>${ahEsc(st.folder)}</b><small>${t("this computer is called")} ${ahEsc(st.device || "")}</small></span></div>` +
+    `<p class="act-note" style="margin:8px 0 0;">${st.syncing ? t("Syncing…") : t("Last synced:") + " " + when}</p>` +
     (st.error ? `<div class="ki-warn" style="margin-top:10px;">⚠ ${ahEsc(st.error)}</div>` : "") +
-    (devs ? `<div class="subhead" style="margin-top:14px;">${t("Other computers")}</div><ul style="margin:4px 0 0; padding-left:18px;">${devs}</ul>` : "") +
-    `<div class="rowflex" style="gap:9px; margin-top:12px;">` +
-    (st.needs_auth ? `<button class="btn primary small" data-sync-connect="${st.provider}">${t("Sign in again")}</button>` : `<button class="btn primary small" id="sync-now"${st.syncing ? " disabled" : ""}>${t("Sync now")}</button>`) +
-    `<button class="btn ghost small" id="sync-off">${t("Disconnect")}</button></div>`;
-  const now = $("sync-now");
-  if (now) now.onclick = () => { now.disabled = true; api("/api/sync/now", { method: "POST" }).then(r => { syncSt = r.sync || syncSt; renderSync(); if (r.ok) { toast(t("Synced"), "ok"); statsHistoryChanged(); loadStats(); } else toast(r.error, "err"); }).catch(e => toast(e.message, "err")); };
-  const again = box.querySelector("[data-sync-connect]");
-  if (again) again.onclick = async () => { try { const r = await api("/api/sync/connect", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ provider: st.provider }) }); window.open(r.url, "_blank"); } catch (e) { toast(e.message, "err"); } };
-  $("sync-off").onclick = () => modal(t("Stop syncing?"), `<p class="ki-note">${t("This computer stops syncing. What is already here stays, and so do the files in your cloud storage.")}</p>`,
-    () => { api("/api/sync/disconnect", { method: "POST" }).then(loadSync).catch(e => toast(e.message, "err")); }, "Disconnect", true);
+    (devs ? `<div class="subhead" style="margin-top:14px;">${t("Other computers")}</div><ul style="margin:4px 0 0; padding-left:18px;">${devs}</ul>`
+      : `<p class="act-note" style="margin:8px 0 0;">${t("No other computer here yet. Choose the same folder on your other computer to sync with it.")}</p>`) +
+    `<div class="rowflex" style="gap:9px; margin-top:12px;">
+      <button class="btn primary small" id="sync-now"${st.syncing ? " disabled" : ""}>${t("Sync now")}</button>
+      <button class="btn ghost small" id="sync-off">${t("Stop syncing")}</button></div>`;
+  $("sync-now").onclick = () => { $("sync-now").disabled = true; api("/api/sync/now", { method: "POST" }).then(r => { syncSt = r.sync || syncSt; renderSync(); if (r.ok) { toast(t("Synced"), "ok"); statsHistoryChanged(); loadStats(); } else toast(r.error, "err"); }).catch(e => toast(e.message, "err")); };
+  $("sync-off").onclick = () => modal(t("Stop syncing?"), `<p class="ki-note">${t("This computer stops syncing. What is already here stays, and so does the folder.")}</p>`,
+    () => { api("/api/sync/disconnect", { method: "POST" }).then(loadSync).catch(e => toast(e.message, "err")); }, "Stop syncing", true);
 }
-if (!STANDALONE) {
-  loadSync();
-  // Back from the provider's sign-in page.
-  const synced = new URLSearchParams(location.search).get("synced");
-  if (synced) {
-    history.replaceState(null, "", location.pathname);
-    toast(t("Connected — Vito now keeps this computer in sync."), "ok", 6000);
-    setTimeout(() => { selectTab("settings"); selectSetSection("backup"); }, 300);
-  }
-}
+if (!STANDALONE) loadSync();
 
 // ---- from the browser to the app ----
 // The app answers /api/hello to this website only. Asking can make the browser

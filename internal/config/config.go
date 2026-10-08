@@ -278,14 +278,13 @@ type Config struct {
 }
 
 // Sync shares dictations, day sums, achievements and the dictionary between
-// computers through an app folder in the user's own cloud storage
-// (internal/cloudsync). Set by its own endpoints, never by a settings save.
+// computers through a folder that a sync app (Dropbox, OneDrive, Nextcloud,
+// iCloud Drive, Syncthing…) keeps the same everywhere (internal/cloudsync).
+// Set by its own endpoints, never by a settings save.
 type Sync struct {
-	Provider     string `json:"provider,omitempty"` // "dropbox" | "onedrive"; "" is off
-	RefreshToken string `json:"refresh_token,omitempty"`
-	Account      string `json:"account,omitempty"` // whose storage, for the settings page
-	DeviceID     string `json:"device_id,omitempty"`
-	DeviceName   string `json:"device_name,omitempty"`
+	Folder     string `json:"folder,omitempty"` // the chosen folder; Vito works in its "Vito Sync"; "" is off
+	DeviceID   string `json:"device_id,omitempty"`
+	DeviceName string `json:"device_name,omitempty"`
 	// DictionaryAt is when the dictionary last changed here (unix ms). The
 	// newest change wins across computers.
 	DictionaryAt int64 `json:"dictionary_at,omitempty"`
