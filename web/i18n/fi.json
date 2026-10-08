@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Täällä ei ole vielä toista tietokonetta. Valitse sama kansio toisella tietokoneellasi synkronoidaksesi sen kanssa.",
 "Stop syncing": "Lopeta synkronointi",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Tämä tietokone lopettaa synkronoinnin. Se, mikä on jo täällä, säilyy, samoin kansio.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Myös sanelun poistaminen tai tähden antaminen siirtyy muille koneille. Asetukset ja API-avaimet pysyvät jokaisella tietokoneella erikseen: mikrofonit, pikanäppäimet ja palveluntarjoajat eroavat usein niiden välillä."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Myös sanelun poistaminen tai tähden antaminen siirtyy muille koneille. Asetukset ja API-avaimet pysyvät jokaisella tietokoneella erikseen: mikrofonit, pikanäppäimet ja palveluntarjoajat eroavat usein niiden välillä.",
+"Vito now runs as an app on this computer": "Vito toimii nyt sovelluksena tällä tietokoneella",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Sanelusi siirtyivät sovellukseen. Jatka sanelua sieltä – pikanäppäimelläsi, missä tahansa ohjelmassa.",
+"Open Vito": "Avaa Vito",
+"Keep using the browser version": "Jatka selainversion käyttöä",
+"Starting Vito…": "Käynnistetään Vitoa…",
+"Tidy up, once": "Siivoa kerran",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Poista tämä selainversio: avaa tämän ikkunan oikeasta yläkulmasta ⋯-valikko ja valitse Poista Vito (tai Poista asennus). Sanelusi ovat turvassa sovelluksessa.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Anna sovellukselle oma ikkuna: avaa Vito ja valitse sen sivulta Asenna sovellus. Se on se, jonka kiinnität tehtäväpalkkiin tai Dockiin.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Voit sulkea tämän välilehden ja poistaa kirjanmerkin osoitteeseen vito.talk/app, jos teit sellaisen.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Avaa Vito jatkossa ilmaisinalueen (valikkorivin) kuvakkeesta tai anna sille oma ikkuna: avaa Vito ja valitse sen sivulta Asenna sovellus.",
+"Vito didn't answer. Is it installed and running?": "Vito ei vastannut. Onko se asennettu ja käynnissä?"
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

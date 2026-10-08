@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Šeit vēl nav neviena cita datora. Izvēlies to pašu mapi otrā datorā, lai sinhronizētos ar to.",
 "Stop syncing": "Pārtraukt sinhronizāciju",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Šis dators pārstāj sinhronizēties. Tas, kas jau ir šeit, paliek, tāpat kā mape.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Diktāta dzēšana vai atzīmēšana ar zvaigznīti arī tiek pārnesta. Iestatījumi un API atslēgas paliek katrā datorā: mikrofoni, karstie taustiņi un pakalpojumu sniedzēji bieži atšķiras."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Diktāta dzēšana vai atzīmēšana ar zvaigznīti arī tiek pārnesta. Iestatījumi un API atslēgas paliek katrā datorā: mikrofoni, karstie taustiņi un pakalpojumu sniedzēji bieži atšķiras.",
+"Vito now runs as an app on this computer": "Vito tagad darbojas kā lietotne šajā datorā",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Tavi diktējumi ir pārcelti uz lietotni. Diktē tālāk no turienes — ar savu karsto taustiņu, jebkurā programmā.",
+"Open Vito": "Atvērt Vito",
+"Keep using the browser version": "Turpināt izmantot pārlūka versiju",
+"Starting Vito…": "Palaiž Vito…",
+"Tidy up, once": "Vienreiz sakopt",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Noņem šo pārlūka versiju: atver izvēlni ⋯ šī loga augšējā labajā stūrī un izvēlies Atinstalēt (vai Noņemt) Vito. Tavi diktējumi ir droši lietotnē.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dod lietotnei savu logu: atver Vito un tā lapā izvēlies Instalēt lietotni. Tieši to piespraud uzdevumjoslai vai Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Šo cilni vari aizvērt, un, ja esi izveidojis grāmatzīmi uz vito.talk/app, noņem to.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Turpmāk atver Vito ar tā ikonu sistēmas joslā (izvēlņu joslā) vai dod tam savu logu: atver Vito un tā lapā izvēlies Instalēt lietotni.",
+"Vito didn't answer. Is it installed and running?": "Vito neatbildēja. Vai tas ir instalēts un darbojas?"
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

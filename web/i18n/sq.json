@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Ende asnjë kompjuter tjetër këtu. Zgjidh të njëjtën dosje në kompjuterin tënd tjetër për të sinkronizuar me të.",
 "Stop syncing": "Ndalo sinkronizimin",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Ky kompjuter ndalon sinkronizimin. Ç'është tashmë këtu mbetet, dhe dosja gjithashtu.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Fshirja e një diktimi ose vënia e një ylli bartet gjithashtu. Cilësimet dhe çelësat API mbeten në çdo kompjuter: mikrofonat, tastet e shpejta dhe ofruesit shpesh ndryshojnë mes tyre."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Fshirja e një diktimi ose vënia e një ylli bartet gjithashtu. Cilësimet dhe çelësat API mbeten në çdo kompjuter: mikrofonat, tastet e shpejta dhe ofruesit shpesh ndryshojnë mes tyre.",
+"Vito now runs as an app on this computer": "Vito tani funksionon si aplikacion në këtë kompjuter",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Diktimet e tua u zhvendosën te aplikacioni. Vazhdo të diktosh që andej — me kombinimin e tasteve, në çdo program.",
+"Open Vito": "Hap Vito",
+"Keep using the browser version": "Vazhdo të përdorësh versionin në shfletues",
+"Starting Vito…": "Po nisim Vito…",
+"Tidy up, once": "Pastro një herë",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Hiqe këtë version të shfletuesit: hap menunë ⋯ lart djathtas në këtë dritare dhe zgjidh Çinstalo (ose Hiq) Vito. Diktimet e tua janë të sigurta në aplikacion.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Jepi aplikacionit dritaren e vet: hap Vito dhe zgjidh Instalo aplikacionin në faqen e tij. Ky është ai që duhet ta fiksosh te shiriti i detyrave ose te Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Mund ta mbyllësh këtë skedë dhe të heqësh faqerojtësin për vito.talk/app, nëse ke krijuar një.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Tani e tutje hap Vito me ikonën e tij në shiritin e sistemit (shiriti i menusë), ose jepi dritaren e vet: hap Vito dhe zgjidh Instalo aplikacionin në faqen e tij.",
+"Vito didn't answer. Is it installed and running?": "Vito nuk u përgjigj. A është i instaluar dhe i ndezur?"
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

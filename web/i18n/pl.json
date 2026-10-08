@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Nie ma tu jeszcze żadnego innego komputera. Wybierz ten sam folder na drugim komputerze, aby się z nim synchronizować.",
 "Stop syncing": "Zatrzymaj synchronizację",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Ten komputer przestaje się synchronizować. To, co już tu jest, zostaje, podobnie jak folder.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Usunięcie dyktowania lub oznaczenie go gwiazdką również się przenosi. Ustawienia i klucze API zostają na każdym komputerze osobno: mikrofony, skróty klawiszowe i dostawcy często różnią się między nimi."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Usunięcie dyktowania lub oznaczenie go gwiazdką również się przenosi. Ustawienia i klucze API zostają na każdym komputerze osobno: mikrofony, skróty klawiszowe i dostawcy często różnią się między nimi.",
+"Vito now runs as an app on this computer": "Vito działa teraz jako aplikacja na tym komputerze",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Twoje dyktowania zostały przeniesione do aplikacji. Dyktuj dalej stamtąd — skrótem klawiszowym, w każdym programie.",
+"Open Vito": "Otwórz Vito",
+"Keep using the browser version": "Nadal używaj wersji przeglądarkowej",
+"Starting Vito…": "Uruchamianie Vito…",
+"Tidy up, once": "Posprzątaj, jednorazowo",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Usuń tę wersję przeglądarkową: otwórz menu ⋯ w prawym górnym rogu tego okna i wybierz Odinstaluj (lub Usuń) Vito. Twoje dyktowania są bezpieczne w aplikacji.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Daj aplikacji własne okno: otwórz Vito i wybierz Zainstaluj aplikację na jej stronie. Właśnie to okno przypnij do paska zadań lub Docka.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Możesz zamknąć tę kartę i usunąć zakładkę do vito.talk/app, jeśli ją utworzyłeś(-aś).",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Od teraz otwieraj Vito za pomocą jego ikony w zasobniku (pasku menu) albo daj mu własne okno: otwórz Vito i wybierz Zainstaluj aplikację na jego stronie.",
+"Vito didn't answer. Is it installed and running?": "Vito nie odpowiada. Czy jest zainstalowane i uruchomione?"
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

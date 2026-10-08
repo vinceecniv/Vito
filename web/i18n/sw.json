@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito sasa inafanya kazi kama programu kwenye kompyuta hii",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Maandishi yako ya sauti yamehamia kwenye programu. Endelea kuandika kwa sauti kutoka huko — kwa mchanganyiko wako wa vitufe, katika kila programu.",
+"Open Vito": "Fungua Vito",
+"Keep using the browser version": "Endelea kutumia toleo la kivinjari",
+"Starting Vito…": "Inaanzisha Vito…",
+"Tidy up, once": "Safisha, mara moja",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Ondoa toleo hili la kivinjari: fungua menyu ya ⋯ juu kulia mwa dirisha hili na uchague Ondoa (Uninstall au Remove) Vito. Maandishi yako ya sauti yako salama kwenye programu.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Ipe programu dirisha lake yenyewe: fungua Vito na uchague Sakinisha programu kwenye ukurasa wake. Hilo ndilo la kubandika kwenye upau wa kazi au Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Unaweza kufunga kichupo hiki, na kuondoa alamisho ya vito.talk/app kama uliiweka.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Kuanzia sasa fungua Vito kwa aikoni yake ya trei (upau wa menyu), au ipe dirisha lake yenyewe: fungua Vito na uchague Sakinisha programu kwenye ukurasa wake.",
+"Vito didn't answer. Is it installed and running?": "Vito haikujibu. Je, imesakinishwa na inafanya kazi?",
 "Dictate today to start a streak": "Andika kwa sauti leo ili kuanza mfululizo",
 "Nothing cleaned up in this period yet": "Bado hakuna kilichosafishwa katika kipindi hiki",
 "No languages detected in this period yet": "Bado hakuna lugha zilizotambuliwa katika kipindi hiki",

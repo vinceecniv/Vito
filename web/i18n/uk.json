@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito тепер працює як застосунок на цьому комп’ютері",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Ваші диктування переїхали до застосунку. Диктуйте далі звідти — за допомогою гарячої клавіші, в будь-якій програмі.",
+"Open Vito": "Відкрити Vito",
+"Keep using the browser version": "Далі користуватися браузерною версією",
+"Starting Vito…": "Запуск Vito…",
+"Tidy up, once": "Навести лад, один раз",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Видаліть цю браузерну версію: відкрийте меню ⋯ угорі праворуч у цьому вікні та виберіть «Видалити Vito». Ваші диктування в безпеці в застосунку.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Дайте застосунку власне вікно: відкрийте Vito та виберіть «Установити застосунок» на його сторінці. Саме його варто закріпити на панелі завдань або в Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Цю вкладку можна закрити, а закладку на vito.talk/app, якщо ви її створювали, — видалити.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Відтепер відкривайте Vito через його значок у треї (рядку меню) або дайте йому власне вікно: відкрийте Vito та виберіть «Установити застосунок» на його сторінці.",
+"Vito didn't answer. Is it installed and running?": "Vito не відповів. Він установлений і запущений?",
 "Main figure": "Головний показник",
 "days in a row": "днів поспіль",
 "New record!": "Новий рекорд!",

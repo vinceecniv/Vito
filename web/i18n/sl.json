@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Tu še ni drugega računalnika. Za sinhronizacijo izberite isto mapo na drugem računalniku.",
 "Stop syncing": "Ustavi sinhronizacijo",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Ta računalnik preneha sinhronizirati. Kar je že tu, ostane, prav tako mapa.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Tudi brisanje narekovanja ali dodelitev zvezdice se prenese. Nastavitve in ključi API ostanejo na vsakem računalniku: mikrofoni, bližnjice in ponudniki se med njimi pogosto razlikujejo."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Tudi brisanje narekovanja ali dodelitev zvezdice se prenese. Nastavitve in ključi API ostanejo na vsakem računalniku: mikrofoni, bližnjice in ponudniki se med njimi pogosto razlikujejo.",
+"Vito now runs as an app on this computer": "Vito zdaj deluje kot aplikacija na tem računalniku",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Vaša narekovanja so se preselila v aplikacijo. Narekujte naprej od tam – s svojo bližnjico, v vsakem programu.",
+"Open Vito": "Odpri Vito",
+"Keep using the browser version": "Še naprej uporabljaj brskalniško različico",
+"Starting Vito…": "Zagon programa Vito …",
+"Tidy up, once": "Enkratno pospravljanje",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Odstranite to brskalniško različico: odprite meni ⋯ zgoraj desno v tem oknu in izberite Odstrani Vito (ali Odstrani). Vaša narekovanja so varna v aplikaciji.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Aplikaciji dajte lastno okno: odprite Vito in na njegovi strani izberite Namesti aplikacijo. To je tista, ki jo pripnite v opravilno vrstico ali Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Ta zavihek lahko zaprete, zaznamek za vito.talk/app pa odstranite, če ste ga ustvarili.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Vito odslej odprite z ikono v sistemski vrstici (menijski vrstici) ali mu dajte lastno okno: odprite Vito in na njegovi strani izberite Namesti aplikacijo.",
+"Vito didn't answer. Is it installed and running?": "Vito se ni odzval. Je nameščen in zagnan?"
 },
 "help": {
 "theme": "Svetla, temna ali samodejna — samodejna sledi svetli/temni nastavitvi vašega sistema.",

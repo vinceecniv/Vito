@@ -1014,7 +1014,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Dim cyfrifiadur arall yma eto. Dewis yr un ffolder ar dy gyfrifiadur arall i gysoni ag ef.",
 "Stop syncing": "Stopio cysoni",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Mae'r cyfrifiadur hwn yn stopio cysoni. Mae'r hyn sydd yma eisoes yn aros, a'r ffolder hefyd.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Mae dileu arddywediad neu roi seren iddo yn cael ei drosglwyddo hefyd. Mae gosodiadau ac allweddi API yn aros ar bob cyfrifiadur: mae meicroffonau, bysellau poeth a darparwyr yn aml yn wahanol rhyngddynt."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Mae dileu arddywediad neu roi seren iddo yn cael ei drosglwyddo hefyd. Mae gosodiadau ac allweddi API yn aros ar bob cyfrifiadur: mae meicroffonau, bysellau poeth a darparwyr yn aml yn wahanol rhyngddynt.",
+"Vito now runs as an app on this computer": "Mae Vito bellach yn rhedeg fel ap ar y cyfrifiadur hwn",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Mae dy arddywediadau wedi symud i'r ap. Dalia ati i arddweud oddi yno — gyda dy fysell boeth, ym mhob rhaglen.",
+"Open Vito": "Agor Vito",
+"Keep using the browser version": "Parhau i ddefnyddio fersiwn y porwr",
+"Starting Vito…": "Yn cychwyn Vito…",
+"Tidy up, once": "Tacluso, unwaith",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Dileu fersiwn y porwr hwn: agora y ddewislen ⋯ ar y dde uchaf yn y ffenestr hon a dewisa Dadosod (neu Dileu) Vito. Mae dy arddywediadau'n ddiogel yn yr ap.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Rho ei ffenestr ei hun i'r ap: agora Vito a dewisa Gosod ap ar ei dudalen. Dyna'r un i'w binio i'r bar tasgau neu'r Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Gelli gau'r tab hwn, a dileu nod tudalen i vito.talk/app os gwnest ti un.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "O hyn ymlaen, agora Vito gyda'i eicon yn yr hambwrdd (bar dewislen), neu rho ei ffenestr ei hun iddo: agora Vito a dewisa Gosod ap ar ei dudalen.",
+"Vito didn't answer. Is it installed and running?": "Wnaeth Vito ddim ateb. Ydy e wedi'i osod ac yn rhedeg?"
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

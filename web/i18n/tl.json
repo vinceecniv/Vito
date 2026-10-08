@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Tumatakbo na ang Vito bilang app sa computer na ito",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Nailipat na sa app ang iyong mga dikta. Doon ka na magdikta — gamit ang iyong hotkey, sa bawat programa.",
+"Open Vito": "Buksan ang Vito",
+"Keep using the browser version": "Ipagpatuloy ang paggamit ng bersyon sa browser",
+"Starting Vito…": "Sinisimulan ang Vito…",
+"Tidy up, once": "Mag-ayos, minsan lang",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Alisin ang bersyong ito sa browser: buksan ang ⋯ menu sa kanang itaas ng window na ito at piliin ang Uninstall (o Remove) Vito. Ligtas ang iyong mga dikta sa app.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Bigyan ang app ng sarili nitong window: buksan ang Vito at piliin ang Install app sa pahina nito. Iyon ang i-pin mo sa taskbar o Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Maaari mo nang isara ang tab na ito, at alisin ang bookmark sa vito.talk/app kung gumawa ka nito.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Mula ngayon, buksan ang Vito gamit ang icon nito sa tray (menu bar), o bigyan ito ng sarili nitong window: buksan ang Vito at piliin ang Install app sa pahina nito.",
+"Vito didn't answer. Is it installed and running?": "Hindi sumagot ang Vito. Naka-install ba ito at tumatakbo?",
 "Status": "Status",
 "Settings": "Mga Setting",
 "Dictionary": "Diksyunaryo",

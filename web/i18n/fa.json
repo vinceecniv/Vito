@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "هنوز رایانه دیگری اینجا نیست. برای همگام‌سازی، روی رایانه دیگرتان همین پوشه را انتخاب کنید.",
 "Stop syncing": "توقف همگام‌سازی",
 "This computer stops syncing. What is already here stays, and so does the folder.": "این رایانه دیگر همگام نمی‌شود. آنچه از قبل اینجاست و همچنین پوشه، باقی می‌ماند.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "حذف یک دیکته یا ستاره‌دار کردن آن نیز منتقل می‌شود. تنظیمات و کلیدهای API روی هر رایانه جدا می‌مانند: میکروفون‌ها، کلیدهای میانبر و ارائه‌دهندگان معمولاً بین رایانه‌ها فرق دارند."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "حذف یک دیکته یا ستاره‌دار کردن آن نیز منتقل می‌شود. تنظیمات و کلیدهای API روی هر رایانه جدا می‌مانند: میکروفون‌ها، کلیدهای میانبر و ارائه‌دهندگان معمولاً بین رایانه‌ها فرق دارند.",
+"Vito now runs as an app on this computer": "Vito اکنون به‌صورت یک برنامه روی این رایانه اجرا می‌شود",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "دیکته‌های شما به برنامه منتقل شدند. از همان‌جا ادامه دهید — با کلید میان‌بر خود، در هر برنامه‌ای.",
+"Open Vito": "باز کردن Vito",
+"Keep using the browser version": "ادامه استفاده از نسخه مرورگر",
+"Starting Vito…": "در حال راه‌اندازی Vito…",
+"Tidy up, once": "یک بار مرتب‌سازی",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "حذف این نسخه مرورگر: منوی ⋯ را در بالا سمت راست این پنجره باز کنید و Uninstall (یا Remove) Vito را انتخاب کنید. دیکته‌های شما در برنامه در امان هستند.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "به برنامه پنجره‌ی مخصوص خودش را بدهید: Vito را باز کنید و در صفحه‌ی آن Install app را انتخاب کنید. همین را به نوار وظیفه یا Dock پین کنید.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "می‌توانید این زبانه را ببندید و اگر نشانکی برای vito.talk/app ساخته‌اید، آن را حذف کنید.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "از این پس Vito را با نماد سینی سیستم (نوار منو) باز کنید، یا پنجره‌ی مخصوص خودش را به آن بدهید: Vito را باز کنید و در صفحه‌ی آن Install app را انتخاب کنید.",
+"Vito didn't answer. Is it installed and running?": "Vito پاسخ نداد. آیا نصب شده و در حال اجراست؟"
 },
 "help": {
 "theme": "روشن، تیره یا خودکار — خودکار از حالت روشن/تیره سیستم شما پیروی می‌کند.",

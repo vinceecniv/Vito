@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito xa funciona como aplicación neste ordenador",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Os teus ditados pasaron á aplicación. Segue ditando desde alí, coa túa combinación de teclas, en calquera programa.",
+"Open Vito": "Abrir Vito",
+"Keep using the browser version": "Seguir usando a versión do navegador",
+"Starting Vito…": "Iniciando Vito…",
+"Tidy up, once": "Poñer orde, unha soa vez",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Elimina esta versión do navegador: abre o menú ⋯ na parte superior dereita desta xanela e escolle Desinstalar (ou Eliminar) Vito. Os teus ditados están a salvo na aplicación.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dálle á aplicación a súa propia xanela: abre Vito e escolle Instalar aplicación na súa páxina. Esa é a que debes fixar na barra de tarefas ou no Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Podes pechar esta pestana e eliminar o marcador de vito.talk/app se fixeches un.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "A partir de agora abre Vito coa súa icona da bandexa (barra de menú) ou dálle a súa propia xanela: abre Vito e escolle Instalar aplicación na súa páxina.",
+"Vito didn't answer. Is it installed and running?": "Vito non respondeu. Está instalado e en execución?",
 "Main figure": "Cifra principal",
 "days in a row": "días seguidos",
 "New record!": "Novo récord!",

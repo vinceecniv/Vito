@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Encara no hi ha cap altre ordinador aquí. Tria la mateixa carpeta a l'altre ordinador per sincronitzar-los.",
 "Stop syncing": "Deixa de sincronitzar",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Aquest ordinador deixa de sincronitzar. El que ja hi ha es conserva, i la carpeta també.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Eliminar un dictat o marcar-lo amb una estrella també es transfereix. Els ajustos i les claus d'API es queden a cada ordinador: els micròfons, les tecles d'accés ràpid i els proveïdors sovint són diferents entre ells."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Eliminar un dictat o marcar-lo amb una estrella també es transfereix. Els ajustos i les claus d'API es queden a cada ordinador: els micròfons, les tecles d'accés ràpid i els proveïdors sovint són diferents entre ells.",
+"Vito now runs as an app on this computer": "Vito ara s'executa com a aplicació en aquest ordinador",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Els teus dictats s'han traslladat a l'aplicació. Continua dictant des d'allà — amb la teva combinació de tecles, en qualsevol programa.",
+"Open Vito": "Obre Vito",
+"Keep using the browser version": "Continua amb la versió del navegador",
+"Starting Vito…": "Iniciant Vito…",
+"Tidy up, once": "Fes ordre, només un cop",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Elimina aquesta versió del navegador: obre el menú ⋯ a dalt a la dreta d'aquesta finestra i tria Desinstal·la (o Elimina) Vito. Els teus dictats estan segurs a l'aplicació.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dona a l'aplicació la seva pròpia finestra: obre Vito i tria Instal·la l'aplicació a la seva pàgina. Aquesta és la que cal fixar a la barra de tasques o al Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Pots tancar aquesta pestanya i eliminar el marcador de vito.talk/app si n'havies creat un.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "A partir d'ara, obre Vito amb la seva icona de la safata (barra de menús), o dona-li la seva pròpia finestra: obre Vito i tria Instal·la l'aplicació a la seva pàgina.",
+"Vito didn't answer. Is it installed and running?": "Vito no ha respost. Està instal·lat i en execució?"
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

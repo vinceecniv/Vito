@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito இப்போது இந்தக் கணினியில் ஒரு செயலியாக இயங்குகிறது",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "உங்கள் சொல்லெழுத்துக்கள் செயலிக்கு மாற்றப்பட்டன. இனி அங்கிருந்தே தொடர்ந்து சொல்லெழுதுங்கள் — உங்கள் ஹாட்கீ மூலம், ஒவ்வொரு நிரலிலும்.",
+"Open Vito": "Vito ஐத் திற",
+"Keep using the browser version": "உலாவி பதிப்பையே தொடர்ந்து பயன்படுத்து",
+"Starting Vito…": "Vito தொடங்குகிறது…",
+"Tidy up, once": "ஒருமுறை சீர்படுத்துங்கள்",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "இந்த உலாவி பதிப்பை நீக்குங்கள்: இந்த சாளரத்தின் மேல் வலதுபுறத்தில் உள்ள ⋯ மெனுவைத் திறந்து Vito ஐ நிறுவல் நீக்கு (அல்லது அகற்று) என்பதைத் தேர்ந்தெடுங்கள். உங்கள் சொல்லெழுத்துக்கள் செயலியில் பாதுகாப்பாக உள்ளன.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "செயலிக்குத் தனி சாளரம் கொடுங்கள்: Vito ஐத் திறந்து அதன் பக்கத்தில் செயலியை நிறுவு என்பதைத் தேர்ந்தெடுங்கள். அதைத்தான் பணிப்பட்டியில் அல்லது Dock இல் பொருத்த வேண்டும்.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "நீங்கள் இந்தத் தாவலை மூடலாம்; vito.talk/app க்கு புக்மார்க் உருவாக்கியிருந்தால் அதையும் நீக்கலாம்.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "இனி Vito ஐ அதன் தட்டு (மெனு பட்டி) ஐகான் மூலம் திறக்கலாம்; அல்லது அதற்குத் தனி சாளரம் கொடுங்கள்: Vito ஐத் திறந்து அதன் பக்கத்தில் செயலியை நிறுவு என்பதைத் தேர்ந்தெடுங்கள்.",
+"Vito didn't answer. Is it installed and running?": "Vito பதிலளிக்கவில்லை. அது நிறுவப்பட்டு இயங்குகிறதா?",
 "Dictate today to start a streak": "தொடர் நாட்களைத் தொடங்க இன்று சொல்லெழுதுங்கள்",
 "Nothing cleaned up in this period yet": "இந்தக் காலத்தில் இன்னும் எதுவும் சீர்படுத்தப்படவில்லை",
 "No languages detected in this period yet": "இந்தக் காலத்தில் இன்னும் எந்த மொழியும் கண்டறியப்படவில்லை",

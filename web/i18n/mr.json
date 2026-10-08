@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "येथे अजून दुसरा कोणताही संगणक नाही. त्याच्याशी सिंक करण्यासाठी तुमच्या दुसऱ्या संगणकावर तेच फोल्डर निवडा.",
 "Stop syncing": "सिंक करणे थांबवा",
 "This computer stops syncing. What is already here stays, and so does the folder.": "हा संगणक सिंक करणे थांबवतो. येथे आधीपासून असलेले सर्व काही तसेच राहते, फोल्डरसुद्धा.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "डिक्टेशन हटवणे किंवा त्याला तारा देणे हेही सोबत जाते. सेटिंग्ज आणि API की प्रत्येक संगणकावर वेगळ्या राहतात: मायक्रोफोन, हॉटकी आणि प्रोव्हायडर अनेकदा त्यांच्यात वेगळे असतात."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "डिक्टेशन हटवणे किंवा त्याला तारा देणे हेही सोबत जाते. सेटिंग्ज आणि API की प्रत्येक संगणकावर वेगळ्या राहतात: मायक्रोफोन, हॉटकी आणि प्रोव्हायडर अनेकदा त्यांच्यात वेगळे असतात.",
+"Vito now runs as an app on this computer": "Vito आता या संगणकावर अ‍ॅप म्हणून चालते",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "तुमची डिक्टेशन्स अ‍ॅपमध्ये हलवली आहेत. तिथून पुढे बोलत राहा — तुमच्या हॉटकीने, प्रत्येक प्रोग्राममध्ये.",
+"Open Vito": "Vito उघडा",
+"Keep using the browser version": "ब्राउझर आवृत्ती वापरत राहा",
+"Starting Vito…": "Vito सुरू होत आहे…",
+"Tidy up, once": "एकदा आवराआवर करा",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "ही ब्राउझर आवृत्ती काढून टाका: या विंडोच्या वरच्या उजव्या कोपऱ्यातील ⋯ मेनू उघडा आणि Vito अनइन्स्टॉल करा (किंवा काढून टाका) निवडा. तुमची डिक्टेशन्स अ‍ॅपमध्ये सुरक्षित आहेत.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "अ‍ॅपला स्वतःची विंडो द्या: Vito उघडा आणि त्याच्या पानावर अ‍ॅप इन्स्टॉल करा निवडा. तीच टास्कबार किंवा डॉकवर पिन करा.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "तुम्ही हा टॅब बंद करू शकता, आणि vito.talk/app साठी बुकमार्क केला असेल तर तो काढून टाका.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "यापुढे Vito त्याच्या ट्रे (मेनू बार) आयकॉनने उघडा, किंवा त्याला स्वतःची विंडो द्या: Vito उघडा आणि त्याच्या पानावर अ‍ॅप इन्स्टॉल करा निवडा.",
+"Vito didn't answer. Is it installed and running?": "Vito ने उत्तर दिले नाही. ते इन्स्टॉल केलेले आणि चालू आहे का?"
 },
 "help": {
 "theme": "उजळ, गडद किंवा आपोआप — आपोआप तुमच्या सिस्टीमच्या उजळ/गडद सेटिंगचे अनुसरण करते.",

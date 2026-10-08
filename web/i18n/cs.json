@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito nyní běží jako aplikace na tomto počítači",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Vaše diktáty se přesunuly do aplikace. Diktujte dál odtud – pomocí klávesové zkratky, v každém programu.",
+"Open Vito": "Otevřít Vito",
+"Keep using the browser version": "Dál používat verzi v prohlížeči",
+"Starting Vito…": "Spouštění Vito…",
+"Tidy up, once": "Jednorázový úklid",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Odstraňte tuto verzi v prohlížeči: otevřete nabídku ⋯ vpravo nahoře v tomto okně a zvolte Odinstalovat (nebo Odebrat) Vito. Vaše diktáty jsou v bezpečí v aplikaci.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dejte aplikaci vlastní okno: otevřete Vito a na jeho stránce zvolte Nainstalovat aplikaci. Tu pak připněte na hlavní panel nebo do Docku.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Tuto kartu můžete zavřít a případnou záložku na vito.talk/app odstranit.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Vito nově otevřete pomocí jeho ikony v oznamovací oblasti (na liště nabídek), nebo mu dejte vlastní okno: otevřete Vito a na jeho stránce zvolte Nainstalovat aplikaci.",
+"Vito didn't answer. Is it installed and running?": "Vito neodpovědělo. Je nainstalované a spuštěné?",
 "Most used words": "Nejpoužívanější slova",
 "Dashboard": "Přehled",
 "Click the 'Detached window' button on the Dashboard to pop out the transcript.": "Klikněte na tlačítko 'Samostatné okno' na stránce Přehled, aby se přepis zobrazil samostatně.",

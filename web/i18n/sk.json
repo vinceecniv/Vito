@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito teraz beží ako aplikácia na tomto počítači",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Vaše diktáty sa presunuli do aplikácie. Diktujte ďalej odtiaľ – pomocou klávesovej skratky, v každom programe.",
+"Open Vito": "Otvoriť Vito",
+"Keep using the browser version": "Naďalej používať verziu v prehliadači",
+"Starting Vito…": "Spúšťa sa Vito…",
+"Tidy up, once": "Raz upratať",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Odstráňte túto verziu v prehliadači: otvorte ponuku ⋯ vpravo hore v tomto okne a zvoľte Odinštalovať (alebo Odstrániť) Vito. Vaše diktáty sú v aplikácii v bezpečí.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dajte aplikácii vlastné okno: otvorte Vito a na jeho stránke zvoľte Inštalovať aplikáciu. Práve to okno si pripnite na panel úloh alebo do Docku.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Túto kartu môžete zavrieť a prípadnú záložku na vito.talk/app odstrániť.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Odteraz otvárajte Vito pomocou jeho ikony v oblasti oznámení (paneli ponúk) alebo mu dajte vlastné okno: otvorte Vito a na jeho stránke zvoľte Inštalovať aplikáciu.",
+"Vito didn't answer. Is it installed and running?": "Vito neodpovedalo. Je nainštalované a spustené?",
 "Most used words": "Najpoužívanejšie slová",
 "Chart in background": "Graf na pozadí",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Slová, ktoré ste v tomto období diktovali najčastejšie – čím väčšie, tým častejšie. Slová s tromi alebo menej písmenami a bežné slová, ako „chcieť“ alebo „pretože“, sú vynechané.",

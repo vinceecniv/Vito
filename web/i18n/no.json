@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito kjører nå som en app på denne datamaskinen",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Diktatene dine er flyttet til appen. Fortsett å diktere derfra — med hurtigtasten din, i alle programmer.",
+"Open Vito": "Åpne Vito",
+"Keep using the browser version": "Fortsett å bruke nettleserversjonen",
+"Starting Vito…": "Starter Vito …",
+"Tidy up, once": "Rydd opp, én gang",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Fjern denne nettleserversjonen: åpne ⋯-menyen øverst til høyre i dette vinduet og velg Avinstaller (eller Fjern) Vito. Diktatene dine er trygge i appen.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Gi appen sitt eget vindu: åpne Vito og velg Installer app på siden. Det er den du kan feste til oppgavelinjen eller Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Du kan lukke denne fanen, og fjerne et bokmerke til vito.talk/app hvis du har laget et.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Åpne Vito heretter med ikonet i systemstatusfeltet (menylinjen), eller gi appen sitt eget vindu: åpne Vito og velg Installer app på siden.",
+"Vito didn't answer. Is it installed and running?": "Vito svarte ikke. Er den installert og i gang?",
 "Dictate today to start a streak": "Dikter i dag for å starte en rekke",
 "Nothing cleaned up in this period yet": "Ingenting er ryddet opp i denne perioden ennå",
 "No languages detected in this period yet": "Ingen språk er registrert i denne perioden ennå",

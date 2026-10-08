@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito hiện chạy như một ứng dụng trên máy tính này",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Các bản đọc của bạn đã chuyển sang ứng dụng. Hãy tiếp tục đọc từ đó — bằng phím tắt của bạn, trong mọi chương trình.",
+"Open Vito": "Mở Vito",
+"Keep using the browser version": "Tiếp tục dùng phiên bản trình duyệt",
+"Starting Vito…": "Đang khởi động Vito…",
+"Tidy up, once": "Dọn dẹp một lần",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Gỡ phiên bản trình duyệt này: mở menu ⋯ ở góc trên bên phải của cửa sổ này và chọn Gỡ cài đặt (hoặc Xóa) Vito. Các bản đọc của bạn vẫn an toàn trong ứng dụng.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Cho ứng dụng cửa sổ riêng: mở Vito và chọn Cài đặt ứng dụng trên trang của nó. Đó là cửa sổ bạn nên ghim vào thanh tác vụ hoặc Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Bạn có thể đóng thẻ này và xóa dấu trang tới vito.talk/app nếu bạn đã tạo.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Từ giờ hãy mở Vito bằng biểu tượng trên khay hệ thống (thanh menu), hoặc cho nó cửa sổ riêng: mở Vito và chọn Cài đặt ứng dụng trên trang của nó.",
+"Vito didn't answer. Is it installed and running?": "Vito không phản hồi. Nó đã được cài đặt và đang chạy chưa?",
 "Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Giữ chính tả, thống kê và chi phí, thành tích, từ điển và quy tắc dọn dẹp của bạn đồng nhất trên mọi máy tính, thông qua một thư mục mà ứng dụng đồng bộ của chính bạn giữ đồng bộ — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing hoặc một thư mục mạng chia sẻ. Vito không giao tiếp với máy chủ nào cho việc này.",
 "Found on this computer": "Tìm thấy trên máy tính này",
 "No sync app found in its usual place. Choose its folder yourself.": "Không tìm thấy ứng dụng đồng bộ ở vị trí thông thường. Hãy tự chọn thư mục của nó.",

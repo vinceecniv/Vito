@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito હવે આ કમ્પ્યુટર પર એપ તરીકે ચાલે છે",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "તમારા શ્રુતલેખન એપમાં ખસેડાઈ ગયા છે. ત્યાંથી આગળ બોલો — તમારી હોટકી સાથે, દરેક પ્રોગ્રામમાં.",
+"Open Vito": "Vito ખોલો",
+"Keep using the browser version": "બ્રાઉઝર સંસ્કરણનો ઉપયોગ ચાલુ રાખો",
+"Starting Vito…": "Vito શરૂ થઈ રહ્યું છે…",
+"Tidy up, once": "એક વાર વ્યવસ્થિત કરો",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "આ બ્રાઉઝર સંસ્કરણ દૂર કરો: આ વિન્ડોની ઉપર જમણી બાજુએ ⋯ મેનૂ ખોલો અને Vito અનઇન્સ્ટૉલ કરો (અથવા દૂર કરો) પસંદ કરો. તમારા શ્રુતલેખન એપમાં સુરક્ષિત છે.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "એપને તેની પોતાની વિન્ડો આપો: Vito ખોલો અને તેના પૃષ્ઠ પર એપ ઇન્સ્ટૉલ કરો પસંદ કરો. તેને જ ટાસ્કબાર અથવા Dock પર પિન કરો.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "તમે આ ટૅબ બંધ કરી શકો છો, અને જો તમે vito.talk/app નું બુકમાર્ક બનાવ્યું હોય તો તેને દૂર કરો.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "હવેથી Vito ને તેના ટ્રે (મેનૂ બાર) આઇકન વડે ખોલો, અથવા તેને તેની પોતાની વિન્ડો આપો: Vito ખોલો અને તેના પૃષ્ઠ પર એપ ઇન્સ્ટૉલ કરો પસંદ કરો.",
+"Vito didn't answer. Is it installed and running?": "Vito એ જવાબ આપ્યો નથી. શું તે ઇન્સ્ટૉલ કરેલું અને ચાલુ છે?",
 "Most used words": "સૌથી વધુ વપરાયેલા શબ્દો",
 "Chart in background": "પૃષ્ઠભૂમિમાં ચાર્ટ",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "આ સમયગાળામાં તમે સૌથી વધુ બોલેલા શબ્દો — જેટલો મોટો, તેટલો વધુ વાર. ત્રણ કે તેથી ઓછા અક્ષરોના શબ્દો અને ‘જોઈએ’ કે ‘કારણ કે’ જેવા સામાન્ય શબ્દો બાકાત રાખવામાં આવ્યા છે.",

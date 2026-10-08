@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "这里还没有其他电脑。请在你的另一台电脑上选择同一个文件夹，即可与之同步。",
 "Stop syncing": "停止同步",
 "This computer stops syncing. What is already here stays, and so does the folder.": "这台电脑将停止同步。已有的内容会保留，文件夹也会保留。",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "删除口述记录或给它加星标也会同步。设置和 API 密钥保留在各台电脑上：麦克风、快捷键和服务提供商往往各不相同。"
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "删除口述记录或给它加星标也会同步。设置和 API 密钥保留在各台电脑上：麦克风、快捷键和服务提供商往往各不相同。",
+"Vito now runs as an app on this computer": "Vito 现在作为应用在这台电脑上运行",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "你的口述记录已迁移到应用中。请从应用继续口述——用你的快捷键，在任何程序里都行。",
+"Open Vito": "打开 Vito",
+"Keep using the browser version": "继续使用浏览器版本",
+"Starting Vito…": "正在启动 Vito…",
+"Tidy up, once": "整理一次",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "移除此浏览器版本：打开此窗口右上角的 ⋯ 菜单，选择“卸载”（或“移除”）Vito。你的口述记录在应用中安然无恙。",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "给应用一个独立的窗口：打开 Vito，在其页面上选择“安装应用”。把它固定到任务栏或 Dock 即可。",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "你可以关闭此标签页；如果添加过 vito.talk/app 的书签，也可以将其删除。",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "今后可通过托盘（菜单栏）图标打开 Vito，或者给它一个独立的窗口：打开 Vito，在其页面上选择“安装应用”。",
+"Vito didn't answer. Is it installed and running?": "Vito 没有响应。它是否已安装并正在运行？"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",
