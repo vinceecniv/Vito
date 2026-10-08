@@ -1002,7 +1002,19 @@
 "No speech recognised.": "کوئی تقریر شناخت نہیں ہوئی۔",
 "This browser cannot record audio.": "یہ براؤزر آڈیو ریکارڈ نہیں کر سکتا۔",
 "downloaded": "ڈاؤن لوڈ ہو گیا",
-"built in": "بلٹ اِن"
+"built in": "بلٹ اِن",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "اپنے املا، اعداد و شمار اور اخراجات، کامیابیاں، لغت اور صفائی کے اصول ہر کمپیوٹر پر ایک جیسے رکھیں، ایک ایسے فولڈر کے ذریعے جسے آپ کی اپنی ہم آہنگی ایپ ہم آہنگ رکھتی ہے — Dropbox، OneDrive، Nextcloud، iCloud Drive، Google Drive، Syncthing یا نیٹ ورک شیئر۔ Vito اس کے لیے کسی سرور سے رابطہ نہیں کرتا۔",
+"Found on this computer": "اس کمپیوٹر پر ملا",
+"No sync app found in its usual place. Choose its folder yourself.": "اپنی معمول کی جگہ پر کوئی ہم آہنگی ایپ نہیں ملی۔ اس کا فولڈر خود منتخب کریں۔",
+"Other folder…": "دوسرا فولڈر…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito اپنی فائلیں اس کے اندر “Vito Sync” نامی فولڈر میں رکھتا ہے۔",
+"Path of the folder": "فولڈر کا راستہ",
+"Use this folder": "یہ فولڈر استعمال کریں",
+"Choose the folder your sync app keeps in sync": "وہ فولڈر منتخب کریں جسے آپ کی ہم آہنگی ایپ ہم آہنگ رکھتی ہے",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "یہاں ابھی کوئی دوسرا کمپیوٹر نہیں ہے۔ اس کے ساتھ ہم آہنگ ہونے کے لیے اپنے دوسرے کمپیوٹر پر یہی فولڈر منتخب کریں۔",
+"Stop syncing": "ہم آہنگی بند کریں",
+"This computer stops syncing. What is already here stays, and so does the folder.": "یہ کمپیوٹر ہم آہنگی بند کر دیتا ہے۔ جو کچھ یہاں پہلے سے موجود ہے وہ رہے گا، اور فولڈر بھی۔",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "کسی املا کو حذف کرنا یا اسے ستارہ دینا بھی منتقل ہو جاتا ہے۔ سیٹنگز اور API کیز ہر کمپیوٹر پر الگ رہتی ہیں: مائیکروفون، ہاٹ کیز اور فراہم کنندگان اکثر ان کے درمیان مختلف ہوتے ہیں۔"
 },
 "help": {
 "theme": "روشن، گہرا یا خودکار — خودکار آپ کے سسٹم کی روشن/گہری ترتیب کے مطابق چلتا ہے۔",

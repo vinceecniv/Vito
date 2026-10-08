@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Nebyla rozpoznána žádná řeč.",
 "This browser cannot record audio.": "Tento prohlížeč nemůže nahrávat zvuk.",
 "downloaded": "staženo",
-"built in": "vestavěné"
+"built in": "vestavěné",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Mějte své diktáty, statistiky a náklady, úspěchy, slovník a pravidla čištění na každém počítači stejné, a to prostřednictvím složky, kterou synchronizuje vaše vlastní aplikace – Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing nebo síťové úložiště. Vito k tomu nekomunikuje s žádným serverem.",
+"Found on this computer": "Nalezeno v tomto počítači",
+"No sync app found in its usual place. Choose its folder yourself.": "Na obvyklém místě nebyla nalezena žádná synchronizační aplikace. Vyberte její složku sami.",
+"Other folder…": "Jiná složka…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito do ní uloží své soubory do složky s názvem „Vito Sync“.",
+"Path of the folder": "Cesta ke složce",
+"Use this folder": "Použít tuto složku",
+"Choose the folder your sync app keeps in sync": "Vyberte složku, kterou vaše synchronizační aplikace synchronizuje",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Zatím tu není žádný jiný počítač. Vyberte stejnou složku na svém druhém počítači, abyste s ním synchronizovali.",
+"Stop syncing": "Zastavit synchronizaci",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Tento počítač přestane synchronizovat. Co už je tady, zůstane, stejně jako složka.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Smazání diktátu nebo jeho označení hvězdičkou se přenáší také. Nastavení a klíče API zůstávají na každém počítači zvlášť: mikrofony, klávesové zkratky i poskytovatelé se mezi nimi často liší."
 },
 "help": {
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",

@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Не е препознат говор.",
 "This browser cannot record audio.": "Овој прелистувач не може да снима звук.",
 "downloaded": "преземено",
-"built in": "вградено"
+"built in": "вградено",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Чувајте ги вашите диктати, статистиките и трошоците, достигнувањата, речникот и правилата за чистење исти на секој компјутер, преку папка што вашата апликација за синхронизација ја одржува синхронизирана — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing или мрежна споделена папка. Vito за ова не комуницира со ниту еден сервер.",
+"Found on this computer": "Пронајдено на овој компјутер",
+"No sync app found in its usual place. Choose its folder yourself.": "Не е пронајдена апликација за синхронизација на вообичаеното место. Изберете ја нејзината папка сами.",
+"Other folder…": "Друга папка…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito ги става своите датотеки во папка наречена „Vito Sync“ внатре во неа.",
+"Path of the folder": "Патека до папката",
+"Use this folder": "Користи ја оваа папка",
+"Choose the folder your sync app keeps in sync": "Изберете ја папката што вашата апликација за синхронизација ја одржува синхронизирана",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Тука сè уште нема друг компјутер. Изберете ја истата папка на другиот компјутер за да се синхронизирате со него.",
+"Stop syncing": "Престани со синхронизација",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Овој компјутер престанува да се синхронизира. Она што веќе е тука останува, како и папката.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Бришењето диктат или давањето ѕвезда на диктат исто така се пренесува. Поставките и API-клучевите остануваат на секој компјутер: микрофоните, кратенките и провајдерите често се разликуваат меѓу нив."
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Hakuna usemi uliotambuliwa.",
 "This browser cannot record audio.": "Kivinjari hiki hakiwezi kurekodi sauti.",
 "downloaded": "imepakuliwa",
-"built in": "imejengewa ndani"
+"built in": "imejengewa ndani",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Weka maandishi yako ya sauti, takwimu na gharama, mafanikio, kamusi na kanuni za usafishaji vilevile kwenye kila kompyuta, kupitia folda ambayo programu yako ya usawazishaji huiweka sawa — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing au rasilimali ya mtandao inayoshirikiwa. Vito haiwasiliani na seva yoyote kwa ajili ya hili.",
+"Found on this computer": "Imepatikana kwenye kompyuta hii",
+"No sync app found in its usual place. Choose its folder yourself.": "Hakuna programu ya usawazishaji iliyopatikana mahali pake pa kawaida. Chagua folda yake mwenyewe.",
+"Other folder…": "Folda nyingine…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito huweka faili zake kwenye folda iitwayo “Vito Sync” ndani yake.",
+"Path of the folder": "Njia ya folda",
+"Use this folder": "Tumia folda hii",
+"Choose the folder your sync app keeps in sync": "Chagua folda ambayo programu yako ya usawazishaji huiweka sawa",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Bado hakuna kompyuta nyingine hapa. Chagua folda ile ile kwenye kompyuta yako nyingine ili kusawazisha nayo.",
+"Stop syncing": "Acha kusawazisha",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Kompyuta hii itaacha kusawazisha. Kilichopo hapa tayari kinabaki, na folda pia.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Kufuta maandishi ya sauti au kuyapa nyota pia kunahamishwa. Mipangilio na funguo za API hubaki kwenye kila kompyuta: maikrofoni, vitufe vya mkato na watoa huduma mara nyingi hutofautiana kati yake."
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

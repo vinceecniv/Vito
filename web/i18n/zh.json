@@ -1001,7 +1001,19 @@
 "No speech recognised.": "未识别到语音。",
 "This browser cannot record audio.": "此浏览器无法录音。",
 "downloaded": "已下载",
-"built in": "内置"
+"built in": "内置",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "让你的口述记录、统计与费用、成就、词典和清理规则在每台电脑上保持一致，方式是通过你自己的同步应用保持同步的文件夹——Dropbox、OneDrive、Nextcloud、iCloud Drive、Google Drive、Syncthing 或网络共享。Vito 不会为此连接任何服务器。",
+"Found on this computer": "在这台电脑上找到",
+"No sync app found in its usual place. Choose its folder yourself.": "在常见位置没有找到同步应用。请自行选择它的文件夹。",
+"Other folder…": "其他文件夹…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito 会在其中创建一个名为“Vito Sync”的文件夹来存放文件。",
+"Path of the folder": "文件夹路径",
+"Use this folder": "使用此文件夹",
+"Choose the folder your sync app keeps in sync": "选择你的同步应用所同步的文件夹",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "这里还没有其他电脑。请在你的另一台电脑上选择同一个文件夹，即可与之同步。",
+"Stop syncing": "停止同步",
+"This computer stops syncing. What is already here stays, and so does the folder.": "这台电脑将停止同步。已有的内容会保留，文件夹也会保留。",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "删除口述记录或给它加星标也会同步。设置和 API 密钥保留在各台电脑上：麦克风、快捷键和服务提供商往往各不相同。"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

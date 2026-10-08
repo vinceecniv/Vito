@@ -1001,7 +1001,19 @@
 "No speech recognised.": "ಯಾವುದೇ ಮಾತು ಗುರುತಿಸಲಾಗಲಿಲ್ಲ.",
 "This browser cannot record audio.": "ಈ ಬ್ರೌಸರ್ ಆಡಿಯೋ ರೆಕಾರ್ಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ.",
 "downloaded": "ಡೌನ್‌ಲೋಡ್ ಆಗಿದೆ",
-"built in": "ಅಂತರ್ನಿರ್ಮಿತ"
+"built in": "ಅಂತರ್ನಿರ್ಮಿತ",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "ನಿಮ್ಮ ಡಿಕ್ಟೇಶನ್‌ಗಳು, ಅಂಕಿಅಂಶಗಳು ಮತ್ತು ವೆಚ್ಚಗಳು, ಸಾಧನೆಗಳು, ನಿಘಂಟು ಮತ್ತು ಸ್ವಚ್ಛಗೊಳಿಸುವ ನಿಯಮಗಳನ್ನು ಪ್ರತಿ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲೂ ಒಂದೇ ರೀತಿ ಇರಿಸಿ — ನಿಮ್ಮದೇ ಸಿಂಕ್ ಆ್ಯಪ್ ಸಿಂಕ್‌ನಲ್ಲಿ ಇರಿಸುವ ಫೋಲ್ಡರ್ ಮೂಲಕ: Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing ಅಥವಾ ನೆಟ್‌ವರ್ಕ್ ಶೇರ್. ಇದಕ್ಕಾಗಿ Vito ಯಾವುದೇ ಸರ್ವರ್‌ನೊಂದಿಗೆ ಮಾತನಾಡುವುದಿಲ್ಲ.",
+"Found on this computer": "ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಕಂಡುಬಂದಿದೆ",
+"No sync app found in its usual place. Choose its folder yourself.": "ಸಿಂಕ್ ಆ್ಯಪ್ ಅದರ ಸಾಮಾನ್ಯ ಸ್ಥಳದಲ್ಲಿ ಸಿಗಲಿಲ್ಲ. ಅದರ ಫೋಲ್ಡರ್ ಅನ್ನು ನೀವೇ ಆಯ್ಕೆಮಾಡಿ.",
+"Other folder…": "ಇತರ ಫೋಲ್ಡರ್…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito ತನ್ನ ಫೈಲ್‌ಗಳನ್ನು ಅದರೊಳಗೆ “Vito Sync” ಎಂಬ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಇಡುತ್ತದೆ.",
+"Path of the folder": "ಫೋಲ್ಡರ್‌ನ ಪಥ",
+"Use this folder": "ಈ ಫೋಲ್ಡರ್ ಬಳಸಿ",
+"Choose the folder your sync app keeps in sync": "ನಿಮ್ಮ ಸಿಂಕ್ ಆ್ಯಪ್ ಸಿಂಕ್‌ನಲ್ಲಿ ಇರಿಸುವ ಫೋಲ್ಡರ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "ಇಲ್ಲಿ ಇನ್ನೂ ಬೇರೆ ಕಂಪ್ಯೂಟರ್ ಇಲ್ಲ. ಅದರೊಂದಿಗೆ ಸಿಂಕ್ ಮಾಡಲು ನಿಮ್ಮ ಇನ್ನೊಂದು ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಅದೇ ಫೋಲ್ಡರ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+"Stop syncing": "ಸಿಂಕ್ ನಿಲ್ಲಿಸಿ",
+"This computer stops syncing. What is already here stays, and so does the folder.": "ಈ ಕಂಪ್ಯೂಟರ್ ಸಿಂಕ್ ಮಾಡುವುದನ್ನು ನಿಲ್ಲಿಸುತ್ತದೆ. ಇಲ್ಲಿ ಈಗಾಗಲೇ ಇರುವುದು ಹಾಗೆಯೇ ಉಳಿಯುತ್ತದೆ, ಫೋಲ್ಡರ್ ಕೂಡ.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ಡಿಕ್ಟೇಶನ್ ಅಳಿಸುವುದು ಅಥವಾ ಅದಕ್ಕೆ ಸ್ಟಾರ್ ಕೊಡುವುದು ಕೂಡ ಇತರ ಕಂಪ್ಯೂಟರ್‌ಗಳಿಗೆ ಹೋಗುತ್ತದೆ. ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಮತ್ತು API ಕೀಗಳು ಪ್ರತಿ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲೇ ಉಳಿಯುತ್ತವೆ: ಮೈಕ್ರೋಫೋನ್‌ಗಳು, ಹಾಟ್‌ಕೀಗಳು ಮತ್ತು ಪೂರೈಕೆದಾರರು ಅವುಗಳ ನಡುವೆ ಆಗಾಗ್ಗೆ ಭಿನ್ನವಾಗಿರುತ್ತವೆ."
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

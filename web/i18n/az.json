@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Nitq tanınmadı.",
 "This browser cannot record audio.": "Bu brauzer səs yaza bilmir.",
 "downloaded": "yükləndi",
-"built in": "daxili"
+"built in": "daxili",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Diktələrinizi, statistikanı və xərcləri, nailiyyətləri, lüğəti və təmizləmə qaydalarını hər kompüterdə eyni saxlayın — bunun üçün öz sinxronizasiya tətbiqinizin sinxron saxladığı qovluqdan istifadə olunur: Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing və ya şəbəkə qovluğu. Vito bunun üçün heç bir serverlə əlaqə qurmur.",
+"Found on this computer": "Bu kompüterdə tapıldı",
+"No sync app found in its usual place. Choose its folder yourself.": "Adi yerində heç bir sinxronizasiya tətbiqi tapılmadı. Qovluğunu özünüz seçin.",
+"Other folder…": "Başqa qovluq…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito fayllarını onun daxilində “Vito Sync” adlı qovluğa qoyur.",
+"Path of the folder": "Qovluğun yolu",
+"Use this folder": "Bu qovluqdan istifadə et",
+"Choose the folder your sync app keeps in sync": "Sinxronizasiya tətbiqinizin sinxron saxladığı qovluğu seçin",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Burada hələ başqa kompüter yoxdur. Onunla sinxronizasiya etmək üçün digər kompüterinizdə eyni qovluğu seçin.",
+"Stop syncing": "Sinxronizasiyanı dayandır",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Bu kompüter sinxronizasiyanı dayandırır. Burada artıq olanlar da, qovluq da qalır.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Diktənin silinməsi və ya ulduzlanması da ötürülür. Parametrlər və API açarları hər kompüterdə ayrıca qalır: mikrofonlar, qısayol düymələri və provayderlər çox vaxt fərqli olur."
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

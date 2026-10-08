@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Geen spraak herken nie.",
 "This browser cannot record audio.": "Hierdie blaaier kan nie oudio opneem nie.",
 "downloaded": "afgelaai",
-"built in": "ingebou"
+"built in": "ingebou",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Hou jou diktate, statistiek en koste, prestasies, woordeboek en skoonmaakreëls op elke rekenaar dieselfde, deur 'n gids wat jou eie sinkroniseerprogram gesinkroniseer hou — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing of 'n netwerkdeling. Vito praat hiervoor met geen bediener nie.",
+"Found on this computer": "Op hierdie rekenaar gevind",
+"No sync app found in its usual place. Choose its folder yourself.": "Geen sinkroniseerprogram op sy gewone plek gevind nie. Kies self sy gids.",
+"Other folder…": "Ander gids…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito sit sy lêers in 'n gids genaamd “Vito Sync” daarbinne.",
+"Path of the folder": "Pad van die gids",
+"Use this folder": "Gebruik hierdie gids",
+"Choose the folder your sync app keeps in sync": "Kies die gids wat jou sinkroniseerprogram gesinkroniseer hou",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Nog geen ander rekenaar hier nie. Kies dieselfde gids op jou ander rekenaar om daarmee te sinkroniseer.",
+"Stop syncing": "Hou op sinkroniseer",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Hierdie rekenaar hou op sinkroniseer. Wat reeds hier is, bly, en die gids ook.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Om 'n diktaat te skrap of 'n ster te gee, word ook oorgedra. Instellings en API-sleutels bly op elke rekenaar: mikrofone, sleutelkombinasies en verskaffers verskil dikwels tussen hulle."
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

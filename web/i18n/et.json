@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Kõnet ei tuvastatud.",
 "This browser cannot record audio.": "See brauser ei saa heli salvestada.",
 "downloaded": "alla laaditud",
-"built in": "sisseehitatud"
+"built in": "sisseehitatud",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Hoia oma dikteeringud, statistika ja kulud, saavutused, sõnastik ja puhastusreeglid igas arvutis samad kausta kaudu, mida su enda sünkroonimisrakendus sünkroonis hoiab — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing või võrgukaust. Vito ei suhtle selleks ühegi serveriga.",
+"Found on this computer": "Leitud sellest arvutist",
+"No sync app found in its usual place. Choose its folder yourself.": "Sünkroonimisrakendust ei leitud tavapäraselt asukohast. Vali selle kaust ise.",
+"Other folder…": "Muu kaust…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito paneb oma failid selle sees olevasse kausta nimega „Vito Sync“.",
+"Path of the folder": "Kausta tee",
+"Use this folder": "Kasuta seda kausta",
+"Choose the folder your sync app keeps in sync": "Vali kaust, mida su sünkroonimisrakendus sünkroonis hoiab",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Siin pole veel ühtegi teist arvutit. Vali sama kaust oma teises arvutis, et sellega sünkroonida.",
+"Stop syncing": "Lõpeta sünkroonimine",
+"This computer stops syncing. What is already here stays, and so does the folder.": "See arvuti lõpetab sünkroonimise. Mis siin juba on, jääb alles, samuti kaust.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Dikteeringu kustutamine või tärniga märkimine kandub samuti üle. Seaded ja API-võtmed jäävad igasse arvutisse eraldi: mikrofonid, kiirklahvid ja pakkujad on arvutiti sageli erinevad."
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Nem ismertünk fel beszédet.",
 "This browser cannot record audio.": "Ez a böngésző nem tud hangot rögzíteni.",
 "downloaded": "letöltve",
-"built in": "beépített"
+"built in": "beépített",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Tartsd ugyanolyan állapotban a diktálásaidat, statisztikáidat és költségeidet, eredményeidet, szótáradat és tisztítási szabályaidat minden számítógépen egy olyan mappán keresztül, amelyet a saját szinkronizáló alkalmazásod tart szinkronban — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing vagy hálózati megosztás. A Vito ehhez semmilyen szerverrel nem kommunikál.",
+"Found on this computer": "Megtalálva ezen a számítógépen",
+"No sync app found in its usual place. Choose its folder yourself.": "Nem található szinkronizáló alkalmazás a szokásos helyén. Válaszd ki a mappáját saját magad.",
+"Other folder…": "Másik mappa…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "A Vito a fájljait egy „Vito Sync” nevű mappába teszi benne.",
+"Path of the folder": "A mappa elérési útja",
+"Use this folder": "Mappa használata",
+"Choose the folder your sync app keeps in sync": "Válaszd ki a mappát, amelyet a szinkronizáló alkalmazásod szinkronban tart",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Még nincs itt másik számítógép. Válaszd ki ugyanezt a mappát a másik számítógépeden, hogy szinkronizálj vele.",
+"Stop syncing": "Szinkronizálás leállítása",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Ez a számítógép leállítja a szinkronizálást. Ami már itt van, megmarad, a mappa is.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "A diktálás törlése vagy csillagozása is átkerül. A beállítások és az API-kulcsok minden számítógépen külön maradnak: a mikrofonok, gyorsbillentyűk és szolgáltatók gyakran eltérnek köztük."
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

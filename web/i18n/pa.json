@@ -1001,7 +1001,19 @@
 "No speech recognised.": "ਕੋਈ ਬੋਲੀ ਨਹੀਂ ਪਛਾਣੀ ਗਈ।",
 "This browser cannot record audio.": "ਇਹ ਬ੍ਰਾਊਜ਼ਰ ਆਡੀਓ ਰਿਕਾਰਡ ਨਹੀਂ ਕਰ ਸਕਦਾ।",
 "downloaded": "ਡਾਊਨਲੋਡ ਕੀਤਾ",
-"built in": "ਅੰਦਰ-ਬਣਿਆ"
+"built in": "ਅੰਦਰ-ਬਣਿਆ",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "ਆਪਣੇ ਡਿਕਟੇਸ਼ਨ, ਅੰਕੜੇ ਅਤੇ ਖਰਚੇ, ਪ੍ਰਾਪਤੀਆਂ, ਡਿਕਸ਼ਨਰੀ ਅਤੇ ਸਫ਼ਾਈ ਨਿਯਮ ਹਰ ਕੰਪਿਊਟਰ 'ਤੇ ਇੱਕੋ ਜਿਹੇ ਰੱਖੋ, ਉਸ ਫੋਲਡਰ ਰਾਹੀਂ ਜਿਸਨੂੰ ਤੁਹਾਡੀ ਆਪਣੀ ਸਿੰਕ ਐਪ ਸਿੰਕ ਵਿੱਚ ਰੱਖਦੀ ਹੈ — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing ਜਾਂ ਨੈੱਟਵਰਕ ਸ਼ੇਅਰ। Vito ਇਸ ਲਈ ਕਿਸੇ ਸਰਵਰ ਨਾਲ ਗੱਲ ਨਹੀਂ ਕਰਦਾ।",
+"Found on this computer": "ਇਸ ਕੰਪਿਊਟਰ 'ਤੇ ਮਿਲਿਆ",
+"No sync app found in its usual place. Choose its folder yourself.": "ਕਿਸੇ ਆਮ ਥਾਂ 'ਤੇ ਕੋਈ ਸਿੰਕ ਐਪ ਨਹੀਂ ਮਿਲੀ। ਉਸਦਾ ਫੋਲਡਰ ਆਪ ਚੁਣੋ।",
+"Other folder…": "ਹੋਰ ਫੋਲਡਰ…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito ਆਪਣੀਆਂ ਫਾਈਲਾਂ ਉਸ ਦੇ ਅੰਦਰ “Vito Sync” ਨਾਂ ਦੇ ਫੋਲਡਰ ਵਿੱਚ ਰੱਖਦਾ ਹੈ।",
+"Path of the folder": "ਫੋਲਡਰ ਦਾ ਪਾਥ",
+"Use this folder": "ਇਹ ਫੋਲਡਰ ਵਰਤੋ",
+"Choose the folder your sync app keeps in sync": "ਉਹ ਫੋਲਡਰ ਚੁਣੋ ਜਿਸਨੂੰ ਤੁਹਾਡੀ ਸਿੰਕ ਐਪ ਸਿੰਕ ਵਿੱਚ ਰੱਖਦੀ ਹੈ",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "ਇੱਥੇ ਹਾਲੇ ਕੋਈ ਹੋਰ ਕੰਪਿਊਟਰ ਨਹੀਂ ਹੈ। ਉਸ ਨਾਲ ਸਿੰਕ ਕਰਨ ਲਈ ਆਪਣੇ ਦੂਜੇ ਕੰਪਿਊਟਰ 'ਤੇ ਇਹੀ ਫੋਲਡਰ ਚੁਣੋ।",
+"Stop syncing": "ਸਿੰਕ ਕਰਨਾ ਬੰਦ ਕਰੋ",
+"This computer stops syncing. What is already here stays, and so does the folder.": "ਇਹ ਕੰਪਿਊਟਰ ਸਿੰਕ ਕਰਨਾ ਬੰਦ ਕਰ ਦੇਵੇਗਾ। ਜੋ ਪਹਿਲਾਂ ਹੀ ਇੱਥੇ ਹੈ ਉਹ ਰਹੇਗਾ, ਅਤੇ ਫੋਲਡਰ ਵੀ।",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ਡਿਕਟੇਸ਼ਨ ਮਿਟਾਉਣਾ ਜਾਂ ਉਸ ਨੂੰ ਤਾਰਾ ਦੇਣਾ ਵੀ ਦੂਜੇ ਕੰਪਿਊਟਰ ਤੱਕ ਪਹੁੰਚਦਾ ਹੈ। ਸੈਟਿੰਗਾਂ ਅਤੇ API ਕੁੰਜੀਆਂ ਹਰ ਕੰਪਿਊਟਰ 'ਤੇ ਵੱਖਰੀਆਂ ਰਹਿੰਦੀਆਂ ਹਨ: ਮਾਈਕ੍ਰੋਫ਼ੋਨ, ਹੌਟਕੀਆਂ ਅਤੇ ਪ੍ਰੋਵਾਈਡਰ ਅਕਸਰ ਉਹਨਾਂ ਵਿਚਕਾਰ ਵੱਖਰੇ ਹੁੰਦੇ ਹਨ।"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",

@@ -1001,7 +1001,19 @@
 "No speech recognised.": "कोई बोली पहचानी नहीं गई।",
 "This browser cannot record audio.": "यह ब्राउज़र ऑडियो रिकॉर्ड नहीं कर सकता।",
 "downloaded": "डाउनलोड किया हुआ",
-"built in": "अंतर्निहित"
+"built in": "अंतर्निहित",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "अपने डिक्टेशन, आँकड़े और लागत, उपलब्धियाँ, डिक्शनरी और सफ़ाई के नियम हर कंप्यूटर पर एक जैसे रखें, एक ऐसे फ़ोल्डर के ज़रिए जिसे आपका अपना सिंक ऐप सिंक में रखता है — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing या नेटवर्क शेयर। इसके लिए Vito किसी सर्वर से बात नहीं करता।",
+"Found on this computer": "इस कंप्यूटर पर मिला",
+"No sync app found in its usual place. Choose its folder yourself.": "इसकी सामान्य जगह पर कोई सिंक ऐप नहीं मिला। उसका फ़ोल्डर खुद चुनें।",
+"Other folder…": "दूसरा फ़ोल्डर…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito अपनी फ़ाइलें उसके अंदर “Vito Sync” नाम के फ़ोल्डर में रखता है।",
+"Path of the folder": "फ़ोल्डर का पाथ",
+"Use this folder": "यह फ़ोल्डर इस्तेमाल करें",
+"Choose the folder your sync app keeps in sync": "वह फ़ोल्डर चुनें जिसे आपका सिंक ऐप सिंक में रखता है",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "यहाँ अभी कोई दूसरा कंप्यूटर नहीं है। उसके साथ सिंक करने के लिए अपने दूसरे कंप्यूटर पर यही फ़ोल्डर चुनें।",
+"Stop syncing": "सिंक बंद करें",
+"This computer stops syncing. What is already here stays, and so does the folder.": "यह कंप्यूटर सिंक करना बंद कर देता है। जो पहले से यहाँ है वह रहेगा, और फ़ोल्डर भी।",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "किसी डिक्टेशन को हटाना या उसे स्टार देना भी दूसरे कंप्यूटरों तक पहुँचता है। सेटिंग्स और API कुंजियाँ हर कंप्यूटर पर अलग रहती हैं: माइक्रोफ़ोन, हॉटकी और प्रोवाइडर अक्सर उनके बीच अलग होते हैं।"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",

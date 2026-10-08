@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Inget tal kändes igen.",
 "This browser cannot record audio.": "Den här webbläsaren kan inte spela in ljud.",
 "downloaded": "nedladdad",
-"built in": "inbyggd"
+"built in": "inbyggd",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Håll dina dikteringar, statistik och kostnader, prestationer, ordlista och upprensningsregler likadana på alla datorer, via en mapp som din egen synkroniseringsapp håller synkroniserad — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing eller en nätverksresurs. Vito pratar inte med någon server för detta.",
+"Found on this computer": "Hittades på den här datorn",
+"No sync app found in its usual place. Choose its folder yourself.": "Ingen synkroniseringsapp hittades på sin vanliga plats. Välj dess mapp själv.",
+"Other folder…": "Annan mapp…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito lägger sina filer i en mapp som heter “Vito Sync” i den.",
+"Path of the folder": "Mappens sökväg",
+"Use this folder": "Använd den här mappen",
+"Choose the folder your sync app keeps in sync": "Välj mappen som din synkroniseringsapp håller synkroniserad",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Ingen annan dator här ännu. Välj samma mapp på din andra dator för att synkronisera med den.",
+"Stop syncing": "Sluta synkronisera",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Den här datorn slutar synkronisera. Det som redan finns här blir kvar, och det gör mappen också.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Att ta bort en diktering eller ge den en stjärna följer också med. Inställningar och API-nycklar stannar på varje dator: mikrofoner, kortkommandon och leverantörer skiljer sig ofta åt mellan dem."
 },
 "help": {
 "theme": "Ljust, mörkt eller automatiskt — automatiskt följer systemets ljus/mörk-inställning.",

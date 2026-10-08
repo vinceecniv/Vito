@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Nuk u njoh asnjë fjalë.",
 "This browser cannot record audio.": "Ky shfletues nuk mund të regjistrojë audio.",
 "downloaded": "shkarkuar",
-"built in": "i integruar"
+"built in": "i integruar",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Mbaji diktimet, statistikat dhe kostot, arritjet, fjalorin dhe rregullat e pastrimit të njëjta në çdo kompjuter, përmes një dosjeje që aplikacioni yt i sinkronizimit e mban të sinkronizuar — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing ose një ndarje rrjeti. Vito nuk komunikon me asnjë server për këtë.",
+"Found on this computer": "U gjet në këtë kompjuter",
+"No sync app found in its usual place. Choose its folder yourself.": "Asnjë aplikacion sinkronizimi nuk u gjet në vendin e zakonshëm. Zgjidhe vetë dosjen e tij.",
+"Other folder…": "Dosje tjetër…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito i vendos skedarët e tij në një dosje me emrin “Vito Sync” brenda saj.",
+"Path of the folder": "Rruga e dosjes",
+"Use this folder": "Përdor këtë dosje",
+"Choose the folder your sync app keeps in sync": "Zgjidh dosjen që aplikacioni yt i sinkronizimit e mban të sinkronizuar",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Ende asnjë kompjuter tjetër këtu. Zgjidh të njëjtën dosje në kompjuterin tënd tjetër për të sinkronizuar me të.",
+"Stop syncing": "Ndalo sinkronizimin",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Ky kompjuter ndalon sinkronizimin. Ç'është tashmë këtu mbetet, dhe dosja gjithashtu.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Fshirja e një diktimi ose vënia e një ylli bartet gjithashtu. Cilësimet dhe çelësat API mbeten në çdo kompjuter: mikrofonat, tastet e shpejta dhe ofruesit shpesh ndryshojnë mes tyre."
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Маўленне не распазнана.",
 "This browser cannot record audio.": "Гэты браўзер не можа запісваць гук.",
 "downloaded": "загружана",
-"built in": "убудавана"
+"built in": "убудавана",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Захоўвайце дыктоўкі, статыстыку і кошты, дасягненні, слоўнік і правілы ачысткі аднолькавымі на кожным камп’ютары праз папку, якую сінхранізуе ваша ўласная праграма сінхранізацыі — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing або сеткавы рэсурс. Vito не звяртаецца для гэтага ні да якога сервера.",
+"Found on this computer": "Знойдзена на гэтым камп’ютары",
+"No sync app found in its usual place. Choose its folder yourself.": "Праграму сінхранізацыі ў звычайным месцы не знойдзена. Выберыце яе папку самі.",
+"Other folder…": "Іншая папка…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito кладзе свае файлы ў папку «Vito Sync» усярэдзіне яе.",
+"Path of the folder": "Шлях да папкі",
+"Use this folder": "Выкарыстаць гэтую папку",
+"Choose the folder your sync app keeps in sync": "Выберыце папку, якую сінхранізуе ваша праграма сінхранізацыі",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Іншага камп’ютара тут пакуль няма. Выберыце тую ж папку на другім камп’ютары, каб сінхранізавацца з ім.",
+"Stop syncing": "Спыніць сінхранізацыю",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Гэты камп’ютар спыняе сінхранізацыю. Тое, што ўжо тут ёсць, застанецца, як і папка.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Выдаленне дыктоўкі або пазначэнне яе зоркай таксама пераносіцца. Налады і API-ключы застаюцца на кожным камп’ютары: мікрафоны, спалучэнні клавіш і правайдары часта адрозніваюцца."
 },
 "help": {
 "theme": "Светлая, цёмная ці аўтаматычная — аўтаматычная сочыць за светлым/цёмным рэжымам вашай сістэмы.",

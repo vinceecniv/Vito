@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Nerozpoznala sa žiadna reč.",
 "This browser cannot record audio.": "Tento prehliadač nedokáže nahrávať zvuk.",
 "downloaded": "stiahnuté",
-"built in": "vstavané"
+"built in": "vstavané",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Majte svoje diktáty, štatistiky a náklady, úspechy, slovník a pravidlá čistenia rovnaké na každom počítači, a to cez priečinok, ktorý synchronizuje vaša vlastná synchronizačná aplikácia – Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing alebo sieťové úložisko. Vito na to nekomunikuje so žiadnym serverom.",
+"Found on this computer": "Nájdené v tomto počítači",
+"No sync app found in its usual place. Choose its folder yourself.": "Synchronizačná aplikácia sa nenašla na obvyklom mieste. Vyberte jej priečinok sami.",
+"Other folder…": "Iný priečinok…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito do neho uloží svoje súbory v priečinku s názvom „Vito Sync“.",
+"Path of the folder": "Cesta k priečinku",
+"Use this folder": "Použiť tento priečinok",
+"Choose the folder your sync app keeps in sync": "Vyberte priečinok, ktorý vaša synchronizačná aplikácia synchronizuje",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Zatiaľ tu nie je žiadny iný počítač. Ak chcete synchronizovať, vyberte rovnaký priečinok na svojom druhom počítači.",
+"Stop syncing": "Zastaviť synchronizáciu",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Tento počítač prestane synchronizovať. Čo tu už je, zostane, rovnako aj priečinok.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Prenáša sa aj odstránenie diktátu alebo jeho označenie hviezdičkou. Nastavenia a kľúče API zostávajú na každom počítači: mikrofóny, klávesové skratky a poskytovatelia sa medzi nimi často líšia."
 },
 "help": {
 "theme": "Svetlá, tmavá alebo automatická — automatická sleduje svetlý/tmavý režim vášho systému.",

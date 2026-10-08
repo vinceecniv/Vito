@@ -1002,7 +1002,19 @@
 "No speech recognised.": "No se reconoció ninguna voz.",
 "This browser cannot record audio.": "Este navegador no puede grabar audio.",
 "downloaded": "descargado",
-"built in": "integrado"
+"built in": "integrado",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Mantén tus dictados, estadísticas y costes, logros, diccionario y reglas de limpieza iguales en todos tus ordenadores, a través de una carpeta que tu propia aplicación de sincronización mantiene sincronizada — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing o un recurso de red compartido. Vito no se comunica con ningún servidor para esto.",
+"Found on this computer": "Encontrado en este ordenador",
+"No sync app found in its usual place. Choose its folder yourself.": "No se encontró ninguna aplicación de sincronización en su ubicación habitual. Elige tú mismo su carpeta.",
+"Other folder…": "Otra carpeta…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito guarda sus archivos en una carpeta llamada “Vito Sync” dentro de ella.",
+"Path of the folder": "Ruta de la carpeta",
+"Use this folder": "Usar esta carpeta",
+"Choose the folder your sync app keeps in sync": "Elige la carpeta que tu aplicación de sincronización mantiene sincronizada",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Todavía no hay otro ordenador aquí. Elige la misma carpeta en tu otro ordenador para sincronizarlo.",
+"Stop syncing": "Dejar de sincronizar",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Este ordenador deja de sincronizar. Lo que ya está aquí se conserva, y la carpeta también.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Eliminar un dictado o marcarlo con una estrella también se transfiere. Los ajustes y las claves de API se quedan en cada ordenador: los micrófonos, las combinaciones de teclas y los proveedores suelen ser distintos entre ellos."
 },
 "help": {
 "theme": "Claro, oscuro o automático — automático sigue el modo claro/oscuro de tu sistema.",

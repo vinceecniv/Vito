@@ -1001,7 +1001,19 @@
 "No speech recognised.": "സംസാരം തിരിച്ചറിഞ്ഞില്ല.",
 "This browser cannot record audio.": "ഈ ബ്രൗസറിന് ഓഡിയോ റെക്കോർഡ് ചെയ്യാൻ കഴിയില്ല.",
 "downloaded": "ഡൗൺലോഡ് ചെയ്തത്",
-"built in": "ഉൾപ്പെടുത്തിയത്"
+"built in": "ഉൾപ്പെടുത്തിയത്",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "നിങ്ങളുടെ സ്വന്തം സിങ്ക് ആപ്പ് സിങ്ക് ചെയ്യുന്ന ഒരു ഫോൾഡർ വഴി — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing അല്ലെങ്കിൽ ഒരു നെറ്റ്‌വർക്ക് ഷെയർ — നിങ്ങളുടെ ഡിക്ടേഷനുകൾ, സ്ഥിതിവിവരക്കണക്കുകൾ, ചെലവുകൾ, നേട്ടങ്ങൾ, നിഘണ്ടു, ക്ലീനപ്പ് നിയമങ്ങൾ എന്നിവ എല്ലാ കമ്പ്യൂട്ടറിലും ഒരുപോലെ നിലനിർത്തൂ. ഇതിനായി Vito ഒരു സെർവറുമായും ബന്ധപ്പെടുന്നില്ല.",
+"Found on this computer": "ഈ കമ്പ്യൂട്ടറിൽ കണ്ടെത്തി",
+"No sync app found in its usual place. Choose its folder yourself.": "സിങ്ക് ആപ്പ് സാധാരണ സ്ഥലത്ത് കണ്ടെത്തിയില്ല. അതിന്റെ ഫോൾഡർ നിങ്ങൾ തന്നെ തിരഞ്ഞെടുക്കൂ.",
+"Other folder…": "മറ്റൊരു ഫോൾഡർ…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito അതിനുള്ളിൽ “Vito Sync” എന്ന ഫോൾഡറിൽ അതിന്റെ ഫയലുകൾ സൂക്ഷിക്കുന്നു.",
+"Path of the folder": "ഫോൾഡറിന്റെ പാത്ത്",
+"Use this folder": "ഈ ഫോൾഡർ ഉപയോഗിക്കുക",
+"Choose the folder your sync app keeps in sync": "നിങ്ങളുടെ സിങ്ക് ആപ്പ് സിങ്ക് ചെയ്യുന്ന ഫോൾഡർ തിരഞ്ഞെടുക്കൂ",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "ഇവിടെ മറ്റൊരു കമ്പ്യൂട്ടർ ഇതുവരെ ഇല്ല. അതുമായി സിങ്ക് ചെയ്യാൻ നിങ്ങളുടെ മറ്റേ കമ്പ്യൂട്ടറിലും ഇതേ ഫോൾഡർ തിരഞ്ഞെടുക്കൂ.",
+"Stop syncing": "സിങ്ക് ചെയ്യുന്നത് നിർത്തുക",
+"This computer stops syncing. What is already here stays, and so does the folder.": "ഈ കമ്പ്യൂട്ടർ സിങ്ക് ചെയ്യുന്നത് നിർത്തുന്നു. ഇവിടെ ഇപ്പോഴുള്ളതെല്ലാം അതുപോലെ തുടരും, ഫോൾഡറും.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ഒരു ഡിക്ടേഷൻ ഇല്ലാതാക്കുന്നതും അതിന് നക്ഷത്രം നൽകുന്നതും മറ്റ് കമ്പ്യൂട്ടറുകളിലേക്കും എത്തും. ക്രമീകരണങ്ങളും API കീകളും ഓരോ കമ്പ്യൂട്ടറിലും വെവ്വേറെ തന്നെ നിൽക്കും: മൈക്രോഫോണുകളും ഹോട്ട്കീകളും ദാതാക്കളും അവയ്ക്കിടയിൽ പലപ്പോഴും വ്യത്യസ്തമായിരിക്കും."
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

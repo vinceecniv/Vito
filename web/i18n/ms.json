@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Tiada pertuturan dikenali.",
 "This browser cannot record audio.": "Pelayar ini tidak boleh merakam audio.",
 "downloaded": "dimuat turun",
-"built in": "terbina dalam"
+"built in": "terbina dalam",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Pastikan dikte, statistik dan kos, pencapaian, kamus serta peraturan pembersihan anda sama pada setiap komputer, melalui folder yang disegerakkan oleh apl segerak anda sendiri — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing atau perkongsian rangkaian. Vito tidak berhubung dengan sebarang pelayan untuk ini.",
+"Found on this computer": "Ditemui pada komputer ini",
+"No sync app found in its usual place. Choose its folder yourself.": "Tiada apl segerak ditemui di lokasi biasanya. Pilih folder itu sendiri.",
+"Other folder…": "Folder lain…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito meletakkan failnya dalam folder bernama “Vito Sync” di dalamnya.",
+"Path of the folder": "Laluan folder",
+"Use this folder": "Guna folder ini",
+"Choose the folder your sync app keeps in sync": "Pilih folder yang disegerakkan oleh apl segerak anda",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Belum ada komputer lain di sini. Pilih folder yang sama pada komputer anda yang lain untuk menyegerak dengannya.",
+"Stop syncing": "Henti segerak",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Komputer ini berhenti menyegerak. Apa yang sudah ada di sini kekal, begitu juga folder itu.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Memadam dikte atau memberinya bintang turut dibawa bersama. Tetapan dan kunci API kekal pada setiap komputer: mikrofon, kekunci pintas dan penyedia selalunya berbeza antara komputer."
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",

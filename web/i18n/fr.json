@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Aucune parole reconnue.",
 "This browser cannot record audio.": "Ce navigateur ne peut pas enregistrer l'audio.",
 "downloaded": "téléchargé",
-"built in": "intégré"
+"built in": "intégré",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Gardez vos dictées, statistiques et coûts, réussites, dictionnaire et règles de nettoyage identiques sur chaque ordinateur, grâce à un dossier que votre propre application de synchronisation tient à jour — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing ou un partage réseau. Vito ne communique avec aucun serveur pour cela.",
+"Found on this computer": "Trouvé sur cet ordinateur",
+"No sync app found in its usual place. Choose its folder yourself.": "Aucune application de synchronisation trouvée à son emplacement habituel. Choisissez son dossier vous-même.",
+"Other folder…": "Autre dossier…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito place ses fichiers dans un dossier nommé « Vito Sync » à l'intérieur.",
+"Path of the folder": "Chemin du dossier",
+"Use this folder": "Utiliser ce dossier",
+"Choose the folder your sync app keeps in sync": "Choisissez le dossier que votre application de synchronisation tient à jour",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Aucun autre ordinateur ici pour l'instant. Choisissez le même dossier sur votre autre ordinateur pour synchroniser avec lui.",
+"Stop syncing": "Arrêter la synchronisation",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Cet ordinateur arrête de synchroniser. Ce qui est déjà ici est conservé, tout comme le dossier.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "La suppression d'une dictée ou l'ajout d'une étoile est également répercuté. Les paramètres et les clés API restent sur chaque ordinateur : les microphones, les raccourcis et les fournisseurs diffèrent souvent d'un ordinateur à l'autre."
 },
 "help": {
 "theme": "Clair, sombre ou automatique — le mode automatique suit le réglage clair/sombre de votre système.",

@@ -1001,7 +1001,19 @@
 "No speech recognised.": "ఏ మాటా గుర్తించబడలేదు.",
 "This browser cannot record audio.": "ఈ బ్రౌజర్ ఆడియోను రికార్డ్ చేయలేదు.",
 "downloaded": "డౌన్‌లోడ్ అయింది",
-"built in": "అంతర్నిర్మితం"
+"built in": "అంతర్నిర్మితం",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "మీ డిక్టేషన్లు, గణాంకాలు మరియు ఖర్చులు, విజయాలు, నిఘంటువు మరియు శుభ్రపరిచే నియమాలు ప్రతి కంప్యూటర్‌లో ఒకేలా ఉండేలా చేయండి — మీ సొంత సింక్ యాప్ సింక్‌లో ఉంచే ఫోల్డర్ ద్వారా: Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing లేదా నెట్‌వర్క్ షేర్. దీని కోసం Vito ఏ సర్వర్‌తోనూ మాట్లాడదు.",
+"Found on this computer": "ఈ కంప్యూటర్‌లో కనుగొనబడింది",
+"No sync app found in its usual place. Choose its folder yourself.": "సాధారణ స్థలంలో ఏ సింక్ యాప్ కనుగొనబడలేదు. దాని ఫోల్డర్‌ను మీరే ఎంచుకోండి.",
+"Other folder…": "ఇతర ఫోల్డర్…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito తన ఫైళ్లను దాని లోపల “Vito Sync” అనే ఫోల్డర్‌లో ఉంచుతుంది.",
+"Path of the folder": "ఫోల్డర్ మార్గం",
+"Use this folder": "ఈ ఫోల్డర్‌ను ఉపయోగించండి",
+"Choose the folder your sync app keeps in sync": "మీ సింక్ యాప్ సింక్‌లో ఉంచే ఫోల్డర్‌ను ఎంచుకోండి",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "ఇక్కడ ఇంకా మరో కంప్యూటర్ లేదు. దానితో సింక్ చేయడానికి మీ ఇతర కంప్యూటర్‌లో అదే ఫోల్డర్‌ను ఎంచుకోండి.",
+"Stop syncing": "సింక్ ఆపండి",
+"This computer stops syncing. What is already here stays, and so does the folder.": "ఈ కంప్యూటర్ సింక్ చేయడం ఆపుతుంది. ఇప్పటికే ఇక్కడ ఉన్నవి అలాగే ఉంటాయి, ఫోల్డర్ కూడా.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "డిక్టేషన్‌ను తొలగించడం లేదా స్టార్ ఇవ్వడం కూడా బదిలీ అవుతుంది. సెట్టింగ్‌లు మరియు API కీలు ప్రతి కంప్యూటర్‌లో వేరుగా ఉంటాయి: మైక్రోఫోన్లు, హాట్‌కీలు మరియు ప్రొవైడర్లు తరచుగా వాటి మధ్య భిన్నంగా ఉంటాయి."
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

@@ -1002,7 +1002,19 @@
 "No speech recognised.": "لم يُتعرَّف على أي كلام.",
 "This browser cannot record audio.": "لا يستطيع هذا المتصفح تسجيل الصوت.",
 "downloaded": "منزَّل",
-"built in": "مدمج"
+"built in": "مدمج",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "احتفظ بإملاءاتك وإحصاءاتك وتكاليفك وإنجازاتك وقاموسك وقواعد التنظيف متطابقة على كل جهاز كمبيوتر، عبر مجلد يتولى تطبيق المزامنة الخاص بك مزامنته — Dropbox أو OneDrive أو Nextcloud أو iCloud Drive أو Google Drive أو Syncthing أو مشاركة شبكية. لا يتصل Vito بأي خادم لهذا الغرض.",
+"Found on this computer": "موجود على هذا الكمبيوتر",
+"No sync app found in its usual place. Choose its folder yourself.": "لم يتم العثور على تطبيق مزامنة في مكانه المعتاد. اختر مجلده بنفسك.",
+"Other folder…": "مجلد آخر…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "ينشئ Vito ملفاته في مجلد باسم «Vito Sync» داخله.",
+"Path of the folder": "مسار المجلد",
+"Use this folder": "استخدم هذا المجلد",
+"Choose the folder your sync app keeps in sync": "اختر المجلد الذي يزامنه تطبيق المزامنة الخاص بك",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "لا يوجد كمبيوتر آخر هنا بعد. اختر المجلد نفسه على الكمبيوتر الآخر للمزامنة معه.",
+"Stop syncing": "إيقاف المزامنة",
+"This computer stops syncing. What is already here stays, and so does the folder.": "سيتوقف هذا الكمبيوتر عن المزامنة. يبقى ما هو موجود هنا، ويبقى المجلد أيضًا.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "حذف إملاء أو تمييزه بنجمة ينتقل أيضًا. تبقى الإعدادات ومفاتيح API على كل كمبيوتر: فالميكروفونات ومفاتيح الاختصار والمزوّدون غالبًا ما تختلف بينها."
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

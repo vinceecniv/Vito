@@ -1,5 +1,17 @@
 {
 "strings": {
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "ทำให้บันทึกเสียงที่พูด สถิติและค่าใช้จ่าย ความสำเร็จ พจนานุกรม และกฎการจัดข้อความเหมือนกันในทุกคอมพิวเตอร์ ผ่านโฟลเดอร์ที่แอปซิงค์ของคุณเองดูแลอยู่ — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing หรือเน็ตเวิร์กแชร์ Vito ไม่ได้ติดต่อกับเซิร์ฟเวอร์ใดๆ เพื่อการนี้",
+"Found on this computer": "พบในคอมพิวเตอร์เครื่องนี้",
+"No sync app found in its usual place. Choose its folder yourself.": "ไม่พบแอปซิงค์ในตำแหน่งปกติ โปรดเลือกโฟลเดอร์ของแอปด้วยตนเอง",
+"Other folder…": "โฟลเดอร์อื่น…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito จะเก็บไฟล์ของตัวเองไว้ในโฟลเดอร์ชื่อ “Vito Sync” ภายในโฟลเดอร์นั้น",
+"Path of the folder": "ที่อยู่ของโฟลเดอร์",
+"Use this folder": "ใช้โฟลเดอร์นี้",
+"Choose the folder your sync app keeps in sync": "เลือกโฟลเดอร์ที่แอปซิงค์ของคุณใช้ซิงค์",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "ยังไม่มีคอมพิวเตอร์เครื่องอื่นที่นี่ เลือกโฟลเดอร์เดียวกันบนคอมพิวเตอร์อีกเครื่องเพื่อซิงค์ข้อมูลระหว่างกัน",
+"Stop syncing": "หยุดซิงค์",
+"This computer stops syncing. What is already here stays, and so does the folder.": "คอมพิวเตอร์เครื่องนี้จะหยุดซิงค์ สิ่งที่มีอยู่ที่นี่แล้วจะยังคงอยู่ รวมถึงโฟลเดอร์ด้วย",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "การลบบันทึกเสียงที่พูดหรือการติดดาวก็ซิงค์ไปด้วยเช่นกัน การตั้งค่าและคีย์ API จะอยู่ในแต่ละเครื่องเท่านั้น เพราะไมโครโฟน ปุ่มลัด และผู้ให้บริการมักต่างกันในแต่ละเครื่อง",
 "Most used words": "คำที่ใช้บ่อยที่สุด",
 "Chart in background": "แสดงแผนภูมิเป็นพื้นหลัง",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "คำที่คุณพูดบ่อยที่สุดในช่วงเวลานี้ ยิ่งตัวใหญ่ยิ่งพูดบ่อย คำที่มีสามตัวอักษรหรือน้อยกว่า และคำทั่วไปอย่าง ‘อยาก’ หรือ ‘เพราะ’ จะไม่ถูกนับรวม",

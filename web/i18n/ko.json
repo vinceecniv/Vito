@@ -1001,7 +1001,19 @@
 "No speech recognised.": "인식된 음성이 없어요.",
 "This browser cannot record audio.": "이 브라우저는 오디오를 녹음할 수 없어요.",
 "downloaded": "다운로드됨",
-"built in": "기본 제공"
+"built in": "기본 제공",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing, 네트워크 공유 등 직접 사용하는 동기화 앱이 동기화하는 폴더를 통해 모든 컴퓨터에서 받아쓰기 기록, 통계와 비용, 업적, 사전, 정리 규칙을 똑같이 유지해요. Vito는 이를 위해 어떤 서버와도 통신하지 않아요.",
+"Found on this computer": "이 컴퓨터에서 찾음",
+"No sync app found in its usual place. Choose its folder yourself.": "일반적인 위치에서 동기화 앱을 찾지 못했어요. 폴더를 직접 선택해 주세요.",
+"Other folder…": "다른 폴더…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito는 그 안에 “Vito Sync”라는 폴더를 만들어 파일을 저장해요.",
+"Path of the folder": "폴더 경로",
+"Use this folder": "이 폴더 사용",
+"Choose the folder your sync app keeps in sync": "동기화 앱이 동기화하는 폴더를 선택하세요",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "아직 다른 컴퓨터가 없어요. 동기화하려면 다른 컴퓨터에서 같은 폴더를 선택하세요.",
+"Stop syncing": "동기화 중지",
+"This computer stops syncing. What is already here stays, and so does the folder.": "이 컴퓨터는 동기화를 중지해요. 이미 여기 있는 내용과 폴더는 그대로 남아요.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "받아쓰기를 삭제하거나 별표를 표시한 것도 함께 반영돼요. 설정과 API 키는 각 컴퓨터에 그대로 남아요. 마이크, 단축키, 제공업체는 컴퓨터마다 다른 경우가 많기 때문이에요."
 },
 "help": {
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",

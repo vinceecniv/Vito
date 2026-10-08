@@ -1001,7 +1001,19 @@
     "No speech recognised.": "Сөйлеу танылмады.",
     "This browser cannot record audio.": "Бұл браузер аудио жаза алмайды.",
     "downloaded": "жүктелген",
-    "built in": "кірістірілген"
+    "built in": "кірістірілген",
+    "Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Диктовкаларыңызды, статистика мен шығындарды, жетістіктерді, сөздікті және тазалау ережелерін барлық компьютерде бірдей ұстаңыз — өзіңіздің синхрондау қолданбаңыз синхрондап тұратын қалта арқылы: Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing немесе желілік қалта. Vito бұл үшін ешқандай серверге қосылмайды.",
+    "Found on this computer": "Осы компьютерден табылды",
+    "No sync app found in its usual place. Choose its folder yourself.": "Синхрондау қолданбасы әдеттегі орнында табылмады. Оның қалтасын өзіңіз таңдаңыз.",
+    "Other folder…": "Басқа қалта…",
+    "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito өз файлдарын оның ішіндегі «Vito Sync» деп аталатын қалтаға салады.",
+    "Path of the folder": "Қалта жолы",
+    "Use this folder": "Осы қалтаны пайдалану",
+    "Choose the folder your sync app keeps in sync": "Синхрондау қолданбаңыз синхрондап тұратын қалтаны таңдаңыз",
+    "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Мұнда әзірге басқа компьютер жоқ. Онымен синхрондау үшін басқа компьютерде де дәл осы қалтаны таңдаңыз.",
+    "Stop syncing": "Синхрондауды тоқтату",
+    "This computer stops syncing. What is already here stays, and so does the folder.": "Бұл компьютер синхрондауды тоқтатады. Мұнда бар нәрсе де, қалта да сақталады.",
+    "Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Диктовканы жою немесе жұлдызшамен белгілеу де басқа компьютерге ауысады. Параметрлер мен API кілттері әр компьютерде бөлек қалады: микрофондар, жылдам пернелер және провайдерлер көбіне әртүрлі болады."
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",

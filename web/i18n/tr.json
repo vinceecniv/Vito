@@ -1,5 +1,17 @@
 {
 "strings": {
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Diktelerinizi, istatistiklerinizi ve maliyetlerinizi, başarımlarınızı, sözlüğünüzü ve temizleme kurallarınızı her bilgisayarda aynı tutun; bunu kendi eşitleme uygulamanızın eşitlediği bir klasör üzerinden yapın — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing veya bir ağ paylaşımı. Vito bunun için hiçbir sunucuyla konuşmaz.",
+"Found on this computer": "Bu bilgisayarda bulundu",
+"No sync app found in its usual place. Choose its folder yourself.": "Eşitleme uygulaması her zamanki yerinde bulunamadı. Klasörünü kendiniz seçin.",
+"Other folder…": "Başka klasör…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito dosyalarını bunun içinde “Vito Sync” adlı bir klasöre koyar.",
+"Path of the folder": "Klasörün yolu",
+"Use this folder": "Bu klasörü kullan",
+"Choose the folder your sync app keeps in sync": "Eşitleme uygulamanızın eşitlediği klasörü seçin",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Burada henüz başka bir bilgisayar yok. Onunla eşitlemek için diğer bilgisayarınızda aynı klasörü seçin.",
+"Stop syncing": "Eşitlemeyi durdur",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Bu bilgisayar eşitlemeyi durdurur. Burada zaten olanlar ve klasör olduğu gibi kalır.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Bir dikteyi silmek veya yıldızlamak da diğer bilgisayarlara yansır. Ayarlar ve API anahtarları her bilgisayarda ayrı kalır: mikrofonlar, kısayol tuşları ve sağlayıcılar çoğunlukla birbirinden farklıdır.",
 "Main figure": "Ana rakam",
 "days in a row": "gün üst üste",
 "New record!": "Yeni rekor!",

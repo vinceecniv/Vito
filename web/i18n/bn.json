@@ -1001,7 +1001,19 @@
 "No speech recognised.": "কোনো কথা শনাক্ত হয়নি।",
 "This browser cannot record audio.": "এই ব্রাউজার অডিও রেকর্ড করতে পারে না।",
 "downloaded": "ডাউনলোড করা",
-"built in": "অন্তর্নির্মিত"
+"built in": "অন্তর্নির্মিত",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "আপনার ডিকটেশন, পরিসংখ্যান ও খরচ, অর্জন, অভিধান এবং পরিষ্কারের নিয়মগুলো প্রতিটি কম্পিউটারে একই রাখুন, আপনার নিজের সিঙ্ক অ্যাপ যে ফোল্ডারটি সিঙ্কে রাখে তার মাধ্যমে — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing বা নেটওয়ার্ক শেয়ার। এর জন্য Vito কোনো সার্ভারের সাথে যোগাযোগ করে না।",
+"Found on this computer": "এই কম্পিউটারে পাওয়া গেছে",
+"No sync app found in its usual place. Choose its folder yourself.": "স্বাভাবিক জায়গায় কোনো সিঙ্ক অ্যাপ পাওয়া যায়নি। এর ফোল্ডারটি নিজে বেছে নিন।",
+"Other folder…": "অন্য ফোল্ডার…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito এর ভেতরে “Vito Sync” নামের একটি ফোল্ডারে তার ফাইলগুলো রাখে।",
+"Path of the folder": "ফোল্ডারের পাথ",
+"Use this folder": "এই ফোল্ডারটি ব্যবহার করুন",
+"Choose the folder your sync app keeps in sync": "আপনার সিঙ্ক অ্যাপ যে ফোল্ডারটি সিঙ্কে রাখে সেটি বেছে নিন",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "এখানে এখনও অন্য কোনো কম্পিউটার নেই। এটির সাথে সিঙ্ক করতে আপনার অন্য কম্পিউটারেও একই ফোল্ডার বেছে নিন।",
+"Stop syncing": "সিঙ্ক বন্ধ করুন",
+"This computer stops syncing. What is already here stays, and so does the folder.": "এই কম্পিউটার সিঙ্ক করা বন্ধ করবে। এখানে যা আছে তা থাকবে, ফোল্ডারটিও থাকবে।",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "কোনো ডিকটেশন মুছে ফেলা বা তাতে তারকা দেওয়াও অন্য কম্পিউটারে পৌঁছে যায়। সেটিংস ও API কী প্রতিটি কম্পিউটারে আলাদা থাকে: মাইক্রোফোন, হটকী ও প্রোভাইডার প্রায়ই একটির সাথে অন্যটির মেলে না।"
 },
 "help": {
 "theme": "হালকা, গাঢ় বা স্বয়ংক্রিয় — স্বয়ংক্রিয় আপনার সিস্টেমের হালকা/গাঢ় সেটিং অনুসরণ করে।",

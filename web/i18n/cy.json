@@ -1002,7 +1002,19 @@
 "No speech recognised.": "Dim lleferydd wedi'i adnabod.",
 "This browser cannot record audio.": "Ni all y porwr hwn recordio sain.",
 "downloaded": "wedi'i lawrlwytho",
-"built in": "adeiledig"
+"built in": "adeiledig",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Cadw dy arddywediadau, ystadegau a chostau, cyflawniadau, geiriadur a rheolau glanhau yr un fath ar bob cyfrifiadur, trwy ffolder y mae dy ap cysoni dy hun yn ei chadw'n gydamserol — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing neu rannu rhwydwaith. Nid yw Vito yn siarad ag unrhyw weinydd ar gyfer hyn.",
+"Found on this computer": "Wedi'i ganfod ar y cyfrifiadur hwn",
+"No sync app found in its usual place. Choose its folder yourself.": "Heb ganfod ap cysoni yn ei le arferol. Dewis ei ffolder dy hun.",
+"Other folder…": "Ffolder arall…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Mae Vito yn rhoi ei ffeiliau mewn ffolder o'r enw “Vito Sync” y tu mewn iddi.",
+"Path of the folder": "Llwybr y ffolder",
+"Use this folder": "Defnyddio'r ffolder hon",
+"Choose the folder your sync app keeps in sync": "Dewis y ffolder y mae dy ap cysoni yn ei chadw'n gydamserol",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Dim cyfrifiadur arall yma eto. Dewis yr un ffolder ar dy gyfrifiadur arall i gysoni ag ef.",
+"Stop syncing": "Stopio cysoni",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Mae'r cyfrifiadur hwn yn stopio cysoni. Mae'r hyn sydd yma eisoes yn aros, a'r ffolder hefyd.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Mae dileu arddywediad neu roi seren iddo yn cael ei drosglwyddo hefyd. Mae gosodiadau ac allweddi API yn aros ar bob cyfrifiadur: mae meicroffonau, bysellau poeth a darparwyr yn aml yn wahanol rhyngddynt."
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

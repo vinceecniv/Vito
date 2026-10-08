@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Ez da hitzik ezagutu.",
 "This browser cannot record audio.": "Nabigatzaile honek ezin du audioa grabatu.",
 "downloaded": "deskargatuta",
-"built in": "barnean"
+"built in": "barnean",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Mantendu zure diktaketak, estatistikak eta kostuak, lorpenak, hiztegia eta garbiketa-arauak berdinak ordenagailu guztietan, zure sinkronizazio-aplikazioak sinkronizatuta mantentzen duen karpeta baten bidez — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing edo sareko partekatze bat. Vitok ez dio inongo zerbitzariri hitz egiten horretarako.",
+"Found on this computer": "Ordenagailu honetan aurkitua",
+"No sync app found in its usual place. Choose its folder yourself.": "Ez da sinkronizazio-aplikaziorik aurkitu ohiko lekuan. Aukeratu zuk zeuk haren karpeta.",
+"Other folder…": "Beste karpeta bat…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vitok bere fitxategiak barruan “Vito Sync” izeneko karpeta batean uzten ditu.",
+"Path of the folder": "Karpetaren bidea",
+"Use this folder": "Erabili karpeta hau",
+"Choose the folder your sync app keeps in sync": "Aukeratu zure sinkronizazio-aplikazioak sinkronizatuta mantentzen duen karpeta",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Oraindik ez dago beste ordenagailurik hemen. Aukeratu karpeta bera zure beste ordenagailuan harekin sinkronizatzeko.",
+"Stop syncing": "Utzi sinkronizatzeari",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Ordenagailu honek sinkronizatzeari uzten dio. Hemen dagoena eta karpeta bertan geratzen dira.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Diktaketa bat ezabatzea edo izarra jartzea ere sartzen da. Ezarpenak eta API gakoak ordenagailu bakoitzean geratzen dira: mikrofonoak, laster-teklak eta hornitzaileak sarri desberdinak izaten dira haien artean."
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

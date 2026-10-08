@@ -1001,7 +1001,19 @@
 "No speech recognised.": "No s'ha reconegut cap veu.",
 "This browser cannot record audio.": "Aquest navegador no pot gravar àudio.",
 "downloaded": "descarregat",
-"built in": "integrat"
+"built in": "integrat",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Mantén els teus dictats, estadístiques i costos, assoliments, diccionari i regles de neteja iguals a cada ordinador, mitjançant una carpeta que la teva pròpia aplicació de sincronització manté sincronitzada: Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing o un recurs de xarxa. Vito no es comunica amb cap servidor per a això.",
+"Found on this computer": "Trobades en aquest ordinador",
+"No sync app found in its usual place. Choose its folder yourself.": "No s'ha trobat cap aplicació de sincronització al seu lloc habitual. Tria'n la carpeta tu mateix.",
+"Other folder…": "Una altra carpeta…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito hi desa els seus fitxers en una carpeta anomenada «Vito Sync».",
+"Path of the folder": "Ruta de la carpeta",
+"Use this folder": "Fes servir aquesta carpeta",
+"Choose the folder your sync app keeps in sync": "Tria la carpeta que la teva aplicació de sincronització manté sincronitzada",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Encara no hi ha cap altre ordinador aquí. Tria la mateixa carpeta a l'altre ordinador per sincronitzar-los.",
+"Stop syncing": "Deixa de sincronitzar",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Aquest ordinador deixa de sincronitzar. El que ja hi ha es conserva, i la carpeta també.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Eliminar un dictat o marcar-lo amb una estrella també es transfereix. Els ajustos i les claus d'API es queden a cada ordinador: els micròfons, les tecles d'accés ràpid i els proveïdors sovint són diferents entre ells."
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

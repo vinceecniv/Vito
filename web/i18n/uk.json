@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Мовлення не розпізнано.",
 "This browser cannot record audio.": "Цей браузер не може записувати аудіо.",
 "downloaded": "завантажено",
-"built in": "вбудовано"
+"built in": "вбудовано",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Зберігайте диктування, статистику та витрати, досягнення, словник і правила очищення однаковими на кожному комп’ютері через папку, яку синхронізує ваш власний застосунок — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing або мережеву папку. Vito для цього не звертається до жодного сервера.",
+"Found on this computer": "Знайдено на цьому комп’ютері",
+"No sync app found in its usual place. Choose its folder yourself.": "Застосунок синхронізації не знайдено у звичному місці. Виберіть його папку самостійно.",
+"Other folder…": "Інша папка…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito створює в ній папку «Vito Sync» і зберігає файли там.",
+"Path of the folder": "Шлях до папки",
+"Use this folder": "Використати цю папку",
+"Choose the folder your sync app keeps in sync": "Виберіть папку, яку синхронізує ваш застосунок",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Тут ще немає іншого комп’ютера. Виберіть ту саму папку на іншому комп’ютері, щоб синхронізуватися з ним.",
+"Stop syncing": "Припинити синхронізацію",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Цей комп’ютер припиняє синхронізацію. Усе, що вже тут є, залишається, як і сама папка.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Видалення диктування чи позначення його зірочкою теж переноситься. Налаштування й ключі API залишаються на кожному комп’ютері: мікрофони, гарячі клавіші та провайдери часто відрізняються."
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",

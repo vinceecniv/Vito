@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Govor nije prepoznat.",
 "This browser cannot record audio.": "Ovaj pregledač ne može da snima zvuk.",
 "downloaded": "preuzeto",
-"built in": "ugrađeno"
+"built in": "ugrađeno",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Neka vaši diktati, statistika i troškovi, dostignuća, rečnik i pravila čišćenja budu isti na svakom računaru, preko fascikle koju vaša sopstvena aplikacija za sinhronizaciju održava usklađenom — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing ili mrežni deljeni resurs. Vito za ovo ne komunicira ni sa jednim serverom.",
+"Found on this computer": "Pronađeno na ovom računaru",
+"No sync app found in its usual place. Choose its folder yourself.": "Aplikacija za sinhronizaciju nije pronađena na uobičajenom mestu. Izaberite njenu fasciklu sami.",
+"Other folder…": "Druga fascikla…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito smešta svoje datoteke u fasciklu pod nazivom „Vito Sync“ unutar nje.",
+"Path of the folder": "Putanja fascikle",
+"Use this folder": "Koristi ovu fasciklu",
+"Choose the folder your sync app keeps in sync": "Izaberite fasciklu koju vaša aplikacija za sinhronizaciju održava usklađenom",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Još nema drugog računara. Izaberite istu fasciklu na drugom računaru da biste se sinhronizovali sa njim.",
+"Stop syncing": "Prekini sinhronizaciju",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Ovaj računar prestaje da se sinhronizuje. Ono što je već ovde ostaje, kao i fascikla.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Brisanje diktata ili davanje zvezdice takođe se prenosi. Podešavanja i API ključevi ostaju na svakom računaru: mikrofoni, prečice i provajderi se često razlikuju među njima."
 },
 "help": {
 "theme": "Svetla, tamna ili automatska — automatska prati svetlu/tamnu postavku vašeg sistema.",

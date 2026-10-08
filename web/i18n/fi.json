@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Puhetta ei tunnistettu.",
 "This browser cannot record audio.": "Tämä selain ei voi tallentaa ääntä.",
 "downloaded": "ladattu",
-"built in": "sisäänrakennettu"
+"built in": "sisäänrakennettu",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Pidä sanelusi, tilastosi ja kustannuksesi, saavutuksesi, sanakirjasi ja siivoussääntösi samoina jokaisella tietokoneella kansion kautta, jota oma synkronointisovelluksesi pitää ajan tasalla — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing tai verkkolevy. Vito ei puhu tätä varten minkään palvelimen kanssa.",
+"Found on this computer": "Löytyi tältä tietokoneelta",
+"No sync app found in its usual place. Choose its folder yourself.": "Synkronointisovellusta ei löytynyt tavalliselta paikalta. Valitse sen kansio itse.",
+"Other folder…": "Muu kansio…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito tallentaa tiedostonsa sen sisällä olevaan kansioon nimeltä ”Vito Sync”.",
+"Path of the folder": "Kansion polku",
+"Use this folder": "Käytä tätä kansiota",
+"Choose the folder your sync app keeps in sync": "Valitse kansio, jota synkronointisovelluksesi pitää ajan tasalla",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Täällä ei ole vielä toista tietokonetta. Valitse sama kansio toisella tietokoneellasi synkronoidaksesi sen kanssa.",
+"Stop syncing": "Lopeta synkronointi",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Tämä tietokone lopettaa synkronoinnin. Se, mikä on jo täällä, säilyy, samoin kansio.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Myös sanelun poistaminen tai tähden antaminen siirtyy muille koneille. Asetukset ja API-avaimet pysyvät jokaisella tietokoneella erikseen: mikrofonit, pikanäppäimet ja palveluntarjoajat eroavat usein niiden välillä."
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

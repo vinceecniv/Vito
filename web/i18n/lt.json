@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Kalba neatpažinta.",
 "This browser cannot record audio.": "Ši naršyklė negali įrašyti garso.",
 "downloaded": "atsisiųsta",
-"built in": "integruota"
+"built in": "integruota",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Laikykite diktavimus, statistiką ir išlaidas, pasiekimus, žodyną ir tvarkymo taisykles vienodus kiekviename kompiuteryje per aplanką, kurį sinchronizuoja jūsų pačių sinchronizavimo programa — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing arba tinklo bendrinamas aplankas. Vito šiam tikslui nesikreipia į jokį serverį.",
+"Found on this computer": "Rasta šiame kompiuteryje",
+"No sync app found in its usual place. Choose its folder yourself.": "Įprastoje vietoje sinchronizavimo programos nerasta. Pasirinkite jos aplanką patys.",
+"Other folder…": "Kitas aplankas…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito deda savo failus į jame esantį aplanką „Vito Sync“.",
+"Path of the folder": "Aplanko kelias",
+"Use this folder": "Naudoti šį aplanką",
+"Choose the folder your sync app keeps in sync": "Pasirinkite aplanką, kurį sinchronizuoja jūsų sinchronizavimo programa",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Čia dar nėra kito kompiuterio. Norėdami sinchronizuoti, kitame kompiuteryje pasirinkite tą patį aplanką.",
+"Stop syncing": "Nustoti sinchronizuoti",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Šis kompiuteris nustos sinchronizuoti. Tai, kas jau yra čia, išliks, kaip ir aplankas.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Diktavimo ištrynimas ar pažymėjimas žvaigždute taip pat persikelia. Nustatymai ir API raktai lieka kiekviename kompiuteryje: mikrofonai, spartieji klavišai ir teikėjai dažnai skiriasi."
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

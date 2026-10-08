@@ -1001,7 +1001,19 @@
 "No speech recognised.": "કોઈ વાણી ઓળખાઈ નથી.",
 "This browser cannot record audio.": "આ બ્રાઉઝર ઑડિયો રેકોર્ડ કરી શકતું નથી.",
 "downloaded": "ડાઉનલોડ થયું",
-"built in": "અંતર્ગત"
+"built in": "અંતર્ગત",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "તમારા ડિક્ટેશન, આંકડા અને ખર્ચ, સિદ્ધિઓ, શબ્દકોશ અને સફાઈ નિયમો દરેક કમ્પ્યુટર પર એકસરખા રાખો, એવા ફોલ્ડર દ્વારા જેને તમારી પોતાની સિંક એપ સિંકમાં રાખે છે — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing અથવા નેટવર્ક શેર. આ માટે Vito કોઈ સર્વર સાથે વાત કરતું નથી.",
+"Found on this computer": "આ કમ્પ્યુટર પર મળ્યું",
+"No sync app found in its usual place. Choose its folder yourself.": "સામાન્ય જગ્યાએ કોઈ સિંક એપ મળી નથી. તેનું ફોલ્ડર જાતે પસંદ કરો.",
+"Other folder…": "અન્ય ફોલ્ડર…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito તેની ફાઇલો તેની અંદર “Vito Sync” નામના ફોલ્ડરમાં મૂકે છે.",
+"Path of the folder": "ફોલ્ડરનો પાથ",
+"Use this folder": "આ ફોલ્ડરનો ઉપયોગ કરો",
+"Choose the folder your sync app keeps in sync": "તમારી સિંક એપ જે ફોલ્ડરને સિંકમાં રાખે છે તે પસંદ કરો",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "અહીં હજી કોઈ બીજું કમ્પ્યુટર નથી. તેની સાથે સિંક કરવા માટે તમારા બીજા કમ્પ્યુટર પર પણ આ જ ફોલ્ડર પસંદ કરો.",
+"Stop syncing": "સિંક કરવાનું બંધ કરો",
+"This computer stops syncing. What is already here stays, and so does the folder.": "આ કમ્પ્યુટર સિંક કરવાનું બંધ કરે છે. અહીં જે પહેલેથી છે તે રહેશે, અને ફોલ્ડર પણ રહેશે.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ડિક્ટેશન કાઢી નાખવું કે તેને તારો આપવો તે પણ સાથે જાય છે. સેટિંગ્સ અને API કીઓ દરેક કમ્પ્યુટર પર જ રહે છે: માઇક્રોફોન, હોટકી અને પ્રદાતાઓ ઘણી વાર એકબીજાથી અલગ હોય છે."
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",

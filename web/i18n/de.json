@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Keine Sprache erkannt.",
 "This browser cannot record audio.": "Dieser Browser kann kein Audio aufnehmen.",
 "downloaded": "heruntergeladen",
-"built in": "integriert"
+"built in": "integriert",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Halte deine Diktate, Statistiken und Kosten, Erfolge, dein Wörterbuch und deine Bereinigungsregeln auf jedem Computer gleich – über einen Ordner, den deine eigene Sync-App synchron hält: Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing oder eine Netzwerkfreigabe. Vito spricht dafür mit keinem Server.",
+"Found on this computer": "Auf diesem Computer gefunden",
+"No sync app found in its usual place. Choose its folder yourself.": "Keine Sync-App an ihrem üblichen Ort gefunden. Wähle ihren Ordner selbst aus.",
+"Other folder…": "Anderer Ordner…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito legt seine Dateien darin in einem Ordner namens „Vito Sync“ ab.",
+"Path of the folder": "Pfad des Ordners",
+"Use this folder": "Diesen Ordner verwenden",
+"Choose the folder your sync app keeps in sync": "Wähle den Ordner, den deine Sync-App synchron hält",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Hier ist noch kein anderer Computer. Wähle auf deinem anderen Computer denselben Ordner, um mit ihm zu synchronisieren.",
+"Stop syncing": "Synchronisierung beenden",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Dieser Computer beendet die Synchronisierung. Was schon hier ist, bleibt erhalten, ebenso der Ordner.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Ein Diktat zu löschen oder mit einem Stern zu markieren wird ebenfalls übernommen. Einstellungen und API-Schlüssel bleiben auf dem jeweiligen Computer: Mikrofone, Tastenkürzel und Anbieter unterscheiden sich oft."
 },
 "help": {
 "theme": "Hell, dunkel oder automatisch — automatisch folgt der Hell/Dunkel-Einstellung deines Systems.",

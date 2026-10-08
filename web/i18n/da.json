@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Ingen tale genkendt.",
 "This browser cannot record audio.": "Denne browser kan ikke optage lyd.",
 "downloaded": "downloadet",
-"built in": "indbygget"
+"built in": "indbygget",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Hold dine diktater, statistik og omkostninger, præstationer, ordbog og oprydningsregler ens på alle computere via en mappe, som din egen synkroniseringsapp holder synkroniseret — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing eller et netværksdrev. Vito taler ikke med nogen server til dette.",
+"Found on this computer": "Fundet på denne computer",
+"No sync app found in its usual place. Choose its folder yourself.": "Ingen synkroniseringsapp fundet på det sædvanlige sted. Vælg dens mappe selv.",
+"Other folder…": "Anden mappe…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito lægger sine filer i en mappe kaldet “Vito Sync” inde i den.",
+"Path of the folder": "Mappens sti",
+"Use this folder": "Brug denne mappe",
+"Choose the folder your sync app keeps in sync": "Vælg den mappe, som din synkroniseringsapp holder synkroniseret",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Ingen anden computer her endnu. Vælg den samme mappe på din anden computer for at synkronisere med den.",
+"Stop syncing": "Stop synkronisering",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Denne computer stopper med at synkronisere. Det, der allerede er her, bliver, og det gør mappen også.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Sletning af et diktat eller tildeling af en stjerne overføres også. Indstillinger og API-nøgler bliver på hver computer: mikrofoner, tastekombinationer og udbydere er ofte forskellige mellem dem."
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",

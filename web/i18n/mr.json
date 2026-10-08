@@ -1001,7 +1001,19 @@
 "No speech recognised.": "कोणतेही भाषण ओळखले गेले नाही.",
 "This browser cannot record audio.": "हा ब्राउझर ऑडिओ रेकॉर्ड करू शकत नाही.",
 "downloaded": "डाउनलोड केलेले",
-"built in": "अंगभूत"
+"built in": "अंगभूत",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "तुमचे डिक्टेशन, आकडेवारी आणि खर्च, उपलब्धी, शब्दकोश आणि स्वच्छता नियम प्रत्येक संगणकावर सारखेच ठेवा, तुमचे स्वतःचे सिंक अ‍ॅप सिंक ठेवत असलेल्या फोल्डरद्वारे — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing किंवा नेटवर्क शेअर. यासाठी Vito कोणत्याही सर्व्हरशी संवाद साधत नाही.",
+"Found on this computer": "या संगणकावर आढळले",
+"No sync app found in its usual place. Choose its folder yourself.": "नेहमीच्या ठिकाणी कोणतेही सिंक अ‍ॅप आढळले नाही. त्याचे फोल्डर स्वतः निवडा.",
+"Other folder…": "दुसरे फोल्डर…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito त्याच्या आत “Vito Sync” नावाच्या फोल्डरमध्ये आपल्या फाइल्स ठेवते.",
+"Path of the folder": "फोल्डरचा पथ",
+"Use this folder": "हे फोल्डर वापरा",
+"Choose the folder your sync app keeps in sync": "तुमचे सिंक अ‍ॅप सिंक ठेवत असलेले फोल्डर निवडा",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "येथे अजून दुसरा कोणताही संगणक नाही. त्याच्याशी सिंक करण्यासाठी तुमच्या दुसऱ्या संगणकावर तेच फोल्डर निवडा.",
+"Stop syncing": "सिंक करणे थांबवा",
+"This computer stops syncing. What is already here stays, and so does the folder.": "हा संगणक सिंक करणे थांबवतो. येथे आधीपासून असलेले सर्व काही तसेच राहते, फोल्डरसुद्धा.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "डिक्टेशन हटवणे किंवा त्याला तारा देणे हेही सोबत जाते. सेटिंग्ज आणि API की प्रत्येक संगणकावर वेगळ्या राहतात: मायक्रोफोन, हॉटकी आणि प्रोव्हायडर अनेकदा त्यांच्यात वेगळे असतात."
 },
 "help": {
 "theme": "उजळ, गडद किंवा आपोआप — आपोआप तुमच्या सिस्टीमच्या उजळ/गडद सेटिंगचे अनुसरण करते.",

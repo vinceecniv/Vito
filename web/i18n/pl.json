@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Nie rozpoznano mowy.",
 "This browser cannot record audio.": "Ta przeglądarka nie może nagrywać dźwięku.",
 "downloaded": "pobrano",
-"built in": "wbudowane"
+"built in": "wbudowane",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Zachowaj dyktowania, statystyki i koszty, osiągnięcia, słownik i reguły czyszczenia takie same na każdym komputerze — przez folder, który synchronizuje Twoja własna aplikacja: Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing lub udział sieciowy. Vito nie łączy się w tym celu z żadnym serwerem.",
+"Found on this computer": "Znaleziono na tym komputerze",
+"No sync app found in its usual place. Choose its folder yourself.": "Nie znaleziono aplikacji synchronizującej w typowym miejscu. Wybierz jej folder samodzielnie.",
+"Other folder…": "Inny folder…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito umieszcza swoje pliki w folderze o nazwie „Vito Sync” wewnątrz niego.",
+"Path of the folder": "Ścieżka folderu",
+"Use this folder": "Użyj tego folderu",
+"Choose the folder your sync app keeps in sync": "Wybierz folder, który synchronizuje Twoja aplikacja",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Nie ma tu jeszcze żadnego innego komputera. Wybierz ten sam folder na drugim komputerze, aby się z nim synchronizować.",
+"Stop syncing": "Zatrzymaj synchronizację",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Ten komputer przestaje się synchronizować. To, co już tu jest, zostaje, podobnie jak folder.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Usunięcie dyktowania lub oznaczenie go gwiazdką również się przenosi. Ustawienia i klucze API zostają na każdym komputerze osobno: mikrofony, skróty klawiszowe i dostawcy często różnią się między nimi."
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

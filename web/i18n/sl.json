@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Govor ni bil prepoznan.",
 "This browser cannot record audio.": "Ta brskalnik ne more snemati zvoka.",
 "downloaded": "preneseno",
-"built in": "vgrajeno"
+"built in": "vgrajeno",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Imejte svoja narekovanja, statistiko in stroške, dosežke, slovar in pravila čiščenja enaka na vseh računalnikih prek mape, ki jo sinhronizira vaša lastna aplikacija za sinhronizacijo — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing ali omrežna delitev. Vito za to ne komunicira z nobenim strežnikom.",
+"Found on this computer": "Najdeno v tem računalniku",
+"No sync app found in its usual place. Choose its folder yourself.": "Aplikacije za sinhronizacijo ni na običajnem mestu. Mapo izberite sami.",
+"Other folder…": "Druga mapa …",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito svoje datoteke shrani v mapo z imenom »Vito Sync« v njej.",
+"Path of the folder": "Pot do mape",
+"Use this folder": "Uporabi to mapo",
+"Choose the folder your sync app keeps in sync": "Izberite mapo, ki jo vaša aplikacija za sinhronizacijo sinhronizira",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Tu še ni drugega računalnika. Za sinhronizacijo izberite isto mapo na drugem računalniku.",
+"Stop syncing": "Ustavi sinhronizacijo",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Ta računalnik preneha sinhronizirati. Kar je že tu, ostane, prav tako mapa.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Tudi brisanje narekovanja ali dodelitev zvezdice se prenese. Nastavitve in ključi API ostanejo na vsakem računalniku: mikrofoni, bližnjice in ponudniki se med njimi pogosto razlikujejo."
 },
 "help": {
 "theme": "Svetla, temna ali samodejna — samodejna sledi svetli/temni nastavitvi vašega sistema.",

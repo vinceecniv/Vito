@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Nessun parlato riconosciuto.",
 "This browser cannot record audio.": "Questo browser non può registrare l'audio.",
 "downloaded": "scaricato",
-"built in": "integrato"
+"built in": "integrato",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Mantieni dettature, statistiche e costi, traguardi, dizionario e regole di pulizia uguali su ogni computer, tramite una cartella che la tua app di sincronizzazione tiene allineata — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing o una condivisione di rete. Vito non comunica con alcun server per questo.",
+"Found on this computer": "Trovate su questo computer",
+"No sync app found in its usual place. Choose its folder yourself.": "Nessuna app di sincronizzazione trovata nel suo posto abituale. Scegli tu la sua cartella.",
+"Other folder…": "Altra cartella…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito salva i suoi file in una cartella chiamata “Vito Sync” al suo interno.",
+"Path of the folder": "Percorso della cartella",
+"Use this folder": "Usa questa cartella",
+"Choose the folder your sync app keeps in sync": "Scegli la cartella che la tua app di sincronizzazione tiene allineata",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Ancora nessun altro computer qui. Scegli la stessa cartella sull'altro computer per sincronizzarlo.",
+"Stop syncing": "Interrompi la sincronizzazione",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Questo computer smette di sincronizzarsi. Ciò che è già qui resta, così come la cartella.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Anche eliminare una dettatura o contrassegnarla con una stella viene trasferito. Impostazioni e chiavi API restano su ogni computer: microfoni, scorciatoie e provider spesso differiscono tra loro."
 },
 "help": {
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",

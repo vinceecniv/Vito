@@ -1001,7 +1001,19 @@
 "No speech recognised.": "Non se recoñeceu ningunha fala.",
 "This browser cannot record audio.": "Este navegador non pode gravar audio.",
 "downloaded": "descargado",
-"built in": "integrado"
+"built in": "integrado",
+"Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Mantén os teus ditados, estatísticas e custos, logros, dicionario e regras de limpeza iguais en todos os ordenadores, a través dun cartafol que a túa propia aplicación de sincronización mantén sincronizado — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing ou un recurso de rede compartido. Vito non se comunica con ningún servidor para isto.",
+"Found on this computer": "Atopado neste ordenador",
+"No sync app found in its usual place. Choose its folder yourself.": "Non se atopou ningunha aplicación de sincronización no seu lugar habitual. Escolle ti mesmo o seu cartafol.",
+"Other folder…": "Outro cartafol…",
+"Vito puts its files in a folder called “Vito Sync” inside it.": "Vito pon os seus ficheiros nun cartafol chamado “Vito Sync” dentro del.",
+"Path of the folder": "Ruta do cartafol",
+"Use this folder": "Usar este cartafol",
+"Choose the folder your sync app keeps in sync": "Escolle o cartafol que a túa aplicación de sincronización mantén sincronizado",
+"No other computer here yet. Choose the same folder on your other computer to sync with it.": "Aínda non hai outro ordenador aquí. Escolle o mesmo cartafol no teu outro ordenador para sincronizar con el.",
+"Stop syncing": "Deixar de sincronizar",
+"This computer stops syncing. What is already here stays, and so does the folder.": "Este ordenador deixa de sincronizar. O que xa está aquí queda, e o cartafol tamén.",
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Eliminar un ditado ou darlle unha estrela tamén se transmite. Os axustes e as chaves de API quedan en cada ordenador: os micrófonos, as teclas de atallo e os provedores adoitan ser distintos entre eles."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a configuración clara/escura do teu sistema.",
