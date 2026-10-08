@@ -1332,6 +1332,14 @@
   .mc-panel-body { padding:2px 14px 14px; }
   .mc-panel.closed .mc-panel-body { display:none; }
   .prov-settings > .act-note:first-child { margin-top:4px; }
+  .am-head { display:flex; align-items:center; gap:14px; margin:18px 0 4px; padding-top:16px; border-top:1px dashed var(--card-border); }
+  .am-head > div { flex:1; display:flex; flex-direction:column; gap:3px; }
+  .am-head span { color:var(--text2); font-size:12.5px; line-height:1.5; }
+  .modelcard.am-card { cursor:default; opacity:.92; background:var(--input-bg); }
+  .modelcard.am-card:hover { transform:none; }
+  .am-badge { display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--violet); background:color-mix(in srgb, var(--violet) 12%, transparent); border-radius:99px; padding:2px 8px; }
+  .am-badge::before { content:"⬇"; font-size:10px; }
   .modelcard { display:flex; flex-direction:column; gap:5px; width:100%; text-align:left; cursor:var(--cur-hand);
     padding:12px 14px; border:1px solid var(--input-border); border-radius:11px; background:var(--input-bg); font:inherit; color:var(--text); }
   .modelcard:hover { border-color:var(--accent); }
@@ -2936,6 +2944,10 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "With the app":"Met de app",
+  "your own server":"je eigen server",
+  "More speech models in the Vito app":"Meer spraakmodellen in de Vito-app",
+  "Install the app and choose from these too: more accurate, more languages (up to 60), or a larger model on your own computer.":"Installeer de app en kies ook uit deze: nauwkeuriger, meer talen (tot 60), of een groter model op je eigen computer.",
   "How Vito in the browser works":"Zo werkt Vito in de browser",
   "The speech model is loaded and ready to use — it now even works offline.":"Het spraakmodel is geladen en klaar voor gebruik — het werkt nu zelfs offline.",
   "Downloading the speech model (18 MB, once)…":"Spraakmodel downloaden (18 MB, eenmalig)…",
@@ -3674,6 +3686,22 @@ function modelPrice(usd){
 }
 // The parts of a card that change while you type or while the local engine
 // installs, kept apart so they can be refreshed in place.
+// In the browser: the models the app adds, as plain cards — nothing to set up
+// or pick here, just what each is good at and that it comes with the app.
+function appModelsHTML(){
+  const cards = SPEECH_MODELS_ALL.filter(m => m.provider !== "whistle").map(m => `
+    <div class="modelcard am-card">
+      <span class="mc-head"><b>${m.logo || ""}<span>${t(m.name)}</span></b><span class="mc-price">${m.provider === "openai" ? t("your own server") : cardPrice(m)}</span></span>
+      <span class="mc-tagrow"><span class="am-badge">${t("With the app")}</span></span>
+      <span class="mc-sub">${t(m.sub)}</span>
+      <span class="mc-list">${m.bullets.map(b => `<span>${t(b)}</span>`).join("")}</span>
+    </div>`).join("");
+  return `<div class="am-head">
+      <div><b>${t("More speech models in the Vito app")}</b>
+      <span>${t("Install the app and choose from these too: more accurate, more languages (up to 60), or a larger model on your own computer.")}</span></div>
+      <button type="button" class="btn primary small am-get">${t("Get the app")}</button>
+    </div>${cards}`;
+}
 const cardPrice = (m) => { const rate = m.provider === "openai" ? sttEndpointRateUSD() : m.price; return rate > 0 ? `${modelPrice(rate)}<em>/${t("hr")}</em>` : t("free"); };
 const cardTag = (m) => m.provider === "openai" ? sttEndpointName() : m.provider === "local" ? localSttTag() : m.provider === "whistle" ? whistleTag() : PROVIDER_NAMES[m.provider];
 const cardMissing = (m) => m.provider === "local" ? "Not installed" : m.provider === "whistle" ? "Not downloaded" : m.provider === "openai" ? "Endpoint missing" : "API key missing";
@@ -3715,6 +3743,7 @@ function buildModelCards(){
     </div>` : "";
     return `<div class="mc-wrap${m.id === cur ? " sel" : ""}" data-id="${m.id}">${card}${panel}</div>`;
   }).join("");
+  if (STANDALONE) { box.insertAdjacentHTML("beforeend", appModelsHTML()); box.querySelectorAll(".am-get").forEach(b => b.onclick = showDownload); }
   // Move the settings blocks into their panels: the nodes move, so their ids,
   // values and listeners come along.
   PROVIDERS.forEach(p => {
