@@ -2901,7 +2901,12 @@ const TR = { nl: {
   "Escape cancels a dictation. A hotkey that works in every program, also when Vito isn't in front, comes with the app.":"Escape annuleert een dictaat. Een sneltoets die in elk programma werkt, ook als Vito niet vooraan staat, krijg je met de app.",
   "Hey, there's more when you install Vito.":"Hé, er is meer als je Vito installeert.",
   "The app adds a hotkey that works in every program, types the text straight into it, Vito Assist voice commands, more and better speech models, sync between computers and automatic backups.":"De app voegt een sneltoets toe die in elk programma werkt, typt de tekst er direct in, en heeft Vito Assist-spraakcommando's, meer en betere spraakmodellen, synchronisatie tussen computers en automatische back-ups.",
-  "Your browser's language ({l}) isn't one Whistle knows yet, so speech recognition is set to English. You can change it under Settings → Speech recognition.":"De taal van je browser ({l}) kent Whistle nog niet, dus de spraakherkenning staat op Engels. Je kunt dit wijzigen onder Instellingen → Spraakherkenning.",
+  "Which languages?":"Welke talen?",
+  "Picked from your browser's settings. You can change both later under Settings.":"Gekozen op basis van de instellingen van je browser. Je kunt ze later allebei wijzigen onder Instellingen.",
+  "Another language…":"Andere taal…",
+  "The language you speak":"De taal die je spreekt",
+  "The speech model in the browser knows English, Dutch, German, French, Spanish, Italian and Polish. {l} is not one of them yet; the Vito app has models that do.":"Het spraakmodel in de browser kent Engels, Nederlands, Duits, Frans, Spaans, Italiaans en Pools. {l} hoort daar nog niet bij; de Vito-app heeft modellen die dat wel doen.",
+  "Get started":"Aan de slag",
   "Sync between computers":"Synchroniseren tussen computers",
   "Keep your dictations, statistics, achievements and dictionary the same on every computer, through your own Dropbox or OneDrive. Vito only sees its own folder there (Apps/Vito), and there is no Vito server in between.":"Houd je dictaten, statistieken, prestaties en woordenboek gelijk op al je computers, via je eigen Dropbox of OneDrive. Vito ziet daar alleen zijn eigen map (Apps/Vito), en er zit geen Vito-server tussen.",
   "Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.":"Instellingen en API-sleutels blijven per computer: microfoons, sneltoetsen en diensten verschillen vaak per computer.",
@@ -3171,6 +3176,7 @@ async function setUiLang(choice, persist){
   if (typeof buildPeriodDropdown === "function") buildPeriodDropdown();
   if (typeof loadAbout === "function") loadAbout(); // its rows are built with t(), re-render them
   if (typeof syncSetSecUI === "function") syncSetSecUI(); // re-clone the now-translated tab labels
+  if (typeof renderPwaTip === "function") renderPwaTip(); // built with t() too
   if ($("tab-status").classList.contains("active")) loadStats();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { lang: choice });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
@@ -4348,6 +4354,53 @@ function hotkeyMatches(ev, spec){
   const k = ev.key === " " ? "space" : ev.key.toLowerCase();
   return k === key && ev.ctrlKey === want.ctrl && ev.altKey === want.alt && ev.shiftKey === want.shift && ev.metaKey === want.meta;
 }
+// showLangPicker asks, on the first visit, which language the interface
+// should be in and which one you will speak — offering the languages the
+// browser says you prefer, and English, as buttons.
+const WHISTLE_STT = ["nl", "en", "de", "fr", "es", "it", "pl"];
+function browserLangs(){
+  const out = [];
+  for (const l of navigator.languages || [navigator.language || "en"]) {
+    const c = String(l).slice(0, 2).toLowerCase();
+    if (c && !out.includes(c)) out.push(c);
+  }
+  return out;
+}
+function showLangPicker(){
+  const pref = browserLangs();
+  const uiOpts = [...pref.filter(c => UI_LANGS.includes(c)), "en"].filter((c, i, a) => a.indexOf(c) === i);
+  const sttOpts = [...pref.filter(c => WHISTLE_STT.includes(c)), "en"].filter((c, i, a) => a.indexOf(c) === i);
+  const missing = pref.filter(c => !WHISTLE_STT.includes(c));
+  const curUi = uiLang, curStt = (cfg.stt && cfg.stt.language) || "en";
+  const name = (c) => LANG_ENDONYM[c] || (c === "en" ? "English" : langName(c));
+  const btn = (kind, c, cur) => `<button type="button" class="tag lp-opt${c === cur ? " sel" : ""}" data-kind="${kind}" data-code="${c}">${langIcon(c)} ${ahEsc(name(c))}</button>`;
+  const others = UI_LANGS.filter(c => !uiOpts.includes(c)).map(c => `<option value="${c}">${ahEsc(langName(c))}</option>`).join("");
+  modal(t("Which languages?"),
+    `<p class="ki-note">${t("Picked from your browser's settings. You can change both later under Settings.")}</p>
+     <label class="fld">${t("Interface language")}</label>
+     <div class="rowflex lp-row" style="gap:8px; flex-wrap:wrap;">${uiOpts.map(c => btn("ui", c, curUi)).join("")}
+       <select id="lp-more" style="width:auto; min-width:150px;"><option value="">${t("Another language…")}</option>${others}</select></div>
+     <label class="fld" style="margin-top:16px;">${t("The language you speak")}</label>
+     <div class="rowflex lp-row" style="gap:8px; flex-wrap:wrap;">${sttOpts.map(c => btn("stt", c, curStt)).join("")}</div>` +
+    (missing.length ? `<p class="act-note" style="margin:8px 0 0;">${t("The speech model in the browser knows English, Dutch, German, French, Spanish, Italian and Polish. {l} is not one of them yet; the Vito app has models that do.").replace("{l}", missing.map(name).join(", "))}</p>` : ""),
+    () => { try { localStorage.setItem("vito-web-langs", "1"); } catch {} },
+    "Get started", false, () => { try { localStorage.setItem("vito-web-langs", "1"); } catch {} }, true);
+  const back = document.querySelector(".modal-backdrop:last-of-type");
+  const pickUi = async (c) => {
+    back.remove();
+    await setUiLang(c, true);
+    showLangPicker(); // again, now in the chosen language
+  };
+  back.querySelectorAll(".lp-opt").forEach(b => b.onclick = async () => {
+    const c = b.dataset.code;
+    if (b.dataset.kind === "ui") return pickUi(c);
+    back.querySelectorAll('.lp-opt[data-kind="stt"]').forEach(x => x.classList.toggle("sel", x === b));
+    if (typeof setLang === "function") setLang(c);
+    await saveConfig({ stt: Object.assign({}, cfg.stt, { language: c }) }, "Saved");
+    renderStatusTags();
+  });
+  back.querySelector("#lp-more").onchange = (e) => { if (e.target.value) pickUi(e.target.value); };
+}
 // webGesture tells the browser engine which window the user just acted in.
 // Audio has to be opened there: a browser only lets a page record and play
 // right after its own user did something, and a click in the floating window
@@ -4440,10 +4493,12 @@ function moveToApp(){
 if (STANDALONE) {
   document.querySelectorAll(".js-find-app").forEach(b => b.onclick = () => findApp(false));
   document.querySelectorAll(".js-to-app").forEach(b => b.onclick = moveToApp);
-  // A browser language Whistle doesn't speak: say why it is English.
+  // The first visit starts with choosing the languages.
   VitoStandalone.ready.then(() => {
-    const l = VitoStandalone.unsupportedLang;
-    if (l) setTimeout(() => toast(t("Your browser's language ({l}) isn't one Whistle knows yet, so speech recognition is set to English. You can change it under Settings → Speech recognition.").replace("{l}", langName(l) || l), "info", 9000), 1200);
+    let done = false; try { done = localStorage.getItem("vito-web-langs") === "1"; } catch {}
+    if (done) return;
+    const wait = () => cfg ? showLangPicker() : setTimeout(wait, 200);
+    setTimeout(wait, 400);
   });
   let known = false; try { known = localStorage.getItem("vito-web-app") === "1"; } catch {}
   if (known) findApp(true);
