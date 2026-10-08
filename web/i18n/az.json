@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito indi bu kompüterdə tətbiq kimi işləyir",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Diktələriniz tətbiqə köçürüldü. Diktəyə oradan davam edin — qısayol düyməsi ilə, hər proqramda.",
+"Open Vito": "Vito-nu aç",
+"Keep using the browser version": "Brauzer versiyasından istifadəyə davam et",
+"Starting Vito…": "Vito başladılır…",
+"Tidy up, once": "Bir dəfə səliqəyə salın",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Bu brauzer versiyasını silin: bu pəncərənin yuxarı sağ küncündəki ⋯ menyusunu açın və Vito-nu sil (Uninstall və ya Remove) seçin. Diktələriniz tətbiqdə təhlükəsizdir.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Tətbiqə öz pəncərəsini verin: Vito-nu açın və səhifəsində Tətbiqi quraşdır seçin. Tapşırıqlar panelinə və ya Dock-a məhz onu sancın.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Bu nişanı bağlaya bilərsiniz; vito.talk/app üçün əlfəcin yaratmısınızsa, onu da silin.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Bundan sonra Vito-nu trey (menyu paneli) ikonu ilə açın və ya ona öz pəncərəsini verin: Vito-nu açın və səhifəsində Tətbiqi quraşdır seçin.",
+"Vito didn't answer. Is it installed and running?": "Vito cavab vermədi. O quraşdırılıb və işləyirmi?",
 "Custom range…": "Fərdi aralıq…",
 "Previous month": "Əvvəlki ay",
 "Next month": "Növbəti ay",

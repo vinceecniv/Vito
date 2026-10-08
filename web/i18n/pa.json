@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "ਇੱਥੇ ਹਾਲੇ ਕੋਈ ਹੋਰ ਕੰਪਿਊਟਰ ਨਹੀਂ ਹੈ। ਉਸ ਨਾਲ ਸਿੰਕ ਕਰਨ ਲਈ ਆਪਣੇ ਦੂਜੇ ਕੰਪਿਊਟਰ 'ਤੇ ਇਹੀ ਫੋਲਡਰ ਚੁਣੋ।",
 "Stop syncing": "ਸਿੰਕ ਕਰਨਾ ਬੰਦ ਕਰੋ",
 "This computer stops syncing. What is already here stays, and so does the folder.": "ਇਹ ਕੰਪਿਊਟਰ ਸਿੰਕ ਕਰਨਾ ਬੰਦ ਕਰ ਦੇਵੇਗਾ। ਜੋ ਪਹਿਲਾਂ ਹੀ ਇੱਥੇ ਹੈ ਉਹ ਰਹੇਗਾ, ਅਤੇ ਫੋਲਡਰ ਵੀ।",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ਡਿਕਟੇਸ਼ਨ ਮਿਟਾਉਣਾ ਜਾਂ ਉਸ ਨੂੰ ਤਾਰਾ ਦੇਣਾ ਵੀ ਦੂਜੇ ਕੰਪਿਊਟਰ ਤੱਕ ਪਹੁੰਚਦਾ ਹੈ। ਸੈਟਿੰਗਾਂ ਅਤੇ API ਕੁੰਜੀਆਂ ਹਰ ਕੰਪਿਊਟਰ 'ਤੇ ਵੱਖਰੀਆਂ ਰਹਿੰਦੀਆਂ ਹਨ: ਮਾਈਕ੍ਰੋਫ਼ੋਨ, ਹੌਟਕੀਆਂ ਅਤੇ ਪ੍ਰੋਵਾਈਡਰ ਅਕਸਰ ਉਹਨਾਂ ਵਿਚਕਾਰ ਵੱਖਰੇ ਹੁੰਦੇ ਹਨ।"
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ਡਿਕਟੇਸ਼ਨ ਮਿਟਾਉਣਾ ਜਾਂ ਉਸ ਨੂੰ ਤਾਰਾ ਦੇਣਾ ਵੀ ਦੂਜੇ ਕੰਪਿਊਟਰ ਤੱਕ ਪਹੁੰਚਦਾ ਹੈ। ਸੈਟਿੰਗਾਂ ਅਤੇ API ਕੁੰਜੀਆਂ ਹਰ ਕੰਪਿਊਟਰ 'ਤੇ ਵੱਖਰੀਆਂ ਰਹਿੰਦੀਆਂ ਹਨ: ਮਾਈਕ੍ਰੋਫ਼ੋਨ, ਹੌਟਕੀਆਂ ਅਤੇ ਪ੍ਰੋਵਾਈਡਰ ਅਕਸਰ ਉਹਨਾਂ ਵਿਚਕਾਰ ਵੱਖਰੇ ਹੁੰਦੇ ਹਨ।",
+"Vito now runs as an app on this computer": "Vito ਹੁਣ ਇਸ ਕੰਪਿਊਟਰ 'ਤੇ ਐਪ ਵਜੋਂ ਚੱਲਦਾ ਹੈ",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "ਤੁਹਾਡੇ ਡਿਕਟੇਸ਼ਨ ਐਪ ਵਿੱਚ ਚਲੇ ਗਏ ਹਨ। ਉੱਥੋਂ ਹੀ ਬੋਲਦੇ ਰਹੋ — ਆਪਣੀ ਹੌਟਕੀ ਨਾਲ, ਹਰ ਪ੍ਰੋਗਰਾਮ ਵਿੱਚ।",
+"Open Vito": "Vito ਖੋਲ੍ਹੋ",
+"Keep using the browser version": "ਬ੍ਰਾਊਜ਼ਰ ਵਰਜ਼ਨ ਵਰਤਦੇ ਰਹੋ",
+"Starting Vito…": "Vito ਸ਼ੁਰੂ ਹੋ ਰਿਹਾ ਹੈ…",
+"Tidy up, once": "ਇੱਕ ਵਾਰ ਸਫ਼ਾਈ ਕਰੋ",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "ਇਹ ਬ੍ਰਾਊਜ਼ਰ ਵਰਜ਼ਨ ਹਟਾਓ: ਇਸ ਵਿੰਡੋ ਦੇ ਉੱਪਰ ਸੱਜੇ ਪਾਸੇ ⋯ ਮੀਨੂ ਖੋਲ੍ਹੋ ਅਤੇ Vito ਨੂੰ ਅਣਇੰਸਟਾਲ ਕਰੋ (ਜਾਂ ਹਟਾਓ) ਚੁਣੋ। ਤੁਹਾਡੇ ਡਿਕਟੇਸ਼ਨ ਐਪ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਹਨ।",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "ਐਪ ਨੂੰ ਆਪਣੀ ਵੱਖਰੀ ਵਿੰਡੋ ਦਿਓ: Vito ਖੋਲ੍ਹੋ ਅਤੇ ਉਸਦੇ ਪੰਨੇ 'ਤੇ ਐਪ ਇੰਸਟਾਲ ਕਰੋ ਚੁਣੋ। ਇਹੀ ਉਹ ਹੈ ਜਿਸਨੂੰ ਟਾਸਕਬਾਰ ਜਾਂ Dock 'ਤੇ ਪਿੰਨ ਕਰਨਾ ਹੈ।",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "ਤੁਸੀਂ ਇਹ ਟੈਬ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ, ਅਤੇ ਜੇ ਤੁਸੀਂ vito.talk/app ਦਾ ਬੁੱਕਮਾਰਕ ਬਣਾਇਆ ਸੀ ਤਾਂ ਉਸਨੂੰ ਹਟਾ ਸਕਦੇ ਹੋ।",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "ਹੁਣ ਤੋਂ Vito ਨੂੰ ਉਸਦੇ ਟ੍ਰੇ (ਮੀਨੂ ਬਾਰ) ਆਈਕਨ ਨਾਲ ਖੋਲ੍ਹੋ, ਜਾਂ ਉਸਨੂੰ ਆਪਣੀ ਵੱਖਰੀ ਵਿੰਡੋ ਦਿਓ: Vito ਖੋਲ੍ਹੋ ਅਤੇ ਉਸਦੇ ਪੰਨੇ 'ਤੇ ਐਪ ਇੰਸਟਾਲ ਕਰੋ ਚੁਣੋ।",
+"Vito didn't answer. Is it installed and running?": "Vito ਨੇ ਜਵਾਬ ਨਹੀਂ ਦਿੱਤਾ। ਕੀ ਇਹ ਇੰਸਟਾਲ ਹੈ ਅਤੇ ਚੱਲ ਰਿਹਾ ਹੈ?"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",

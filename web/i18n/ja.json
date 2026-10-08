@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito はこのコンピューターでアプリとして動作しています",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "口述した内容はアプリに移りました。ここからはホットキーを使って、どのプログラムでも口述を続けましょう。",
+"Open Vito": "Vito を開く",
+"Keep using the browser version": "ブラウザー版を使い続ける",
+"Starting Vito…": "Vito を起動しています…",
+"Tidy up, once": "一度だけ片付けましょう",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "このブラウザー版を削除するには、このウィンドウの右上にある ⋯ メニューを開き、Vito のアンインストール（または削除）を選びます。口述した内容はアプリに安全に保存されています。",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "アプリに専用のウィンドウを持たせるには、Vito を開き、そのページで「アプリをインストール」を選びます。タスクバーや Dock にピン留めするのはそちらです。",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "このタブは閉じて構いません。vito.talk/app のブックマークを作っていた場合は、削除してください。",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "今後は、トレイ（メニューバー）のアイコンから Vito を開くか、専用のウィンドウを持たせてください。Vito を開き、そのページで「アプリをインストール」を選びます。",
+"Vito didn't answer. Is it installed and running?": "Vito から応答がありません。インストールされて実行中ですか？",
 "Dictate today to start a streak": "今日口述して連続記録を始めましょう",
 "Nothing cleaned up in this period yet": "この期間はまだ整形されたものがありません",
 "No languages detected in this period yet": "この期間はまだ検出された言語がありません",

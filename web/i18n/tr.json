@@ -1013,7 +1013,18 @@
 "No speech recognised.": "Konuşma tanınmadı.",
 "This browser cannot record audio.": "Bu tarayıcı ses kaydedemiyor.",
 "downloaded": "indirildi",
-"built in": "yerleşik"
+"built in": "yerleşik",
+"Vito now runs as an app on this computer": "Vito artık bu bilgisayarda bir uygulama olarak çalışıyor",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Diktelerin uygulamaya taşındı. Dikte etmeye oradan devam et — kısayol tuşunla, her programda.",
+"Open Vito": "Vito'yu aç",
+"Keep using the browser version": "Tarayıcı sürümünü kullanmaya devam et",
+"Starting Vito…": "Vito başlatılıyor…",
+"Tidy up, once": "Bir kereliğine derle toparla",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Bu tarayıcı sürümünü kaldır: bu pencerenin sağ üstündeki ⋯ menüsünü aç ve Vito'yu kaldır (veya Kaldır) seçeneğini seç. Diktelerin uygulamada güvende.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Uygulamaya kendi penceresini ver: Vito'yu aç ve sayfasındaki Uygulamayı yükle seçeneğini seç. Görev çubuğuna veya Dock'a sabitleyeceğin pencere bu.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Bu sekmeyi kapatabilir ve varsa vito.talk/app yer imini silebilirsin.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Bundan sonra Vito'yu tepsi (menü çubuğu) simgesinden aç ya da ona kendi penceresini ver: Vito'yu aç ve sayfasındaki Uygulamayı yükle seçeneğini seç.",
+"Vito didn't answer. Is it installed and running?": "Vito yanıt vermedi. Kurulu ve çalışıyor mu?"
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",

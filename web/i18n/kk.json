@@ -1,5 +1,16 @@
 {
 "strings": {
+    "Vito now runs as an app on this computer": "Vito енді осы компьютерде қолданба ретінде жұмыс істейді",
+    "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Диктовкаларыңыз қолданбаға көшірілді. Әрі қарай сол жерден диктовка жасаңыз — тікелей перне арқылы, кез келген бағдарламада.",
+    "Open Vito": "Vito ашу",
+    "Keep using the browser version": "Браузер нұсқасын қолдана беру",
+    "Starting Vito…": "Vito іске қосылуда…",
+    "Tidy up, once": "Бір рет тазалап алыңыз",
+    "Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Бұл браузер нұсқасын жойыңыз: осы терезенің жоғарғы оң жағындағы ⋯ мәзірін ашып, Vito қолданбасын жою (Uninstall немесе Remove) пәрменін таңдаңыз. Диктовкаларыңыз қолданбада сақтаулы.",
+    "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Қолданбаға жеке терезе беріңіз: Vito қолданбасын ашып, оның бетіндегі «Install app» түймесін басыңыз. Тапсырмалар тақтасына немесе Dock-қа бекітетініңіз дәл осы.",
+    "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Бұл қойындыны жаба аласыз, ал vito.talk/app сілтемесіне бетбелгі жасаған болсаңыз, оны жойыңыз.",
+    "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Енді Vito қолданбасын трей (мәзір жолағы) белгішесі арқылы ашыңыз немесе оған жеке терезе беріңіз: Vito қолданбасын ашып, оның бетіндегі «Install app» түймесін басыңыз.",
+    "Vito didn't answer. Is it installed and running?": "Vito жауап бермеді. Ол орнатылған және жұмыс істеп тұр ма?",
     "Dictate today to start a streak": "Серияны бастау үшін бүгін диктовка жасаңыз",
     "Nothing cleaned up in this period yet": "Бұл кезеңде әлі ештеңе тазаланған жоқ",
     "No languages detected in this period yet": "Бұл кезеңде әлі тілдер анықталған жоқ",

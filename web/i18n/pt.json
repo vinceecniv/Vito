@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "O Vito agora corre como uma aplicação neste computador",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Os seus ditados passaram para a aplicação. Continue a ditar a partir de lá — com a sua combinação de teclas, em qualquer programa.",
+"Open Vito": "Abrir o Vito",
+"Keep using the browser version": "Continuar a usar a versão do navegador",
+"Starting Vito…": "A iniciar o Vito…",
+"Tidy up, once": "Arrumar, uma só vez",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Remova esta versão do navegador: abra o menu ⋯ no canto superior direito desta janela e escolha Desinstalar (ou Remover) o Vito. Os seus ditados estão seguros na aplicação.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dê à aplicação a sua própria janela: abra o Vito e escolha Instalar aplicação na respetiva página. Essa é a que deve fixar na barra de tarefas ou no Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Pode fechar este separador e remover o marcador para vito.talk/app, se criou algum.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "A partir de agora, abra o Vito através do ícone na área de notificações (barra de menus) ou dê-lhe a sua própria janela: abra o Vito e escolha Instalar aplicação na respetiva página.",
+"Vito didn't answer. Is it installed and running?": "O Vito não respondeu. Está instalado e a correr?",
 "Backups are lightly encrypted with a built-in key, so they aren't plainly readable on disk. Because every Vito shares that key it's a deterrent against casual reading — not full security — so still treat a backup as sensitive.": "Os backups são ligeiramente encriptados com uma chave incorporada, por isso não ficam legíveis em texto simples no disco. Como todos os Vito partilham essa chave, é um dissuasor contra a leitura casual — não é segurança total — por isso trate um backup na mesma como algo sensível.",
 "Restore from a backup file": "Restaurar a partir de um ficheiro de backup",
 "Restoring REPLACES everything on this device — settings, dictionary, history, statistics and achievements — with the backup. This cannot be undone.": "Restaurar SUBSTITUI tudo neste dispositivo — definições, dicionário, histórico, estatísticas e conquistas — pelo backup. Não é possível desfazer.",

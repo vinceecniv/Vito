@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Δεν υπάρχει ακόμη άλλος υπολογιστής εδώ. Επιλέξτε τον ίδιο φάκελο στον άλλο σας υπολογιστή για να συγχρονιστείτε.",
 "Stop syncing": "Διακοπή συγχρονισμού",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Αυτός ο υπολογιστής σταματά να συγχρονίζεται. Ό,τι υπάρχει ήδη εδώ παραμένει, όπως και ο φάκελος.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Η διαγραφή μιας υπαγόρευσης ή η προσθήκη αστεριού μεταφέρεται επίσης. Οι ρυθμίσεις και τα κλειδιά API μένουν σε κάθε υπολογιστή: τα μικρόφωνα, οι συντομεύσεις και οι πάροχοι συχνά διαφέρουν μεταξύ τους."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Η διαγραφή μιας υπαγόρευσης ή η προσθήκη αστεριού μεταφέρεται επίσης. Οι ρυθμίσεις και τα κλειδιά API μένουν σε κάθε υπολογιστή: τα μικρόφωνα, οι συντομεύσεις και οι πάροχοι συχνά διαφέρουν μεταξύ τους.",
+"Vito now runs as an app on this computer": "Το Vito τρέχει πλέον ως εφαρμογή σε αυτόν τον υπολογιστή",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Οι υπαγορεύσεις σας μεταφέρθηκαν στην εφαρμογή. Συνεχίστε να υπαγορεύετε από εκεί — με το πλήκτρο συντόμευσής σας, σε κάθε πρόγραμμα.",
+"Open Vito": "Άνοιγμα του Vito",
+"Keep using the browser version": "Συνέχεια με την έκδοση του προγράμματος περιήγησης",
+"Starting Vito…": "Εκκίνηση του Vito…",
+"Tidy up, once": "Τακτοποίηση, μία φορά",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Αφαιρέστε αυτήν την έκδοση του προγράμματος περιήγησης: ανοίξτε το μενού ⋯ πάνω δεξιά σε αυτό το παράθυρο και επιλέξτε Απεγκατάσταση (ή Κατάργηση) του Vito. Οι υπαγορεύσεις σας είναι ασφαλείς στην εφαρμογή.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Δώστε στην εφαρμογή το δικό της παράθυρο: ανοίξτε το Vito και επιλέξτε Εγκατάσταση εφαρμογής στη σελίδα του. Αυτό είναι που πρέπει να καρφιτσώσετε στη γραμμή εργασιών ή στο Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Μπορείτε να κλείσετε αυτήν την καρτέλα και να αφαιρέσετε τυχόν σελιδοδείκτη προς το vito.talk/app, αν δημιουργήσατε έναν.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Από εδώ και πέρα ανοίγετε το Vito από το εικονίδιό του στην περιοχή ειδοποιήσεων (γραμμή μενού) ή δώστε του το δικό του παράθυρο: ανοίξτε το Vito και επιλέξτε Εγκατάσταση εφαρμογής στη σελίδα του.",
+"Vito didn't answer. Is it installed and running?": "Το Vito δεν απάντησε. Είναι εγκατεστημένο και εκτελείται;"
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Oraindik ez dago beste ordenagailurik hemen. Aukeratu karpeta bera zure beste ordenagailuan harekin sinkronizatzeko.",
 "Stop syncing": "Utzi sinkronizatzeari",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Ordenagailu honek sinkronizatzeari uzten dio. Hemen dagoena eta karpeta bertan geratzen dira.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Diktaketa bat ezabatzea edo izarra jartzea ere sartzen da. Ezarpenak eta API gakoak ordenagailu bakoitzean geratzen dira: mikrofonoak, laster-teklak eta hornitzaileak sarri desberdinak izaten dira haien artean."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Diktaketa bat ezabatzea edo izarra jartzea ere sartzen da. Ezarpenak eta API gakoak ordenagailu bakoitzean geratzen dira: mikrofonoak, laster-teklak eta hornitzaileak sarri desberdinak izaten dira haien artean.",
+"Vito now runs as an app on this computer": "Vito orain aplikazio gisa dabil ordenagailu honetan",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Zure diktatuak aplikaziora eraman dira. Jarraitu hortik diktatzen — zure laster-teklarekin, programa guztietan.",
+"Open Vito": "Ireki Vito",
+"Keep using the browser version": "Jarraitu nabigatzailearen bertsioa erabiltzen",
+"Starting Vito…": "Vito abiarazten…",
+"Tidy up, once": "Garbitu, behin",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Kendu nabigatzailearen bertsio hau: ireki leiho honen goiko eskuineko ⋯ menua eta aukeratu Vito desinstalatu (edo kendu). Zure diktatuak seguru daude aplikazioan.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Eman aplikazioari bere leihoa: ireki Vito eta aukeratu Instalatu aplikazioa bere orrian. Hori da zereginen barran edo Dock-ean finkatu beharrekoa.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Fitxa hau itxi dezakezu, eta vito.talk/app helbiderako laster-marka bat egin baduzu, ezabatu.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Hemendik aurrera ireki Vito bere erretiluko (menu-barrako) ikonoarekin, edo eman bere leiho propioa: ireki Vito eta aukeratu Instalatu aplikazioa bere orrian.",
+"Vito didn't answer. Is it installed and running?": "Vitok ez du erantzun. Instalatuta dago eta martxan?"
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

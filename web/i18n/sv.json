@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Ingen annan dator här ännu. Välj samma mapp på din andra dator för att synkronisera med den.",
 "Stop syncing": "Sluta synkronisera",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Den här datorn slutar synkronisera. Det som redan finns här blir kvar, och det gör mappen också.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Att ta bort en diktering eller ge den en stjärna följer också med. Inställningar och API-nycklar stannar på varje dator: mikrofoner, kortkommandon och leverantörer skiljer sig ofta åt mellan dem."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Att ta bort en diktering eller ge den en stjärna följer också med. Inställningar och API-nycklar stannar på varje dator: mikrofoner, kortkommandon och leverantörer skiljer sig ofta åt mellan dem.",
+"Vito now runs as an app on this computer": "Vito körs nu som en app på den här datorn",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Dina dikteringar har flyttat till appen. Fortsätt diktera därifrån – med din tangentkombination, i alla program.",
+"Open Vito": "Öppna Vito",
+"Keep using the browser version": "Fortsätt använda webbversionen",
+"Starting Vito…": "Startar Vito…",
+"Tidy up, once": "Städa upp, en gång",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Ta bort den här webbversionen: öppna ⋯-menyn uppe till höger i fönstret och välj Avinstallera (eller Ta bort) Vito. Dina dikteringar finns kvar i appen.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Ge appen ett eget fönster: öppna Vito och välj Installera appen på dess sida. Det är den du fäster i aktivitetsfältet eller Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Du kan stänga den här fliken och ta bort ett bokmärke till vito.talk/app om du har skapat ett.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Öppna Vito framöver via ikonen i systemfältet (menyraden), eller ge appen ett eget fönster: öppna Vito och välj Installera appen på dess sida.",
+"Vito didn't answer. Is it installed and running?": "Vito svarade inte. Är det installerat och igång?"
 },
 "help": {
 "theme": "Ljust, mörkt eller automatiskt — automatiskt följer systemets ljus/mörk-inställning.",

@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito अब इस कंप्यूटर पर ऐप के रूप में चलता है",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "आपके डिक्टेशन ऐप में चले गए हैं। अब वहीं से बोलकर लिखवाते रहें — अपनी हॉटकी से, हर प्रोग्राम में।",
+"Open Vito": "Vito खोलें",
+"Keep using the browser version": "ब्राउज़र वाला संस्करण इस्तेमाल करते रहें",
+"Starting Vito…": "Vito शुरू हो रहा है…",
+"Tidy up, once": "एक बार सफ़ाई कर लें",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "इस ब्राउज़र संस्करण को हटाएँ: इस विंडो के ऊपर दाईं ओर ⋯ मेनू खोलें और Vito को अनइंस्टॉल करें (या हटाएँ) चुनें। आपके डिक्टेशन ऐप में सुरक्षित हैं।",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "ऐप को उसकी अपनी विंडो दें: Vito खोलें और उसके पेज पर ऐप इंस्टॉल करें चुनें। टास्कबार या Dock पर पिन करने के लिए यही सही है।",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "आप इस टैब को बंद कर सकते हैं, और अगर आपने vito.talk/app का बुकमार्क बनाया था तो उसे हटा सकते हैं।",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "अब से Vito को उसके ट्रे (मेनू बार) आइकन से खोलें, या उसे उसकी अपनी विंडो दें: Vito खोलें और उसके पेज पर ऐप इंस्टॉल करें चुनें।",
+"Vito didn't answer. Is it installed and running?": "Vito ने जवाब नहीं दिया। क्या वह इंस्टॉल है और चल रहा है?",
 "Dictate today to start a streak": "स्ट्रीक शुरू करने के लिए आज बोलकर लिखवाएँ",
 "Nothing cleaned up in this period yet": "इस अवधि में अभी तक कुछ भी साफ़ नहीं किया गया",
 "No languages detected in this period yet": "इस अवधि में अभी तक कोई भाषा पहचानी नहीं गई",

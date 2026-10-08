@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Még nincs itt másik számítógép. Válaszd ki ugyanezt a mappát a másik számítógépeden, hogy szinkronizálj vele.",
 "Stop syncing": "Szinkronizálás leállítása",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Ez a számítógép leállítja a szinkronizálást. Ami már itt van, megmarad, a mappa is.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "A diktálás törlése vagy csillagozása is átkerül. A beállítások és az API-kulcsok minden számítógépen külön maradnak: a mikrofonok, gyorsbillentyűk és szolgáltatók gyakran eltérnek köztük."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "A diktálás törlése vagy csillagozása is átkerül. A beállítások és az API-kulcsok minden számítógépen külön maradnak: a mikrofonok, gyorsbillentyűk és szolgáltatók gyakran eltérnek köztük.",
+"Vito now runs as an app on this computer": "A Vito mostantól alkalmazásként fut ezen a számítógépen",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "A diktálásaid átkerültek az alkalmazásba. Diktálj innentől ott – a billentyűkombinációddal, bármelyik programban.",
+"Open Vito": "Vito megnyitása",
+"Keep using the browser version": "A böngészős verzió további használata",
+"Starting Vito…": "A Vito indítása…",
+"Tidy up, once": "Egyszeri rendrakás",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Távolítsd el ezt a böngészős verziót: nyisd meg a ⋯ menüt az ablak jobb felső sarkában, és válaszd a Vito eltávolítása (vagy Eltávolítás) lehetőséget. A diktálásaid biztonságban vannak az alkalmazásban.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Adj az alkalmazásnak saját ablakot: nyisd meg a Vitót, és az oldalán válaszd az Alkalmazás telepítése lehetőséget. Ezt érdemes a tálcára vagy a Dockra rögzíteni.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Bezárhatod ezt a lapot, és ha készítettél könyvjelzőt a vito.talk/app címhez, törölheted is.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Innentől a Vitót a tálcaikonjáról (menüsorból) nyithatod meg, vagy adhatsz neki saját ablakot: nyisd meg a Vitót, és az oldalán válaszd az Alkalmazás telepítése lehetőséget.",
+"Vito didn't answer. Is it installed and running?": "A Vito nem válaszolt. Telepítve van, és fut?"
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

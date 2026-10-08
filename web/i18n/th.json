@@ -1013,7 +1013,18 @@
 "No speech recognised.": "ไม่รู้จำเสียงพูด",
 "This browser cannot record audio.": "เบราว์เซอร์นี้บันทึกเสียงไม่ได้",
 "downloaded": "ดาวน์โหลดแล้ว",
-"built in": "มีในตัว"
+"built in": "มีในตัว",
+"Vito now runs as an app on this computer": "ตอนนี้ Vito ทำงานเป็นแอปบนคอมพิวเตอร์เครื่องนี้แล้ว",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "บันทึกเสียงที่พูดของคุณย้ายไปอยู่ในแอปแล้ว พูดต่อจากที่นั่นได้เลย — ด้วยปุ่มลัดของคุณ ในทุกโปรแกรม",
+"Open Vito": "เปิด Vito",
+"Keep using the browser version": "ใช้เวอร์ชันบนเบราว์เซอร์ต่อ",
+"Starting Vito…": "กำลังเริ่ม Vito…",
+"Tidy up, once": "จัดระเบียบสักครั้ง",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "ลบเวอร์ชันบนเบราว์เซอร์นี้: เปิดเมนู ⋯ ที่มุมขวาบนของหน้าต่างนี้ แล้วเลือกถอนการติดตั้ง (หรือลบ) Vito บันทึกเสียงที่พูดของคุณปลอดภัยอยู่ในแอป",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "ให้แอปมีหน้าต่างของตัวเอง: เปิด Vito แล้วเลือกติดตั้งแอปในหน้าของมัน อันนั้นคืออันที่ควรปักหมุดไว้บนแถบงานหรือ Dock",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "คุณปิดแท็บนี้ได้ และลบบุ๊กมาร์กไปยัง vito.talk/app ออกได้หากคุณเคยสร้างไว้",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "ต่อไปนี้ให้เปิด Vito จากไอคอนในถาดระบบ (แถบเมนู) หรือให้มันมีหน้าต่างของตัวเอง: เปิด Vito แล้วเลือกติดตั้งแอปในหน้าของมัน",
+"Vito didn't answer. Is it installed and running?": "Vito ไม่ตอบสนอง ติดตั้งและเปิดใช้งานอยู่หรือเปล่า"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",

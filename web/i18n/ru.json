@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Других компьютеров пока нет. Выберите ту же папку на другом компьютере, чтобы синхронизироваться с ним.",
 "Stop syncing": "Остановить синхронизацию",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Этот компьютер перестаёт синхронизироваться. То, что уже здесь, остаётся, как и папка.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Удаление диктовки и отметка звездой тоже переносятся. Настройки и ключи API остаются на каждом компьютере: микрофоны, горячие клавиши и провайдеры у них часто разные."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Удаление диктовки и отметка звездой тоже переносятся. Настройки и ключи API остаются на каждом компьютере: микрофоны, горячие клавиши и провайдеры у них часто разные.",
+"Vito now runs as an app on this computer": "Vito теперь работает как приложение на этом компьютере",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Ваши диктовки перенесены в приложение. Диктуйте дальше оттуда — по горячей клавише, в любой программе.",
+"Open Vito": "Открыть Vito",
+"Keep using the browser version": "Продолжить в браузерной версии",
+"Starting Vito…": "Запуск Vito…",
+"Tidy up, once": "Навести порядок, один раз",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Удалите эту браузерную версию: откройте меню ⋯ в правом верхнем углу этого окна и выберите «Удалить Vito». Ваши диктовки в безопасности в приложении.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Дайте приложению отдельное окно: откройте Vito и выберите «Установить приложение» на его странице. Именно его стоит закрепить на панели задач или в Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Эту вкладку можно закрыть и удалить закладку на vito.talk/app, если вы её создавали.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Теперь открывайте Vito через значок в трее (строке меню) или дайте ему отдельное окно: откройте Vito и выберите «Установить приложение» на его странице.",
+"Vito didn't answer. Is it installed and running?": "Vito не отвечает. Он установлен и запущен?"
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",

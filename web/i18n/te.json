@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito ఇప్పుడు ఈ కంప్యూటర్‌లో యాప్‌గా నడుస్తోంది",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "మీ డిక్టేషన్‌లు యాప్‌కు తరలించబడ్డాయి. ఇకపై అక్కడి నుండి డిక్టేట్ చేయండి — మీ హాట్‌కీతో, ప్రతి ప్రోగ్రామ్‌లో.",
+"Open Vito": "Vito తెరవండి",
+"Keep using the browser version": "బ్రౌజర్ వెర్షన్‌నే వాడుతూ ఉండండి",
+"Starting Vito…": "Vito ప్రారంభమవుతోంది…",
+"Tidy up, once": "ఒక్కసారి సర్దుకోండి",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "ఈ బ్రౌజర్ వెర్షన్‌ను తీసివేయండి: ఈ విండో ఎగువ కుడివైపున ఉన్న ⋯ మెనూను తెరిచి, Vito అన్‌ఇన్‌స్టాల్ (లేదా తీసివేయి) ఎంచుకోండి. మీ డిక్టేషన్‌లు యాప్‌లో సురక్షితంగా ఉన్నాయి.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "యాప్‌కు దాని స్వంత విండో ఇవ్వండి: Vito తెరిచి, దాని పేజీలో యాప్‌ను ఇన్‌స్టాల్ చేయి ఎంచుకోండి. టాస్క్‌బార్ లేదా Dock కు పిన్ చేయవలసినది అదే.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "మీరు ఈ ట్యాబ్‌ను మూసివేయవచ్చు, అలాగే vito.talk/app కు బుక్‌మార్క్ చేసి ఉంటే దాన్ని తీసివేయవచ్చు.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "ఇకపై Vito ను దాని ట్రే (మెనూ బార్) చిహ్నంతో తెరవండి, లేదా దానికి స్వంత విండో ఇవ్వండి: Vito తెరిచి, దాని పేజీలో యాప్‌ను ఇన్‌స్టాల్ చేయి ఎంచుకోండి.",
+"Vito didn't answer. Is it installed and running?": "Vito స్పందించలేదు. అది ఇన్‌స్టాల్ అయి నడుస్తోందా?",
 "Dictate today to start a streak": "స్ట్రీక్ ప్రారంభించడానికి ఈరోజు డిక్టేట్ చేయండి",
 "Nothing cleaned up in this period yet": "ఈ కాలంలో ఇంకా ఏదీ శుభ్రం చేయబడలేదు",
 "No languages detected in this period yet": "ఈ కాలంలో ఇంకా ఏ భాషలూ గుర్తించబడలేదు",

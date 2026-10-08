@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "ಇಲ್ಲಿ ಇನ್ನೂ ಬೇರೆ ಕಂಪ್ಯೂಟರ್ ಇಲ್ಲ. ಅದರೊಂದಿಗೆ ಸಿಂಕ್ ಮಾಡಲು ನಿಮ್ಮ ಇನ್ನೊಂದು ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಅದೇ ಫೋಲ್ಡರ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
 "Stop syncing": "ಸಿಂಕ್ ನಿಲ್ಲಿಸಿ",
 "This computer stops syncing. What is already here stays, and so does the folder.": "ಈ ಕಂಪ್ಯೂಟರ್ ಸಿಂಕ್ ಮಾಡುವುದನ್ನು ನಿಲ್ಲಿಸುತ್ತದೆ. ಇಲ್ಲಿ ಈಗಾಗಲೇ ಇರುವುದು ಹಾಗೆಯೇ ಉಳಿಯುತ್ತದೆ, ಫೋಲ್ಡರ್ ಕೂಡ.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ಡಿಕ್ಟೇಶನ್ ಅಳಿಸುವುದು ಅಥವಾ ಅದಕ್ಕೆ ಸ್ಟಾರ್ ಕೊಡುವುದು ಕೂಡ ಇತರ ಕಂಪ್ಯೂಟರ್‌ಗಳಿಗೆ ಹೋಗುತ್ತದೆ. ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಮತ್ತು API ಕೀಗಳು ಪ್ರತಿ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲೇ ಉಳಿಯುತ್ತವೆ: ಮೈಕ್ರೋಫೋನ್‌ಗಳು, ಹಾಟ್‌ಕೀಗಳು ಮತ್ತು ಪೂರೈಕೆದಾರರು ಅವುಗಳ ನಡುವೆ ಆಗಾಗ್ಗೆ ಭಿನ್ನವಾಗಿರುತ್ತವೆ."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ಡಿಕ್ಟೇಶನ್ ಅಳಿಸುವುದು ಅಥವಾ ಅದಕ್ಕೆ ಸ್ಟಾರ್ ಕೊಡುವುದು ಕೂಡ ಇತರ ಕಂಪ್ಯೂಟರ್‌ಗಳಿಗೆ ಹೋಗುತ್ತದೆ. ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಮತ್ತು API ಕೀಗಳು ಪ್ರತಿ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲೇ ಉಳಿಯುತ್ತವೆ: ಮೈಕ್ರೋಫೋನ್‌ಗಳು, ಹಾಟ್‌ಕೀಗಳು ಮತ್ತು ಪೂರೈಕೆದಾರರು ಅವುಗಳ ನಡುವೆ ಆಗಾಗ್ಗೆ ಭಿನ್ನವಾಗಿರುತ್ತವೆ.",
+"Vito now runs as an app on this computer": "Vito ಈಗ ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಆ್ಯಪ್ ಆಗಿ ಚಲಿಸುತ್ತಿದೆ",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "ನಿಮ್ಮ ಡಿಕ್ಟೇಶನ್‌ಗಳು ಆ್ಯಪ್‌ಗೆ ಸ್ಥಳಾಂತರಗೊಂಡಿವೆ. ಅಲ್ಲಿಂದ ಮುಂದುವರಿಸಿ — ನಿಮ್ಮ ಹಾಟ್‌ಕೀ ಬಳಸಿ, ಪ್ರತಿಯೊಂದು ಪ್ರೋಗ್ರಾಂನಲ್ಲಿ.",
+"Open Vito": "Vito ತೆರೆಯಿರಿ",
+"Keep using the browser version": "ಬ್ರೌಸರ್ ಆವೃತ್ತಿಯನ್ನೇ ಬಳಸುತ್ತಿರಿ",
+"Starting Vito…": "Vito ಪ್ರಾರಂಭವಾಗುತ್ತಿದೆ…",
+"Tidy up, once": "ಒಮ್ಮೆ ಸ್ವಚ್ಛಗೊಳಿಸಿ",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "ಈ ಬ್ರೌಸರ್ ಆವೃತ್ತಿಯನ್ನು ತೆಗೆದುಹಾಕಿ: ಈ ವಿಂಡೋದ ಮೇಲಿನ ಬಲಭಾಗದಲ್ಲಿರುವ ⋯ ಮೆನು ತೆರೆದು Vito ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ (ಅಥವಾ ತೆಗೆದುಹಾಕಿ) ಆಯ್ಕೆಮಾಡಿ. ನಿಮ್ಮ ಡಿಕ್ಟೇಶನ್‌ಗಳು ಆ್ಯಪ್‌ನಲ್ಲಿ ಸುರಕ್ಷಿತವಾಗಿವೆ.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "ಆ್ಯಪ್‌ಗೆ ತನ್ನದೇ ಆದ ವಿಂಡೋ ನೀಡಿ: Vito ತೆರೆದು ಅದರ ಪುಟದಲ್ಲಿ ಆ್ಯಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ ಆಯ್ಕೆಮಾಡಿ. ಅದನ್ನೇ ಟಾಸ್ಕ್‌ಬಾರ್ ಅಥವಾ Dock ಗೆ ಪಿನ್ ಮಾಡಬೇಕು.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "ನೀವು ಈ ಟ್ಯಾಬ್ ಅನ್ನು ಮುಚ್ಚಬಹುದು, ಮತ್ತು vito.talk/app ಗೆ ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿದ್ದರೆ ಅದನ್ನು ತೆಗೆದುಹಾಕಬಹುದು.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "ಇನ್ನು ಮುಂದೆ Vito ಅನ್ನು ಅದರ ಟ್ರೇ (ಮೆನು ಬಾರ್) ಐಕಾನ್‌ನಿಂದ ತೆರೆಯಿರಿ, ಅಥವಾ ಅದಕ್ಕೆ ತನ್ನದೇ ಆದ ವಿಂಡೋ ನೀಡಿ: Vito ತೆರೆದು ಅದರ ಪುಟದಲ್ಲಿ ಆ್ಯಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ ಆಯ್ಕೆಮಾಡಿ.",
+"Vito didn't answer. Is it installed and running?": "Vito ಉತ್ತರಿಸಲಿಲ್ಲ. ಅದು ಇನ್‌ಸ್ಟಾಲ್ ಆಗಿ ಚಲಿಸುತ್ತಿದೆಯೇ?"
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

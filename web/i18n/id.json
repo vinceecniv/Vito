@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Belum ada komputer lain di sini. Pilih folder yang sama di komputer lainmu untuk menyinkronkannya.",
 "Stop syncing": "Berhenti menyinkronkan",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Komputer ini berhenti menyinkronkan. Yang sudah ada di sini tetap ada, begitu juga foldernya.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Menghapus dikte atau memberinya bintang juga ikut terbawa. Pengaturan dan kunci API tetap di setiap komputer: mikrofon, pintasan, dan penyedia sering berbeda di antara keduanya."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Menghapus dikte atau memberinya bintang juga ikut terbawa. Pengaturan dan kunci API tetap di setiap komputer: mikrofon, pintasan, dan penyedia sering berbeda di antara keduanya.",
+"Vito now runs as an app on this computer": "Vito sekarang berjalan sebagai aplikasi di komputer ini",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Dikte kamu sudah pindah ke aplikasi. Lanjutkan mendikte dari sana — dengan kombinasi tombolmu, di setiap program.",
+"Open Vito": "Buka Vito",
+"Keep using the browser version": "Tetap pakai versi browser",
+"Starting Vito…": "Memulai Vito…",
+"Tidy up, once": "Rapikan, sekali saja",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Hapus versi browser ini: buka menu ⋯ di kanan atas jendela ini dan pilih Copot pemasangan (atau Hapus) Vito. Dikte kamu aman di aplikasi.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Beri aplikasi jendelanya sendiri: buka Vito dan pilih Pasang aplikasi di halamannya. Itulah yang sebaiknya disematkan ke bilah tugas atau Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Kamu bisa menutup tab ini, dan menghapus bookmark ke vito.talk/app jika kamu membuatnya.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Mulai sekarang buka Vito lewat ikon baki (bilah menu)-nya, atau beri jendelanya sendiri: buka Vito dan pilih Pasang aplikasi di halamannya.",
+"Vito didn't answer. Is it installed and running?": "Vito tidak merespons. Apakah sudah terpasang dan berjalan?"
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",

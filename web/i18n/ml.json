@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito ഇപ്പോൾ ഈ കമ്പ്യൂട്ടറിൽ ഒരു ആപ്പായി പ്രവർത്തിക്കുന്നു",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "നിങ്ങളുടെ ഡിക്ടേഷനുകൾ ആപ്പിലേക്ക് മാറ്റി. ഇനി അവിടെ നിന്ന് തുടർന്നും ഡിക്ടേറ്റ് ചെയ്യൂ — നിങ്ങളുടെ ഹോട്ട്കീ ഉപയോഗിച്ച്, ഓരോ പ്രോഗ്രാമിലും.",
+"Open Vito": "Vito തുറക്കുക",
+"Keep using the browser version": "ബ്രൗസർ പതിപ്പ് തുടർന്നും ഉപയോഗിക്കുക",
+"Starting Vito…": "Vito ആരംഭിക്കുന്നു…",
+"Tidy up, once": "ഒരിക്കൽ ഒന്ന് വൃത്തിയാക്കാം",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "ഈ ബ്രൗസർ പതിപ്പ് നീക്കം ചെയ്യുക: ഈ വിൻഡോയുടെ മുകളിൽ വലതുവശത്തുള്ള ⋯ മെനു തുറന്ന് Vito അൺഇൻസ്റ്റാൾ ചെയ്യുക (അല്ലെങ്കിൽ നീക്കം ചെയ്യുക) തിരഞ്ഞെടുക്കുക. നിങ്ങളുടെ ഡിക്ടേഷനുകൾ ആപ്പിൽ സുരക്ഷിതമാണ്.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "ആപ്പിന് സ്വന്തമായൊരു വിൻഡോ നൽകുക: Vito തുറന്ന് അതിന്റെ പേജിൽ ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക തിരഞ്ഞെടുക്കുക. ടാസ്ക്ബാറിലോ ഡോക്കിലോ പിൻ ചെയ്യേണ്ടത് അതാണ്.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "നിങ്ങൾക്ക് ഈ ടാബ് അടയ്ക്കാം, vito.talk/app ലേക്ക് ബുക്ക്മാർക്ക് ഉണ്ടാക്കിയിട്ടുണ്ടെങ്കിൽ അത് നീക്കം ചെയ്യാം.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "ഇനി മുതൽ Vito തുറക്കാൻ അതിന്റെ ട്രേ (മെനു ബാർ) ഐക്കൺ ഉപയോഗിക്കുക, അല്ലെങ്കിൽ അതിന് സ്വന്തം വിൻഡോ നൽകുക: Vito തുറന്ന് അതിന്റെ പേജിൽ ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക തിരഞ്ഞെടുക്കുക.",
+"Vito didn't answer. Is it installed and running?": "Vito പ്രതികരിച്ചില്ല. അത് ഇൻസ്റ്റാൾ ചെയ്ത് പ്രവർത്തിക്കുന്നുണ്ടോ?",
 "Dictate today to start a streak": "ഒരു തുടർച്ച തുടങ്ങാൻ ഇന്ന് ഡിക്ടേറ്റ് ചെയ്യൂ",
 "Nothing cleaned up in this period yet": "ഈ കാലയളവിൽ ഇതുവരെ ഒന്നും ശുദ്ധീകരിച്ചിട്ടില്ല",
 "No languages detected in this period yet": "ഈ കാലയളവിൽ ഇതുവരെ ഭാഷകളൊന്നും കണ്ടെത്തിയിട്ടില്ല",

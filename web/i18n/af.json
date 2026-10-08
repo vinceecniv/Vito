@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Nog geen ander rekenaar hier nie. Kies dieselfde gids op jou ander rekenaar om daarmee te sinkroniseer.",
 "Stop syncing": "Hou op sinkroniseer",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Hierdie rekenaar hou op sinkroniseer. Wat reeds hier is, bly, en die gids ook.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Om 'n diktaat te skrap of 'n ster te gee, word ook oorgedra. Instellings en API-sleutels bly op elke rekenaar: mikrofone, sleutelkombinasies en verskaffers verskil dikwels tussen hulle."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Om 'n diktaat te skrap of 'n ster te gee, word ook oorgedra. Instellings en API-sleutels bly op elke rekenaar: mikrofone, sleutelkombinasies en verskaffers verskil dikwels tussen hulle.",
+"Vito now runs as an app on this computer": "Vito loop nou as toepassing op hierdie rekenaar",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Jou diktate het na die toepassing verskuif. Dikteer van daar af verder — met jou sleutelkombinasie, in elke program.",
+"Open Vito": "Maak Vito oop",
+"Keep using the browser version": "Gebruik steeds die blaaierweergawe",
+"Starting Vito…": "Vito begin tans…",
+"Tidy up, once": "Een keer opruim",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Verwyder hierdie blaaierweergawe: maak die ⋯-kieslys regs bo in hierdie venster oop en kies Deïnstalleer (of Verwyder) Vito. Jou diktate is veilig in die toepassing.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Gee die toepassing sy eie venster: maak Vito oop en kies Installeer toepassing op sy bladsy. Dít is die een om aan die taakbalk of Dock vas te speld.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Jy kan hierdie oortjie toemaak, en 'n boekmerk na vito.talk/app verwyder as jy een gemaak het.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Maak Vito voortaan oop met sy stelselbakikoon (kieslysbalk), of gee dit sy eie venster: maak Vito oop en kies Installeer toepassing op sy bladsy.",
+"Vito didn't answer. Is it installed and running?": "Vito het nie geantwoord nie. Is dit geïnstalleer en aan die gang?"
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

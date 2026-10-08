@@ -1,5 +1,16 @@
 {
 "strings": {
+"Vito now runs as an app on this computer": "Vito এখন এই কম্পিউটারে অ্যাপ হিসেবে চলছে",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "আপনার ডিকটেশনগুলো অ্যাপে সরে গেছে। এখন থেকে সেখানেই ডিকটেট করুন — আপনার হটকি দিয়ে, প্রতিটি প্রোগ্রামে।",
+"Open Vito": "Vito খুলুন",
+"Keep using the browser version": "ব্রাউজার সংস্করণ ব্যবহার চালিয়ে যান",
+"Starting Vito…": "Vito শুরু হচ্ছে…",
+"Tidy up, once": "একবার গুছিয়ে নিন",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "এই ব্রাউজার সংস্করণ সরিয়ে ফেলুন: এই উইন্ডোর উপরের ডানদিকে ⋯ মেনু খুলে Vito আনইনস্টল (বা সরান) বেছে নিন। আপনার ডিকটেশনগুলো অ্যাপে নিরাপদ আছে।",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "অ্যাপকে তার নিজস্ব উইন্ডো দিন: Vito খুলে তার পৃষ্ঠায় অ্যাপ ইনস্টল করুন বেছে নিন। সেটিকেই টাস্কবার বা Dock-এ পিন করবেন।",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "আপনি এই ট্যাব বন্ধ করতে পারেন, আর vito.talk/app-এর কোনো বুকমার্ক করে থাকলে তা সরিয়ে ফেলতে পারেন।",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "এখন থেকে Vito-র ট্রে (মেনু বার) আইকন দিয়ে সেটি খুলুন, অথবা তাকে নিজস্ব উইন্ডো দিন: Vito খুলে তার পৃষ্ঠায় অ্যাপ ইনস্টল করুন বেছে নিন।",
+"Vito didn't answer. Is it installed and running?": "Vito সাড়া দেয়নি। এটি কি ইনস্টল করা আছে এবং চলছে?",
 "Dictate today to start a streak": "ধারা শুরু করতে আজ ডিকটেট করুন",
 "Nothing cleaned up in this period yet": "এই সময়কালে এখনও কিছু পরিষ্কার করা হয়নি",
 "No languages detected in this period yet": "এই সময়কালে এখনও কোনো ভাষা শনাক্ত হয়নি",

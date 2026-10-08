@@ -1013,7 +1013,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Încă nu există alt computer aici. Alege același folder pe celălalt computer ca să te sincronizezi cu el.",
 "Stop syncing": "Oprește sincronizarea",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Acest computer nu se mai sincronizează. Ce se află deja aici rămâne, la fel și folderul.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Ștergerea unei dictări sau marcarea ei cu stea se transferă și ea. Setările și cheile API rămân pe fiecare computer: microfoanele, tastele rapide și furnizorii diferă adesea între ele."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Ștergerea unei dictări sau marcarea ei cu stea se transferă și ea. Setările și cheile API rămân pe fiecare computer: microfoanele, tastele rapide și furnizorii diferă adesea între ele.",
+"Vito now runs as an app on this computer": "Vito rulează acum ca aplicație pe acest computer",
+"Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Dictările tale s-au mutat în aplicație. Continuă să dictezi de acolo — cu tasta ta rapidă, în orice program.",
+"Open Vito": "Deschide Vito",
+"Keep using the browser version": "Continuă să folosești versiunea din browser",
+"Starting Vito…": "Se pornește Vito…",
+"Tidy up, once": "Fă ordine, o singură dată",
+"Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.": "Elimină această versiune din browser: deschide meniul ⋯ din dreapta sus a acestei ferestre și alege Dezinstalează (sau Elimină) Vito. Dictările tale sunt în siguranță în aplicație.",
+"Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dă aplicației propria fereastră: deschide Vito și alege Instalează aplicația pe pagina sa. Aceea este cea pe care o fixezi în bara de activități sau în Dock.",
+"You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Poți închide această filă și poți șterge marcajul către vito.talk/app, dacă ai făcut unul.",
+"Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "De acum deschide Vito cu pictograma sa din bara de sistem (bara de meniu) sau dă-i propria fereastră: deschide Vito și alege Instalează aplicația pe pagina sa.",
+"Vito didn't answer. Is it installed and running?": "Vito nu a răspuns. Este instalat și rulează?"
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",
