@@ -1519,6 +1519,18 @@
   .sync-cand svg, .sync-on svg { width:22px; height:22px; flex:none; color:var(--violet); }
   .sync-cand span, .sync-on span { display:flex; flex-direction:column; min-width:0; }
   .sync-cand small, .sync-on small { color:var(--text3); font-size:11.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .moved-screen { display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:64px 20px 40px; }
+  .moved-screen[hidden] { display:none; }
+  .moved-logo { width:120px; height:120px; }
+  .moved-title { font-family:'Baloo 2',sans-serif; font-weight:700; font-size:26px; color:var(--text); line-height:1.2; }
+  .moved-text { color:var(--text2); font-size:14.5px; line-height:1.55; max-width:460px; }
+  .moved-screen .btn { margin-top:12px; padding:12px 28px; font-size:15px; }
+  .moved-status { min-height:20px; color:var(--text3); font-size:13px; }
+  .moved-tidy { text-align:left; max-width:520px; margin:14px 0 6px; padding:14px 16px; border-radius:12px; background:var(--accent-soft); color:var(--text2); font-size:13px; line-height:1.55; }
+  .moved-tidy b { color:var(--text); }
+  .moved-tidy ol { margin:6px 0 0; padding-left:18px; }
+  .moved .content > section, .moved .content > .install-banner, .moved .content > .demo-banner,
+  .moved .sidebar .nav-item, .moved .sidebar .side-pip { display:none !important; }
   .help-web, .dl-web { display:none; }
   .standalone .dl-web { display:flex; color:#fff; border-color:transparent; background:var(--grad); box-shadow:0 4px 14px rgba(124,58,237,.3); }
   .standalone .dl-web:hover { filter:brightness(1.08); color:#fff; }
@@ -1621,6 +1633,16 @@
 
   <main class="content">
     <!-- Demo banner: outside the sections so it shows on every tab. -->
+    <!-- Browser version, after moving to the app: this page only opens it (renderMoved). -->
+    <div class="moved-screen" id="moved-screen" hidden>
+      <svg viewBox="0 0 100 100" fill="url(#movedGrad)" class="vito-talk moved-logo" aria-hidden="true"><defs><linearGradient id="movedGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs><rect x="10" y="24" width="8" height="16" rx="4"/><rect x="22" y="24" width="8" height="28" rx="4"/><rect x="34" y="24" width="8" height="40" rx="4"/><rect x="46" y="24" width="8" height="54" rx="4"/><rect x="58" y="24" width="8" height="40" rx="4"/><rect x="70" y="24" width="8" height="28" rx="4"/><rect x="82" y="24" width="8" height="16" rx="4"/></svg>
+      <div class="moved-title">Vito now runs as an app on this computer</div>
+      <div class="moved-text">Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.</div>
+      <button type="button" class="btn primary" id="moved-open">Open Vito</button>
+      <div class="moved-status" id="moved-status"></div>
+      <div class="moved-tidy" id="moved-tidy" data-noi18n></div>
+      <button type="button" class="linkbtn" id="moved-stay">Keep using the browser version</button>
+    </div>
     <!-- Browser version: from download to a connected app (renderInstallBanner). -->
     <div class="install-banner" id="install-banner" hidden></div>
     <div class="demo-banner" id="demo-banner" hidden>
@@ -3006,6 +3028,17 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "Vito now runs as an app on this computer":"Vito draait nu als app op deze computer",
+  "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.":"Je dictaten zijn naar de app verhuisd. Dicteer daar verder — met je sneltoets, in elk programma.",
+  "Open Vito":"Open Vito",
+  "Keep using the browser version":"Toch de browserversie blijven gebruiken",
+  "Starting Vito…":"Vito wordt gestart…",
+  "Tidy up, once":"Eenmalig netjes maken",
+  "Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app.":"Verwijder deze browserversie: open het ⋯-menu rechtsboven in dit venster en kies Vito verwijderen. Je dictaten staan veilig in de app.",
+  "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.":"Geef de app een eigen venster: open Vito en kies op zijn pagina Installeer app. Die zet je vast op de taakbalk of in het Dock.",
+  "You can close this tab, and remove a bookmark to vito.talk/app if you made one.":"Je kunt dit tabblad sluiten, en een bladwijzer naar vito.talk/app weghalen als je die had.",
+  "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.":"Open Vito voortaan via zijn icoon in het systeemvak (menubalk), of geef hem een eigen venster: open Vito en kies op zijn pagina Installeer app.",
+  "Vito didn't answer. Is it installed and running?":"Vito reageerde niet. Is hij geïnstalleerd en gestart?",
   "Connected to the Vito app!":"Verbonden met de Vito-app!",
   "From now on you dictate into any program with your hotkey. Take what you dictated here along:":"Vanaf nu dicteer je in elk programma met je sneltoets. Neem mee wat je hier al dicteerde:",
   "Open the app":"Open de app",
@@ -4628,7 +4661,7 @@ async function showLangPicker(first){
 // is not one in this tab — recording from here then captured silence.
 function webGesture(w){ if (STANDALONE) VitoStandalone.gestureWindow = w; }
 if (STANDALONE) document.addEventListener("keydown", (ev) => {
-  if (hkCapturing) return;
+  if (hkCapturing || document.documentElement.classList.contains("moved")) return;
   if (hotkeyMatches(ev, webHotkey())) { ev.preventDefault(); webGesture(window); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); }
   else if (ev.key === "Escape" && uiState === "recording") api("/api/cancel", { method: "POST" }).catch(() => {});
 });
@@ -4747,7 +4780,7 @@ function renderInstallBanner(){
       <div class="ib-text">${t("From now on you dictate into any program with your hotkey. Take what you dictated here along:")}</div>
       <div class="ib-actions"><button class="btn small" id="ib-move">${t("Move to the app")}</button><button class="btn ghost small" id="ib-open">${t("Open the app")}</button></div></div>`;
     $("ib-move").onclick = () => { moveToApp(); lsSet("vito-web-ib-done", "1"); renderInstallBanner(); };
-    $("ib-open").onclick = () => { window.open(APP_URL + "/", "_blank"); lsSet("vito-web-ib-done", "1"); renderInstallBanner(); };
+    $("ib-open").onclick = () => { lsSet("vito-web-ib-done", "1"); lsSet("vito-web-moved", "1"); renderMoved(); openApp(); };
   } else {
     el.className = "install-banner";
     const steps = (IB_STEPS[dl.os] || IB_STEPS.windows).map(x => `<li>${t(x)}</li>`).join("");
@@ -4799,11 +4832,55 @@ if (STANDALONE) {
   renderInstallBanner();
 }
 
+// ---- after moving: this page opens the app ----
+// Once the dictations went over, carrying on here would only split them
+// between two places again. So the page becomes the way into the app — and
+// starts it (vito://start, which the app registers) when it isn't running.
+function renderMoved(){
+  const moved = STANDALONE && lsGet("vito-web-moved") === "1";
+  document.documentElement.classList.toggle("moved", moved);
+  $("moved-screen").hidden = !moved;
+  if (moved) {
+    $("moved-status").textContent = "";
+    // How to end up with one Vito: installed as an app, this page is a second
+    // "Vito" in the Start menu or Dock that no longer does anything itself.
+    const pwa = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+    const steps = pwa
+      ? [t("Remove this browser version: open the ⋯ menu at the top right of this window and choose Uninstall (or Remove) Vito. Your dictations are safe in the app."),
+         t("Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.")]
+      : [t("You can close this tab, and remove a bookmark to vito.talk/app if you made one."),
+         t("Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.")];
+    $("moved-tidy").innerHTML = `<b>${t("Tidy up, once")}</b><ol>${steps.map(x => `<li>${ahEsc(x)}</li>`).join("")}</ol>`;
+    if (typeof applyI18n === "function") applyI18n($("moved-screen"));
+  }
+}
+async function openApp(){
+  const st = $("moved-status");
+  const up = async () => { try { return (await (await fetch(APP_URL + "/api/hello", { targetAddressSpace: "loopback" })).json()).app === "vito"; } catch { return false; } };
+  if (await up()) { window.open(APP_URL + "/", "_blank"); return; }
+  if (st) st.textContent = t("Starting Vito…");
+  try { location.href = "vito://start"; } catch {}
+  for (let i = 0; i < 20; i++) {
+    await new Promise(r => setTimeout(r, 1000));
+    if (await up()) { if (st) st.textContent = ""; window.open(APP_URL + "/", "_blank"); return; }
+  }
+  // It may still be running where this page can't see it (the browser kept
+  // it from asking): opening the app's page directly is the last word.
+  if (st) st.textContent = t("Vito didn't answer. Is it installed and running?");
+  window.open(APP_URL + "/", "_blank");
+}
+if (STANDALONE) {
+  $("moved-open").onclick = openApp;
+  $("moved-stay").onclick = () => { lsSet("vito-web-moved", null); renderMoved(); };
+  renderMoved();
+}
+
 function moveToApp(){
   // Nothing kept here yet: then there is nothing to take over, just the app.
   const data = VitoStandalone.export();
   const d = data.config && data.config.dictionary || {};
   if (!(data.history || []).length && !Object.keys(data.days || {}).length && !(d.keyterms || []).length && !(d.corrections || []).length) {
+    lsSet("vito-web-moved", "1"); renderMoved();
     window.open(APP_URL + "/", "_blank");
     return;
   }
@@ -4812,6 +4889,7 @@ function moveToApp(){
   const i = document.createElement("input");
   i.type = "hidden"; i.name = "data"; i.value = JSON.stringify(data);
   f.appendChild(i); document.body.appendChild(f); f.submit(); f.remove();
+  lsSet("vito-web-moved", "1"); renderMoved();
   toast(t("Opened in the app — confirm there what to take over."), "ok", 6000);
 }
 if (STANDALONE) {
