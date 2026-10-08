@@ -4641,10 +4641,17 @@ async function findApp(quiet){
 // app's own page, which asks what to take over. A form post rather than a
 // fetch: it is a navigation, so the app can show its page straight away.
 function moveToApp(){
+  // Nothing kept here yet: then there is nothing to take over, just the app.
+  const data = VitoStandalone.export();
+  const d = data.config && data.config.dictionary || {};
+  if (!(data.history || []).length && !Object.keys(data.days || {}).length && !(d.keyterms || []).length && !(d.corrections || []).length) {
+    window.open(APP_URL + "/", "_blank");
+    return;
+  }
   const f = document.createElement("form");
   f.method = "POST"; f.action = APP_URL + "/handover"; f.target = "_blank";
   const i = document.createElement("input");
-  i.type = "hidden"; i.name = "data"; i.value = JSON.stringify(VitoStandalone.export());
+  i.type = "hidden"; i.name = "data"; i.value = JSON.stringify(data);
   f.appendChild(i); document.body.appendChild(f); f.submit(); f.remove();
   toast(t("Opened in the app — confirm there what to take over."), "ok", 6000);
 }
@@ -4668,7 +4675,7 @@ async function offerHandover(){
   history.replaceState(null, "", location.pathname);
   let h; try { h = await api("/api/handover/" + encodeURIComponent(id)); } catch (e) { toast(e.message, "err", 6000); return; }
   const n = (v) => Number(v || 0).toLocaleString(numLoc());
-  const box = (id, label, on) => `<label class="tgl" style="margin-top:8px;"><input type="checkbox" id="${id}"${on ? " checked" : ""}><span class="sw"></span><span>${label}</span></label>`;
+  const box = (id, label, on) => `<label class="tgl" style="margin-top:8px;"><input type="checkbox" id="${id}"${on ? " checked" : ""}><span class="tr"></span> ${label}</label>`;
   modal(t("Take over from the browser?"),
     `<p class="ki-note">${t("Vito in your browser sent what it kept. Dictations already here are skipped, so doing this twice changes nothing.")}</p>
      <p class="ki-note"><b>${n(h.entries)}</b> ${t("dictations")} · <b>${n(h.words)}</b> ${t("words over")} <b>${n(h.days)}</b> ${t("days")}</p>` +
