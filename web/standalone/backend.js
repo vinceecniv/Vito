@@ -44,9 +44,12 @@
     // A first visit speaks the browser's preferred language when Whistle knows
     // it, and English otherwise — saying so, since the user may not expect it.
     if (!(saved.stt && saved.stt.language)) {
-      const want = String((navigator.languages && navigator.languages[0]) || navigator.language || "en").slice(0, 2).toLowerCase();
-      cfg.stt.language = WHISTLE_LANGS.includes(want) ? want : "en";
-      if (!WHISTLE_LANGS.includes(want)) unsupportedLang = want;
+      // Of the browser's languages that Whistle knows, one other than English
+      // goes first: listing both means English is the second language.
+      const prefs = [...new Set((navigator.languages || [navigator.language || "en"]).map((l) => String(l).slice(0, 2).toLowerCase()))];
+      const known = prefs.filter((c) => WHISTLE_LANGS.includes(c));
+      cfg.stt.language = known.find((c) => c !== "en") || known[0] || "en";
+      if (prefs[0] && !WHISTLE_LANGS.includes(prefs[0])) unsupportedLang = prefs[0];
       saveConfig();
     }
     // What the browser can do, whatever an older saved config says.

@@ -4376,7 +4376,11 @@ function browserLangs(){
 function showLangPicker(){
   const pref = browserLangs();
   const uiOpts = [...pref.filter(c => UI_LANGS.includes(c)), "en"].filter((c, i, a) => a.indexOf(c) === i);
-  const sttOpts = [...pref.filter(c => WHISTLE_STT.includes(c)), "en"].filter((c, i, a) => a.indexOf(c) === i);
+  // Every language Whistle knows, the browser's own first — and of those, one
+  // other than English before English: a browser that lists both was set up by
+  // someone who speaks the other one, English being everyone's second.
+  const mine = pref.filter(c => WHISTLE_STT.includes(c));
+  const sttOpts = [...mine.filter(c => c !== "en"), ...mine.filter(c => c === "en"), ...WHISTLE_STT.filter(c => !mine.includes(c))];
   const missing = pref.filter(c => !WHISTLE_STT.includes(c));
   const curUi = uiLang, curStt = (cfg.stt && cfg.stt.language) || "en";
   const name = (c) => LANG_ENDONYM[c] || (c === "en" ? "English" : langName(c));
