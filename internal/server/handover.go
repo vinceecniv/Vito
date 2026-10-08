@@ -129,7 +129,8 @@ func (s *Server) handleHandoverSummary(w http.ResponseWriter, r *http.Request) {
 		s.writeJSON(w, http.StatusNotFound, map[string]any{"ok": false, "error": "this hand-over has expired — start it again from the browser"})
 		return
 	}
-	words, days := 0, 0
+	var words int64
+	days := 0
 	for _, d := range p.Days {
 		words += d.Words
 		if d.Words > 0 {

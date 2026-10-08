@@ -285,9 +285,11 @@ type Sync struct {
 	Folder     string `json:"folder,omitempty"` // the chosen folder; Vito works in its "Vito Sync"; "" is off
 	DeviceID   string `json:"device_id,omitempty"`
 	DeviceName string `json:"device_name,omitempty"`
-	// DictionaryAt is when the dictionary last changed here (unix ms). The
-	// newest change wins across computers.
+	// DictionaryAt and PromptsAt are when the dictionary and the user's own
+	// cleanup rule sets last changed here (unix ms). The newest change wins
+	// across computers.
 	DictionaryAt int64 `json:"dictionary_at,omitempty"`
+	PromptsAt    int64 `json:"prompts_at,omitempty"`
 }
 
 // PushToTalkEnabled reports whether the hold-to-talk behaviour is on.

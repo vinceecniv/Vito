@@ -599,6 +599,9 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	if !slices.Equal(cfg.Dictionary.Keyterms, savedDict.Keyterms) || !slices.Equal(cfg.Dictionary.Corrections, savedDict.Corrections) {
 		cfg.Sync.DictionaryAt = time.Now().UnixMilli()
 	}
+	if !slices.Equal(cfg.Cleanup.Prompts, current.Cleanup.Prompts) {
+		cfg.Sync.PromptsAt = time.Now().UnixMilli()
+	}
 	// The dashboard layout has its own endpoint; a settings save carries the
 	// copy the page loaded, which may be older than a layout saved since.
 	cfg.UI.Dashboard = savedDashboard

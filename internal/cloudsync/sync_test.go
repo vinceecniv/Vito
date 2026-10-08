@@ -161,3 +161,60 @@ func TestTwoComputersThroughAFolder(t *testing.T) {
 		return nil
 	})
 }
+
+// What the user does by hand travels too: deleting, starring, their own
+// cleanup rules, and the costs and Assist counts in the day sums.
+func TestSyncCarriesDeletesStarsRulesAndCosts(t *testing.T) {
+	r := &memRemote{files: map[string][]byte{}}
+	now := time.Now()
+	a := newComputer(t, "aaaa")
+	a.h.Append(history.Entry{ID: "a1", Timestamp: now, Raw: "een", DurationMS: 1000})
+	a.h.Append(history.Entry{ID: "a2", Timestamp: now, Raw: "vertaald", DurationMS: 1000, Command: true, CommandText: "vertaal",
+		CommandInTokens: 300, CommandOutTokens: 40})
+	a.h.Append(history.Entry{ID: "a3", Timestamp: now, Raw: "drie", DurationMS: 1000, CleanupInTokens: 200, CleanupOutTokens: 20})
+	b := newComputer(t, "bbbb")
+	sync3 := func() { a.sync(t, r); b.sync(t, r); a.sync(t, r) }
+	sync3()
+
+	// Costs and Assist: b counts a's tokens and command.
+	today := now.Format("2006-01-02")
+	if _, _, in, out, cin, cout, _, _ := b.h.CostTotals(today, today); in != 200 || out != 20 || cin != 300 || cout != 40 {
+		t.Fatalf("b's token totals %d %d %d %d, want 200 20 300 40", in, out, cin, cout)
+	}
+	if n, _ := b.h.CommandTotal(today, today); n != 1 {
+		t.Fatalf("b counts %d commands, want 1", n)
+	}
+
+	// b deletes a1 and stars a3; a follows, and a1 does not come back.
+	if err := b.h.Delete("a1"); err != nil {
+		t.Fatal(err)
+	}
+	time.Sleep(5 * time.Millisecond)
+	if err := b.h.SetFavorite("a3", true); err != nil {
+		t.Fatal(err)
+	}
+	// b changes the rule sets.
+	b.cfg.Cleanup.Prompts = []config.Prompt{{ID: "p1", Name: "Kort", Rules: "Maak het kort."}}
+	b.cfg.Sync.PromptsAt = time.Now().UnixMilli() + 1000
+	b.sync(t, r)
+	a.sync(t, r)
+	b.sync(t, r)
+	for name, c := range map[string]*computer{"a": a, "b": b} {
+		if _, ok, _ := c.h.Get("a1"); ok {
+			t.Fatalf("%s still has the deleted entry", name)
+		}
+		if favs, _ := c.h.FavoriteIDs(); !favs["a3"] {
+			t.Fatalf("%s lost the star on a3", name)
+		}
+	}
+	if len(a.cfg.Cleanup.Prompts) != 1 || a.cfg.Cleanup.Prompts[0].Rules != "Maak het kort." {
+		t.Fatalf("a's rule sets %+v", a.cfg.Cleanup.Prompts)
+	}
+	// Un-starring on a wins over b's older star.
+	time.Sleep(5 * time.Millisecond)
+	a.h.SetFavorite("a3", false)
+	sync3()
+	if favs, _ := b.h.FavoriteIDs(); favs["a3"] {
+		t.Fatal("b kept a star a removed later")
+	}
+}

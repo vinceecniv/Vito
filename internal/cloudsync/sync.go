@@ -51,6 +51,15 @@ Don't edit these files. To stop syncing, use Settings → Backup in Vito.
 
 // DeviceDoc is devices/<id>.json.
 type DeviceDoc struct {
+	// Deleted and Favorites are what the user did by hand here: entries
+	// deleted, and stars set or cleared, with when. The other computers do
+	// the same; for a star the latest change wins.
+	Deleted   map[string]int64                  `json:"deleted,omitempty"`
+	Favorites map[string]history.FavoriteChange `json:"favorites,omitempty"`
+	// Prompts are the user's own cleanup rule sets; newest change wins, as
+	// for the dictionary. Which set is active stays a per-computer setting.
+	Prompts      []config.Prompt            `json:"prompts,omitempty"`
+	PromptsAt    int64                      `json:"prompts_at,omitempty"`
 	Device       string                     `json:"device"`
 	Name         string                     `json:"name"`
 	Updated      int64                      `json:"updated"` // unix ms
@@ -324,6 +333,10 @@ func (e *Engine) takeOver(ctx context.Context, r Remote, st *state, d DeviceDoc)
 	if seen == nil {
 		seen = map[string]string{}
 	}
+	// Deletions first, so the import below doesn't bring them back.
+	if err := e.hist.ApplyDeleted(d.Deleted); err != nil {
+		return err
+	}
 	var entries []history.Entry
 	for month, sig := range d.Months {
 		if seen[month] == sig {
@@ -346,6 +359,9 @@ func (e *Engine) takeOver(ctx context.Context, r Remote, st *state, d DeviceDoc)
 	if _, err := e.hist.Import(history.SyncSource(d.Device), entries, d.Days); err != nil {
 		return err
 	}
+	if err := e.hist.ApplyFavorites(d.Favorites); err != nil {
+		return err
+	}
 	if len(d.Achievements) > 0 {
 		_, _ = e.hist.RecordAchievements(d.Achievements)
 	}
@@ -361,22 +377,34 @@ func (e *Engine) applyDictionary(st *state, others []DeviceDoc) {
 		_ = e.update(func(c *config.Config) {
 			for _, d := range others {
 				c.Dictionary = MergeDictionary(c.Dictionary, d.Dictionary)
+				c.Cleanup.Prompts = mergePrompts(c.Cleanup.Prompts, d.Prompts)
 			}
-			c.Sync.DictionaryAt = time.Now().UnixMilli()
+			now := time.Now().UnixMilli()
+			c.Sync.DictionaryAt, c.Sync.PromptsAt = now, now
 		})
 		st.Merged = true
 		return
 	}
-	var newest *DeviceDoc
+	var dict, rules *DeviceDoc
 	for i := range others {
-		if newest == nil || others[i].DictionaryAt > newest.DictionaryAt {
-			newest = &others[i]
+		if dict == nil || others[i].DictionaryAt > dict.DictionaryAt {
+			dict = &others[i]
+		}
+		if rules == nil || others[i].PromptsAt > rules.PromptsAt {
+			rules = &others[i]
 		}
 	}
-	if newest != nil && newest.DictionaryAt > e.config().Sync.DictionaryAt {
+	cur := e.config().Sync
+	if dict != nil && dict.DictionaryAt > cur.DictionaryAt {
 		_ = e.update(func(c *config.Config) {
-			c.Dictionary = newest.Dictionary
-			c.Sync.DictionaryAt = newest.DictionaryAt
+			c.Dictionary = dict.Dictionary
+			c.Sync.DictionaryAt = dict.DictionaryAt
+		})
+	}
+	if rules != nil && rules.PromptsAt > cur.PromptsAt {
+		_ = e.update(func(c *config.Config) {
+			c.Cleanup.Prompts = append([]config.Prompt(nil), rules.Prompts...)
+			c.Sync.PromptsAt = rules.PromptsAt
 		})
 	}
 }
@@ -385,9 +413,16 @@ func (e *Engine) applyDictionary(st *state, others []DeviceDoc) {
 func (e *Engine) ownDoc(c config.Sync) (DeviceDoc, map[string][]history.Entry, error) {
 	cfg := e.config()
 	doc := DeviceDoc{Device: c.DeviceID, Name: c.DeviceName, Updated: time.Now().UnixMilli(),
-		Dictionary: cfg.Dictionary, DictionaryAt: cfg.Sync.DictionaryAt, Months: map[string]string{}}
+		Dictionary: cfg.Dictionary, DictionaryAt: cfg.Sync.DictionaryAt,
+		Prompts: cfg.Cleanup.Prompts, PromptsAt: cfg.Sync.PromptsAt, Months: map[string]string{}}
 	var err error
 	if doc.Days, err = e.hist.OwnDaySums(); err != nil {
+		return doc, nil, err
+	}
+	if doc.Deleted, err = e.hist.Deleted(); err != nil {
+		return doc, nil, err
+	}
+	if doc.Favorites, err = e.hist.FavoriteChanges(); err != nil {
 		return doc, nil, err
 	}
 	if un, err := e.hist.UnlockedAchievements(); err == nil {
@@ -413,6 +448,22 @@ func (e *Engine) ownDoc(c config.Sync) (DeviceDoc, map[string][]history.Entry, e
 		doc.Months[m] = fmt.Sprintf("%d-%x", len(es), h.Sum64())
 	}
 	return doc, months, nil
+}
+
+// mergePrompts adds b's rule sets that a doesn't have (by id).
+func mergePrompts(a, b []config.Prompt) []config.Prompt {
+	out := append([]config.Prompt(nil), a...)
+	have := map[string]bool{}
+	for _, p := range out {
+		have[p.ID] = true
+	}
+	for _, p := range b {
+		if p.ID != "" && !have[p.ID] {
+			have[p.ID] = true
+			out = append(out, p)
+		}
+	}
+	return out
 }
 
 // MergeDictionary adds b's keyterms and corrections to a's, skipping what a

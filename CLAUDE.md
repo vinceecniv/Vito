@@ -58,18 +58,21 @@ From the browser to the app: the daemon answers `GET /api/hello` to
 the browser's data for the app's own page to confirm (`internal/server/handover.go`,
 `history.Import`, idempotent per source).
 
-## Cloud sync
+## Sync
 
-`internal/cloudsync`: each computer writes only `devices/<id>.json` and
-`history/<id>/<yyyy-mm>.json` in the app folder of the user's Dropbox or
-OneDrive and imports the others' (`history.Import` with `SyncSource`). Entries
-taken over are marked by `origin`, so they are never re-shared; the dictionary
-is newest-wins after a first merge. OAuth is PKCE with a public client id;
-`DropboxAppKey` and `OneDriveClientID` in `remote.go` are empty until the apps
-are registered (Dropbox: App folder, redirect `http://127.0.0.1:4573/oauth/callback`;
-Azure: public client, redirect `http://localhost:4573/oauth/callback`,
-`Files.ReadWrite.AppFolder`). `VITO_DROPBOX_KEY` / `VITO_ONEDRIVE_ID` override
-them for testing.
+`internal/cloudsync` syncs through a **folder** the user's own sync app keeps
+the same everywhere (Dropbox, OneDrive, Nextcloud, iCloud Drive, Syncthing, a
+network share) — no accounts, tokens or server. `Candidates()` finds the usual
+folders; `PickFolder` opens the system's picker. Vito works in `<folder>/Vito
+Sync`, writing beside the target and renaming into place.
+
+Each computer writes only `devices/<id>.json` and `history/<id>/<yyyy-mm>.json`
+and imports the others' (`history.Import` with `SyncSource`), so a sync app
+never sees two computers change one file. Entries taken over are marked by
+`origin` and never re-shared. The device file also carries all day_stats
+columns (costs, Assist, uploads), the user's deletions and star changes
+(`sync_deleted`/`sync_favorite`; automatic pruning is not synced), and the
+dictionary and cleanup rule sets (newest wins after a first merge).
 
 ## Translations
 
