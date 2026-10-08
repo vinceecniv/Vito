@@ -603,6 +603,14 @@
   .cloud span.alt { color:var(--coral); }
   .cloud span.top { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800; }
   .cloud-empty { margin-top:12px; font-size:12.5px; color:var(--text3); }
+  .hist-empty { display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; padding:34px 16px 30px; }
+  .hist-empty.small { padding:22px 16px; }
+  .hist-empty .he-logo { width:84px; height:84px; margin-bottom:2px; }
+  .hist-empty .he-title { font-family:'Baloo 2',sans-serif; font-weight:700; font-size:20px; color:var(--text); }
+  .hist-empty.small .he-title { font-size:16px; }
+  .hist-empty .he-sub { color:var(--text2); font-size:13px; line-height:1.55; max-width:440px; }
+  .hist-empty .btn { margin-top:10px; }
+  .hist-empty .he-key { color:var(--text3); font-size:12px; }
   .quiet-today { display:flex; align-items:center; gap:14px; margin-top:8px; }
   /* The app icon talking, as on vito.talk: the bars bounce like an equaliser. */
   .quiet-icon { flex:none; width:64px; height:64px; display:inline-flex; align-items:center; justify-content:center; }
@@ -1489,6 +1497,19 @@
   .standalone .web-only-inline { display:contents; }
   .standalone .helper-only { display:none !important; }
   a.btn.js-get-app { text-decoration:none; }
+  .help-web { display:none; }
+  .standalone .help-web { display:flex; color:var(--violet); border-color:color-mix(in srgb, var(--violet) 40%, transparent);
+    background:color-mix(in srgb, var(--violet) 12%, var(--card)); }
+  .standalone .help-web:hover, .standalone .help-web.on { background:var(--violet); color:#fff; border-color:transparent; }
+  @keyframes helpPing { 0%,100% { box-shadow:0 0 0 0 rgba(124,58,237,.0); } 40% { box-shadow:0 0 0 8px rgba(124,58,237,.28); } }
+  .help-web.ping { animation:helpPing .9s ease-out 2; }
+  .wl-bar { display:block; height:6px; border-radius:99px; background:rgba(255,255,255,.25); margin:6px 0 2px; overflow:hidden; max-width:320px; }
+  .wl-bar i { display:block; height:100%; background:#fff; border-radius:99px; transition:width .2s; }
+  .welcome-steps .linkbtn { color:#fff; text-decoration:underline; font:inherit; }
+  .dl-tabs { display:flex; gap:6px; margin:4px 0 14px; }
+  .dl-pane p { margin:8px 0 0; }
+  .dl-pane a.btn { text-decoration:none; }
+  .dl-pane pre { background:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:8px 10px; font-size:11.5px; overflow:auto; margin:8px 0 0; }
   .app-more { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:16px; }
   .app-more .grow { flex:1 1 280px; }
   .app-more .rowflex { gap:8px; flex-wrap:wrap; }
@@ -1557,6 +1578,9 @@
           <button class="privacy-btn" id="privacy-btn" title="Privacy mode" aria-label="Privacy mode">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg>
           </button>
+          <button class="privacy-btn help-web" id="help-web" title="How Vito in the browser works" aria-label="How Vito in the browser works">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.8"/><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"/></svg>
+          </button>
         </div>
       </div>
       <div class="welcome-card" id="welcome-card" hidden>
@@ -1568,8 +1592,8 @@
         <div class="web-only">
         <p class="welcome-intro">Try Vito right here: the speech recognition runs in your browser, and nothing you say is uploaded.</p>
         <ol class="welcome-steps">
-          <li>The speech model downloads once (18 MB); after that it even works offline.</li>
-          <li>Press the microphone button or your hotkey (Ctrl + Alt + Space; another one under Settings → Activation), speak, and press it again when you're done.</li>
+          <li id="wl-model" data-noi18n></li>
+          <li id="wl-start" data-noi18n></li>
           <li>The text lands on your clipboard — paste it wherever you like. Your dictations stay in this browser.</li>
           <li>Like it? The Vito app types straight into any program, with a hotkey that works everywhere.</li>
         </ol>
@@ -2764,9 +2788,20 @@ const TR = { nl: {
   "Clear":"Wissen",
   "Kopieer":"Kopieer",
   "Copy":"Kopiëren",
+  "Error":"Fout",
   "Delete":"Verwijderen",
   "No dictations yet.":"Nog geen dictaten.",
   "No favorites yet.":"Nog geen favorieten.",
+  "It's awfully quiet in here…":"Het is hier nog akelig stil…",
+  "A blank page. Exciting!":"Een leeg blad. Spannend!",
+  "Not a word yet. Vito is sitting here with pen and paper.":"Nog geen woord gezegd. Vito zit hier klaar met pen en papier.",
+  "Your history is waiting for its first sentence.":"Je geschiedenis wacht op zijn eerste zin.",
+  "Everything you dictate lands here: searchable, with a star for the keepers. Say something — anything — and your first sentence shows up within seconds.":"Alles wat je dicteert komt hier te staan: doorzoekbaar, met een ster voor de blijvertjes. Zeg iets — maakt niet uit wat — en binnen een paar seconden staat je eerste zin hier.",
+  "Start your first dictation":"Start je eerste dictaat",
+  "or press {k}":"of druk op {k}",
+  "Nothing that says “{q}”.":"Niets waarin “{q}” staat.",
+  "Maybe you put it differently? The search looks in both the raw and the cleaned text.":"Misschien zei je het net anders? De zoekfunctie kijkt in zowel de ruwe als de opgeschoonde tekst.",
+  "Give a dictation a star and it waits for you here — and is never cleaned up automatically.":"Geef een dictaat een ster en het staat hier voor je klaar — en wordt nooit automatisch opgeruimd.",
   "Favorite":"Favoriet",
   "Favorites":"Favorieten",
   "Add to favorites":"Toevoegen aan favorieten",
@@ -2901,6 +2936,23 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "How Vito in the browser works":"Zo werkt Vito in de browser",
+  "The speech model is loaded and ready to use — it now even works offline.":"Het spraakmodel is geladen en klaar voor gebruik — het werkt nu zelfs offline.",
+  "Downloading the speech model (18 MB, once)…":"Spraakmodel downloaden (18 MB, eenmalig)…",
+  "Try again":"Opnieuw proberen",
+  "Press {start} or your hotkey {key} ({change}), speak, and press it again when you're done.":"Druk op {start} of je sneltoets {key} ({change}), praat, en druk nog eens als je klaar bent.",
+  "change":"wijzigen",
+  "The text is ready — the browser only lets it onto the clipboard after a click.":"De tekst staat klaar — de browser zet hem pas na een klik op het klembord.",
+  "Get the Vito app":"De Vito-app downloaden",
+  "We picked your system; another one is a click away.":"We hebben je systeem al gekozen; een ander is één klik verderop.",
+  "The Vito app is for desktop computers: Windows, macOS and Linux.":"De Vito-app is voor computers: Windows, macOS en Linux.",
+  "Download for Windows":"Downloaden voor Windows",
+  "Windows 10 and 11. Vito isn't code-signed yet, so Windows may warn you: choose More info → Run anyway.":"Windows 10 en 11. Vito is nog niet digitaal ondertekend, dus Windows kan waarschuwen: kies Meer info → Toch uitvoeren.",
+  "Download for macOS":"Downloaden voor macOS",
+  "One download for Apple Silicon and Intel. The first time, open it with right-click → Open, as Vito isn't notarised yet.":"Eén download voor Apple Silicon en Intel. Open hem de eerste keer met rechtsklik → Open, omdat Vito nog niet genotariseerd is.",
+  "Download the AppImage (x86-64)":"AppImage downloaden (x86-64)",
+  "Make it executable and run it. Or install the Flatpak:":"Maak hem uitvoerbaar en start hem. Of installeer de Flatpak:",
+  "All downloads and release notes":"Alle downloads en release notes",
   "Start and stop dictating with a key combination while this tab has focus. If one does nothing, another program has claimed it — pick a different one.":"Start en stop het dicteren met een toetscombinatie terwijl dit tabblad actief is. Doet een combinatie niets, dan heeft een ander programma hem al geclaimd — kies dan een andere.",
   "Press your own combination":"Eigen combinatie indrukken",
   "Press the combination now…":"Druk nu de combinatie in…",
@@ -2949,7 +3001,6 @@ const TR = { nl: {
   "Take over":"Overnemen",
   "Try Vito right here: the speech recognition runs in your browser, and nothing you say is uploaded.":"Probeer Vito meteen hier: de spraakherkenning draait in je browser en niets van wat je zegt wordt geüpload.",
   "The speech model downloads once (18 MB); after that it even works offline.":"Het spraakmodel wordt één keer gedownload (18 MB); daarna werkt het zelfs offline.",
-  "Press the microphone button or your hotkey (Ctrl + Alt + Space; another one under Settings → Activation), speak, and press it again when you're done.":"Druk op de microfoonknop of je sneltoets (Ctrl + Alt + Spatie; een andere kies je onder Instellingen → Activering), praat, en druk nog eens als je klaar bent.",
   "The text lands on your clipboard — paste it wherever you like. Your dictations stay in this browser.":"De tekst komt op je klembord — plak hem waar je wilt. Je dictaten blijven in deze browser.",
   "Like it? The Vito app types straight into any program, with a hotkey that works everywhere.":"Bevalt het? De Vito-app typt direct in elk programma, met een sneltoets die overal werkt.",
   "Installing it as an app gives Vito its own window: pin it to the taskbar or Start menu and open straight to it, without hunting for a browser tab. Your dictations stay where they are.":"Als app geïnstalleerd krijgt Vito een eigen venster: zet het vast op de taakbalk of in het Startmenu en open het direct, zonder een browsertabblad te zoeken. Je dictaten blijven waar ze zijn.",
@@ -3186,6 +3237,7 @@ async function setUiLang(choice, persist){
   if (typeof loadAbout === "function") loadAbout(); // its rows are built with t(), re-render them
   if (typeof syncSetSecUI === "function") syncSetSecUI(); // re-clone the now-translated tab labels
   if (typeof renderPwaTip === "function") renderPwaTip(); // built with t() too
+  if (typeof renderWelcomeWeb === "function") renderWelcomeWeb();
   if ($("tab-status").classList.contains("active")) loadStats();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { lang: choice });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
@@ -3865,6 +3917,7 @@ function whistleTag(){
   }
 }
 function renderWhistle(){
+  renderWelcomeWeb();
   const s = whistleSt, box = $("whistle-status"), bar = $("whistle-bar");
   if (!box) return;
   if (!s) { box.textContent = t("Status unavailable."); return; }
@@ -4668,6 +4721,9 @@ function handleEvent(e) {
       const was = syncSt && syncSt.last;
       syncSt = e.sync || syncSt; renderSync();
       if (syncSt && syncSt.last && syncSt.last !== was) { statsHistoryChanged(); loadStats(); }
+    } else if (e.type === "copy-failed") {
+      actionToast(t("The text is ready — the browser only lets it onto the clipboard after a click."), t("Copy"),
+        () => navigator.clipboard.writeText(e.text).then(() => toast(t("Copied — paste it wherever you like."), "ok")).catch(er => toast(er.message, "err")), 15000, "info");
     } else if (e.type === "copied") {
       toast(t("Copied — paste it wherever you like."), "ok");
     } else if (e.type === "error") {
@@ -6229,6 +6285,14 @@ $("s-openaikey").addEventListener("paste", () => setTimeout(testOpenAI, 250));
 
 /* ---- welcome / onboarding card ---- */
 function dismissWelcome(){
+  // In the browser the card moves into the ? button instead: it is the
+  // manual of this version and should stay at hand.
+  if (STANDALONE) {
+    $("welcome-card").hidden = true;
+    if (cfg && cfg.ui && !cfg.ui.welcome_done) { cfg.ui.welcome_done = true; api("/api/welcome-done", { method:"POST" }).catch(()=>{}); }
+    const h = $("help-web"); h.classList.remove("on", "ping"); void h.offsetWidth; h.classList.add("ping");
+    return;
+  }
   modal(t("Close the welcome card?"),
     `<p style="color:var(--text2);font-size:13px;line-height:1.55;margin:0;">${t("Are you sure you want to close this card? It won't be shown again.")}</p>`,
     () => {
@@ -6244,6 +6308,80 @@ function dismissWelcome(){
 $("welcome-ok").onclick = dismissWelcome;
 $("welcome-dismiss").onclick = dismissWelcome;
 $("welcome-settings").onclick = () => selectTab("settings");
+$("help-web").onclick = () => {
+  const c = $("welcome-card"), show = c.hidden;
+  c.hidden = !show; $("help-web").classList.toggle("on", show);
+  if (show) { renderWelcomeWeb(); c.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+};
+// The browser version's welcome steps that change: the model's download, and
+// the hotkey in use.
+function renderWelcomeWeb(){
+  if (!STANDALONE) return;
+  const m = $("wl-model"), st = whistleSt || {};
+  if (m) {
+    const pct = Math.round(100 * (st.done || 0) / (st.total || 1));
+    m.innerHTML = st.phase === "ready" ? "✓ " + t("The speech model is loaded and ready to use — it now even works offline.")
+      : st.phase === "downloading" ? t("Downloading the speech model (18 MB, once)…") + " " + pct + "%" + `<span class="wl-bar"><i style="width:${pct}%"></i></span>`
+      : st.phase === "error" ? "✗ " + ahEsc(st.error || t("Error")) + ` <button type="button" class="linkbtn" id="wl-retry">${t("Try again")}</button>`
+      : t("The speech model downloads once (18 MB); after that it even works offline.");
+    const r = $("wl-retry"); if (r) r.onclick = () => api("/api/whistle/install", { method: "POST" });
+  }
+  const s = $("wl-start");
+  if (s) {
+    s.innerHTML = t("Press {start} or your hotkey {key} ({change}), speak, and press it again when you're done.")
+      .replace("{start}", "<b>" + ahEsc(t("Start recording")) + "</b>")
+      .replace("{key}", "<b>" + ahEsc(fmtHotkey(webHotkey())) + "</b>")
+      .replace("{change}", `<button type="button" class="linkbtn" id="wl-hotkey">${t("change")}</button>`);
+    $("wl-hotkey").onclick = () => { selectTab("settings"); selectSetSection("activation"); };
+  }
+}
+
+// ---- getting the app: a picker per system, the right one already chosen ----
+const APP_REPO = "vinceecniv/vito";
+let latestRelease = null;
+function guessOS(){
+  const p = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || "").toLowerCase();
+  if (/android|iphone|ipad|cros/.test((navigator.userAgent || "").toLowerCase())) return "other";
+  if (p.includes("win")) return "windows";
+  if (p.includes("mac")) return "macos";
+  if (p.includes("linux") || p.includes("x11")) return "linux";
+  return "windows";
+}
+async function showDownload(){
+  if (!latestRelease) {
+    try { latestRelease = await (await fetch("https://api.github.com/repos/" + APP_REPO + "/releases/latest")).json(); } catch {}
+  }
+  const rel = latestRelease || {}, all = "https://github.com/" + APP_REPO + "/releases" + (rel.tag_name ? "/latest" : "");
+  const asset = (re) => ((rel.assets || []).find(a => re.test(a.name)) || {}).browser_download_url || all;
+  const ver = (rel.tag_name || "").replace(/^v/, "");
+  const panes = {
+    windows: `<a class="btn primary small js-dl" href="${asset(/^Vito-Setup-.*\.exe$/)}">${t("Download for Windows")}</a>
+      <p class="act-note">${t("Windows 10 and 11. Vito isn't code-signed yet, so Windows may warn you: choose More info → Run anyway.")}</p>`,
+    macos: `<a class="btn primary small js-dl" href="${asset(/^Vito-.*\.dmg$/)}">${t("Download for macOS")}</a>
+      <p class="act-note">${t("One download for Apple Silicon and Intel. The first time, open it with right-click → Open, as Vito isn't notarised yet.")}</p>`,
+    linux: `<a class="btn primary small js-dl" href="${asset(/x86_64\.AppImage$/)}">${t("Download the AppImage (x86-64)")}</a>
+      <p class="act-note">${t("Make it executable and run it. Or install the Flatpak:")}</p>
+      <pre>flatpak remote-add --user --if-not-exists vito https://vinceecniv.github.io/Vito/vito.flatpakrepo
+flatpak install --user vito io.github.vinceecniv.vito</pre>`,
+  };
+  const os = guessOS();
+  const tabs = [["windows", "Windows"], ["macos", "macOS"], ["linux", "Linux"]];
+  modal(t("Get the Vito app") + (ver ? " " + ver : ""),
+    (os === "other" ? `<p class="ki-note">${t("The Vito app is for desktop computers: Windows, macOS and Linux.")}</p>` : `<p class="ki-note">${t("We picked your system; another one is a click away.")}</p>`) +
+    `<div class="dl-tabs">${tabs.map(([k, n]) => `<button type="button" class="tag${k === (os === "other" ? "windows" : os) ? " sel" : ""}" data-os="${k}">${n}</button>`).join("")}</div>
+     <div class="dl-pane" id="dl-pane"></div>
+     <p class="act-note" style="margin-top:12px;"><a href="${all}" target="_blank" rel="noopener">${t("All downloads and release notes")}</a></p>`,
+    () => {}, "Close", false, null, true);
+  const back = document.querySelector(".modal-backdrop:last-of-type");
+  back.querySelector(".modal").style.width = "480px";
+  const show = (k) => {
+    back.querySelectorAll("[data-os]").forEach(b => b.classList.toggle("sel", b.dataset.os === k));
+    back.querySelector("#dl-pane").innerHTML = panes[k];
+  };
+  back.querySelectorAll("[data-os]").forEach(b => b.onclick = () => show(b.dataset.os));
+  show(os === "other" ? "windows" : os);
+}
+document.querySelectorAll(".js-get-app").forEach(a => a.onclick = (e) => { if (STANDALONE) { e.preventDefault(); showDownload(); } });
 // The card is hidden by default (so it never flashes on refresh); loadSettings
 // calls this once the config is in, revealing it only when it hasn't been
 // dismissed yet — a state that lives in the config, so wiping settings resets it.
@@ -7499,6 +7637,36 @@ function hotkeyHint(){
   if (!spec) return "";
   return hk.os === "windows" ? fmtHotkey(spec) : fmtPortalShortcut(spec);
 }
+// The history with nothing in it — the first visit for most people, so an
+// invitation rather than a shrug. Searching and favourites get their own line.
+const HIST_EMPTY_LINES = [
+  "It's awfully quiet in here…",
+  "A blank page. Exciting!",
+  "Not a word yet. Vito is sitting here with pen and paper.",
+  "Your history is waiting for its first sentence.",
+];
+function historyEmptyHTML(){
+  if (hQuery) return `<div class="hist-empty small"><div class="he-title">${t("Nothing that says “{q}”.").replace("{q}", ahEsc(hQuery))}</div><div class="he-sub">${t("Maybe you put it differently? The search looks in both the raw and the cleaned text.")}</div></div>`;
+  if (hFavOnly) return `<div class="hist-empty small"><div class="he-title">${t("No favorites yet.")}</div><div class="he-sub">${t("Give a dictation a star and it waits for you here — and is never cleaned up automatically.")}</div></div>`;
+  const k = STANDALONE ? fmtHotkey(webHotkey()) : hotkeyHint();
+  const line = HIST_EMPTY_LINES[Math.floor(Math.random() * HIST_EMPTY_LINES.length)];
+  const bars = [[10,16],[22,28],[34,40],[46,54],[58,40],[70,28],[82,16]].map(([x, h]) => `<rect x="${x}" y="24" width="8" height="${h}" rx="4"/>`).join("");
+  return `<div class="hist-empty">
+    <svg viewBox="0 0 100 100" fill="url(#heGrad)" class="vito-talk he-logo" aria-hidden="true"><defs><linearGradient id="heGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs>${bars}</svg>
+    <div class="he-title">${t(line)}</div>
+    <div class="he-sub">${t("Everything you dictate lands here: searchable, with a star for the keepers. Say something — anything — and your first sentence shows up within seconds.")}</div>
+    <button type="button" class="btn primary" id="he-start">${t("Start your first dictation")}</button>
+    ${k ? `<div class="he-key">${t("or press {k}").replace("{k}", "<b>" + ahEsc(k) + "</b>")}</div>` : ""}
+  </div>`;
+}
+function wireHistoryEmpty(){
+  const b = $("he-start"); if (!b) return;
+  b.onclick = () => {
+    if (typeof webGesture === "function") webGesture(window);
+    selectTab("status");
+    api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
+  };
+}
 function quietTodayHTML(){
   const d = new Date(), day = d.getFullYear() * 400 + d.getMonth() * 31 + d.getDate();
   const k = hotkeyHint();
@@ -8587,6 +8755,7 @@ function renderStatusTags(){
   const hk = hkInfo || {}, tags = [];
   const portalSpec = hk.os !== "windows" && hk.supported && hk.toggle ? hk.toggle.spec : "";
   if (STANDALONE) {
+    renderWelcomeWeb();
     tags.push({ ico: ICON_KBD, text: fmtHotkey(webHotkey()) + " · " + t("in this tab"), sec: "activation" });
   } else if (hk.os === "windows") {
     const spec = (hk.toggle && (hk.toggle.spec || hk.toggle.configured)) || "";
@@ -9781,7 +9950,7 @@ async function loadHistoryNow() {
   catch { d = { total: 0, items: [] }; }
   hTotal = d.total || 0;
   updateHistoryCount();
-  if (!hTotal) { list.innerHTML = '<p class="sub" style="color:var(--text3)">' + t(hFavOnly ? "No favorites yet." : "No dictations yet.") + '</p>'; renderPlayback(); return; }
+  if (!hTotal) { list.innerHTML = historyEmptyHTML(); wireHistoryEmpty(); renderPlayback(); return; }
   appendHistoryEntries(d.items || []);
   hLoaded = (d.items || []).length;
   renderPlayback(); // a recording playing through a reload keeps its controls lit

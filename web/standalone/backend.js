@@ -278,7 +278,11 @@ registerProcessor("vito-pcm",P)`;
     if (!cleaned) raw = ruleCleanup(raw);
     const out = cleaned || raw;
     let copied = false;
+    // Writing to the clipboard needs no permission, but the browser wants a
+    // recent click or key press — absent after an auto-stop on silence, or a
+    // long wait. Then the page offers a button, which is that click.
     try { await navigator.clipboard.writeText(out); copied = true; } catch {}
+    if (!copied) emit({ type: "copy-failed", text: out });
     const injectedMS = performance.now() - r.stopped;
     const durMS = Math.round(r.samples / RATE * 1000);
     const ms = (v) => Math.round(v) * 1e6; // Go's time.Duration is nanoseconds
@@ -762,7 +766,13 @@ registerProcessor("vito-pcm",P)`;
       return handle((opts.method || "GET").toUpperCase(), path, body);
     },
     // connect stands in for the WebSocket: fn gets every event.
-    connect(fn) { onEvent = fn; ready.then(warmUp); },
+    // The model (18 MB) is fetched once the page itself has loaded, when the
+    // browser is idle, so it never competes with the interface.
+    connect(fn) {
+      onEvent = fn;
+      const later = () => ready.then(() => (window.requestIdleCallback || ((f) => setTimeout(f, 800)))(warmUp, { timeout: 3000 }));
+      if (document.readyState === "complete") later(); else window.addEventListener("load", later, { once: true });
+    },
     // export is the whole browser state, for handing over to the app.
     export() {
       // Names this browser, so the app can tell a repeat hand-over from a new one.
