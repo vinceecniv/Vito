@@ -1117,6 +1117,9 @@ func (d *Daemon) finish(s *session) {
 
 	// Deterministic corrections run always, so raw mode benefits too.
 	raw = dictionary.Apply(raw, cfg.Dictionary.Corrections)
+	// Characters many apps cannot show (a non-breaking hyphen comes out as a box
+	// in Notepad) become their plain equivalents, in what is pasted and kept.
+	raw = cleanup.Plain(raw)
 
 	// A spoken command ("Vito, vertaal naar Duits") arms the next dictation and is
 	// not itself pasted; the following dictation carries it into the cleanup pass.
@@ -1207,7 +1210,7 @@ func (d *Daemon) finish(s *session) {
 				d.markCredit(p, true)
 			}
 		} else {
-			cleaned = out
+			cleaned = cleanup.Plain(out)
 			cleanupUsed = true
 			d.markCredit(cleanup.ProviderName(cleanCfg), false) // a successful pass clears any prior flag
 		}
