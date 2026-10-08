@@ -7,8 +7,8 @@
 // in a worker (whistle-worker.js) for the speech recognition.
 //
 // What needs the helper — a global hotkey, typing into other apps, the better
-// local models, cloud speech services, Vito Assist, sync — answers as
-// unsupported, and index.html hides those settings. AI cleanup does work: the
+// local models, cloud speech services, sync — answers as unsupported, and
+// index.html hides those settings. AI cleanup and Vito Assist do work: the
 // providers accept calls straight from a browser with the user's own key.
 //
 // The figures (stats, streaks, achievements) are ports of internal/history;
@@ -265,13 +265,48 @@ registerProcessor("vito-pcm",P)`;
       emit({ type: "error", error: "No speech recognised." });
       return;
     }
-    // AI cleanup when it is set up, as the daemon does it; the rules when not,
-    // or when it fails — the text always arrives.
-    let cleaned = "", cleanupErr = "", cleanupMS = 0;
+    // Vito Assist, as in the daemon (internal/daemon finish): "Vito, …" arms
+    // the next dictation — or, about the clipboard, runs on it right away.
     const cl = cfg.cleanup || {};
-    if (cl.enabled && cleanupConfigured(cl) && countWords(raw) >= (cl.min_words || 0)) {
+    const cleanupOn = cl.enabled && cleanupConfigured(cl);
+    let instruction = "", clipboardIn = false;
+    const cmd = parseCommand(raw);
+    if (cmd) {
+      if (!cleanupOn) {
+        playSound("cancel"); setState("idle");
+        emit({ type: "error", error: "Vito Assist needs AI cleanup: switch it on under Settings → AI cleanup." });
+        return;
+      }
+      if (/klembord|clipboard/i.test(cmd)) {
+        let clip = "";
+        try { clip = (await navigator.clipboard.readText()).trim(); }
+        catch { playSound("cancel"); setState("idle"); emit({ type: "error", error: "The browser didn't let Vito read the clipboard." }); return; }
+        if (!clip) { playSound("cancel"); setState("idle"); emit({ type: "error", error: "There is no text on the clipboard for this command." }); return; }
+        playSound("command");
+        emit({ type: "command", command: cmd, command_received: true });
+        raw = clip; instruction = cmd; clipboardIn = true;
+      } else {
+        pendingCmd = cmd;
+        playSound("command");
+        emit({ type: "command", command: cmd });
+        setState("idle");
+        // The microphone reopens by itself for the text the command is about.
+        setTimeout(() => { start().catch(() => {}); }, 350);
+        return;
+      }
+    } else { instruction = pendingCmd; pendingCmd = ""; }
+
+    // AI cleanup when it is set up, as the daemon does it; the rules when not,
+    // or when it fails — the text always arrives. A command runs even below the
+    // word threshold, on Assist's own model when it has one.
+    let cleaned = "", cleanupErr = "", cleanupMS = 0;
+    let useCfg = cl;
+    if (instruction && cfg.assist && cfg.assist.use_cleanup_model === false) {
+      useCfg = Object.assign({}, cfg.assist.cleanup, { enabled: true, timeout_ms: (cfg.assist.cleanup && cfg.assist.cleanup.timeout_ms) || cl.timeout_ms });
+    }
+    if (cleanupOn && (instruction || countWords(raw) >= (cl.min_words || 0))) {
       const t0 = performance.now();
-      try { cleaned = plain(await aiCleanup(raw, language)); }
+      try { cleaned = plain(await aiCleanup(raw, language, useCfg, instruction)); }
       catch (e) { cleanupErr = (e && e.message) || String(e); }
       cleanupMS = performance.now() - t0;
     }
@@ -288,7 +323,7 @@ registerProcessor("vito-pcm",P)`;
     const ms = (v) => Math.round(v) * 1e6; // Go's time.Duration is nanoseconds
     lastTimings = { recording_ms: ms(durMS), stt_final_ms: ms(sttMS), cleanup_ms: ms(cleanupMS), injected_ms: ms(injectedMS) };
     const entry = record({ raw, cleaned, cleanup_error: cleanupErr, language, duration_ms: durMS, stt_ms: Math.round(sttMS),
-      cleanup_ms: Math.round(cleanupMS), injected_ms: Math.round(injectedMS) });
+      cleanup_ms: Math.round(cleanupMS), injected_ms: Math.round(injectedMS), command_text: instruction, clipboard: clipboardIn });
     playSound(cleanupErr ? "warn" : "done");
     emit({ type: "final", raw, cleaned, text: out, timings: lastTimings, entry_id: entry ? entry.id : "",
       cleanup_failed: !!cleanupErr, cleanup_error: cleanupErr });
@@ -296,8 +331,25 @@ registerProcessor("vito-pcm",P)`;
     if (copied) emit({ type: "copied" });
   }
 
+  // parseCommand: internal/daemon parseCommand — the wake word first (heard
+  // loosely), then a short instruction; anything longer is ordinary text.
+  let pendingCmd = "";
+  function parseCommand(raw) {
+    const s = raw.trim(), low = s.toLowerCase();
+    for (const w of ["vito", "vido", "fito", "veto"]) {
+      if (!low.startsWith(w) || s.length <= w.length || !" ,:.!-\t".includes(s[w.length])) continue;
+      const instr = s.slice(w.length).replace(/^[\s,:.!-]+/, "").trim();
+      if (!instr || instr.split(/\s+/).length > 15) return "";
+      return instr;
+    }
+    return "";
+  }
+
   // ---- AI cleanup: internal/cleanup, called from the browser ----
   const cleanupConfigured = (cl) => cl.provider === "anthropic" ? !!cl.api_key : !!(cl.openai_base_url && cl.openai_model);
+  function systemPrompt(cl, instruction) {
+    return instruction ? (CLEANUP.command_prompt || "").replace("{{instruction}}", instruction) : cleanupRules(cl);
+  }
   function cleanupRules(cl) {
     const id = cl.active_prompt || "";
     const b = (CLEANUP.builtins || []).find((x) => x.id === id);
@@ -313,8 +365,8 @@ registerProcessor("vito-pcm",P)`;
   }
   const maxTokens = (text) => Math.min(4096, Math.floor(text.length / 2) + 2048);
   const stripThinking = (s) => (s || "").replace(/<(think|thinking)>[\s\S]*?<\/(think|thinking)>/g, "").trim();
-  async function aiCleanup(text, language) {
-    const cl = cfg.cleanup, ctl = new AbortController();
+  async function aiCleanup(text, language, cl, instruction) {
+    const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), cl.timeout_ms || 5000);
     try {
       let resp, body;
@@ -322,7 +374,7 @@ registerProcessor("vito-pcm",P)`;
         resp = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", signal: ctl.signal,
           headers: { "content-type": "application/json", "x-api-key": cl.api_key, "anthropic-version": "2023-06-01",
             "anthropic-dangerous-direct-browser-access": "true" },
-          body: JSON.stringify({ model: cl.model, max_tokens: maxTokens(text), temperature: 0, system: cleanupRules(cl),
+          body: JSON.stringify({ model: cl.model, max_tokens: maxTokens(text), temperature: 0, system: systemPrompt(cl, instruction),
             messages: [{ role: "user", content: userPrompt(text, language) }] }) });
         body = await resp.json().catch(() => ({}));
         if (!resp.ok) throw new Error("Anthropic: " + ((body.error && body.error.message) || resp.status));
@@ -330,7 +382,7 @@ registerProcessor("vito-pcm",P)`;
         return stripThinking((body.content || []).filter((b) => b.type === "text").map((b) => b.text).join(""));
       }
       const req = { model: cl.openai_model, temperature: 0, max_tokens: maxTokens(text),
-        messages: [{ role: "system", content: cleanupRules(cl) }, { role: "user", content: userPrompt(text, language) }] };
+        messages: [{ role: "system", content: systemPrompt(cl, instruction) }, { role: "user", content: userPrompt(text, language) }] };
       if (cl.reasoning_effort) req.reasoning_effort = cl.reasoning_effort;
       resp = await fetch(cl.openai_base_url.replace(/\/+$/, "") + "/chat/completions", { method: "POST", signal: ctl.signal,
         headers: Object.assign({ "Content-Type": "application/json" }, cl.openai_key ? { Authorization: "Bearer " + cl.openai_key } : {}),
@@ -395,13 +447,14 @@ registerProcessor("vito-pcm",P)`;
     const words = countWords(text), sentences = countSentences(text);
     const d = days[dayKey(now)] || (days[dayKey(now)] = { words: 0, sentences: 0, activations: 0, duration_ms: 0 });
     d.words += words; d.sentences += sentences; d.activations++; d.duration_ms += e.duration_ms;
+    if (e.command_text) { d.commands = (d.commands || 0) + 1; if (e.clipboard) d.clipboard_commands = (d.clipboard_commands || 0) + 1; }
     write(LS_DAYS, days);
     if (cfg.history && cfg.history.enabled === false) return null;
     if (privacyOn()) return null; // privacy mode: the sums count, the words are not kept
     const entry = { id: newID(), timestamp: now.toISOString(), duration_ms: e.duration_ms, language: e.language || "",
       source: "stream", raw: e.raw, cleaned: e.cleaned || undefined, cleanup_used: !!e.cleaned,
       cleanup_error: e.cleanup_error || undefined, stt_ms: e.stt_ms, cleanup_ms: e.cleanup_ms || 0, injected_ms: e.injected_ms,
-      words, sentences, favorite: false };
+      words, sentences, favorite: false, command: !!e.command_text || undefined, command_text: e.command_text || undefined };
     history.unshift(entry);
     pruneHistory();
     return entry;
@@ -423,13 +476,13 @@ registerProcessor("vito-pcm",P)`;
   const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   function dayTotals(from, to) {
-    let words = 0, sentences = 0, activations = 0, dur = 0, first = "";
+    let words = 0, sentences = 0, activations = 0, dur = 0, commands = 0, first = "";
     for (const [k, v] of Object.entries(days)) {
       if ((from && k < from) || k > to) continue;
-      words += v.words; sentences += v.sentences; activations += v.activations; dur += v.duration_ms;
+      words += v.words; sentences += v.sentences; activations += v.activations; dur += v.duration_ms; commands += v.commands || 0;
       if (!first || k < first) first = k;
     }
-    return { words, sentences, activations, dur, first };
+    return { words, sentences, activations, dur, commands, first };
   }
   const firstDataDay = () => Object.keys(days).sort()[0] || "";
 
@@ -573,7 +626,7 @@ registerProcessor("vito-pcm",P)`;
     }
     span = Math.max(1, span);
     const saved = Math.max(0, tot.words / wpm - tot.dur / 60000);
-    const st = { period_days: span, words: tot.words, sentences: tot.sentences, activations: tot.activations, commands: 0,
+    const st = { period_days: span, words: tot.words, sentences: tot.sentences, activations: tot.activations, commands: tot.commands,
       activations_per_day: tot.activations / divisor, saved_minutes: Math.round(saved), spoken_seconds: Math.floor(tot.dur / 1000),
       typing_wpm: wpm, first_day: firstDataDay(), week: [], week_peak_index: -1, series_unit: "", currency: "eur",
       spoken_wpm: tot.dur > 0 ? Math.round(tot.words / (tot.dur / 60000)) : 0, avg_words: tot.activations ? tot.words / tot.activations : 0,
@@ -635,15 +688,19 @@ registerProcessor("vito-pcm",P)`;
       if (h < 5) st.night = true; else if (h < 7) st.early = true;
     }
     st.languages = langs.size;
+    let cmds = 0, clips = 0;
+    for (const v of Object.values(days)) { cmds += v.commands || 0; clips += v.clipboard_commands || 0; }
+    st.commands = cmds;
+    st.wizard = st.activations > cmds && cmds > clips && clips > 0; // all three modes used
     return st;
   }
   function achievements() {
     const st = achievementInputs();
     const value = (g) => ({ words: st.words, spoken: st.spoken, saved: st.saved, streak: st.streak, day: st.day, week: st.week,
-      activations: st.activations, commands: 0, money: 0 }[g] || 0);
+      activations: st.activations, commands: st.commands, money: 0 }[g] || 0);
     const earned = (d) => {
       if (d.manual) return false;
-      if (d.group === "special") return { first: st.activations > 0, night: st.night, early: st.early, comeback: st.comeback, polyglot: st.languages >= 3 }[d.flag] || false;
+      if (d.group === "special") return { first: st.activations > 0, night: st.night, early: st.early, comeback: st.comeback, polyglot: st.languages >= 3, wizard: st.wizard }[d.flag] || false;
       return value(d.group) >= d.threshold;
     };
     let changed = false;
@@ -669,7 +726,7 @@ registerProcessor("vito-pcm",P)`;
     const u = new URL(path, location.href), q = u.searchParams, p = u.pathname.replace(/^.*?\/api\//, "/api/");
     const m = (re) => re.exec(p);
     let r;
-    if (p === "/api/status") return { state, last_timings: lastTimings, boot: "web", web: true };
+    if (p === "/api/status") return { state, last_timings: lastTimings, boot: "web", web: true, command: pendingCmd };
     if (p === "/api/config") {
       if (method === "GET") return cfg;
       const keep = cfg.ui && cfg.ui.dashboard;

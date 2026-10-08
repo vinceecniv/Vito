@@ -233,6 +233,10 @@ const messagesRules = `You tidy dictated chat messages.
 // page can show what it cannot edit away.
 func Contract() string { return outputContract }
 
+// CommandPrompt is the system prompt for a Vito Assist command, for the
+// browser version (packaging/uibundle), which builds its requests itself.
+func CommandPrompt(instruction string) string { return systemPromptWith(instruction, "") }
+
 // cleanupPrompt builds the system prompt for a plain dictation: the given rules
 // (Vito's own when empty) plus the contract that always closes it.
 func cleanupPrompt(rules string) string {

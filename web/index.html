@@ -1517,6 +1517,12 @@
   .modal.dl-modal { width:460px; padding:24px; }
   .dl-modal h3 { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
   .dl-ver { font-size:11px; font-weight:600; color:var(--violet); background:color-mix(in srgb, var(--violet) 12%, transparent); border-radius:99px; padding:2px 8px; }
+  .dl-why { list-style:none; margin:0 0 18px; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .dl-why li { display:flex; gap:11px; align-items:flex-start; font-size:13px; line-height:1.5; color:var(--text2); }
+  .dl-why b { color:var(--text); font-weight:600; }
+  .dl-ico { flex:none; width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    color:var(--violet); background:color-mix(in srgb, var(--violet) 12%, transparent); }
+  .dl-ico svg { width:17px; height:17px; }
   .dl-tabs { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin:0 0 18px; }
   .dl-os { display:flex; flex-direction:column; align-items:center; gap:8px; padding:14px 8px 12px; border-radius:12px;
     border:1.5px solid var(--input-border); background:var(--input-bg); color:var(--text2); font:inherit; font-size:13px; font-weight:600; cursor:var(--cur-hand); }
@@ -1530,14 +1536,13 @@
   .banner.app-more { flex-direction:column; align-items:flex-start; gap:14px; padding:18px 20px; margin-bottom:18px; line-height:1.6; }
   .app-more .grow { flex:none; }
   .app-more .rowflex { gap:10px; flex-wrap:wrap; margin-top:6px; }
-  .standalone #settabs [data-sec="assist"],
   .standalone #settabs [data-sec="output"], .standalone #settabs [data-sec="backup"],
   .standalone #settabs [data-sec="linux"],
-  .standalone .settings-pane > .card[data-sec="assist"],
+
   .standalone .settings-pane > .card[data-sec="output"], .standalone .settings-pane > .card[data-sec="backup"],
   .standalone .settings-pane > .card[data-sec="linux"],
   .standalone [data-help="level"], .standalone #s-inputlevel, .standalone [data-help="media"], .standalone #mediaaction-sel,
-  .standalone #btn-mictest, .standalone [data-help="output"], .standalone [data-help="output"] + .isel, .standalone [data-sound="command"],
+  .standalone #btn-mictest, .standalone [data-help="output"], .standalone [data-help="output"] + .isel,
   .standalone label:has(#s-autostart), .standalone label:has(#s-tray), .standalone label:has(#s-trviz),
   .standalone [data-help="notifications"], .standalone #notify-sel,
   .standalone label:has(#s-updatecheck), .standalone label:has(#s-updateauto), .standalone #upd-auto-note,
@@ -1727,7 +1732,7 @@
       </div>
       <div class="settings-pane">
         <div class="banner tip app-more web-only">
-          <span class="grow"><b>Hey, there's more when you install Vito.</b> The app adds a hotkey that works in every program, types the text straight into it, Vito Assist voice commands, more and better speech models, sync between computers and automatic backups.</span>
+          <span class="grow"><b>Hey, there's more when you install Vito.</b> The app adds a hotkey that works in every program, types the text straight into it, more and better speech models, sync between computers and automatic backups.</span>
           <span class="rowflex">
             <a class="btn primary small js-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
             <button type="button" class="btn primary small js-to-app" hidden>Move to the app</button>
@@ -2953,6 +2958,19 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "A hotkey that works everywhere":"Een sneltoets die overal werkt",
+  "— also when Vito isn't the window in front.":"— ook als Vito niet het venster vooraan is.",
+  "Types straight into any program":"Typt direct in elk programma",
+  "— your mail, chat or document; no pasting.":"— je mail, chat of document; geen plakken meer.",
+  "Better speech models":"Betere spraakmodellen",
+  "— up to 60 languages, on your own computer or in the cloud.":"— tot 60 talen, op je eigen computer of in de cloud.",
+  "Sync and backups":"Synchronisatie en back-ups",
+  "— the same history and dictionary on every computer, through your own Dropbox or OneDrive.":"— dezelfde geschiedenis en hetzelfde woordenboek op al je computers, via je eigen Dropbox of OneDrive.",
+  "Always ready":"Altijd paraat",
+  "— starts with your computer and waits in the background, updates itself.":"— start met je computer, wacht op de achtergrond en werkt zichzelf bij.",
+  "Vito Assist needs AI cleanup: switch it on under Settings → AI cleanup.":"Vito Assist heeft AI-opschoning nodig: zet die aan onder Instellingen → AI-opschoning.",
+  "The browser didn't let Vito read the clipboard.":"De browser liet Vito het klembord niet lezen.",
+  "There is no text on the clipboard for this command.":"Er staat geen tekst op het klembord voor deze opdracht.",
   "With the app":"Met de app",
   "your own server":"je eigen server",
   "More speech models in the Vito app":"Meer spraakmodellen in de Vito-app",
@@ -2980,7 +2998,7 @@ const TR = { nl: {
   "Use Ctrl, Alt or Shift with it, or a function key.":"Gebruik er Ctrl, Alt of Shift bij, of een functietoets.",
   "Escape cancels a dictation. A hotkey that works in every program, also when Vito isn't in front, comes with the app.":"Escape annuleert een dictaat. Een sneltoets die in elk programma werkt, ook als Vito niet vooraan staat, krijg je met de app.",
   "Hey, there's more when you install Vito.":"Hé, er is meer als je Vito installeert.",
-  "The app adds a hotkey that works in every program, types the text straight into it, Vito Assist voice commands, more and better speech models, sync between computers and automatic backups.":"De app voegt een sneltoets toe die in elk programma werkt, typt de tekst er direct in, en heeft Vito Assist-spraakcommando's, meer en betere spraakmodellen, synchronisatie tussen computers en automatische back-ups.",
+  "The app adds a hotkey that works in every program, types the text straight into it, more and better speech models, sync between computers and automatic backups.":"De app voegt een sneltoets toe die in elk programma werkt, typt de tekst er direct in, en heeft meer en betere spraakmodellen, synchronisatie tussen computers en automatische back-ups.",
   "Which languages?":"Welke talen?",
   "Picked from your browser's settings. You can change both later under Settings.":"Gekozen op basis van de instellingen van je browser. Je kunt ze later allebei wijzigen onder Instellingen.",
   "Another language…":"Andere taal…",
@@ -4777,7 +4795,7 @@ function handleEvent(e) {
         toast("⚠ " + msg, "err", 7000);
         refreshCredit();
       } else {
-        $("transcript").textContent = "⚠ " + e.error;
+        $("transcript").textContent = "⚠ " + t(e.error || "");
       }
       syncPip();
     } else if (e.type === "credit") {
@@ -6381,6 +6399,19 @@ function renderWelcomeWeb(){
 
 // ---- getting the app: a picker per system, the right one already chosen ----
 const APP_REPO = "vinceecniv/vito";
+// What the app adds over this page, for the download picker.
+const DL_BENEFITS = [
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>',
+    "A hotkey that works everywhere", "— also when Vito isn't the window in front."],
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+    "Types straight into any program", "— your mail, chat or document; no pasting."],
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg>',
+    "Better speech models", "— up to 60 languages, on your own computer or in the cloud."],
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.5 1.5A3.8 3.8 0 0 1 17.5 18z"/><path d="M10 13.5l2-2 2 2M12 11.5V16"/></svg>',
+    "Sync and backups", "— the same history and dictionary on every computer, through your own Dropbox or OneDrive."],
+  ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    "Always ready", "— starts with your computer and waits in the background, updates itself."],
+];
 const OS_ICONS = {
   windows: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M6.555 1.375 0 2.237v5.45h6.555zM0 13.795l6.555.933V8.313H0zm7.278-5.4.026 6.378L16 16V8.395zM16 0 7.33 1.244v6.414H16z"/></svg>',
   macos: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/></svg>',
@@ -6415,7 +6446,8 @@ flatpak install --user vito io.github.vinceecniv.vito</pre>`,
   const tabs = [["windows", "Windows", OS_ICONS.windows], ["macos", "macOS", OS_ICONS.macos], ["linux", "Linux", TUX_SVG]];
   modal(t("Get the Vito app") + (ver ? ` <span class="dl-ver">${ver}</span>` : ""),
     (os === "other" ? `<p class="ki-note">${t("The Vito app is for desktop computers: Windows, macOS and Linux.")}</p>` : "") +
-    `<div class="dl-tabs">${tabs.map(([k, n, ico]) => `<button type="button" class="dl-os" data-os="${k}">${ico}<span>${n}</span></button>`).join("")}</div>
+    `<ul class="dl-why">${DL_BENEFITS.map(([ico, b, s]) => `<li><span class="dl-ico">${ico}</span><span><b>${t(b)}</b> ${t(s)}</span></li>`).join("")}</ul>
+     <div class="dl-tabs">${tabs.map(([k, n, ico]) => `<button type="button" class="dl-os" data-os="${k}">${ico}<span>${n}</span></button>`).join("")}</div>
      <div class="dl-pane" id="dl-pane"></div>
      <p class="dl-all"><a href="${all}" target="_blank" rel="noopener">${t("All downloads and release notes")}</a></p>`,
     () => {}, "Close", false, null, true);

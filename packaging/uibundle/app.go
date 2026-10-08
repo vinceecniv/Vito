@@ -81,7 +81,8 @@ func app(args []string) error {
 	for _, b := range cleanup.Builtins() {
 		builtins = append(builtins, map[string]string{"id": b.ID, "name": b.Name, "description": b.Description, "rules": b.Rules})
 	}
-	cl, err := json.Marshal(map[string]any{"builtins": builtins, "contract": cleanup.Contract(), "default_rules": cleanup.DefaultRules})
+	cl, err := json.Marshal(map[string]any{"builtins": builtins, "contract": cleanup.Contract(), "default_rules": cleanup.DefaultRules,
+		"command_prompt": cleanup.CommandPrompt("{{instruction}}")})
 	if err != nil {
 		return err
 	}
