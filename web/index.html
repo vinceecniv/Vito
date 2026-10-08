@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#FAF6EF">
 <title>Vito — Voice In, Text Out</title>
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
   /* Self-hosted fonts (variable, latin subset) — served by the daemon so the
      UI renders identically offline and never depends on the Google Fonts CDN,
      which many browsers' tracking protection blocks. */
   @font-face {
     font-family:'Sora'; font-style:normal; font-weight:400 600;
-    font-display:swap; src:url(/fonts-sora.woff2) format('woff2');
+    font-display:swap; src:url(fonts-sora.woff2) format('woff2');
   }
   @font-face {
     font-family:'Baloo 2'; font-style:normal; font-weight:600 700;
-    font-display:swap; src:url(/fonts-baloo2.woff2) format('woff2');
+    font-display:swap; src:url(fonts-baloo2.woff2) format('woff2');
   }
   :root {
     --coral:#FF6B5E; --violet:#7C3AED; --violet-l:#A78BFA; --coral-l:#FF8A7E;
@@ -3000,7 +3000,7 @@ async function loadTranslations(lang){
     // cache:"reload" skips the browser's HTTP cache. Without it, a copy stored
     // under an earlier (long) max-age keeps being served after an update, and
     // the interface silently stays in the previous version's language.
-    const r = await fetch("/i18n/" + encodeURIComponent(lang) + ".json", { cache: "reload" });
+    const r = await fetch("i18n/" + encodeURIComponent(lang) + ".json", { cache: "reload" });
     if (!r.ok) return;
     const d = await r.json();
     if (d && d.strings) TR[lang] = d.strings;
@@ -3265,7 +3265,7 @@ const PARAKEET_LANGS = ["nl","en","de","fr","es","it","pt","pl","cs","sk","hu","
 // its own engine, and a server icon for an endpoint that could be anything.
 const LOGO_VITO = '<span class="mc-logo vito"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>';
 const LOGO_SERVER = '<span class="mc-logo plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>';
-const LOGO_IMG = (name) => `<span class="mc-logo"><img src="/logos/${name}.png" alt=""></span>`;
+const LOGO_IMG = (name) => `<span class="mc-logo"><img src="logos/${name}.png" alt=""></span>`;
 const GEAR_SVG = '<svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
 const SPEECH_MODELS = [
   // The engine Vito installs and runs itself (see internal/localstt) comes
@@ -3377,7 +3377,7 @@ function flag(code){
   if (code === "auto") return AUTO_GLOBE;
   const d = LANG_DATA[code] || LANG_DATA[code.split("_")[0]];
   if (!d || !d.cc) return null;
-  return `<img class="flag" src="/flags/${d.cc}.svg" alt="" loading="lazy">`;
+  return `<img class="flag" src="flags/${d.cc}.svg" alt="" loading="lazy">`;
 }
 // Every language's own name. Endonyms don't depend on the interface language,
 // so this one table serves all 60 of them — a Japanese user recognises 日本語
@@ -6723,7 +6723,7 @@ function setAssetVer(v){
 }
 // A medal is its shipped image when one exists, otherwise its emoji.
 function achMedalInner(x){
-  if (achImages.has(x.id)) return `<img src="/achievements/${x.id}.png${assetV()}" alt="" loading="lazy">`;
+  if (achImages.has(x.id)) return `<img src="achievements/${x.id}.png${assetV()}" alt="" loading="lazy">`;
   return ahEsc(x.icon);
 }
 // The medal art is a static PNG; the ones with a Lottie come alive on unlock and
@@ -6735,7 +6735,7 @@ function ensureLottie(){
   if (_lottieLoad) return _lottieLoad;
   _lottieLoad = new Promise((res, rej) => {
     const s = document.createElement("script");
-    s.src = "/achievements/lottie.min.js";
+    s.src = "achievements/lottie.min.js";
     s.onload = () => res(window.lottie); s.onerror = rej;
     document.head.appendChild(s);
   });
@@ -6747,7 +6747,7 @@ function mountLottie(container, id, loop){
     container.innerHTML = ""; // swap the static PNG for the animation once it's ready
     container._anim = lottie.loadAnimation({
       container, renderer: "svg", loop: !!loop, autoplay: true,
-      path: "/achievements/lottie/" + id + ".json" + assetV(),
+      path: "achievements/lottie/" + id + ".json" + assetV(),
     });
   }).catch(() => {}); // no player, no problem — the static PNG stays
 }
@@ -6990,7 +6990,7 @@ if ($("ach-content")) {
     if (e.relatedTarget && card.contains(e.relatedTarget)) return; // still inside the card
     const medal = card.querySelector(".ach-medal"); if (!medal || !medal._anim) return;
     unmountLottie(medal);
-    medal.innerHTML = achImages.has(card.dataset.id) ? `<img src="/achievements/${card.dataset.id}.png${assetV()}" alt="" loading="lazy">` : "";
+    medal.innerHTML = achImages.has(card.dataset.id) ? `<img src="achievements/${card.dataset.id}.png${assetV()}" alt="" loading="lazy">` : "";
   });
   // Claiming / unmarking the honour-system donation badges.
   $("ach-content").addEventListener("click", (e) => {
@@ -9446,7 +9446,7 @@ function pwaCapableBrowser(){
 }
 window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredPrompt = e; renderPwaTip(); });
 window.addEventListener("appinstalled", () => { deferredPrompt = null; $("pwa-tip").innerHTML = ""; });
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(()=>{});
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
 
 /* ---- staggered reveal: tag static tiles per section with an order index ---- */
 function tagReveals(){

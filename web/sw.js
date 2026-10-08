@@ -3,9 +3,9 @@
 // state instead of a browser error). API and WebSocket traffic is never cached.
 // Bumped when cached content changes shape: activate() drops every other cache,
 // which is what clears out translations from a previous version of the app.
-const CACHE = "vito-v3";
-const CORE = ["/", "/manifest.webmanifest", "/favicon.svg", "/icon-192.png", "/icon-512.png",
-  "/fonts-baloo2.woff2", "/fonts-sora.woff2"];
+const CACHE = "vito-v4";
+const CORE = ["./", "manifest.webmanifest", "favicon.svg", "icon-192.png", "icon-512.png",
+  "fonts-baloo2.woff2", "fonts-sora.woff2"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
@@ -30,14 +30,14 @@ self.addEventListener("fetch", (e) => {
     // Network-first for the page (keeps the injected token fresh), cache fallback.
     e.respondWith(
       fetch(e.request)
-        .then((r) => { const cp = r.clone(); caches.open(CACHE).then((c) => c.put("/", cp)); return r; })
-        .catch(() => caches.match("/"))
+        .then((r) => { const cp = r.clone(); caches.open(CACHE).then((c) => c.put("./", cp)); return r; })
+        .catch(() => caches.match("./"))
     );
-  } else if (url.pathname.startsWith("/i18n/")) {
-    // Translations change with the app, so serve them network-first and keep a
-    // copy only as an offline fallback. Cache-first would pin a language file
-    // for as long as the cache name stays the same, and a stale one silently
-    // leaves the interface in English.
+  } else if (url.pathname.includes("/i18n/") || url.pathname.includes("/standalone/")) {
+    // Translations and the browser engine change with the app, so serve them
+    // network-first and keep a copy only as an offline fallback. Cache-first
+    // would pin a language file for as long as the cache name stays the same,
+    // and a stale one silently leaves the interface in English.
     e.respondWith(
       fetch(e.request)
         .then((r) => { if (r.ok) { const cp = r.clone(); caches.open(CACHE).then((c) => c.put(e.request, cp)); } return r; })
