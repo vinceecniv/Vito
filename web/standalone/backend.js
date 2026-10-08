@@ -629,7 +629,12 @@ registerProcessor("vito-pcm",P)`;
     // connect stands in for the WebSocket: fn gets every event.
     connect(fn) { onEvent = fn; ready.then(warmUp); },
     // export is the whole browser state, for handing over to the app.
-    export() { return { config: cfg, history, days, achievements: unlocked }; },
+    export() {
+      // Names this browser, so the app can tell a repeat hand-over from a new one.
+      let source = read("vito-web-id", "");
+      if (!source) { source = newID(); write("vito-web-id", source); }
+      return { source, config: cfg, history, days, achievements: unlocked };
+    },
     get state() { return state; },
   };
 

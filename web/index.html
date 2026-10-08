@@ -1480,6 +1480,8 @@
   .standalone .web-only { display:block; }
   .standalone .helper-only { display:none !important; }
   .web-banner a.btn { text-decoration:none; white-space:nowrap; }
+  .web-banner-actions { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+  .web-banner-actions .linkbtn { font-size:12px; }
   .standalone .web-banner { display:flex; }
   .standalone #settabs [data-sec="activation"], .standalone #settabs [data-sec="audio"],
   .standalone #settabs [data-sec="cleanup"], .standalone #settabs [data-sec="assist"],
@@ -1540,7 +1542,11 @@
         <b>Vito in your browser</b>
         <span>Speech recognition runs on this device and your dictations stay in this browser. Press <b id="web-hotkey">Ctrl + Alt + Space</b> in this tab or the microphone button; the text lands on your clipboard. The Vito app adds a hotkey that works in every program, typing straight into it, and better speech models.</span>
       </div>
-      <a class="btn primary small" id="web-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
+      <div class="web-banner-actions">
+        <a class="btn primary small" id="web-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
+        <button type="button" class="linkbtn" id="web-find-app">I have the app</button>
+        <button type="button" class="btn primary small" id="web-to-app" hidden>Move to the app</button>
+      </div>
     </div>
     <!-- STATUS -->
     <section id="tab-status" class="active">
@@ -2880,6 +2886,19 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "I have the app":"Ik heb de app",
+  "Move to the app":"Overzetten naar de app",
+  "The Vito app doesn't answer on this computer. Is it running?":"De Vito-app reageert niet op deze computer. Draait hij?",
+  "Opened in the app — confirm there what to take over.":"Geopend in de app — bevestig daar wat je wilt overnemen.",
+  "Take over from the browser?":"Overnemen uit de browser?",
+  "Vito in your browser sent what it kept. Dictations already here are skipped, so doing this twice changes nothing.":"Vito in je browser heeft gestuurd wat het bewaarde. Dictaten die hier al staan worden overgeslagen, dus twee keer doen verandert niets.",
+  "dictations":"dictaten",
+  "words over":"woorden over",
+  "days":"dagen",
+  "Add the dictionary":"Woordenboek toevoegen",
+  "Use the language and appearance from the browser":"Taal en weergave uit de browser overnemen",
+  "Taken over: {n} dictations.":"Overgenomen: {n} dictaten.",
+  "Take over":"Overnemen",
   "Try Vito right here: the speech recognition runs in your browser, and nothing you say is uploaded.":"Probeer Vito meteen hier: de spraakherkenning draait in je browser en niets van wat je zegt wordt geüpload.",
   "The speech model downloads once (18 MB); after that it even works offline.":"Het spraakmodel wordt één keer gedownload (18 MB); daarna werkt het zelfs offline.",
   "Press the microphone button or Ctrl + Alt + Space, speak, and press it again when you're done.":"Druk op de microfoonknop of Ctrl + Alt + Spatie, praat, en druk nog eens als je klaar bent.",
@@ -4262,6 +4281,61 @@ if (STANDALONE) document.addEventListener("keydown", (ev) => {
   if (hotkeyMatches(ev, webHotkey())) { ev.preventDefault(); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); }
   else if (ev.key === "Escape" && uiState === "recording") api("/api/cancel", { method: "POST" }).catch(() => {});
 });
+// ---- from the browser to the app ----
+// The app answers /api/hello to this website only. Asking can make the browser
+// ask the user for access to local devices, so it happens when they say they
+// have the app — and on later visits once it was found.
+const APP_URL = "http://127.0.0.1:4573";
+async function findApp(quiet){
+  try {
+    const r = await fetch(APP_URL + "/api/hello", { targetAddressSpace: "local" });
+    const h = await r.json();
+    if (h.app !== "vito") throw new Error("not Vito");
+    try { localStorage.setItem("vito-web-app", "1"); } catch {}
+    $("web-get-app").hidden = true; $("web-find-app").hidden = true; $("web-to-app").hidden = false;
+    return true;
+  } catch {
+    if (!quiet) toast(t("The Vito app doesn't answer on this computer. Is it running?"), "err", 6000);
+    return false;
+  }
+}
+// moveToApp posts everything the browser kept to the app, in a new tab on the
+// app's own page, which asks what to take over. A form post rather than a
+// fetch: it is a navigation, so the app can show its page straight away.
+function moveToApp(){
+  const f = document.createElement("form");
+  f.method = "POST"; f.action = APP_URL + "/handover"; f.target = "_blank";
+  const i = document.createElement("input");
+  i.type = "hidden"; i.name = "data"; i.value = JSON.stringify(VitoStandalone.export());
+  f.appendChild(i); document.body.appendChild(f); f.submit(); f.remove();
+  toast(t("Opened in the app — confirm there what to take over."), "ok", 6000);
+}
+if (STANDALONE) {
+  $("web-find-app").onclick = () => findApp(false);
+  $("web-to-app").onclick = moveToApp;
+  let known = false; try { known = localStorage.getItem("vito-web-app") === "1"; } catch {}
+  if (known) findApp(true);
+}
+// The other end: the app's page, opened by that form post with ?handover=<id>.
+async function offerHandover(){
+  const id = new URLSearchParams(location.search).get("handover");
+  if (!id || STANDALONE) return;
+  history.replaceState(null, "", location.pathname);
+  let h; try { h = await api("/api/handover/" + encodeURIComponent(id)); } catch (e) { toast(e.message, "err", 6000); return; }
+  const n = (v) => Number(v || 0).toLocaleString(numLoc());
+  const box = (id, label, on) => `<label class="tgl" style="margin-top:8px;"><input type="checkbox" id="${id}"${on ? " checked" : ""}><span class="sw"></span><span>${label}</span></label>`;
+  modal(t("Take over from the browser?"),
+    `<p class="ki-note">${t("Vito in your browser sent what it kept. Dictations already here are skipped, so doing this twice changes nothing.")}</p>
+     <p class="ki-note"><b>${n(h.entries)}</b> ${t("dictations")} · <b>${n(h.words)}</b> ${t("words over")} <b>${n(h.days)}</b> ${t("days")}</p>` +
+    (h.keyterms || h.corrections ? box("ho-dict", t("Add the dictionary") + ` (${n(h.keyterms + h.corrections)})`, true) : "") +
+    (h.settings ? box("ho-set", t("Use the language and appearance from the browser"), false) : ""),
+    () => {
+      const body = { dictionary: !!($("ho-dict") && $("ho-dict").checked), settings: !!($("ho-set") && $("ho-set").checked) };
+      api("/api/handover/" + encodeURIComponent(id) + "/apply", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+        .then(r => { toast(t("Taken over: {n} dictations.").replace("{n}", n(r.added)), "ok"); statsHistoryChanged(); loadStats(); if (body.dictionary || body.settings) loadSettings(); })
+        .catch(e => toast(e.message, "err"));
+    }, "Take over");
+}
 function connectWS() {
   if (STANDALONE) { VitoStandalone.connect(handleEvent); return; }
   const ws = new WebSocket(`ws://${location.host}/ws?token=${TOKEN}`);
@@ -9757,6 +9831,7 @@ loadUpdate();
 // announces) earned milestones without opening the Achievements page.
 loadAchievements(true);
 renderPwaTip();
+offerHandover();
 restoreLastTab(); // all module-scope state is initialized by now — safe to open History/Achievements
 </script>
 </body>

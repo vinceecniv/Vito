@@ -158,6 +158,12 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/cleanup/prompts", s.auth(s.handleBuiltinPrompts))
 	mux.HandleFunc("GET /api/about", s.auth(s.handleAbout))
 	mux.HandleFunc("GET /api/ui", s.auth(s.handleUI))
+	// The browser version finding the app, and handing its data over (handover.go).
+	mux.HandleFunc("GET /api/hello", s.handleHello)
+	mux.HandleFunc("OPTIONS /api/hello", s.handleHello)
+	mux.HandleFunc("POST /handover", s.handleHandover)
+	mux.HandleFunc("GET /api/handover/{id}", s.auth(s.handleHandoverSummary))
+	mux.HandleFunc("POST /api/handover/{id}/apply", s.auth(s.handleHandoverApply))
 	mux.HandleFunc("POST /api/ui/check", s.auth(s.handleUICheck))
 	mux.HandleFunc("GET /api/linux-tools", s.auth(s.handleLinuxTools))
 	mux.HandleFunc("GET /api/autostart", s.auth(s.handleGetAutostart))
@@ -199,6 +205,11 @@ func (s *Server) ownOrigin() string {
 // pass through to token auth.
 func (s *Server) rejectCrossOrigin(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// The two routes for the website check its origin themselves.
+		if r.URL.Path == "/api/hello" || r.URL.Path == "/handover" {
+			next.ServeHTTP(w, r)
+			return
+		}
 		if origin := r.Header.Get("Origin"); origin != "" && origin != s.ownOrigin() {
 			http.Error(w, "cross-origin requests are not allowed", http.StatusForbidden)
 			return
