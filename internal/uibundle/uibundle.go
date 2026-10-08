@@ -66,10 +66,17 @@ type Manifest struct {
 	Size   int64  `json:"size"`
 	SHA256 string `json:"sha256"`
 	Built  string `json:"built,omitempty"`
+	// App is the release the bundle updates the interface of. A daemon serves
+	// a bundle only for its own version: after the next release its built-in
+	// interface is newer than any bundle made for the one before, and stays in
+	// use until a bundle for the new release is published.
+	App string `json:"app"`
 }
 
-// fits reports whether this daemon should serve the bundle.
-func (m Manifest) fits() bool { return m.MinAPI <= API && m.API >= API }
+// fits reports whether a daemon of version app should serve the bundle.
+func (m Manifest) fits(app string) bool {
+	return m.App != "" && m.App == app && m.MinAPI <= API && m.API >= API
+}
 
 // Status is what the daemon reports about the interface it serves.
 type Status struct {
@@ -85,6 +92,7 @@ var versionRe = regexp.MustCompile(`^[0-9A-Za-z][0-9A-Za-z.\-]{0,39}$`)
 // Manager owns the downloaded interface.
 type Manager struct {
 	log     *slog.Logger
+	app     string // this daemon's version
 	url     string
 	dir     string
 	enabled func() bool
@@ -98,12 +106,13 @@ type Manager struct {
 	err     string
 }
 
-// New loads the interface downloaded earlier, if it is still trusted and fits.
-// enabled says whether looking online is allowed (the update-check setting);
-// changed is called when a new interface has been installed. With use false
-// the manager never serves a download: a build made by hand shows its own web/.
-func New(log *slog.Logger, use bool, enabled func() bool, changed func(Status)) *Manager {
-	m := &Manager{log: log, url: DefaultURL, enabled: enabled, changed: changed,
+// New loads the interface downloaded earlier, if it is still trusted and fits
+// this daemon's version app. enabled says whether looking online is allowed
+// (the update-check setting); changed is called when a new interface has been
+// installed. With use false the manager never serves a download: a build made
+// by hand shows its own web/.
+func New(log *slog.Logger, app string, use bool, enabled func() bool, changed func(Status)) *Manager {
+	m := &Manager{log: log, app: app, url: DefaultURL, enabled: enabled, changed: changed,
 		client: &http.Client{Timeout: 2 * time.Minute}}
 	if u := os.Getenv("VITO_UI_URL"); u != "" {
 		m.url = u
@@ -193,8 +202,8 @@ func (m *Manager) check(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	if !man.fits() {
-		m.log.Debug("interface bundle does not fit this version", "version", man.Version, "api", man.API, "min_api", man.MinAPI)
+	if !man.fits(m.app) {
+		m.log.Debug("interface bundle does not fit this version", "version", man.Version, "for", man.App, "api", man.API, "min_api", man.MinAPI)
 		return nil
 	}
 	m.mu.Lock()
@@ -267,10 +276,10 @@ func (m *Manager) loadInstalled() {
 		m.log.Warn("downloaded interface not trusted; using the built-in one", "err", err)
 		return
 	}
-	if !man.fits() {
-		// This daemon is newer than the bundle (or the other way round): the
-		// interface it shipped with is the right one until a matching bundle
-		// is published.
+	if !man.fits(m.app) {
+		// Made for another release (most often the one before an update): the
+		// interface this daemon shipped with is the right one until a bundle
+		// for its version is published.
 		m.log.Info("downloaded interface does not fit this version; using the built-in one", "version", man.Version)
 		return
 	}

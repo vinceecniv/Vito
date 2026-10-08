@@ -80,7 +80,7 @@ func New(d *daemon.Daemon, log *slog.Logger, audioCtx *audio.Context, hist *hist
 	// change to web/ would be hidden behind the published one; VITO_UI_URL
 	// opts it in for testing.
 	fetch := Version != "dev" || os.Getenv("VITO_UI_URL") != ""
-	s.ui = uibundle.New(log, fetch, func() bool { return d.Config().Update.CheckEnabled() },
+	s.ui = uibundle.New(log, Version, fetch, func() bool { return d.Config().Update.CheckEnabled() },
 		func(st uibundle.Status) { s.hub.broadcast(map[string]any{"type": "ui", "ui": st}) })
 	if fetch {
 		go s.ui.Run(context.Background())

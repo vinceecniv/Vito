@@ -22,8 +22,10 @@ and serves it from the next page load. The embedded `web.Files` is the fallback;
 reads through `s.uiFS(r)` — never from `web.*` directly.
 
 A `dev` build never serves a download (set `VITO_UI_URL` to test one), so local
-edits stay visible. A bundle is served only when `min_api <= uibundle.API <=
-api`: **raise `uibundle.API` when the UI starts depending on something new in
+edits stay visible. A bundle names the release it updates (`app`, default the
+latest `v*` tag) and is served only by that exact version, so after the next
+release the newer built-in interface wins until a bundle for it is published.
+It also needs `min_api <= uibundle.API <= api`: **raise `uibundle.API` when the UI starts depending on something new in
 the daemon**, or a published interface will call routes older daemons lack.
 
 Publish with `pwsh -File scripts/publish-ui.ps1 [-Push]` (builds into

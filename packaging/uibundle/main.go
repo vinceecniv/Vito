@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
@@ -54,6 +55,15 @@ func main() {
 func usage() {
 	fmt.Fprintln(os.Stderr, "usage: uibundle keygen [-key path] | build -out dir [-version v] [-min-api n] [-key path] | app -out dir")
 	os.Exit(2)
+}
+
+// latestTag is the newest release tag without its v ("2026.10"), or "".
+func latestTag() string {
+	out, err := exec.Command("git", "describe", "--tags", "--abbrev=0", "--match", "v*").Output()
+	if err != nil {
+		return ""
+	}
+	return strings.TrimPrefix(strings.TrimSpace(string(out)), "v")
 }
 
 func defaultKey() string {
@@ -91,6 +101,7 @@ func build(args []string) error {
 	out := fl.String("out", "", "directory to write ui.json, ui.json.sig and the zip into")
 	version := fl.String("version", time.Now().UTC().Format("2006.01.02-1504"), "bundle version")
 	minAPI := fl.Int("min-api", uibundle.API, "lowest daemon API level this interface works with")
+	appVer := fl.String("app", latestTag(), "the release whose interface this updates (default: the latest v* tag)")
 	keyPath := fl.String("key", defaultKey(), "private key")
 	_ = fl.Parse(args)
 	if *out == "" {
@@ -149,6 +160,10 @@ func build(args []string) error {
 		Size:    int64(buf.Len()),
 		SHA256:  hex.EncodeToString(sum[:]),
 		Built:   time.Now().UTC().Format(time.RFC3339),
+		App:     *appVer,
+	}
+	if man.App == "" {
+		return fmt.Errorf("no release to attach the interface to: pass -app <version>")
 	}
 	raw, err := json.MarshalIndent(man, "", "  ")
 	if err != nil {
@@ -176,6 +191,6 @@ func build(args []string) error {
 	if err := os.WriteFile(filepath.Join(*out, "ui.json"), raw, 0o644); err != nil {
 		return err
 	}
-	fmt.Printf("%s  %s  %d bytes  api %d (min %d)\n", man.Version, man.File, man.Size, man.API, man.MinAPI)
+	fmt.Printf("%s  %s  %d bytes  for app %s  api %d (min %d)\n", man.Version, man.File, man.Size, man.App, man.API, man.MinAPI)
 	return nil
 }
