@@ -1514,13 +1514,22 @@
   .wl-bar { display:block; height:6px; border-radius:99px; background:rgba(255,255,255,.25); margin:6px 0 2px; overflow:hidden; max-width:320px; }
   .wl-bar i { display:block; height:100%; background:#fff; border-radius:99px; transition:width .2s; }
   .welcome-steps .linkbtn { color:#fff; text-decoration:underline; font:inherit; }
-  .dl-tabs { display:flex; gap:6px; margin:4px 0 14px; }
-  .dl-pane p { margin:8px 0 0; }
-  .dl-pane a.btn { text-decoration:none; }
+  .modal.dl-modal { width:460px; padding:24px; }
+  .dl-modal h3 { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
+  .dl-ver { font-size:11px; font-weight:600; color:var(--violet); background:color-mix(in srgb, var(--violet) 12%, transparent); border-radius:99px; padding:2px 8px; }
+  .dl-tabs { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin:0 0 18px; }
+  .dl-os { display:flex; flex-direction:column; align-items:center; gap:8px; padding:14px 8px 12px; border-radius:12px;
+    border:1.5px solid var(--input-border); background:var(--input-bg); color:var(--text2); font:inherit; font-size:13px; font-weight:600; cursor:var(--cur-hand); }
+  .dl-os svg { width:26px; height:26px; }
+  .dl-os:hover { border-color:var(--violet); color:var(--accent); }
+  .dl-os.sel { border-color:var(--violet); color:var(--violet); background:color-mix(in srgb, var(--violet) 10%, var(--card)); box-shadow:0 0 0 3px color-mix(in srgb, var(--violet) 14%, transparent); }
+  .dl-pane a.btn { display:flex; justify-content:center; text-decoration:none; width:100%; box-sizing:border-box; }
+  .dl-pane p { margin:12px 0 0; line-height:1.55; }
+  .dl-all { margin:18px 0 0; padding-top:14px; border-top:1px solid var(--card-border); font-size:12.5px; }
   .dl-pane pre { background:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:8px 10px; font-size:11.5px; overflow:auto; margin:8px 0 0; }
-  .app-more { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:16px; }
-  .app-more .grow { flex:1 1 280px; }
-  .app-more .rowflex { gap:8px; flex-wrap:wrap; }
+  .banner.app-more { flex-direction:column; align-items:flex-start; gap:14px; padding:18px 20px; margin-bottom:18px; line-height:1.6; }
+  .app-more .grow { flex:none; }
+  .app-more .rowflex { gap:10px; flex-wrap:wrap; margin-top:6px; }
   .standalone #settabs [data-sec="assist"],
   .standalone #settabs [data-sec="output"], .standalone #settabs [data-sec="backup"],
   .standalone #settabs [data-sec="linux"],
@@ -3338,7 +3347,11 @@ async function api(path, opts = {}) {
 // values land, then solve for the one that aligns with the content edge.
 function positionToasts(){
   const box = $("toasts"), c = document.querySelector(".content"); if (!c) return;
-  const target = c.getBoundingClientRect().right - 24; // sit just inside the content edge
+  // Line up with the right edge of the cards on the page in view: the
+  // settings column is narrower than the rest, so measure that when it shows.
+  const pane = document.querySelector("section.active .settings-pane");
+  const target = pane ? pane.getBoundingClientRect().right
+    : c.getBoundingClientRect().right - parseFloat(getComputedStyle(c).paddingRight) * uiZoom();
   const prev = box.style.right;
   box.style.right = "0px";   const at0 = box.getBoundingClientRect().right;
   box.style.right = "100px"; const at100 = box.getBoundingClientRect().right;
@@ -4238,6 +4251,7 @@ function selectTab(name){
   if (!TABS.includes(name)) name = "status";
   document.querySelectorAll(".nav-item").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
   document.querySelectorAll("main section").forEach(s => s.classList.toggle("active", s.id === "tab-" + name));
+  positionToasts(); // the column changes width between pages
   if (name === "history") loadHistory();
   if (name === "achievements") loadAchievements();
   // Coming back to Status replays the chart's build-up, the same way opening the
@@ -6367,6 +6381,10 @@ function renderWelcomeWeb(){
 
 // ---- getting the app: a picker per system, the right one already chosen ----
 const APP_REPO = "vinceecniv/vito";
+const OS_ICONS = {
+  windows: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M6.555 1.375 0 2.237v5.45h6.555zM0 13.795l6.555.933V8.313H0zm7.278-5.4.026 6.378L16 16V8.395zM16 0 7.33 1.244v6.414H16z"/></svg>',
+  macos: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/></svg>',
+};
 let latestRelease = null;
 function guessOS(){
   const p = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || "").toLowerCase();
@@ -6384,25 +6402,25 @@ async function showDownload(){
   const asset = (re) => ((rel.assets || []).find(a => re.test(a.name)) || {}).browser_download_url || all;
   const ver = (rel.tag_name || "").replace(/^v/, "");
   const panes = {
-    windows: `<a class="btn primary small js-dl" href="${asset(/^Vito-Setup-.*\.exe$/)}">${t("Download for Windows")}</a>
+    windows: `<a class="btn primary js-dl" href="${asset(/^Vito-Setup-.*\.exe$/)}">${t("Download for Windows")}</a>
       <p class="act-note">${t("Windows 10 and 11. Vito isn't code-signed yet, so Windows may warn you: choose More info → Run anyway.")}</p>`,
-    macos: `<a class="btn primary small js-dl" href="${asset(/^Vito-.*\.dmg$/)}">${t("Download for macOS")}</a>
+    macos: `<a class="btn primary js-dl" href="${asset(/^Vito-.*\.dmg$/)}">${t("Download for macOS")}</a>
       <p class="act-note">${t("One download for Apple Silicon and Intel. The first time, open it with right-click → Open, as Vito isn't notarised yet.")}</p>`,
-    linux: `<a class="btn primary small js-dl" href="${asset(/x86_64\.AppImage$/)}">${t("Download the AppImage (x86-64)")}</a>
+    linux: `<a class="btn primary js-dl" href="${asset(/x86_64\.AppImage$/)}">${t("Download the AppImage (x86-64)")}</a>
       <p class="act-note">${t("Make it executable and run it. Or install the Flatpak:")}</p>
       <pre>flatpak remote-add --user --if-not-exists vito https://vinceecniv.github.io/Vito/vito.flatpakrepo
 flatpak install --user vito io.github.vinceecniv.vito</pre>`,
   };
   const os = guessOS();
-  const tabs = [["windows", "Windows"], ["macos", "macOS"], ["linux", "Linux"]];
-  modal(t("Get the Vito app") + (ver ? " " + ver : ""),
-    (os === "other" ? `<p class="ki-note">${t("The Vito app is for desktop computers: Windows, macOS and Linux.")}</p>` : `<p class="ki-note">${t("We picked your system; another one is a click away.")}</p>`) +
-    `<div class="dl-tabs">${tabs.map(([k, n]) => `<button type="button" class="tag${k === (os === "other" ? "windows" : os) ? " sel" : ""}" data-os="${k}">${n}</button>`).join("")}</div>
+  const tabs = [["windows", "Windows", OS_ICONS.windows], ["macos", "macOS", OS_ICONS.macos], ["linux", "Linux", TUX_SVG]];
+  modal(t("Get the Vito app") + (ver ? ` <span class="dl-ver">${ver}</span>` : ""),
+    (os === "other" ? `<p class="ki-note">${t("The Vito app is for desktop computers: Windows, macOS and Linux.")}</p>` : "") +
+    `<div class="dl-tabs">${tabs.map(([k, n, ico]) => `<button type="button" class="dl-os" data-os="${k}">${ico}<span>${n}</span></button>`).join("")}</div>
      <div class="dl-pane" id="dl-pane"></div>
-     <p class="act-note" style="margin-top:12px;"><a href="${all}" target="_blank" rel="noopener">${t("All downloads and release notes")}</a></p>`,
+     <p class="dl-all"><a href="${all}" target="_blank" rel="noopener">${t("All downloads and release notes")}</a></p>`,
     () => {}, "Close", false, null, true);
   const back = document.querySelector(".modal-backdrop:last-of-type");
-  back.querySelector(".modal").style.width = "480px";
+  back.querySelector(".modal").classList.add("dl-modal");
   const show = (k) => {
     back.querySelectorAll("[data-os]").forEach(b => b.classList.toggle("sel", b.dataset.os === k));
     back.querySelector("#dl-pane").innerHTML = panes[k];
