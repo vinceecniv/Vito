@@ -81,6 +81,7 @@ var (
 
 func (s *Server) handleHandover(w http.ResponseWriter, r *http.Request) {
 	if _, ok := allowedWebOrigin(r); !ok {
+		s.log.Info("hand-over refused", "origin", r.Header.Get("Origin"), "referer", r.Referer())
 		http.Error(w, "not from the Vito website", http.StatusForbidden)
 		return
 	}

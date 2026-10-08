@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#FAF6EF">
+<!-- The browser version hands its data to the app with a form post from
+     https://vito.talk to http://127.0.0.1, which the default policy sends with
+     Origin: null — and the app only takes it from the Vito website. This
+     policy names the origin, and never more than the origin, cross-site. -->
+<meta name="referrer" content="origin-when-cross-origin">
 <title>Vito — Voice In, Text Out</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -2959,6 +2964,7 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "Move over anyway":"Toch overzetten",
   "Vito in your browser — always the newest":"Vito in je browser — altijd de nieuwste",
   "A hotkey that works everywhere":"Een sneltoets die overal werkt",
   "— also when Vito isn't the window in front.":"— ook als Vito niet het venster vooraan is.",
@@ -4615,7 +4621,9 @@ if (!STANDALONE) {
 const APP_URL = "http://127.0.0.1:4573";
 async function findApp(quiet){
   try {
-    const r = await fetch(APP_URL + "/api/hello", { targetAddressSpace: "local" });
+    // Chrome and Edge treat 127.0.0.1 as its own "loopback" space and ask the
+    // user once before a website may reach it; other browsers just allow it.
+    const r = await fetch(APP_URL + "/api/hello", { targetAddressSpace: "loopback" });
     const h = await r.json();
     if (h.app !== "vito") throw new Error("not Vito");
     try { localStorage.setItem("vito-web-app", "1"); } catch {}
@@ -4623,7 +4631,9 @@ async function findApp(quiet){
     document.querySelectorAll(".js-to-app").forEach(el => el.hidden = false);
     return true;
   } catch {
-    if (!quiet) toast(t("The Vito app doesn't answer on this computer. Is it running?"), "err", 6000);
+    // The browser may also have kept the page from asking (Chrome and Edge
+    // ask once). Moving the data over doesn't need that permission, so offer it.
+    if (!quiet) actionToast(t("The Vito app doesn't answer on this computer. Is it running?"), t("Move over anyway"), moveToApp, 9000, "err");
     return false;
   }
 }
