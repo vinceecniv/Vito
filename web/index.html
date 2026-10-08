@@ -1519,7 +1519,16 @@
   .help-web.ping { animation:helpPing .9s ease-out 2; }
   .wl-bar { display:block; height:6px; border-radius:99px; background:rgba(255,255,255,.25); margin:6px 0 2px; overflow:hidden; max-width:320px; }
   .wl-bar i { display:block; height:100%; background:#fff; border-radius:99px; transition:width .2s; }
-  .welcome-steps .linkbtn { color:#fff; text-decoration:underline; font:inherit; }
+  .welcome-steps .linkbtn, .wl-grid .linkbtn { color:#fff; text-decoration:underline; font:inherit; padding:0; }
+  .wl-grid { position:relative; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; max-width:760px; margin:4px 0 12px; }
+  @media (max-width:640px){ .wl-grid { grid-template-columns:1fr; } }
+  .wl-item { display:flex; gap:11px; align-items:flex-start; background:rgba(255,255,255,.12); border-radius:12px; padding:10px 12px; }
+  .wl-item > div { display:flex; flex-direction:column; gap:1px; font-size:13px; line-height:1.45; min-width:0; }
+  .wl-item b { font-size:13.5px; }
+  .wl-item span:not(.wl-ico):not(.wl-bar) { opacity:.92; }
+  .wl-ico { flex:none; width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.2); }
+  .wl-ico svg { width:17px; height:17px; }
+  .wl-note { position:relative; margin:0 0 4px; font-size:12.5px; line-height:1.5; opacity:.9; max-width:900px; }
   .modal.dl-modal { width:460px; padding:24px; }
   .dl-modal h3 { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
   .dl-ver { font-size:11px; font-weight:600; color:var(--violet); background:color-mix(in srgb, var(--violet) 12%, transparent); border-radius:99px; padding:2px 8px; }
@@ -1618,13 +1627,14 @@
           <div><div class="welcome-title">Welcome to Vito</div><div class="welcome-sub">Voice In, Text Out — your voice becomes clean text</div></div>
         </div>
         <div class="web-only">
-        <p class="welcome-intro">Try Vito right here: the speech recognition runs in your browser, and nothing you say is uploaded.</p>
-        <ol class="welcome-steps">
-          <li id="wl-model" data-noi18n></li>
-          <li id="wl-start" data-noi18n></li>
-          <li>The text lands on your clipboard — paste it wherever you like. Your dictations stay in this browser.</li>
-          <li>Like it? The Vito app types straight into any program, with a hotkey that works everywhere.</li>
-        </ol>
+        <p class="welcome-intro">Try Vito right here, no installing and no account.</p>
+        <div class="wl-grid">
+          <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg></span><div><b>Speech model</b><span id="wl-model" data-noi18n></span></div></div>
+          <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></span><div><b>Start</b><span id="wl-start" data-noi18n></span></div></div>
+          <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg></span><div><b>Result</b><span>The text lands on your clipboard.</span></div></div>
+          <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><div><b>Private</b><span>Your dictations stay in this browser.</span></div></div>
+        </div>
+        <p class="wl-note"><b>Good to know:</b> in the browser Vito uses Whistle, a small speech model — fine for trying, not the best recognition. Better: Soniox with your own key, or the Vito app.</p>
         </div>
         <div class="helper-only">
         <p class="welcome-intro">Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:</p>
@@ -2964,6 +2974,18 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "Try Vito right here, no installing and no account.":"Probeer Vito meteen hier, zonder installeren en zonder account.",
+  "Result":"Resultaat",
+  "Private":"Privé",
+  "The text lands on your clipboard.":"De tekst komt op je klembord.",
+  "Your dictations stay in this browser.":"Je dictaten blijven in deze browser.",
+  "Good to know:":"Goed om te weten:",
+  "in the browser Vito uses Whistle, a small speech model — fine for trying, not the best recognition. Better: Soniox with your own key, or the Vito app.":"in de browser gebruikt Vito Whistle, een klein spraakmodel — prima om te proberen, maar niet de beste herkenning. Beter: Soniox met je eigen sleutel, of de Vito-app.",
+  "Using {p}.":"Via {p}.",
+  "Loaded — works offline too.":"Geladen — werkt ook offline.",
+  "Downloading (18 MB, once)…":"Downloaden (18 MB, eenmalig)…",
+  "Downloads once (18 MB).":"Wordt één keer gedownload (18 MB).",
+  "{start} or {key} · {change}":"{start} of {key} · {change}",
   "Move over anyway":"Toch overzetten",
   "Vito in your browser — always the newest":"Vito in je browser — altijd de nieuwste",
   "A hotkey that works everywhere":"Een sneltoets die overal werkt",
@@ -2984,10 +3006,7 @@ const TR = { nl: {
   "More speech models in the Vito app":"Meer spraakmodellen in de Vito-app",
   "Install the app and choose from these too: a larger model on your own computer, or AssemblyAI's most accurate realtime model.":"Installeer de app en kies ook uit deze: een groter model op je eigen computer, of het nauwkeurigste realtime model van AssemblyAI.",
   "How Vito in the browser works":"Zo werkt Vito in de browser",
-  "The speech model is loaded and ready to use — it now even works offline.":"Het spraakmodel is geladen en klaar voor gebruik — het werkt nu zelfs offline.",
-  "Downloading the speech model (18 MB, once)…":"Spraakmodel downloaden (18 MB, eenmalig)…",
   "Try again":"Opnieuw proberen",
-  "Press {start} or your hotkey {key} ({change}), speak, and press it again when you're done.":"Druk op {start} of je sneltoets {key} ({change}), praat, en druk nog eens als je klaar bent.",
   "change":"wijzigen",
   "The text is ready — the browser only lets it onto the clipboard after a click.":"De tekst staat klaar — de browser zet hem pas na een klik op het klembord.",
   "Get the Vito app":"De Vito-app downloaden",
@@ -3046,10 +3065,7 @@ const TR = { nl: {
   "Use the language and appearance from the browser":"Taal en weergave uit de browser overnemen",
   "Taken over: {n} dictations.":"Overgenomen: {n} dictaten.",
   "Take over":"Overnemen",
-  "Try Vito right here: the speech recognition runs in your browser, and nothing you say is uploaded.":"Probeer Vito meteen hier: de spraakherkenning draait in je browser en niets van wat je zegt wordt geüpload.",
   "The speech model downloads once (18 MB); after that it even works offline.":"Het spraakmodel wordt één keer gedownload (18 MB); daarna werkt het zelfs offline.",
-  "The text lands on your clipboard — paste it wherever you like. Your dictations stay in this browser.":"De tekst komt op je klembord — plak hem waar je wilt. Je dictaten blijven in deze browser.",
-  "Like it? The Vito app types straight into any program, with a hotkey that works everywhere.":"Bevalt het? De Vito-app typt direct in elk programma, met een sneltoets die overal werkt.",
   "Installing it as an app gives Vito its own window: pin it to the taskbar or Start menu and open straight to it, without hunting for a browser tab. Your dictations stay where they are.":"Als app geïnstalleerd krijgt Vito een eigen venster: zet het vast op de taakbalk of in het Startmenu en open het direct, zonder een browsertabblad te zoeken. Je dictaten blijven waar ze zijn.",
   "Get the app":"Download de app",
   "in this tab":"in dit tabblad",
@@ -6405,15 +6421,16 @@ function renderWelcomeWeb(){
   const m = $("wl-model"), st = whistleSt || {};
   if (m) {
     const pct = Math.round(100 * (st.done || 0) / (st.total || 1));
-    m.innerHTML = st.phase === "ready" ? "✓ " + t("The speech model is loaded and ready to use — it now even works offline.")
-      : st.phase === "downloading" ? t("Downloading the speech model (18 MB, once)…") + " " + pct + "%" + `<span class="wl-bar"><i style="width:${pct}%"></i></span>`
+    m.innerHTML = cfg && cfg.stt && cfg.stt.provider !== "whistle" ? ahEsc(t("Using {p}.").replace("{p}", PROVIDER_NAMES[cfg.stt.provider] || cfg.stt.provider))
+      : st.phase === "ready" ? "✓ " + t("Loaded — works offline too.")
+      : st.phase === "downloading" ? t("Downloading (18 MB, once)…") + " " + pct + "%" + `<span class="wl-bar"><i style="width:${pct}%"></i></span>`
       : st.phase === "error" ? "✗ " + ahEsc(st.error || t("Error")) + ` <button type="button" class="linkbtn" id="wl-retry">${t("Try again")}</button>`
-      : t("The speech model downloads once (18 MB); after that it even works offline.");
+      : t("Downloads once (18 MB).");
     const r = $("wl-retry"); if (r) r.onclick = () => api("/api/whistle/install", { method: "POST" });
   }
   const s = $("wl-start");
   if (s) {
-    s.innerHTML = t("Press {start} or your hotkey {key} ({change}), speak, and press it again when you're done.")
+    s.innerHTML = t("{start} or {key} · {change}")
       .replace("{start}", "<b>" + ahEsc(t("Start recording")) + "</b>")
       .replace("{key}", "<b>" + ahEsc(fmtHotkey(webHotkey())) + "</b>")
       .replace("{change}", `<button type="button" class="linkbtn" id="wl-hotkey">${t("change")}</button>`);

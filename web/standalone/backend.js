@@ -41,6 +41,15 @@
     CLEANUP = c;
     const saved = read(LS_CONFIG, {});
     cfg = merge(structuredClone(DEFAULTS), saved);
+    // What the browser can do, whatever a saved config says — decided before
+    // anything is saved below. A first visit starts on Whistle: it needs no
+    // account (the app's own default, Soniox, needs a key). A service without
+    // its key or address falls back to Whistle too: an early version of this
+    // page saved Soniox for visitors who never chose it.
+    const st = cfg.stt;
+    if (!(saved.stt && saved.stt.provider) || !BROWSER_STT.includes(st.provider)
+        || (st.provider === "soniox" && !(st.soniox_api_key || "").trim())
+        || (st.provider === "openai" && !(st.openai_base_url || "").trim())) { st.provider = "whistle"; st.model = "whistle"; }
     // A first visit speaks the browser's preferred language when Whistle knows
     // it, and English otherwise — saying so, since the user may not expect it.
     if (!(saved.stt && saved.stt.language)) {
@@ -52,10 +61,6 @@
       if (prefs[0] && !WHISTLE_LANGS.includes(prefs[0])) unsupportedLang = prefs[0];
       saveConfig();
     }
-    // What the browser can do, whatever an older saved config says.
-    // A first visit starts on Whistle: it needs no account. (The app's own
-    // default, Soniox, needs a key first.)
-    if (!(saved.stt && saved.stt.provider) || !BROWSER_STT.includes(cfg.stt.provider)) { cfg.stt.provider = "whistle"; cfg.stt.model = "whistle"; }
     cfg.history.store_audio = false;
     if (!WHISTLE_LANGS.includes(cfg.stt.language)) cfg.stt.language = "en";
   })();
