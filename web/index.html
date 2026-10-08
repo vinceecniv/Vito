@@ -3756,7 +3756,7 @@ function buildModelCards(){
     b.closest(".mc-panel").classList.toggle("closed", !open);
     b.setAttribute("aria-expanded", String(open));
   });
-  box.querySelectorAll(".modelcard").forEach(c => c.onclick = () => {
+  box.querySelectorAll(".modelcard:not(.am-card)").forEach(c => c.onclick = () => {
     if (c.disabled) return;
     $("s-model").value = c.dataset.id;
     // The provider follows the card, so choosing a model is the whole decision —
