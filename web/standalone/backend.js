@@ -53,7 +53,9 @@
       saveConfig();
     }
     // What the browser can do, whatever an older saved config says.
-    cfg.stt.provider = "whistle"; cfg.stt.model = "whistle";
+    // A first visit starts on Whistle: it needs no account. (The app's own
+    // default, Soniox, needs a key first.)
+    if (!(saved.stt && saved.stt.provider) || !BROWSER_STT.includes(cfg.stt.provider)) { cfg.stt.provider = "whistle"; cfg.stt.model = "whistle"; }
     cfg.history.store_audio = false;
     if (!WHISTLE_LANGS.includes(cfg.stt.language)) cfg.stt.language = "en";
   })();
@@ -155,9 +157,11 @@
   async function warmUp() {
     try {
       const c = await caches.open("vito-whistle-model");
-      if (await c.match(MODEL_URL)) whistle = { phase: "ready" };
+      if (await c.match(MODEL_URL)) { whistle = { phase: "ready" }; startWorker(); return; }
     } catch {}
-    startWorker();
+    // Not here yet: fetch it when Whistle is the engine in use. Someone on
+    // Soniox doesn't need 18 MB they will never run.
+    if (cfg.stt.provider === "whistle") startWorker();
   }
 
   // ---- recording ----
@@ -167,6 +171,141 @@
   const WORKLET = `class P extends AudioWorkletProcessor{constructor(){super();this.r=sampleRate/${RATE};this.a=0;this.s=0;this.n=0;this.b=new Float32Array(1600);this.l=0;this.p=0}
 process(i){const c=i[0]&&i[0][0];if(!c)return true;for(let k=0;k<c.length;k++){const v=c[k];this.s+=v;this.n++;this.a+=1;const m=v<0?-v:v;if(m>this.p)this.p=m;if(this.a>=this.r){this.a-=this.r;this.b[this.l++]=this.s/this.n;this.s=0;this.n=0;if(this.l===this.b.length){this.port.postMessage({pcm:this.b,peak:this.p},[this.b.buffer]);this.b=new Float32Array(1600);this.l=0;this.p=0}}}return true}}
 registerProcessor("vito-pcm",P)`;
+
+  // ---- speech engines ----
+  // Each takes 16 kHz float audio while you speak and gives the text when you
+  // stop: { audio(pcm), stop() -> Promise<{text, language}>, abort() }.
+  // Live text goes out as "partial" events on the way.
+  const BROWSER_STT = ["whistle", "soniox", "openai"];
+  const partial = (text) => { if (state === "recording" && text) emit({ type: "partial", text }); };
+  const toS16 = (pcm) => {
+    const out = new Int16Array(pcm.length);
+    for (let i = 0; i < pcm.length; i++) { const v = Math.max(-1, Math.min(1, pcm[i])); out[i] = v < 0 ? v * 32768 : v * 32767; }
+    return out;
+  };
+
+  // Whistle: the model in the worker (whistle-worker.js). Audio that arrives
+  // while the model is still downloading is kept until it is there.
+  function whistleEngine() {
+    startWorker();
+    const buffered = [];
+    let done = null;
+    worker.postMessage({ type: "start", lang: cfg.stt.language || "", keywords: cfg.stt.keyterms_enabled === false ? [] : keyterms() });
+    const send = (pcm) => worker.postMessage({ type: "audio", pcm }, [pcm.buffer]);
+    const eng = {
+      audio(pcm) {
+        if (whistle.phase === "ready") { buffered.splice(0).forEach(send); send(pcm); } else buffered.push(pcm);
+      },
+      async stop() {
+        await workerReady;
+        buffered.splice(0).forEach(send);
+        return new Promise((resolve) => { done = resolve; worker.postMessage({ type: "stop" }); });
+      },
+      abort() { worker.postMessage({ type: "abort" }); },
+      onWorker(m) {
+        if (m.type === "partial") partial(m.text);
+        else if (m.type === "final" && done) { const d = done; done = null; d({ text: m.text || "", language: m.language || cfg.stt.language }); }
+      },
+    };
+    return eng;
+  }
+
+  // Soniox: its realtime WebSocket, as internal/stt/soniox_stream.go. The key
+  // travels in the first message, which is what makes it usable from a page.
+  function sonioxEngine() {
+    const ws = new WebSocket("wss://stt-rt.soniox.com/transcribe-websocket");
+    ws.binaryType = "arraybuffer";
+    let final = "", tail = "", queue = [], failed = null, finished = null;
+    const langs = {};
+    const start = { api_key: (cfg.stt.soniox_api_key || "").trim(), model: "stt-rt-v5", audio_format: "pcm_s16le",
+      sample_rate: RATE, num_channels: 1, enable_language_identification: true };
+    if (cfg.stt.language && cfg.stt.language !== "auto") start.language_hints = [cfg.stt.language];
+    const end = () => { if (finished) { const f = finished; finished = null; f(); } };
+    ws.onopen = () => { ws.send(JSON.stringify(start)); queue.forEach((b) => ws.send(b)); queue = null; };
+    ws.onmessage = (ev) => {
+      let m; try { m = JSON.parse(ev.data); } catch { return; }
+      if (m.error_message) { failed = new Error("Soniox: " + m.error_message); end(); return; }
+      let t = "";
+      for (const tk of m.tokens || []) {
+        if (tk.is_final) { final += tk.text; if (tk.language && tk.text.trim()) langs[tk.language] = (langs[tk.language] || 0) + 1; }
+        else t += tk.text;
+      }
+      tail = t;
+      partial((final + tail).trim());
+      if (m.finished) end();
+    };
+    ws.onerror = () => { failed = failed || new Error("Soniox can't be reached."); end(); };
+    ws.onclose = () => end();
+    return {
+      audio(pcm) { const b = toS16(pcm).buffer; if (queue) queue.push(b); else if (ws.readyState === 1) ws.send(b); },
+      stop() {
+        return new Promise((resolve, reject) => {
+          const timer = setTimeout(() => { failed = failed || new Error("Soniox didn't answer in time."); end(); }, 8000);
+          finished = () => {
+            clearTimeout(timer);
+            try { ws.close(); } catch {}
+            if (failed) return reject(failed);
+            const language = Object.entries(langs).sort((a, b) => b[1] - a[1]).map((x) => x[0])[0] || cfg.stt.language;
+            resolve({ text: (final + tail).trim(), language });
+          };
+          if (failed) return finished();
+          // An empty TEXT frame ends the stream; an empty binary one is ignored.
+          const send = () => ws.send("");
+          if (ws.readyState === 1 && !queue) send(); else ws.addEventListener("open", () => setTimeout(send, 0), { once: true });
+        });
+      },
+      abort() { try { ws.close(); } catch {} },
+    };
+  }
+
+  // An OpenAI-compatible endpoint (Groq, OpenAI, a server of your own that
+  // allows the page): the whole recording as WAV once you stop, as
+  // internal/stt/openai.go. No live text.
+  function openaiEngine() {
+    const chunks = [];
+    return {
+      audio(pcm) { chunks.push(toS16(pcm)); },
+      async stop() {
+        const n = chunks.reduce((a, c) => a + c.length, 0);
+        const wav = new DataView(new ArrayBuffer(44 + n * 2));
+        const str = (o, s) => { for (let i = 0; i < s.length; i++) wav.setUint8(o + i, s.charCodeAt(i)); };
+        str(0, "RIFF"); wav.setUint32(4, 36 + n * 2, true); str(8, "WAVE"); str(12, "fmt "); wav.setUint32(16, 16, true);
+        wav.setUint16(20, 1, true); wav.setUint16(22, 1, true); wav.setUint32(24, RATE, true); wav.setUint32(28, RATE * 2, true);
+        wav.setUint16(32, 2, true); wav.setUint16(34, 16, true); str(36, "data"); wav.setUint32(40, n * 2, true);
+        let o = 44; for (const c of chunks) for (let i = 0; i < c.length; i++, o += 2) wav.setInt16(o, c[i], true);
+        const fd = new FormData();
+        fd.append("file", new Blob([wav.buffer], { type: "audio/wav" }), "dictation.wav");
+        fd.append("response_format", "json");
+        if ((cfg.stt.openai_model || "").trim()) fd.append("model", cfg.stt.openai_model.trim());
+        if (cfg.stt.language && cfg.stt.language !== "auto") fd.append("language", cfg.stt.language);
+        if (cfg.stt.keyterms_enabled !== false && keyterms().length) fd.append("prompt", keyterms().join(", "));
+        const key = (cfg.stt.openai_key || "").trim();
+        let resp;
+        try {
+          resp = await fetch((cfg.stt.openai_base_url || "").trim().replace(/\/+$/, "") + "/audio/transcriptions",
+            { method: "POST", body: fd, headers: key ? { Authorization: "Bearer " + key } : {}, signal: AbortSignal.timeout(90000) });
+        } catch { throw new Error("The speech endpoint can't be reached from the browser."); }
+        const body = await resp.json().catch(() => ({}));
+        if (!resp.ok) throw new Error("Speech endpoint: HTTP " + resp.status + (body.error && body.error.message ? " — " + body.error.message : ""));
+        return { text: (body.text || "").trim(), language: body.language || cfg.stt.language };
+      },
+      abort() {},
+    };
+  }
+
+  function newEngine() {
+    switch (cfg.stt.provider) {
+      case "soniox":
+        if (!(cfg.stt.soniox_api_key || "").trim()) throw new Error("Enter your Soniox API key under Settings → Speech recognition.");
+        return sonioxEngine();
+      case "openai":
+        if (!(cfg.stt.openai_base_url || "").trim()) throw new Error("Enter the speech endpoint under Settings → Speech recognition.");
+        return openaiEngine();
+      default:
+        return whistleEngine();
+    }
+  }
+  let engine = null;
 
   async function start() {
     if (state !== "idle") return;
@@ -186,7 +325,8 @@ registerProcessor("vito-pcm",P)`;
       w.URL.revokeObjectURL(url);
       const src = ctx.createMediaStreamSource(stream);
       const node = new w.AudioWorkletNode(ctx, "vito-pcm");
-      const r = { stream, ctx, node, started: performance.now(), samples: 0, lastLoud: performance.now(), heard: false, buffered: [] };
+      engine = newEngine();
+      const r = { stream, ctx, node, engine, started: performance.now(), samples: 0, lastLoud: performance.now(), heard: false };
       rec = r;
       node.port.onmessage = (ev) => {
         if (rec !== r) return;
@@ -195,10 +335,7 @@ registerProcessor("vito-pcm",P)`;
         const db = peak > 0 ? 20 * Math.log10(peak) : -100;
         emit({ type: "level", level: Math.max(0, Math.min(100, Math.round((db + 60) / 60 * 100))), clip: peak >= 0.99 });
         if (db > -40) { r.lastLoud = performance.now(); r.heard = true; }
-        if (worker && whistle.phase === "ready") {
-          for (const b of r.buffered.splice(0)) worker.postMessage({ type: "audio", pcm: b }, [b.buffer]);
-          worker.postMessage({ type: "audio", pcm }, [pcm.buffer]);
-        } else r.buffered.push(pcm); // still downloading: keep it for when the model is there
+        r.engine.audio(pcm);
         // Auto-stop after a pause, when switched on, as the daemon does.
         if (cfg.audio.auto_stop && r.heard && performance.now() - r.lastLoud > (cfg.audio.auto_stop_silence_ms || 1200)) stop();
         else if (performance.now() - r.lastLoud > (cfg.audio.silence_timeout_sec || 15) * 1000 && !r.heard) cancel();
@@ -206,9 +343,8 @@ registerProcessor("vito-pcm",P)`;
       src.connect(node);
       // Nothing to hear from the node; connecting it keeps the graph running.
       node.connect(ctx.destination);
-      startWorker();
-      worker.postMessage({ type: "start", lang: cfg.stt.language || "", keywords: cfg.stt.keyterms_enabled === false ? [] : keyterms() });
     } catch (e) {
+      if (rec) release(rec);
       rec = null;
       setState("idle");
       const msg = e && e.name === "NotAllowedError" ? "Microphone access was denied." : (e && e.message) || String(e);
@@ -230,30 +366,22 @@ registerProcessor("vito-pcm",P)`;
     release(r);
     r.stopped = performance.now();
     setState("processing");
-    try { await workerReady; } catch (e) { emit({ type: "error", error: e.message }); setState("idle"); return; }
-    for (const b of r.buffered.splice(0)) worker.postMessage({ type: "audio", pcm: b }, [b.buffer]);
-    pendingStop = r;
-    worker.postMessage({ type: "stop" });
+    let res;
+    try { res = await r.engine.stop(); }
+    catch (e) { playSound("cancel"); setState("idle"); emit({ type: "error", error: (e && e.message) || String(e) }); return; }
+    finish(r, res.text || "", res.language || cfg.stt.language);
   }
 
   function cancel() {
     const r = rec;
     rec = null;
-    if (r) { release(r); playSound("cancel"); }
-    pendingStop = null;
-    if (worker) worker.postMessage({ type: "abort" });
+    if (r) { release(r); playSound("cancel"); r.engine.abort(); }
     if (state !== "idle") setState("idle");
   }
 
-  let pendingStop = null;
   function onWorker(m) {
-    if (m.type === "partial" && state === "recording") emit({ type: "partial", text: m.text });
-    else if (m.type === "error") console.warn("whistle:", m.error);
-    else if (m.type === "final" && pendingStop) {
-      const r = pendingStop;
-      pendingStop = null;
-      finish(r, m.text || "", m.language || cfg.stt.language);
-    }
+    if (m.type === "error") console.warn("whistle:", m.error);
+    else if (engine && engine.onWorker) engine.onWorker(m);
   }
 
   async function finish(r, text, language) {
@@ -402,7 +530,11 @@ registerProcessor("vito-pcm",P)`;
   async function testKey(b) {
     const key = (b.key || "").trim();
     let url, headers = {};
-    if (b.provider === "anthropic" || b.provider === "cleanup") {
+    if (b.provider === "soniox") {
+      if (!key) return { ok: false, error: "empty" };
+      url = "https://api.soniox.com/v1/models";
+      headers = { Authorization: "Bearer " + key };
+    } else if (b.provider === "anthropic" || b.provider === "cleanup") {
       if (!key) return { ok: false, error: "empty" };
       url = "https://api.anthropic.com/v1/models?limit=1";
       headers = { "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" };
@@ -732,7 +864,7 @@ registerProcessor("vito-pcm",P)`;
       const keep = cfg.ui && cfg.ui.dashboard;
       cfg = merge(structuredClone(DEFAULTS), body || {});
       cfg.ui = cfg.ui || {}; if (keep !== undefined) cfg.ui.dashboard = keep;
-      cfg.stt.provider = "whistle"; cfg.stt.model = "whistle";
+      if (!BROWSER_STT.includes(cfg.stt.provider)) { cfg.stt.provider = "whistle"; cfg.stt.model = "whistle"; }
       saveConfig(); pruneHistory();
       return ok();
     }

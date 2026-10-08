@@ -2974,7 +2974,7 @@ const TR = { nl: {
   "With the app":"Met de app",
   "your own server":"je eigen server",
   "More speech models in the Vito app":"Meer spraakmodellen in de Vito-app",
-  "Install the app and choose from these too: more accurate, more languages (up to 60), or a larger model on your own computer.":"Installeer de app en kies ook uit deze: nauwkeuriger, meer talen (tot 60), of een groter model op je eigen computer.",
+  "Install the app and choose from these too: a larger model on your own computer, or AssemblyAI's most accurate realtime model.":"Installeer de app en kies ook uit deze: een groter model op je eigen computer, of het nauwkeurigste realtime model van AssemblyAI.",
   "How Vito in the browser works":"Zo werkt Vito in de browser",
   "The speech model is loaded and ready to use — it now even works offline.":"Het spraakmodel is geladen en klaar voor gebruik — het werkt nu zelfs offline.",
   "Downloading the speech model (18 MB, once)…":"Spraakmodel downloaden (18 MB, eenmalig)…",
@@ -3534,8 +3534,12 @@ const SPEECH_MODELS_ALL = [
     needs:"Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.",
     bullets:["Best for: privacy — runs on your own machine", "Any language the model supports", "No live transcript: the text arrives after you stop", "Keyterms sent as prompt (Whisper)"] },
 ];
-// In the browser only Whistle runs: the others need the app (or a server).
-const SPEECH_MODELS = STANDALONE ? SPEECH_MODELS_ALL.filter(m => m.provider === "whistle") : SPEECH_MODELS_ALL;
+// In the browser: Whistle, and the services a page can reach itself — Soniox
+// (its WebSocket takes the key in a message) and OpenAI-compatible endpoints.
+// Parakeet runs on the computer and AssemblyAI hands out no browser tokens:
+// those come with the app.
+const WEB_STT = ["whistle", "soniox", "openai"];
+const SPEECH_MODELS = STANDALONE ? SPEECH_MODELS_ALL.filter(m => WEB_STT.includes(m.provider)) : SPEECH_MODELS_ALL;
 const PROVIDER_NAMES = { assemblyai:"AssemblyAI", soniox:"Soniox", openai:"Speech endpoint", local:"Vito local", whistle:"Whistle" };
 // The endpoint provider is named after what is behind the URL, as the daemon
 // names it in the out-of-credit card and the cleanup side names its own.
@@ -3720,7 +3724,7 @@ function modelPrice(usd){
 // In the browser: the models the app adds, as plain cards — nothing to set up
 // or pick here, just what each is good at and that it comes with the app.
 function appModelsHTML(){
-  const cards = SPEECH_MODELS_ALL.filter(m => m.provider !== "whistle").map(m => `
+  const cards = SPEECH_MODELS_ALL.filter(m => !WEB_STT.includes(m.provider)).map(m => `
     <div class="modelcard am-card">
       <span class="mc-head"><b>${m.logo || ""}<span>${t(m.name)}</span></b><span class="mc-price">${m.provider === "openai" ? t("your own server") : cardPrice(m)}</span></span>
       <span class="mc-tagrow"><span class="am-badge">${t("With the app")}</span></span>
@@ -3729,7 +3733,7 @@ function appModelsHTML(){
     </div>`).join("");
   return `<div class="am-head">
       <div><b>${t("More speech models in the Vito app")}</b>
-      <span>${t("Install the app and choose from these too: more accurate, more languages (up to 60), or a larger model on your own computer.")}</span></div>
+      <span>${t("Install the app and choose from these too: a larger model on your own computer, or AssemblyAI's most accurate realtime model.")}</span></div>
       <button type="button" class="btn primary small am-get">${t("Get the app")}</button>
     </div>${cards}`;
 }
