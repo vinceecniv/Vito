@@ -158,7 +158,7 @@
   }
 
   // ---- recording ----
-  let state = "idle", rec = null, lastTimings = {};
+  let state = "idle", rec = null, lastTimings = {}, gestureWindow = null;
   const setState = (s) => { state = s; emit({ type: "state", state: s }); };
 
   const WORKLET = `class P extends AudioWorkletProcessor{constructor(){super();this.r=sampleRate/${RATE};this.a=0;this.s=0;this.n=0;this.b=new Float32Array(1600);this.l=0;this.p=0}
@@ -171,15 +171,18 @@ registerProcessor("vito-pcm",P)`;
     setState("recording");
     playSound("start");
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: {
+      // The window the user acted in (the floating window, or this tab).
+      const w = gestureWindow && !gestureWindow.closed ? gestureWindow : window;
+      const stream = await w.navigator.mediaDevices.getUserMedia({ audio: {
         deviceId: cfg.audio.input_device ? { ideal: cfg.audio.input_device } : undefined,
         echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
-      const ctx = new AudioContext();
-      const url = URL.createObjectURL(new Blob([WORKLET], { type: "text/javascript" }));
+      const ctx = new w.AudioContext();
+      if (ctx.state === "suspended") ctx.resume().catch(() => {});
+      const url = w.URL.createObjectURL(new w.Blob([WORKLET], { type: "text/javascript" }));
       await ctx.audioWorklet.addModule(url);
-      URL.revokeObjectURL(url);
+      w.URL.revokeObjectURL(url);
       const src = ctx.createMediaStreamSource(stream);
-      const node = new AudioWorkletNode(ctx, "vito-pcm");
+      const node = new w.AudioWorkletNode(ctx, "vito-pcm");
       const r = { stream, ctx, node, started: performance.now(), samples: 0, lastLoud: performance.now(), heard: false, buffered: [] };
       rec = r;
       node.port.onmessage = (ev) => {
@@ -364,7 +367,12 @@ registerProcessor("vito-pcm",P)`;
   async function playSound(name, volume) {
     if (volume === undefined && !(cfg.audio && cfg.audio.sounds_enabled)) return;
     try {
-      audioCtx = audioCtx || new AudioContext();
+      const w = gestureWindow && !gestureWindow.closed ? gestureWindow : window;
+      if (!audioCtx || audioCtx.vitoWin !== w) {
+        audioCtx = new w.AudioContext(); audioCtx.vitoWin = w;
+        for (const k in soundBuf) delete soundBuf[k];
+      }
+      if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
       if (!soundBuf[name]) soundBuf[name] = await fetch(BASE + "sounds/" + name + ".wav").then((r) => r.arrayBuffer()).then((b) => audioCtx.decodeAudioData(b));
       const src = audioCtx.createBufferSource(), gain = audioCtx.createGain();
       gain.gain.value = volume !== undefined ? volume : (cfg.audio.sounds_volume ?? 1);
@@ -760,6 +768,7 @@ registerProcessor("vito-pcm",P)`;
       return { source, config: cfg, history, days, achievements: unlocked };
     },
     get state() { return state; },
+    set gestureWindow(w) { gestureWindow = w; },
     // The browser's language when Whistle can't do it, on the first visit only.
     get unsupportedLang() { return unsupportedLang; },
   };

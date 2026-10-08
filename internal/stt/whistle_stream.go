@@ -183,8 +183,9 @@ func (s *whistleStream) Finish(ctx context.Context) (string, error) {
 		return "", s.engErr
 	}
 	s.mu.Lock()
-	// What is left after the last pause is the final segment.
-	if len(s.pcm)-s.cutAt >= whistle.SampleRate*2/5 {
+	// What is left after the last pause is the final segment — when it holds
+	// speech: silence would come back as a made-up phrase.
+	if len(s.pcm)-s.cutAt >= whistle.SampleRate*2/5 && s.seg.HasSpeech() {
 		s.queue = append(s.queue, [2]int{s.cutAt, len(s.pcm)})
 		s.cutAt = len(s.pcm)
 	}
@@ -246,7 +247,9 @@ func (w whistleFile) TranscribeFile(ctx context.Context, path string) (string, e
 	for off := 0; off < len(pcm); off += 3200 {
 		cuts = append(cuts, seg.Add(pcm[off:min(off+3200, len(pcm))])...)
 	}
-	cuts = append(cuts, len(pcm))
+	if seg.HasSpeech() {
+		cuts = append(cuts, len(pcm))
+	}
 	var parts []string
 	prev := 0
 	for _, c := range cuts {

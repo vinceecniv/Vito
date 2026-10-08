@@ -29,6 +29,8 @@ const MAX_SEG_FRAMES = 22 * 1000 / 30 | 0; // never longer than 22 s
 const LOOK_FRAMES = 4 * 1000 / 30 | 0; // a forced cut lands in the quietest frame of the last 4 s
 const LOOK_EVERY = 1200;               // ms between looks at the open segment
 const MIN_LOOK = RATE * 3 / 2;         // ...once it holds 1.5 s
+const SPEECH_FRAMES = 8;               // 240 ms above the noise is speech; less is a click
+                                       // (silence handed to the model comes back as "Thank you.")
 
 let M = null, loading = null;
 
@@ -123,8 +125,12 @@ function Segmenter() {
   this.levels = [];
   this.floor = -60;
   this.speech = false;
+  this.loud = 0;
   this.quietRun = 0;
 }
+Segmenter.prototype.countLoud = function () {
+  return this.levels.filter((db) => db > Math.max(this.floor + 12, -55)).length;
+};
 Segmenter.prototype.add = function (pcm) {
   const cuts = [];
   const data = new Float32Array(this.pending.length + pcm.length);
@@ -137,13 +143,14 @@ Segmenter.prototype.add = function (pcm) {
     if (db < this.floor) this.floor = db; else this.floor += 0.05;
     const loud = db > Math.max(this.floor + 12, -55);
     this.levels.push(db);
-    if (loud) { this.speech = true; this.quietRun = 0; } else this.quietRun++;
+    if (loud) { this.loud++; this.speech = this.loud >= SPEECH_FRAMES; this.quietRun = 0; } else this.quietRun++;
     if (this.speech && this.quietRun >= PAUSE_FRAMES && this.levels.length >= MIN_SEG_FRAMES) {
       cuts.push(this.cut(this.levels.length - (this.quietRun >> 1)));
     } else if (!this.speech && this.levels.length > 70) {
       const drop = this.levels.length - 17;
       this.start += drop * FRAME;
       this.levels = this.levels.slice(drop);
+      this.loud = this.countLoud();
     } else if (this.levels.length >= MAX_SEG_FRAMES) {
       let q = this.levels.length - 1, lo = Infinity;
       for (let i = this.levels.length - LOOK_FRAMES; i < this.levels.length; i++) {
@@ -159,7 +166,8 @@ Segmenter.prototype.cut = function (f) {
   const at = this.start + f * FRAME;
   const rest = this.levels.slice(f);
   this.start = at; this.levels = rest;
-  this.speech = rest.some((db) => db > Math.max(this.floor + 12, -55));
+  this.loud = this.countLoud();
+  this.speech = this.loud >= SPEECH_FRAMES;
   this.quietRun = 0;
   return at;
 };
@@ -250,8 +258,9 @@ onmessage = async (ev) => {
     case "stop": {
       const s = S;
       if (!s) { postMessage({ type: "final", text: "", language: "" }); break; }
-      // What is left after the last pause is the final segment.
-      if (s.len - s.cutAt >= RATE * 2 / 5) { s.queue.push([s.cutAt, s.len]); s.cutAt = s.len; }
+      // What is left after the last pause is the final segment — when it
+      // holds speech: silence would come back as a made-up phrase.
+      if (s.len - s.cutAt >= RATE * 2 / 5 && s.seg.speech) { s.queue.push([s.cutAt, s.len]); s.cutAt = s.len; }
       s.finished = true;
       s.openText = "";
       schedule(s);

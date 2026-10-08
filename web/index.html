@@ -4348,9 +4348,14 @@ function hotkeyMatches(ev, spec){
   const k = ev.key === " " ? "space" : ev.key.toLowerCase();
   return k === key && ev.ctrlKey === want.ctrl && ev.altKey === want.alt && ev.shiftKey === want.shift && ev.metaKey === want.meta;
 }
+// webGesture tells the browser engine which window the user just acted in.
+// Audio has to be opened there: a browser only lets a page record and play
+// right after its own user did something, and a click in the floating window
+// is not one in this tab — recording from here then captured silence.
+function webGesture(w){ if (STANDALONE) VitoStandalone.gestureWindow = w; }
 if (STANDALONE) document.addEventListener("keydown", (ev) => {
   if (hkCapturing) return;
-  if (hotkeyMatches(ev, webHotkey())) { ev.preventDefault(); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); }
+  if (hotkeyMatches(ev, webHotkey())) { ev.preventDefault(); webGesture(window); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); }
   else if (ev.key === "Escape" && uiState === "recording") api("/api/cancel", { method: "POST" }).catch(() => {});
 });
 // ---- cloud sync (internal/cloudsync) ----
@@ -4621,7 +4626,7 @@ function handleEvent(e) {
 }
 connectWS();
 
-$("btn-toggle").onclick = () => api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
+$("btn-toggle").onclick = () => { webGesture(window); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); };
 $("btn-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
 
 /* ---- copy transcript (shared by the card button and the PiP window) ---- */
@@ -5222,7 +5227,9 @@ async function togglePip(fromTray){
       if (e.target.closest && e.target.closest("[data-tip-text]")) { clearTimeout(timer); tip.classList.remove("show"); }
     });
   })();
-  d.getElementById("pip-toggle").onclick = () => api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err"));
+  d.getElementById("pip-toggle").onclick = () => { webGesture(pipWin); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); };
+  // The in-tab hotkey works in the floating window too.
+  if (STANDALONE) d.addEventListener("keydown", (ev) => { if (!hkCapturing && hotkeyMatches(ev, webHotkey())) { ev.preventDefault(); webGesture(pipWin); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); } });
   d.getElementById("pip-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
   d.getElementById("pip-copy").onclick = async (ev) => { if (await copyTranscript(pipWin)) { flashCopied(ev.currentTarget, "copied"); pipToast("✓ " + t("Copied to clipboard")); } };
   d.getElementById("pip-open").onclick = () => { try { window.focus(); } catch {} selectTab("status"); };

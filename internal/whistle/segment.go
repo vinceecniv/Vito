@@ -16,6 +16,11 @@ const (
 	minSegFrames = 50                         // ...once it is at least 1.5 s long
 	maxSegFrames = 22 * 1000 / 30             // never longer than 22 s
 	lookFrames   = 4 * 1000 / 30              // a forced cut lands in the quietest frame of the last 4 s
+	// speechFrames is how much sound above the noise counts as speech: 240 ms
+	// in all. Less is a click, a breath or a bump of the desk, and handing the
+	// model a clip without speech is how it comes up with "Thank you." or
+	// "Dank u wel." — it always says something.
+	speechFrames = 8
 )
 
 // Segmenter finds the cuts in a growing stream of 16 kHz mono s16le PCM.
@@ -26,6 +31,7 @@ type Segmenter struct {
 	levels   []float64 // dB per frame of the open segment
 	floor    float64   // running noise floor, dB
 	speech   bool      // the open segment has had speech
+	loud     int       // frames above the noise in the open segment
 	quietRun int       // frames of quiet at the end
 }
 
@@ -57,7 +63,8 @@ func (s *Segmenter) Add(pcm []byte) []int {
 		loud := db > math.Max(s.floor+12, -55)
 		s.levels = append(s.levels, db)
 		if loud {
-			s.speech = true
+			s.loud++
+			s.speech = s.loud >= speechFrames
 			s.quietRun = 0
 		} else {
 			s.quietRun++
@@ -71,6 +78,7 @@ func (s *Segmenter) Add(pcm []byte) []int {
 			drop := len(s.levels) - 17
 			s.start += drop * frameBytes
 			s.levels = append(s.levels[:0], s.levels[drop:]...)
+			s.loud = s.countLoud()
 		case len(s.levels) >= maxSegFrames:
 			q, lo := len(s.levels)-1, math.Inf(1)
 			for i := len(s.levels) - lookFrames; i < len(s.levels); i++ {
@@ -91,14 +99,21 @@ func (s *Segmenter) cut(f int) int {
 	at := s.start + f*frameBytes
 	rest := append([]float64(nil), s.levels[f:]...)
 	s.start, s.levels = at, rest
-	s.speech = false
-	for _, db := range rest {
-		if db > math.Max(s.floor+12, -55) {
-			s.speech = true
-		}
-	}
+	s.loud = s.countLoud()
+	s.speech = s.loud >= speechFrames
 	s.quietRun = 0
 	return at
+}
+
+// countLoud counts the open segment's frames above the noise.
+func (s *Segmenter) countLoud() int {
+	n := 0
+	for _, db := range s.levels {
+		if db > math.Max(s.floor+12, -55) {
+			n++
+		}
+	}
+	return n
 }
 
 // level is a frame's loudness in dBFS.
