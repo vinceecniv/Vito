@@ -1473,6 +1473,26 @@
     filter:blur(6px); opacity:0; transition:height 130ms ease-out,opacity 260ms ease-out; }
   :root:not([data-theme="dark"]) .tr-field .pip-wave { mix-blend-mode:multiply; }
   @media (prefers-reduced-motion:reduce){ .tr-field .pip-wave { transition:none; } }
+
+  /* In the browser without the app (standalone/backend.js): what only the app
+     can do is left out rather than shown switched off. */
+  .web-banner, .web-only { display:none; }
+  .standalone .web-only { display:block; }
+  .standalone .helper-only { display:none !important; }
+  .web-banner a.btn { text-decoration:none; white-space:nowrap; }
+  .standalone .web-banner { display:flex; }
+  .standalone #settabs [data-sec="activation"], .standalone #settabs [data-sec="audio"],
+  .standalone #settabs [data-sec="cleanup"], .standalone #settabs [data-sec="assist"],
+  .standalone #settabs [data-sec="output"], .standalone #settabs [data-sec="backup"],
+  .standalone #settabs [data-sec="linux"],
+  .standalone .settings-pane > .card[data-sec="activation"], .standalone .settings-pane > .card[data-sec="audio"],
+  .standalone .settings-pane > .card[data-sec="cleanup"], .standalone .settings-pane > .card[data-sec="assist"],
+  .standalone .settings-pane > .card[data-sec="output"], .standalone .settings-pane > .card[data-sec="backup"],
+  .standalone .settings-pane > .card[data-sec="linux"],
+  .standalone label:has(#s-autostart), .standalone label:has(#s-tray), .standalone label:has(#s-trviz),
+  .standalone [data-help="notifications"], .standalone #notify-sel,
+  .standalone label:has(#s-updatecheck), .standalone label:has(#s-updateauto), .standalone #upd-auto-note,
+  .standalone label:has(#s-demo), .standalone #cost-card, .standalone #whistle-remove { display:none !important; }
 </style>
 </head>
 <body>
@@ -1513,6 +1533,15 @@
       </div>
       <button class="btn ghost small" id="demo-off">Turn off demo mode</button>
     </div>
+    <!-- In the browser without the app: what this is, and the way to the app. -->
+    <div class="demo-banner web-banner" id="web-banner">
+      <span class="demo-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8"/></svg></span>
+      <div class="demo-txt">
+        <b>Vito in your browser</b>
+        <span>Speech recognition runs on this device and your dictations stay in this browser. Press <b id="web-hotkey">Ctrl + Alt + Space</b> in this tab or the microphone button; the text lands on your clipboard. The Vito app adds a hotkey that works in every program, typing straight into it, and better speech models.</span>
+      </div>
+      <a class="btn primary small" id="web-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
+    </div>
     <!-- STATUS -->
     <section id="tab-status" class="active">
       <div class="page-head">
@@ -1534,6 +1563,16 @@
           <span class="welcome-logo"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
           <div><div class="welcome-title">Welcome to Vito</div><div class="welcome-sub">Voice In, Text Out — your voice becomes clean text</div></div>
         </div>
+        <div class="web-only">
+        <p class="welcome-intro">Try Vito right here: the speech recognition runs in your browser, and nothing you say is uploaded.</p>
+        <ol class="welcome-steps">
+          <li>The speech model downloads once (18 MB); after that it even works offline.</li>
+          <li>Press the microphone button or Ctrl + Alt + Space, speak, and press it again when you're done.</li>
+          <li>The text lands on your clipboard — paste it wherever you like. Your dictations stay in this browser.</li>
+          <li>Like it? The Vito app types straight into any program, with a hotkey that works everywhere.</li>
+        </ol>
+        </div>
+        <div class="helper-only">
         <p class="welcome-intro">Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:</p>
         <ol class="welcome-steps">
           <li>Choose how your speech becomes text, under Settings → Speech recognition:
@@ -1546,7 +1585,8 @@
           <li>Set your start/stop hotkey under Settings → Activation and review the other settings.</li>
           <li>Press your hotkey, speak, and Vito pastes the text where your cursor is.</li>
         </ol>
-        <p class="welcome-tip"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/></svg> Tip: each API-key field on the settings page has a 'Get a key' button with step-by-step instructions to request that key.</p>
+        </div>
+        <p class="welcome-tip helper-only"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/></svg> Tip: each API-key field on the settings page has a 'Get a key' button with step-by-step instructions to request that key.</p>
         <div class="welcome-actions">
           <button class="btn" id="welcome-settings">Go to settings</button>
           <button class="btn ghost" id="welcome-ok">Got it</button>
@@ -2125,7 +2165,16 @@
 </div>
 
 <script>
+// Opened from the website rather than from the Vito app on this computer: the
+// app puts its token in place of the placeholder below, the website leaves it,
+// and then the browser does the daemon's work itself (standalone/backend.js).
+window.VITO_STANDALONE = "__VITO_TOKEN__".indexOf("__VITO" + "_TOKEN__") === 0;
+if (window.VITO_STANDALONE) document.write('<script src="standalone/backend.js"><\/script>');
+</script>
+<script>
 const TOKEN = "__VITO_TOKEN__";
+const STANDALONE = !!window.VITO_STANDALONE;
+if (STANDALONE) document.documentElement.classList.add("standalone");
 const $ = (id) => document.getElementById(id);
 
 /* ---- i18n (source strings are English; every other language via a map) ---- */
@@ -2831,6 +2880,23 @@ const TR = { nl: {
   "Version":"Versie",
   "Git commit":"Git-commit",
   "Interface":"Interface",
+  "Try Vito right here: the speech recognition runs in your browser, and nothing you say is uploaded.":"Probeer Vito meteen hier: de spraakherkenning draait in je browser en niets van wat je zegt wordt geüpload.",
+  "The speech model downloads once (18 MB); after that it even works offline.":"Het spraakmodel wordt één keer gedownload (18 MB); daarna werkt het zelfs offline.",
+  "Press the microphone button or Ctrl + Alt + Space, speak, and press it again when you're done.":"Druk op de microfoonknop of Ctrl + Alt + Spatie, praat, en druk nog eens als je klaar bent.",
+  "The text lands on your clipboard — paste it wherever you like. Your dictations stay in this browser.":"De tekst komt op je klembord — plak hem waar je wilt. Je dictaten blijven in deze browser.",
+  "Like it? The Vito app types straight into any program, with a hotkey that works everywhere.":"Bevalt het? De Vito-app typt direct in elk programma, met een sneltoets die overal werkt.",
+  "Installing it as an app gives Vito its own window: pin it to the taskbar or Start menu and open straight to it, without hunting for a browser tab. Your dictations stay where they are.":"Als app geïnstalleerd krijgt Vito een eigen venster: zet het vast op de taakbalk of in het Startmenu en open het direct, zonder een browsertabblad te zoeken. Je dictaten blijven waar ze zijn.",
+  "Vito in your browser":"Vito in je browser",
+  "Speech recognition runs on this device and your dictations stay in this browser. Press":"Spraakherkenning draait op dit apparaat en je dictaten blijven in deze browser. Druk in dit tabblad op",
+  "in this tab or the microphone button; the text lands on your clipboard. The Vito app adds a hotkey that works in every program, typing straight into it, and better speech models.":"of op de microfoonknop; de tekst komt op je klembord. De Vito-app voegt een sneltoets toe die in elk programma werkt, typt de tekst er direct in, en heeft betere spraakmodellen.",
+  "Get the app":"Download de app",
+  "in this tab":"in dit tabblad",
+  "Tidied by rules":"Opgeschoond met regels",
+  "Copied — paste it wherever you like.":"Gekopieerd — plak het waar je wilt.",
+  "This needs the Vito app on your computer.":"Hiervoor is de Vito-app op je computer nodig.",
+  "Microphone access was denied.":"Toegang tot de microfoon is geweigerd.",
+  "No speech recognised.":"Geen spraak herkend.",
+  "This browser cannot record audio.":"Deze browser kan geen geluid opnemen.",
   "downloaded":"gedownload",
   "built in":"ingebouwd",
   "License":"Licentie",
@@ -3116,6 +3182,7 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(t
 applyTheme();
 
 async function api(path, opts = {}) {
+  if (STANDALONE) return VitoStandalone.api(path, opts);
   opts.headers = Object.assign({ "Authorization": "Bearer " + TOKEN }, opts.headers || {});
   let res;
   try { res = await fetch(path, opts); }
@@ -3241,6 +3308,7 @@ async function daemonCameBack(){
   loadStats();
 }
 async function pingDaemon(){
+  if (STANDALONE) { setDaemonUp(true); return true; }
   try { const r = await fetch("/api/status", { headers:{ Authorization:"Bearer "+TOKEN } }); if (r.ok || r.status === 401) { setDaemonUp(true); return true; } }
   catch {}
   setDaemonUp(false); return false;
@@ -3274,7 +3342,7 @@ const LOGO_VITO = '<span class="mc-logo vito"><svg viewBox="0 0 100 100" fill="#
 const LOGO_SERVER = '<span class="mc-logo plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>';
 const LOGO_IMG = (name) => `<span class="mc-logo"><img src="logos/${name}.png" alt=""></span>`;
 const GEAR_SVG = '<svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
-const SPEECH_MODELS = [
+const SPEECH_MODELS_ALL = [
   // The engine Vito installs and runs itself (see internal/localstt) comes
   // first: it is the one choice that needs no account and sends nothing away.
   // The picker's languages are the model's 25, minus Maltese, which has no flag here.
@@ -3306,6 +3374,8 @@ const SPEECH_MODELS = [
     needs:"Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.",
     bullets:["Best for: privacy — runs on your own machine", "Any language the model supports", "No live transcript: the text arrives after you stop", "Keyterms sent as prompt (Whisper)"] },
 ];
+// In the browser only Whistle runs: the others need the app (or a server).
+const SPEECH_MODELS = STANDALONE ? SPEECH_MODELS_ALL.filter(m => m.provider === "whistle") : SPEECH_MODELS_ALL;
 const PROVIDER_NAMES = { assemblyai:"AssemblyAI", soniox:"Soniox", openai:"Speech endpoint", local:"Vito local", whistle:"Whistle" };
 // The endpoint provider is named after what is behind the URL, as the daemon
 // names it in the out-of-credit card and the cleanup side names its own.
@@ -4179,7 +4249,21 @@ function renderTimings(tm){
 // a few seconds (a blip is no outage), reconnects back off up to 10 s, and a
 // reconnect after a blip resyncs, since events may have been missed meanwhile.
 let wsBackoff = 1000, wsDownTimer = null, wsEverOpen = false;
+// In the browser the hotkey only works while this tab has focus: the same
+// combination as the app's (Ctrl+Alt+Space by default) toggles, Escape cancels.
+function webHotkey(){ return (cfg && cfg.hotkey_windows) || "ctrl+alt+space"; }
+function hotkeyMatches(ev, spec){
+  const parts = spec.toLowerCase().split("+"), key = parts.pop();
+  const want = { ctrl: parts.includes("ctrl"), alt: parts.includes("alt"), shift: parts.includes("shift"), meta: parts.includes("win") || parts.includes("cmd") || parts.includes("meta") };
+  const k = ev.key === " " ? "space" : ev.key.toLowerCase();
+  return k === key && ev.ctrlKey === want.ctrl && ev.altKey === want.alt && ev.shiftKey === want.shift && ev.metaKey === want.meta;
+}
+if (STANDALONE) document.addEventListener("keydown", (ev) => {
+  if (hotkeyMatches(ev, webHotkey())) { ev.preventDefault(); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); }
+  else if (ev.key === "Escape" && uiState === "recording") api("/api/cancel", { method: "POST" }).catch(() => {});
+});
 function connectWS() {
+  if (STANDALONE) { VitoStandalone.connect(handleEvent); return; }
   const ws = new WebSocket(`ws://${location.host}/ws?token=${TOKEN}`);
   ws.onopen = () => {
     wsBackoff = 1000;
@@ -4188,8 +4272,16 @@ function connectWS() {
     if (!daemonUp) setDaemonUp(true);  // came back from a real outage: daemonCameBack runs
     else if (again) daemonCameBack();  // a blip: catch up on what was missed
   };
-  ws.onmessage = (m) => {
-    const e = JSON.parse(m.data);
+  ws.onmessage = (m) => handleEvent(JSON.parse(m.data));
+  ws.onclose = () => {
+    if (!wsDownTimer && daemonUp) wsDownTimer = setTimeout(() => { wsDownTimer = null; setDaemonUp(false); }, 3000);
+    setTimeout(connectWS, wsBackoff);
+    wsBackoff = Math.min(wsBackoff * 2, 10000);
+  };
+}
+// handleEvent takes one event from the daemon (or, in the browser, from
+// standalone/backend.js).
+function handleEvent(e) {
     if (e.type === "state") {
       uiState = e.state; setState(e.state);
       if (e.state === "recording") { showTranscriptHint(LISTENING_HINT); lastFinalText = ""; curPartial = ""; curRaw = ""; curCleaned = ""; }
@@ -4284,6 +4376,8 @@ function connectWS() {
       pipWave(lvl);
       trWave(lvl);
       if (rec) vmLevel(lvl);
+    } else if (e.type === "copied") {
+      toast(t("Copied — paste it wherever you like."), "ok");
     } else if (e.type === "error") {
       vmFlash("dizzy", 1800);
       if (e.credit) {
@@ -4319,12 +4413,6 @@ function connectWS() {
         clearInterval(micCountdown); if (st) st.textContent = "✗"; if (btn) btn.disabled = false; toast("Mic-test: " + (e.error || ""), "err");
       }
     }
-  };
-  ws.onclose = () => {
-    if (!wsDownTimer && daemonUp) wsDownTimer = setTimeout(() => { wsDownTimer = null; setDaemonUp(false); }, 3000);
-    setTimeout(connectWS, wsBackoff);
-    wsBackoff = Math.min(wsBackoff * 2, 10000);
-  };
 }
 connectWS();
 
@@ -8201,9 +8289,12 @@ function cleanupProviderLabel(cl){
 }
 function renderStatusTags(){
   const box = $("status-tags"); if (!box || !cfg) return;
+  if (STANDALONE && $("web-hotkey")) $("web-hotkey").textContent = fmtHotkey(webHotkey());
   const hk = hkInfo || {}, tags = [];
   const portalSpec = hk.os !== "windows" && hk.supported && hk.toggle ? hk.toggle.spec : "";
-  if (hk.os === "windows") {
+  if (STANDALONE) {
+    tags.push({ ico: ICON_KBD, text: fmtHotkey(webHotkey()) + " · " + t("in this tab"), sec: "general" });
+  } else if (hk.os === "windows") {
     const spec = (hk.toggle && (hk.toggle.spec || hk.toggle.configured)) || "";
     tags.push({ ico: ICON_KBD, text: spec ? fmtHotkey(spec) : t("No hotkey set"), sec: "activation" });
   } else if (portalSpec) {
@@ -8221,7 +8312,8 @@ function renderStatusTags(){
   tags.push({ ico: ICON_MIC2, text: sttLabel || ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
   tags.push({ raw: langIcon((cfg.stt && cfg.stt.language) || ""), text: langShortName(cfg.stt && cfg.stt.language), sec: "stt" });
   const cl = cfg.cleanup || {};
-  if (!cl.enabled) tags.push({ ico: SPARK_SVG, text: t("Cleanup off"), sec: "cleanup", muted: true });
+  if (STANDALONE) tags.push({ ico: SPARK_SVG, text: t("Tidied by rules"), sec: "stt", muted: true });
+  else if (!cl.enabled) tags.push({ ico: SPARK_SVG, text: t("Cleanup off"), sec: "cleanup", muted: true });
   else {
     const model = cl.provider === "openai" ? cl.openai_model : cl.model;
     tags.push({ ico: SPARK_SVG, text: cleanupProviderLabel(cl) + (model ? " · " + model : ""), sec: "cleanup" });
@@ -9453,7 +9545,8 @@ function renderPwaTip(){
         <span class="pwa-title">${ICON_BULB} ${t("Give Vito its own app window")}</span>
         <button class="x" id="pwa-x" title="${t("Close")}">×</button>
       </div>
-      <p>${t("Vito itself runs in the background with a tray icon — this page is how you manage it and dictate. Installing it as an app gives this interface its own window: pin it to the taskbar or Start menu and open straight to Vito, without hunting for a browser tab. It stays exactly the same interface, served from your own computer.")}</p>
+      <p>${STANDALONE ? t("Installing it as an app gives Vito its own window: pin it to the taskbar or Start menu and open straight to it, without hunting for a browser tab. Your dictations stay where they are.")
+        : t("Vito itself runs in the background with a tray icon — this page is how you manage it and dictate. Installing it as an app gives this interface its own window: pin it to the taskbar or Start menu and open straight to Vito, without hunting for a browser tab. It stays exactly the same interface, served from your own computer.")}</p>
       <div class="pwa-actions"><button class="btn primary small" id="pwa-install">${t("Install app")}</button></div>
     </div>`;
     $("pwa-install").onclick = async () => { deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==="accepted"){deferredPrompt=null; el.innerHTML="";} };

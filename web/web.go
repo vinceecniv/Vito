@@ -24,9 +24,11 @@ import "embed"
 //     index.html), loaded on demand.
 //   - achievements/ — the medal art: a PNG per achievement (Noto Emoji), the
 //     Lottie animations played on unlock/hover, and the small Lottie player.
+//   - standalone/ — the browser version's stand-in for the daemon (vito.talk/app;
+//     unused when the daemon serves the page).
 //
 //go:embed index.html manifest.webmanifest sw.js favicon.svg icon-192.png icon-512.png
-//go:embed fonts-baloo2.woff2 fonts-sora.woff2 flags logos i18n achievements
+//go:embed fonts-baloo2.woff2 fonts-sora.woff2 flags logos i18n achievements standalone
 var Files embed.FS
 
 // I18n is Files under the name the tray uses for its translations.

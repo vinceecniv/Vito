@@ -40,6 +40,8 @@ func main() {
 		err = keygen(os.Args[2:])
 	case "build":
 		err = build(os.Args[2:])
+	case "app":
+		err = app(os.Args[2:])
 	default:
 		usage()
 	}
@@ -50,7 +52,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: uibundle keygen [-key path] | build -out dir [-version v] [-min-api n] [-key path]")
+	fmt.Fprintln(os.Stderr, "usage: uibundle keygen [-key path] | build -out dir [-version v] [-min-api n] [-key path] | app -out dir")
 	os.Exit(2)
 }
 
