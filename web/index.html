@@ -2912,7 +2912,9 @@ const TR = { nl: {
   "Picked from your browser's settings. You can change both later under Settings.":"Gekozen op basis van de instellingen van je browser. Je kunt ze later allebei wijzigen onder Instellingen.",
   "Another language…":"Andere taal…",
   "The language you speak":"De taal die je spreekt",
-  "The speech model in the browser knows English, Dutch, German, French, Spanish, Italian and Polish. {l} is not one of them yet; the Vito app has models that do.":"Het spraakmodel in de browser kent Engels, Nederlands, Duits, Frans, Spaans, Italiaans en Pools. {l} hoort daar nog niet bij; de Vito-app heeft modellen die dat wel doen.",
+  "Vito's interface is available in {n} languages.":"De interface van Vito is beschikbaar in {n} talen.",
+  "These are the {n} languages the speech model in your browser knows. With the Vito app installed you can dictate in 60 languages.":"Dit zijn de {n} talen die het spraakmodel in je browser kent. Met de Vito-app geïnstalleerd dicteer je in 60 talen.",
+  "{l} is not among the browser's languages yet.":"{l} zit nog niet bij de talen in de browser.",
   "Get started":"Aan de slag",
   "Sync between computers":"Synchroniseren tussen computers",
   "Keep your dictations, statistics, achievements and dictionary the same on every computer, through your own Dropbox or OneDrive. Vito only sees its own folder there (Apps/Vito), and there is no Vito server in between.":"Houd je dictaten, statistieken, prestaties en woordenboek gelijk op al je computers, via je eigen Dropbox of OneDrive. Vito ziet daar alleen zijn eigen map (Apps/Vito), en er zit geen Vito-server tussen.",
@@ -3145,7 +3147,7 @@ async function loadTranslations(lang){
 const _orig = new WeakMap();
 function applyI18n(root = document.body){
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-  const nodes = []; while (w.nextNode()) { const p = w.currentNode.parentNode; if (p && (p.tagName === "SCRIPT" || p.tagName === "STYLE")) continue; nodes.push(w.currentNode); }
+  const nodes = []; while (w.nextNode()) { const p = w.currentNode.parentNode; if (p && (p.tagName === "SCRIPT" || p.tagName === "STYLE" || (p.closest && p.closest("[data-noi18n]")))) continue; nodes.push(w.currentNode); }
   nodes.forEach(n => {
     if (!_orig.has(n)) _orig.set(n, n.nodeValue);
     const raw = _orig.get(n), key = raw.trim();
@@ -4373,9 +4375,21 @@ function browserLangs(){
   }
   return out;
 }
-function showLangPicker(){
+// preferLang is the first of the browser's languages in list, but one other
+// than English before English: a browser that lists both was set up by
+// someone who speaks the other, English being everyone's second language.
+function preferLang(list){
+  const mine = browserLangs().filter(c => list.includes(c));
+  return mine.find(c => c !== "en") || mine[0] || "en";
+}
+async function showLangPicker(first){
+  // The first time, the interface follows that rule too — unless a language
+  // was already chosen.
+  let chosen = ""; try { chosen = localStorage.getItem("vito-lang") || ""; } catch {}
+  if (first && !chosen && preferLang(UI_LANGS) !== uiLang) await setUiLang(preferLang(UI_LANGS), true);
   const pref = browserLangs();
-  const uiOpts = [...pref.filter(c => UI_LANGS.includes(c)), "en"].filter((c, i, a) => a.indexOf(c) === i);
+  const uiMine = pref.filter(c => UI_LANGS.includes(c));
+  const uiOpts = [...uiMine.filter(c => c !== "en"), "en"];
   // Every language Whistle knows, the browser's own first — and of those, one
   // other than English before English: a browser that lists both was set up by
   // someone who speaks the other one, English being everyone's second.
@@ -4384,16 +4398,18 @@ function showLangPicker(){
   const missing = pref.filter(c => !WHISTLE_STT.includes(c));
   const curUi = uiLang, curStt = (cfg.stt && cfg.stt.language) || "en";
   const name = (c) => LANG_ENDONYM[c] || (c === "en" ? "English" : langName(c));
-  const btn = (kind, c, cur) => `<button type="button" class="tag lp-opt${c === cur ? " sel" : ""}" data-kind="${kind}" data-code="${c}">${langIcon(c)} ${ahEsc(name(c))}</button>`;
+  const btn = (kind, c, cur) => `<button type="button" class="tag lp-opt${c === cur ? " sel" : ""}" data-kind="${kind}" data-code="${c}">${langIcon(c)} <span data-noi18n>${ahEsc(name(c))}</span></button>`;
   const others = UI_LANGS.filter(c => !uiOpts.includes(c)).map(c => `<option value="${c}">${ahEsc(langName(c))}</option>`).join("");
   modal(t("Which languages?"),
     `<p class="ki-note">${t("Picked from your browser's settings. You can change both later under Settings.")}</p>
      <label class="fld">${t("Interface language")}</label>
      <div class="rowflex lp-row" style="gap:8px; flex-wrap:wrap;">${uiOpts.map(c => btn("ui", c, curUi)).join("")}
        <select id="lp-more" style="width:auto; min-width:150px;"><option value="">${t("Another language…")}</option>${others}</select></div>
+     <p class="act-note" style="margin:6px 0 0;">${t("Vito's interface is available in {n} languages.").replace("{n}", UI_LANGS.length)}</p>
      <label class="fld" style="margin-top:16px;">${t("The language you speak")}</label>
      <div class="rowflex lp-row" style="gap:8px; flex-wrap:wrap;">${sttOpts.map(c => btn("stt", c, curStt)).join("")}</div>` +
-    (missing.length ? `<p class="act-note" style="margin:8px 0 0;">${t("The speech model in the browser knows English, Dutch, German, French, Spanish, Italian and Polish. {l} is not one of them yet; the Vito app has models that do.").replace("{l}", missing.map(name).join(", "))}</p>` : ""),
+    `<p class="act-note" style="margin:8px 0 0;">${t("These are the {n} languages the speech model in your browser knows. With the Vito app installed you can dictate in 60 languages.").replace("{n}", WHISTLE_STT.length)}` +
+    (missing.length ? " " + t("{l} is not among the browser's languages yet.").replace("{l}", missing.map(name).join(", ")) : "") + `</p>`,
     () => { try { localStorage.setItem("vito-web-langs", "1"); } catch {} },
     "Get started", false, () => { try { localStorage.setItem("vito-web-langs", "1"); } catch {} }, true);
   const back = document.querySelector(".modal-backdrop:last-of-type");
@@ -4508,7 +4524,7 @@ if (STANDALONE) {
   VitoStandalone.ready.then(() => {
     let done = false; try { done = localStorage.getItem("vito-web-langs") === "1"; } catch {}
     if (done) return;
-    const wait = () => cfg ? showLangPicker() : setTimeout(wait, 200);
+    const wait = () => cfg ? showLangPicker(true) : setTimeout(wait, 200);
     setTimeout(wait, 400);
   });
   let known = false; try { known = localStorage.getItem("vito-web-app") === "1"; } catch {}
