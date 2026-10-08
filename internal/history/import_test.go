@@ -68,3 +68,42 @@ func TestImportIsIdempotentAndKeepsPrunedDays(t *testing.T) {
 		t.Fatal("the favorite did not come along")
 	}
 }
+
+func TestOwnLeavesOutWhatSyncBroughtIn(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("AppData", dir)
+	t.Setenv("XDG_CONFIG_HOME", dir)
+	t.Setenv("HOME", dir)
+	s, err := NewStore(500, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer s.Close()
+	now := time.Now()
+	today := now.Format("2006-01-02")
+	if err := s.Append(Entry{ID: "mine", Timestamp: now, Raw: "hier gedicteerd", DurationMS: 1000}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := s.Import(SyncSource("laptop"), []Entry{{ID: "theirs", Timestamp: now, Raw: "daar gedicteerd ja", DurationMS: 2000}},
+		map[string]DaySums{today: {Words: 3, Sentences: 1, Activations: 1, DurationMS: 2000}}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := s.Import("web:browser", []Entry{{ID: "moved", Timestamp: now, Raw: "uit de browser", DurationMS: 500}},
+		map[string]DaySums{today: {Words: 3, Sentences: 1, Activations: 1, DurationMS: 500}}); err != nil {
+		t.Fatal(err)
+	}
+	own, err := s.OwnEntries(now.Add(-time.Hour), now.Add(time.Hour))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(own) != 2 {
+		t.Fatalf("own entries %d, want 2 (dictated here + moved from the browser)", len(own))
+	}
+	sums, err := s.OwnDaySums()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := sums[today]; got.Words != 5 || got.Activations != 2 {
+		t.Fatalf("own sums %+v, want 5 words in 2 activations", got)
+	}
+}

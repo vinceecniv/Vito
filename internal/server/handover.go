@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	"vito/internal/cloudsync"
 	"vito/internal/config"
 	"vito/internal/history"
 	"vito/internal/uibundle"
@@ -169,7 +170,7 @@ func (s *Server) handleHandoverApply(w http.ResponseWriter, r *http.Request) {
 	if p.Config != nil && (opt.Dictionary || opt.Settings) {
 		cfg := s.d.Config()
 		if opt.Dictionary {
-			cfg.Dictionary = mergeDictionary(cfg.Dictionary, p.Config.Dictionary)
+			cfg.Dictionary = cloudsync.MergeDictionary(cfg.Dictionary, p.Config.Dictionary)
 		}
 		if opt.Settings {
 			// What someone sets while trying Vito: the language they speak and
@@ -191,34 +192,4 @@ func (s *Server) handleHandoverApply(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "added": added})
-}
-
-// mergeDictionary adds the browser's keyterms and corrections to the app's,
-// skipping what is already there (ignoring case).
-func mergeDictionary(have, add config.Dictionary) config.Dictionary {
-	out := config.Dictionary{
-		Keyterms:    append([]string(nil), have.Keyterms...),
-		Corrections: append([]config.Correction(nil), have.Corrections...),
-	}
-	seen := map[string]bool{}
-	for _, k := range out.Keyterms {
-		seen[strings.ToLower(strings.TrimSpace(k))] = true
-	}
-	for _, k := range add.Keyterms {
-		if key := strings.ToLower(strings.TrimSpace(k)); key != "" && !seen[key] {
-			seen[key] = true
-			out.Keyterms = append(out.Keyterms, k)
-		}
-	}
-	wrong := map[string]bool{}
-	for _, c := range out.Corrections {
-		wrong[strings.ToLower(strings.TrimSpace(c.Wrong))] = true
-	}
-	for _, c := range add.Corrections {
-		if key := strings.ToLower(strings.TrimSpace(c.Wrong)); key != "" && !wrong[key] {
-			wrong[key] = true
-			out.Corrections = append(out.Corrections, c)
-		}
-	}
-	return out
 }

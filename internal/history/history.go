@@ -120,6 +120,10 @@ func NewStore(maxEntries, retentionDays int) (*Store, error) {
 	// The failed-cleanup reason (added later than the table); older rows keep ''
 	// — the reason was never stored back then, not even for the ones that failed.
 	_, _ = db.Exec("ALTER TABLE history ADD COLUMN cleanup_error TEXT NOT NULL DEFAULT ''")
+	// Where an entry came from when it was not dictated here: 'web:<id>' for a
+	// browser hand-over, 'sync:<device>' for another computer (see import.go).
+	_, _ = db.Exec("ALTER TABLE history ADD COLUMN origin TEXT NOT NULL DEFAULT ''")
+	_, _ = db.Exec(importedDaysSchema)
 	s := &Store{db: db, maxEntries: maxEntries, retentionDays: retentionDays}
 	s.importLegacy(filepath.Join(base, "history.jsonl"))
 	s.backfillDayStats()

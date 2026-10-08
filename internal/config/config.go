@@ -268,12 +268,27 @@ type Config struct {
 	Costs      Costs   `json:"costs"`
 	Update     Update  `json:"update"`
 	Backup     Backup  `json:"backup"`
+	Sync       Sync    `json:"sync,omitzero"`
 	// Demo fills the UI with fabricated English sample data — statistics, costs,
 	// history, dictionary and a replayed live transcript — for screenshots and
 	// demos. Deliberately file-only (no setting in the UI) so it can't be turned
 	// on by accident. Your real history and dictionary are left untouched: they
 	// are hidden while it's on, not replaced.
 	Demo bool `json:"demo"`
+}
+
+// Sync shares dictations, day sums, achievements and the dictionary between
+// computers through an app folder in the user's own cloud storage
+// (internal/cloudsync). Set by its own endpoints, never by a settings save.
+type Sync struct {
+	Provider     string `json:"provider,omitempty"` // "dropbox" | "onedrive"; "" is off
+	RefreshToken string `json:"refresh_token,omitempty"`
+	Account      string `json:"account,omitempty"` // whose storage, for the settings page
+	DeviceID     string `json:"device_id,omitempty"`
+	DeviceName   string `json:"device_name,omitempty"`
+	// DictionaryAt is when the dictionary last changed here (unix ms). The
+	// newest change wins across computers.
+	DictionaryAt int64 `json:"dictionary_at,omitempty"`
 }
 
 // PushToTalkEnabled reports whether the hold-to-talk behaviour is on.

@@ -23,6 +23,7 @@ import (
 	"regexp"
 	"runtime"
 	"runtime/debug"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -36,6 +37,7 @@ import (
 	"vito/internal/autostart"
 	"vito/internal/backup"
 	"vito/internal/cleanup"
+	"vito/internal/cloudsync"
 	"vito/internal/config"
 	"vito/internal/daemon"
 	"vito/internal/demo"
@@ -60,6 +62,7 @@ type Server struct {
 	port     int
 	updates  *update.Checker
 	ui       *uibundle.Manager
+	sync     *cloudsync.Engine
 	auto     *update.Auto
 	// updatedFrom is the version this start replaced, when it was an update.
 	updatedFrom string
@@ -82,6 +85,7 @@ func New(d *daemon.Daemon, log *slog.Logger, audioCtx *audio.Context, hist *hist
 	if fetch {
 		go s.ui.Run(context.Background())
 	}
+	s.startSync()
 	s.updatedFrom = update.TakeUpdatedFrom(Version)
 	s.auto = update.NewAuto(s.updates, log,
 		func() bool { return d.Config().Update.AutoEnabled() },
@@ -163,6 +167,12 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("OPTIONS /api/hello", s.handleHello)
 	mux.HandleFunc("POST /handover", s.handleHandover)
 	mux.HandleFunc("GET /api/handover/{id}", s.auth(s.handleHandoverSummary))
+	// Cloud sync (sync.go).
+	mux.HandleFunc("GET /api/sync", s.auth(s.handleSyncStatus))
+	mux.HandleFunc("POST /api/sync/connect", s.auth(s.handleSyncConnect))
+	mux.HandleFunc("POST /api/sync/now", s.auth(s.handleSyncNow))
+	mux.HandleFunc("POST /api/sync/disconnect", s.auth(s.handleSyncDisconnect))
+	mux.HandleFunc("GET /oauth/callback", s.handleOAuthCallback)
 	mux.HandleFunc("POST /api/handover/{id}/apply", s.auth(s.handleHandoverApply))
 	mux.HandleFunc("POST /api/ui/check", s.auth(s.handleUICheck))
 	mux.HandleFunc("GET /api/linux-tools", s.auth(s.handleLinuxTools))
@@ -583,6 +593,12 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	}
 	// The local API is not allowed to move or re-key the server itself.
 	cfg.Server = current.Server
+	// Sync has its own endpoints; a settings save only stamps a dictionary
+	// change, so the newest one wins across computers.
+	cfg.Sync = current.Sync
+	if !slices.Equal(cfg.Dictionary.Keyterms, savedDict.Keyterms) || !slices.Equal(cfg.Dictionary.Corrections, savedDict.Corrections) {
+		cfg.Sync.DictionaryAt = time.Now().UnixMilli()
+	}
 	// The dashboard layout has its own endpoint; a settings save carries the
 	// copy the page loaded, which may be older than a layout saved since.
 	cfg.UI.Dashboard = savedDashboard

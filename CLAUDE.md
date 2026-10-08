@@ -31,6 +31,44 @@ Publish with `pwsh -File scripts/publish-ui.ps1 [-Push]` (builds into
 `~/.vito-signing/ui-ed25519.key` on the Windows build machine; losing it means
 shipping a release with a new public key.
 
+## Vito in the browser (vito.talk/app)
+
+The same `index.html` runs without the app. When the page is not served by the
+daemon, `__VITO_TOKEN__` is still the placeholder; then `STANDALONE` is true,
+`standalone/backend.js` answers every `api()` call and stands in for the
+WebSocket (localStorage for config, history and day sums), and
+`standalone/whistle-worker.js` runs Whistle as WebAssembly, cut at pauses like
+`internal/stt/whistle_stream.go` (the engine's own streaming mode is ~2× slower
+than realtime in WASM). Its stats/streaks/achievements are ports of
+`internal/history` — keep them in step. Settings that need the app are hidden by
+CSS under `.standalone`; `.web-only`/`.helper-only` swap text.
+
+Asset URLs in `index.html` must stay **relative** (`i18n/…`, not `/i18n/…`): the
+browser version lives under `/app/`.
+
+Build the site with `go run ./packaging/uibundle app -out <dir>` (adds the
+default config, the achievement list and the pinned needle WASM). Test it
+locally by serving `<dir>` under `/app/` and opening it in headless Edge with
+`--use-file-for-fake-audio-capture=<wav>` as the microphone.
+
+From the browser to the app: the daemon answers `GET /api/hello` to
+`https://vito.talk` only (plus `VITO_WEB_ORIGIN`), and `POST /handover` parks
+the browser's data for the app's own page to confirm (`internal/server/handover.go`,
+`history.Import`, idempotent per source).
+
+## Cloud sync
+
+`internal/cloudsync`: each computer writes only `devices/<id>.json` and
+`history/<id>/<yyyy-mm>.json` in the app folder of the user's Dropbox or
+OneDrive and imports the others' (`history.Import` with `SyncSource`). Entries
+taken over are marked by `origin`, so they are never re-shared; the dictionary
+is newest-wins after a first merge. OAuth is PKCE with a public client id;
+`DropboxAppKey` and `OneDriveClientID` in `remote.go` are empty until the apps
+are registered (Dropbox: App folder, redirect `http://127.0.0.1:4573/oauth/callback`;
+Azure: public client, redirect `http://localhost:4573/oauth/callback`,
+`Files.ReadWrite.AppFolder`). `VITO_DROPBOX_KEY` / `VITO_ONEDRIVE_ID` override
+them for testing.
+
 ## Translations
 
 The interface ships in 60 languages. English is the source language: the code
