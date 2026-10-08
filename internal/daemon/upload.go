@@ -101,7 +101,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 		durationMS = out.DurationMS
 	}
 
-	raw := dictionary.Apply(strings.TrimSpace(out.Text), cfg.Dictionary.Corrections)
+	raw := cleanup.Plain(dictionary.Apply(strings.TrimSpace(out.Text), cfg.Dictionary.Corrections))
 	if raw == "" {
 		err := fmt.Errorf("geen spraak herkend in dit bestand")
 		d.emitUpload(UploadStatus{Phase: "error", Name: name, Error: err.Error()})
@@ -127,7 +127,7 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 				d.markCredit(p, true)
 			}
 		} else {
-			cleaned, cleanupUsed = out, true
+			cleaned, cleanupUsed = cleanup.Plain(out), true
 			d.markCredit(cleanup.ProviderName(cfg.Cleanup), false)
 		}
 	}
