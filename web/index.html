@@ -1782,6 +1782,16 @@
           <label class="fld" data-help="sttopenaimodel">Model</label>
           <input type="text" id="s-sttopenaimodel" placeholder="whisper-large-v3-turbo" autocomplete="off">
           </div>
+          <div class="prov-settings" id="prov-whistle" hidden>
+          <p class="act-note" style="margin:0 0 8px;">Runs on this computer, free, and your audio never leaves it: Cactus Compute's Whistle, a speech model of 17 MB. Text appears while you speak, cut at your pauses.</p>
+          <p class="act-note" style="margin:0 0 8px;"><b>Languages (7):</b> English, Dutch, German, French, Spanish, Italian, Polish. Keyterms from your dictionary are used.</p>
+          <div class="act-note" id="whistle-status" style="margin:0 0 8px; padding:9px 12px; border-radius:9px; background:var(--card-border); color:var(--text2);"></div>
+          <div class="up-prog" id="whistle-bar" hidden style="margin:0 0 10px;"><div class="up-bar"><i></i></div></div>
+          <div class="rowflex" style="gap:9px; align-items:center;">
+            <button type="button" class="mini-btn" id="whistle-install">Download</button>
+            <button type="button" class="mini-btn" id="whistle-remove">Remove</button>
+          </div>
+          </div>
           <div class="prov-settings" id="prov-local" hidden>
           <p class="act-note" style="margin:0 0 8px;">Runs on this computer, free, and your audio never leaves it. Vito installs and runs the engine itself: parakeet.cpp with NVIDIA's Parakeet TDT 0.6B v3.</p>
           <p class="act-note" style="margin:0 0 8px;" data-help="localstt"><b>Languages (25):</b> Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages. Keyterms are not used by this engine; your corrections are.</p>
@@ -2176,6 +2186,23 @@ const TR = { nl: {
   "Status":"Status",
   "Dashboard":"Dashboard",
   "Main figure":"Hoofdcijfer",
+  "On this computer, free, nothing leaves it. A download of 18 MB.":"Op deze computer, gratis, er gaat niets de deur uit. Een download van 18 MB.",
+  "Requires: nothing but the small download below — no account, no key, no server of your own.":"Nodig: alleen de kleine download hieronder — geen account, geen sleutel, geen eigen server.",
+  "Best for: trying Vito, and dictating offline":"Ideaal voor: Vito uitproberen, en offline dicteren",
+  "7 languages: English, Dutch, German, French, Spanish, Italian, Polish":"7 talen: Engels, Nederlands, Duits, Frans, Spaans, Italiaans, Pools",
+  "Live transcript while you speak":"Live transcript terwijl je praat",
+  "Less accurate than Parakeet or Soniox, mostly with names and jargon":"Minder nauwkeurig dan Parakeet of Soniox, vooral bij namen en vakjargon",
+  "Not downloaded":"Niet gedownload",
+  "Ready":"Klaar",
+  "Ready — runs on this computer, nothing leaves it.":"Klaar — draait op deze computer, er gaat niets de deur uit.",
+  "Not downloaded yet. A download of about 18 MB, once.":"Nog niet gedownload. Een eenmalige download van ongeveer 18 MB.",
+  "Downloading Whistle…":"Whistle downloaden…",
+  "Remove Whistle?":"Whistle verwijderen?",
+  "Deletes the Whistle model from this computer. You can download it again at any time.":"Verwijdert het Whistle-model van deze computer. Je kunt het op elk moment opnieuw downloaden.",
+  "Runs on this computer, free, and your audio never leaves it: Cactus Compute's Whistle, a speech model of 17 MB. Text appears while you speak, cut at your pauses.":"Draait op deze computer, gratis, en je audio gaat nooit de deur uit: Whistle van Cactus Compute, een spraakmodel van 17 MB. De tekst verschijnt terwijl je praat, geknipt op je pauzes.",
+  "Languages (7):":"Talen (7):",
+  "English, Dutch, German, French, Spanish, Italian, Polish. Keyterms from your dictionary are used.":"Engels, Nederlands, Duits, Frans, Spaans, Italiaans, Pools. Sleutelwoorden uit je woordenboek worden gebruikt.",
+
   "days in a row":"dagen op rij",
   "Dictate today to start a streak":"Dicteer vandaag om een reeks te beginnen",
   "Nothing cleaned up in this period yet":"Nog niets opgeschoond in deze periode",
@@ -3221,6 +3248,7 @@ const OS_LANG = (navigator.language || "").slice(0, 2).toLowerCase();
 // list — each with a real flag (served from /flags) and a localized name below.
 const SONIOX_LANGS = ["en","nl","de","fr","es","it","pt","pl","ru","uk","cs","sk","sv","da","no","fi","el","hu","ro","bg","hr","sr","sl","bs","sq","mk","be","lt","lv","et","ca","eu","gl","cy","tr","az","kk","ar","he","fa","ur","hi","bn","gu","pa","mr","kn","ml","ta","te","zh","ja","ko","vi","th","id","ms","tl","af","sw"];
 // Parakeet TDT 0.6B v3's 25 languages, minus Maltese (no flag in LANG_DATA).
+const WHISTLE_LANGS = ["nl","en","de","fr","es","it","pl"];
 const PARAKEET_LANGS = ["nl","en","de","fr","es","it","pt","pl","cs","sk","hu","ro","bg","hr","sl","el","sv","da","fi","et","lv","lt","ru","uk"];
 // The marks on the cards: the providers' own icons (web/logos), Vito's bars for
 // its own engine, and a server icon for an endpoint that could be anything.
@@ -3232,6 +3260,10 @@ const SPEECH_MODELS = [
   // The engine Vito installs and runs itself (see internal/localstt) comes
   // first: it is the one choice that needs no account and sends nothing away.
   // The picker's languages are the model's 25, minus Maltese, which has no flag here.
+  { id:"whistle", provider:"whistle", name:"Whistle (small, built-in)", price:0, langs:WHISTLE_LANGS, logo:LOGO_VITO,
+    sub:"On this computer, free, nothing leaves it. A download of 18 MB.",
+    needs:"Requires: nothing but the small download below — no account, no key, no server of your own.",
+    bullets:["Best for: trying Vito, and dictating offline", "7 languages: English, Dutch, German, French, Spanish, Italian, Polish", "Live transcript while you speak", "Less accurate than Parakeet or Soniox, mostly with names and jargon"] },
   { id:"vito-local", provider:"local", name:"Vito local (Parakeet)", price:0, langs:PARAKEET_LANGS, logo:LOGO_VITO,
     sub:"On this computer, free, nothing leaves it. One download of about 1 GB.",
     needs:"Requires: nothing but the one-time download below — no account, no key, no server of your own.",
@@ -3256,7 +3288,7 @@ const SPEECH_MODELS = [
     needs:"Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.",
     bullets:["Best for: privacy — runs on your own machine", "Any language the model supports", "No live transcript: the text arrives after you stop", "Keyterms sent as prompt (Whisper)"] },
 ];
-const PROVIDER_NAMES = { assemblyai:"AssemblyAI", soniox:"Soniox", openai:"Speech endpoint", local:"Vito local" };
+const PROVIDER_NAMES = { assemblyai:"AssemblyAI", soniox:"Soniox", openai:"Speech endpoint", local:"Vito local", whistle:"Whistle" };
 // The endpoint provider is named after what is behind the URL, as the daemon
 // names it in the out-of-credit card and the cleanup side names its own.
 function sttEndpointName(){
@@ -3281,6 +3313,7 @@ function sttEndpointRateUSD(){
 function providerReady(p){
   if (!cfg) return false;
   if (p === "local") return !!(localStt && localStt.installed);
+  if (p === "whistle") return !!(whistleSt && whistleSt.phase === "ready");
   const v = p === "soniox" ? cfg.stt.soniox_api_key : p === "openai" ? cfg.stt.openai_base_url : cfg.stt.api_key;
   return !!(v || "").trim();
 }
@@ -3437,8 +3470,8 @@ function modelPrice(usd){
 // The parts of a card that change while you type or while the local engine
 // installs, kept apart so they can be refreshed in place.
 const cardPrice = (m) => { const rate = m.provider === "openai" ? sttEndpointRateUSD() : m.price; return rate > 0 ? `${modelPrice(rate)}<em>/${t("hr")}</em>` : t("free"); };
-const cardTag = (m) => m.provider === "openai" ? sttEndpointName() : m.provider === "local" ? localSttTag() : PROVIDER_NAMES[m.provider];
-const cardMissing = (m) => m.provider === "local" ? "Not installed" : m.provider === "openai" ? "Endpoint missing" : "API key missing";
+const cardTag = (m) => m.provider === "openai" ? sttEndpointName() : m.provider === "local" ? localSttTag() : m.provider === "whistle" ? whistleTag() : PROVIDER_NAMES[m.provider];
+const cardMissing = (m) => m.provider === "local" ? "Not installed" : m.provider === "whistle" ? "Not downloaded" : m.provider === "openai" ? "Endpoint missing" : "API key missing";
 const providerLabel = (p) => p === "local" ? t("Vito local") : p === "openai" ? t("Speech endpoint") : PROVIDER_NAMES[p];
 // Which fold-outs the user opened or closed this session; unset means "open if
 // it is the active provider", which is what a fresh page shows.
@@ -3454,7 +3487,7 @@ function buildModelCards(){
   box.dataset.sig = sig;
   // The settings blocks are inside the cards from the previous render; park
   // them first, or replacing the cards' HTML would take them along.
-  const PROVIDERS = ["local", "soniox", "assemblyai", "openai"], holder = $("prov-holder");
+  const PROVIDERS = ["whistle", "local", "soniox", "assemblyai", "openai"], holder = $("prov-holder");
   PROVIDERS.forEach(p => { const b = $("prov-" + p); if (b && holder) holder.appendChild(b); });
   // A provider's settings sit under its selected card, or under its last card
   // when none of its cards is selected (AssemblyAI has two).
@@ -3496,6 +3529,8 @@ function buildModelCards(){
     // and its settings unfold, since that is where you go next.
     if (cfg) cfg.stt.provider = c.dataset.provider;
     panelOpen[c.dataset.provider] = true;
+    // Whistle is small enough to fetch the moment you pick it: no second step.
+    if (c.dataset.provider === "whistle" && whistleSt && ["absent", "error"].includes(whistleSt.phase)) installWhistle();
     updateKeytermsNotice();
     buildModelCards();
     buildLangDropdown();
@@ -3655,6 +3690,57 @@ function syncSttEndpointUI(){
 // Its state comes from /api/local-stt once, then follows "local_stt" events:
 // install progress, the process starting, running, or dying.
 let localStt = null;
+// Whistle, the small built-in model: a download of 18 MB, then ready. Nothing
+// to start — each clip runs on its own.
+let whistleSt = null;
+async function loadWhistle(){
+  whistleSt = await api("/api/whistle").catch(() => null);
+  renderWhistle();
+  buildModelCards();
+}
+function whistleTag(){
+  const s = whistleSt;
+  if (!s) return "Whistle";
+  switch (s.phase) {
+    case "unsupported": return t("Not available on this system");
+    case "ready": return t("Ready");
+    case "downloading": return t("Downloading…") + " " + Math.round(100 * (s.done || 0) / (s.total || 1)) + "%";
+    case "error": return t("Error");
+    default: return t("Not downloaded");
+  }
+}
+function renderWhistle(){
+  const s = whistleSt, box = $("whistle-status"), bar = $("whistle-bar");
+  if (!box) return;
+  if (!s) { box.textContent = t("Status unavailable."); return; }
+  const pct = Math.round(100 * (s.done || 0) / (s.total || 1));
+  box.textContent = {
+    unsupported: t("There is no build of this engine for your system."),
+    ready: "✓ " + t("Ready — runs on this computer, nothing leaves it."),
+    downloading: t("Downloading…") + " " + pct + "%",
+    error: "✗ " + (s.error || t("Error")),
+  }[s.phase] || t("Not downloaded yet. A download of about 18 MB, once.");
+  bar.hidden = s.phase !== "downloading";
+  bar.querySelector("i").style.width = pct + "%";
+  $("whistle-install").hidden = ["unsupported", "ready", "downloading"].includes(s.phase);
+  $("whistle-remove").hidden = s.phase !== "ready";
+}
+async function installWhistle(){
+  try {
+    const r = await api("/api/whistle/install", { method:"POST" });
+    if (!r.ok) { toast("✗ " + (r.error || t("Install failed.")), "err"); return; }
+    toast(t("Downloading Whistle…"), "info");
+  } catch { toast(t("Install failed."), "err"); }
+}
+function removeWhistle(){
+  modal(t("Remove Whistle?"), `<p class="ki-note">${t("Deletes the Whistle model from this computer. You can download it again at any time.")}</p>`,
+    async () => {
+      try {
+        const r = await api("/api/whistle/remove", { method:"POST" });
+        if (!r.ok) toast("✗ " + (r.error || t("Remove failed.")), "err");
+      } catch { toast(t("Remove failed."), "err"); }
+    }, "Remove", true);
+}
 async function loadLocalStt(){
   localStt = await api("/api/local-stt").catch(() => null);
   renderLocalStt();
@@ -4151,6 +4237,11 @@ function connectWS() {
       onPlaybackStream(e.playback || {});
     } else if (e.type === "upload") {
       setUploadProgress(e.upload || {});
+    } else if (e.type === "whistle") {
+      whistleSt = e.whistle || whistleSt;
+      renderWhistle();
+      buildModelCards();
+      if (cfg && cfg.stt && cfg.stt.provider === "whistle") renderStatusTags();
     } else if (e.type === "local_stt") {
       localStt = e.local_stt || localStt;
       renderLocalStt();
@@ -5717,6 +5808,8 @@ $("s-sonioxkey").addEventListener("paste", () => setTimeout(() => testKey("sonio
 // A key arriving or leaving flips which model cards are selectable.
 $("test-sttopenaikey").onclick = () => testKey("openai", "s-sttopenaikey", "test-sttopenaikey", { baseUrl: $("s-sttbaseurl").value.trim(), name: sttEndpointName() });
 $("localstt-install").onclick = installLocalStt;
+$("whistle-install").onclick = installWhistle;
+$("whistle-remove").onclick = removeWhistle;
 $("localstt-remove").onclick = removeLocalStt;
 $("s-localvariant").addEventListener("change", autoSaveSettings);
 $("info-sttopenaikey").onclick = () => showKeyInfo($("s-sttpreset").value === "openai" ? "openai" : "groq");
@@ -7462,7 +7555,7 @@ function showCostInfo(){
   // For the endpoint provider a zero is the real rate (a server of your own),
   // not a missing one to paper over with the default.
   const prov = (cfg && cfg.stt && cfg.stt.provider) || "";
-  const endpoint = prov === "openai" || prov === "local";
+  const endpoint = prov === "openai" || prov === "local" || prov === "whistle";
   const stt = endpoint ? (c.stt_per_hour_usd || 0) : (c.stt_per_hour_usd || rates.stt_per_hour_usd || 0.15);
   const cin = c.cleanup_in_per_mtok_usd || rates.cleanup_in_per_mtok_usd || 1.0;
   const cout = c.cleanup_out_per_mtok_usd || rates.cleanup_out_per_mtok_usd || 5.0;
@@ -7961,6 +8054,7 @@ async function loadSettings() {
   promptActive = cfg.cleanup.active_prompt || "";
   renderPromptPicker();
   loadLocalStt();
+  loadWhistle();
   // Vito's own sets come from the daemon, not the page: they are the prompts the
   // running build actually uses, and would drift if the UI kept its own copy.
   loadPromptBuiltins().then(renderPromptPicker);
@@ -8072,6 +8166,7 @@ function renderStatusTags(){
   // URL (and which model) is what tells you something.
   const sttLabel = sm && sm.provider === "openai" ? sttEndpointName() + (cfg.stt.openai_model ? " · " + cfg.stt.openai_model : "")
     : sm && sm.provider === "local" ? t("Vito local") + " · Parakeet" + (localStt && localStt.phase !== "running" ? " · " + localSttTag() : "")
+    : sm && sm.provider === "whistle" ? "Whistle" + (whistleSt && whistleSt.phase !== "ready" ? " · " + whistleTag() : "")
     : sm ? sm.name : null;
   tags.push({ ico: ICON_MIC2, text: sttLabel || ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
   tags.push({ raw: langIcon((cfg.stt && cfg.stt.language) || ""), text: langShortName(cfg.stt && cfg.stt.language), sec: "stt" });

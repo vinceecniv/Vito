@@ -59,6 +59,10 @@ func TranscribeUpload(ctx context.Context, cfg config.STT, keyterms []string, pa
 		return newSonioxFileClient(cfg, keyterms).transcribe(ctx, path, onProgress)
 	case "openai":
 		return newOpenAIClient(cfg, keyterms).transcribeUpload(ctx, path, onProgress)
+	case "whistle":
+		onProgress(UploadProgress{Phase: "transcribe"})
+		text, err := whistleFile{lang: whistleLang(cfg), keywords: keyterms}.TranscribeFile(ctx, path)
+		return UploadOutcome{Text: text}, err
 	}
 	return NewAsyncClient(cfg, keyterms).transcribeWithProgress(ctx, path, onProgress)
 }
@@ -72,8 +76,8 @@ func UploadRateUSD(cfg config.STT) float64 {
 		return 0.10 // stt-async-v5
 	case "openai":
 		return OpenAIRateUSD(cfg) // one price: the audio API has no streaming tier
-	case "local":
-		return 0 // Vito's own engine on this machine
+	case "local", "whistle":
+		return 0 // a model on this machine
 	}
 	return 0.15 // AssemblyAI pre-recorded, default model
 }

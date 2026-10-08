@@ -131,6 +131,9 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/local-stt", s.auth(s.handleLocalSTT))
 	mux.HandleFunc("POST /api/local-stt/install", s.auth(s.handleLocalSTTInstall))
 	mux.HandleFunc("POST /api/local-stt/remove", s.auth(s.handleLocalSTTRemove))
+	mux.HandleFunc("GET /api/whistle", s.auth(s.handleWhistle))
+	mux.HandleFunc("POST /api/whistle/install", s.auth(s.handleWhistleInstall))
+	mux.HandleFunc("POST /api/whistle/remove", s.auth(s.handleWhistleRemove))
 	mux.HandleFunc("GET /api/cleanup/prompts", s.auth(s.handleBuiltinPrompts))
 	mux.HandleFunc("GET /api/about", s.auth(s.handleAbout))
 	mux.HandleFunc("GET /api/linux-tools", s.auth(s.handleLinuxTools))
@@ -696,8 +699,8 @@ func (s *Server) costRates() (sttHr, inRate, outRate, fx float64, currency strin
 		// Taken as is, zero included: a server of your own is free, and "unknown
 		// rate, assume the default" would bill it at AssemblyAI's price.
 		sttHr = stt.OpenAIRateUSD(cfg.STT)
-	case "local":
-		sttHr = 0 // Vito's own engine on this machine
+	case "local", "whistle":
+		sttHr = 0 // a model on this machine
 	default:
 		sttHr = nonZero(sttRateUSD(cfg.STT), nonZero(c.SttPerHourUSD, 0.15))
 	}
@@ -974,6 +977,29 @@ func (s *Server) handleBuiltinPrompts(w http.ResponseWriter, r *http.Request) {
 // handleLocalSTT reports the managed local speech engine: whether this machine
 // has a build, whether it is installed, and what it is doing right now. The
 // page reads it once and then follows the "local_stt" events.
+// handleWhistle reports the built-in small model: whether this platform has an
+// engine, and whether it is downloaded. Install and remove answer at once;
+// progress follows as "whistle" events.
+func (s *Server) handleWhistle(w http.ResponseWriter, r *http.Request) {
+	s.writeJSON(w, http.StatusOK, s.d.Whistle().Status())
+}
+
+func (s *Server) handleWhistleInstall(w http.ResponseWriter, r *http.Request) {
+	if err := s.d.Whistle().Install(); err != nil {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
+func (s *Server) handleWhistleRemove(w http.ResponseWriter, r *http.Request) {
+	if err := s.d.Whistle().Remove(); err != nil {
+		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
 func (s *Server) handleLocalSTT(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, s.d.LocalSTT().Status())
 }
