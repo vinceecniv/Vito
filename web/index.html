@@ -520,7 +520,7 @@
   .setsec-sel .flagsel-btn svg, .setsec-sel .flagsel-opt svg { width:16px; height:16px; flex:0 0 16px; color:var(--text3); }
   .setsec-sel .flagsel-opt.sel svg { color:var(--accent); }
   #tab-settings { position:relative; }
-  #tab-settings.settabs-narrow .settabs { position:absolute; left:0; right:0; visibility:hidden; pointer-events:none; width:auto; max-width:none; }
+  #tab-settings.settabs-narrow .settabs { position:absolute; left:0; right:0; visibility:hidden; pointer-events:none; width:auto; max-width:min(800px,100%); }
   #tab-settings.settabs-narrow .setsec-sel { display:block; }
   @media (max-width:820px){
     .setsec-sel, .settings-pane { max-width:100%; }
@@ -4353,7 +4353,8 @@ const SETTABS_MAX_LINES = 2;
 function fitSetTabs(){
   const sec = $("tab-settings"), bar = $("settabs");
   if (!sec.clientWidth) return; // the settings page isn't showing; it is checked when it does
-  const btns = [...bar.children].filter(b => !b.hidden);
+  // Tabs hidden by CSS (the browser version leaves some out) take no line.
+  const btns = [...bar.children].filter(b => !b.hidden && getComputedStyle(b).display !== "none");
   const lines = new Set(btns.map(b => b.offsetTop)).size;
   sec.classList.toggle("settabs-narrow", lines > SETTABS_MAX_LINES);
 }
