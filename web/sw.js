@@ -3,7 +3,7 @@
 // state instead of a browser error). API and WebSocket traffic is never cached.
 // Bumped when cached content changes shape: activate() drops every other cache,
 // which is what clears out translations from a previous version of the app.
-const CACHE = "vito-v4";
+const CACHE = "vito-v5";
 const CORE = ["./", "manifest.webmanifest", "favicon.svg", "icon-192.png", "icon-512.png",
   "fonts-baloo2.woff2", "fonts-sora.woff2"];
 
@@ -29,7 +29,9 @@ self.addEventListener("fetch", (e) => {
   if (e.request.mode === "navigate") {
     // Network-first for the page (keeps the injected token fresh), cache fallback.
     e.respondWith(
-      fetch(e.request)
+      // no-cache: ask the server every time (a 304 costs nothing). Without it the
+      // browser's HTTP cache — ten minutes on GitHub Pages — answers for it.
+      fetch(e.request.url, { cache: "no-cache", credentials: "same-origin" })
         .then((r) => { const cp = r.clone(); caches.open(CACHE).then((c) => c.put("./", cp)); return r; })
         .catch(() => caches.match("./"))
     );
@@ -39,7 +41,7 @@ self.addEventListener("fetch", (e) => {
     // would pin a language file for as long as the cache name stays the same,
     // and a stale one silently leaves the interface in English.
     e.respondWith(
-      fetch(e.request)
+      fetch(e.request, { cache: "no-cache" })
         .then((r) => { if (r.ok) { const cp = r.clone(); caches.open(CACHE).then((c) => c.put(e.request, cp)); } return r; })
         .catch(() => caches.match(e.request))
     );
