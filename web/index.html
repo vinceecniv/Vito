@@ -1511,6 +1511,8 @@
   .standalone .web-only-inline { display:contents; }
   .standalone .helper-only { display:none !important; }
   a.btn.js-get-app { text-decoration:none; }
+  .sync-pickrow { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:6px; }
+  .sync-pickrow input { flex:1 1 240px; min-width:0; }
   .sync-cands { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
   .sync-cand, .sync-on { display:flex; align-items:center; gap:12px; text-align:left; padding:10px 12px; border-radius:10px;
     border:1px solid var(--input-border); background:var(--input-bg); color:var(--text); font:inherit; }
@@ -3118,7 +3120,9 @@ const TR = { nl: {
   "Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.":"Houd je dictaten, statistieken en kosten, prestaties, woordenboek en opschoonregels gelijk op al je computers, via een map die je eigen sync-app gelijk houdt — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing of een netwerkschijf. Vito praat hiervoor met geen enkele server.",
   "Found on this computer":"Gevonden op deze computer",
   "No sync app found in its usual place. Choose its folder yourself.":"Geen sync-app gevonden op de gebruikelijke plek. Kies de map zelf.",
-  "Other folder…":"Andere map…",
+  "Or another folder":"Of een andere map",
+  "Folder":"Map",
+  "No folder window on this system — type or paste the path.":"Geen mapvenster op dit systeem — typ of plak het pad.",
   "Vito puts its files in a folder called “Vito Sync” inside it.":"Vito zet zijn bestanden daarin in een map “Vito Sync”.",
   "Path of the folder":"Pad van de map",
   "Use this folder":"Deze map gebruiken",
@@ -3293,7 +3297,6 @@ const TR = { nl: {
   // System tray menu (internal/tray)
   "Idle":"Idle",
   "Recording…":"Opname…",
-  "Open settings…":"Instellingen openen…",
   "Open the web UI in the browser":"Open de web-UI in de browser",
   "Start / stop dictation":"Start / stop dictaat",
   "Start or stop a recording":"Start of stop een opname",
@@ -4690,22 +4693,28 @@ function renderSync(){
       (cands.length ? `<div class="subhead">${t("Found on this computer")}</div>
         <div class="sync-cands">${cands.map((c, i) => `<button type="button" class="sync-cand" data-i="${i}">${ICON_FOLDER}<span><b>${ahEsc(c.name)}</b><small>${ahEsc(c.path)}</small></span></button>`).join("")}</div>`
         : `<p class="act-note" style="margin:0;">${t("No sync app found in its usual place. Choose its folder yourself.")}</p>`) +
-      `<div class="rowflex" style="gap:9px; margin-top:12px; align-items:center;">
-        <button type="button" class="btn ${cands.length ? "ghost" : "primary"} small" id="sync-pick">${t("Other folder…")}</button>
-        <span class="act-note" style="margin:0;">${t("Vito puts its files in a folder called “Vito Sync” inside it.")}</span></div>
-      <div class="rowflex" id="sync-typed" style="gap:9px; margin-top:10px;" hidden>
-        <input type="text" id="sync-path" placeholder="${t("Path of the folder")}" style="flex:1; min-width:220px;">
-        <button type="button" class="btn primary small" id="sync-use">${t("Use this folder")}</button></div>`;
+      `<div class="subhead" style="margin-top:16px;">${cands.length ? t("Or another folder") : t("Folder")}</div>
+      <div class="sync-pickrow">
+        <input type="text" id="sync-path" placeholder="${t("Path of the folder")}">
+        <button type="button" class="btn ghost small" id="sync-pick">${t("Browse…")}</button>
+        <button type="button" class="btn primary small" id="sync-use" disabled>${t("Use this folder")}</button>
+      </div>
+      <p class="act-note" style="margin:8px 0 0;">${t("Vito puts its files in a folder called “Vito Sync” inside it.")}</p>`;
     box.querySelectorAll(".sync-cand").forEach(b => b.onclick = () => connect(cands[+b.dataset.i].path));
     $("sync-pick").onclick = async () => {
       try {
         const r = await api("/api/sync/pick", { method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title: t("Choose the folder your sync app keeps in sync") }) });
-        if (r.ok && r.path) return connect(r.path);
-        if (!r.ok && r.error === "no_picker") { $("sync-typed").hidden = false; $("sync-path").focus(); return; }
+        // The chosen folder goes into the field, to be confirmed with the
+        // button beside it — so a picker that isn't there (some Linux
+        // desktops) leaves the same way open: type or paste the path.
+        if (r.ok && r.path) { $("sync-path").value = r.path; $("sync-use").disabled = false; $("sync-use").focus(); return; }
+        if (!r.ok && r.error === "no_picker") { toast(t("No folder window on this system — type or paste the path."), "info", 6000); $("sync-path").focus(); return; }
         if (!r.ok) throw new Error(r.error);
       } catch (e) { toast(e.message, "err"); }
     };
+    $("sync-path").oninput = () => { $("sync-use").disabled = !$("sync-path").value.trim(); };
+    $("sync-path").onkeydown = (e) => { if (e.key === "Enter" && $("sync-path").value.trim()) connect($("sync-path").value.trim()); };
     $("sync-use").onclick = () => { const p = $("sync-path").value.trim(); if (p) connect(p); };
     return;
   }

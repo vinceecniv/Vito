@@ -156,7 +156,7 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 		}
 		mVersion.SetTooltip(t("Version"))
 		mStatus.SetTooltip(t("Status"))
-		set(mSettings, "Open settings…", "Open the web UI in the browser")
+		set(mSettings, "Open Vito", "Open the web UI in the browser")
 		set(mToggle, "Start / stop dictation", "Start or stop a recording")
 		set(mCancel, "Cancel", "Cancel the current recording")
 		set(mMedia, "Media while dictating", "What to do with playing media")

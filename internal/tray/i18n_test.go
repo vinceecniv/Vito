@@ -11,7 +11,7 @@ import (
 // trayKeys are the English source strings relabel and statusText look up.
 var trayKeys = []string{
 	"Version", "Status", "Idle", "Recording…", "Processing…", "idle", "recording", "processing",
-	"Open settings…", "Open the web UI in the browser",
+	"Open Vito", "Open the web UI in the browser",
 	"Start / stop dictation", "Start or stop a recording",
 	"Cancel", "Cancel the current recording",
 	"Media while dictating", "What to do with playing media", "Duck volume", "Pause", "Off",
