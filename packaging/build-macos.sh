@@ -31,6 +31,10 @@ BUNDLE_ID="io.github.vinceecniv.vito"
 # what Go and the SDK still support.
 MIN_MACOS="11.0"
 
+# A non-login shell (an IDE, an agent) may not have Go on its PATH; try the
+# usual install locations before giving up.
+command -v go >/dev/null || PATH="$HOME/go-sdk/go/bin:/usr/local/go/bin:/opt/homebrew/bin:$PATH"
+
 echo "==> building vito $VERSION"
 mkdir -p "$OUT"
 rm -rf "$BUILD"
@@ -238,3 +242,27 @@ SetFile -a C "$DMG"
 cd "$OUT"
 shasum -a 256 "Vito-$VERSION.dmg" > "Vito-$VERSION.dmg.sha256"
 echo "==> built $DMG"
+
+# --release: attach the image to the GitHub release v$VERSION (usually the draft
+# the Windows build created) and write its checksum into the release notes. The
+# notes are drafted before the Mac build exists, so the dmg line in the
+# "Checksums" block carries a placeholder (MAC_DMG_SHA256 or whatever stands
+# there); any indented "<word>  Vito-<version>.dmg" line is overwritten with the
+# real hash, so a rebuild also corrects an outdated one. Publishing stays manual.
+if [ "${2:-}" = "--release" ]; then
+	TAG="v$VERSION"
+	SUM="$(cut -d' ' -f1 "Vito-$VERSION.dmg.sha256")"
+	echo "==> uploading to release $TAG"
+	gh release upload "$TAG" "Vito-$VERSION.dmg" "Vito-$VERSION.dmg.sha256" --clobber
+	NOTES="$BUILD/release-notes.md"
+	gh release view "$TAG" --json body -q .body > "$NOTES"
+	SUM="$SUM" NAME="Vito-$VERSION.dmg" perl -pi -e \
+		's/^(\s+)\S+(\s+)\Q$ENV{NAME}\E\s*$/$1$ENV{SUM}$2$ENV{NAME}\n/' "$NOTES"
+	if grep -qF "$SUM  Vito-$VERSION.dmg" "$NOTES"; then
+		gh release edit "$TAG" --notes-file "$NOTES" >/dev/null
+		echo "    checksum written into the release notes"
+	else
+		echo "    WARNING: no checksum line for Vito-$VERSION.dmg in the notes; add it by hand:" >&2
+		echo "    $SUM  Vito-$VERSION.dmg" >&2
+	fi
+fi

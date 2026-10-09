@@ -229,11 +229,18 @@ prefers `$APPIMAGE` over `os.Executable()`; the latter points into the throwaway
 
 ```sh
 bash packaging/build-macos.sh 2026.8    # -> dist/Vito-2026.8.dmg (+ .sha256)
+bash packaging/build-macos.sh 2026.8 --release   # also attach it to release v2026.8
 ```
 
 Must run on macOS; only the Xcode Command Line Tools are needed. The script
 builds both architectures and merges them with `lipo`, so one download is
 native on Apple Silicon and Intel.
+
+`--release` uploads the `.dmg` and `.sha256` to the existing GitHub release
+(normally the draft the Windows build made, with the Mac checksum still a
+placeholder such as `MAC_DMG_SHA256`) and writes the real hash into the
+"Checksums" block of its notes. Always use it for a release; publishing the
+draft stays a separate, deliberate step.
 
 Two `Info.plist` keys carry the behaviour the binary cannot have on its own:
 `NSMicrophoneUsageDescription` (without it macOS denies the microphone outright
