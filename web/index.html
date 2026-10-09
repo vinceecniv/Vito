@@ -3168,7 +3168,9 @@ const TR = { nl: {
   "Add the dictionary":"Woordenboek toevoegen",
   "Use the language and appearance from the browser":"Taal en weergave uit de browser overnemen",
   "Taken over: {n} dictations.":"Overgenomen: {n} dictaten.",
-  "Take over":"Overnemen",
+  "Bring them along":"Meenemen",
+  "Leave them":"Laat ze staan",
+  "You use the app either way — this only decides whether your browser dictations come along. Without them, they stay in the browser.":"Je gebruikt de app hoe dan ook — dit bepaalt alleen of je dictaten uit de browser meekomen. Zonder blijven ze in de browser staan.",
   "The speech model downloads once (18 MB); after that it even works offline.":"Het spraakmodel wordt één keer gedownload (18 MB); daarna werkt het zelfs offline.",
   "Installing it as an app gives Vito its own window: pin it to the taskbar or Start menu and open straight to it, without hunting for a browser tab. Your dictations stay where they are.":"Als app geïnstalleerd krijgt Vito een eigen venster: zet het vast op de taakbalk of in het Startmenu en open het direct, zonder een browsertabblad te zoeken. Je dictaten blijven waar ze zijn.",
   "Get the app":"Download de app",
@@ -4942,6 +4944,7 @@ async function offerHandover(){
   const box = (id, label, on) => `<label class="tgl" style="margin-top:8px;"><input type="checkbox" id="${id}"${on ? " checked" : ""}><span class="tr"></span> ${label}</label>`;
   modal(t("Take over from the browser?"),
     `<p class="ki-note">${t("Vito in your browser sent what it kept. Dictations already here are skipped, so doing this twice changes nothing.")}</p>
+     <p class="ki-note">${t("You use the app either way — this only decides whether your browser dictations come along. Without them, they stay in the browser.")}</p>
      <p class="ki-note"><b>${n(h.entries)}</b> ${t("dictations")} · <b>${n(h.words)}</b> ${t("words over")} <b>${n(h.days)}</b> ${t("days")}</p>` +
     (h.keyterms || h.corrections ? box("ho-dict", t("Add the dictionary") + ` (${n(h.keyterms + h.corrections)})`, true) : "") +
     (h.settings ? box("ho-set", t("Use the language and appearance from the browser"), false) : ""),
@@ -4950,7 +4953,7 @@ async function offerHandover(){
       api("/api/handover/" + encodeURIComponent(id) + "/apply", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
         .then(r => { toast(t("Taken over: {n} dictations.").replace("{n}", n(r.added)), "ok"); statsHistoryChanged(); loadStats(); if (body.dictionary || body.settings) loadSettings(); })
         .catch(e => toast(e.message, "err"));
-    }, "Take over");
+    }, "Bring them along", false, null, false, "Leave them");
 }
 function connectWS() {
   if (STANDALONE) { VitoStandalone.connect(handleEvent); return; }
@@ -9868,11 +9871,11 @@ function renderKeyterms() {
   const add = document.createElement("button"); add.className = "kt-add"; add.textContent = "+ Keyterm"; add.onclick = addKeyterms;
   box.appendChild(add);
 }
-function modal(title, bodyHTML, onOk, okLabel = "Save", danger = false, onCancel = null, hideCancel = false){
+function modal(title, bodyHTML, onOk, okLabel = "Save", danger = false, onCancel = null, hideCancel = false, cancelLabel = "Cancel"){
   const back = document.createElement("div"); back.className = "modal-backdrop";
   back.innerHTML = `<div class="modal"><h3>${title}</h3>${bodyHTML}
     <div class="rowflex" style="margin-top:14px; justify-content:flex-end;">
-      ${hideCancel ? "" : `<button class="btn ghost small" data-x>${t("Cancel")}</button>`}
+      ${hideCancel ? "" : `<button class="btn ghost small" data-x>${t(cancelLabel)}</button>`}
       <button class="btn ${danger ? "danger" : "primary"} small" data-ok>${t(okLabel)}</button></div></div>`;
   document.body.appendChild(back);
   const close = () => back.remove();
