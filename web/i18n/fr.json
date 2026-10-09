@@ -1009,6 +1009,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito place ses fichiers dans un dossier nommé « Vito Sync » à l'intérieur.",
 "Path of the folder": "Chemin du dossier",
 "Use this folder": "Utiliser ce dossier",
+"Use the dashboard layout from the browser": "Utiliser la disposition du tableau de bord du navigateur",
 "On — fillers out, punctuation fixed.": "Activé — mots parasites retirés, ponctuation corrigée.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Désactivé par défaut dans le navigateur : le texte arrive exactement comme vous l'avez dit.",
 "Switch it on": "L'activer",

@@ -3174,6 +3174,7 @@ const TR = { nl: {
   "Use the language and appearance from the browser":"Taal en weergave uit de browser overnemen",
   "Taken over: {n} dictations.":"Overgenomen: {n} dictaten.",
   "Bring them along":"Meenemen",
+  "Use the dashboard layout from the browser":"Gebruik de dashboardindeling uit de browser",
   "Leave them":"Laat ze staan",
   "You use the app either way — this only decides whether your browser dictations come along. Without them, they stay in the browser.":"Je gebruikt de app hoe dan ook — dit bepaalt alleen of je dictaten uit de browser meekomen. Zonder blijven ze in de browser staan.",
   "The speech model downloads once (18 MB); after that it even works offline.":"Het spraakmodel wordt één keer gedownload (18 MB); daarna werkt het zelfs offline.",
@@ -4884,7 +4885,13 @@ function renderMoved(){
          t("Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.")]
       : [t("You can close this tab, and remove a bookmark to vito.talk/app if you made one."),
          t("Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.")];
-    $("moved-tidy").innerHTML = `<b>${t("Tidy up, once")}</b><ol>${steps.map(x => `<li>${ahEsc(x)}</li>`).join("")}</ol>`;
+    // Built with textContent: this runs while the page is still starting, before
+    // helpers like ahEsc further down exist — and a throw here once stopped the
+    // whole start-up, leaving an empty dashboard behind "Keep using".
+    const box = $("moved-tidy"), b = document.createElement("b"), ol = document.createElement("ol");
+    b.textContent = t("Tidy up, once");
+    steps.forEach(x => { const li = document.createElement("li"); li.textContent = x; ol.appendChild(li); });
+    box.replaceChildren(b, ol);
     if (typeof applyI18n === "function") applyI18n($("moved-screen"));
   }
 }
@@ -4912,6 +4919,9 @@ if (STANDALONE) {
 function moveToApp(){
   // Nothing kept here yet: then there is nothing to take over, just the app.
   const data = VitoStandalone.export();
+  // The dashboard as it looks here — also when it was never rearranged and so
+  // never saved — so the app can open with the same one.
+  if (data.config) { data.config.ui = data.config.ui || {}; data.config.ui.dashboard = loadLayout(); }
   const d = data.config && data.config.dictionary || {};
   if (!(data.history || []).length && !Object.keys(data.days || {}).length && !(d.keyterms || []).length && !(d.corrections || []).length) {
     lsSet("vito-web-moved", "1"); renderMoved();
@@ -4952,11 +4962,24 @@ async function offerHandover(){
      <p class="ki-note">${t("You use the app either way — this only decides whether your browser dictations come along. Without them, they stay in the browser.")}</p>
      <p class="ki-note"><b>${n(h.entries)}</b> ${t("dictations")} · <b>${n(h.words)}</b> ${t("words over")} <b>${n(h.days)}</b> ${t("days")}</p>` +
     (h.keyterms || h.corrections ? box("ho-dict", t("Add the dictionary") + ` (${n(h.keyterms + h.corrections)})`, true) : "") +
-    (h.settings ? box("ho-set", t("Use the language and appearance from the browser"), false) : ""),
+    (h.settings ? box("ho-set", t("Use the language and appearance from the browser"), false) : "") +
+    // On by default while this app still shows the arrangement it started with.
+    (h.layout ? box("ho-layout", t("Use the dashboard layout from the browser"), layoutUntouched(cfg && cfg.ui && cfg.ui.dashboard)) : ""),
     () => {
-      const body = { dictionary: !!($("ho-dict") && $("ho-dict").checked), settings: !!($("ho-set") && $("ho-set").checked) };
+      const body = { dictionary: !!($("ho-dict") && $("ho-dict").checked), settings: !!($("ho-set") && $("ho-set").checked),
+        layout: !!($("ho-layout") && $("ho-layout").checked) };
       api("/api/handover/" + encodeURIComponent(id) + "/apply", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
-        .then(r => { toast(t("Taken over: {n} dictations.").replace("{n}", n(r.added)), "ok"); statsHistoryChanged(); loadStats(); if (body.dictionary || body.settings) loadSettings(); })
+        .then(async r => {
+          toast(t("Taken over: {n} dictations.").replace("{n}", n(r.added)), "ok"); statsHistoryChanged();
+          if (body.dictionary || body.settings || body.layout) await loadSettings();
+          // This page keeps its own copy of the layout; the config now holds
+          // the browser's, so let it take that one.
+          if (body.layout && cfg && cfg.ui && cfg.ui.dashboard) {
+            try { localStorage.setItem("vito-status-layout", JSON.stringify(cfg.ui.dashboard)); } catch {}
+            statusLayout = null; applyStatusLayout();
+          }
+          loadStats();
+        })
         .catch(e => toast(e.message, "err"));
     }, "Bring them along", false, null, false, "Leave them");
 }
@@ -7124,6 +7147,13 @@ function syncLayoutWithConfig(){
   } else if (local && !remote) {
     loadLayout(); saveLayout();
   }
+}
+// Whether a layout is still the one a new user starts with: nothing moved,
+// hidden or resized. Saving happens on first sight, so "saved" says nothing.
+function layoutUntouched(l){
+  if (!l || !Array.isArray(l.order)) return true;
+  const f = freshLayout(), ord = (o) => o.filter(k => LAYOUT_FRESH.includes(k)).join();
+  return ord(l.order) === ord(f.order) && !(l.hidden || []).length && JSON.stringify(l.widths || {}) === JSON.stringify(f.widths);
 }
 const layoutVisible = (key) => !loadLayout().hidden.includes(key);
 // Keys of one group, in the saved order, hidden ones dropped.

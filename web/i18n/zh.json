@@ -1009,6 +1009,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito 会在其中创建一个名为“Vito Sync”的文件夹来存放文件。",
 "Path of the folder": "文件夹路径",
 "Use this folder": "使用此文件夹",
+"Use the dashboard layout from the browser": "使用浏览器中的仪表板布局",
 "On — fillers out, punctuation fixed.": "已开启——去除口头禅，修正标点。",
 "Off by default in the browser: the text arrives exactly as you said it.": "浏览器中默认关闭：文字会和你说的完全一样。",
 "Switch it on": "开启",

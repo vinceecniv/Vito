@@ -1009,6 +1009,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito tallentaa tiedostonsa sen sisällä olevaan kansioon nimeltä ”Vito Sync”.",
 "Path of the folder": "Kansion polku",
 "Use this folder": "Käytä tätä kansiota",
+"Use the dashboard layout from the browser": "Käytä selaimen kojelaudan asettelua",
 "On — fillers out, punctuation fixed.": "Päällä — täytesanat pois, välimerkit korjattu.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Selaimessa oletuksena pois päältä: teksti tulee juuri niin kuin sanoit sen.",
 "Switch it on": "Kytke päälle",

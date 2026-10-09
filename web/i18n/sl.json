@@ -1009,6 +1009,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito svoje datoteke shrani v mapo z imenom »Vito Sync« v njej.",
 "Path of the folder": "Pot do mape",
 "Use this folder": "Uporabi to mapo",
+"Use the dashboard layout from the browser": "Uporabi postavitev nadzorne plošče iz brskalnika",
 "On — fillers out, punctuation fixed.": "Vklopljeno — mašila odstranjena, ločila popravljena.",
 "Off by default in the browser: the text arrives exactly as you said it.": "V brskalniku je privzeto izklopljeno: besedilo pride točno tako, kot ste ga izrekli.",
 "Switch it on": "Vklopi",

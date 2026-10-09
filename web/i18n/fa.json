@@ -1009,6 +1009,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito فایل‌هایش را در پوشه‌ای به نام «Vito Sync» درون آن قرار می‌دهد.",
 "Path of the folder": "مسیر پوشه",
 "Use this folder": "استفاده از این پوشه",
+"Use the dashboard layout from the browser": "استفاده از چیدمان داشبورد مرورگر",
 "On — fillers out, punctuation fixed.": "روشن — کلمات اضافه حذف، نشانه‌گذاری اصلاح‌شده.",
 "Off by default in the browser: the text arrives exactly as you said it.": "در مرورگر به‌طور پیش‌فرض خاموش است: متن دقیقاً همان‌طور که گفتید می‌رسد.",
 "Switch it on": "روشنش کنید",

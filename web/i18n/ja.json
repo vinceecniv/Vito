@@ -1020,6 +1020,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito は、その中の「Vito Sync」というフォルダにファイルを保存します。",
 "Path of the folder": "フォルダのパス",
 "Use this folder": "このフォルダを使う",
+"Use the dashboard layout from the browser": "ブラウザのダッシュボード配置を使う",
 "On — fillers out, punctuation fixed.": "オン — つなぎ言葉を除き、句読点を修正。",
 "Off by default in the browser: the text arrives exactly as you said it.": "ブラウザでは初期設定でオフ：話したとおりのテキストがそのまま届きます。",
 "Switch it on": "オンにする",
