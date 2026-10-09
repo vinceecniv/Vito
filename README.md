@@ -8,6 +8,7 @@
 </p>
 
 <p align="center">
+  <a href="https://vito.talk/app"><img alt="Try it in your browser" src="https://img.shields.io/badge/Try%20it-in%20your%20browser-FF6B5E?style=for-the-badge"></a>
   <a href="#download"><img alt="Download" src="https://img.shields.io/badge/Download-Windows%20%C2%B7%20Linux%20%C2%B7%20macOS-7C3AED?style=for-the-badge"></a>
   <a href="https://vito.talk"><img alt="Website" src="https://img.shields.io/badge/Website-vito.talk-2B2440?style=for-the-badge"></a>
   <a href="https://ko-fi.com/vito_app"><img alt="Ko-fi" src="https://img.shields.io/badge/Support-Ko--fi-FF6B5E?style=for-the-badge"></a>
@@ -42,9 +43,36 @@ You press a hotkey, speak naturally, and Vito:
 
 No window to switch to, no copy-paste dance. Talk, and the text appears where you're already working.
 
+> **Try it first, without installing anything:** open **[vito.talk/app](https://vito.talk/app)** and start
+> dictating in your browser — no account, no key needed. [More below](#try-it-in-your-browser).
+
 <p align="center">
   <img src="assets/marketing/flow.svg" alt="Press → Speak → Paste" width="100%">
 </p>
+
+---
+
+## Try it in your browser
+
+**[vito.talk/app](https://vito.talk/app)** is Vito without the install: the same interface, running entirely
+in your browser.
+
+- 🎙️ **Speech recognition in the browser** — **Whistle**, a small model (18 MB, downloaded once) that then
+  works offline. Seven languages: English, Dutch, German, French, Spanish, Italian and Polish. Fine for
+  trying Vito; for the best results add a **Soniox** key or any **OpenAI-compatible** endpoint (Groq, OpenAI)
+  right in the settings.
+- ✨ **AI cleanup and Vito Assist** with your own key (Groq, OpenAI, Anthropic), straight from the browser.
+- 📋 **The text lands on your clipboard**, and a hotkey of your choice works while the tab has focus.
+- 🔒 **Your dictations stay in your browser** — history, statistics, streaks, achievements and dictionary
+  included. Nothing goes to a Vito server, because there isn't one.
+
+What the browser can't do is reach into other programs: a hotkey that works everywhere, text typed straight
+at your cursor, the larger speech models and sync between computers need the app. When you install it, the
+browser version **finds it by itself** and **moves everything you dictated** over in one click — the app
+shows what came in and asks before taking it. From then on the page simply opens the app.
+
+> Vito is made for dictating at a computer. It runs on a phone or tablet too, but without a hotkey and
+> only via the clipboard — your keyboard's own dictation button is usually handier there.
 
 ---
 
@@ -115,8 +143,10 @@ To spend €15 in a month — a typical *monthly* subscription price elsewhere �
 
 ## Offline, if you want it
 
-Vito ships with a **local speech engine it installs itself**. One button in settings —
-*Install, ≈ 1 GB, once* — and the cloud becomes optional:
+Vito comes with **two speech engines that run on your own computer**, installed from the settings with one
+button. The small one is **Whistle** by Cactus Compute — an 18 MB download, seven languages (English, Dutch,
+German, French, Spanish, Italian, Polish), with **live text while you speak**, cut at your pauses. The big one
+is **Vito local** — *Install, ≈ 1 GB, once* — and with it the cloud becomes optional:
 
 - 💸 **Free** — no key, no account, no per-hour bill.
 - 🔒 **Private** — your audio never leaves the computer; there is nothing to send.
@@ -196,7 +226,11 @@ and **90%+ of humanity** once you count second and lingua-franca languages.
 ## Privacy
 
 - **No tracking. No telemetry. No analytics.** Vito never phones home.
-- Your **history, statistics and settings stay on your own device.**
+- Your **history, statistics and settings stay on your own device** — in the
+  [browser version](#try-it-in-your-browser), in your own browser.
+- **Sync between computers goes through a folder you already sync** (Dropbox, OneDrive, Nextcloud, iCloud
+  Drive, Syncthing…). Vito only reads and writes files there; your sync app moves them. No account, no
+  Vito server, and settings and API keys never leave the computer they're on.
 - The only thing that leaves your computer is the **audio you dictate**, sent **directly** to the
   speech-to-text provider, and — if cleanup is on — the **transcript**, sent directly to the AI provider.
   Nothing more, and only when you're actively dictating. Run cleanup on a **local model** and even the
@@ -210,7 +244,7 @@ and **90%+ of humanity** once you count second and lingua-franca languages.
 
 | Purpose | On your machine | In the cloud |
 |---|---|---|
-| **Speech-to-text** | **[Vito local](#offline-if-you-want-it)** (no key needed) · any OpenAI-compatible endpoint: [whisper.cpp](https://github.com/ggml-org/whisper.cpp), [Speaches](https://speaches.ai), [LocalAI](https://localai.io) | [Soniox](https://soniox.com) · [AssemblyAI](https://www.assemblyai.com) · hosted Whisper at [Groq](https://groq.com) / [OpenAI](https://openai.com) |
+| **Speech-to-text** | **[Vito local](#offline-if-you-want-it)** or **Whistle** (no key needed) · any OpenAI-compatible endpoint: [whisper.cpp](https://github.com/ggml-org/whisper.cpp), [Speaches](https://speaches.ai), [LocalAI](https://localai.io) | [Soniox](https://soniox.com) · [AssemblyAI](https://www.assemblyai.com) · hosted Whisper at [Groq](https://groq.com) / [OpenAI](https://openai.com) |
 | **AI cleanup** | A local model via [Ollama](https://ollama.com) or [LM Studio](https://lmstudio.ai) | [Anthropic](https://www.anthropic.com) (Claude) · [Groq](https://groq.com) (free tier) · [OpenAI](https://openai.com) |
 
 Pick one per row. You need **at most one key to get started** — none at all with the local engine — and the
@@ -262,8 +296,14 @@ Vito is **simple to use, but powerful under the hood.**
 
 ### System & maintenance
 - 🚀 **Start with your computer**, so Vito is always ready.
+- 🔄 **Sync between your computers** through a folder your sync app already keeps the same — dictations,
+  statistics and costs, achievements, dictionary and cleanup rules; deleting or starring a dictation carries
+  over too. Vito finds the usual sync folders, or you browse to one.
 - 🔁 **Backup & restore** with automatic rolling backups.
-- ⬆️ **Built-in update checker** — tells you when a new version is out, and on Windows installs it for you.
+- ⬆️ **Updates itself** — a new version is downloaded, checked against its published checksum and installed
+  once you haven't dictated for a few minutes (the installer on Windows, the AppImage on Linux, the app on
+  macOS). You can switch that off and just be told instead. The interface can also be updated between
+  releases, with a signed update that is verified before it's used.
 - 🎧 **Configurable media behavior** while dictating — do nothing, duck the audio, or auto pause/play.
 - 🐧 **Linux-friendly** — detects missing utilities/libraries and explains how to bind hotkeys in each desktop environment.
 
@@ -275,7 +315,8 @@ Vito is **simple to use, but powerful under the hood.**
 
 ## Download
 
-> Vito is **cross-platform: Windows, Linux and macOS.**
+> Vito is **cross-platform: Windows, Linux and macOS** — and there's a version that needs no install at all:
+> **[vito.talk/app](https://vito.talk/app)**.
 
 - **Windows** — grab `Vito-Setup-<version>.exe` from the [**Releases**](../../releases) page. Per-user install,
   no admin needed.
@@ -285,11 +326,11 @@ Vito is **simple to use, but powerful under the hood.**
   |---|---|---|
   | **Best for** | GNOME, KDE | everything else — wlroots compositors (niri, Sway, Hyprland), X11, minimal setups |
   | **Typing into other apps** | needs the **RemoteDesktop portal**, which GNOME and KDE provide | always works — `wtype` on Wayland, `ydotool` on X11 |
-  | **Updates** | `flatpak update`, like any other app | download the new file yourself |
+  | **Updates** | `flatpak update`, like any other app | Vito replaces the AppImage itself |
   | **Setup** | none | none on Wayland; `ydotool` + a udev rule only on X11 |
 
-  **In doubt, take the AppImage** — it always works. The Flatpak is the nicer way to *live with* Vito, since
-  it updates itself, but the sandbox can only type where the RemoteDesktop portal exists. Without one it
+  **In doubt, take the AppImage** — it always works, and it keeps itself up to date. The Flatpak fits in with
+  the rest of your Flatpak apps, but the sandbox can only type where the RemoteDesktop portal exists. Without one it
   still hears you and cleans up your text, then puts the result on the clipboard for you to paste — and the
   settings page says so, rather than leaving you guessing.
 
@@ -330,8 +371,9 @@ Vito is **simple to use, but powerful under the hood.**
 
   </details>
 
-After installing, open Vito, pick a speech-to-text engine — paste an API key, or install the local one —
-choose your hotkey, and start talking.
+After installing, open Vito, pick a speech-to-text engine — paste an API key, or install one of the local
+ones — choose your hotkey, and start talking. Tried it in the browser first? Open
+[vito.talk/app](https://vito.talk/app) once more: it finds the app and offers to move your dictations over.
 
 ---
 
