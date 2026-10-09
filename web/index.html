@@ -1575,6 +1575,7 @@
   .welcome-steps .linkbtn, .wl-grid .linkbtn { color:#fff; text-decoration:underline; font:inherit; padding:0; }
   .wl-grid { position:relative; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; max-width:760px; margin:4px 0 12px; }
   @media (max-width:640px){ .wl-grid { grid-template-columns:1fr; } }
+  .wl-wide { grid-column:1 / -1; }
   .wl-item { display:flex; gap:11px; align-items:flex-start; background:rgba(255,255,255,.12); border-radius:12px; padding:10px 12px; }
   .wl-item > div { display:flex; flex-direction:column; gap:1px; font-size:13px; line-height:1.45; min-width:0; }
   .wl-item b { font-size:13.5px; }
@@ -1701,6 +1702,7 @@
           <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></span><div><b>Start</b><span id="wl-start" data-noi18n></span></div></div>
           <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg></span><div><b>Result</b><span>The text lands on your clipboard.</span></div></div>
           <div class="wl-item"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><div><b>Private</b><span>Your dictations stay in this browser.</span></div></div>
+          <div class="wl-item wl-wide"><span class="wl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z"/><path d="M19 15l.7 1.8L21.5 18l-1.8.7L19 20.5l-.7-1.8L16.5 18l1.8-.5z"/></svg></span><div><b>AI cleanup</b><span id="wl-cleanup" data-noi18n></span></div></div>
         </div>
         <p class="wl-note"><b>Good to know:</b> in the browser Vito uses Whistle, a small speech model — fine for trying, not the best recognition. Better: Soniox with your own key, or the Vito app.</p>
         </div>
@@ -2907,6 +2909,9 @@ const TR = { nl: {
   "Everything you dictate lands here: searchable, with a star for the keepers. Say something — anything — and your first sentence shows up within seconds.":"Alles wat je dicteert komt hier te staan: doorzoekbaar, met een ster voor de blijvertjes. Zeg iets — maakt niet uit wat — en binnen een paar seconden staat je eerste zin hier.",
   "Start your first dictation":"Start je eerste dictaat",
   "or press {k}":"of druk op {k}",
+  "On — fillers out, punctuation fixed.":"Aan — stopwoorden eruit, interpunctie gecorrigeerd.",
+  "Off by default in the browser: the text arrives exactly as you said it.":"Staat in de browser standaard uit: de tekst komt precies zoals je hem uitsprak.",
+  "Switch it on":"Zet hem aan",
   "Made for the computer":"Gemaakt voor de computer",
   "Vito is built for dictating at a computer. On a phone or tablet it works, but not at its best: there is no hotkey, and the text lands on your clipboard instead of straight in your app. Your keyboard's own dictation button is often handier here.":"Vito is gemaakt om op een computer te dicteren. Op een telefoon of tablet werkt het wel, maar niet optimaal: er is geen sneltoets, en de tekst komt op je klembord in plaats van direct in je app. De dicteerknop van je eigen toetsenbord is hier vaak handiger.",
   "Nothing that says “{q}”.":"Niets waarin “{q}” staat.",
@@ -4567,7 +4572,7 @@ let wsBackoff = 1000, wsDownTimer = null, wsEverOpen = false;
 // The browser's Activation section: a few ready-made combinations, or one of
 // your own. Whatever the app or another program claims system-wide (Claude
 // takes Ctrl+Alt+Space) never reaches the page, so a choice matters here.
-const WEB_HOTKEYS = ["ctrl+alt+space", "ctrl+shift+space", "ctrl+alt+d", "ctrl+shift+d", "alt+shift+v", "f2", "f9"];
+const WEB_HOTKEYS = ["ctrl+shift+d", "ctrl+alt+space", "ctrl+shift+space", "ctrl+alt+d", "alt+shift+v", "f2", "f9"];
 let hkCapturing = false;
 function renderWebActivation(){
   const box = $("activation-body"); if (!box) return;
@@ -4605,8 +4610,8 @@ async function setWebHotkey(spec){
   renderWebActivation(); renderStatusTags();
 }
 // In the browser the hotkey only works while this tab has focus: the same
-// combination as the app's (Ctrl+Alt+Space by default) toggles, Escape cancels.
-function webHotkey(){ return (cfg && cfg.hotkey_windows) || "ctrl+alt+space"; }
+// combination as the app's (Ctrl+Shift+D by default) toggles, Escape cancels.
+function webHotkey(){ return (cfg && cfg.hotkey_windows) || "ctrl+shift+d"; }
 function hotkeyMatches(ev, spec){
   const parts = spec.toLowerCase().split("+"), key = parts.pop();
   const want = { ctrl: parts.includes("ctrl"), alt: parts.includes("alt"), shift: parts.includes("shift"), meta: parts.includes("win") || parts.includes("cmd") || parts.includes("meta") };
@@ -6669,6 +6674,15 @@ $("help-web").onclick = () => {
 // the hotkey in use.
 function renderWelcomeWeb(){
   if (!STANDALONE) return;
+  // Cleanup needs a key of your own, so in the browser it starts switched off —
+  // easy to miss when the text simply comes out as spoken.
+  const cl = $("wl-cleanup");
+  if (cl) {
+    const on = cfg && cfg.cleanup && cfg.cleanup.enabled;
+    cl.innerHTML = on ? "✓ " + ahEsc(t("On — fillers out, punctuation fixed."))
+      : ahEsc(t("Off by default in the browser: the text arrives exactly as you said it.")) + ` <button type="button" class="linkbtn" id="wl-cleanup-set">${t("Switch it on")}</button>`;
+    const b = $("wl-cleanup-set"); if (b) b.onclick = () => { selectTab("settings"); selectSetSection("cleanup"); };
+  }
   const m = $("wl-model"), st = whistleSt || {};
   if (m) {
     const pct = Math.round(100 * (st.done || 0) / (st.total || 1));

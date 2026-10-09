@@ -343,7 +343,7 @@ func Default() *Config {
 			PasteDelayMS:     100,
 			RestoreDelayMS:   300,
 		},
-		HotkeyWindows: "ctrl+alt+space",
+		HotkeyWindows: "ctrl+shift+d", // Ctrl+Alt+Space is often taken (Claude, among others)
 		History:       History{Enabled: true, MaxEntries: 5000},
 		Tray:          Tray{Enabled: true},
 		UI:            UI{Theme: "system", Notifications: "all"},
