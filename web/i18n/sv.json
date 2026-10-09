@@ -1009,6 +1009,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito lägger sina filer i en mapp som heter “Vito Sync” i den.",
 "Path of the folder": "Mappens sökväg",
 "Use this folder": "Använd den här mappen",
+"Use the dashboard layout from the browser": "Använd instrumentpanelens layout från webbläsaren",
 "On — fillers out, punctuation fixed.": "På — utfyllnadsord bort, skiljetecken rättade.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Avstängd som standard i webbläsaren: texten kommer precis som du sa den.",
 "Switch it on": "Slå på den",

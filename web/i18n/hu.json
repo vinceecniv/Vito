@@ -1009,6 +1009,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "A Vito a fájljait egy „Vito Sync” nevű mappába teszi benne.",
 "Path of the folder": "A mappa elérési útja",
 "Use this folder": "Mappa használata",
+"Use the dashboard layout from the browser": "A böngésző irányítópult-elrendezésének használata",
 "On — fillers out, punctuation fixed.": "Be — töltelékszavak ki, írásjelek javítva.",
 "Off by default in the browser: the text arrives exactly as you said it.": "A böngészőben alapból ki van kapcsolva: a szöveg pontosan úgy érkezik, ahogy kimondtad.",
 "Switch it on": "Kapcsold be",

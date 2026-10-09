@@ -1009,6 +1009,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito paneb oma failid selle sees olevasse kausta nimega „Vito Sync“.",
 "Path of the folder": "Kausta tee",
 "Use this folder": "Kasuta seda kausta",
+"Use the dashboard layout from the browser": "Kasuta brauseri töölaua paigutust",
 "On — fillers out, punctuation fixed.": "Sees — täitesõnad välja, kirjavahemärgid parandatud.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Brauseris vaikimisi väljas: tekst tuleb täpselt nii, nagu sa selle ütlesid.",
 "Switch it on": "Lülita sisse",

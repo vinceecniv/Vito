@@ -1010,6 +1010,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito svoje datoteke stavlja u folder pod nazivom „Vito Sync“ unutar njega.",
 "Path of the folder": "Putanja foldera",
 "Use this folder": "Koristi ovaj folder",
+"Use the dashboard layout from the browser": "Koristi raspored kontrolne table iz preglednika",
 "On — fillers out, punctuation fixed.": "Uključeno — poštapalice uklonjene, interpunkcija ispravljena.",
 "Off by default in the browser: the text arrives exactly as you said it.": "U pregledniku je podrazumijevano isključeno: tekst stiže tačno onako kako ste ga izgovorili.",
 "Switch it on": "Uključi",

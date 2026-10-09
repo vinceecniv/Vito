@@ -1009,6 +1009,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito кладёт свои файлы внутрь неё, в папку «Vito Sync».",
 "Path of the folder": "Путь к папке",
 "Use this folder": "Использовать эту папку",
+"Use the dashboard layout from the browser": "Использовать расположение панели из браузера",
 "On — fillers out, punctuation fixed.": "Включено — слова-паразиты убраны, пунктуация исправлена.",
 "Off by default in the browser: the text arrives exactly as you said it.": "В браузере по умолчанию выключено: текст приходит ровно так, как вы его сказали.",
 "Switch it on": "Включить",

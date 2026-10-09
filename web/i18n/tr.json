@@ -7,6 +7,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito dosyalarını bunun içinde “Vito Sync” adlı bir klasöre koyar.",
 "Path of the folder": "Klasörün yolu",
 "Use this folder": "Bu klasörü kullan",
+"Use the dashboard layout from the browser": "Tarayıcıdaki pano düzenini kullan",
 "On — fillers out, punctuation fixed.": "Açık — dolgu sözcükleri atılır, noktalama düzeltilir.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Tarayıcıda varsayılan olarak kapalı: metin tam söylediğiniz gibi gelir.",
 "Switch it on": "Aç",

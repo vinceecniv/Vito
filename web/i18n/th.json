@@ -7,6 +7,7 @@
 "Vito puts its files in a folder called “Vito Sync” inside it.": "Vito จะเก็บไฟล์ของตัวเองไว้ในโฟลเดอร์ชื่อ “Vito Sync” ภายในโฟลเดอร์นั้น",
 "Path of the folder": "ที่อยู่ของโฟลเดอร์",
 "Use this folder": "ใช้โฟลเดอร์นี้",
+"Use the dashboard layout from the browser": "ใช้การจัดวางแดชบอร์ดจากเบราว์เซอร์",
 "On — fillers out, punctuation fixed.": "เปิดอยู่ — ตัดคำฟุ่มเฟือย แก้เครื่องหมายวรรคตอน",
 "Off by default in the browser: the text arrives exactly as you said it.": "ในเบราว์เซอร์ปิดไว้ตามค่าเริ่มต้น: ข้อความจะออกมาตรงตามที่คุณพูด",
 "Switch it on": "เปิดใช้",

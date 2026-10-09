@@ -142,7 +142,8 @@ func (s *Server) handleHandoverSummary(w http.ResponseWriter, r *http.Request) {
 		terms, fixes = len(p.Config.Dictionary.Keyterms), len(p.Config.Dictionary.Corrections)
 	}
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "entries": len(p.History), "words": words,
-		"days": days, "keyterms": terms, "corrections": fixes, "settings": p.Config != nil})
+		"days": days, "keyterms": terms, "corrections": fixes, "settings": p.Config != nil,
+		"layout": p.Config != nil && len(p.Config.UI.Dashboard) > 0})
 }
 
 // handleHandoverApply imports a parked hand-over: the dictations and their
@@ -151,6 +152,7 @@ func (s *Server) handleHandoverApply(w http.ResponseWriter, r *http.Request) {
 	var opt struct {
 		Dictionary bool `json:"dictionary"`
 		Settings   bool `json:"settings"`
+		Layout     bool `json:"layout"`
 	}
 	_ = json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<12)).Decode(&opt)
 	p, ok := takeHandover(r.PathValue("id"), true)
@@ -169,7 +171,7 @@ func (s *Server) handleHandoverApply(w http.ResponseWriter, r *http.Request) {
 	}
 	_, _ = s.hist.RecordAchievements(ids)
 
-	if p.Config != nil && (opt.Dictionary || opt.Settings) {
+	if p.Config != nil && (opt.Dictionary || opt.Settings || opt.Layout) {
 		cfg := s.d.Config()
 		if opt.Dictionary {
 			cfg.Dictionary = cloudsync.MergeDictionary(cfg.Dictionary, p.Config.Dictionary)
@@ -184,6 +186,11 @@ func (s *Server) handleHandoverApply(w http.ResponseWriter, r *http.Request) {
 			if p.Config.Stats.TypingSpeed != "" {
 				cfg.Stats.TypingSpeed = p.Config.Stats.TypingSpeed
 			}
+		}
+		// The dashboard as arranged in the browser: the app takes it whole,
+		// rather than ending up with a different order on the same cards.
+		if opt.Layout && len(p.Config.UI.Dashboard) > 0 {
+			cfg.UI.Dashboard = p.Config.UI.Dashboard
 		}
 		if err := cfg.Validate(); err == nil {
 			if err := cfg.Save(); err != nil {
