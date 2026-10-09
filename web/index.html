@@ -4573,6 +4573,16 @@ let wsBackoff = 1000, wsDownTimer = null, wsEverOpen = false;
 // The browser's Activation section: a few ready-made combinations, or one of
 // your own. Whatever the app or another program claims system-wide (Claude
 // takes Ctrl+Alt+Space) never reaches the page, so a choice matters here.
+// On Windows, Ctrl+Alt *is* AltGr. On a layout with a character under it
+// (US-International: Ctrl+Alt+D types "ð") the browser then reports neither
+// Ctrl nor Alt — only AltGraph — and the character instead of the key. Read
+// such a press as the Ctrl+Alt combination it was, by its physical key.
+const HK_WINDOWS = /Windows/.test(navigator.userAgent);
+function hkPress(ev){
+  const altGr = HK_WINDOWS && ev.getModifierState && ev.getModifierState("AltGraph");
+  const key = altGr ? hkKeyFromCode(ev.code) : (ev.key === " " ? "space" : (ev.key || "").toLowerCase());
+  return { key, ctrl: ev.ctrlKey || !!altGr, alt: ev.altKey || !!altGr, shift: ev.shiftKey, meta: ev.metaKey };
+}
 const WEB_HOTKEYS = ["ctrl+shift+d", "ctrl+alt+space", "ctrl+shift+space", "ctrl+alt+d", "alt+shift+v", "f2", "f9"];
 let hkCapturing = false;
 function renderWebActivation(){
@@ -4597,8 +4607,9 @@ function renderWebActivation(){
       document.removeEventListener("keydown", grab, true);
       hkCapturing = false;
       if (ev.key === "Escape") { $("webhk-hint").textContent = ""; return; }
-      const key = ev.key === " " ? "space" : ev.key.toLowerCase();
-      const mods = [ev.ctrlKey && "ctrl", ev.altKey && "alt", ev.shiftKey && "shift", ev.metaKey && "win"].filter(Boolean);
+      const p = hkPress(ev), key = p.key;
+      if (!key) return; // a key Vito can't name
+      const mods = [p.ctrl && "ctrl", p.alt && "alt", p.shift && "shift", p.meta && "win"].filter(Boolean);
       // A bare letter would fire while typing anywhere on the page; a function key is fine.
       if (!mods.length && !/^f\d{1,2}$/.test(key)) { $("webhk-hint").textContent = t("Use Ctrl, Alt or Shift with it, or a function key."); return; }
       setWebHotkey([...mods, key].join("+"));
@@ -4616,8 +4627,8 @@ function webHotkey(){ return (cfg && cfg.hotkey_windows) || "ctrl+shift+d"; }
 function hotkeyMatches(ev, spec){
   const parts = spec.toLowerCase().split("+"), key = parts.pop();
   const want = { ctrl: parts.includes("ctrl"), alt: parts.includes("alt"), shift: parts.includes("shift"), meta: parts.includes("win") || parts.includes("cmd") || parts.includes("meta") };
-  const k = ev.key === " " ? "space" : ev.key.toLowerCase();
-  return k === key && ev.ctrlKey === want.ctrl && ev.altKey === want.alt && ev.shiftKey === want.shift && ev.metaKey === want.meta;
+  const p = hkPress(ev);
+  return p.key === key && p.ctrl === want.ctrl && p.alt === want.alt && p.shift === want.shift && p.meta === want.meta;
 }
 // showLangPicker asks, on the first visit, which language the interface
 // should be in and which one you will speak — offering the languages the
@@ -9327,11 +9338,11 @@ function wireHotkeyCapture(kind){
     if (e.code === "Escape") { setHotkey(kind, ""); cap.blur(); return; } // Esc clears the field
     const key = hkKeyFromCode(e.code);
     if (!key) return; // waiting for a non-modifier key
-    const mods = [];
-    if (e.ctrlKey) mods.push("ctrl");
-    if (e.altKey) mods.push("alt");
-    if (e.shiftKey) mods.push("shift");
-    if (e.metaKey) mods.push("win");
+    const p = hkPress(e), mods = [];
+    if (p.ctrl) mods.push("ctrl");
+    if (p.alt) mods.push("alt");
+    if (p.shift) mods.push("shift");
+    if (p.meta) mods.push("win");
     if (!mods.length) { const s=$("hk-status-"+kind); if(s){ s.className="hk-badge warn"; s.innerHTML="⚠ "+(hkIsMac
       ? t("Choose a combination with at least Control, Option or Command.")
       : withWin(t("Choose a combination with at least Ctrl, Alt or {win}."))); } return; }
