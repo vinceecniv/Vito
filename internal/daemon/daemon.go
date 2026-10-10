@@ -128,6 +128,9 @@ type session struct {
 	// only arms after speech has actually begun (before that a silent session is a
 	// silence-cancel, not an auto-stop).
 	spoke atomic.Bool
+	// byWake marks a session the wake word started: no key will end it, so
+	// it, and the follow-up a spoken command opens, stop at the first pause.
+	byWake bool
 }
 
 type Daemon struct {
@@ -695,6 +698,7 @@ func (d *Daemon) startWith(byWake bool) error {
 		spool:   spool,
 		started: time.Now(),
 		chunks:  make(chan []byte, 256),
+		byWake:  byWake,
 	}
 
 	// Duck (or pause) any playing music/video for the duration of the
@@ -1187,7 +1191,7 @@ func (d *Daemon) finish(s *session) {
 			// pressing the hotkey again — one continuous flow.
 			go func() {
 				time.Sleep(350 * time.Millisecond) // let the ack sound play and the session tear down
-				if err := d.start(); err != nil {
+				if err := d.startWith(s.byWake); err != nil {
 					d.log.Warn("auto-restart after command failed", "err", err)
 				}
 			}()
