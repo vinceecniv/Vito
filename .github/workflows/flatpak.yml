@@ -14,6 +14,15 @@ on:
   push:
     tags: ['v*']
   workflow_dispatch:
+    inputs:
+      tag:
+        # Every deploy replaces the whole repository, so a run by hand from a
+        # branch would publish that branch as version "dev" to every Flatpak
+        # user. Name the current release instead: the app is built from that
+        # tag, while the .flatpakref/.flatpakrepo come from the branch the run
+        # was started on — how a change to those reaches users between releases.
+        description: Release tag to build (e.g. v2026.10.3); empty builds the chosen branch as dev
+        required: false
 
 permissions:
   contents: read
@@ -39,6 +48,14 @@ jobs:
       GPG_ID: ${{ secrets.FLATPAK_GPG_ID }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+
+      - name: Check out the install files from the run's own commit
+        uses: actions/checkout@v7
+        with:
+          path: run-ref
+          sparse-checkout: packaging/flatpak
 
       - name: Install the Go SDK extension
         # The flathub-infra image ships the Platform and Sdk but not the language
@@ -57,7 +74,7 @@ jobs:
         env:
           # Stamped into the binary the same way the other builds do it, so
           # `vito version` and the About page agree with the tag.
-          VITO_VERSION: ${{ github.ref_type == 'tag' && github.ref_name || 'dev' }}
+          VITO_VERSION: ${{ inputs.tag || (github.ref_type == 'tag' && github.ref_name) || 'dev' }}
         run: |
           set -eux
           # Strip the leading v from the tag: v2026.7.3 -> 2026.7.3
@@ -86,8 +103,15 @@ jobs:
         if: env.GPG_KEY == ''
         run: flatpak build-update-repo repo --generate-static-deltas
 
-      - name: Add the .flatpakrepo users point at
-        run: cp packaging/flatpak/vito.flatpakrepo repo/vito.flatpakrepo
+      - name: Add the .flatpakref users install from (and the .flatpakrepo)
+        run: |
+          set -eu
+          # Both files carry the signing key; a mismatch would make one of the
+          # two install routes refuse every pull.
+          cd run-ref/packaging/flatpak
+          [ "$(grep '^GPGKey=' vito.flatpakref)" = "$(grep '^GPGKey=' vito.flatpakrepo)" ] \
+            || { echo "GPGKey differs between vito.flatpakref and vito.flatpakrepo" >&2; exit 1; }
+          cp vito.flatpakref vito.flatpakrepo "$GITHUB_WORKSPACE/repo/"
 
       - uses: actions/upload-pages-artifact@v5
         with:

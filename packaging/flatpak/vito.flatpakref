@@ -1,0 +1,19 @@
+[Flatpak Ref]
+Title=Vito
+Name=io.github.vinceecniv.vito
+Branch=stable
+Url=https://vinceecniv.github.io/Vito/
+SuggestRemoteName=vito
+IsRuntime=false
+Homepage=https://vito.talk
+Comment=Voice In, Text Out — dictate anywhere with a hotkey
+Description=Free, open-source voice dictation. Press a hotkey, speak, and clean text is pasted where your cursor is. Bring your own API key; no subscription.
+Icon=https://vito.talk/icon-512.png
+# Where the runtime (org.freedesktop.Platform) comes from. flatpak only looks for
+# a missing runtime in the remotes of the installation it installs into, and
+# many systems have Flathub system-wide only (Fedora, filtered at that) — so a
+# --user install from the .flatpakrepo alone fails with "requires the runtime
+# … which was not found". With this line flatpak offers to add Flathub itself.
+RuntimeRepo=https://dl.flathub.org/repo/flathub.flatpakrepo
+# Must be the same key as in vito.flatpakrepo; the release workflow checks it.
+GPGKey=mDMEaoBcchYJKwYBBAHaRw8BAQdATV8cgy9BeoZgkUivKRC3zyK8xNeutxYHreKTvowEDqG0F1ZpdG8gRmxhdHBhayBSZXBvc2l0b3J5iJMEExYKADsWIQQUgyQqDBe52y7SkJRRGs8QcGryfwUCaoBccgIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgAAKCRBRGs8QcGryf9OrAQCjXK++FqOW6YUFQ9wdgJzEvgK6bFrmFAFiCsmjrKY+igD5AVzrm3Um8PAI2BmN7L+I2ZmZuQs6NXnLfzpSa9Wy5Qe4OARqgFxyEgorBgEEAZdVAQUBAQdAr2SAxAMseS5ZzR8/N0aSWR2xW3gsPXFrm9svXTQmLUYDAQgHiHgEGBYKACAWIQQUgyQqDBe52y7SkJRRGs8QcGryfwUCaoBccgIbDAAKCRBRGs8QcGryf31YAQD+guciZEtywb2dlupSYG4Qy4IHzc/zEz9I0pm4uZbeQgEAuXMSOstfrpWmnNvdRMvdv8X3dhtAnDQpM6dCb9CWcQE=
