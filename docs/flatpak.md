@@ -243,3 +243,19 @@ again.
 user has already added, so a new key means everyone re-adds the remote — the
 same cost as losing it. Keep a backup of the secret key and the revocation
 certificate that `gpg` wrote to `~/.gnupg/openpgp-revocs.d/`.
+
+## Screenshots
+
+Software centres, and Flathub (which requires at least one), show the
+screenshots named in `packaging/io.github.vinceecniv.vito.metainfo.xml`. They
+live in `packaging/screenshots/` and are loaded from GitHub's `main` branch.
+Regenerate them when the interface changes:
+
+```sh
+go build -o /tmp/vito ./cmd/vito && python3 scripts/screenshots.py /tmp/vito
+```
+
+It runs that binary in demo mode beside an installed Vito (own config, port
+4599) and photographs the dashboard, history and dictionary in headless
+Firefox, in English and the default light theme, as Flathub's quality
+guidelines ask.
