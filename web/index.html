@@ -286,6 +286,9 @@
      menu (cardMenuItems). */
   .cost-card { cursor:var(--cur-hand); } /* a click opens how the costs are worked out */
   .h2-btns { margin-left:auto; display:flex; gap:6px; }
+  /* The narrowest phones: title, status and buttons don't fit one line, and
+     pushing past it made the whole page scroll sideways. */
+  @media (max-width:380px){ #transcript-card h2 { flex-wrap:wrap; row-gap:8px; } }
   .h2-btn { width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--card-border); border-radius:8px; background:none; color:var(--text3); cursor:var(--cur-hand); transition:color .12s, border-color .12s, background .12s; }
   .h2-btn:hover { color:var(--accent); border-color:var(--accent); }
   .h2-btn.active { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
@@ -7677,22 +7680,9 @@ function showReleaseNotes(rel){
     `<div class="relnotes">${renderMarkdown(rel.notes) || `<p>${t("This release has no notes.")}</p>`}</div>` +
     `<p class="act-note" style="margin:12px 0 0;"><a href="${rel.url}" target="_blank" rel="noopener">${t("View on GitHub")}</a></p>`,
     () => {}, "Close", false, null, true);
-  // Wider, and lined up over the content column (right of the sidebar) instead
-  // of the whole viewport, so it sits over what you're reading.
+  // Wider; the backdrop already centres it over the content column.
   const box = back.querySelector(".modal"); if (box) box.classList.add("relnotes-modal");
-  centreOverContent(back);
 }
-// Nudge a modal so its centre matches the content column rather than the
-// viewport — the fixed sidebar offsets the two. No-op when they coincide, e.g.
-// on narrow layouts where the sidebar is hidden.
-function centreOverContent(back){
-  const box = back && back.querySelector(".modal"), content = document.querySelector(".content");
-  if (!box || !content) return;
-  const r = content.getBoundingClientRect();
-  const shift = Math.round((r.left + r.width / 2) - window.innerWidth / 2);
-  if (shift) box.style.transform = `translateX(${shift}px)`;
-}
-
 /* ---- achievements ---- */
 // The server evaluates and persists which milestones are earned; the page just
 // renders them and — the fun part — announces the ones you cross for the first
