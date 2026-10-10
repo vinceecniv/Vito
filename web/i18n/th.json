@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "ให้แอปมีหน้าต่างของตัวเอง: เปิด Vito แล้วเลือกติดตั้งแอปในหน้าของมัน อันนั้นคืออันที่ควรปักหมุดไว้บนแถบงานหรือ Dock",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "คุณปิดแท็บนี้ได้ และลบบุ๊กมาร์กไปยัง vito.talk/app ออกได้หากคุณเคยสร้างไว้",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "ต่อไปนี้ให้เปิด Vito จากไอคอนในถาดระบบ (แถบเมนู) หรือให้มันมีหน้าต่างของตัวเอง: เปิด Vito แล้วเลือกติดตั้งแอปในหน้าของมัน",
-"Vito didn't answer. Is it installed and running?": "Vito ไม่ตอบสนอง ติดตั้งและเปิดใช้งานอยู่หรือเปล่า"
+"Vito didn't answer. Is it installed and running?": "Vito ไม่ตอบสนอง ติดตั้งและเปิดใช้งานอยู่หรือเปล่า",
+"Collapse": "ย่อ",
+"Collapse sidebar": "ย่อแถบด้านข้าง",
+"Expand sidebar": "ขยายแถบด้านข้าง",
+"Register again": "ลงทะเบียนอีกครั้ง",
+"Register shortcut": "ลงทะเบียนปุ่มลัด",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "ขอปุ่มลัดจากเดสก์ท็อปของคุณอีกครั้ง เพื่อให้กล่องโต้ตอบของเดสก์ท็อปแสดงขึ้นมาอีก",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "กำลังรอเดสก์ท็อปของคุณ — ยืนยันปุ่มลัดในกล่องโต้ตอบของเดสก์ท็อป",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "คุณปิดกล่องโต้ตอบปุ่มลัดของเดสก์ท็อปไปแล้ว จึงยังไม่มีปุ่มลัดที่ผูกไว้",
+"Your desktop didn't bind the shortcut.": "เดสก์ท็อปของคุณไม่ได้ผูกปุ่มลัด",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "เดสก์ท็อปของคุณ ({desktop}) ส่งต่อปุ่มลัดส่วนกลางให้แอปไม่ได้ Vito จึงไม่ขอปุ่มลัดจากเดสก์ท็อป ให้ผูกคำสั่งด้านล่างกับปุ่มใน compositor ของคุณแทน",
+"your desktop": "เดสก์ท็อปของคุณ"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",

@@ -1036,7 +1036,18 @@
 "No speech recognised.": "Không nhận dạng được giọng nói.",
 "This browser cannot record audio.": "Trình duyệt này không thể ghi âm.",
 "downloaded": "đã tải xuống",
-"built in": "tích hợp sẵn"
+"built in": "tích hợp sẵn",
+"Collapse": "Thu gọn",
+"Collapse sidebar": "Thu gọn thanh bên",
+"Expand sidebar": "Mở rộng thanh bên",
+"Register again": "Đăng ký lại",
+"Register shortcut": "Đăng ký phím tắt",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Yêu cầu lại desktop của bạn cấp phím tắt, để hộp thoại của nó hiện ra lần nữa.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Đang chờ desktop của bạn — hãy xác nhận phím tắt trong hộp thoại của nó.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Bạn đã đóng hộp thoại phím tắt của desktop, nên chưa có phím tắt nào được gán.",
+"Your desktop didn't bind the shortcut.": "Desktop của bạn không gán phím tắt.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Desktop của bạn ({desktop}) không thể chuyển phím tắt toàn cục cho ứng dụng, nên Vito không yêu cầu nó cấp phím tắt. Thay vào đó, hãy gán các lệnh bên dưới cho phím trong compositor của bạn.",
+"your desktop": "desktop của bạn"
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",

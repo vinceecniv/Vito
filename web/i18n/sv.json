@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Ge appen ett eget fönster: öppna Vito och välj Installera appen på dess sida. Det är den du fäster i aktivitetsfältet eller Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Du kan stänga den här fliken och ta bort ett bokmärke till vito.talk/app om du har skapat ett.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Öppna Vito framöver via ikonen i systemfältet (menyraden), eller ge appen ett eget fönster: öppna Vito och välj Installera appen på dess sida.",
-"Vito didn't answer. Is it installed and running?": "Vito svarade inte. Är det installerat och igång?"
+"Vito didn't answer. Is it installed and running?": "Vito svarade inte. Är det installerat och igång?",
+"Collapse": "Fäll ihop",
+"Collapse sidebar": "Fäll ihop sidofältet",
+"Expand sidebar": "Fäll ut sidofältet",
+"Register again": "Registrera igen",
+"Register shortcut": "Registrera snabbtangent",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Ber din skrivbordsmiljö om snabbtangenten igen, så att dess dialogruta visas på nytt.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Väntar på din skrivbordsmiljö — bekräfta snabbtangenten i dess dialogruta.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Du stängde skrivbordsmiljöns dialogruta för snabbtangenter, så ingen snabbtangent är bunden ännu.",
+"Your desktop didn't bind the shortcut.": "Din skrivbordsmiljö band inte snabbtangenten.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Din skrivbordsmiljö ({desktop}) kan inte skicka globala snabbtangenter vidare till appar, så Vito ber den inte om någon. Bind istället kommandona nedan till tangenter i din compositor.",
+"your desktop": "din skrivbordsmiljö"
 },
 "help": {
 "theme": "Ljust, mörkt eller automatiskt — automatiskt följer systemets ljus/mörk-inställning.",

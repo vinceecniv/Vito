@@ -124,6 +124,26 @@
      rests again — a continuous pulse in the corner of your eye is tiring. */
   @keyframes pipfade { 0%,62% { opacity:1; } 78% { opacity:.18; } 94%,100% { opacity:1; } }
   @media (prefers-reduced-motion:reduce){ .side-pip.active .pip-ico::after { animation:none; } }
+  /* Collapse/expand, at the foot of the sidebar. Collapsed (html.side-collapsed,
+     remembered per browser) the sidebar keeps only the logo and the icons; the
+     pages are named on hover by the title applyI18n gives every nav item. Only
+     beside the content: the narrow layouts have their own top bar. No width
+     animation — the content column would reflow, charts and all, every frame. */
+  .side-toggle { display:flex; align-items:center; gap:11px; width:100%; margin-top:auto; padding:9px 12px; border-radius:10px;
+    border:none; background:none; color:var(--text3); font-family:inherit; font-size:13px; text-align:left; cursor:var(--cur-hand); }
+  .side-toggle svg { width:17px; height:17px; flex:0 0 17px; }
+  .side-toggle:hover { color:var(--text); background:color-mix(in srgb, var(--nav-active-bg) 50%, transparent); }
+  @media (min-width:821px){
+    html.side-collapsed .sidebar { width:68px; flex:0 0 68px; }
+    html.side-collapsed .brand { justify-content:center; padding:4px 0 18px; }
+    html.side-collapsed .brand-text { display:none; }
+    html.side-collapsed .nav-item { justify-content:center; padding:10px 0; gap:0; font-size:0; }
+    html.side-collapsed .side-pip { justify-content:center; padding:10px 0; gap:0; }
+    html.side-collapsed .side-pip > span:last-child { display:none; }
+    html.side-collapsed .side-toggle { justify-content:center; padding:9px 0; gap:0; }
+    html.side-collapsed .side-toggle > span { display:none; }
+    html.side-collapsed .side-toggle svg { transform:rotate(180deg); }
+  }
   .pill { display:inline-flex; align-items:center; gap:8px; align-self:flex-start;
     padding:5px 12px; border-radius:99px; background:var(--input-bg); font-size:12px; color:var(--text2); }
   :root[data-theme="dark"] .pill { background:#262031; }
@@ -443,6 +463,7 @@
     .side-pip { display:flex; order:2; width:40px; height:40px; padding:0; margin:0;
       gap:0; justify-content:center; flex:0 0 auto; }
     .side-pip > span:last-child { display:none; }
+    .side-toggle { display:none; }
     .sidebar.open .nav-item { display:flex; }
     .content { padding:20px 16px; max-width:100%; }
     .grid-2 { grid-template-columns:1fr; }
@@ -1418,6 +1439,7 @@
   .modal-backdrop, #offline-overlay { --side:216px; }
   @media (min-width:821px){ .modal-backdrop, #offline-overlay { padding-left:var(--side); } }
   @media (max-width:980px){ .modal-backdrop, #offline-overlay { --side:180px; } }
+  html.side-collapsed .modal-backdrop, html.side-collapsed #offline-overlay { --side:68px; }
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
   .modal { --mpad:20px; width:360px; max-width:92vw; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:var(--mpad); box-shadow:0 24px 64px rgba(20,10,40,.45);
     /* Never taller than the screen (dvh: the part a phone's browser bars leave
@@ -1553,7 +1575,7 @@
   .moved-tidy b { color:var(--text); }
   .moved-tidy ol { margin:6px 0 0; padding-left:18px; }
   .moved .content > section, .moved .content > .install-banner, .moved .content > .demo-banner,
-  .moved .sidebar .nav-item, .moved .sidebar .side-pip { display:none !important; }
+  .moved .sidebar .nav-item, .moved .sidebar .side-pip, .moved .sidebar .side-toggle { display:none !important; }
   .help-web, .dl-web { display:none; }
   .standalone .dl-web { display:flex; color:#fff; border-color:transparent; background:var(--grad); box-shadow:0 4px 14px rgba(124,58,237,.3); }
   .standalone .dl-web:hover { filter:brightness(1.08); color:#fff; }
@@ -1645,6 +1667,8 @@
 </head>
 <body>
 <div class="app">
+  <!-- Applied before the sidebar is drawn, so a collapsed one doesn't flash open. -->
+  <script>try { if (localStorage.getItem("vito-side") === "collapsed") document.documentElement.classList.add("side-collapsed"); } catch {}</script>
   <aside class="sidebar" id="sidebar">
     <div class="brand" id="brand">
       <span class="tile" id="brand-mark"></span>
@@ -1669,6 +1693,9 @@
     <button class="side-pip" id="side-pip" data-help="pip" aria-label="Show the live transcript in its own window (always on top)">
       <span class="pip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1" fill="currentColor" stroke="none"/></svg></span>
       <span>Detached window</span></button>
+    <button type="button" class="side-toggle" id="side-toggle" title="Collapse sidebar" aria-label="Collapse sidebar" aria-expanded="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      <span>Collapse</span></button>
   </aside>
 
   <main class="content">
@@ -2842,6 +2869,7 @@ const TR = { nl: {
   "Stop":"Stop",
   "Processing…":"Verwerken…",
   "Detached window":"Los venster",
+  "Collapse":"Inklappen","Collapse sidebar":"Zijbalk inklappen","Expand sidebar":"Zijbalk uitklappen",
   "Bring Vito to front":"Vito naar voren halen",
   "Quick settings":"Snelinstellingen",
   "Enter after text":"Enter na tekst",
@@ -4452,6 +4480,21 @@ function selectTab(name){
   $("sidebar").classList.remove("open"); // collapse the mobile menu after choosing
 }
 document.querySelectorAll(".nav-item").forEach(btn => btn.onclick = () => selectTab(btn.dataset.tab));
+// Sidebar collapsed to icons, or expanded with names (the default). The class
+// is already set before first paint (the inline script in .app); this keeps the
+// button's name in step and remembers the choice for this browser.
+function setSideCollapsed(on, persist){
+  document.documentElement.classList.toggle("side-collapsed", on);
+  const b = $("side-toggle"); if (!b) return;
+  const label = on ? "Expand sidebar" : "Collapse sidebar";
+  // applyI18n re-translates title/aria-label from these English originals.
+  b.dataset.i18nTitle = b.dataset.i18nAriaLabel = label;
+  b.title = t(label); b.setAttribute("aria-label", t(label));
+  b.setAttribute("aria-expanded", String(!on));
+  if (persist) { try { localStorage.setItem("vito-side", on ? "collapsed" : "expanded"); } catch {} }
+}
+setSideCollapsed(document.documentElement.classList.contains("side-collapsed"), false);
+$("side-toggle").onclick = () => setSideCollapsed(!document.documentElement.classList.contains("side-collapsed"), true);
 $("brand").onclick = () => selectTab("status");
 // Restore the tab that was open before a reload (defaults to status). Deferred to
 // the end of init: selecting History/Achievements calls into state (hPlayRows,

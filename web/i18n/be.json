@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Дайце праграме ўласнае акно: адкрыйце Vito і абярыце «Усталяваць праграму» на яго старонцы. Менавіта яго варта замацаваць на панэлі задач або ў Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Гэту ўкладку можна закрыць, а закладку на vito.talk/app, калі вы яе рабілі, — выдаліць.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Надалей адкрывайце Vito праз яго значок у вобласці апавяшчэнняў (радку меню) або дайце яму ўласнае акно: адкрыйце Vito і абярыце «Усталяваць праграму» на яго старонцы.",
-"Vito didn't answer. Is it installed and running?": "Vito не адказвае. Ён усталяваны і запушчаны?"
+"Vito didn't answer. Is it installed and running?": "Vito не адказвае. Ён усталяваны і запушчаны?",
+"Collapse": "Згарнуць",
+"Collapse sidebar": "Згарнуць бакавую панэль",
+"Expand sidebar": "Разгарнуць бакавую панэль",
+"Register again": "Зарэгістраваць зноў",
+"Register shortcut": "Зарэгістраваць гарачую клавішу",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Зноў запытвае гарачую клавішу ў вашага асяроддзя, каб яго дыялогавае акно паказалася зноў.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Чакаем ваша асяроддзе — пацвердзіце гарачую клавішу ў яго дыялогавым акне.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Вы закрылі дыялог гарачых клавіш вашага асяроддзя, таму гарачая клавіша яшчэ не прызначана.",
+"Your desktop didn't bind the shortcut.": "Ваша асяроддзе не прызначыла гарачую клавішу.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Ваша асяроддзе ({desktop}) не можа перадаваць глабальныя гарачыя клавішы праграмам, таму Vito іх у яго не запытвае. Замест гэтага прывяжыце каманды ніжэй да клавіш у вашым кампазітары.",
+"your desktop": "ваша асяроддзе"
 },
 "help": {
 "theme": "Светлая, цёмная ці аўтаматычная — аўтаматычная сочыць за светлым/цёмным рэжымам вашай сістэмы.",

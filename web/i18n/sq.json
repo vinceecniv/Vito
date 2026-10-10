@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Jepi aplikacionit dritaren e vet: hap Vito dhe zgjidh Instalo aplikacionin në faqen e tij. Ky është ai që duhet ta fiksosh te shiriti i detyrave ose te Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Mund ta mbyllësh këtë skedë dhe të heqësh faqerojtësin për vito.talk/app, nëse ke krijuar një.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Tani e tutje hap Vito me ikonën e tij në shiritin e sistemit (shiriti i menusë), ose jepi dritaren e vet: hap Vito dhe zgjidh Instalo aplikacionin në faqen e tij.",
-"Vito didn't answer. Is it installed and running?": "Vito nuk u përgjigj. A është i instaluar dhe i ndezur?"
+"Vito didn't answer. Is it installed and running?": "Vito nuk u përgjigj. A është i instaluar dhe i ndezur?",
+"Collapse": "Palos",
+"Collapse sidebar": "Palos shiritin anësor",
+"Expand sidebar": "Zgjero shiritin anësor",
+"Register again": "Regjistroje përsëri",
+"Register shortcut": "Regjistro shkurtoren",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "I kërkon përsëri desktopit tënd shkurtoren, që dialogu i tij të shfaqet sërish.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Në pritje të desktopit tënd — konfirmo shkurtoren në dialogun e tij.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "E mbylle dialogun e shkurtoreve të desktopit tënd, prandaj ende nuk është lidhur asnjë shkurtore.",
+"Your desktop didn't bind the shortcut.": "Desktopi yt nuk e lidhi shkurtoren.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Desktopi yt ({desktop}) nuk mund t'ua kalojë shkurtoret globale aplikacioneve, prandaj Vito nuk i kërkon një të tillë. Në vend të kësaj, lidhi komandat më poshtë me taste në compositor-in tënd.",
+"your desktop": "desktopi yt"
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

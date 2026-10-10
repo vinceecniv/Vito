@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Beri apl tetingkapnya sendiri: buka Vito dan pilih Pasang apl pada halamannya. Itulah yang perlu anda semat pada bar tugas atau Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Anda boleh menutup tab ini, dan membuang penanda halaman ke vito.talk/app jika anda ada membuatnya.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Mulai sekarang, buka Vito melalui ikon dulang (bar menu)nya, atau beri tetingkapnya sendiri: buka Vito dan pilih Pasang apl pada halamannya.",
-"Vito didn't answer. Is it installed and running?": "Vito tidak menjawab. Adakah ia dipasang dan sedang berjalan?"
+"Vito didn't answer. Is it installed and running?": "Vito tidak menjawab. Adakah ia dipasang dan sedang berjalan?",
+"Collapse": "Kuncupkan",
+"Collapse sidebar": "Kuncupkan bar sisi",
+"Expand sidebar": "Kembangkan bar sisi",
+"Register again": "Daftar semula",
+"Register shortcut": "Daftar pintasan",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Meminta pintasan daripada desktop anda sekali lagi, supaya dialognya muncul semula.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Menunggu desktop anda — sahkan pintasan dalam dialognya.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Anda menutup dialog pintasan desktop anda, jadi belum ada pintasan yang diikat.",
+"Your desktop didn't bind the shortcut.": "Desktop anda tidak mengikat pintasan itu.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Desktop anda ({desktop}) tidak dapat menyalurkan pintasan global kepada aplikasi, jadi Vito tidak memintanya. Sebaliknya, ikat arahan di bawah kepada kekunci dalam compositor anda.",
+"your desktop": "desktop anda"
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",

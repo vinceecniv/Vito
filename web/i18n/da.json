@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Giv appen sit eget vindue: åbn Vito, og vælg Installer app på dens side. Det er den, du skal fastgøre til proceslinjen eller Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Du kan lukke denne fane og fjerne et bogmærke til vito.talk/app, hvis du har lavet et.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Åbn Vito fra nu af med dets ikon i systembakken (menulinjen), eller giv det sit eget vindue: åbn Vito, og vælg Installer app på dens side.",
-"Vito didn't answer. Is it installed and running?": "Vito svarede ikke. Er det installeret og kører det?"
+"Vito didn't answer. Is it installed and running?": "Vito svarede ikke. Er det installeret og kører det?",
+"Collapse": "Skjul",
+"Collapse sidebar": "Skjul sidepanel",
+"Expand sidebar": "Udvid sidepanel",
+"Register again": "Registrér igen",
+"Register shortcut": "Registrér genvej",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Beder dit skrivebord om genvejen igen, så dets dialog vises igen.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Venter på dit skrivebord — bekræft genvejen i dets dialog.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Du lukkede dit skrivebords genvejsdialog, så der er endnu ikke bundet nogen genvej.",
+"Your desktop didn't bind the shortcut.": "Dit skrivebord bandt ikke genvejen.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Dit skrivebord ({desktop}) kan ikke videregive globale genveje til apps, så Vito beder ikke om en. Bind i stedet kommandoerne nedenfor til taster i din compositor.",
+"your desktop": "dit skrivebord"
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",

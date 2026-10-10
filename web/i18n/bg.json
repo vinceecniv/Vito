@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Дайте на приложението собствен прозорец: отворете Vito и изберете Инсталиране на приложението на неговата страница. Именно него закачете към лентата на задачите или към Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Можете да затворите този раздел и да премахнете отметката към vito.talk/app, ако сте направили такава.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Отваряйте Vito оттук нататък с иконата му в областта за известия (лентата с менюта) или му дайте собствен прозорец: отворете Vito и изберете Инсталиране на приложението на неговата страница.",
-"Vito didn't answer. Is it installed and running?": "Vito не отговори. Инсталиран и стартиран ли е?"
+"Vito didn't answer. Is it installed and running?": "Vito не отговори. Инсталиран и стартиран ли е?",
+"Collapse": "Свий",
+"Collapse sidebar": "Свий страничната лента",
+"Expand sidebar": "Разгъни страничната лента",
+"Register again": "Регистрирай отново",
+"Register shortcut": "Регистрирай клавишната комбинация",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Отново иска клавишната комбинация от вашата работна среда, за да се появи пак нейният диалог.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Изчакване на вашата работна среда — потвърдете клавишната комбинация в нейния диалог.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Затворихте диалога за клавишни комбинации на вашата работна среда, така че все още няма зададена комбинация.",
+"Your desktop didn't bind the shortcut.": "Вашата работна среда не зададе клавишната комбинация.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Вашата работна среда ({desktop}) не може да предава глобални клавишни комбинации на приложенията, затова Vito не я иска. Вместо това свържете командите по-долу с клавиши във вашия compositor.",
+"your desktop": "вашата работна среда"
 },
 "help": {
 "theme": "Светла, тъмна или автоматична — автоматичната следва светлия/тъмния режим на системата ви.",

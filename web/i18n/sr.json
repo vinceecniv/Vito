@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dajte aplikaciji sopstveni prozor: otvorite Vito i na njegovoj stranici izaberite Instaliraj aplikaciju. Taj prozor zakačite na traku zadataka ili Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Ovu karticu možete zatvoriti, a ako ste napravili obeleživač za vito.talk/app, možete ga ukloniti.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Ubuduće otvarajte Vito preko njegove ikone u sistemskoj traci (traka menija), ili mu dajte sopstveni prozor: otvorite Vito i na njegovoj stranici izaberite Instaliraj aplikaciju.",
-"Vito didn't answer. Is it installed and running?": "Vito nije odgovorio. Da li je instaliran i pokrenut?"
+"Vito didn't answer. Is it installed and running?": "Vito nije odgovorio. Da li je instaliran i pokrenut?",
+"Collapse": "Skupi",
+"Collapse sidebar": "Skupi bočnu traku",
+"Expand sidebar": "Proširi bočnu traku",
+"Register again": "Registruj ponovo",
+"Register shortcut": "Registruj prečicu",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Ponovo traži prečicu od vašeg radnog okruženja, tako da se njegov dijalog ponovo pojavi.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Čeka se vaše radno okruženje — potvrdite prečicu u njegovom dijalogu.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Zatvorili ste dijalog za prečice vašeg radnog okruženja, pa još nijedna prečica nije povezana.",
+"Your desktop didn't bind the shortcut.": "Vaše radno okruženje nije povezalo prečicu.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Vaše radno okruženje ({desktop}) ne može da prosleđuje globalne prečice aplikacijama, pa ga Vito i ne traži prečicu. Umesto toga, povežite komande ispod sa tasterima u svom kompozitoru.",
+"your desktop": "vaše radno okruženje"
 },
 "help": {
 "theme": "Svetla, tamna ili automatska — automatska prati svetlu/tamnu postavku vašeg sistema.",

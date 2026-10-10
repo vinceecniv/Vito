@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Zatím tu není žádný jiný počítač. Vyberte stejnou složku na svém druhém počítači, abyste s ním synchronizovali.",
 "Stop syncing": "Zastavit synchronizaci",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Tento počítač přestane synchronizovat. Co už je tady, zůstane, stejně jako složka.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Smazání diktátu nebo jeho označení hvězdičkou se přenáší také. Nastavení a klíče API zůstávají na každém počítači zvlášť: mikrofony, klávesové zkratky i poskytovatelé se mezi nimi často liší."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Smazání diktátu nebo jeho označení hvězdičkou se přenáší také. Nastavení a klíče API zůstávají na každém počítači zvlášť: mikrofony, klávesové zkratky i poskytovatelé se mezi nimi často liší.",
+"Collapse": "Sbalit",
+"Collapse sidebar": "Sbalit postranní panel",
+"Expand sidebar": "Rozbalit postranní panel",
+"Register again": "Zaregistrovat znovu",
+"Register shortcut": "Zaregistrovat zkratku",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Znovu požádá váš desktop o zkratku, aby se jeho dialog znovu objevil.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Čeká se na váš desktop — potvrďte zkratku v jeho dialogu.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Zavřeli jste dialog zkratek svého desktopu, takže zatím není navázána žádná zkratka.",
+"Your desktop didn't bind the shortcut.": "Váš desktop zkratku nenavázal.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Váš desktop ({desktop}) neumí předávat globální zkratky aplikacím, takže o ni Vito nežádá. Místo toho navažte příkazy níže na klávesy ve svém kompozitoru.",
+"your desktop": "váš desktop"
 },
 "help": {
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",

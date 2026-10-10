@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "अ‍ॅपला स्वतःची विंडो द्या: Vito उघडा आणि त्याच्या पानावर अ‍ॅप इन्स्टॉल करा निवडा. तीच टास्कबार किंवा डॉकवर पिन करा.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "तुम्ही हा टॅब बंद करू शकता, आणि vito.talk/app साठी बुकमार्क केला असेल तर तो काढून टाका.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "यापुढे Vito त्याच्या ट्रे (मेनू बार) आयकॉनने उघडा, किंवा त्याला स्वतःची विंडो द्या: Vito उघडा आणि त्याच्या पानावर अ‍ॅप इन्स्टॉल करा निवडा.",
-"Vito didn't answer. Is it installed and running?": "Vito ने उत्तर दिले नाही. ते इन्स्टॉल केलेले आणि चालू आहे का?"
+"Vito didn't answer. Is it installed and running?": "Vito ने उत्तर दिले नाही. ते इन्स्टॉल केलेले आणि चालू आहे का?",
+"Collapse": "संकुचित करा",
+"Collapse sidebar": "साइडबार संकुचित करा",
+"Expand sidebar": "साइडबार विस्तृत करा",
+"Register again": "पुन्हा नोंदणी करा",
+"Register shortcut": "शॉर्टकट नोंदवा",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "तुमच्या डेस्कटॉपला शॉर्टकटसाठी पुन्हा विचारते, जेणेकरून त्याचा संवाद पुन्हा दिसेल.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "तुमच्या डेस्कटॉपची प्रतीक्षा करत आहे — त्याच्या संवादात शॉर्टकटची पुष्टी करा.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "तुम्ही तुमच्या डेस्कटॉपचा शॉर्टकट संवाद बंद केला, त्यामुळे अद्याप कोणताही शॉर्टकट जोडलेला नाही.",
+"Your desktop didn't bind the shortcut.": "तुमच्या डेस्कटॉपने शॉर्टकट जोडला नाही.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "तुमचा डेस्कटॉप ({desktop}) जागतिक शॉर्टकट ॲप्सपर्यंत पोहोचवू शकत नाही, म्हणून Vito त्याच्याकडे शॉर्टकट मागत नाही. त्याऐवजी खालील कमांड्स तुमच्या compositor मध्ये कीजना जोडा.",
+"your desktop": "तुमचा डेस्कटॉप"
 },
 "help": {
 "theme": "उजळ, गडद किंवा आपोआप — आपोआप तुमच्या सिस्टीमच्या उजळ/गडद सेटिंगचे अनुसरण करते.",

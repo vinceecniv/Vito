@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Δώστε στην εφαρμογή το δικό της παράθυρο: ανοίξτε το Vito και επιλέξτε Εγκατάσταση εφαρμογής στη σελίδα του. Αυτό είναι που πρέπει να καρφιτσώσετε στη γραμμή εργασιών ή στο Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Μπορείτε να κλείσετε αυτήν την καρτέλα και να αφαιρέσετε τυχόν σελιδοδείκτη προς το vito.talk/app, αν δημιουργήσατε έναν.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Από εδώ και πέρα ανοίγετε το Vito από το εικονίδιό του στην περιοχή ειδοποιήσεων (γραμμή μενού) ή δώστε του το δικό του παράθυρο: ανοίξτε το Vito και επιλέξτε Εγκατάσταση εφαρμογής στη σελίδα του.",
-"Vito didn't answer. Is it installed and running?": "Το Vito δεν απάντησε. Είναι εγκατεστημένο και εκτελείται;"
+"Vito didn't answer. Is it installed and running?": "Το Vito δεν απάντησε. Είναι εγκατεστημένο και εκτελείται;",
+"Collapse": "Σύμπτυξη",
+"Collapse sidebar": "Σύμπτυξη πλαϊνής στήλης",
+"Expand sidebar": "Ανάπτυξη πλαϊνής στήλης",
+"Register again": "Νέα καταχώριση",
+"Register shortcut": "Καταχώριση συντόμευσης",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Ζητά ξανά τη συντόμευση από την επιφάνεια εργασίας σας, ώστε να εμφανιστεί ξανά ο διάλογός της.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Αναμονή για την επιφάνεια εργασίας σας — επιβεβαιώστε τη συντόμευση στον διάλογό της.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Κλείσατε τον διάλογο συντομεύσεων της επιφάνειας εργασίας σας, οπότε δεν έχει αντιστοιχιστεί ακόμη συντόμευση.",
+"Your desktop didn't bind the shortcut.": "Η επιφάνεια εργασίας σας δεν αντιστοίχισε τη συντόμευση.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Η επιφάνεια εργασίας σας ({desktop}) δεν μπορεί να μεταβιβάσει καθολικές συντομεύσεις σε εφαρμογές, οπότε το Vito δεν της ζητά καμία. Αντιστοιχίστε αντί γι' αυτό τις παρακάτω εντολές σε πλήκτρα στον compositor σας.",
+"your desktop": "η επιφάνεια εργασίας σας"
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

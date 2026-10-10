@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dă aplicației propria fereastră: deschide Vito și alege Instalează aplicația pe pagina sa. Aceea este cea pe care o fixezi în bara de activități sau în Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Poți închide această filă și poți șterge marcajul către vito.talk/app, dacă ai făcut unul.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "De acum deschide Vito cu pictograma sa din bara de sistem (bara de meniu) sau dă-i propria fereastră: deschide Vito și alege Instalează aplicația pe pagina sa.",
-"Vito didn't answer. Is it installed and running?": "Vito nu a răspuns. Este instalat și rulează?"
+"Vito didn't answer. Is it installed and running?": "Vito nu a răspuns. Este instalat și rulează?",
+"Collapse": "Restrânge",
+"Collapse sidebar": "Restrânge bara laterală",
+"Expand sidebar": "Extinde bara laterală",
+"Register again": "Înregistrează din nou",
+"Register shortcut": "Înregistrează scurtătura",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Îi cere din nou desktopului tău scurtătura, ca dialogul lui să reapară.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Se așteaptă desktopul tău — confirmă scurtătura în dialogul acestuia.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Ai închis dialogul de scurtături al desktopului tău, așa că încă nu este asociată nicio scurtătură.",
+"Your desktop didn't bind the shortcut.": "Desktopul tău nu a asociat scurtătura.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Desktopul tău ({desktop}) nu poate transmite scurtături globale aplicațiilor, așa că Vito nu îi cere una. Asociază în schimb comenzile de mai jos cu taste în compozitorul tău.",
+"your desktop": "desktopul tău"
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",

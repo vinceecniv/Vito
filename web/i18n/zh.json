@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "给应用一个独立的窗口：打开 Vito，在其页面上选择“安装应用”。把它固定到任务栏或 Dock 即可。",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "你可以关闭此标签页；如果添加过 vito.talk/app 的书签，也可以将其删除。",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "今后可通过托盘（菜单栏）图标打开 Vito，或者给它一个独立的窗口：打开 Vito，在其页面上选择“安装应用”。",
-"Vito didn't answer. Is it installed and running?": "Vito 没有响应。它是否已安装并正在运行？"
+"Vito didn't answer. Is it installed and running?": "Vito 没有响应。它是否已安装并正在运行？",
+"Collapse": "收起",
+"Collapse sidebar": "收起侧边栏",
+"Expand sidebar": "展开侧边栏",
+"Register again": "重新注册",
+"Register shortcut": "注册快捷键",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "再次向你的桌面请求快捷键，让它的对话框重新出现。",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "正在等待你的桌面 — 请在它的对话框中确认快捷键。",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "你关闭了桌面的快捷键对话框，所以还没有绑定任何快捷键。",
+"Your desktop didn't bind the shortcut.": "你的桌面没有绑定该快捷键。",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "你的桌面（{desktop}）无法将全局快捷键传递给应用，因此 Vito 不会向它请求快捷键。请改为在你的合成器中把下面的命令绑定到按键上。",
+"your desktop": "你的桌面"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

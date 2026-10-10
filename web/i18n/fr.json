@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Donnez à l'application sa propre fenêtre : ouvrez Vito et choisissez Installer l'application sur sa page. C'est celle-là qu'il faut épingler à la barre des tâches ou au Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Vous pouvez fermer cet onglet et supprimer le favori vers vito.talk/app si vous en avez créé un.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Désormais, ouvrez Vito avec son icône de la zone de notification (barre des menus), ou donnez-lui sa propre fenêtre : ouvrez Vito et choisissez Installer l'application sur sa page.",
-"Vito didn't answer. Is it installed and running?": "Vito n'a pas répondu. Est-il installé et en cours d'exécution ?"
+"Vito didn't answer. Is it installed and running?": "Vito n'a pas répondu. Est-il installé et en cours d'exécution ?",
+"Collapse": "Réduire",
+"Collapse sidebar": "Réduire la barre latérale",
+"Expand sidebar": "Développer la barre latérale",
+"Register again": "Enregistrer à nouveau",
+"Register shortcut": "Enregistrer le raccourci",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Redemande le raccourci à votre bureau, pour que sa boîte de dialogue réapparaisse.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "En attente de votre bureau — confirmez le raccourci dans sa boîte de dialogue.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Vous avez fermé la boîte de dialogue des raccourcis de votre bureau, aucun raccourci n'est donc encore lié.",
+"Your desktop didn't bind the shortcut.": "Votre bureau n'a pas lié le raccourci.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Votre bureau ({desktop}) ne peut pas transmettre les raccourcis globaux aux applications, Vito ne lui en demande donc pas. Liez plutôt les commandes ci-dessous à des touches dans votre compositeur.",
+"your desktop": "votre bureau"
 },
 "help": {
 "theme": "Clair, sombre ou automatique — le mode automatique suit le réglage clair/sombre de votre système.",

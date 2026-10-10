@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Adj az alkalmazásnak saját ablakot: nyisd meg a Vitót, és az oldalán válaszd az Alkalmazás telepítése lehetőséget. Ezt érdemes a tálcára vagy a Dockra rögzíteni.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Bezárhatod ezt a lapot, és ha készítettél könyvjelzőt a vito.talk/app címhez, törölheted is.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Innentől a Vitót a tálcaikonjáról (menüsorból) nyithatod meg, vagy adhatsz neki saját ablakot: nyisd meg a Vitót, és az oldalán válaszd az Alkalmazás telepítése lehetőséget.",
-"Vito didn't answer. Is it installed and running?": "A Vito nem válaszolt. Telepítve van, és fut?"
+"Vito didn't answer. Is it installed and running?": "A Vito nem válaszolt. Telepítve van, és fut?",
+"Collapse": "Összecsukás",
+"Collapse sidebar": "Oldalsáv összecsukása",
+"Expand sidebar": "Oldalsáv kibontása",
+"Register again": "Újraregisztrálás",
+"Register shortcut": "Gyorsbillentyű regisztrálása",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Újra elkéri a gyorsbillentyűt az asztali környezetedtől, így a párbeszédablaka ismét megjelenik.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Várakozás az asztali környezetedre — erősítsd meg a gyorsbillentyűt a párbeszédablakában.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Bezártad az asztali környezeted gyorsbillentyű-párbeszédablakát, így még nincs gyorsbillentyű hozzárendelve.",
+"Your desktop didn't bind the shortcut.": "Az asztali környezeted nem rendelte hozzá a gyorsbillentyűt.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Az asztali környezeted ({desktop}) nem tudja továbbadni a globális gyorsbillentyűket az alkalmazásoknak, ezért a Vito nem is kér tőle ilyet. Ehelyett kösd az alábbi parancsokat billentyűkhöz a compositorodban.",
+"your desktop": "az asztali környezeted"
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Ingen andre datamaskiner her ennå. Velg den samme mappen på den andre datamaskinen din for å synkronisere med den.",
 "Stop syncing": "Stopp synkronisering",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Denne datamaskinen slutter å synkronisere. Det som allerede er her, blir værende, og det samme gjelder mappen.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Sletting av et diktat eller å gi det en stjerne overføres også. Innstillinger og API-nøkler blir på hver datamaskin: mikrofoner, hurtigtaster og leverandører er ofte forskjellige mellom dem."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Sletting av et diktat eller å gi det en stjerne overføres også. Innstillinger og API-nøkler blir på hver datamaskin: mikrofoner, hurtigtaster og leverandører er ofte forskjellige mellom dem.",
+"Collapse": "Skjul",
+"Collapse sidebar": "Skjul sidepanelet",
+"Expand sidebar": "Vis sidepanelet",
+"Register again": "Registrer på nytt",
+"Register shortcut": "Registrer hurtigtast",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Ber skrivebordet ditt om hurtigtasten på nytt, slik at dialogen dukker opp igjen.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Venter på skrivebordet ditt — bekreft hurtigtasten i dialogen.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Du lukket hurtigtastdialogen til skrivebordet ditt, så ingen hurtigtast er bundet ennå.",
+"Your desktop didn't bind the shortcut.": "Skrivebordet ditt bandt ikke hurtigtasten.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Skrivebordet ditt ({desktop}) kan ikke videreformidle globale hurtigtaster til apper, så Vito ber ikke om en. Bind heller kommandoene nedenfor til taster i compositoren din.",
+"your desktop": "skrivebordet ditt"
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger systemets lys/mørk-innstilling.",

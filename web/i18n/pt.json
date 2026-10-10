@@ -1037,7 +1037,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Ainda não há aqui nenhum outro computador. Escolha a mesma pasta no seu outro computador para sincronizar com ele.",
 "Stop syncing": "Parar de sincronizar",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Este computador deixa de sincronizar. O que já está aqui permanece, tal como a pasta.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Eliminar um ditado ou marcá-lo com uma estrela também é sincronizado. As definições e as chaves de API ficam em cada computador: os microfones, as teclas de atalho e os fornecedores costumam diferir entre eles."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Eliminar um ditado ou marcá-lo com uma estrela também é sincronizado. As definições e as chaves de API ficam em cada computador: os microfones, as teclas de atalho e os fornecedores costumam diferir entre eles.",
+"Collapse": "Recolher",
+"Collapse sidebar": "Recolher barra lateral",
+"Expand sidebar": "Expandir barra lateral",
+"Register again": "Registar novamente",
+"Register shortcut": "Registar atalho",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Pede novamente o atalho ao seu ambiente de trabalho, para que a respetiva caixa de diálogo volte a aparecer.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "A aguardar o seu ambiente de trabalho — confirme o atalho na respetiva caixa de diálogo.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Fechou a caixa de diálogo de atalhos do seu ambiente de trabalho, por isso ainda não há nenhum atalho associado.",
+"Your desktop didn't bind the shortcut.": "O seu ambiente de trabalho não associou o atalho.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "O seu ambiente de trabalho ({desktop}) não consegue passar atalhos globais às aplicações, por isso o Vito não lhe pede nenhum. Em vez disso, associe os comandos abaixo a teclas no seu compositor.",
+"your desktop": "o seu ambiente de trabalho"
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",

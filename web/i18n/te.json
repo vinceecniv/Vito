@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "ఇక్కడ ఇంకా మరో కంప్యూటర్ లేదు. దానితో సింక్ చేయడానికి మీ ఇతర కంప్యూటర్‌లో అదే ఫోల్డర్‌ను ఎంచుకోండి.",
 "Stop syncing": "సింక్ ఆపండి",
 "This computer stops syncing. What is already here stays, and so does the folder.": "ఈ కంప్యూటర్ సింక్ చేయడం ఆపుతుంది. ఇప్పటికే ఇక్కడ ఉన్నవి అలాగే ఉంటాయి, ఫోల్డర్ కూడా.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "డిక్టేషన్‌ను తొలగించడం లేదా స్టార్ ఇవ్వడం కూడా బదిలీ అవుతుంది. సెట్టింగ్‌లు మరియు API కీలు ప్రతి కంప్యూటర్‌లో వేరుగా ఉంటాయి: మైక్రోఫోన్లు, హాట్‌కీలు మరియు ప్రొవైడర్లు తరచుగా వాటి మధ్య భిన్నంగా ఉంటాయి."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "డిక్టేషన్‌ను తొలగించడం లేదా స్టార్ ఇవ్వడం కూడా బదిలీ అవుతుంది. సెట్టింగ్‌లు మరియు API కీలు ప్రతి కంప్యూటర్‌లో వేరుగా ఉంటాయి: మైక్రోఫోన్లు, హాట్‌కీలు మరియు ప్రొవైడర్లు తరచుగా వాటి మధ్య భిన్నంగా ఉంటాయి.",
+"Collapse": "కుదించు",
+"Collapse sidebar": "సైడ్‌బార్‌ను కుదించు",
+"Expand sidebar": "సైడ్‌బార్‌ను విస్తరించు",
+"Register again": "మళ్లీ నమోదు చేయి",
+"Register shortcut": "షార్ట్‌కట్‌ను నమోదు చేయి",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "మీ డెస్క్‌టాప్‌ను షార్ట్‌కట్ కోసం మళ్లీ అడుగుతుంది, దాంతో దాని డైలాగ్ మళ్లీ కనిపిస్తుంది.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "మీ డెస్క్‌టాప్ కోసం వేచి ఉంది — దాని డైలాగ్‌లో షార్ట్‌కట్‌ను నిర్ధారించండి.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "మీరు మీ డెస్క్‌టాప్ షార్ట్‌కట్ డైలాగ్‌ను మూసివేశారు, కాబట్టి ఇంకా ఏ షార్ట్‌కట్ కేటాయించబడలేదు.",
+"Your desktop didn't bind the shortcut.": "మీ డెస్క్‌టాప్ షార్ట్‌కట్‌ను కేటాయించలేదు.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "మీ డెస్క్‌టాప్ ({desktop}) గ్లోబల్ షార్ట్‌కట్‌లను యాప్‌లకు అందించలేదు, కాబట్టి Vito దానిని షార్ట్‌కట్ అడగదు. బదులుగా కింది కమాండ్‌లను మీ compositor లో కీలకు కేటాయించండి.",
+"your desktop": "మీ డెస్క్‌టాప్"
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

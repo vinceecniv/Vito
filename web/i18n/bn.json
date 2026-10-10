@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "এখানে এখনও অন্য কোনো কম্পিউটার নেই। এটির সাথে সিঙ্ক করতে আপনার অন্য কম্পিউটারেও একই ফোল্ডার বেছে নিন।",
 "Stop syncing": "সিঙ্ক বন্ধ করুন",
 "This computer stops syncing. What is already here stays, and so does the folder.": "এই কম্পিউটার সিঙ্ক করা বন্ধ করবে। এখানে যা আছে তা থাকবে, ফোল্ডারটিও থাকবে।",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "কোনো ডিকটেশন মুছে ফেলা বা তাতে তারকা দেওয়াও অন্য কম্পিউটারে পৌঁছে যায়। সেটিংস ও API কী প্রতিটি কম্পিউটারে আলাদা থাকে: মাইক্রোফোন, হটকী ও প্রোভাইডার প্রায়ই একটির সাথে অন্যটির মেলে না।"
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "কোনো ডিকটেশন মুছে ফেলা বা তাতে তারকা দেওয়াও অন্য কম্পিউটারে পৌঁছে যায়। সেটিংস ও API কী প্রতিটি কম্পিউটারে আলাদা থাকে: মাইক্রোফোন, হটকী ও প্রোভাইডার প্রায়ই একটির সাথে অন্যটির মেলে না।",
+"Collapse": "সংকুচিত করুন",
+"Collapse sidebar": "সাইডবার সংকুচিত করুন",
+"Expand sidebar": "সাইডবার প্রসারিত করুন",
+"Register again": "আবার নিবন্ধন করুন",
+"Register shortcut": "শর্টকাট নিবন্ধন করুন",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "আপনার ডেস্কটপের কাছে আবার শর্টকাটটি চায়, যাতে এর ডায়ালগ আবার দেখা যায়।",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "আপনার ডেস্কটপের জন্য অপেক্ষা করা হচ্ছে — এর ডায়ালগে শর্টকাটটি নিশ্চিত করুন।",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "আপনি আপনার ডেস্কটপের শর্টকাট ডায়ালগ বন্ধ করেছেন, তাই এখনও কোনো শর্টকাট বাঁধা হয়নি।",
+"Your desktop didn't bind the shortcut.": "আপনার ডেস্কটপ শর্টকাটটি বাঁধেনি।",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "আপনার ডেস্কটপ ({desktop}) অ্যাপগুলোতে গ্লোবাল শর্টকাট পৌঁছে দিতে পারে না, তাই Vito এর কাছে শর্টকাট চায় না। এর বদলে নিচের কমান্ডগুলো আপনার কম্পোজিটরে কীর সাথে বাঁধুন।",
+"your desktop": "আপনার ডেস্কটপ"
 },
 "help": {
 "theme": "হালকা, গাঢ় বা স্বয়ংক্রিয় — স্বয়ংক্রিয় আপনার সিস্টেমের হালকা/গাঢ় সেটিং অনুসরণ করে।",
