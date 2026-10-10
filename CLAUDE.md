@@ -6,9 +6,17 @@ Vito is a personal voice-dictation daemon in Go with an embedded web UI.
 
 `web/web.go` uses `go:embed`, so editing `web/index.html` changes nothing until
 the binary is rebuilt and the daemon restarted. That is automated: a PostToolUse
-hook on `Write|Edit` (`.claude/settings.json` → `.claude/hooks/rebuild.ps1`)
-rebuilds `dist/vito.exe` and restarts the daemon after every edit. If the UI
-seems not to change, check the hook ran — don't debug the CSS first.
+hook on `Write|Edit` (`.claude/settings.json` → `.claude/hooks/rebuild.sh`)
+rebuilds `dist/vito` and restarts a daemon running from it after every edit.
+Hooks run through Git Bash on Windows, where `rebuild.sh` hands over to
+`rebuild.ps1` (`dist/vito.exe`). An installed Vito (AppImage, setup) is never
+touched. If the UI seems not to change, check the hook ran — don't debug the
+CSS first.
+
+A test daemon next to the installed one needs its own config (and so its own
+port): `XDG_CONFIG_HOME=<dir> dist/vito serve` with
+`{"server":{"port":4599,"token":"…"}}` in `<dir>/vito/config.json`. It also
+shows its own tray icon — stop it when done.
 
 The user usually views the app as an installed PWA, which caches aggressively.
 
