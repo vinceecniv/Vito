@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Pechaches o diálogo de atallos do teu escritorio, así que aínda non hai ningún atallo vinculado.",
 "Your desktop didn't bind the shortcut.": "O teu escritorio non vinculou o atallo.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "O teu escritorio ({desktop}) non pode pasar atallos globais ás aplicacións, así que Vito non lle pide ningún. Vincula no seu lugar os comandos de abaixo a teclas no teu compositor.",
-"your desktop": "o teu escritorio"
+"your desktop": "o teu escritorio",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito aínda non pode premer teclas neste escritorio desde dentro do Flatpak, así que os teus ditados van ao portapapeis. Cunha liña no inicio do teu escritorio xa pode escribir — os axustes de Linux indícano.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "A conexión existe, pero pertence a unha sesión anterior. Executa o comando de novo.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Este escritorio non ten portal RemoteDesktop, e a conexión propia do Flatpak con el non pode premer teclas. Dálle a Vito unha conexión directa — executa isto unha vez:",
+"Then add this to {file}, so it is there after every login:": "Despois engade isto a {file}, para que estea aí tras cada inicio de sesión:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Despois engade o mesmo comando ao inicio do teu escritorio, para que estea aí tras cada inicio de sesión.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Prefires non configurar nada? O AppImage escribe neste escritorio sen máis.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito escribe a través da conexión directa co teu escritorio que configuraches."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a configuración clara/escura do teu sistema.",

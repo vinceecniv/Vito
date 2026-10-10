@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Вы закрылі дыялог гарачых клавіш вашага асяроддзя, таму гарачая клавіша яшчэ не прызначана.",
 "Your desktop didn't bind the shortcut.": "Ваша асяроддзе не прызначыла гарачую клавішу.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Ваша асяроддзе ({desktop}) не можа перадаваць глабальныя гарачыя клавішы праграмам, таму Vito іх у яго не запытвае. Замест гэтага прывяжыце каманды ніжэй да клавіш у вашым кампазітары.",
-"your desktop": "ваша асяроддзе"
+"your desktop": "ваша асяроддзе",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "На гэтым працоўным стале Vito пакуль не можа націскаць клавішы знутры Flatpak, таму вашы дыктоўкі трапляюць у буфер абмену. Адзін радок у аўтазапуску вашага працоўнага стала дазволіць яму набіраць тэкст — ён паказаны ў наладах Linux.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Сувязь ёсць, але яна належыць да папярэдняга сеанса. Выканайце каманду яшчэ раз.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "У гэтага працоўнага стала няма партала RemoteDesktop, а ўласная сувязь Flatpak з ім не можа націскаць клавішы. Дайце Vito прамую сувязь — выканайце гэта адзін раз:",
+"Then add this to {file}, so it is there after every login:": "Потым дадайце гэта ў {file}, каб яна была пасля кожнага ўваходу ў сістэму:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Потым дадайце тую ж каманду ў аўтазапуск вашага працоўнага стала, каб сувязь была пасля кожнага ўваходу ў сістэму.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Не хочаце нічога наладжваць? AppImage набірае тэкст на гэтым працоўным стале адразу, без налад.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito набірае тэкст праз прамую сувязь з вашым працоўным сталом, якую вы наладзілі."
 },
 "help": {
 "theme": "Светлая, цёмная ці аўтаматычная — аўтаматычная сочыць за светлым/цёмным рэжымам вашай сістэмы.",

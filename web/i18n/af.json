@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Jy het jou werkskerm se kortpaddialoog gesluit, so daar is nog geen kortpad gekoppel nie.",
 "Your desktop didn't bind the shortcut.": "Jou werkskerm het nie die kortpad gekoppel nie.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Jou werkskerm ({desktop}) kan nie globale kortpaaie aan toepassings deurgee nie, so Vito vra dit nie vir een nie. Koppel eerder die opdragte hieronder aan sleutels in jou compositor.",
-"your desktop": "jou werkskerm"
+"your desktop": "jou werkskerm",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito kan nog nie van binne die Flatpak sleutels op hierdie werkskerm druk nie, dus beland jou diktate op die knipbord. Een reël in jou werkskerm se opstart laat dit tik — die Linux-instellings wys jou hoe.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Die koppeling bestaan, maar dit behoort aan 'n vroeëre sessie. Voer die opdrag weer uit.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Hierdie werkskerm het geen RemoteDesktop-portaal nie, en die Flatpak se eie verbinding daarmee kan nie sleutels druk nie. Gee Vito 'n direkte verbinding — voer dit een keer uit:",
+"Then add this to {file}, so it is there after every login:": "Voeg dit dan by {file}, sodat dit na elke aanmelding daar is:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Voeg dan dieselfde opdrag by jou werkskerm se opstart, sodat dit na elke aanmelding daar is.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Verkies jy glad geen instelwerk nie? Die AppImage tik sommer dadelik op hierdie werkskerm.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito tik deur die direkte verbinding met jou werkskerm wat jy opgestel het."
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

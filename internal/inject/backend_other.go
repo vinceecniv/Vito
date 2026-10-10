@@ -21,3 +21,6 @@ func adjustMode(cfg config.Injection, mode Mode) Mode { return mode }
 // Sandboxed is always false here: the Flatpak is a Linux packaging format, and
 // nothing else Vito ships confines it this way.
 func Sandboxed() bool { return false }
+
+// HasHostWaylandLink is Linux-only for the same reason.
+func HasHostWaylandLink() bool { return false }

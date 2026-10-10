@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "데스크톱의 단축키 대화 상자를 닫았기 때문에 아직 연결된 단축키가 없습니다.",
 "Your desktop didn't bind the shortcut.": "데스크톱이 단축키를 연결하지 않았습니다.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "데스크톱({desktop})이 전역 단축키를 앱에 전달할 수 없으므로 Vito는 단축키를 요청하지 않습니다. 대신 아래 명령을 컴포지터에서 키에 연결하세요.",
-"your desktop": "데스크톱"
+"your desktop": "데스크톱",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito는 아직 Flatpak 안에서 이 데스크톱의 키를 누를 수 없어서, 받아쓴 내용이 클립보드로 갑니다. 데스크톱 시작 설정에 한 줄만 추가하면 직접 입력할 수 있어요 — Linux 설정에서 방법을 볼 수 있습니다.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "연결은 있지만 이전 세션의 것입니다. 명령을 다시 실행하세요.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "이 데스크톱에는 RemoteDesktop 포털이 없고, Flatpak 자체 연결로는 키를 누를 수 없습니다. Vito에 직접 연결을 만들어 주세요 — 다음을 한 번 실행하세요:",
+"Then add this to {file}, so it is there after every login:": "그런 다음 로그인할 때마다 적용되도록 {file}에 다음을 추가하세요:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "그런 다음 로그인할 때마다 적용되도록 같은 명령을 데스크톱 시작 설정에 추가하세요.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "설정이 전혀 없는 쪽이 좋으세요? AppImage는 이 데스크톱에서 바로 입력할 수 있습니다.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito는 직접 설정한 데스크톱 연결을 통해 입력합니다."
 },
 "help": {
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",

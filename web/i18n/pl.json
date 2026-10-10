@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Zamknąłeś okno dialogowe skrótów swojego pulpitu, więc żaden skrót nie jest jeszcze przypisany.",
 "Your desktop didn't bind the shortcut.": "Twój pulpit nie przypisał skrótu.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Twój pulpit ({desktop}) nie potrafi przekazywać globalnych skrótów do aplikacji, więc Vito o żaden go nie prosi. Zamiast tego przypisz poniższe polecenia do klawiszy w swoim kompozytorze.",
-"your desktop": "twój pulpit"
+"your desktop": "twój pulpit",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito nie może jeszcze naciskać klawiszy na tym pulpicie z wnętrza Flatpaka, więc twoje dyktowania trafiają do schowka. Jedna linia w autostarcie twojego pulpitu pozwala mu pisać — pokazują ją ustawienia Linuksa.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Połączenie istnieje, ale należy do wcześniejszej sesji. Uruchom polecenie ponownie.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Ten pulpit nie ma portalu RemoteDesktop, a własne połączenie Flatpaka z nim nie może naciskać klawiszy. Daj Vito połączenie bezpośrednie — uruchom to raz:",
+"Then add this to {file}, so it is there after every login:": "Następnie dodaj to do {file}, aby działało po każdym zalogowaniu:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Następnie dodaj to samo polecenie do autostartu swojego pulpitu, aby działało po każdym zalogowaniu.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Wolisz obejść się bez żadnej konfiguracji? AppImage pisze na tym pulpicie od razu po uruchomieniu.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito pisze przez skonfigurowane przez ciebie bezpośrednie połączenie z twoim pulpitem."
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

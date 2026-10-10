@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "আপনি আপনার ডেস্কটপের শর্টকাট ডায়ালগ বন্ধ করেছেন, তাই এখনও কোনো শর্টকাট বাঁধা হয়নি।",
 "Your desktop didn't bind the shortcut.": "আপনার ডেস্কটপ শর্টকাটটি বাঁধেনি।",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "আপনার ডেস্কটপ ({desktop}) অ্যাপগুলোতে গ্লোবাল শর্টকাট পৌঁছে দিতে পারে না, তাই Vito এর কাছে শর্টকাট চায় না। এর বদলে নিচের কমান্ডগুলো আপনার কম্পোজিটরে কীর সাথে বাঁধুন।",
-"your desktop": "আপনার ডেস্কটপ"
+"your desktop": "আপনার ডেস্কটপ",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Flatpak-এর ভেতর থেকে Vito এখনও এই ডেস্কটপে কী চাপতে পারে না, তাই আপনার ডিকটেশনগুলো ক্লিপবোর্ডে যায়। আপনার ডেস্কটপের স্টার্টআপে একটি লাইন যোগ করলেই এটি টাইপ করতে পারবে — Linux সেটিংসে সেটি দেখানো আছে।",
+"The link is there, but it belongs to an earlier session. Run the command again.": "সংযোগটি আছে, কিন্তু এটি আগের একটি সেশনের। কমান্ডটি আবার চালান।",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "এই ডেস্কটপে কোনো RemoteDesktop পোর্টাল নেই, আর Flatpak-এর নিজস্ব সংযোগ দিয়ে কী চাপা যায় না। Vito-কে একটি সরাসরি সংযোগ দিন — এটি একবার চালান:",
+"Then add this to {file}, so it is there after every login:": "তারপর এটি {file}-এ যোগ করুন, যাতে প্রতিবার লগইনের পরে এটি থাকে:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "তারপর একই কমান্ড আপনার ডেস্কটপের স্টার্টআপে যোগ করুন, যাতে প্রতিবার লগইনের পরে এটি থাকে।",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "কোনো সেটআপ ছাড়াই চান? AppImage এই ডেস্কটপে কোনো বাড়তি ব্যবস্থা ছাড়াই টাইপ করে।",
+"Vito types through the direct connection to your desktop that you set up.": "আপনার সেট আপ করা ডেস্কটপের সরাসরি সংযোগের মাধ্যমে Vito টাইপ করে।"
 },
 "help": {
 "theme": "হালকা, গাঢ় বা স্বয়ংক্রিয় — স্বয়ংক্রিয় আপনার সিস্টেমের হালকা/গাঢ় সেটিং অনুসরণ করে।",

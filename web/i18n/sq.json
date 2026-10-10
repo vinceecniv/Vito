@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "E mbylle dialogun e shkurtoreve të desktopit tënd, prandaj ende nuk është lidhur asnjë shkurtore.",
 "Your desktop didn't bind the shortcut.": "Desktopi yt nuk e lidhi shkurtoren.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Desktopi yt ({desktop}) nuk mund t'ua kalojë shkurtoret globale aplikacioneve, prandaj Vito nuk i kërkon një të tillë. Në vend të kësaj, lidhi komandat më poshtë me taste në compositor-in tënd.",
-"your desktop": "desktopi yt"
+"your desktop": "desktopi yt",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito ende nuk mund të shtypë taste në këtë desktop nga brenda Flatpak-ut, prandaj diktimet e tua shkojnë te kujtesa. Një rresht në nisjen e desktopit tënd e lejon të shkruajë — cilësimet e Linux-it ta tregojnë.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Lidhja ekziston, por i përket një sesioni të mëparshëm. Ekzekutoje sërish komandën.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Ky desktop nuk ka portal RemoteDesktop, dhe lidhja e vetë Flatpak-ut me të nuk mund të shtypë taste. Jepi Vito-s një lidhje të drejtpërdrejtë — ekzekutoje këtë një herë:",
+"Then add this to {file}, so it is there after every login:": "Pastaj shtoje këtë te {file}, që të jetë aty pas çdo hyrjeje:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Pastaj shto të njëjtën komandë në nisjen e desktopit tënd, që të jetë aty pas çdo hyrjeje.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Nuk do asnjë konfigurim? AppImage shkruan në këtë desktop menjëherë, pa asnjë rregullim.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito shkruan përmes lidhjes së drejtpërdrejtë me desktopin tënd që ke konfiguruar."
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

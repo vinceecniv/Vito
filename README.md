@@ -325,14 +325,14 @@ Vito is **simple to use, but powerful under the hood.**
   | | **Flatpak** | **AppImage** |
   |---|---|---|
   | **Best for** | GNOME, KDE | everything else — wlroots compositors (niri, Sway, Hyprland), X11, minimal setups |
-  | **Typing into other apps** | needs the **RemoteDesktop portal**, which GNOME and KDE provide | always works — `wtype` on Wayland, `ydotool` on X11 |
+  | **Typing into other apps** | through the **RemoteDesktop portal** on GNOME and KDE; on niri, Sway or Hyprland after one line in the compositor's startup | always works — `wtype` on Wayland, `ydotool` on X11 |
   | **Updates** | `flatpak update`, like any other app | Vito replaces the AppImage itself |
   | **Setup** | none | none on Wayland; `ydotool` + a udev rule only on X11 |
 
   **In doubt, take the AppImage** — it always works, and it keeps itself up to date. The Flatpak fits in with
-  the rest of your Flatpak apps, but the sandbox can only type where the RemoteDesktop portal exists. Without one it
-  still hears you and cleans up your text, then puts the result on the clipboard for you to paste — and the
-  settings page says so, rather than leaving you guessing.
+  the rest of your Flatpak apps, but the sandbox types by itself only where the RemoteDesktop portal exists. Without
+  one it puts the result on the clipboard for you to paste, and the Linux settings show the one line for your
+  compositor's startup that lets it type after all.
 
   **Flatpak** (GNOME, KDE):
 

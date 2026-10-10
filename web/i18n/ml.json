@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിന്റെ ഹോട്ട്‌കീ ഡയലോഗ് നിങ്ങൾ അടച്ചു, അതിനാൽ ഇതുവരെ ഒരു ഹോട്ട്‌കീയും ബന്ധിപ്പിച്ചിട്ടില്ല.",
 "Your desktop didn't bind the shortcut.": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പ് ഹോട്ട്‌കീ ബന്ധിപ്പിച്ചില്ല.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിന് ({desktop}) ഗ്ലോബൽ ഹോട്ട്‌കീകൾ ആപ്പുകളിലേക്ക് കൈമാറാൻ കഴിയില്ല, അതിനാൽ Vito അതിനോട് ഒന്ന് ആവശ്യപ്പെടുന്നില്ല. പകരം, താഴെയുള്ള കമാൻഡുകൾ നിങ്ങളുടെ compositor-ൽ കീകളുമായി ബന്ധിപ്പിക്കുക.",
-"your desktop": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പ്"
+"your desktop": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പ്",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Flatpak-നുള്ളിൽ നിന്ന് ഈ ഡെസ്ക്ടോപ്പിൽ കീകൾ അമർത്താൻ Vito-യ്ക്ക് ഇതുവരെ കഴിയില്ല, അതിനാൽ നിങ്ങളുടെ ഡിക്ടേഷനുകൾ ക്ലിപ്പ്ബോർഡിലേക്ക് പോകുന്നു. നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിന്റെ സ്റ്റാർട്ടപ്പിലെ ഒരു വരി അതിനെ ടൈപ്പ് ചെയ്യാൻ അനുവദിക്കുന്നു — Linux ക്രമീകരണങ്ങൾ അത് കാണിക്കുന്നു.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "കണക്ഷൻ നിലവിലുണ്ട്, പക്ഷേ അത് മുമ്പത്തെ ഒരു സെഷന്റേതാണ്. കമാൻഡ് വീണ്ടും പ്രവർത്തിപ്പിക്കുക.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "ഈ ഡെസ്ക്ടോപ്പിൽ RemoteDesktop പോർട്ടൽ ഇല്ല, Flatpak-ന്റെ സ്വന്തം കണക്ഷന് കീകൾ അമർത്താനും കഴിയില്ല. Vito-യ്ക്ക് ഒരു നേരിട്ടുള്ള കണക്ഷൻ നൽകുക — ഇത് ഒരിക്കൽ പ്രവർത്തിപ്പിക്കുക:",
+"Then add this to {file}, so it is there after every login:": "തുടർന്ന് ഓരോ ലോഗിനു ശേഷവും ഇത് ഉണ്ടാകാൻ, ഇത് {file}-ലേക്ക് ചേർക്കുക:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "തുടർന്ന് ഓരോ ലോഗിനു ശേഷവും ഇത് ഉണ്ടാകാൻ, ഇതേ കമാൻഡ് നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിന്റെ സ്റ്റാർട്ടപ്പിലേക്ക് ചേർക്കുക.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "ഒരു സജ്ജീകരണവും വേണ്ടേ? AppImage ഈ ഡെസ്ക്ടോപ്പിൽ ഒന്നും ചെയ്യാതെ തന്നെ ടൈപ്പ് ചെയ്യുന്നു.",
+"Vito types through the direct connection to your desktop that you set up.": "നിങ്ങൾ സജ്ജമാക്കിയ, ഡെസ്ക്ടോപ്പിലേക്കുള്ള നേരിട്ടുള്ള കണക്ഷനിലൂടെ Vito ടൈപ്പ് ചെയ്യുന്നു."
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

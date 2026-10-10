@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "你关闭了桌面的快捷键对话框，所以还没有绑定任何快捷键。",
 "Your desktop didn't bind the shortcut.": "你的桌面没有绑定该快捷键。",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "你的桌面（{desktop}）无法将全局快捷键传递给应用，因此 Vito 不会向它请求快捷键。请改为在你的合成器中把下面的命令绑定到按键上。",
-"your desktop": "你的桌面"
+"your desktop": "你的桌面",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "在这个桌面上，Vito 目前还无法从 Flatpak 内部按下按键，所以你的口述内容会进入剪贴板。在桌面的启动项中加一行命令，它就能键入了——Linux 设置里有说明。",
+"The link is there, but it belongs to an earlier session. Run the command again.": "连接已存在，但属于之前的会话。请再运行一次该命令。",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "这个桌面没有 RemoteDesktop 门户，而 Flatpak 自身与桌面的连接无法按下按键。给 Vito 一个直接连接——运行一次这条命令：",
+"Then add this to {file}, so it is there after every login:": "然后把这一行添加到 {file}，这样每次登录后它都会生效：",
+"Then add the same command to your desktop's startup, so it is there after every login.": "然后把同一条命令添加到桌面的启动项中，这样每次登录后它都会生效。",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "不想做任何设置？AppImage 在这个桌面上开箱即可键入。",
+"Vito types through the direct connection to your desktop that you set up.": "Vito 通过你设置的与桌面的直接连接进行键入。"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

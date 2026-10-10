@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Κλείσατε τον διάλογο συντομεύσεων της επιφάνειας εργασίας σας, οπότε δεν έχει αντιστοιχιστεί ακόμη συντόμευση.",
 "Your desktop didn't bind the shortcut.": "Η επιφάνεια εργασίας σας δεν αντιστοίχισε τη συντόμευση.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Η επιφάνεια εργασίας σας ({desktop}) δεν μπορεί να μεταβιβάσει καθολικές συντομεύσεις σε εφαρμογές, οπότε το Vito δεν της ζητά καμία. Αντιστοιχίστε αντί γι' αυτό τις παρακάτω εντολές σε πλήκτρα στον compositor σας.",
-"your desktop": "η επιφάνεια εργασίας σας"
+"your desktop": "η επιφάνεια εργασίας σας",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Το Vito δεν μπορεί ακόμη να πατήσει πλήκτρα σε αυτή την επιφάνεια εργασίας μέσα από το Flatpak, οπότε οι υπαγορεύσεις σας πηγαίνουν στο πρόχειρο. Μία γραμμή στην εκκίνηση της επιφάνειας εργασίας σας του επιτρέπει να πληκτρολογεί — οι ρυθμίσεις Linux σας δείχνουν πώς.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Η σύνδεση υπάρχει, αλλά ανήκει σε μια προηγούμενη συνεδρία. Εκτελέστε ξανά την εντολή.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Αυτή η επιφάνεια εργασίας δεν διαθέτει πύλη RemoteDesktop και η δική σύνδεση του Flatpak με αυτήν δεν μπορεί να πατήσει πλήκτρα. Δώστε στο Vito μια άμεση σύνδεση — εκτελέστε αυτό μία φορά:",
+"Then add this to {file}, so it is there after every login:": "Έπειτα προσθέστε αυτό στο {file}, ώστε να υπάρχει μετά από κάθε σύνδεση:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Έπειτα προσθέστε την ίδια εντολή στην εκκίνηση της επιφάνειας εργασίας σας, ώστε να υπάρχει μετά από κάθε σύνδεση.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Προτιμάτε καμία ρύθμιση; Το AppImage πληκτρολογεί σε αυτή την επιφάνεια εργασίας χωρίς καμία προετοιμασία.",
+"Vito types through the direct connection to your desktop that you set up.": "Το Vito πληκτρολογεί μέσω της άμεσης σύνδεσης με την επιφάνεια εργασίας σας που ρυθμίσατε."
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

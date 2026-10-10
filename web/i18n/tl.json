@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Isinara mo ang shortcut dialog ng desktop mo, kaya wala pang naka-bind na shortcut.",
 "Your desktop didn't bind the shortcut.": "Hindi na-bind ng desktop mo ang shortcut.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Hindi kayang ipasa ng desktop mo ({desktop}) ang mga global shortcut sa mga app, kaya hindi na ito hinihingan ng Vito ng shortcut. Sa halip, i-bind ang mga command sa ibaba sa mga key sa compositor mo.",
-"your desktop": "desktop mo"
+"your desktop": "desktop mo",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Hindi pa makakapagpindot ng key ang Vito sa desktop na ito mula sa loob ng Flatpak, kaya sa clipboard napupunta ang mga diktasyon mo. Isang linya sa startup ng desktop mo ang magpapa-type dito — makikita ito sa mga setting ng Linux.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Nariyan ang koneksyon, pero galing ito sa naunang session. Patakbuhin ulit ang command.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Walang RemoteDesktop portal ang desktop na ito, at hindi makakapagpindot ng key ang sariling koneksyon ng Flatpak dito. Bigyan ang Vito ng direktang koneksyon — patakbuhin ito nang isang beses:",
+"Then add this to {file}, so it is there after every login:": "Pagkatapos, idagdag ito sa {file}, para nariyan ito pagkatapos ng bawat login:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Pagkatapos, idagdag ang parehong command sa startup ng desktop mo, para nariyan ito pagkatapos ng bawat login.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Ayaw mo ng anumang setup? Nakakapag-type agad ang AppImage sa desktop na ito, walang kailangang i-configure.",
+"Vito types through the direct connection to your desktop that you set up.": "Nagta-type ang Vito sa pamamagitan ng direktang koneksyon sa desktop mo na iyong in-set up."
 },
 "help": {
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",

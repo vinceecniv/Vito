@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "તમે તમારા ડેસ્કટોપનો શોર્ટકટ ડાયલોગ બંધ કર્યો, તેથી હજી કોઈ શોર્ટકટ જોડાયેલો નથી.",
 "Your desktop didn't bind the shortcut.": "તમારા ડેસ્કટોપે શોર્ટકટ જોડ્યો નહીં.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "તમારું ડેસ્કટોપ ({desktop}) ગ્લોબલ શોર્ટકટ એપ્સ સુધી પહોંચાડી શકતું નથી, તેથી Vito તેની પાસે શોર્ટકટ માંગતું નથી. તેને બદલે નીચેના કમાન્ડને તમારા compositor માં કીઓ સાથે જોડો.",
-"your desktop": "તમારું ડેસ્કટોપ"
+"your desktop": "તમારું ડેસ્કટોપ",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito હજી Flatpak ની અંદરથી આ ડેસ્કટોપ પર કી દબાવી શકતું નથી, તેથી તમારા શ્રુતલેખન ક્લિપબોર્ડ પર જાય છે. તમારા ડેસ્કટોપના સ્ટાર્ટઅપમાં એક લાઇન ઉમેરવાથી તે ટાઇપ કરી શકશે — Linux સેટિંગ્સમાં તે બતાવેલ છે.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "જોડાણ હાજર છે, પરંતુ તે અગાઉના સેશનનું છે. કમાન્ડ ફરીથી ચલાવો.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "આ ડેસ્કટોપમાં RemoteDesktop પોર્ટલ નથી, અને Flatpak નું પોતાનું જોડાણ કી દબાવી શકતું નથી. Vito ને સીધું જોડાણ આપો — આ એક વાર ચલાવો:",
+"Then add this to {file}, so it is there after every login:": "પછી આ {file} માં ઉમેરો, જેથી દરેક લૉગિન પછી તે હાજર રહે:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "પછી આ જ કમાન્ડ તમારા ડેસ્કટોપના સ્ટાર્ટઅપમાં ઉમેરો, જેથી દરેક લૉગિન પછી તે હાજર રહે.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "કોઈ સેટઅપ જ નથી કરવું? AppImage આ ડેસ્કટોપ પર કોઈ સેટઅપ વગર સીધું ટાઇપ કરે છે.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito તમે ગોઠવેલા તમારા ડેસ્કટોપ સાથેના સીધા જોડાણ દ્વારા ટાઇપ કરે છે."
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",

@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "ਤੁਸੀਂ ਆਪਣੇ ਡੈਸਕਟਾਪ ਦਾ ਸ਼ਾਰਟਕੱਟ ਡਾਇਲਾਗ ਬੰਦ ਕਰ ਦਿੱਤਾ, ਇਸ ਲਈ ਅਜੇ ਕੋਈ ਸ਼ਾਰਟਕੱਟ ਜੋੜਿਆ ਨਹੀਂ ਗਿਆ।",
 "Your desktop didn't bind the shortcut.": "ਤੁਹਾਡੇ ਡੈਸਕਟਾਪ ਨੇ ਸ਼ਾਰਟਕੱਟ ਨਹੀਂ ਜੋੜਿਆ।",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "ਤੁਹਾਡਾ ਡੈਸਕਟਾਪ ({desktop}) ਗਲੋਬਲ ਸ਼ਾਰਟਕੱਟ ਐਪਾਂ ਤੱਕ ਨਹੀਂ ਪਹੁੰਚਾ ਸਕਦਾ, ਇਸ ਲਈ Vito ਉਸ ਤੋਂ ਸ਼ਾਰਟਕੱਟ ਨਹੀਂ ਮੰਗਦਾ। ਇਸਦੀ ਬਜਾਏ ਹੇਠਾਂ ਦਿੱਤੀਆਂ ਕਮਾਂਡਾਂ ਨੂੰ ਆਪਣੇ ਕੰਪੋਜ਼ੀਟਰ ਵਿੱਚ ਕੀਆਂ ਨਾਲ ਜੋੜੋ।",
-"your desktop": "ਤੁਹਾਡਾ ਡੈਸਕਟਾਪ"
+"your desktop": "ਤੁਹਾਡਾ ਡੈਸਕਟਾਪ",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito ਅਜੇ Flatpak ਦੇ ਅੰਦਰੋਂ ਇਸ ਡੈਸਕਟਾਪ 'ਤੇ ਕੁੰਜੀਆਂ ਨਹੀਂ ਦਬਾ ਸਕਦਾ, ਇਸ ਲਈ ਤੁਹਾਡੇ ਡਿਕਟੇਸ਼ਨ ਕਲਿੱਪਬੋਰਡ 'ਤੇ ਜਾਂਦੇ ਹਨ। ਤੁਹਾਡੇ ਡੈਸਕਟਾਪ ਦੀ ਸ਼ੁਰੂਆਤ ਵਿੱਚ ਇੱਕ ਲਾਈਨ ਨਾਲ ਇਹ ਟਾਈਪ ਕਰ ਸਕਦਾ ਹੈ — Linux ਸੈਟਿੰਗਾਂ ਇਹ ਦਿਖਾਉਂਦੀਆਂ ਹਨ।",
+"The link is there, but it belongs to an earlier session. Run the command again.": "ਕਨੈਕਸ਼ਨ ਮੌਜੂਦ ਹੈ, ਪਰ ਇਹ ਪਿਛਲੇ ਸੈਸ਼ਨ ਦਾ ਹੈ। ਕਮਾਂਡ ਦੁਬਾਰਾ ਚਲਾਓ।",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "ਇਸ ਡੈਸਕਟਾਪ ਵਿੱਚ RemoteDesktop ਪੋਰਟਲ ਨਹੀਂ ਹੈ, ਅਤੇ Flatpak ਦਾ ਆਪਣਾ ਕਨੈਕਸ਼ਨ ਕੁੰਜੀਆਂ ਨਹੀਂ ਦਬਾ ਸਕਦਾ। Vito ਨੂੰ ਸਿੱਧਾ ਕਨੈਕਸ਼ਨ ਦਿਓ — ਇਹ ਇੱਕ ਵਾਰ ਚਲਾਓ:",
+"Then add this to {file}, so it is there after every login:": "ਫਿਰ ਇਸਨੂੰ {file} ਵਿੱਚ ਜੋੜੋ, ਤਾਂ ਜੋ ਇਹ ਹਰ ਲੌਗਇਨ ਤੋਂ ਬਾਅਦ ਮੌਜੂਦ ਰਹੇ:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "ਫਿਰ ਇਹੀ ਕਮਾਂਡ ਆਪਣੇ ਡੈਸਕਟਾਪ ਦੀ ਸ਼ੁਰੂਆਤ ਵਿੱਚ ਜੋੜੋ, ਤਾਂ ਜੋ ਇਹ ਹਰ ਲੌਗਇਨ ਤੋਂ ਬਾਅਦ ਮੌਜੂਦ ਰਹੇ।",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "ਕੋਈ ਸੈੱਟਅੱਪ ਨਹੀਂ ਚਾਹੁੰਦੇ? AppImage ਇਸ ਡੈਸਕਟਾਪ 'ਤੇ ਬਿਨਾਂ ਕਿਸੇ ਤਿਆਰੀ ਦੇ ਟਾਈਪ ਕਰਦਾ ਹੈ।",
+"Vito types through the direct connection to your desktop that you set up.": "Vito ਤੁਹਾਡੇ ਵੱਲੋਂ ਸੈੱਟ ਕੀਤੇ ਤੁਹਾਡੇ ਡੈਸਕਟਾਪ ਦੇ ਸਿੱਧੇ ਕਨੈਕਸ਼ਨ ਰਾਹੀਂ ਟਾਈਪ ਕਰਦਾ ਹੈ।"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",

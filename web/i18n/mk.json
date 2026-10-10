@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Го затворивте дијалогот за кратенки на вашата работна површина, па сè уште нема поврзана кратенка.",
 "Your desktop didn't bind the shortcut.": "Вашата работна површина не ја поврза кратенката.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Вашата работна површина ({desktop}) не може да им проследува глобални кратенки на апликациите, па Vito не бара кратенка од неа. Наместо тоа, поврзете ги командите подолу со копчиња во вашиот композитор.",
-"your desktop": "вашата работна површина"
+"your desktop": "вашата работна површина",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito сè уште не може да притиска копчиња на оваа работна површина од внатре во Flatpak, па вашите диктати одат во клипбордот. Една линија во стартувањето на вашата работна површина му овозможува да пишува — Linux-поставките ви покажуваат како.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Врската постои, но припаѓа на претходна сесија. Извршете ја командата повторно.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Оваа работна површина нема RemoteDesktop-портал, а сопствената врска на Flatpak со неа не може да притиска копчиња. Дајте му на Vito директна врска — извршете го ова еднаш:",
+"Then add this to {file}, so it is there after every login:": "Потоа додајте го ова во {file}, за да биде таму по секое најавување:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Потоа додајте ја истата команда во стартувањето на вашата работна површина, за да биде таму по секое најавување.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Претпочитате воопшто без поставување? AppImage пишува на оваа работна површина веднаш, без ништо дополнително.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito пишува преку директната врска со вашата работна површина што ја поставивте."
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

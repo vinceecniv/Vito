@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "உங்கள் டெஸ்க்டாப்பின் குறுக்குவழி உரையாடல் பெட்டியை நீங்கள் மூடிவிட்டீர்கள், எனவே இன்னும் எந்தக் குறுக்குவழியும் இணைக்கப்படவில்லை.",
 "Your desktop didn't bind the shortcut.": "உங்கள் டெஸ்க்டாப் குறுக்குவழியை இணைக்கவில்லை.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "உங்கள் டெஸ்க்டாப்பால் ({desktop}) உலகளாவிய குறுக்குவழிகளை ஆப்களுக்கு அனுப்ப முடியாது, எனவே Vito அதனிடம் குறுக்குவழியைக் கேட்பதில்லை. அதற்குப் பதிலாக கீழே உள்ள கட்டளைகளை உங்கள் compositor இல் விசைகளுடன் இணைக்கவும்.",
-"your desktop": "உங்கள் டெஸ்க்டாப்"
+"your desktop": "உங்கள் டெஸ்க்டாப்",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Flatpak-க்குள் இருந்து இந்த டெஸ்க்டாப்பில் Vito-வால் இன்னும் விசைகளை அழுத்த முடியாது, எனவே உங்கள் சொல்லெழுத்துக்கள் கிளிப்போர்டுக்குச் செல்கின்றன. உங்கள் டெஸ்க்டாப்பின் தொடக்கத்தில் ஒரு வரியைச் சேர்த்தால் அது தட்டச்சு செய்ய முடியும் — Linux அமைப்புகள் அதைக் காட்டுகின்றன.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "இணைப்பு இருக்கிறது, ஆனால் அது முந்தைய அமர்வைச் சேர்ந்தது. கட்டளையை மீண்டும் இயக்குங்கள்.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "இந்த டெஸ்க்டாப்பில் RemoteDesktop போர்டல் இல்லை, மேலும் Flatpak-இன் சொந்த இணைப்பால் விசைகளை அழுத்த முடியாது. Vito-வுக்கு ஒரு நேரடி இணைப்பைக் கொடுங்கள் — இதை ஒரு முறை இயக்குங்கள்:",
+"Then add this to {file}, so it is there after every login:": "பின்னர் ஒவ்வொரு உள்நுழைவுக்குப் பிறகும் அது இருக்கும்படி இதை {file} இல் சேர்க்கவும்:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "பின்னர் ஒவ்வொரு உள்நுழைவுக்குப் பிறகும் அது இருக்கும்படி அதே கட்டளையை உங்கள் டெஸ்க்டாப்பின் தொடக்கத்தில் சேர்க்கவும்.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "எந்த அமைப்பும் வேண்டாமா? AppImage இந்த டெஸ்க்டாப்பில் கூடுதல் அமைப்பு இல்லாமலேயே தட்டச்சு செய்கிறது.",
+"Vito types through the direct connection to your desktop that you set up.": "நீங்கள் அமைத்த, உங்கள் டெஸ்க்டாப்புடனான நேரடி இணைப்பின் வழியாக Vito தட்டச்சு செய்கிறது."
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

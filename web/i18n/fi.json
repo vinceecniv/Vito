@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Suljit työpöytäsi pikanäppäinikkunan, joten pikanäppäintä ei ole vielä sidottu.",
 "Your desktop didn't bind the shortcut.": "Työpöytäsi ei sitonut pikanäppäintä.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Työpöytäsi ({desktop}) ei voi välittää globaaleja pikanäppäimiä sovelluksille, joten Vito ei pyydä siltä sellaista. Sido sen sijaan alla olevat komennot näppäimiin kompositorissasi.",
-"your desktop": "työpöytäsi"
+"your desktop": "työpöytäsi",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito ei vielä pysty painamaan näppäimiä tällä työpöydällä Flatpakin sisältä, joten sanelusi menevät leikepöydälle. Yksi rivi työpöytäsi käynnistykseen antaa sen kirjoittaa — Linux-asetukset näyttävät, miten.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Yhteys on olemassa, mutta se kuuluu aiempaan istuntoon. Suorita komento uudelleen.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Tällä työpöydällä ei ole RemoteDesktop-porttaalia, eikä Flatpakin oma yhteys siihen pysty painamaan näppäimiä. Anna Vitolle suora yhteys — suorita tämä kerran:",
+"Then add this to {file}, so it is there after every login:": "Lisää tämä sitten tiedostoon {file}, jotta se on käytössä jokaisen kirjautumisen jälkeen:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Lisää sama komento sitten työpöytäsi käynnistykseen, jotta se on käytössä jokaisen kirjautumisen jälkeen.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Etkö halua määrittää mitään? AppImage kirjoittaa tällä työpöydällä suoraan ilman asetuksia.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito kirjoittaa määrittämäsi suoran työpöytäyhteyden kautta."
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",

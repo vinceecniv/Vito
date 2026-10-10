@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "คุณปิดกล่องโต้ตอบปุ่มลัดของเดสก์ท็อปไปแล้ว จึงยังไม่มีปุ่มลัดที่ผูกไว้",
 "Your desktop didn't bind the shortcut.": "เดสก์ท็อปของคุณไม่ได้ผูกปุ่มลัด",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "เดสก์ท็อปของคุณ ({desktop}) ส่งต่อปุ่มลัดส่วนกลางให้แอปไม่ได้ Vito จึงไม่ขอปุ่มลัดจากเดสก์ท็อป ให้ผูกคำสั่งด้านล่างกับปุ่มใน compositor ของคุณแทน",
-"your desktop": "เดสก์ท็อปของคุณ"
+"your desktop": "เดสก์ท็อปของคุณ",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito ยังกดปุ่มบนเดสก์ท็อปนี้จากภายใน Flatpak ไม่ได้ คำบอกของคุณจึงไปอยู่ในคลิปบอร์ด เพิ่มคำสั่งหนึ่งบรรทัดในการเริ่มต้นของเดสก์ท็อปคุณแล้ว Vito จะพิมพ์ได้ — ดูวิธีได้ในการตั้งค่า Linux",
+"The link is there, but it belongs to an earlier session. Run the command again.": "มีการเชื่อมต่ออยู่แล้ว แต่เป็นของเซสชันก่อนหน้า ให้รันคำสั่งอีกครั้ง",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "เดสก์ท็อปนี้ไม่มีพอร์ทัล RemoteDesktop และการเชื่อมต่อของ Flatpak เองก็กดปุ่มไม่ได้ ให้ Vito มีการเชื่อมต่อโดยตรง — รันคำสั่งนี้หนึ่งครั้ง:",
+"Then add this to {file}, so it is there after every login:": "จากนั้นเพิ่มบรรทัดนี้ลงใน {file} เพื่อให้มีอยู่หลังการเข้าสู่ระบบทุกครั้ง:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "จากนั้นเพิ่มคำสั่งเดียวกันนี้ลงในการเริ่มต้นของเดสก์ท็อปคุณ เพื่อให้มีอยู่หลังการเข้าสู่ระบบทุกครั้ง",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "ไม่อยากตั้งค่าอะไรเลยใช่ไหม? AppImage พิมพ์บนเดสก์ท็อปนี้ได้ทันทีโดยไม่ต้องตั้งค่า",
+"Vito types through the direct connection to your desktop that you set up.": "Vito พิมพ์ผ่านการเชื่อมต่อโดยตรงกับเดสก์ท็อปที่คุณตั้งค่าไว้"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",

@@ -1048,7 +1048,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Zatvorili ste dijalog za prečice vašeg desktopa, pa još nijedna prečica nije vezana.",
 "Your desktop didn't bind the shortcut.": "Vaš desktop nije vezao prečicu.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Vaš desktop ({desktop}) ne može prosljeđivati globalne prečice aplikacijama, pa ga Vito ni ne traži. Umjesto toga, vežite komande ispod za tipke u svom compositoru.",
-"your desktop": "vaš desktop"
+"your desktop": "vaš desktop",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito iz Flatpaka još ne može pritiskati tipke na ovoj radnoj površini, pa vaši diktati idu u međuspremnik. Jedan red u pokretanju vaše radne površine omogućava mu da kuca — Linux postavke pokazuju kako.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Veza postoji, ali pripada ranijoj sesiji. Ponovo pokrenite komandu.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Ova radna površina nema RemoteDesktop portal, a vlastita veza Flatpaka s njom ne može pritiskati tipke. Dajte Vitu direktnu vezu — pokrenite ovo jednom:",
+"Then add this to {file}, so it is there after every login:": "Zatim dodajte ovo u {file}, kako bi bilo tu nakon svake prijave:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Zatim dodajte istu komandu u pokretanje svoje radne površine, kako bi bila tu nakon svake prijave.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Radije biste bez ikakvog podešavanja? AppImage na ovoj radnoj površini kuca odmah, bez dodatnih koraka.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito kuca preko direktne veze s vašom radnom površinom koju ste podesili."
 },
 "help": {
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetli/tamni način vašeg sistema.",

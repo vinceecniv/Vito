@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Tu aizvēri darbvirsmas īsinājumtaustiņu dialogu, tāpēc neviens īsinājumtaustiņš vēl nav piesaistīts.",
 "Your desktop didn't bind the shortcut.": "Tava darbvirsma nepiesaistīja īsinājumtaustiņu.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Tava darbvirsma ({desktop}) nevar nodot globālos īsinājumtaustiņus lietotnēm, tāpēc Vito to nepieprasa. Tā vietā piesaisti tālāk norādītās komandas taustiņiem savā kompozitorā.",
-"your desktop": "tava darbvirsma"
+"your desktop": "tava darbvirsma",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito no Flatpak iekšpuses šajā darbvirsmā vēl nevar nospiest taustiņus, tāpēc tavi diktāti nonāk starpliktuvē. Viena rindiņa tavas darbvirsmas startēšanā ļauj tam rakstīt — Linux iestatījumos redzams, kā.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Savienojums ir, taču tas pieder iepriekšējai sesijai. Palaid komandu vēlreiz.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Šajā darbvirsmā nav RemoteDesktop portāla, un Flatpak paša savienojums ar to nevar nospiest taustiņus. Dod Vito tiešu savienojumu — palaid šo vienreiz:",
+"Then add this to {file}, so it is there after every login:": "Pēc tam pievieno šo failam {file}, lai tas būtu pieejams pēc katras pieteikšanās:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Pēc tam pievieno to pašu komandu savas darbvirsmas startēšanai, lai tas būtu pieejams pēc katras pieteikšanās.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Negribi neko iestatīt? AppImage šajā darbvirsmā raksta uzreiz, bez papildu iestatīšanas.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito raksta, izmantojot tevis iestatīto tiešo savienojumu ar tavu darbvirsmu."
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

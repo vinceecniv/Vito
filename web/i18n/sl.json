@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Zaprli ste pogovorno okno za bližnjice vašega namizja, zato bližnjica še ni povezana.",
 "Your desktop didn't bind the shortcut.": "Vaše namizje ni povezalo bližnjice.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Vaše namizje ({desktop}) ne more posredovati globalnih bližnjic aplikacijam, zato ga Vito zanjo ne prosi. Namesto tega povežite spodnje ukaze s tipkami v svojem kompozitorju.",
-"your desktop": "vaše namizje"
+"your desktop": "vaše namizje",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito v tem namizju iz Flatpaka še ne more pritiskati tipk, zato vaša narekovanja gredo v odložišče. Ena vrstica v zagonu vašega namizja mu omogoči tipkanje — prikazana je v nastavitvah za Linux.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Povezava obstaja, vendar pripada prejšnji seji. Ukaz zaženite znova.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "To namizje nima portala RemoteDesktop, lastna povezava Flatpaka do njega pa ne more pritiskati tipk. Dajte Vitu neposredno povezavo — enkrat zaženite tole:",
+"Then add this to {file}, so it is there after every login:": "Nato to dodajte v {file}, da bo na voljo po vsaki prijavi:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Nato isti ukaz dodajte v zagon svojega namizja, da bo na voljo po vsaki prijavi.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Ne želite ničesar nastavljati? AppImage na tem namizju tipka že takoj.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito tipka prek neposredne povezave z vašim namizjem, ki ste jo nastavili."
 },
 "help": {
 "theme": "Svetla, temna ali samodejna — samodejna sledi svetli/temni nastavitvi vašega sistema.",

@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Zavreli ste dialóg skratiek vášho prostredia, takže zatiaľ nie je priradená žiadna skratka.",
 "Your desktop didn't bind the shortcut.": "Vaše prostredie skratku nepriradilo.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Vaše prostredie ({desktop}) nedokáže odovzdávať globálne skratky aplikáciám, preto ho Vito o skratku nežiada. Namiesto toho priraďte príkazy nižšie klávesom vo svojom kompozitore.",
-"your desktop": "vaše prostredie"
+"your desktop": "vaše prostredie",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito zatiaľ nedokáže v tomto prostredí stláčať klávesy zvnútra Flatpaku, takže vaše diktáty idú do schránky. Jeden riadok v spúšťaní vášho prostredia mu umožní písať — ukážu vám ho nastavenia pre Linux.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Prepojenie existuje, ale patrí k predchádzajúcej relácii. Spustite príkaz znova.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Toto prostredie nemá portál RemoteDesktop a vlastné pripojenie Flatpaku k nemu nedokáže stláčať klávesy. Dajte Vito priame pripojenie — spustite raz toto:",
+"Then add this to {file}, so it is there after every login:": "Potom toto pridajte do {file}, aby bolo k dispozícii po každom prihlásení:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Potom pridajte rovnaký príkaz do spúšťania vášho prostredia, aby bolo k dispozícii po každom prihlásení.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Nechcete nič nastavovať? AppImage v tomto prostredí píše hneď bez ďalších úprav.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito píše cez priame pripojenie k vášmu prostrediu, ktoré ste nastavili."
 },
 "help": {
 "theme": "Svetlá, tmavá alebo automatická — automatická sleduje svetlý/tmavý režim vášho systému.",

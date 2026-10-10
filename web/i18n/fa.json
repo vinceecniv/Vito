@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "پنجره‌ی گفت‌وگوی کلید میان‌بر دسک‌تاپ خود را بستید، بنابراین هنوز هیچ کلید میان‌بری متصل نشده است.",
 "Your desktop didn't bind the shortcut.": "دسک‌تاپ شما کلید میان‌بر را متصل نکرد.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "دسک‌تاپ شما ({desktop}) نمی‌تواند کلیدهای میان‌بر سراسری را به برنامه‌ها منتقل کند، بنابراین Vito از آن درخواستی نمی‌کند. به‌جای آن، فرمان‌های زیر را در کامپوزیتور خود به کلیدها متصل کنید.",
-"your desktop": "دسک‌تاپ شما"
+"your desktop": "دسک‌تاپ شما",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito هنوز نمی‌تواند در این دسک‌تاپ از داخل Flatpak کلیدها را فشار دهد، بنابراین دیکته‌های شما به کلیپ‌بورد می‌روند. یک خط در راه‌اندازی خودکار دسک‌تاپتان به آن امکان تایپ می‌دهد — تنظیمات Linux آن را نشان می‌دهد.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "اتصال وجود دارد، اما به یک نشست قبلی تعلق دارد. دستور را دوباره اجرا کنید.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "این دسک‌تاپ پورتال RemoteDesktop ندارد و اتصال خودِ Flatpak به آن نمی‌تواند کلیدها را فشار دهد. به Vito یک اتصال مستقیم بدهید — این را یک بار اجرا کنید:",
+"Then add this to {file}, so it is there after every login:": "سپس این را به {file} اضافه کنید تا پس از هر بار ورود به سیستم برقرار باشد:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "سپس همین دستور را به راه‌اندازی خودکار دسک‌تاپتان اضافه کنید تا پس از هر بار ورود به سیستم برقرار باشد.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "ترجیح می‌دهید هیچ تنظیمی لازم نباشد؟ AppImage در این دسک‌تاپ بدون هیچ تنظیمی تایپ می‌کند.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito از طریق اتصال مستقیمی که به دسک‌تاپتان برقرار کرده‌اید تایپ می‌کند."
 },
 "help": {
 "theme": "روشن، تیره یا خودکار — خودکار از حالت روشن/تیره سیستم شما پیروی می‌کند.",

@@ -2766,6 +2766,13 @@ const TR = { nl: {
   "Welcome, Linux user! Set Vito up for your desktop in the Linux settings.":"Welkom, Linux-gebruiker! Stel Vito in voor je desktop bij de Linux-instellingen.",
   "Open Linux settings":"Linux-instellingen openen",
   "Get the AppImage":"Download de AppImage",
+  "Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.":"Vito kan vanuit de Flatpak nog geen toetsen aanslaan op deze desktop, dus je dictaten komen op het klembord. Met één regel in de opstart van je desktop kan Vito wel typen — de Linux-instellingen laten zien hoe.",
+  "The link is there, but it belongs to an earlier session. Run the command again.":"De koppeling bestaat, maar hoort bij een eerdere sessie. Voer de opdracht opnieuw uit.",
+  "This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:":"Deze desktop heeft geen RemoteDesktop-portal, en via de eigen verbinding van de Flatpak kan Vito geen toetsen aanslaan. Geef Vito een directe verbinding — voer dit één keer uit:",
+  "Then add this to {file}, so it is there after every login:":"Zet dit daarna in {file}, zodat het er na elke keer inloggen is:",
+  "Then add the same command to your desktop's startup, so it is there after every login.":"Zet dezelfde opdracht daarna in de opstart van je desktop, zodat het er na elke keer inloggen is.",
+  "Prefer no setup at all? The AppImage types on this desktop out of the box.":"Liever helemaal niets instellen? De AppImage typt op deze desktop meteen.",
+  "Vito types through the direct connection to your desktop that you set up.":"Vito typt via de directe verbinding met je desktop die je hebt ingesteld.",
   "preview":"preview",
   "Wayland virtual-keyboard (wtype)":"Wayland virtual-keyboard (wtype)",
   "RemoteDesktop portal":"RemoteDesktop-portal",
@@ -6921,17 +6928,24 @@ function maybeShowLinuxHint(){
   // whole point of having packaged it.
   const stuck = info.flatpak && info.backend === "clipboard";
   if (info.flatpak && !stuck) return;
+  // A daemon that reports wayland_link knows the direct connection, so the bar
+  // points at the one-line setup instead of away from the Flatpak. Its own
+  // dismissal key: users who closed the old "get the AppImage" bar haven't
+  // heard about the fix yet.
+  const fixable = stuck && "wayland_link" in info;
   // The stuck case is not onboarding — it says the download does not fit this
   // desktop — so it is worth showing outside the first-run window too.
   if (!stuck && !(cfg && cfg.ui && !cfg.ui.welcome_done)) return;
-  const key = stuck ? "vito-flatpak-hint" : "vito-linux-hint";
+  const key = fixable ? "vito-flatpak-link-hint" : stuck ? "vito-flatpak-hint" : "vito-linux-hint";
   let dismissed = false; try { dismissed = localStorage.getItem(key) === "1"; } catch {}
   if (dismissed) return;
   const slot = $("linux-banner"); if (!slot || slot.firstChild) return;
-  const text = stuck
+  const text = fixable
+    ? t("Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.")
+    : stuck
     ? t("Vito can't press keys on this desktop from inside the Flatpak, so your dictations go to the clipboard. The AppImage can type them for you.")
     : t("Welcome, Linux user! Set Vito up for your desktop in the Linux settings.");
-  const action = stuck ? t("Get the AppImage") : t("Open Linux settings");
+  const action = stuck && !fixable ? t("Get the AppImage") : t("Open Linux settings");
   slot.innerHTML =
     `<div class="update-bar linux-bar">` +
       `<span class="ub-ico tux-slot"></span>` +
@@ -6941,7 +6955,7 @@ function maybeShowLinuxHint(){
     `</div>`;
   const ic = slot.querySelector(".tux-slot"); if (ic) ic.innerHTML = TUX_SVG;
   const o = $("lx-open");
-  if (o) o.onclick = stuck
+  if (o) o.onclick = stuck && !fixable
     ? () => window.open(releasesURL(), "_blank")
     : () => { selectTab("settings"); selectSetSection("linux"); };
   const x = $("lx-dismiss"); if (x) x.onclick = () => { slot.innerHTML = ""; try { localStorage.setItem(key, "1"); } catch {} };
@@ -7007,7 +7021,7 @@ async function renderLinuxCard(){
   // bundled, and ydotool is absent on purpose and cannot be added. Listing them
   // with a red cross would invite the user to install something that would change
   // nothing, so the Flatpak gets a shorter, truthful card instead.
-  if (info.flatpak) { body.innerHTML = flatpakLinuxHTML(backend, info.backend_verified); wireLinuxButtons(); return; }
+  if (info.flatpak) { body.innerHTML = flatpakLinuxHTML(backend, info.backend_verified, info); wireLinuxButtons(); return; }
   const required = linuxRequired(backend);
   const rows = LINUX_TOOLS.map(tl => {
     const ok = !!present[tl.name];
@@ -7046,13 +7060,40 @@ function releasesURL(){
 // The Flatpak's own version of the Linux card. Same questions answered — how is
 // text delivered, how is the hotkey bound — without the helper checklist that
 // only makes sense where the user installs the helpers themselves.
-function flatpakLinuxHTML(backend, verified){
+// The direct Wayland connection a Flatpak types through where the desktop has
+// no RemoteDesktop portal: a hard link to the compositor's socket, which only
+// the host can make (internal/inject HostWaylandLink, docs/flatpak.md).
+const FLATPAK_LINK_CMD = 'mkdir -p "$XDG_RUNTIME_DIR/vito" && ln -f "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/vito/wayland"';
+// Where that line goes for the compositors that need it, as [file, line].
+function flatpakLinkStartup(desktop){
+  const d = (desktop || "").toLowerCase();
+  if (d.includes("niri")) return ["~/.config/niri/config.kdl", `spawn-at-startup "sh" "-c" "${FLATPAK_LINK_CMD.replace(/"/g, '\\"')}"`];
+  if (d.includes("hyprland")) return ["~/.config/hypr/hyprland.conf", `exec-once = ${FLATPAK_LINK_CMD}`];
+  if (d.includes("sway")) return ["~/.config/sway/config", `exec sh -c '${FLATPAK_LINK_CMD}'`];
+  return null;
+}
+function flatpakLinkHTML(info){
+  const start = flatpakLinkStartup(info.desktop);
+  return (info.wayland_link
+      ? `<p class="act-note" style="color:var(--coral); margin:10px 0 0;">${t("The link is there, but it belongs to an earlier session. Run the command again.")}</p>` : "") +
+    `<p class="act-note" style="margin:10px 0 6px;">${t("This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:")}</p>` +
+    `<pre>${ahEsc(FLATPAK_LINK_CMD)}</pre>` +
+    (start
+      ? `<p class="act-note" style="margin:10px 0 6px;">${t("Then add this to {file}, so it is there after every login:").replace("{file}", `<code>${ahEsc(start[0])}</code>`)}</p><pre>${ahEsc(start[1])}</pre>`
+      : `<p class="act-note" style="margin:10px 0 0;">${t("Then add the same command to your desktop's startup, so it is there after every login.")}</p>`) +
+    `<p class="act-note" style="margin:10px 0 0;">${t("Prefer no setup at all? The AppImage types on this desktop out of the box.")}</p>`;
+}
+function flatpakLinuxHTML(backend, verified, info){
+  info = info || {};
   const stuck = backend === "clipboard";
   return `<p class="act-note" style="margin:0 0 8px;">${t("Vito is running as a Flatpak. Everything it needs to reach your clipboard and type is bundled or comes from your desktop through the portals, so there is nothing to install here.")}</p>` +
     backendRowHTML(backend, verified) +
     (stuck
-      ? `<p class="act-note" style="color:var(--coral); margin:10px 0 0;">${t("This desktop has no RemoteDesktop portal, and the sandbox blocks the alternative, so nothing here can press a key. Your dictations are copied to the clipboard and you paste them yourself. The AppImage has no such limit on this desktop.")}</p>` +
+      ? ("wayland_link" in info ? flatpakLinkHTML(info)
+        : `<p class="act-note" style="color:var(--coral); margin:10px 0 0;">${t("This desktop has no RemoteDesktop portal, and the sandbox blocks the alternative, so nothing here can press a key. Your dictations are copied to the clipboard and you paste them yourself. The AppImage has no such limit on this desktop.")}</p>`) +
         `<div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;"><button class="btn ghost small" id="linux-appimage">${t("Get the AppImage")}</button><button class="btn ghost small" id="linux-retest">${t("Re-test")}</button></div>`
+      : backend === "wayland"
+        ? `<p class="act-note" style="margin:10px 0 0;">${t("Vito types through the direct connection to your desktop that you set up.")}</p>`
       : (verified === false ? "" : `<p class="act-note" style="margin:10px 0 0;">${t("Your desktop provides the portals Vito uses, so text delivery and the hotkey work without any setup.")}</p>`) +
         `<div class="rowflex" style="justify-content:flex-end; gap:9px; margin-top:12px;"><button class="btn ghost small" id="linux-activation">${t("Go to Activation")}</button><button class="btn ghost small" id="linux-retest">${t("Re-test")}</button></div>`);
 }

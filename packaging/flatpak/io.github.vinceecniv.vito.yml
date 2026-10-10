@@ -25,6 +25,13 @@ finish-args:
   # The Wayland socket is all the virtual-keyboard backend needs — no extra
   # permission, no daemon. The portals need no finish-arg at all.
   - --socket=wayland
+  # …except where the compositor has no RemoteDesktop portal (niri, Hyprland,
+  # sway): Flatpak's managed socket filters the virtual-keyboard protocol out.
+  # One line in the compositor's startup hard-links its real socket to
+  # $XDG_RUNTIME_DIR/vito/wayland, and wtype connects there instead
+  # (internal/inject, docs/flatpak.md). :create makes the directory exist
+  # whichever starts first, so the link shows up in a running sandbox.
+  - --filesystem=xdg-run/vito:create
   # Microphone capture. PipeWire serves this through its PulseAudio compatibility.
   - --socket=pulseaudio
   # Speech-to-text and AI cleanup are network calls to the user's own providers,
