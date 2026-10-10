@@ -34,6 +34,19 @@ func TestJoinFollow(t *testing.T) {
 		t.Fatalf("context: %q", d.follow.before)
 	}
 
+	// an open part's dangling dash or comma waits for what follows too
+	d3 := &Daemon{}
+	o := &session{chain: true}
+	o.followed.Store(true)
+	if got := d3.joinFollow(o, "en dan wacht ik even, en dan—", true); got != "en dan wacht ik even, en dan" || !d3.follow.pendingDot {
+		t.Fatalf("open part: %q pending %v", got, d3.follow.pendingDot)
+	}
+	o2 := &session{chain: true, continuation: true}
+	o2.followed.Store(true)
+	if got := d3.joinFollow(o2, "praat ik verder,", true); got != " praat ik verder" || !d3.follow.pendingDot {
+		t.Fatalf("open continuation: %q", got)
+	}
+
 	// without the model each part is its own sentence
 	d2 := &Daemon{}
 	a := &session{chain: true}

@@ -1100,9 +1100,18 @@ func (d *Daemon) joinFollow(s *session, text string, fromModel bool) string {
 		}
 		d.follow.pendingDot = false
 	}
-	if s.followed.Load() && strings.HasSuffix(out, ".") && !strings.HasSuffix(out, "..") {
-		out = strings.TrimSuffix(out, ".")
-		d.follow.pendingDot = true
+	if s.followed.Load() {
+		// What closes an open part is decided by what comes next: drop the
+		// recognizer's dash for a cut-off sentence, a dangling comma, and the full
+		// stop — the next part's join (or the window closing) puts the right mark.
+		trimmed := strings.TrimRight(out, " —–-,;:")
+		if strings.HasSuffix(trimmed, ".") && !strings.HasSuffix(trimmed, "..") {
+			trimmed = strings.TrimSuffix(trimmed, ".")
+		}
+		if trimmed != "" && !strings.ContainsAny(trimmed[len(trimmed)-1:], "?!") {
+			d.follow.pendingDot = true
+		}
+		out = trimmed
 	}
 	b := d.follow.before + out
 	if !s.continuation {
@@ -1437,10 +1446,16 @@ func (d *Daemon) finish(s *session) {
 		before = d.follow.before
 		d.follow.mu.Unlock()
 	}
-	if d.cleanupEffective(s) && (instruction != "" || before != "" || wordCount(raw) >= cfg.Cleanup.MinWords) {
+	// A part with a follow window after it may stop mid-sentence: cleanup must
+	// keep its dangling last words, and not close it with a full stop.
+	openEnded := chainJoin && s.followed.Load()
+	if d.cleanupEffective(s) && (instruction != "" || before != "" || openEnded || wordCount(raw) >= cfg.Cleanup.MinWords) {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cleanCfg.TimeoutMS)*time.Millisecond)
 		if before != "" {
 			ctx = cleanup.WithPreceding(ctx, before)
+		}
+		if openEnded {
+			ctx = cleanup.WithOpenEnd(ctx)
 		}
 		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
 		cancel()

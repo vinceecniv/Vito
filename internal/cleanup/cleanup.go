@@ -80,6 +80,24 @@ func WithPreceding(ctx context.Context, before string) context.Context {
 	return context.WithValue(ctx, precedingKey{}, before)
 }
 
+type openEndKey struct{}
+
+// WithOpenEnd marks a transcript that stops where the speaker paused and may
+// go on (a hands-free dictation with a follow window): it can end mid-sentence,
+// and its last words are not a false start to tidy away.
+func WithOpenEnd(ctx context.Context) context.Context {
+	return context.WithValue(ctx, openEndKey{}, true)
+}
+
+func openEnd(ctx context.Context) bool {
+	b, _ := ctx.Value(openEndKey{}).(bool)
+	return b
+}
+
+// openEndNote is added to the user turn of a transcript that may continue.
+const openEndNote = `The speaker paused at the end of this transcript and may go on talking; the rest follows separately. So it can stop mid-sentence: keep every word up to the very end — a trailing "en dan" / "and then" is not a false start — and do not end an unfinished sentence with a full stop.
+`
+
 func preceding(ctx context.Context) string {
 	s, _ := ctx.Value(precedingKey{}).(string)
 	return s
@@ -99,6 +117,9 @@ func buildUserPrompt(ctx context.Context, text, language string, corrections []c
 	var user strings.Builder
 	if before := preceding(ctx); before != "" {
 		fmt.Fprintf(&user, continuationNote, before)
+	}
+	if openEnd(ctx) {
+		user.WriteString(openEndNote)
 	}
 	fmt.Fprintf(&user, "Language: %s\n", language)
 	if len(corrections) > 0 {
