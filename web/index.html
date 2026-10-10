@@ -124,25 +124,27 @@
      rests again — a continuous pulse in the corner of your eye is tiring. */
   @keyframes pipfade { 0%,62% { opacity:1; } 78% { opacity:.18; } 94%,100% { opacity:1; } }
   @media (prefers-reduced-motion:reduce){ .side-pip.active .pip-ico::after { animation:none; } }
-  /* Collapse/expand, at the foot of the sidebar. Collapsed (html.side-collapsed,
-     remembered per browser) the sidebar keeps only the logo and the icons; the
-     pages are named on hover by the title applyI18n gives every nav item. Only
-     beside the content: the narrow layouts have their own top bar. No width
-     animation — the content column would reflow, charts and all, every frame. */
+  /* Collapse/expand, at the foot of the sidebar. Compact (html.side-compact) the
+     sidebar keeps only the logo and the icons; the pages are named on hover by
+     the title applyI18n gives every nav item. Who decides depends on the width
+     (see applySide): on a wide window the user's remembered choice, between
+     1099px and the top-bar layout compact by default — a narrowing window
+     goes compact first, then to the top bar. No width animation — the content
+     column would reflow, charts and all, every frame. */
   .side-toggle { display:flex; align-items:center; gap:11px; width:100%; margin-top:auto; padding:9px 12px; border-radius:10px;
     border:none; background:none; color:var(--text3); font-family:inherit; font-size:13px; text-align:left; cursor:var(--cur-hand); }
   .side-toggle svg { width:17px; height:17px; flex:0 0 17px; }
   .side-toggle:hover { color:var(--text); background:color-mix(in srgb, var(--nav-active-bg) 50%, transparent); }
   @media (min-width:821px){
-    html.side-collapsed .sidebar { width:68px; flex:0 0 68px; }
-    html.side-collapsed .brand { justify-content:center; padding:4px 0 18px; }
-    html.side-collapsed .brand-text { display:none; }
-    html.side-collapsed .nav-item { justify-content:center; padding:10px 0; gap:0; font-size:0; }
-    html.side-collapsed .side-pip { justify-content:center; padding:10px 0; gap:0; }
-    html.side-collapsed .side-pip > span:last-child { display:none; }
-    html.side-collapsed .side-toggle { justify-content:center; padding:9px 0; gap:0; }
-    html.side-collapsed .side-toggle > span { display:none; }
-    html.side-collapsed .side-toggle svg { transform:rotate(180deg); }
+    html.side-compact .sidebar { width:68px; flex:0 0 68px; }
+    html.side-compact .brand { justify-content:center; padding:4px 0 18px; }
+    html.side-compact .brand-text { display:none; }
+    html.side-compact .nav-item { justify-content:center; padding:10px 0; gap:0; font-size:0; }
+    html.side-compact .side-pip { justify-content:center; padding:10px 0; gap:0; }
+    html.side-compact .side-pip > span:last-child { display:none; }
+    html.side-compact .side-toggle { justify-content:center; padding:9px 0; gap:0; }
+    html.side-compact .side-toggle > span { display:none; }
+    html.side-compact .side-toggle svg { transform:rotate(180deg); }
   }
   .pill { display:inline-flex; align-items:center; gap:8px; align-self:flex-start;
     padding:5px 12px; border-radius:99px; background:var(--input-bg); font-size:12px; color:var(--text2); }
@@ -1439,7 +1441,7 @@
   .modal-backdrop, #offline-overlay { --side:216px; }
   @media (min-width:821px){ .modal-backdrop, #offline-overlay { padding-left:var(--side); } }
   @media (max-width:980px){ .modal-backdrop, #offline-overlay { --side:180px; } }
-  html.side-collapsed .modal-backdrop, html.side-collapsed #offline-overlay { --side:68px; }
+  html.side-compact .modal-backdrop, html.side-compact #offline-overlay { --side:68px; }
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
   .modal { --mpad:20px; width:360px; max-width:92vw; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:var(--mpad); box-shadow:0 24px 64px rgba(20,10,40,.45);
     /* Never taller than the screen (dvh: the part a phone's browser bars leave
@@ -1668,7 +1670,7 @@
 <body>
 <div class="app">
   <!-- Applied before the sidebar is drawn, so a collapsed one doesn't flash open. -->
-  <script>try { if (localStorage.getItem("vito-side") === "collapsed") document.documentElement.classList.add("side-collapsed"); } catch {}</script>
+  <script>try { if (matchMedia("(min-width:821px) and (max-width:1099px)").matches || localStorage.getItem("vito-side") === "collapsed") document.documentElement.classList.add("side-compact"); } catch {}</script>
   <aside class="sidebar" id="sidebar">
     <div class="brand" id="brand">
       <span class="tile" id="brand-mark"></span>
@@ -4480,21 +4482,35 @@ function selectTab(name){
   $("sidebar").classList.remove("open"); // collapse the mobile menu after choosing
 }
 document.querySelectorAll(".nav-item").forEach(btn => btn.onclick = () => selectTab(btn.dataset.tab));
-// Sidebar collapsed to icons, or expanded with names (the default). The class
-// is already set before first paint (the inline script in .app); this keeps the
-// button's name in step and remembers the choice for this browser.
-function setSideCollapsed(on, persist){
-  document.documentElement.classList.toggle("side-collapsed", on);
+// Sidebar compact (icons) or expanded (names), by width:
+//   ≥1100px     the user's choice, remembered per browser (default expanded);
+//   821–1099px  compact, so a narrowing window first gives up the names and
+//               only then switches to the top bar; the button expands it
+//               here for the moment only, not as a new default;
+//   ≤820px      the top bar, which this doesn't touch.
+// Crossing a boundary drops a momentary expand, so widening the window brings
+// back the user's own choice. The inline script in .app applies the same rule
+// before first paint.
+const SIDE_MID = matchMedia("(min-width:821px) and (max-width:1099px)");
+let sidePeek = false;
+function sidePref(){ try { return localStorage.getItem("vito-side") === "collapsed"; } catch { return false; } }
+function applySide(){
+  const compact = SIDE_MID.matches ? !sidePeek : sidePref();
+  document.documentElement.classList.toggle("side-compact", compact);
   const b = $("side-toggle"); if (!b) return;
-  const label = on ? "Expand sidebar" : "Collapse sidebar";
+  const label = compact ? "Expand sidebar" : "Collapse sidebar";
   // applyI18n re-translates title/aria-label from these English originals.
   b.dataset.i18nTitle = b.dataset.i18nAriaLabel = label;
   b.title = t(label); b.setAttribute("aria-label", t(label));
-  b.setAttribute("aria-expanded", String(!on));
-  if (persist) { try { localStorage.setItem("vito-side", on ? "collapsed" : "expanded"); } catch {} }
+  b.setAttribute("aria-expanded", String(!compact));
 }
-setSideCollapsed(document.documentElement.classList.contains("side-collapsed"), false);
-$("side-toggle").onclick = () => setSideCollapsed(!document.documentElement.classList.contains("side-collapsed"), true);
+SIDE_MID.addEventListener("change", () => { sidePeek = false; applySide(); });
+applySide();
+$("side-toggle").onclick = () => {
+  if (SIDE_MID.matches) sidePeek = !sidePeek;
+  else { const collapse = !sidePref(); try { localStorage.setItem("vito-side", collapse ? "collapsed" : "expanded"); } catch {} }
+  applySide();
+};
 $("brand").onclick = () => selectTab("status");
 // Restore the tab that was open before a reload (defaults to status). Deferred to
 // the end of init: selecting History/Achievements calls into state (hPlayRows,
