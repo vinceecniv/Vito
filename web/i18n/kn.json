@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "ಆ್ಯಪ್‌ಗೆ ತನ್ನದೇ ಆದ ವಿಂಡೋ ನೀಡಿ: Vito ತೆರೆದು ಅದರ ಪುಟದಲ್ಲಿ ಆ್ಯಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ ಆಯ್ಕೆಮಾಡಿ. ಅದನ್ನೇ ಟಾಸ್ಕ್‌ಬಾರ್ ಅಥವಾ Dock ಗೆ ಪಿನ್ ಮಾಡಬೇಕು.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "ನೀವು ಈ ಟ್ಯಾಬ್ ಅನ್ನು ಮುಚ್ಚಬಹುದು, ಮತ್ತು vito.talk/app ಗೆ ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿದ್ದರೆ ಅದನ್ನು ತೆಗೆದುಹಾಕಬಹುದು.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "ಇನ್ನು ಮುಂದೆ Vito ಅನ್ನು ಅದರ ಟ್ರೇ (ಮೆನು ಬಾರ್) ಐಕಾನ್‌ನಿಂದ ತೆರೆಯಿರಿ, ಅಥವಾ ಅದಕ್ಕೆ ತನ್ನದೇ ಆದ ವಿಂಡೋ ನೀಡಿ: Vito ತೆರೆದು ಅದರ ಪುಟದಲ್ಲಿ ಆ್ಯಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ ಆಯ್ಕೆಮಾಡಿ.",
-"Vito didn't answer. Is it installed and running?": "Vito ಉತ್ತರಿಸಲಿಲ್ಲ. ಅದು ಇನ್‌ಸ್ಟಾಲ್ ಆಗಿ ಚಲಿಸುತ್ತಿದೆಯೇ?"
+"Vito didn't answer. Is it installed and running?": "Vito ಉತ್ತರಿಸಲಿಲ್ಲ. ಅದು ಇನ್‌ಸ್ಟಾಲ್ ಆಗಿ ಚಲಿಸುತ್ತಿದೆಯೇ?",
+"Collapse": "ಕುಗ್ಗಿಸಿ",
+"Collapse sidebar": "ಸೈಡ್‌ಬಾರ್ ಕುಗ್ಗಿಸಿ",
+"Expand sidebar": "ಸೈಡ್‌ಬಾರ್ ವಿಸ್ತರಿಸಿ",
+"Register again": "ಮತ್ತೆ ನೋಂದಾಯಿಸಿ",
+"Register shortcut": "ಶಾರ್ಟ್‌ಕಟ್ ನೋಂದಾಯಿಸಿ",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನಿಂದ ಶಾರ್ಟ್‌ಕಟ್ ಅನ್ನು ಮತ್ತೆ ಕೇಳುತ್ತದೆ, ಇದರಿಂದ ಅದರ ಡೈಲಾಗ್ ಮತ್ತೆ ಕಾಣಿಸುತ್ತದೆ.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್‌ಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ — ಅದರ ಡೈಲಾಗ್‌ನಲ್ಲಿ ಶಾರ್ಟ್‌ಕಟ್ ಅನ್ನು ದೃಢೀಕರಿಸಿ.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "ನೀವು ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನ ಶಾರ್ಟ್‌ಕಟ್ ಡೈಲಾಗ್ ಅನ್ನು ಮುಚ್ಚಿದ್ದೀರಿ, ಆದ್ದರಿಂದ ಇನ್ನೂ ಯಾವುದೇ ಶಾರ್ಟ್‌ಕಟ್ ಬೈಂಡ್ ಆಗಿಲ್ಲ.",
+"Your desktop didn't bind the shortcut.": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್ ಶಾರ್ಟ್‌ಕಟ್ ಅನ್ನು ಬೈಂಡ್ ಮಾಡಲಿಲ್ಲ.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್ ({desktop}) ಜಾಗತಿಕ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಆಪ್‌ಗಳಿಗೆ ರವಾನಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆದ್ದರಿಂದ Vito ಅದರಿಂದ ಶಾರ್ಟ್‌ಕಟ್ ಕೇಳುವುದಿಲ್ಲ. ಬದಲಿಗೆ ಕೆಳಗಿನ ಕಮಾಂಡ್‌ಗಳನ್ನು ನಿಮ್ಮ ಕಂಪೋಸಿಟರ್‌ನಲ್ಲಿ ಕೀಗಳಿಗೆ ಬೈಂಡ್ ಮಾಡಿ.",
+"your desktop": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್"
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

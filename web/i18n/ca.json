@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dona a l'aplicació la seva pròpia finestra: obre Vito i tria Instal·la l'aplicació a la seva pàgina. Aquesta és la que cal fixar a la barra de tasques o al Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Pots tancar aquesta pestanya i eliminar el marcador de vito.talk/app si n'havies creat un.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "A partir d'ara, obre Vito amb la seva icona de la safata (barra de menús), o dona-li la seva pròpia finestra: obre Vito i tria Instal·la l'aplicació a la seva pàgina.",
-"Vito didn't answer. Is it installed and running?": "Vito no ha respost. Està instal·lat i en execució?"
+"Vito didn't answer. Is it installed and running?": "Vito no ha respost. Està instal·lat i en execució?",
+"Collapse": "Replega",
+"Collapse sidebar": "Replega la barra lateral",
+"Expand sidebar": "Desplega la barra lateral",
+"Register again": "Torna a registrar",
+"Register shortcut": "Registra la drecera",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Torna a demanar la drecera al teu escriptori, perquè en torni a aparèixer el diàleg.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Esperant el teu escriptori — confirma la drecera al seu diàleg.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Has tancat el diàleg de dreceres del teu escriptori, així que encara no hi ha cap drecera vinculada.",
+"Your desktop didn't bind the shortcut.": "El teu escriptori no ha vinculat la drecera.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "El teu escriptori ({desktop}) no pot passar dreceres globals a les apps, així que Vito no n'hi demana cap. En lloc d'això, vincula les ordres de sota a tecles del teu compositor.",
+"your desktop": "el teu escriptori"
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

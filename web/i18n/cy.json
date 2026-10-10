@@ -1037,7 +1037,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Rho ei ffenestr ei hun i'r ap: agora Vito a dewisa Gosod ap ar ei dudalen. Dyna'r un i'w binio i'r bar tasgau neu'r Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Gelli gau'r tab hwn, a dileu nod tudalen i vito.talk/app os gwnest ti un.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "O hyn ymlaen, agora Vito gyda'i eicon yn yr hambwrdd (bar dewislen), neu rho ei ffenestr ei hun iddo: agora Vito a dewisa Gosod ap ar ei dudalen.",
-"Vito didn't answer. Is it installed and running?": "Wnaeth Vito ddim ateb. Ydy e wedi'i osod ac yn rhedeg?"
+"Vito didn't answer. Is it installed and running?": "Wnaeth Vito ddim ateb. Ydy e wedi'i osod ac yn rhedeg?",
+"Collapse": "Cwympo",
+"Collapse sidebar": "Cwympo'r bar ochr",
+"Expand sidebar": "Ehangu'r bar ochr",
+"Register again": "Cofrestru eto",
+"Register shortcut": "Cofrestru bysell brys",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Yn gofyn i dy fwrdd gwaith am y fysell brys eto, fel bod ei ddeialog yn dod yn ôl.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Yn aros am dy fwrdd gwaith — cadarnha'r fysell brys yn ei ddeialog.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Fe gaeaist ti ddeialog bysellau brys dy fwrdd gwaith, felly does dim bysell brys wedi'i chlymu eto.",
+"Your desktop didn't bind the shortcut.": "Wnaeth dy fwrdd gwaith ddim clymu'r fysell brys.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Ni all dy fwrdd gwaith ({desktop}) drosglwyddo bysellau brys byd-eang i apiau, felly nid yw Vito yn gofyn iddo am un. Yn lle hynny, clyma'r gorchmynion isod i fysellau yn dy gyfansoddwr.",
+"your desktop": "dy fwrdd gwaith"
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

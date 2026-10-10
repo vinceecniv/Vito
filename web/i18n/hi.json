@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "यहाँ अभी कोई दूसरा कंप्यूटर नहीं है। उसके साथ सिंक करने के लिए अपने दूसरे कंप्यूटर पर यही फ़ोल्डर चुनें।",
 "Stop syncing": "सिंक बंद करें",
 "This computer stops syncing. What is already here stays, and so does the folder.": "यह कंप्यूटर सिंक करना बंद कर देता है। जो पहले से यहाँ है वह रहेगा, और फ़ोल्डर भी।",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "किसी डिक्टेशन को हटाना या उसे स्टार देना भी दूसरे कंप्यूटरों तक पहुँचता है। सेटिंग्स और API कुंजियाँ हर कंप्यूटर पर अलग रहती हैं: माइक्रोफ़ोन, हॉटकी और प्रोवाइडर अक्सर उनके बीच अलग होते हैं।"
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "किसी डिक्टेशन को हटाना या उसे स्टार देना भी दूसरे कंप्यूटरों तक पहुँचता है। सेटिंग्स और API कुंजियाँ हर कंप्यूटर पर अलग रहती हैं: माइक्रोफ़ोन, हॉटकी और प्रोवाइडर अक्सर उनके बीच अलग होते हैं।",
+"Collapse": "संक्षिप्त करें",
+"Collapse sidebar": "साइडबार संक्षिप्त करें",
+"Expand sidebar": "साइडबार विस्तृत करें",
+"Register again": "फिर से रजिस्टर करें",
+"Register shortcut": "शॉर्टकट रजिस्टर करें",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "आपके डेस्कटॉप से शॉर्टकट फिर से माँगता है, ताकि उसका डायलॉग फिर से दिखे।",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "आपके डेस्कटॉप की प्रतीक्षा की जा रही है — उसके डायलॉग में शॉर्टकट की पुष्टि करें।",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "आपने अपने डेस्कटॉप का शॉर्टकट डायलॉग बंद कर दिया, इसलिए अभी कोई शॉर्टकट बाइंड नहीं है।",
+"Your desktop didn't bind the shortcut.": "आपके डेस्कटॉप ने शॉर्टकट बाइंड नहीं किया।",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "आपका डेस्कटॉप ({desktop}) ग्लोबल शॉर्टकट ऐप्स तक नहीं पहुँचा सकता, इसलिए Vito उससे शॉर्टकट नहीं माँगता। इसके बजाय नीचे दिए गए कमांड्स को अपने कंपोज़िटर में कीज़ से बाइंड करें।",
+"your desktop": "आपका डेस्कटॉप"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",

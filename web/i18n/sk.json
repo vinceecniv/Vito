@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Zatiaľ tu nie je žiadny iný počítač. Ak chcete synchronizovať, vyberte rovnaký priečinok na svojom druhom počítači.",
 "Stop syncing": "Zastaviť synchronizáciu",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Tento počítač prestane synchronizovať. Čo tu už je, zostane, rovnako aj priečinok.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Prenáša sa aj odstránenie diktátu alebo jeho označenie hviezdičkou. Nastavenia a kľúče API zostávajú na každom počítači: mikrofóny, klávesové skratky a poskytovatelia sa medzi nimi často líšia."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Prenáša sa aj odstránenie diktátu alebo jeho označenie hviezdičkou. Nastavenia a kľúče API zostávajú na každom počítači: mikrofóny, klávesové skratky a poskytovatelia sa medzi nimi často líšia.",
+"Collapse": "Zbaliť",
+"Collapse sidebar": "Zbaliť bočný panel",
+"Expand sidebar": "Rozbaliť bočný panel",
+"Register again": "Znova zaregistrovať",
+"Register shortcut": "Zaregistrovať skratku",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Znova požiada vaše prostredie o skratku, aby sa jeho dialóg opäť zobrazil.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Čaká sa na vaše prostredie — potvrďte skratku v jeho dialógu.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Zavreli ste dialóg skratiek vášho prostredia, takže zatiaľ nie je priradená žiadna skratka.",
+"Your desktop didn't bind the shortcut.": "Vaše prostredie skratku nepriradilo.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Vaše prostredie ({desktop}) nedokáže odovzdávať globálne skratky aplikáciám, preto ho Vito o skratku nežiada. Namiesto toho priraďte príkazy nižšie klávesom vo svojom kompozitore.",
+"your desktop": "vaše prostredie"
 },
 "help": {
 "theme": "Svetlá, tmavá alebo automatická — automatická sleduje svetlý/tmavý režim vášho systému.",

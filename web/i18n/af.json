@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Gee die toepassing sy eie venster: maak Vito oop en kies Installeer toepassing op sy bladsy. Dít is die een om aan die taakbalk of Dock vas te speld.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Jy kan hierdie oortjie toemaak, en 'n boekmerk na vito.talk/app verwyder as jy een gemaak het.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Maak Vito voortaan oop met sy stelselbakikoon (kieslysbalk), of gee dit sy eie venster: maak Vito oop en kies Installeer toepassing op sy bladsy.",
-"Vito didn't answer. Is it installed and running?": "Vito het nie geantwoord nie. Is dit geïnstalleer en aan die gang?"
+"Vito didn't answer. Is it installed and running?": "Vito het nie geantwoord nie. Is dit geïnstalleer en aan die gang?",
+"Collapse": "Vou in",
+"Collapse sidebar": "Vou kantbalk in",
+"Expand sidebar": "Vou kantbalk uit",
+"Register again": "Registreer weer",
+"Register shortcut": "Registreer kortpad",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Vra jou werkskerm weer vir die kortpad, sodat sy dialoog terugkom.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Wag vir jou werkskerm — bevestig die kortpad in sy dialoog.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Jy het jou werkskerm se kortpaddialoog gesluit, so daar is nog geen kortpad gekoppel nie.",
+"Your desktop didn't bind the shortcut.": "Jou werkskerm het nie die kortpad gekoppel nie.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Jou werkskerm ({desktop}) kan nie globale kortpaaie aan toepassings deurgee nie, so Vito vra dit nie vir een nie. Koppel eerder die opdragte hieronder aan sleutels in jou compositor.",
+"your desktop": "jou werkskerm"
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

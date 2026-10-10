@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Wala pang ibang computer dito. Piliin ang parehong folder sa isa mo pang computer para mag-sync dito.",
 "Stop syncing": "Ihinto ang pag-sync",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Titigil sa pag-sync ang computer na ito. Mananatili ang nandito na, pati ang folder.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Nadadala rin ang pagbura ng diktasyon o pagbibigay dito ng bituin. Nananatili sa bawat computer ang mga setting at API key: madalas magkakaiba ang mga mikropono, hotkey at provider sa pagitan ng mga ito."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Nadadala rin ang pagbura ng diktasyon o pagbibigay dito ng bituin. Nananatili sa bawat computer ang mga setting at API key: madalas magkakaiba ang mga mikropono, hotkey at provider sa pagitan ng mga ito.",
+"Collapse": "Paliitin",
+"Collapse sidebar": "Paliitin ang sidebar",
+"Expand sidebar": "Palakihin ang sidebar",
+"Register again": "Irehistro muli",
+"Register shortcut": "Irehistro ang shortcut",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Hinihingi muli sa desktop mo ang shortcut, para lumabas ulit ang dialog nito.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Hinihintay ang desktop mo — kumpirmahin ang shortcut sa dialog nito.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Isinara mo ang shortcut dialog ng desktop mo, kaya wala pang naka-bind na shortcut.",
+"Your desktop didn't bind the shortcut.": "Hindi na-bind ng desktop mo ang shortcut.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Hindi kayang ipasa ng desktop mo ({desktop}) ang mga global shortcut sa mga app, kaya hindi na ito hinihingan ng Vito ng shortcut. Sa halip, i-bind ang mga command sa ibaba sa mga key sa compositor mo.",
+"your desktop": "desktop mo"
 },
 "help": {
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",

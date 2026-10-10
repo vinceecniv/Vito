@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Aínda non hai outro ordenador aquí. Escolle o mesmo cartafol no teu outro ordenador para sincronizar con el.",
 "Stop syncing": "Deixar de sincronizar",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Este ordenador deixa de sincronizar. O que xa está aquí queda, e o cartafol tamén.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Eliminar un ditado ou darlle unha estrela tamén se transmite. Os axustes e as chaves de API quedan en cada ordenador: os micrófonos, as teclas de atallo e os provedores adoitan ser distintos entre eles."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Eliminar un ditado ou darlle unha estrela tamén se transmite. Os axustes e as chaves de API quedan en cada ordenador: os micrófonos, as teclas de atallo e os provedores adoitan ser distintos entre eles.",
+"Collapse": "Contraer",
+"Collapse sidebar": "Contraer a barra lateral",
+"Expand sidebar": "Expandir a barra lateral",
+"Register again": "Rexistrar de novo",
+"Register shortcut": "Rexistrar atallo",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Volve pedir o atallo ao teu escritorio, para que o seu diálogo apareza outra vez.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Agardando polo teu escritorio — confirma o atallo no seu diálogo.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Pechaches o diálogo de atallos do teu escritorio, así que aínda non hai ningún atallo vinculado.",
+"Your desktop didn't bind the shortcut.": "O teu escritorio non vinculou o atallo.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "O teu escritorio ({desktop}) non pode pasar atallos globais ás aplicacións, así que Vito non lle pide ningún. Vincula no seu lugar os comandos de abaixo a teclas no teu compositor.",
+"your desktop": "o teu escritorio"
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a configuración clara/escura do teu sistema.",

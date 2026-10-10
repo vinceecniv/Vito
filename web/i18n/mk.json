@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Дајте и на апликацијата свој прозорец: отворете го Vito и на неговата страница изберете Инсталирај ја апликацијата. Тој прозорец закачете го на лентата со задачи или на Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Можете да го затворите овој таб и да го отстраните обележувачот за vito.talk/app, ако сте направиле таков.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Отсега отворајте го Vito преку иконата во системската лента (лентата со мени) или дајте му свој прозорец: отворете го Vito и на неговата страница изберете Инсталирај ја апликацијата.",
-"Vito didn't answer. Is it installed and running?": "Vito не одговори. Дали е инсталиран и дали работи?"
+"Vito didn't answer. Is it installed and running?": "Vito не одговори. Дали е инсталиран и дали работи?",
+"Collapse": "Собери",
+"Collapse sidebar": "Собери ја страничната лента",
+"Expand sidebar": "Прошири ја страничната лента",
+"Register again": "Регистрирај повторно",
+"Register shortcut": "Регистрирај кратенка",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Повторно ја бара кратенката од вашата работна површина, за нејзиниот дијалог повторно да се појави.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Се чека вашата работна површина — потврдете ја кратенката во нејзиниот дијалог.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Го затворивте дијалогот за кратенки на вашата работна површина, па сè уште нема поврзана кратенка.",
+"Your desktop didn't bind the shortcut.": "Вашата работна површина не ја поврза кратенката.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Вашата работна површина ({desktop}) не може да им проследува глобални кратенки на апликациите, па Vito не бара кратенка од неа. Наместо тоа, поврзете ги командите подолу со копчиња во вашиот композитор.",
+"your desktop": "вашата работна површина"
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

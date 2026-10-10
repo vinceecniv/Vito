@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Bado hakuna kompyuta nyingine hapa. Chagua folda ile ile kwenye kompyuta yako nyingine ili kusawazisha nayo.",
 "Stop syncing": "Acha kusawazisha",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Kompyuta hii itaacha kusawazisha. Kilichopo hapa tayari kinabaki, na folda pia.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Kufuta maandishi ya sauti au kuyapa nyota pia kunahamishwa. Mipangilio na funguo za API hubaki kwenye kila kompyuta: maikrofoni, vitufe vya mkato na watoa huduma mara nyingi hutofautiana kati yake."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Kufuta maandishi ya sauti au kuyapa nyota pia kunahamishwa. Mipangilio na funguo za API hubaki kwenye kila kompyuta: maikrofoni, vitufe vya mkato na watoa huduma mara nyingi hutofautiana kati yake.",
+"Collapse": "Kunja",
+"Collapse sidebar": "Kunja upau wa pembeni",
+"Expand sidebar": "Panua upau wa pembeni",
+"Register again": "Sajili tena",
+"Register shortcut": "Sajili njia ya mkato",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Inaomba eneo-kazi lako njia ya mkato tena, ili kidirisha chake kirudi.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Inasubiri eneo-kazi lako — thibitisha njia ya mkato katika kidirisha chake.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Ulifunga kidirisha cha njia za mkato cha eneo-kazi lako, kwa hivyo bado hakuna njia ya mkato iliyounganishwa.",
+"Your desktop didn't bind the shortcut.": "Eneo-kazi lako halikuunganisha njia ya mkato.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Eneo-kazi lako ({desktop}) haliwezi kupitisha njia za mkato za kimataifa kwa programu, kwa hivyo Vito haiombi njia ya mkato. Badala yake, unganisha amri zilizo hapa chini na vitufe katika compositor yako.",
+"your desktop": "eneo-kazi lako"
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

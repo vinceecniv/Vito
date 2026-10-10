@@ -1037,7 +1037,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "امنح التطبيق نافذته الخاصة: افتح Vito واختر تثبيت التطبيق في صفحته. هذه هي النافذة التي يُنصح بتثبيتها في شريط المهام أو Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "يمكنك إغلاق هذا التبويب، وحذف الإشارة المرجعية إلى vito.talk/app إن أنشأت واحدة.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "افتح Vito من الآن فصاعدًا عبر أيقونته في الشريط (شريط القوائم)، أو امنحه نافذته الخاصة: افتح Vito واختر تثبيت التطبيق في صفحته.",
-"Vito didn't answer. Is it installed and running?": "لم يستجب Vito. هل هو مثبّت وقيد التشغيل؟"
+"Vito didn't answer. Is it installed and running?": "لم يستجب Vito. هل هو مثبّت وقيد التشغيل؟",
+"Collapse": "طيّ",
+"Collapse sidebar": "طيّ الشريط الجانبي",
+"Expand sidebar": "توسيع الشريط الجانبي",
+"Register again": "التسجيل مجددًا",
+"Register shortcut": "تسجيل الاختصار",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "يطلب الاختصار من سطح مكتبك مرة أخرى، فيظهر مربع الحوار الخاص به من جديد.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "بانتظار سطح مكتبك — أكّد الاختصار في مربع الحوار الخاص به.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "أغلقت مربع حوار الاختصارات في سطح مكتبك، لذا لم يُربط أي اختصار بعد.",
+"Your desktop didn't bind the shortcut.": "لم يربط سطح مكتبك الاختصار.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "سطح مكتبك ({desktop}) لا يستطيع تمرير الاختصارات العامة إلى التطبيقات، لذا لا يطلب Vito منه اختصارًا. بدلًا من ذلك، اربط الأوامر أدناه بمفاتيح في مُركّبك (compositor).",
+"your desktop": "سطح مكتبك"
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

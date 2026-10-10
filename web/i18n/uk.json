@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Тут ще немає іншого комп’ютера. Виберіть ту саму папку на іншому комп’ютері, щоб синхронізуватися з ним.",
 "Stop syncing": "Припинити синхронізацію",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Цей комп’ютер припиняє синхронізацію. Усе, що вже тут є, залишається, як і сама папка.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Видалення диктування чи позначення його зірочкою теж переноситься. Налаштування й ключі API залишаються на кожному комп’ютері: мікрофони, гарячі клавіші та провайдери часто відрізняються."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Видалення диктування чи позначення його зірочкою теж переноситься. Налаштування й ключі API залишаються на кожному комп’ютері: мікрофони, гарячі клавіші та провайдери часто відрізняються.",
+"Collapse": "Згорнути",
+"Collapse sidebar": "Згорнути бічну панель",
+"Expand sidebar": "Розгорнути бічну панель",
+"Register again": "Зареєструвати знову",
+"Register shortcut": "Зареєструвати скорочення",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Знову запитує скорочення у вашого робочого середовища, щоб його діалог зʼявився знову.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Очікування вашого робочого середовища — підтвердьте скорочення в його діалозі.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Ви закрили діалог скорочень вашого робочого середовища, тож скорочення ще не призначено.",
+"Your desktop didn't bind the shortcut.": "Ваше робоче середовище не призначило скорочення.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Ваше робоче середовище ({desktop}) не може передавати глобальні скорочення застосункам, тому Vito не просить його про це. Натомість призначте команди нижче клавішам у вашому композиторі.",
+"your desktop": "ваше робоче середовище"
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",

@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Gib der App ein eigenes Fenster: Öffne Vito und wähle auf der Seite App installieren. Diese App kannst du an die Taskleiste oder das Dock anheften.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Du kannst diesen Tab schließen und ein Lesezeichen auf vito.talk/app entfernen, falls du eines angelegt hast.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Öffne Vito künftig über das Tray-Symbol (Menüleiste) oder gib ihm ein eigenes Fenster: Öffne Vito und wähle auf der Seite App installieren.",
-"Vito didn't answer. Is it installed and running?": "Vito hat nicht geantwortet. Ist es installiert und läuft es?"
+"Vito didn't answer. Is it installed and running?": "Vito hat nicht geantwortet. Ist es installiert und läuft es?",
+"Collapse": "Einklappen",
+"Collapse sidebar": "Seitenleiste einklappen",
+"Expand sidebar": "Seitenleiste ausklappen",
+"Register again": "Erneut registrieren",
+"Register shortcut": "Tastenkürzel registrieren",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Fragt deine Desktop-Umgebung erneut nach dem Tastenkürzel, damit ihr Dialog wieder erscheint.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Warte auf deine Desktop-Umgebung — bestätige das Tastenkürzel in ihrem Dialog.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Du hast den Tastenkürzel-Dialog deiner Desktop-Umgebung geschlossen, daher ist noch kein Tastenkürzel belegt.",
+"Your desktop didn't bind the shortcut.": "Deine Desktop-Umgebung hat das Tastenkürzel nicht belegt.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Deine Desktop-Umgebung ({desktop}) kann globale Tastenkürzel nicht an Apps weitergeben, daher fragt Vito sie nicht danach. Binde stattdessen die Befehle unten in deinem Compositor an Tasten.",
+"your desktop": "deine Desktop-Umgebung"
 },
 "help": {
 "theme": "Hell, dunkel oder automatisch — automatisch folgt der Hell/Dunkel-Einstellung deines Systems.",

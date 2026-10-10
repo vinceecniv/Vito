@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Burada hələ başqa kompüter yoxdur. Onunla sinxronizasiya etmək üçün digər kompüterinizdə eyni qovluğu seçin.",
 "Stop syncing": "Sinxronizasiyanı dayandır",
 "This computer stops syncing. What is already here stays, and so does the folder.": "Bu kompüter sinxronizasiyanı dayandırır. Burada artıq olanlar da, qovluq da qalır.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Diktənin silinməsi və ya ulduzlanması da ötürülür. Parametrlər və API açarları hər kompüterdə ayrıca qalır: mikrofonlar, qısayol düymələri və provayderlər çox vaxt fərqli olur."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Diktənin silinməsi və ya ulduzlanması da ötürülür. Parametrlər və API açarları hər kompüterdə ayrıca qalır: mikrofonlar, qısayol düymələri və provayderlər çox vaxt fərqli olur.",
+"Collapse": "Yığ",
+"Collapse sidebar": "Yan paneli yığ",
+"Expand sidebar": "Yan paneli genişləndir",
+"Register again": "Yenidən qeydə al",
+"Register shortcut": "Qısayolu qeydə al",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Masaüstünüzdən qısayolu yenidən istəyir ki, onun dialoq pəncərəsi yenidən görünsün.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Masaüstünüz gözlənilir — qısayolu onun dialoq pəncərəsində təsdiqləyin.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Masaüstünüzün qısayol dialoqunu bağladınız, ona görə də hələ heç bir qısayol təyin edilməyib.",
+"Your desktop didn't bind the shortcut.": "Masaüstünüz qısayolu təyin etmədi.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Masaüstünüz ({desktop}) qlobal qısayolları tətbiqlərə ötürə bilmir, ona görə də Vito ondan qısayol istəmir. Bunun əvəzinə aşağıdakı əmrləri kompozitorunuzda düymələrə bağlayın.",
+"your desktop": "masaüstünüz"
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",

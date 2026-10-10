@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dai all'app una finestra tutta sua: apri Vito e scegli Installa app nella sua pagina. È quella da fissare nella barra delle applicazioni o nel Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Puoi chiudere questa scheda e, se ne hai creato uno, rimuovere il segnalibro di vito.talk/app.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "D'ora in poi apri Vito con la sua icona nell'area di notifica (barra dei menu), oppure dagli una finestra tutta sua: apri Vito e scegli Installa app nella sua pagina.",
-"Vito didn't answer. Is it installed and running?": "Vito non ha risposto. È installato e in esecuzione?"
+"Vito didn't answer. Is it installed and running?": "Vito non ha risposto. È installato e in esecuzione?",
+"Collapse": "Comprimi",
+"Collapse sidebar": "Comprimi barra laterale",
+"Expand sidebar": "Espandi barra laterale",
+"Register again": "Registra di nuovo",
+"Register shortcut": "Registra scorciatoia",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Richiede di nuovo la scorciatoia al tuo desktop, così la sua finestra di dialogo ricompare.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "In attesa del tuo desktop — conferma la scorciatoia nella sua finestra di dialogo.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Hai chiuso la finestra delle scorciatoie del tuo desktop, quindi non è ancora associata nessuna scorciatoia.",
+"Your desktop didn't bind the shortcut.": "Il tuo desktop non ha associato la scorciatoia.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Il tuo desktop ({desktop}) non può inoltrare le scorciatoie globali alle app, quindi Vito non gliene chiede una. Associa invece i comandi qui sotto a dei tasti nel tuo compositor.",
+"your desktop": "il tuo desktop"
 },
 "help": {
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",

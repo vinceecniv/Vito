@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "ഇവിടെ മറ്റൊരു കമ്പ്യൂട്ടർ ഇതുവരെ ഇല്ല. അതുമായി സിങ്ക് ചെയ്യാൻ നിങ്ങളുടെ മറ്റേ കമ്പ്യൂട്ടറിലും ഇതേ ഫോൾഡർ തിരഞ്ഞെടുക്കൂ.",
 "Stop syncing": "സിങ്ക് ചെയ്യുന്നത് നിർത്തുക",
 "This computer stops syncing. What is already here stays, and so does the folder.": "ഈ കമ്പ്യൂട്ടർ സിങ്ക് ചെയ്യുന്നത് നിർത്തുന്നു. ഇവിടെ ഇപ്പോഴുള്ളതെല്ലാം അതുപോലെ തുടരും, ഫോൾഡറും.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ഒരു ഡിക്ടേഷൻ ഇല്ലാതാക്കുന്നതും അതിന് നക്ഷത്രം നൽകുന്നതും മറ്റ് കമ്പ്യൂട്ടറുകളിലേക്കും എത്തും. ക്രമീകരണങ്ങളും API കീകളും ഓരോ കമ്പ്യൂട്ടറിലും വെവ്വേറെ തന്നെ നിൽക്കും: മൈക്രോഫോണുകളും ഹോട്ട്കീകളും ദാതാക്കളും അവയ്ക്കിടയിൽ പലപ്പോഴും വ്യത്യസ്തമായിരിക്കും."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ഒരു ഡിക്ടേഷൻ ഇല്ലാതാക്കുന്നതും അതിന് നക്ഷത്രം നൽകുന്നതും മറ്റ് കമ്പ്യൂട്ടറുകളിലേക്കും എത്തും. ക്രമീകരണങ്ങളും API കീകളും ഓരോ കമ്പ്യൂട്ടറിലും വെവ്വേറെ തന്നെ നിൽക്കും: മൈക്രോഫോണുകളും ഹോട്ട്കീകളും ദാതാക്കളും അവയ്ക്കിടയിൽ പലപ്പോഴും വ്യത്യസ്തമായിരിക്കും.",
+"Collapse": "ചുരുക്കുക",
+"Collapse sidebar": "സൈഡ്‌ബാർ ചുരുക്കുക",
+"Expand sidebar": "സൈഡ്‌ബാർ വികസിപ്പിക്കുക",
+"Register again": "വീണ്ടും രജിസ്റ്റർ ചെയ്യുക",
+"Register shortcut": "ഹോട്ട്‌കീ രജിസ്റ്റർ ചെയ്യുക",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "ഹോട്ട്‌കീക്കായി നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിനോട് വീണ്ടും ആവശ്യപ്പെടുന്നു, അതിനാൽ അതിന്റെ ഡയലോഗ് വീണ്ടും വരും.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിനായി കാത്തിരിക്കുന്നു — അതിന്റെ ഡയലോഗിൽ ഹോട്ട്‌കീ സ്ഥിരീകരിക്കുക.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിന്റെ ഹോട്ട്‌കീ ഡയലോഗ് നിങ്ങൾ അടച്ചു, അതിനാൽ ഇതുവരെ ഒരു ഹോട്ട്‌കീയും ബന്ധിപ്പിച്ചിട്ടില്ല.",
+"Your desktop didn't bind the shortcut.": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പ് ഹോട്ട്‌കീ ബന്ധിപ്പിച്ചില്ല.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിന് ({desktop}) ഗ്ലോബൽ ഹോട്ട്‌കീകൾ ആപ്പുകളിലേക്ക് കൈമാറാൻ കഴിയില്ല, അതിനാൽ Vito അതിനോട് ഒന്ന് ആവശ്യപ്പെടുന്നില്ല. പകരം, താഴെയുള്ള കമാൻഡുകൾ നിങ്ങളുടെ compositor-ൽ കീകളുമായി ബന്ധിപ്പിക്കുക.",
+"your desktop": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പ്"
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

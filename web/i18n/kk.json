@@ -1036,7 +1036,18 @@
     "No other computer here yet. Choose the same folder on your other computer to sync with it.": "Мұнда әзірге басқа компьютер жоқ. Онымен синхрондау үшін басқа компьютерде де дәл осы қалтаны таңдаңыз.",
     "Stop syncing": "Синхрондауды тоқтату",
     "This computer stops syncing. What is already here stays, and so does the folder.": "Бұл компьютер синхрондауды тоқтатады. Мұнда бар нәрсе де, қалта да сақталады.",
-    "Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Диктовканы жою немесе жұлдызшамен белгілеу де басқа компьютерге ауысады. Параметрлер мен API кілттері әр компьютерде бөлек қалады: микрофондар, жылдам пернелер және провайдерлер көбіне әртүрлі болады."
+    "Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "Диктовканы жою немесе жұлдызшамен белгілеу де басқа компьютерге ауысады. Параметрлер мен API кілттері әр компьютерде бөлек қалады: микрофондар, жылдам пернелер және провайдерлер көбіне әртүрлі болады.",
+"Collapse": "Жию",
+"Collapse sidebar": "Бүйір тақтаны жию",
+"Expand sidebar": "Бүйір тақтаны жаю",
+"Register again": "Қайта тіркеу",
+"Register shortcut": "Жедел пернені тіркеу",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Жұмыс үстеліңізден жедел пернені қайта сұрайды, сонда оның диалогы қайта шығады.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Жұмыс үстеліңізді күтуде — жедел пернені оның диалогында растаңыз.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Жұмыс үстеліңіздің жедел перне диалогын жаптыңыз, сондықтан әзірге ешбір жедел перне байланыстырылмаған.",
+"Your desktop didn't bind the shortcut.": "Жұмыс үстеліңіз жедел пернені байланыстырмады.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Жұмыс үстеліңіз ({desktop}) жаһандық жедел пернелерді қолданбаларға жеткізе алмайды, сондықтан Vito одан жедел перне сұрамайды. Оның орнына төмендегі командаларды компоситорыңыздағы пернелермен байланыстырыңыз.",
+"your desktop": "жұмыс үстеліңіз"
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",

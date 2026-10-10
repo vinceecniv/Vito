@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "ここにはまだ他のコンピューターがありません。同期するには、もう一台のコンピューターで同じフォルダを選んでください。",
 "Stop syncing": "同期を停止",
 "This computer stops syncing. What is already here stays, and so does the folder.": "このコンピューターでの同期が停止します。ここにすでにあるものとフォルダはそのまま残ります。",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "口述の削除やスターの付与も引き継がれます。設定と API キーは各コンピューターに残ります。マイク、ホットキー、プロバイダーはコンピューターごとに異なることが多いためです。"
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "口述の削除やスターの付与も引き継がれます。設定と API キーは各コンピューターに残ります。マイク、ホットキー、プロバイダーはコンピューターごとに異なることが多いためです。",
+"Collapse": "折りたたむ",
+"Collapse sidebar": "サイドバーを折りたたむ",
+"Expand sidebar": "サイドバーを展開",
+"Register again": "再登録",
+"Register shortcut": "ショートカットを登録",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "デスクトップにショートカットを再度要求し、そのダイアログをもう一度表示させます。",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "デスクトップの応答を待っています — ダイアログでショートカットを確定してください。",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "デスクトップのショートカットダイアログが閉じられたため、まだショートカットは割り当てられていません。",
+"Your desktop didn't bind the shortcut.": "デスクトップがショートカットを割り当てませんでした。",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "お使いのデスクトップ（{desktop}）はグローバルショートカットをアプリに渡せないため、Vito はショートカットを要求しません。代わりに、以下のコマンドをコンポジタでキーに割り当ててください。",
+"your desktop": "お使いのデスクトップ"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",

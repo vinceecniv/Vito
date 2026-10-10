@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "இங்கே இன்னும் வேறு கணினி இல்லை. அதனுடன் ஒத்திசைக்க உங்கள் மற்றொரு கணினியிலும் அதே கோப்புறையைத் தேர்ந்தெடுங்கள்.",
 "Stop syncing": "ஒத்திசைவை நிறுத்து",
 "This computer stops syncing. What is already here stays, and so does the folder.": "இந்தக் கணினி ஒத்திசைப்பதை நிறுத்தும். ஏற்கனவே இங்கே உள்ளவை அப்படியே இருக்கும், கோப்புறையும் அப்படியே இருக்கும்.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ஒரு சொல்லெழுத்தை நீக்குவதும் அதற்கு நட்சத்திரம் இடுவதும் கூட மற்றொரு கணினிக்குச் செல்லும். அமைப்புகளும் API விசைகளும் ஒவ்வொரு கணினியிலும் தனித்தனியாகவே இருக்கும்: மைக்ரோஃபோன்கள், விசைச் சேர்க்கைகள் மற்றும் வழங்குநர்கள் அவற்றுக்கிடையே பெரும்பாலும் வேறுபடும்."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ஒரு சொல்லெழுத்தை நீக்குவதும் அதற்கு நட்சத்திரம் இடுவதும் கூட மற்றொரு கணினிக்குச் செல்லும். அமைப்புகளும் API விசைகளும் ஒவ்வொரு கணினியிலும் தனித்தனியாகவே இருக்கும்: மைக்ரோஃபோன்கள், விசைச் சேர்க்கைகள் மற்றும் வழங்குநர்கள் அவற்றுக்கிடையே பெரும்பாலும் வேறுபடும்.",
+"Collapse": "சுருக்கு",
+"Collapse sidebar": "பக்கப்பட்டியைச் சுருக்கு",
+"Expand sidebar": "பக்கப்பட்டியை விரி",
+"Register again": "மீண்டும் பதிவு செய்",
+"Register shortcut": "குறுக்குவழியைப் பதிவு செய்",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "குறுக்குவழியை உங்கள் டெஸ்க்டாப்பிடம் மீண்டும் கேட்கிறது, அதனால் அதன் உரையாடல் பெட்டி மீண்டும் தோன்றும்.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "உங்கள் டெஸ்க்டாப்புக்காகக் காத்திருக்கிறது — அதன் உரையாடல் பெட்டியில் குறுக்குவழியை உறுதிப்படுத்தவும்.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "உங்கள் டெஸ்க்டாப்பின் குறுக்குவழி உரையாடல் பெட்டியை நீங்கள் மூடிவிட்டீர்கள், எனவே இன்னும் எந்தக் குறுக்குவழியும் இணைக்கப்படவில்லை.",
+"Your desktop didn't bind the shortcut.": "உங்கள் டெஸ்க்டாப் குறுக்குவழியை இணைக்கவில்லை.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "உங்கள் டெஸ்க்டாப்பால் ({desktop}) உலகளாவிய குறுக்குவழிகளை ஆப்களுக்கு அனுப்ப முடியாது, எனவே Vito அதனிடம் குறுக்குவழியைக் கேட்பதில்லை. அதற்குப் பதிலாக கீழே உள்ள கட்டளைகளை உங்கள் compositor இல் விசைகளுடன் இணைக்கவும்.",
+"your desktop": "உங்கள் டெஸ்க்டாப்"
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

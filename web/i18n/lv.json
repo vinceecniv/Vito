@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Dod lietotnei savu logu: atver Vito un tā lapā izvēlies Instalēt lietotni. Tieši to piespraud uzdevumjoslai vai Dock.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Šo cilni vari aizvērt, un, ja esi izveidojis grāmatzīmi uz vito.talk/app, noņem to.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Turpmāk atver Vito ar tā ikonu sistēmas joslā (izvēlņu joslā) vai dod tam savu logu: atver Vito un tā lapā izvēlies Instalēt lietotni.",
-"Vito didn't answer. Is it installed and running?": "Vito neatbildēja. Vai tas ir instalēts un darbojas?"
+"Vito didn't answer. Is it installed and running?": "Vito neatbildēja. Vai tas ir instalēts un darbojas?",
+"Collapse": "Sakļaut",
+"Collapse sidebar": "Sakļaut sānjoslu",
+"Expand sidebar": "Izvērst sānjoslu",
+"Register again": "Reģistrēt vēlreiz",
+"Register shortcut": "Reģistrēt īsinājumtaustiņu",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Vēlreiz pieprasa īsinājumtaustiņu no tavas darbvirsmas, lai tās dialogs atkal parādītos.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Gaida tavu darbvirsmu — apstiprini īsinājumtaustiņu tās dialogā.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Tu aizvēri darbvirsmas īsinājumtaustiņu dialogu, tāpēc neviens īsinājumtaustiņš vēl nav piesaistīts.",
+"Your desktop didn't bind the shortcut.": "Tava darbvirsma nepiesaistīja īsinājumtaustiņu.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Tava darbvirsma ({desktop}) nevar nodot globālos īsinājumtaustiņus lietotnēm, tāpēc Vito to nepieprasa. Tā vietā piesaisti tālāk norādītās komandas taustiņiem savā kompozitorā.",
+"your desktop": "tava darbvirsma"
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

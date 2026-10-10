@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "앱에 전용 창 만들기: Vito를 열고 해당 페이지에서 앱 설치를 선택하세요. 작업 표시줄이나 Dock에 고정할 앱은 바로 그것이에요.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "이 탭은 닫아도 되고, vito.talk/app 북마크를 만들어 두었다면 삭제해도 돼요.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "앞으로는 트레이(메뉴 막대) 아이콘으로 Vito를 열거나, 전용 창을 만들 수 있어요. Vito를 열고 해당 페이지에서 앱 설치를 선택하세요.",
-"Vito didn't answer. Is it installed and running?": "Vito가 응답하지 않아요. 설치되어 실행 중인가요?"
+"Vito didn't answer. Is it installed and running?": "Vito가 응답하지 않아요. 설치되어 실행 중인가요?",
+"Collapse": "접기",
+"Collapse sidebar": "사이드바 접기",
+"Expand sidebar": "사이드바 펼치기",
+"Register again": "다시 등록",
+"Register shortcut": "단축키 등록",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "데스크톱에 단축키를 다시 요청하여 대화 상자가 다시 나타나게 합니다.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "데스크톱을 기다리는 중 — 대화 상자에서 단축키를 확인하세요.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "데스크톱의 단축키 대화 상자를 닫았기 때문에 아직 연결된 단축키가 없습니다.",
+"Your desktop didn't bind the shortcut.": "데스크톱이 단축키를 연결하지 않았습니다.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "데스크톱({desktop})이 전역 단축키를 앱에 전달할 수 없으므로 Vito는 단축키를 요청하지 않습니다. 대신 아래 명령을 컴포지터에서 키에 연결하세요.",
+"your desktop": "데스크톱"
 },
 "help": {
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",

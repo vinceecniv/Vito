@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Uygulamaya kendi penceresini ver: Vito'yu aç ve sayfasındaki Uygulamayı yükle seçeneğini seç. Görev çubuğuna veya Dock'a sabitleyeceğin pencere bu.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Bu sekmeyi kapatabilir ve varsa vito.talk/app yer imini silebilirsin.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Bundan sonra Vito'yu tepsi (menü çubuğu) simgesinden aç ya da ona kendi penceresini ver: Vito'yu aç ve sayfasındaki Uygulamayı yükle seçeneğini seç.",
-"Vito didn't answer. Is it installed and running?": "Vito yanıt vermedi. Kurulu ve çalışıyor mu?"
+"Vito didn't answer. Is it installed and running?": "Vito yanıt vermedi. Kurulu ve çalışıyor mu?",
+"Collapse": "Daralt",
+"Collapse sidebar": "Kenar çubuğunu daralt",
+"Expand sidebar": "Kenar çubuğunu genişlet",
+"Register again": "Yeniden kaydet",
+"Register shortcut": "Kısayolu kaydet",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Kısayolu masaüstünüzden yeniden ister, böylece iletişim penceresi tekrar açılır.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Masaüstünüz bekleniyor — kısayolu onun iletişim penceresinde onaylayın.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Masaüstünüzün kısayol iletişim penceresini kapattınız, bu yüzden henüz bir kısayol atanmadı.",
+"Your desktop didn't bind the shortcut.": "Masaüstünüz kısayolu atamadı.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Masaüstünüz ({desktop}) genel kısayolları uygulamalara iletemiyor, bu yüzden Vito ondan kısayol istemiyor. Bunun yerine aşağıdaki komutları compositor'ınızda tuşlara atayın.",
+"your desktop": "masaüstünüz"
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",

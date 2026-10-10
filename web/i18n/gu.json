@@ -1036,7 +1036,18 @@
 "No other computer here yet. Choose the same folder on your other computer to sync with it.": "અહીં હજી કોઈ બીજું કમ્પ્યુટર નથી. તેની સાથે સિંક કરવા માટે તમારા બીજા કમ્પ્યુટર પર પણ આ જ ફોલ્ડર પસંદ કરો.",
 "Stop syncing": "સિંક કરવાનું બંધ કરો",
 "This computer stops syncing. What is already here stays, and so does the folder.": "આ કમ્પ્યુટર સિંક કરવાનું બંધ કરે છે. અહીં જે પહેલેથી છે તે રહેશે, અને ફોલ્ડર પણ રહેશે.",
-"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ડિક્ટેશન કાઢી નાખવું કે તેને તારો આપવો તે પણ સાથે જાય છે. સેટિંગ્સ અને API કીઓ દરેક કમ્પ્યુટર પર જ રહે છે: માઇક્રોફોન, હોટકી અને પ્રદાતાઓ ઘણી વાર એકબીજાથી અલગ હોય છે."
+"Deleting a dictation or giving it a star carries over too. Settings and API keys stay on each computer: microphones, hotkeys and providers often differ between them.": "ડિક્ટેશન કાઢી નાખવું કે તેને તારો આપવો તે પણ સાથે જાય છે. સેટિંગ્સ અને API કીઓ દરેક કમ્પ્યુટર પર જ રહે છે: માઇક્રોફોન, હોટકી અને પ્રદાતાઓ ઘણી વાર એકબીજાથી અલગ હોય છે.",
+"Collapse": "સંકુચિત કરો",
+"Collapse sidebar": "સાઇડબાર સંકુચિત કરો",
+"Expand sidebar": "સાઇડબાર વિસ્તૃત કરો",
+"Register again": "ફરીથી નોંધણી કરો",
+"Register shortcut": "શોર્ટકટ નોંધાવો",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "તમારા ડેસ્કટોપને ફરીથી શોર્ટકટ માટે પૂછે છે, જેથી તેનો ડાયલોગ ફરી દેખાય.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "તમારા ડેસ્કટોપની રાહ જોવાઈ રહી છે — તેના ડાયલોગમાં શોર્ટકટની પુષ્ટિ કરો.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "તમે તમારા ડેસ્કટોપનો શોર્ટકટ ડાયલોગ બંધ કર્યો, તેથી હજી કોઈ શોર્ટકટ જોડાયેલો નથી.",
+"Your desktop didn't bind the shortcut.": "તમારા ડેસ્કટોપે શોર્ટકટ જોડ્યો નહીં.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "તમારું ડેસ્કટોપ ({desktop}) ગ્લોબલ શોર્ટકટ એપ્સ સુધી પહોંચાડી શકતું નથી, તેથી Vito તેની પાસે શોર્ટકટ માંગતું નથી. તેને બદલે નીચેના કમાન્ડને તમારા compositor માં કીઓ સાથે જોડો.",
+"your desktop": "તમારું ડેસ્કટોપ"
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",

@@ -1036,7 +1036,18 @@
 "Give the app its own window: open Vito and choose Install app on its page. That is the one to pin to the taskbar or Dock.": "Anna sovellukselle oma ikkuna: avaa Vito ja valitse sen sivulta Asenna sovellus. Se on se, jonka kiinnität tehtäväpalkkiin tai Dockiin.",
 "You can close this tab, and remove a bookmark to vito.talk/app if you made one.": "Voit sulkea tämän välilehden ja poistaa kirjanmerkin osoitteeseen vito.talk/app, jos teit sellaisen.",
 "Open Vito from now on with its tray (menu bar) icon, or give it its own window: open Vito and choose Install app on its page.": "Avaa Vito jatkossa ilmaisinalueen (valikkorivin) kuvakkeesta tai anna sille oma ikkuna: avaa Vito ja valitse sen sivulta Asenna sovellus.",
-"Vito didn't answer. Is it installed and running?": "Vito ei vastannut. Onko se asennettu ja käynnissä?"
+"Vito didn't answer. Is it installed and running?": "Vito ei vastannut. Onko se asennettu ja käynnissä?",
+"Collapse": "Pienennä",
+"Collapse sidebar": "Pienennä sivupalkki",
+"Expand sidebar": "Laajenna sivupalkki",
+"Register again": "Rekisteröi uudelleen",
+"Register shortcut": "Rekisteröi pikanäppäin",
+"Asks your desktop for the shortcut again, so its dialog comes back.": "Pyytää pikanäppäintä työpöydältäsi uudelleen, jotta sen valintaikkuna tulee takaisin.",
+"Waiting for your desktop — confirm the shortcut in its dialog.": "Odotetaan työpöytääsi — vahvista pikanäppäin sen valintaikkunassa.",
+"You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Suljit työpöytäsi pikanäppäinikkunan, joten pikanäppäintä ei ole vielä sidottu.",
+"Your desktop didn't bind the shortcut.": "Työpöytäsi ei sitonut pikanäppäintä.",
+"Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Työpöytäsi ({desktop}) ei voi välittää globaaleja pikanäppäimiä sovelluksille, joten Vito ei pyydä siltä sellaista. Sido sen sijaan alla olevat komennot näppäimiin kompositorissasi.",
+"your desktop": "työpöytäsi"
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",
