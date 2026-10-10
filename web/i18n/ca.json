@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "En pausa: un altre programa fa servir el micròfon",
 "Wake word unavailable: {e}": "Paraula d’activació no disponible: {e}",
 "No microphone available — Vito keeps trying": "No hi ha cap micròfon disponible; el Vito continua provant-ho",
+"Keep listening after a pause": "Continuar escoltant després d’una pausa",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "El que diguis dins d’aquest temps s’enganxa després del text anterior, perquè puguis aturar-te a pensar. 0 = desactivat.",
 "Use the dashboard layout from the browser": "Fes servir la disposició del tauler del navegador",
 "On — fillers out, punctuation fixed.": "Activada — fora crosses, puntuació corregida.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Desactivada per defecte al navegador: el text arriba exactament com l'has dit.",

@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "Pristabdyta: mikrofoną naudoja kita programa",
 "Wake word unavailable: {e}": "Pažadinimo žodis nepasiekiamas: {e}",
 "No microphone available — Vito keeps trying": "Mikrofono nėra — Vito toliau bando",
+"Keep listening after a pause": "Klausytis ir po pauzės",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Tai, ką pasakote per šį laiką, įklijuojama po ankstesnio teksto, todėl galite stabtelėti ir pagalvoti. 0 = išjungta.",
 "Use the dashboard layout from the browser": "Naudoti naršyklės prietaisų skydelio išdėstymą",
 "On — fillers out, punctuation fixed.": "Įjungta — parazitiniai žodžiai pašalinti, skyryba pataisyta.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Naršyklėje pagal numatytuosius nustatymus išjungta: tekstas ateina tiksliai taip, kaip pasakėte.",

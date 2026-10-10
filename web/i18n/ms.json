@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "Dijeda: program lain sedang menggunakan mikrofon",
 "Wake word unavailable: {e}": "Kata pemicu tidak tersedia: {e}",
 "No microphone available — Vito keeps trying": "Tiada mikrofon — Vito terus mencuba",
+"Keep listening after a pause": "Terus mendengar selepas jeda",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Apa yang anda sebut dalam masa ini ditampal selepas teks sebelumnya, jadi anda boleh berhenti seketika untuk berfikir. 0 = mati.",
 "Use the dashboard layout from the browser": "Guna susun atur papan pemuka daripada pelayar",
 "On — fillers out, punctuation fixed.": "Hidup — kata pengisi dibuang, tanda baca dibetulkan.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Dimatikan secara lalai dalam pelayar: teks tiba tepat seperti yang anda sebut.",

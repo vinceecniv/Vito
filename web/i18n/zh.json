@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "已暂停：其他程序正在使用麦克风",
 "Wake word unavailable: {e}": "唤醒词不可用：{e}",
 "No microphone available — Vito keeps trying": "没有可用的麦克风——Vito 会继续尝试",
+"Keep listening after a pause": "停顿后继续聆听",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "在这段时间内说的话会接在之前的文字后面粘贴，所以你可以停下来想一想。0 = 关闭。",
 "Use the dashboard layout from the browser": "使用浏览器中的仪表板布局",
 "On — fillers out, punctuation fixed.": "已开启——去除口头禅，修正标点。",
 "Off by default in the browser: the text arrives exactly as you said it.": "浏览器中默认关闭：文字会和你说的完全一样。",

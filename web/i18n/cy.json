@@ -1025,6 +1025,8 @@
 "Paused: another program is using the microphone": "Wedi oedi: mae rhaglen arall yn defnyddio'r meicroffon",
 "Wake word unavailable: {e}": "Gair deffro ddim ar gael: {e}",
 "No microphone available — Vito keeps trying": "Dim meicroffon ar gael – mae Vito yn dal i geisio",
+"Keep listening after a pause": "Dal i wrando ar ôl saib",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Mae’r hyn a ddywedwch o fewn yr amser hwn yn cael ei ludo ar ôl y testun hyd yma, fel y gallwch oedi i feddwl. 0 = i ffwrdd.",
 "Use the dashboard layout from the browser": "Defnyddio cynllun y dangosfwrdd o'r porwr",
 "On — fillers out, punctuation fixed.": "Ymlaen — geiriau llanw allan, atalnodi wedi'i gywiro.",
 "Off by default in the browser: the text arrives exactly as you said it.": "I ffwrdd yn ddiofyn yn y porwr: daw'r testun yn union fel y dywedoch chi.",

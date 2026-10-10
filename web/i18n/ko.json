@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "일시 중지됨: 다른 프로그램이 마이크를 사용 중",
 "Wake word unavailable: {e}": "호출어를 사용할 수 없음: {e}",
 "No microphone available — Vito keeps trying": "사용 가능한 마이크 없음 — Vito가 계속 시도합니다",
+"Keep listening after a pause": "잠시 멈춘 뒤에도 계속 듣기",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "이 시간 안에 말한 내용은 지금까지의 텍스트 뒤에 붙여 넣어지므로 잠시 멈춰 생각할 수 있습니다. 0 = 끔.",
 "Use the dashboard layout from the browser": "브라우저의 대시보드 배치 사용",
 "On — fillers out, punctuation fixed.": "켜짐 — 군말은 빼고 문장 부호는 바로잡습니다.",
 "Off by default in the browser: the text arrives exactly as you said it.": "브라우저에서는 기본적으로 꺼져 있습니다. 말한 그대로 텍스트가 나옵니다.",

@@ -1035,6 +1035,8 @@
 "Paused: another program is using the microphone": "ఆపబడింది: మరో ప్రోగ్రామ్ మైక్రోఫోన్ వాడుతోంది",
 "Wake word unavailable: {e}": "మేల్కొలిపే పదం అందుబాటులో లేదు: {e}",
 "No microphone available — Vito keeps trying": "మైక్రోఫోన్ అందుబాటులో లేదు — Vito ప్రయత్నిస్తూనే ఉంది",
+"Keep listening after a pause": "విరామం తర్వాత కూడా వింటూ ఉండు",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "ఈ సమయంలో మీరు చెప్పేది ఇప్పటివరకు ఉన్న వచనం తర్వాత అతికించబడుతుంది, కాబట్టి మీరు ఆగి ఆలోచించవచ్చు. 0 = ఆఫ్.",
 "Use the dashboard layout from the browser": "బ్రౌజర్‌లోని డాష్‌బోర్డ్ అమరికను వాడండి",
 "On — fillers out, punctuation fixed.": "ఆన్ — పూరక పదాలు తీసివేసి, విరామచిహ్నాలు సరిచేశాం.",
 "Off by default in the browser: the text arrives exactly as you said it.": "బ్రౌజర్‌లో డిఫాల్ట్‌గా ఆఫ్: మీరు చెప్పినట్లే టెక్స్ట్ వస్తుంది.",

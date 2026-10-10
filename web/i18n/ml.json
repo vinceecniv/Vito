@@ -1035,6 +1035,8 @@
 "Paused: another program is using the microphone": "താൽക്കാലികമായി നിർത്തി: മറ്റൊരു പ്രോഗ്രാം മൈക്രോഫോൺ ഉപയോഗിക്കുന്നു",
 "Wake word unavailable: {e}": "ഉണർത്തൽ വാക്ക് ലഭ്യമല്ല: {e}",
 "No microphone available — Vito keeps trying": "മൈക്രോഫോൺ ലഭ്യമല്ല — Vito ശ്രമം തുടരുന്നു",
+"Keep listening after a pause": "ഇടവേളയ്ക്കു ശേഷവും കേൾക്കുന്നത് തുടരുക",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "ഈ സമയത്തിനുള്ളിൽ പറയുന്നത് ഇതുവരെയുള്ള വാചകത്തിന് പിന്നാലെ ഒട്ടിക്കും, അതിനാൽ നിർത്തി ആലോചിക്കാം. 0 = ഓഫ്.",
 "Use the dashboard layout from the browser": "ബ്രൗസറിലെ ഡാഷ്‌ബോർഡ് ലേഔട്ട് ഉപയോഗിക്കുക",
 "On — fillers out, punctuation fixed.": "ഓൺ — അനാവശ്യ വാക്കുകൾ ഒഴിവാക്കി, ചിഹ്നങ്ങൾ ശരിയാക്കി.",
 "Off by default in the browser: the text arrives exactly as you said it.": "ബ്രൗസറിൽ സ്ഥിരസ്ഥിതിയായി ഓഫ്: നിങ്ങൾ പറഞ്ഞതുപോലെ തന്നെ ടെക്സ്റ്റ് എത്തുന്നു.",

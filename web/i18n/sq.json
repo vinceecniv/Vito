@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "Në pauzë: një program tjetër po përdor mikrofonin",
 "Wake word unavailable: {e}": "Fjala e zgjimit nuk është e disponueshme: {e}",
 "No microphone available — Vito keeps trying": "Asnjë mikrofon i disponueshëm — Vito vazhdon të provojë",
+"Keep listening after a pause": "Vazhdo të dëgjosh pas një pushimi",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Ajo që thoni brenda kësaj kohe ngjitet pas tekstit deri tani, që të mund të ndaleni e të mendoni. 0 = joaktive.",
 "Use the dashboard layout from the browser": "Përdor paraqitjen e panelit nga shfletuesi",
 "On — fillers out, punctuation fixed.": "Aktive — fjalët mbushëse hiqen, pikësimi korrigjohet.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Si parazgjedhje është joaktive në shfletues: teksti vjen saktësisht siç e the.",

@@ -1035,6 +1035,8 @@
 "Paused: another program is using the microphone": "На паузі: мікрофон використовує інша програма",
 "Wake word unavailable: {e}": "Слово активації недоступне: {e}",
 "No microphone available — Vito keeps trying": "Мікрофон недоступний — Vito продовжує спроби",
+"Keep listening after a pause": "Слухати й після паузи",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Сказане протягом цього часу вставляється після вже набраного тексту, тож можна зупинитися й подумати. 0 = вимк.",
 "Use the dashboard layout from the browser": "Використати розташування панелі з браузера",
 "On — fillers out, punctuation fixed.": "Увімкнено — слова-паразити прибрано, пунктуацію виправлено.",
 "Off by default in the browser: the text arrives exactly as you said it.": "У браузері типово вимкнено: текст надходить саме так, як ви його сказали.",

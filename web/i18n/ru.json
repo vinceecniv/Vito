@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "На паузе: микрофон использует другая программа",
 "Wake word unavailable: {e}": "Слово активации недоступно: {e}",
 "No microphone available — Vito keeps trying": "Микрофон недоступен — Vito продолжает попытки",
+"Keep listening after a pause": "Слушать и после паузы",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Сказанное в течение этого времени вставляется после уже набранного текста, так что можно остановиться и подумать. 0 = выкл.",
 "Use the dashboard layout from the browser": "Использовать расположение панели из браузера",
 "On — fillers out, punctuation fixed.": "Включено — слова-паразиты убраны, пунктуация исправлена.",
 "Off by default in the browser: the text arrives exactly as you said it.": "В браузере по умолчанию выключено: текст приходит ровно так, как вы его сказали.",

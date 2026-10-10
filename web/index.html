@@ -1945,6 +1945,9 @@
             <label class="fld">Sensitivity <span class="val" id="s-wakesensval"></span></label>
             <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-wakesens" min="0.1" max="0.9" step="0.05"><span class="slider-mark" aria-hidden="true"></span></div>
             <p class="act-note" style="margin:2px 0 0;">Higher reacts sooner, but wakes by mistake more often.</p>
+            <label class="fld">Keep listening after a pause <span class="val" id="s-wakefollowval"></span></label>
+            <div class="slider-wrap" style="--frac:0.4;"><input type="range" id="s-wakefollow" min="0" max="10" step="1"><span class="slider-mark" aria-hidden="true"></span></div>
+            <p class="act-note" style="margin:2px 0 0;">What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.</p>
             <div class="wake-live">
               <div class="wake-status" id="wake-status"></div>
               <div class="wake-meter" title="Live score — the line marks where Vito wakes"><span class="wake-bar" id="wake-bar"></span><span class="wake-thr" id="wake-thr"></span></div>
@@ -3252,6 +3255,8 @@ const TR = { nl: {
   "Paused: another program is using the microphone":"Gepauzeerd: een ander programma gebruikt de microfoon",
   "Wake word unavailable: {e}":"Wake word niet beschikbaar: {e}",
   "No microphone available — Vito keeps trying":"Geen microfoon beschikbaar — Vito blijft het proberen",
+  "Keep listening after a pause":"Blijf luisteren na een pauze",
+  "What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.":"Wat je binnen deze tijd zegt, wordt achter de tekst tot nu toe geplakt, zodat je even kunt nadenken. 0 = uit.",
   "Choose the folder your sync app keeps in sync":"Kies de map die je sync-app gelijk houdt",
   "No other computer here yet. Choose the same folder on your other computer to sync with it.":"Nog geen andere computer. Kies op je andere computer dezelfde map om ermee te synchroniseren.",
   "Stop syncing":"Stoppen met synchroniseren",
@@ -9488,6 +9493,7 @@ function renderWakeSettings(){
   $("s-wake").checked = !!w.enabled;
   $("s-wakesens").value = w.sensitivity || 0.5;
   $("s-wakecalls").checked = !!w.keep_listening_in_calls;
+  $("s-wakefollow").value = w.follow_sec ?? 4;
   const cur = w.phrase || "hey_vito";
   $("wake-phrases").replaceChildren(...wakePhrases.map(p => {
     const b = document.createElement("button");
@@ -9505,6 +9511,8 @@ function syncWakeUI(){
   const on = $("s-wake").checked, sens = parseFloat($("s-wakesens").value) || 0.5;
   $("wake-opts").style.opacity = on ? "" : ".55";
   $("s-wakesensval").textContent = Math.round(sens * 100) + "%";
+  const fol = parseInt($("s-wakefollow").value, 10) || 0;
+  $("s-wakefollowval").textContent = fol ? fol + " s" : t("Off");
   $("wake-thr").style.left = (wakeThreshold(sens) * 100) + "%";
   // only Windows tells which other program has the microphone
   const win = wakeOS === "windows";
@@ -9553,6 +9561,8 @@ setInterval(() => {
 if ($("s-wake")) {
   ["s-wake", "s-wakecalls"].forEach(id => $(id).addEventListener("change", () => { syncWakeUI(); autoSaveSettings(); }));
   $("s-wakesens").addEventListener("input", syncWakeUI);
+  $("s-wakefollow").addEventListener("input", syncWakeUI);
+  $("s-wakefollow").addEventListener("change", autoSaveSettings);
   $("s-wakesens").addEventListener("change", autoSaveSettings);
   $("s-wake").addEventListener("change", () => { if ($("s-wake").checked) api("/api/wake/meter", { method: "POST" }).catch(() => {}); });
 }
@@ -9903,6 +9913,7 @@ function collectSettings() {
       phrase: wakePhrase(),
       sensitivity: parseFloat($("s-wakesens").value) || 0.5,
       keep_listening_in_calls: $("s-wakecalls").checked,
+      follow_sec: Math.max(0, Math.min(10, parseInt($("s-wakefollow").value, 10) || 0)),
     }),
     demo: $("s-demo").checked,
   };

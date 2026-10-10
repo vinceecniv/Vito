@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "Σε παύση: άλλο πρόγραμμα χρησιμοποιεί το μικρόφωνο",
 "Wake word unavailable: {e}": "Η λέξη αφύπνισης δεν είναι διαθέσιμη: {e}",
 "No microphone available — Vito keeps trying": "Δεν υπάρχει διαθέσιμο μικρόφωνο — το Vito συνεχίζει να προσπαθεί",
+"Keep listening after a pause": "Συνέχεια ακρόασης μετά από παύση",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Ό,τι λέτε μέσα σε αυτό το διάστημα επικολλάται μετά το κείμενο μέχρι τώρα, ώστε να μπορείτε να σταματήσετε να σκεφτείτε. 0 = απενεργοποιημένο.",
 "Use the dashboard layout from the browser": "Χρήση της διάταξης του πίνακα ελέγχου από τον browser",
 "On — fillers out, punctuation fixed.": "Ενεργή — χωρίς λέξεις-γεμίσματα, με διορθωμένη στίξη.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Απενεργοποιημένη από προεπιλογή στον browser: το κείμενο έρχεται ακριβώς όπως το είπατε.",

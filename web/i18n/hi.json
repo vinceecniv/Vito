@@ -1035,6 +1035,8 @@
 "Paused: another program is using the microphone": "रुका हुआ: कोई दूसरा प्रोग्राम माइक्रोफ़ोन इस्तेमाल कर रहा है",
 "Wake word unavailable: {e}": "वेक वर्ड उपलब्ध नहीं: {e}",
 "No microphone available — Vito keeps trying": "कोई माइक्रोफ़ोन उपलब्ध नहीं — Vito कोशिश करता रहेगा",
+"Keep listening after a pause": "रुकने के बाद भी सुनते रहें",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "इस समय के भीतर आप जो कहेंगे वह अब तक के टेक्स्ट के बाद चिपका दिया जाएगा, ताकि आप रुककर सोच सकें। 0 = बंद।",
 "Use the dashboard layout from the browser": "ब्राउज़र का डैशबोर्ड लेआउट इस्तेमाल करें",
 "On — fillers out, punctuation fixed.": "चालू — भराव वाले शब्द हटे, विराम चिह्न ठीक।",
 "Off by default in the browser: the text arrives exactly as you said it.": "ब्राउज़र में डिफ़ॉल्ट रूप से बंद: टेक्स्ट ठीक वैसा ही आता है जैसा आपने बोला।",

@@ -22,6 +22,8 @@
 "Paused: another program is using the microphone": "Duraklatıldı: mikrofonu başka bir program kullanıyor",
 "Wake word unavailable: {e}": "Uyandırma sözcüğü kullanılamıyor: {e}",
 "No microphone available — Vito keeps trying": "Kullanılabilir mikrofon yok — Vito denemeye devam ediyor",
+"Keep listening after a pause": "Bir duraklamadan sonra dinlemeye devam et",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Bu süre içinde söyledikleriniz şimdiye kadarki metnin arkasına yapıştırılır; böylece durup düşünebilirsiniz. 0 = kapalı.",
 "Use the dashboard layout from the browser": "Tarayıcıdaki pano düzenini kullan",
 "On — fillers out, punctuation fixed.": "Açık — dolgu sözcükleri atılır, noktalama düzeltilir.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Tarayıcıda varsayılan olarak kapalı: metin tam söylediğiniz gibi gelir.",

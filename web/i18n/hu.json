@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "Szünetel: egy másik program használja a mikrofont",
 "Wake word unavailable: {e}": "Az ébresztőszó nem érhető el: {e}",
 "No microphone available — Vito keeps trying": "Nincs elérhető mikrofon – Vito tovább próbálkozik",
+"Keep listening after a pause": "Szünet után is figyeljen",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Amit ezen az időn belül mondasz, az eddigi szöveg után kerül beillesztésre, így megállhatsz gondolkodni. 0 = ki.",
 "Use the dashboard layout from the browser": "A böngésző irányítópult-elrendezésének használata",
 "On — fillers out, punctuation fixed.": "Be — töltelékszavak ki, írásjelek javítva.",
 "Off by default in the browser: the text arrives exactly as you said it.": "A böngészőben alapból ki van kapcsolva: a szöveg pontosan úgy érkezik, ahogy kimondtad.",

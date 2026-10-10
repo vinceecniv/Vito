@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "På pause: et andet program bruger mikrofonen",
 "Wake word unavailable: {e}": "Vækkeord ikke tilgængeligt: {e}",
 "No microphone available — Vito keeps trying": "Ingen mikrofon tilgængelig – Vito bliver ved med at prøve",
+"Keep listening after a pause": "Bliv ved med at lytte efter en pause",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Det, du siger inden for denne tid, indsættes efter teksten indtil nu, så du kan stoppe op og tænke. 0 = fra.",
 "Use the dashboard layout from the browser": "Brug dashboardlayoutet fra browseren",
 "On — fillers out, punctuation fixed.": "Til — fyldord væk, tegnsætning rettet.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Slået fra som standard i browseren: teksten kommer præcis, som du sagde den.",

@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "ವಿರಾಮಗೊಂಡಿದೆ: ಇನ್ನೊಂದು ಪ್ರೋಗ್ರಾಂ ಮೈಕ್ರೊಫೋನ್ ಬಳಸುತ್ತಿದೆ",
 "Wake word unavailable: {e}": "ಎಚ್ಚರಿಸುವ ಪದ ಲಭ್ಯವಿಲ್ಲ: {e}",
 "No microphone available — Vito keeps trying": "ಮೈಕ್ರೊಫೋನ್ ಲಭ್ಯವಿಲ್ಲ — Vito ಪ್ರಯತ್ನ ಮುಂದುವರಿಸುತ್ತಿದೆ",
+"Keep listening after a pause": "ವಿರಾಮದ ನಂತರವೂ ಕೇಳುತ್ತಿರು",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "ಈ ಸಮಯದೊಳಗೆ ನೀವು ಹೇಳುವುದು ಇದುವರೆಗಿನ ಪಠ್ಯದ ನಂತರ ಅಂಟಿಸಲಾಗುತ್ತದೆ, ಆದ್ದರಿಂದ ನೀವು ನಿಂತು ಯೋಚಿಸಬಹುದು. 0 = ಆಫ್.",
 "Use the dashboard layout from the browser": "ಬ್ರೌಸರ್‌ನ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ವಿನ್ಯಾಸವನ್ನು ಬಳಸಿ",
 "On — fillers out, punctuation fixed.": "ಆನ್ — ತುಂಬು ಪದಗಳು ತೆಗೆದು, ವಿರಾಮಚಿಹ್ನೆ ಸರಿಪಡಿಸಲಾಗಿದೆ.",
 "Off by default in the browser: the text arrives exactly as you said it.": "ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಡೀಫಾಲ್ಟ್ ಆಗಿ ಆಫ್: ನೀವು ಹೇಳಿದಂತೆಯೇ ಪಠ್ಯ ಬರುತ್ತದೆ.",

@@ -1035,6 +1035,8 @@
 "Paused: another program is using the microphone": "Satt på pause: et annet program bruker mikrofonen",
 "Wake word unavailable: {e}": "Vekkeord ikke tilgjengelig: {e}",
 "No microphone available — Vito keeps trying": "Ingen mikrofon tilgjengelig – Vito fortsetter å prøve",
+"Keep listening after a pause": "Fortsett å lytte etter en pause",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Det du sier innen denne tiden, limes inn etter teksten så langt, så du kan stoppe og tenke. 0 = av.",
 "Use the dashboard layout from the browser": "Bruk dashbordoppsettet fra nettleseren",
 "On — fillers out, punctuation fixed.": "På — fyllord ut, tegnsetting rettet.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Av som standard i nettleseren: teksten kommer akkurat slik du sa den.",

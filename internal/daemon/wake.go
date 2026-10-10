@@ -2,9 +2,11 @@ package daemon
 
 import (
 	"fmt"
+
 	"sync"
 	"sync/atomic"
 	"time"
+	"vito/internal/config"
 
 	"vito/internal/wakeword"
 )
@@ -14,6 +16,15 @@ import (
 // steps aside for everything else that uses the microphone — a dictation,
 // the microphone test, and (unless the user says otherwise) a call in
 // another program — and comes back once that is over.
+
+// followSec is how long a hands-free dictation keeps listening after it
+// stopped at a pause (WakeWord.FollowSec, default 4 s; 0 is off).
+func followSec(cfg config.Config) int {
+	if f := cfg.WakeWord.FollowSec; f != nil {
+		return *f
+	}
+	return 4
+}
 
 // wakeSilenceSec cancels a wake-started dictation in which nothing is said:
 // with no key pressed, a false wake must end on its own, and soon.

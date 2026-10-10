@@ -1025,6 +1025,8 @@
 "Paused: another program is using the microphone": "متوقف مؤقتًا: برنامج آخر يستخدم الميكروفون",
 "Wake word unavailable: {e}": "كلمة التنبيه غير متاحة: {e}",
 "No microphone available — Vito keeps trying": "لا يوجد ميكروفون متاح — Vito يواصل المحاولة",
+"Keep listening after a pause": "تابع الاستماع بعد التوقف",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "ما تقوله خلال هذه المدة يُلصق بعد النص السابق، لتتمكن من التوقف للتفكير. 0 = إيقاف.",
 "Use the dashboard layout from the browser": "استخدم تخطيط لوحة المعلومات من المتصفح",
 "On — fillers out, punctuation fixed.": "مفعّل — تُحذف كلمات الحشو وتُصحَّح علامات الترقيم.",
 "Off by default in the browser: the text arrives exactly as you said it.": "معطّل افتراضيًا في المتصفح: يصل النص تمامًا كما نطقته.",

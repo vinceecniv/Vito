@@ -1035,6 +1035,8 @@
 "Paused: another program is using the microphone": "Pozastaveno: mikrofon používá jiný program",
 "Wake word unavailable: {e}": "Aktivační slovo není k dispozici: {e}",
 "No microphone available — Vito keeps trying": "Žádný mikrofon není k dispozici – Vito to zkouší dál",
+"Keep listening after a pause": "Poslouchat i po pauze",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Co řeknete během této doby, se vloží za dosavadní text, takže se můžete zastavit a přemýšlet. 0 = vypnuto.",
 "Use the dashboard layout from the browser": "Použít rozložení nástěnky z prohlížeče",
 "On — fillers out, punctuation fixed.": "Zapnuto — vycpávková slova pryč, interpunkce opravená.",
 "Off by default in the browser: the text arrives exactly as you said it.": "V prohlížeči je ve výchozím stavu vypnuto: text přijde přesně tak, jak jste ho řekli.",

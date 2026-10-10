@@ -293,6 +293,10 @@ type WakeWord struct {
 	// KeepListeningInCalls keeps listening while another program uses the
 	// microphone (a call or meeting). Off: Vito pauses listening then.
 	KeepListeningInCalls bool `json:"keep_listening_in_calls,omitempty"`
+	// FollowSec keeps listening this long after a hands-free dictation stopped
+	// at a pause; speech within it is pasted after the text so far. Nil is the
+	// default (4 s), 0 switches it off.
+	FollowSec *int `json:"follow_sec,omitempty"`
 }
 
 // Sync shares dictations, day sums, achievements and the dictionary between
@@ -575,6 +579,9 @@ func (c *Config) Validate() error {
 	case "", "hey_vito", "oke_vito":
 	default:
 		return fmt.Errorf("wake_word.phrase %q invalid (hey_vito|oke_vito)", c.WakeWord.Phrase)
+	}
+	if f := c.WakeWord.FollowSec; f != nil && (*f < 0 || *f > 30) {
+		return fmt.Errorf("wake_word.follow_sec %d out of range [0, 30]", *f)
 	}
 	if c.WakeWord.Sensitivity < 0 || c.WakeWord.Sensitivity > 1 {
 		return fmt.Errorf("wake_word.sensitivity %v out of range [0, 1]", c.WakeWord.Sensitivity)

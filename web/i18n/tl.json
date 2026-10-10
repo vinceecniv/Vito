@@ -1035,6 +1035,8 @@
 "Paused: another program is using the microphone": "Naka-pause: ginagamit ng ibang programa ang mikropono",
 "Wake word unavailable: {e}": "Hindi available ang wake word: {e}",
 "No microphone available — Vito keeps trying": "Walang available na mikropono — patuloy na sumusubok si Vito",
+"Keep listening after a pause": "Patuloy na makinig pagkatapos ng paghinto",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Ang sasabihin mo sa loob ng oras na ito ay idinidikit pagkatapos ng naunang teksto, kaya puwede kang huminto para mag-isip. 0 = naka-off.",
 "Use the dashboard layout from the browser": "Gamitin ang ayos ng dashboard mula sa browser",
 "On — fillers out, punctuation fixed.": "Naka-on — tanggal ang mga pampuno, ayos ang bantas.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Naka-off bilang default sa browser: dumarating ang teksto nang eksakto kung paano mo ito sinabi.",

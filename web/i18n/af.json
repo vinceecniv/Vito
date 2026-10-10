@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "Gepouseer: 'n ander program gebruik die mikrofoon",
 "Wake word unavailable: {e}": "Wekwoord nie beskikbaar nie: {e}",
 "No microphone available — Vito keeps trying": "Geen mikrofoon beskikbaar nie – Vito probeer aanhou",
+"Keep listening after a pause": "Hou aan luister ná ’n pouse",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Wat jy binne hierdie tyd sê, word ná die teks tot dusver geplak, sodat jy kan stilstaan om te dink. 0 = af.",
 "Use the dashboard layout from the browser": "Gebruik die paneelborduitleg uit die blaaier",
 "On — fillers out, punctuation fixed.": "Aan — stopwoorde weg, leestekens reggemaak.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Is in die blaaier by verstek af: die teks kom presies soos jy dit gesê het.",

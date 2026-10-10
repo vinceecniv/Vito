@@ -1035,6 +1035,8 @@
 "Paused: another program is using the microphone": "En pausa: outro programa está a usar o micrófono",
 "Wake word unavailable: {e}": "Palabra de activación non dispoñible: {e}",
 "No microphone available — Vito keeps trying": "Non hai micrófono dispoñible; Vito segue téntandoo",
+"Keep listening after a pause": "Seguir escoitando tras unha pausa",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "O que digas dentro deste tempo pégase despois do texto anterior, para que poidas parar a pensar. 0 = desactivado.",
 "Use the dashboard layout from the browser": "Usar a disposición do panel do navegador",
 "On — fillers out, punctuation fixed.": "Activada — fóra recheos, puntuación corrixida.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Desactivada por defecto no navegador: o texto chega tal como o dixeches.",

@@ -33,6 +33,8 @@
 "Paused: another program is using the microphone": "Tạm dừng: một chương trình khác đang dùng micrô",
 "Wake word unavailable: {e}": "Không dùng được từ đánh thức: {e}",
 "No microphone available — Vito keeps trying": "Không có micrô — Vito vẫn tiếp tục thử",
+"Keep listening after a pause": "Tiếp tục nghe sau khi tạm dừng",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Những gì bạn nói trong khoảng thời gian này được dán tiếp sau văn bản trước đó, nên bạn có thể dừng lại suy nghĩ. 0 = tắt.",
 "Use the dashboard layout from the browser": "Dùng bố cục bảng điều khiển từ trình duyệt",
 "On — fillers out, punctuation fixed.": "Bật — bỏ từ đệm, sửa dấu câu.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Mặc định tắt trong trình duyệt: văn bản đến đúng như bạn đã nói.",

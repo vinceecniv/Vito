@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "Wstrzymane: inny program używa mikrofonu",
 "Wake word unavailable: {e}": "Słowo aktywujące niedostępne: {e}",
 "No microphone available — Vito keeps trying": "Brak dostępnego mikrofonu — Vito próbuje dalej",
+"Keep listening after a pause": "Słuchaj dalej po przerwie",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "To, co powiesz w tym czasie, zostanie wklejone za dotychczasowym tekstem, więc możesz chwilę pomyśleć. 0 = wyłączone.",
 "Use the dashboard layout from the browser": "Użyj układu pulpitu z przeglądarki",
 "On — fillers out, punctuation fixed.": "Włączone — bez wypełniaczy, interpunkcja poprawiona.",
 "Off by default in the browser: the text arrives exactly as you said it.": "W przeglądarce domyślnie wyłączone: tekst trafia dokładnie tak, jak go wypowiedziałeś.",

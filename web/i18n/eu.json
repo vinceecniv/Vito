@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "Pausatuta: beste programa batek mikrofonoa erabiltzen du",
 "Wake word unavailable: {e}": "Aktibatzeko hitza ez dago erabilgarri: {e}",
 "No microphone available — Vito keeps trying": "Ez dago mikrofonorik erabilgarri; Vito saiatzen jarraitzen du",
+"Keep listening after a pause": "Jarraitu entzuten eten baten ondoren",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Denbora honetan esaten duzuna orain arteko testuaren atzean itsasten da, gelditu eta pentsatu ahal izateko. 0 = desaktibatuta.",
 "Use the dashboard layout from the browser": "Erabili nabigatzaileko panelaren antolaketa",
 "On — fillers out, punctuation fixed.": "Aktibatuta — betegarriak kenduta, puntuazioa zuzenduta.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Nabigatzailean desaktibatuta dago lehenespenez: testua esan bezala iristen da.",

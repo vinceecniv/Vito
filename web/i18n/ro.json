@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "În pauză: alt program folosește microfonul",
 "Wake word unavailable: {e}": "Cuvânt de activare indisponibil: {e}",
 "No microphone available — Vito keeps trying": "Niciun microfon disponibil — Vito continuă să încerce",
+"Keep listening after a pause": "Continuă să asculți după o pauză",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Ce spui în acest interval este lipit după textul de până acum, ca să te poți opri să te gândești. 0 = dezactivat.",
 "Use the dashboard layout from the browser": "Folosește aranjarea panoului din browser",
 "On — fillers out, punctuation fixed.": "Pornită — fără cuvinte de umplutură, punctuație corectată.",
 "Off by default in the browser: the text arrives exactly as you said it.": "Oprită implicit în browser: textul vine exact cum l-ai spus.",

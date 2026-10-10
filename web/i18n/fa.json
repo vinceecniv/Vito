@@ -1024,6 +1024,8 @@
 "Paused: another program is using the microphone": "متوقف: برنامهٔ دیگری از میکروفون استفاده می‌کند",
 "Wake word unavailable: {e}": "کلمهٔ بیدارباش در دسترس نیست: {e}",
 "No microphone available — Vito keeps trying": "میکروفونی در دسترس نیست — Vito به تلاش ادامه می‌دهد",
+"Keep listening after a pause": "پس از مکث هم گوش بده",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "هرچه در این مدت بگویید پس از متن قبلی چسبانده می‌شود، تا بتوانید برای فکر کردن مکث کنید. ۰ = خاموش.",
 "Use the dashboard layout from the browser": "استفاده از چیدمان داشبورد مرورگر",
 "On — fillers out, punctuation fixed.": "روشن — کلمات اضافه حذف، نشانه‌گذاری اصلاح‌شده.",
 "Off by default in the browser: the text arrives exactly as you said it.": "در مرورگر به‌طور پیش‌فرض خاموش است: متن دقیقاً همان‌طور که گفتید می‌رسد.",

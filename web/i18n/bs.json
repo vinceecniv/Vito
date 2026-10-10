@@ -1025,6 +1025,8 @@
 "Paused: another program is using the microphone": "Pauzirano: drugi program koristi mikrofon",
 "Wake word unavailable: {e}": "Riječ za buđenje nije dostupna: {e}",
 "No microphone available — Vito keeps trying": "Nema dostupnog mikrofona – Vito i dalje pokušava",
+"Keep listening after a pause": "Nastavi slušati nakon pauze",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "Ono što izgovorite u tom vremenu zalijepi se iza dosadašnjeg teksta, pa možete stati i razmisliti. 0 = isključeno.",
 "Use the dashboard layout from the browser": "Koristi raspored kontrolne table iz preglednika",
 "On — fillers out, punctuation fixed.": "Uključeno — poštapalice uklonjene, interpunkcija ispravljena.",
 "Off by default in the browser: the text arrives exactly as you said it.": "U pregledniku je podrazumijevano isključeno: tekst stiže tačno onako kako ste ga izgovorili.",

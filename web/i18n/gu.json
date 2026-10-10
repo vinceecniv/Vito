@@ -1035,6 +1035,8 @@
 "Paused: another program is using the microphone": "થોભાવેલું: બીજો પ્રોગ્રામ માઇક્રોફોન વાપરી રહ્યો છે",
 "Wake word unavailable: {e}": "જગાડવાનો શબ્દ ઉપલબ્ધ નથી: {e}",
 "No microphone available — Vito keeps trying": "કોઈ માઇક્રોફોન ઉપલબ્ધ નથી — Vito પ્રયાસ ચાલુ રાખે છે",
+"Keep listening after a pause": "વિરામ પછી પણ સાંભળતા રહો",
+"What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.": "આ સમયમાં તમે જે બોલો તે અત્યાર સુધીના લખાણ પછી ચોંટાડવામાં આવે છે, જેથી તમે થોભીને વિચારી શકો. 0 = બંધ.",
 "Use the dashboard layout from the browser": "બ્રાઉઝરનું ડૅશબોર્ડ લેઆઉટ વાપરો",
 "On — fillers out, punctuation fixed.": "ચાલુ — ભરતીના શબ્દો દૂર, વિરામચિહ્નો સુધારેલાં.",
 "Off by default in the browser: the text arrives exactly as you said it.": "બ્રાઉઝરમાં મૂળભૂત રીતે બંધ: લખાણ તમે બોલ્યા એવું જ આવે છે.",
