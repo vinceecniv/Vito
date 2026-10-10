@@ -252,3 +252,6 @@ func ActiveBackend(cfg config.Injection) string { return "sendinput" }
 
 // BackendVerified: with a single route there is nothing to be unsure about.
 func BackendVerified(cfg config.Injection) bool { return true }
+
+// HasHostWaylandLink is a Flatpak matter, so never on Windows.
+func HasHostWaylandLink() bool { return false }
