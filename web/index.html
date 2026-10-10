@@ -3542,7 +3542,9 @@ function positionToasts(){
   box.style.right = "100px"; const at100 = box.getBoundingClientRect().right;
   const perUnit = (at0 - at100) / 100; // measured px the anchor moves per 1px of `right`
   if (!perUnit) { box.style.right = prev || "22px"; return; }
-  box.style.right = Math.max(22, (at0 - target) / perUnit) + "px";
+  // Never flush against the window, but no 22px floor either: on a phone the
+  // cards sit 12-16px from the edge, and the toasts belong in line with them.
+  box.style.right = Math.max(8, (at0 - target) / perUnit) + "px";
 }
 addEventListener("resize", positionToasts);
 function toast(msg, type = "ok", ms = 3400) {
@@ -7790,6 +7792,7 @@ function celebrateNew(a){
   fresh.forEach((x, i) => setTimeout(() => achToast(x), i * 950));
 }
 function achToast(x){
+  positionToasts(); // it may be the first toast on this page
   const el = document.createElement("div");
   el.className = "toast ok ach-pop";
   el.innerHTML = `<span class="ach-pop-medal">${achMedalInner(x)}</span>` +
