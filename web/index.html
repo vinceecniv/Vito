@@ -790,6 +790,16 @@
   /* a slider with a triangle marker at a default position; --frac is the value's
      fraction along the range (e.g. 0.375 for 100% on a 0.7–1.5 zoom). */
   .slider-wrap { position:relative; max-width:320px; padding-bottom:9px; }
+  .wake-live { margin-top:14px; max-width:480px; }
+  .wake-live .wake-meter { max-width:320px; }
+  .wake-status { font-size:12.5px; color:var(--text3); margin-bottom:6px; display:flex; align-items:center; gap:7px; }
+  .wake-status::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--text3); opacity:.5; flex:none; }
+  .wake-status.on::before { background:#22c55e; opacity:1; box-shadow:0 0 0 3px color-mix(in srgb, #22c55e 25%, transparent); }
+  .wake-status.err { color:#e5484d; }
+  .wake-meter { position:relative; height:8px; border-radius:6px; background:color-mix(in srgb, var(--text3) 18%, transparent); overflow:hidden; }
+  .wake-bar { position:absolute; inset:0 auto 0 0; width:0; background:var(--grad); border-radius:6px; transition:width 120ms linear; }
+  .wake-bar.hit { background:#22c55e; }
+  .wake-thr { position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--text); opacity:.55; }
   .slider-mark { position:absolute; bottom:4px; left:calc(8px + (100% - 16px) * var(--frac, 0.5)); transform:translateX(-50%);
     width:0; height:0; pointer-events:none; border-left:4px solid transparent; border-right:4px solid transparent; border-bottom:5px solid var(--accent); }
   .reset-btn:hover { color:var(--accent); }
@@ -1924,6 +1934,24 @@
         <div class="card" data-sec="activation" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><span>Activation</span></h2>
           <div id="activation-body"></div>
+        </div>
+        <div class="card helper-only" data-sec="activation" id="wake-card" hidden>
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 11v2"/></svg><span>Wake word</span></h2>
+          <p class="act-note" style="margin:2px 0 12px;">Say the phrase and Vito starts listening — no key needed. Detection runs on this computer: nothing is recorded or sent until it hears the phrase. A dictation it starts ends by itself when you pause.</p>
+          <label class="tgl"><input type="checkbox" id="s-wake"><span class="tr"></span> Start dictating when I say the wake word</label>
+          <div id="wake-opts">
+            <label class="fld">Wake word</label>
+            <div class="rowflex" style="gap:8px; flex-wrap:wrap;" id="wake-phrases"></div>
+            <label class="fld">Sensitivity <span class="val" id="s-wakesensval"></span></label>
+            <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-wakesens" min="0.1" max="0.9" step="0.05"><span class="slider-mark" aria-hidden="true"></span></div>
+            <p class="act-note" style="margin:2px 0 0;">Higher reacts sooner, but wakes by mistake more often.</p>
+            <div class="wake-live">
+              <div class="wake-status" id="wake-status"></div>
+              <div class="wake-meter" title="Live score — the line marks where Vito wakes"><span class="wake-bar" id="wake-bar"></span><span class="wake-thr" id="wake-thr"></span></div>
+            </div>
+            <label class="tgl" id="wake-calls-row" style="margin-top:14px;"><input type="checkbox" id="s-wakecalls"><span class="tr"></span> Keep listening while another program uses the microphone</label>
+            <p class="act-note" id="wake-calls-note" style="margin:4px 0 0;">Off: Vito pauses during calls and meetings, where its name may come up without meaning it.</p>
+          </div>
         </div>
         <div class="card" data-sec="audio" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg><span>Audio</span></h2>
@@ -3209,6 +3237,21 @@ const TR = { nl: {
   "Vito puts its files in a folder called “Vito Sync” inside it.":"Vito zet zijn bestanden daarin in een map “Vito Sync”.",
   "Path of the folder":"Pad van de map",
   "Use this folder":"Deze map gebruiken",
+  "Wake word":"Wake word",
+  "Say the phrase and Vito starts listening — no key needed. Detection runs on this computer: nothing is recorded or sent until it hears the phrase. A dictation it starts ends by itself when you pause.":"Zeg de zin en Vito luistert — geen toets nodig. De herkenning draait op deze computer: er wordt niets opgenomen of verstuurd tot hij de zin hoort. Een dictaat dat zo begint, stopt vanzelf als je even pauzeert.",
+  "Start dictating when I say the wake word":"Begin met dicteren als ik het wake word zeg",
+  "Sensitivity":"Gevoeligheid",
+  "Higher reacts sooner, but wakes by mistake more often.":"Hoger reageert sneller, maar wordt vaker per ongeluk wakker.",
+  "Live score — the line marks where Vito wakes":"Live score — de streep is waar Vito wakker wordt",
+  "Keep listening while another program uses the microphone":"Blijf luisteren als een ander programma de microfoon gebruikt",
+  "Off: Vito pauses during calls and meetings, where its name may come up without meaning it.":"Uit: Vito pauzeert tijdens gesprekken en vergaderingen, waar zijn naam kan vallen zonder dat je hem bedoelt.",
+  "Hey Vito":"Hé Vito",
+  "Okay Vito":"Oké Vito",
+  "Listening for “{w}”":"Luistert naar “{w}”",
+  "Paused while you dictate":"Gepauzeerd terwijl je dicteert",
+  "Paused: another program is using the microphone":"Gepauzeerd: een ander programma gebruikt de microfoon",
+  "Wake word unavailable: {e}":"Wake word niet beschikbaar: {e}",
+  "No microphone available — Vito keeps trying":"Geen microfoon beschikbaar — Vito blijft het proberen",
   "Choose the folder your sync app keeps in sync":"Kies de map die je sync-app gelijk houdt",
   "No other computer here yet. Choose the same folder on your other computer to sync with it.":"Nog geen andere computer. Kies op je andere computer dezelfde map om ermee te synchroniseren.",
   "Stop syncing":"Stoppen met synchroniseren",
@@ -5232,6 +5275,11 @@ function handleEvent(e) {
       loadSettings().catch(()=>{});
     } else if (e.type === "privacy") {
       loadPrivacy();
+    } else if (e.type === "wake") {
+      if (e.text === "heard") wakeHeard(e.level || 0);
+      else loadWake();
+    } else if (e.type === "wake_score") {
+      wakeScore(e.level || 0);
     } else if (e.type === "mic_test") {
       const st = $("mt-status"), btn = $("mt-start");
       if (e.text === "recording") {
@@ -9219,6 +9267,7 @@ async function fillSettings() {
   renderAutoUpdateNote();
   $("s-autobackup").checked = !(cfg.backup && cfg.backup.auto === false);
   if ($("s-ptt")) $("s-ptt").checked = cfg.push_to_talk !== false; // default on
+  renderWakeSettings();
   if (typeof renderBackupAutoNote === "function") renderBackupAutoNote();
   renderDemoBanner();
   keytermsList = (cfg.dictionary.keyterms || []).slice();
@@ -9358,6 +9407,7 @@ function hkFieldHTML(kind, label){
 }
 function renderActivation(info){
   const body = $("activation-body"); if (!body) return;
+  wakeOS = info.os || ""; if ($("s-wake")) { syncWakeUI(); loadWake(); }
   hkIsMac = info.os === "darwin";
   // "supported" now also means "the portal bound our shortcut", so branch on the
   // platform rather than on that flag: only Windows and macOS capture keys
@@ -9417,6 +9467,90 @@ function renderActivation(info){
       });
   }
 }
+// ---- Wake word -------------------------------------------------------------
+// The phrases the app ships a model for (GET /api/wake), shown as tags.
+const WAKE_NAMES = { hey_vito: "Hey Vito", oke_vito: "Okay Vito" };
+let wakePhrases = ["hey_vito", "oke_vito"], wakeOS = "";
+function wakePhrase(){
+  const sel = document.querySelector("#wake-phrases .tag.sel");
+  return sel ? sel.dataset.phrase : ((cfg && cfg.wake_word && cfg.wake_word.phrase) || "hey_vito");
+}
+// sensitivity → the score at which Vito wakes (wakeword.Threshold)
+const wakeThreshold = (s) => (s > 0 && s < 1) ? 0.9 - 0.8 * s : 0.5;
+function renderWakeSettings(){
+  if (!$("s-wake") || !cfg) return;
+  const w = cfg.wake_word || {};
+  $("s-wake").checked = !!w.enabled;
+  $("s-wakesens").value = w.sensitivity || 0.5;
+  $("s-wakecalls").checked = !!w.keep_listening_in_calls;
+  const cur = w.phrase || "hey_vito";
+  $("wake-phrases").replaceChildren(...wakePhrases.map(p => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "tag" + (p === cur ? " sel" : ""); b.dataset.phrase = p;
+    b.textContent = t(WAKE_NAMES[p] || p);
+    b.onclick = () => {
+      $("wake-phrases").querySelectorAll(".tag").forEach(x => x.classList.toggle("sel", x === b));
+      autoSaveSettings();
+    };
+    return b;
+  }));
+  syncWakeUI();
+}
+function syncWakeUI(){
+  const on = $("s-wake").checked, sens = parseFloat($("s-wakesens").value) || 0.5;
+  $("wake-opts").style.opacity = on ? "" : ".55";
+  $("s-wakesensval").textContent = Math.round(sens * 100) + "%";
+  $("wake-thr").style.left = (wakeThreshold(sens) * 100) + "%";
+  // only Windows tells which other program has the microphone
+  const win = wakeOS === "windows";
+  $("wake-calls-row").hidden = !win; $("wake-calls-note").hidden = !win;
+}
+async function loadWake(){
+  if (STANDALONE || !$("wake-status")) return;
+  let st;
+  try { st = await api("/api/wake"); } catch { return; }
+  if (Array.isArray(st.phrases) && st.phrases.length && st.phrases.join() !== wakePhrases.join()) {
+    wakePhrases = st.phrases; renderWakeSettings();
+  }
+  const el = $("wake-status");
+  const phrase = t(WAKE_NAMES[wakePhrase()] || wakePhrase());
+  const text = {
+    listening: t("Listening for “{w}”").replace("{w}", phrase),
+    paused: t("Paused while you dictate"),
+    paused_call: t("Paused: another program is using the microphone"),
+    error: /open microphone/.test(st.error || "") ? t("No microphone available — Vito keeps trying")
+      : t("Wake word unavailable: {e}").replace("{e}", st.error || ""),
+  }[st.status] || t("Off");
+  el.textContent = text;
+  el.classList.toggle("on", st.status === "listening");
+  el.classList.toggle("err", st.status === "error");
+}
+let wakeHitTimer = 0;
+function wakeScore(level){
+  const bar = $("wake-bar"); if (!bar || bar.classList.contains("hit")) return;
+  bar.style.width = Math.min(100, level) + "%";
+}
+function wakeHeard(level){
+  const bar = $("wake-bar");
+  if (bar) {
+    bar.style.width = Math.min(100, Math.max(level, 8)) + "%"; bar.classList.add("hit");
+    clearTimeout(wakeHitTimer); wakeHitTimer = setTimeout(() => bar.classList.remove("hit"), 1500);
+  }
+}
+// The live meter costs a WebSocket message every 200 ms, so the daemon only
+// sends it for a while after being asked; ask again while the card is on screen.
+setInterval(() => {
+  const card = $("wake-card");
+  if (STANDALONE || !card || card.hidden || document.hidden || !$("s-wake").checked) return;
+  api("/api/wake/meter", { method: "POST" }).catch(() => {});
+}, 20000);
+if ($("s-wake")) {
+  ["s-wake", "s-wakecalls"].forEach(id => $(id).addEventListener("change", () => { syncWakeUI(); autoSaveSettings(); }));
+  $("s-wakesens").addEventListener("input", syncWakeUI);
+  $("s-wakesens").addEventListener("change", autoSaveSettings);
+  $("s-wake").addEventListener("change", () => { if ($("s-wake").checked) api("/api/wake/meter", { method: "POST" }).catch(() => {}); });
+}
+
 // Map a KeyboardEvent.code to Vito's hotkey vocabulary; null for modifier keys.
 function hkKeyFromCode(code){
   if (/^Key([A-Z])$/.test(code)) return code.slice(3).toLowerCase();
@@ -9758,6 +9892,12 @@ function collectSettings() {
     update: Object.assign(cfg.update || {}, { check: $("s-updatecheck").checked, auto: $("s-updateauto").checked }),
     backup: Object.assign(cfg.backup || {}, { auto: $("s-autobackup").checked }),
     push_to_talk: $("s-ptt") ? $("s-ptt").checked : cfg.push_to_talk,
+    wake_word: Object.assign(cfg.wake_word || {}, {
+      enabled: $("s-wake").checked,
+      phrase: wakePhrase(),
+      sensitivity: parseFloat($("s-wakesens").value) || 0.5,
+      keep_listening_in_calls: $("s-wakecalls").checked,
+    }),
     demo: $("s-demo").checked,
   };
 }

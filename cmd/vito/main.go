@@ -187,6 +187,7 @@ func serve() error {
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)
 	notifyUserSignals(d, log)
 	hk.Start(cfg.HotkeyWindows, cfg.HotkeyCancelWindows)
+	go d.SyncWake()
 
 	if cfg.Demo {
 		log.Info("demo mode: serving sample data; your own history and dictionary are hidden, not changed")

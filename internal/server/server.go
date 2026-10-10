@@ -146,6 +146,8 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("PUT /api/ui/dashboard", s.auth(s.handlePutDashboard))
 	mux.HandleFunc("GET /api/hotkey", s.auth(s.handleGetHotkey))
 	mux.HandleFunc("POST /api/accessibility", s.auth(s.handleRequestAccessibility))
+	mux.HandleFunc("GET /api/wake", s.auth(s.handleWake))
+	mux.HandleFunc("POST /api/wake/meter", s.auth(s.handleWakeMeter))
 	mux.HandleFunc("POST /api/hotkey/configure", s.auth(s.handleConfigureHotkey))
 	mux.HandleFunc("POST /api/hotkey/reregister", s.auth(s.handleReregisterHotkey))
 	mux.HandleFunc("POST /api/test-key", s.auth(s.handleTestKey))
@@ -695,6 +697,18 @@ func (s *Server) handleRequestAccessibility(w http.ResponseWriter, r *http.Reque
 		"ok":      true,
 		"granted": inject.RequestAccessibility(),
 	})
+}
+
+// handleWake reports the wake word listener's state and the phrases on offer.
+func (s *Server) handleWake(w http.ResponseWriter, r *http.Request) {
+	s.writeJSON(w, http.StatusOK, s.d.Wake())
+}
+
+// handleWakeMeter streams live wake word scores (as "wake_score" events) for
+// the next 30 seconds, for the meter on the settings page.
+func (s *Server) handleWakeMeter(w http.ResponseWriter, r *http.Request) {
+	s.d.WakeMeter()
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
 // handleConfigureHotkey asks the desktop to open its shortcut editor for Vito.

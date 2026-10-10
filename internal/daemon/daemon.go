@@ -178,6 +178,8 @@ type Daemon struct {
 	// whistle is the small built-in speech model (provider "whistle"): runs
 	// in-process per clip, so there is nothing to start, only to download.
 	whistle *whistle.Manager
+
+	wake wakeState // the wake word listener (wake.go)
 }
 
 // LocalSTT exposes the managed local engine to the HTTP layer.
@@ -331,6 +333,7 @@ func (d *Daemon) restoreMedia() {
 // Shutdown restores any ducked/paused media and cancels an in-flight recording,
 // so the daemon never exits leaving system audio suppressed. Call before exit.
 func (d *Daemon) Shutdown() {
+	d.wake.l.Stop()
 	_ = d.Cancel()   // restores + tears down when recording
 	d.restoreMedia() // catch the brief stop→finish window, or any leftover
 	if d.local != nil {
@@ -382,6 +385,7 @@ func New(cfg *config.Config, log *slog.Logger, audioCtx *audio.Context, hist *hi
 	d.whistle = whistle.NewManager(log, func(st whistle.Status) { d.emit(Event{Type: "whistle", Whistle: &st}) })
 	stt.WhistleEngine = d.whistle.Engine
 	d.local.SetDesired(cfg.STT.Provider == "local", cfg.STT.LocalVariant)
+	d.wakeInit()
 	go d.retentionLoop()
 	return d
 }
@@ -539,6 +543,7 @@ func (d *Daemon) UpdateConfig(cfg *config.Config) {
 	if d.local != nil {
 		d.local.SetDesired(cfg.STT.Provider == "local", cfg.STT.LocalVariant)
 	}
+	go d.SyncWake()
 	d.log.Info("configuration updated")
 	d.emit(Event{Type: "config"})
 }
@@ -588,6 +593,9 @@ func (d *Daemon) Status() Status {
 }
 
 func (d *Daemon) emit(e Event) {
+	if e.Type == "state" {
+		go d.SyncWake() // the listener steps aside while the microphone is in use
+	}
 	if d.OnEvent != nil {
 		d.OnEvent(e)
 	}
@@ -629,7 +637,12 @@ func (d *Daemon) RequestPip() { d.emit(Event{Type: "pip"}) }
 
 func (d *Daemon) Start() error { return d.start() }
 
-func (d *Daemon) start() error {
+func (d *Daemon) start() error { return d.startWith(false) }
+
+// startWith starts a dictation; byWake marks one the wake word started, which
+// has no key to end it: it stops at the first pause, and is dropped soon when
+// nothing is said.
+func (d *Daemon) startWith(byWake bool) error {
 	// A fresh dictation that isn't carrying an armed command clears the leftover
 	// command indicator (kept visible through the command's own dictation above).
 	d.cmdMu.Lock()
@@ -651,6 +664,12 @@ func (d *Daemon) start() error {
 	d.status.LastError = ""
 	cfg := *d.cfg // session snapshot: settings changes apply per-dictation
 	d.mu.Unlock()
+	if byWake {
+		cfg.Audio.AutoStop = true
+		if t := cfg.Audio.SilenceTimeoutSec; t <= 0 || t > wakeSilenceSec {
+			cfg.Audio.SilenceTimeoutSec = wakeSilenceSec
+		}
+	}
 	d.emit(Event{Type: "state", State: StateRecording})
 	d.stopPlayback() // never let the microphone record a recording we're playing
 
@@ -922,10 +941,12 @@ func (d *Daemon) TestMic(seconds int) error {
 	d.micTesting = true
 	cfg := *d.cfg
 	d.mu.Unlock()
+	d.SyncWake() // let go of the microphone for the test
 	defer func() {
 		d.mu.Lock()
 		d.micTesting = false
 		d.mu.Unlock()
+		go d.SyncWake()
 	}()
 
 	d.emit(Event{Type: "mic_test", Text: "recording"})
