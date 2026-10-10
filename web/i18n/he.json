@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "סגרת את תיבת הדו-שיח של קיצור המקשים של שולחן העבודה שלך, כך שעדיין לא שויך קיצור מקשים.",
 "Your desktop didn't bind the shortcut.": "שולחן העבודה שלך לא שייך את קיצור המקשים.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "שולחן העבודה שלך ({desktop}) אינו יכול להעביר קיצורי מקשים גלובליים לאפליקציות, ולכן Vito אינו מבקש ממנו קיצור. במקום זאת, שייך את הפקודות שלהלן למקשים ב-compositor שלך.",
-"your desktop": "שולחן העבודה שלך"
+"your desktop": "שולחן העבודה שלך",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito עדיין אינו יכול ללחוץ על מקשים בשולחן עבודה זה מתוך ה-Flatpak, ולכן ההכתבות שלך מגיעות ללוח הגזירים. שורה אחת בהפעלה של שולחן העבודה שלך תאפשר לו להקליד — הגדרות Linux מראות איך.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "החיבור קיים, אבל הוא שייך להפעלה קודמת. הרץ את הפקודה שוב.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "בשולחן עבודה זה אין פורטל RemoteDesktop, והחיבור של ה-Flatpak עצמו אליו אינו יכול ללחוץ על מקשים. תן ל-Vito חיבור ישיר — הרץ זאת פעם אחת:",
+"Then add this to {file}, so it is there after every login:": "לאחר מכן הוסף זאת ל-{file}, כדי שזה יהיה קיים אחרי כל כניסה:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "לאחר מכן הוסף את אותה פקודה להפעלה של שולחן העבודה שלך, כדי שזה יהיה קיים אחרי כל כניסה.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "מעדיף בלי שום הגדרה? ה-AppImage מקליד בשולחן עבודה זה מיד, בלי הכנות.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito מקליד דרך החיבור הישיר לשולחן העבודה שלך שהגדרת."
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

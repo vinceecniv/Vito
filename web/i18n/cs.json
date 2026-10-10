@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Zavřeli jste dialog zkratek svého desktopu, takže zatím není navázána žádná zkratka.",
 "Your desktop didn't bind the shortcut.": "Váš desktop zkratku nenavázal.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Váš desktop ({desktop}) neumí předávat globální zkratky aplikacím, takže o ni Vito nežádá. Místo toho navažte příkazy níže na klávesy ve svém kompozitoru.",
-"your desktop": "váš desktop"
+"your desktop": "váš desktop",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito zatím nemůže v tomto desktopovém prostředí z Flatpaku mačkat klávesy, takže vaše diktáty putují do schránky. Jeden řádek v automatickém spuštění vašeho desktopu mu umožní psát — najdete ho v nastavení pro Linux.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Spojení existuje, ale patří k dřívější relaci. Spusťte příkaz znovu.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Tento desktop nemá portál RemoteDesktop a vlastní spojení Flatpaku s ním nemůže mačkat klávesy. Dejte Vito přímé spojení — jednou spusťte tento příkaz:",
+"Then add this to {file}, so it is there after every login:": "Pak tohle přidejte do {file}, aby bylo k dispozici po každém přihlášení:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Pak stejný příkaz přidejte do automatického spuštění svého desktopu, aby bylo spojení k dispozici po každém přihlášení.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Nechcete nic nastavovat? AppImage na tomto desktopu píše hned bez dalšího nastavení.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito píše přes přímé spojení s vaším desktopem, které jste nastavili."
 },
 "help": {
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",

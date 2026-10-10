@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Ulifunga kidirisha cha njia za mkato cha eneo-kazi lako, kwa hivyo bado hakuna njia ya mkato iliyounganishwa.",
 "Your desktop didn't bind the shortcut.": "Eneo-kazi lako halikuunganisha njia ya mkato.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Eneo-kazi lako ({desktop}) haliwezi kupitisha njia za mkato za kimataifa kwa programu, kwa hivyo Vito haiombi njia ya mkato. Badala yake, unganisha amri zilizo hapa chini na vitufe katika compositor yako.",
-"your desktop": "eneo-kazi lako"
+"your desktop": "eneo-kazi lako",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito bado haiwezi kubonyeza vitufe kwenye eneo-kazi hili ikiwa ndani ya Flatpak, hivyo maandishi yako huenda kwenye ubao wa kunakili. Mstari mmoja katika uanzishaji wa eneo-kazi lako unairuhusu kuandika — mipangilio ya Linux inaonyesha jinsi.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Muunganisho upo, lakini ni wa kipindi cha awali. Endesha amri tena.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Eneo-kazi hili halina lango la RemoteDesktop, na muunganisho wa Flatpak wenyewe kwake hauwezi kubonyeza vitufe. Ipe Vito muunganisho wa moja kwa moja — endesha hii mara moja:",
+"Then add this to {file}, so it is there after every login:": "Kisha ongeza hii kwenye {file}, ili iwepo baada ya kila kuingia:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Kisha ongeza amri hiyo hiyo kwenye uanzishaji wa eneo-kazi lako, ili iwepo baada ya kila kuingia.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Hupendi kuweka chochote? AppImage huandika kwenye eneo-kazi hili moja kwa moja bila mipangilio yoyote.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito huandika kupitia muunganisho wa moja kwa moja na eneo-kazi lako ulioweka."
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

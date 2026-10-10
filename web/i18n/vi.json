@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Bạn đã đóng hộp thoại phím tắt của desktop, nên chưa có phím tắt nào được gán.",
 "Your desktop didn't bind the shortcut.": "Desktop của bạn không gán phím tắt.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Desktop của bạn ({desktop}) không thể chuyển phím tắt toàn cục cho ứng dụng, nên Vito không yêu cầu nó cấp phím tắt. Thay vào đó, hãy gán các lệnh bên dưới cho phím trong compositor của bạn.",
-"your desktop": "desktop của bạn"
+"your desktop": "desktop của bạn",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Từ bên trong Flatpak, Vito chưa thể nhấn phím trên desktop này, nên các bản đọc của bạn được đưa vào bộ nhớ tạm. Chỉ cần thêm một dòng vào phần khởi động của desktop là Vito gõ được — phần cài đặt Linux sẽ chỉ cho bạn.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Kết nối đã có, nhưng thuộc về một phiên trước đó. Hãy chạy lại lệnh.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Desktop này không có portal RemoteDesktop, và kết nối riêng của Flatpak tới desktop không nhấn phím được. Hãy cho Vito một kết nối trực tiếp — chạy lệnh này một lần:",
+"Then add this to {file}, so it is there after every login:": "Sau đó thêm dòng này vào {file}, để nó luôn có sau mỗi lần đăng nhập:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Sau đó thêm cùng lệnh này vào phần khởi động của desktop, để nó luôn có sau mỗi lần đăng nhập.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Không muốn thiết lập gì cả? Bản AppImage gõ được ngay trên desktop này.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito gõ văn bản qua kết nối trực tiếp tới desktop mà bạn đã thiết lập."
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",

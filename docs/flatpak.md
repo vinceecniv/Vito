@@ -55,8 +55,8 @@ No `--device=all`, no uinput, no broad filesystem access. Text delivery goes
 through the RemoteDesktop portal (GNOME, KDE) or the bundled `wtype` over the
 virtual-keyboard protocol (niri, wlroots); the hotkey through GlobalShortcuts.
 
-**The sandbox can only type where the RemoteDesktop portal exists.** This turned
-out to be a stronger limit than expected, and it corrects an assumption made
+**Without the RemoteDesktop portal, the sandbox needs one line of help to type.**
+This turned out to be a stronger limit than expected, and it corrects an assumption made
 earlier in this file: `--socket=wayland` does *not* hand the app the compositor's
 own socket. Flatpak passes a managed one, and the virtual-keyboard protocol is
 filtered out of it — deliberately, since injecting input into other windows is
@@ -68,7 +68,7 @@ The practical shape of that:
 | Compositor | Flatpak | AppImage / host build |
 |---|---|---|
 | GNOME, KDE (RemoteDesktop portal) | types normally | types normally |
-| niri, wlroots (no such portal) | **clipboard only** — you press Ctrl+V | types via wtype |
+| niri, wlroots (no such portal) | clipboard only — **types via wtype once the link below is made** | types via wtype |
 
 On a clipboard-only desktop Vito still records, transcribes, cleans up and runs
 Vito Assist; it just leaves the result on the clipboard. Settings → Linux says so
@@ -101,11 +101,48 @@ owns a symlink at, so it is shadowed and never appears. Adding
 `--nosocket=wayland` does not free the path either: the symlink stays, now
 dangling. Both were tried.
 
-So the managed socket is structural, not a setting — which means this cannot be
-fixed from the manifest either, since a manifest `finish-args` entry performs
-the same grant that was just shown to be inert. Where the RemoteDesktop portal
-is absent, a sandboxed Vito cannot type. That is the sandbox working as
-designed, and the AppImage is the answer.
+So the managed socket is structural, not a setting: the real socket cannot be
+granted *by its own name*, from an override or the manifest alike.
+
+**Under another name it can.** A Unix socket is reached through any hard link
+to it, and a link at a path Flatpak has no symlink of its own at is not
+shadowed. Connecting to it bypasses the filter, which lives only on the socket
+Flatpak creates. One line, run on the host:
+
+```sh
+mkdir -p "$XDG_RUNTIME_DIR/vito" && ln -f "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/vito/wayland"
+```
+
+The manifest grants `--filesystem=xdg-run/vito:create`, and wtype connects to
+`$XDG_RUNTIME_DIR/vito/wayland` (an absolute `WAYLAND_DISPLAY`, which libwayland
+accepts) whenever it exists — only wtype; the clipboard tools keep the managed
+socket. Three details carry it:
+
+* **The directory, not the socket, is granted.** A bind mount of the socket
+  file would pin the inode it found at start; the directory shows a link made
+  later in a sandbox that is already running.
+* **`:create`** makes that directory exist whichever starts first at login,
+  Vito or the compositor's startup line — without it, a missing directory is
+  simply not mounted and the link would only count after a restart.
+* **The probe is keyed on the link's inode**, so a link made or remade (a new
+  session has a new socket) is probed again without restarting Vito. A link
+  left over from an earlier session is reported (`wayland_link` while the
+  backend is still `clipboard`) so the settings page can say to run it again.
+
+The line belongs in the compositor's startup, since every session has a new
+socket: `spawn-at-startup` in niri, `exec-once` in Hyprland, `exec` in sway. The
+Linux settings show the right one for the running desktop, and the stuck-banner
+points there. Measured on niri 26.04 (Fedora 44): the probe goes from
+*"Compositor does not support the virtual keyboard protocol"* to success, and
+`TestFlatpakDirectWayland` (in `internal/inject`, run inside the sandbox)
+resolves to `wayland`. Hyprland and sway implement the same protocol and should
+behave alike, but have not been tried.
+
+What it costs is honest to state: the app gets the compositor's unfiltered
+socket, so the sandbox no longer keeps it from sending input to other windows —
+which is exactly the capability typing needs, and no more than the AppImage has.
+On GNOME and KDE none of this applies; the portal does the job with a
+permission dialog instead.
 
 Bundled: `wl-clipboard` (the clipboard is used by paste mode, clipboard-only mode
 and Vito Assist's clipboard commands) and `wtype`.

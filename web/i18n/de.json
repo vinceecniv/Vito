@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Du hast den Tastenkürzel-Dialog deiner Desktop-Umgebung geschlossen, daher ist noch kein Tastenkürzel belegt.",
 "Your desktop didn't bind the shortcut.": "Deine Desktop-Umgebung hat das Tastenkürzel nicht belegt.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Deine Desktop-Umgebung ({desktop}) kann globale Tastenkürzel nicht an Apps weitergeben, daher fragt Vito sie nicht danach. Binde stattdessen die Befehle unten in deinem Compositor an Tasten.",
-"your desktop": "deine Desktop-Umgebung"
+"your desktop": "deine Desktop-Umgebung",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito kann auf dieser Desktop-Umgebung aus dem Flatpak heraus noch keine Tasten drücken, deshalb landen deine Diktate in der Zwischenablage. Eine Zeile im Autostart deiner Desktop-Umgebung genügt, damit es tippen kann — die Linux-Einstellungen zeigen dir, wie.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Die Verbindung ist da, gehört aber zu einer früheren Sitzung. Führe den Befehl noch einmal aus.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Diese Desktop-Umgebung hat kein RemoteDesktop-Portal, und die eigene Verbindung des Flatpaks zu ihr kann keine Tasten drücken. Gib Vito eine direkte Verbindung — führe das einmal aus:",
+"Then add this to {file}, so it is there after every login:": "Füge das dann zu {file} hinzu, damit es nach jeder Anmeldung da ist:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Füge denselben Befehl dann zum Autostart deiner Desktop-Umgebung hinzu, damit er nach jeder Anmeldung da ist.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Lieber gar nichts einrichten? Das AppImage tippt auf dieser Desktop-Umgebung sofort ohne Einrichtung.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito tippt über die direkte Verbindung zu deiner Desktop-Umgebung, die du eingerichtet hast."
 },
 "help": {
 "theme": "Hell, dunkel oder automatisch — automatisch folgt der Hell/Dunkel-Einstellung deines Systems.",

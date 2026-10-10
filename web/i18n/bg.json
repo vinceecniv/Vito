@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Затворихте диалога за клавишни комбинации на вашата работна среда, така че все още няма зададена комбинация.",
 "Your desktop didn't bind the shortcut.": "Вашата работна среда не зададе клавишната комбинация.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Вашата работна среда ({desktop}) не може да предава глобални клавишни комбинации на приложенията, затова Vito не я иска. Вместо това свържете командите по-долу с клавиши във вашия compositor.",
-"your desktop": "вашата работна среда"
+"your desktop": "вашата работна среда",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito все още не може да натиска клавиши в тази работна среда отвътре на Flatpak, затова диктовките ви отиват в клипборда. Един ред в автоматичното стартиране на работната ви среда му позволява да пише — ще го намерите в настройките за Linux.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Връзката съществува, но принадлежи на по-ранна сесия. Изпълнете командата отново.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Тази работна среда няма портал RemoteDesktop, а собствената връзка на Flatpak с нея не може да натиска клавиши. Дайте на Vito директна връзка — изпълнете това веднъж:",
+"Then add this to {file}, so it is there after every login:": "След това добавете това към {file}, за да е налице след всяко влизане:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "След това добавете същата команда към автоматичното стартиране на работната си среда, за да е налице след всяко влизане.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Предпочитате изобщо без настройване? AppImage пише в тази работна среда веднага, без допълнителни стъпки.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito пише чрез директната връзка с работната ви среда, която сте настроили."
 },
 "help": {
 "theme": "Светла, тъмна или автоматична — автоматичната следва светлия/тъмния режим на системата ви.",

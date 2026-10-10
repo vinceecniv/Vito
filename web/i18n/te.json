@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "మీరు మీ డెస్క్‌టాప్ షార్ట్‌కట్ డైలాగ్‌ను మూసివేశారు, కాబట్టి ఇంకా ఏ షార్ట్‌కట్ కేటాయించబడలేదు.",
 "Your desktop didn't bind the shortcut.": "మీ డెస్క్‌టాప్ షార్ట్‌కట్‌ను కేటాయించలేదు.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "మీ డెస్క్‌టాప్ ({desktop}) గ్లోబల్ షార్ట్‌కట్‌లను యాప్‌లకు అందించలేదు, కాబట్టి Vito దానిని షార్ట్‌కట్ అడగదు. బదులుగా కింది కమాండ్‌లను మీ compositor లో కీలకు కేటాయించండి.",
-"your desktop": "మీ డెస్క్‌టాప్"
+"your desktop": "మీ డెస్క్‌టాప్",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "ఈ డెస్క్‌టాప్‌లో Flatpak లోపలి నుండి Vito ఇంకా కీలను నొక్కలేదు, కాబట్టి మీ డిక్టేషన్‌లు క్లిప్‌బోర్డ్‌కు వెళ్తాయి. మీ డెస్క్‌టాప్ స్టార్టప్‌లో ఒక్క లైన్ జోడిస్తే అది టైప్ చేయగలదు — Linux సెట్టింగ్‌లలో అది చూపబడింది.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "కనెక్షన్ ఉంది, కానీ అది ఇంతకు ముందటి సెషన్‌కు చెందినది. కమాండ్‌ను మళ్ళీ రన్ చేయండి.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "ఈ డెస్క్‌టాప్‌లో RemoteDesktop పోర్టల్ లేదు, మరియు Flatpak యొక్క స్వంత కనెక్షన్ కీలను నొక్కలేదు. Vito కి నేరుగా ఒక కనెక్షన్ ఇవ్వండి — దీన్ని ఒక్కసారి రన్ చేయండి:",
+"Then add this to {file}, so it is there after every login:": "తర్వాత దీన్ని {file} కు జోడించండి, తద్వారా ప్రతి లాగిన్ తర్వాత అది అందుబాటులో ఉంటుంది:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "తర్వాత అదే కమాండ్‌ను మీ డెస్క్‌టాప్ స్టార్టప్‌కు జోడించండి, తద్వారా ప్రతి లాగిన్ తర్వాత అది అందుబాటులో ఉంటుంది.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "అసలు ఎలాంటి సెటప్ వద్దనుకుంటున్నారా? ఈ డెస్క్‌టాప్‌లో AppImage ఎలాంటి సెటప్ లేకుండానే టైప్ చేస్తుంది.",
+"Vito types through the direct connection to your desktop that you set up.": "మీరు సెటప్ చేసిన మీ డెస్క్‌టాప్‌తో నేరుగా ఉన్న కనెక్షన్ ద్వారా Vito టైప్ చేస్తుంది."
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

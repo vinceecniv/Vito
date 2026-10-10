@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Sulgesid oma töölaua kiirklahvidialoogi, seega pole veel ühtegi kiirklahvi seotud.",
 "Your desktop didn't bind the shortcut.": "Su töölaud ei sidunud kiirklahvi.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Su töölaud ({desktop}) ei saa globaalseid kiirklahve rakendustele edasi anda, seega Vito ei küsi sellelt kiirklahvi. Seo selle asemel allolevad käsud klahvidega oma kompositoris.",
-"your desktop": "su töölaud"
+"your desktop": "su töölaud",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito ei saa Flatpaki seest sellel töölaual veel klahve vajutada, seega lähevad su dikteeringud lõikelauale. Üks rida su töölaua käivitusseadetes laseb tal tippida — Linuxi seaded näitavad, kuidas.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Ühendus on olemas, kuid see kuulub varasemale seansile. Käivita käsk uuesti.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Sellel töölaual pole RemoteDesktopi portaali ja Flatpaki enda ühendus töölauaga ei saa klahve vajutada. Anna Vitole otseühendus — käivita see üks kord:",
+"Then add this to {file}, so it is there after every login:": "Seejärel lisa see faili {file}, et see oleks olemas pärast iga sisselogimist:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Seejärel lisa sama käsk oma töölaua käivitusseadetesse, et see oleks olemas pärast iga sisselogimist.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Eelistad üldse mitte midagi seadistada? AppImage tipib sellel töölaual kohe ilma lisaseadistuseta.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito tipib sinu seadistatud otseühenduse kaudu su töölauale."
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

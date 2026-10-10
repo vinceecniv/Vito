@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Ви закрили діалог скорочень вашого робочого середовища, тож скорочення ще не призначено.",
 "Your desktop didn't bind the shortcut.": "Ваше робоче середовище не призначило скорочення.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Ваше робоче середовище ({desktop}) не може передавати глобальні скорочення застосункам, тому Vito не просить його про це. Натомість призначте команди нижче клавішам у вашому композиторі.",
-"your desktop": "ваше робоче середовище"
+"your desktop": "ваше робоче середовище",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito поки що не може натискати клавіші в цьому робочому середовищі зсередини Flatpak, тому ваші диктування потрапляють у буфер обміну. Один рядок в автозапуску вашого робочого середовища дасть йому змогу друкувати — його показано в налаштуваннях Linux.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "З’єднання є, але воно належить до попереднього сеансу. Виконайте команду ще раз.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "У цьому робочому середовищі немає порталу RemoteDesktop, а власне з’єднання Flatpak із ним не вміє натискати клавіші. Дайте Vito пряме з’єднання — виконайте це один раз:",
+"Then add this to {file}, so it is there after every login:": "Потім додайте це до {file}, щоб воно було на місці після кожного входу в систему:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Потім додайте ту саму команду до автозапуску вашого робочого середовища, щоб вона спрацьовувала після кожного входу в систему.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Не хочете нічого налаштовувати? AppImage друкує в цьому робочому середовищі одразу, без жодних налаштувань.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito друкує через пряме з’єднання з вашим робочим середовищем, яке ви налаштували."
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",

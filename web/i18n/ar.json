@@ -1048,7 +1048,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "أغلقت مربع حوار الاختصارات في سطح مكتبك، لذا لم يُربط أي اختصار بعد.",
 "Your desktop didn't bind the shortcut.": "لم يربط سطح مكتبك الاختصار.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "سطح مكتبك ({desktop}) لا يستطيع تمرير الاختصارات العامة إلى التطبيقات، لذا لا يطلب Vito منه اختصارًا. بدلًا من ذلك، اربط الأوامر أدناه بمفاتيح في مُركّبك (compositor).",
-"your desktop": "سطح مكتبك"
+"your desktop": "سطح مكتبك",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "لا يستطيع Vito بعدُ ضغط المفاتيح على سطح المكتب هذا من داخل حزمة Flatpak، لذا تذهب إملاءاتك إلى الحافظة. سطر واحد في أوامر بدء تشغيل سطح مكتبك يتيح له الكتابة — تجده في إعدادات Linux.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "الاتصال موجود، لكنه يعود إلى جلسة سابقة. شغّل الأمر مرة أخرى.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "لا يحتوي سطح المكتب هذا على بوابة RemoteDesktop، واتصال حزمة Flatpak الخاص به لا يستطيع ضغط المفاتيح. امنح Vito اتصالًا مباشرًا — شغّل هذا مرة واحدة:",
+"Then add this to {file}, so it is there after every login:": "ثم أضف هذا إلى {file}، ليبقى موجودًا بعد كل تسجيل دخول:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "ثم أضف الأمر نفسه إلى أوامر بدء تشغيل سطح مكتبك، ليبقى موجودًا بعد كل تسجيل دخول.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "تفضّل عدم الإعداد إطلاقًا؟ إصدار AppImage يكتب على سطح المكتب هذا مباشرةً دون أي إعداد.",
+"Vito types through the direct connection to your desktop that you set up.": "يكتب Vito عبر الاتصال المباشر بسطح مكتبك الذي أعددته."
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

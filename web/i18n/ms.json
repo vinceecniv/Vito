@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Anda menutup dialog pintasan desktop anda, jadi belum ada pintasan yang diikat.",
 "Your desktop didn't bind the shortcut.": "Desktop anda tidak mengikat pintasan itu.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Desktop anda ({desktop}) tidak dapat menyalurkan pintasan global kepada aplikasi, jadi Vito tidak memintanya. Sebaliknya, ikat arahan di bawah kepada kekunci dalam compositor anda.",
-"your desktop": "desktop anda"
+"your desktop": "desktop anda",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito belum boleh menekan kekunci pada desktop ini dari dalam Flatpak, jadi dikte anda pergi ke papan klip. Satu baris dalam permulaan desktop anda membolehkannya menaip — tetapan Linux menunjukkan caranya.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Sambungan itu ada, tetapi ia milik sesi yang lebih awal. Jalankan arahan itu sekali lagi.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Desktop ini tiada portal RemoteDesktop, dan sambungan Flatpak sendiri kepadanya tidak boleh menekan kekunci. Berikan Vito sambungan terus — jalankan ini sekali:",
+"Then add this to {file}, so it is there after every login:": "Kemudian tambahkan ini ke {file}, supaya ia sentiasa ada selepas setiap log masuk:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Kemudian tambahkan arahan yang sama ke permulaan desktop anda, supaya ia sentiasa ada selepas setiap log masuk.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Mahu tanpa sebarang persediaan? AppImage boleh menaip pada desktop ini terus tanpa persediaan.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito menaip melalui sambungan terus ke desktop anda yang telah anda sediakan."
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",

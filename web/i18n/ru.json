@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Вы закрыли диалог сочетаний клавиш вашего окружения рабочего стола, поэтому сочетание пока не назначено.",
 "Your desktop didn't bind the shortcut.": "Ваше окружение рабочего стола не назначило сочетание клавиш.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Ваше окружение рабочего стола ({desktop}) не умеет передавать глобальные сочетания клавиш приложениям, поэтому Vito его об этом не просит. Вместо этого назначьте команды ниже на клавиши в вашем композиторе.",
-"your desktop": "ваше окружение рабочего стола"
+"your desktop": "ваше окружение рабочего стола",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Внутри Flatpak Vito пока не может нажимать клавиши в этом окружении рабочего стола, поэтому ваши диктовки попадают в буфер обмена. Одна строка в автозапуске вашего окружения позволит ему вводить текст — она показана в настройках Linux.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Подключение есть, но оно осталось от предыдущего сеанса. Выполните команду ещё раз.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "В этом окружении рабочего стола нет портала RemoteDesktop, а собственное подключение Flatpak к нему не умеет нажимать клавиши. Дайте Vito прямое подключение — выполните один раз:",
+"Then add this to {file}, so it is there after every login:": "Затем добавьте это в {file}, чтобы оно появлялось после каждого входа в систему:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Затем добавьте ту же команду в автозапуск вашего окружения рабочего стола, чтобы оно появлялось после каждого входа в систему.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Не хотите ничего настраивать? Версия AppImage вводит текст в этом окружении сразу, без настройки.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito вводит текст через настроенное вами прямое подключение к окружению рабочего стола."
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",

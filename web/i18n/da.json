@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Du lukkede dit skrivebords genvejsdialog, så der er endnu ikke bundet nogen genvej.",
 "Your desktop didn't bind the shortcut.": "Dit skrivebord bandt ikke genvejen.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Dit skrivebord ({desktop}) kan ikke videregive globale genveje til apps, så Vito beder ikke om en. Bind i stedet kommandoerne nedenfor til taster i din compositor.",
-"your desktop": "dit skrivebord"
+"your desktop": "dit skrivebord",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito kan endnu ikke trykke på taster på dette skrivebord inde fra Flatpak'en, så dine diktater havner på udklipsholderen. Én linje i dit skrivebords opstart lader den skrive — Linux-indstillingerne viser hvordan.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Forbindelsen findes, men den hører til en tidligere session. Kør kommandoen igen.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Dette skrivebord har ingen RemoteDesktop-portal, og Flatpak'ens egen forbindelse til det kan ikke trykke på taster. Giv Vito en direkte forbindelse — kør dette én gang:",
+"Then add this to {file}, so it is there after every login:": "Tilføj derefter dette til {file}, så den er der efter hvert login:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Tilføj derefter den samme kommando til dit skrivebords opstart, så den er der efter hvert login.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Vil du helst slet ikke opsætte noget? AppImage'en skriver på dette skrivebord helt af sig selv.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito skriver via den direkte forbindelse til dit skrivebord, som du har sat op."
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",

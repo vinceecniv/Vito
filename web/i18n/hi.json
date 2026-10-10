@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "आपने अपने डेस्कटॉप का शॉर्टकट डायलॉग बंद कर दिया, इसलिए अभी कोई शॉर्टकट बाइंड नहीं है।",
 "Your desktop didn't bind the shortcut.": "आपके डेस्कटॉप ने शॉर्टकट बाइंड नहीं किया।",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "आपका डेस्कटॉप ({desktop}) ग्लोबल शॉर्टकट ऐप्स तक नहीं पहुँचा सकता, इसलिए Vito उससे शॉर्टकट नहीं माँगता। इसके बजाय नीचे दिए गए कमांड्स को अपने कंपोज़िटर में कीज़ से बाइंड करें।",
-"your desktop": "आपका डेस्कटॉप"
+"your desktop": "आपका डेस्कटॉप",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "इस डेस्कटॉप पर Vito अभी Flatpak के भीतर से कीज़ नहीं दबा सकता, इसलिए आपके डिक्टेशन क्लिपबोर्ड पर जाते हैं। आपके डेस्कटॉप के स्टार्टअप में एक लाइन जोड़ने से यह टाइप कर सकेगा — Linux सेटिंग्स में यह दिखाया गया है।",
+"The link is there, but it belongs to an earlier session. Run the command again.": "कनेक्शन मौजूद है, लेकिन यह पिछले सत्र का है। कमांड फिर से चलाएँ।",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "इस डेस्कटॉप में RemoteDesktop पोर्टल नहीं है, और Flatpak का अपना कनेक्शन कीज़ नहीं दबा सकता। Vito को एक सीधा कनेक्शन दें — इसे एक बार चलाएँ:",
+"Then add this to {file}, so it is there after every login:": "फिर इसे {file} में जोड़ें, ताकि यह हर लॉगिन के बाद मौजूद रहे:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "फिर यही कमांड अपने डेस्कटॉप के स्टार्टअप में जोड़ें, ताकि यह हर लॉगिन के बाद मौजूद रहे।",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "कोई सेटअप नहीं करना चाहते? AppImage इस डेस्कटॉप पर बिना किसी सेटअप के टाइप करता है।",
+"Vito types through the direct connection to your desktop that you set up.": "Vito आपके डेस्कटॉप से उस सीधे कनेक्शन के ज़रिए टाइप करता है जो आपने सेट किया है।"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",

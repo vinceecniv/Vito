@@ -765,6 +765,13 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 		// bundled or forbidden, not something the user installs. The UI needs to
 		// know which story to tell, and only the daemon can see the sandbox.
 		"flatpak": inject.Sandboxed(),
+		// Whether the Flatpak's direct Wayland connection ($XDG_RUNTIME_DIR/
+		// vito/wayland) exists. Its presence in the reply also tells the UI this
+		// daemon knows the route, so a downloaded interface only offers the
+		// setup to daemons that will use it. Names the desktop for the startup
+		// line to show.
+		"wayland_link": inject.HasHostWaylandLink(),
+		"desktop":      os.Getenv("XDG_CURRENT_DESKTOP"),
 	})
 }
 

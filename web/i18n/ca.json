@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Has tancat el diàleg de dreceres del teu escriptori, així que encara no hi ha cap drecera vinculada.",
 "Your desktop didn't bind the shortcut.": "El teu escriptori no ha vinculat la drecera.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "El teu escriptori ({desktop}) no pot passar dreceres globals a les apps, així que Vito no n'hi demana cap. En lloc d'això, vincula les ordres de sota a tecles del teu compositor.",
-"your desktop": "el teu escriptori"
+"your desktop": "el teu escriptori",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Des de dins del Flatpak, Vito encara no pot prémer tecles en aquest escriptori, així que els teus dictats van al porta-retalls. Una sola línia a l'inici del teu escriptori li permet escriure — la configuració de Linux t'ho mostra.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "La connexió hi és, però pertany a una sessió anterior. Torna a executar l'ordre.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Aquest escriptori no té portal RemoteDesktop, i la connexió pròpia del Flatpak no pot prémer tecles. Dona a Vito una connexió directa — executa això una vegada:",
+"Then add this to {file}, so it is there after every login:": "Després afegeix això a {file}, perquè hi sigui després de cada inici de sessió:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Després afegeix la mateixa ordre a l'inici del teu escriptori, perquè hi sigui després de cada inici de sessió.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Prefereixes no configurar res? L'AppImage escriu en aquest escriptori sense cap pas addicional.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito escriu a través de la connexió directa amb el teu escriptori que has configurat."
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

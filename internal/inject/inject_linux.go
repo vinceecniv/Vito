@@ -69,7 +69,8 @@ func resolveBackend(cfg config.Injection) string {
 // Flatpak on a compositor with no RemoteDesktop portal there is none: the
 // portal is missing, ydotool cannot work in a sandbox, and Flatpak's managed
 // Wayland socket filters out the virtual-keyboard protocol — deliberately, since
-// injecting input into other windows is exactly what a sandbox restricts.
+// injecting input into other windows is exactly what a sandbox restricts —
+// until the user links the real socket in (HostWaylandLink).
 func canType(cfg config.Injection) bool {
 	if resolveBackend(cfg) != backendYdotool {
 		return true

@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Hai chiuso la finestra delle scorciatoie del tuo desktop, quindi non è ancora associata nessuna scorciatoia.",
 "Your desktop didn't bind the shortcut.": "Il tuo desktop non ha associato la scorciatoia.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Il tuo desktop ({desktop}) non può inoltrare le scorciatoie globali alle app, quindi Vito non gliene chiede una. Associa invece i comandi qui sotto a dei tasti nel tuo compositor.",
-"your desktop": "il tuo desktop"
+"your desktop": "il tuo desktop",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Dall'interno del Flatpak, Vito non può ancora premere tasti su questo desktop, quindi le tue dettature finiscono negli appunti. Una riga nell'avvio del tuo desktop gli permette di digitare: le impostazioni Linux ti mostrano quale.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Il collegamento c'è, ma appartiene a una sessione precedente. Esegui di nuovo il comando.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Questo desktop non ha un portale RemoteDesktop e il collegamento proprio del Flatpak non può premere tasti. Dai a Vito un collegamento diretto: esegui questo comando una volta:",
+"Then add this to {file}, so it is there after every login:": "Poi aggiungi questo a {file}, così sarà attivo dopo ogni accesso:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Poi aggiungi lo stesso comando all'avvio del tuo desktop, così sarà attivo dopo ogni accesso.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Preferisci non configurare nulla? L'AppImage digita su questo desktop senza alcuna configurazione.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito digita tramite il collegamento diretto al tuo desktop che hai configurato."
 },
 "help": {
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",

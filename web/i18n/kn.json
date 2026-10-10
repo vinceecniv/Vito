@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "ನೀವು ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನ ಶಾರ್ಟ್‌ಕಟ್ ಡೈಲಾಗ್ ಅನ್ನು ಮುಚ್ಚಿದ್ದೀರಿ, ಆದ್ದರಿಂದ ಇನ್ನೂ ಯಾವುದೇ ಶಾರ್ಟ್‌ಕಟ್ ಬೈಂಡ್ ಆಗಿಲ್ಲ.",
 "Your desktop didn't bind the shortcut.": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್ ಶಾರ್ಟ್‌ಕಟ್ ಅನ್ನು ಬೈಂಡ್ ಮಾಡಲಿಲ್ಲ.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್ ({desktop}) ಜಾಗತಿಕ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಆಪ್‌ಗಳಿಗೆ ರವಾನಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆದ್ದರಿಂದ Vito ಅದರಿಂದ ಶಾರ್ಟ್‌ಕಟ್ ಕೇಳುವುದಿಲ್ಲ. ಬದಲಿಗೆ ಕೆಳಗಿನ ಕಮಾಂಡ್‌ಗಳನ್ನು ನಿಮ್ಮ ಕಂಪೋಸಿಟರ್‌ನಲ್ಲಿ ಕೀಗಳಿಗೆ ಬೈಂಡ್ ಮಾಡಿ.",
-"your desktop": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್"
+"your desktop": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Flatpak ಒಳಗಿನಿಂದ Vito ಈ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನಲ್ಲಿ ಇನ್ನೂ ಕೀಗಳನ್ನು ಒತ್ತಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆದ್ದರಿಂದ ನಿಮ್ಮ ಡಿಕ್ಟೇಶನ್‌ಗಳು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ಹೋಗುತ್ತವೆ. ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನ ಸ್ಟಾರ್ಟ್‌ಅಪ್‌ನಲ್ಲಿ ಒಂದು ಸಾಲು ಸೇರಿಸಿದರೆ ಅದು ಟೈಪ್ ಮಾಡಬಲ್ಲದು — Linux ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಅದನ್ನು ತೋರಿಸುತ್ತವೆ.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "ಸಂಪರ್ಕ ಇದೆ, ಆದರೆ ಅದು ಹಿಂದಿನ ಸೆಷನ್‌ಗೆ ಸೇರಿದ್ದು. ಕಮಾಂಡ್ ಅನ್ನು ಮತ್ತೊಮ್ಮೆ ರನ್ ಮಾಡಿ.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "ಈ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನಲ್ಲಿ RemoteDesktop ಪೋರ್ಟಲ್ ಇಲ್ಲ, ಮತ್ತು Flatpak‌ನ ಸ್ವಂತ ಸಂಪರ್ಕದಿಂದ ಕೀಗಳನ್ನು ಒತ್ತಲು ಸಾಧ್ಯವಿಲ್ಲ. Vito ಗೆ ನೇರ ಸಂಪರ್ಕ ನೀಡಿ — ಇದನ್ನು ಒಮ್ಮೆ ರನ್ ಮಾಡಿ:",
+"Then add this to {file}, so it is there after every login:": "ನಂತರ ಇದನ್ನು {file} ಗೆ ಸೇರಿಸಿ, ಇದರಿಂದ ಪ್ರತಿ ಲಾಗಿನ್ ನಂತರವೂ ಅದು ಇರುತ್ತದೆ:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "ನಂತರ ಅದೇ ಕಮಾಂಡ್ ಅನ್ನು ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನ ಸ್ಟಾರ್ಟ್‌ಅಪ್‌ಗೆ ಸೇರಿಸಿ, ಇದರಿಂದ ಪ್ರತಿ ಲಾಗಿನ್ ನಂತರವೂ ಅದು ಇರುತ್ತದೆ.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "ಯಾವುದೇ ಸೆಟಪ್ ಬೇಡವೇ? AppImage ಈ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನಲ್ಲಿ ನೇರವಾಗಿ, ಯಾವುದೇ ಹೊಂದಿಸುವಿಕೆ ಇಲ್ಲದೆ ಟೈಪ್ ಮಾಡುತ್ತದೆ.",
+"Vito types through the direct connection to your desktop that you set up.": "ನೀವು ಹೊಂದಿಸಿದ ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನೊಂದಿಗಿನ ನೇರ ಸಂಪರ್ಕದ ಮೂಲಕ Vito ಟೈಪ್ ಮಾಡುತ್ತದೆ."
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

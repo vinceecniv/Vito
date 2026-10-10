@@ -1,5 +1,12 @@
 {
 "strings": {
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "A Vito a Flatpakon belülről még nem tud billentyűket lenyomni ezen az asztalon, ezért a diktálásaid a vágólapra kerülnek. Egyetlen sor az asztalod indítási parancsai között lehetővé teszi, hogy gépeljen — a Linux-beállítások megmutatják, hogyan.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "A kapcsolat megvan, de egy korábbi munkamenethez tartozik. Futtasd újra a parancsot.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Ezen az asztalon nincs RemoteDesktop portál, és a Flatpak saját kapcsolata nem tud billentyűket lenyomni. Adj a Vitónak közvetlen kapcsolatot — futtasd ezt egyszer:",
+"Then add this to {file}, so it is there after every login:": "Ezután add hozzá ezt a(z) {file} fájlhoz, hogy minden bejelentkezés után meglegyen:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Ezután add hozzá ugyanezt a parancsot az asztalod indítási parancsaihoz, hogy minden bejelentkezés után meglegyen.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Inkább semmit sem állítanál be? Az AppImage ezen az asztalon beállítás nélkül is tud gépelni.",
+"Vito types through the direct connection to your desktop that you set up.": "A Vito az általad beállított, az asztalodhoz vezető közvetlen kapcsolaton keresztül gépel.",
 "Status": "Állapot",
 "Settings": "Beállítások",
 "Dictionary": "Szótár",

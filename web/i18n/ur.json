@@ -1048,7 +1048,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "آپ نے اپنے ڈیسک ٹاپ کا شارٹ کٹ ڈائیلاگ بند کر دیا، اس لیے ابھی کوئی شارٹ کٹ مقرر نہیں ہوا۔",
 "Your desktop didn't bind the shortcut.": "آپ کے ڈیسک ٹاپ نے شارٹ کٹ مقرر نہیں کیا۔",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "آپ کا ڈیسک ٹاپ ({desktop}) گلوبل شارٹ کٹس ایپس تک نہیں پہنچا سکتا، اس لیے Vito اس سے شارٹ کٹ نہیں مانگتا۔ اس کے بجائے نیچے دی گئی کمانڈز کو اپنے کمپوزیٹر میں کیز سے منسلک کریں۔",
-"your desktop": "آپ کا ڈیسک ٹاپ"
+"your desktop": "آپ کا ڈیسک ٹاپ",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito ابھی اس ڈیسک ٹاپ پر Flatpak کے اندر سے کیز نہیں دبا سکتا، اس لیے آپ کے املا کلپ بورڈ پر جاتے ہیں۔ آپ کے ڈیسک ٹاپ کے آغاز میں ایک لائن اسے ٹائپ کرنے دیتی ہے — Linux کی ترتیبات میں وہ دکھائی گئی ہے۔",
+"The link is there, but it belongs to an earlier session. Run the command again.": "رابطہ موجود ہے، لیکن یہ کسی پچھلے سیشن کا ہے۔ کمانڈ دوبارہ چلائیں۔",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "اس ڈیسک ٹاپ پر RemoteDesktop پورٹل نہیں ہے، اور Flatpak کا اپنا رابطہ کیز نہیں دبا سکتا۔ Vito کو ایک براہِ راست رابطہ دیں — یہ ایک بار چلائیں:",
+"Then add this to {file}, so it is there after every login:": "پھر اسے {file} میں شامل کریں، تاکہ یہ ہر لاگ اِن کے بعد موجود رہے:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "پھر یہی کمانڈ اپنے ڈیسک ٹاپ کے آغاز میں شامل کریں، تاکہ یہ ہر لاگ اِن کے بعد موجود رہے۔",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "کوئی سیٹ اپ نہیں چاہتے؟ AppImage اس ڈیسک ٹاپ پر بغیر کسی تیاری کے ٹائپ کرتا ہے۔",
+"Vito types through the direct connection to your desktop that you set up.": "Vito آپ کے ڈیسک ٹاپ سے اس براہِ راست رابطے کے ذریعے ٹائپ کرتا ہے جو آپ نے ترتیب دیا ہے۔"
 },
 "help": {
 "theme": "روشن، گہرا یا خودکار — خودکار آپ کے سسٹم کی روشن/گہری ترتیب کے مطابق چلتا ہے۔",

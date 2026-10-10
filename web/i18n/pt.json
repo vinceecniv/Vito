@@ -1048,7 +1048,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Fechou a caixa de diálogo de atalhos do seu ambiente de trabalho, por isso ainda não há nenhum atalho associado.",
 "Your desktop didn't bind the shortcut.": "O seu ambiente de trabalho não associou o atalho.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "O seu ambiente de trabalho ({desktop}) não consegue passar atalhos globais às aplicações, por isso o Vito não lhe pede nenhum. Em vez disso, associe os comandos abaixo a teclas no seu compositor.",
-"your desktop": "o seu ambiente de trabalho"
+"your desktop": "o seu ambiente de trabalho",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "O Vito ainda não consegue premir teclas neste ambiente de trabalho a partir do Flatpak, por isso os seus ditados vão para a área de transferência. Uma linha no arranque do seu ambiente de trabalho permite-lhe escrever — as definições de Linux mostram como.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "A ligação existe, mas pertence a uma sessão anterior. Execute o comando novamente.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Este ambiente de trabalho não tem portal RemoteDesktop, e a ligação própria do Flatpak não consegue premir teclas. Dê ao Vito uma ligação direta — execute isto uma vez:",
+"Then add this to {file}, so it is there after every login:": "Depois adicione isto a {file}, para que esteja disponível após cada início de sessão:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Depois adicione o mesmo comando ao arranque do seu ambiente de trabalho, para que esteja disponível após cada início de sessão.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Prefere não configurar nada? O AppImage escreve neste ambiente de trabalho sem qualquer configuração.",
+"Vito types through the direct connection to your desktop that you set up.": "O Vito escreve através da ligação direta ao seu ambiente de trabalho que configurou."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",

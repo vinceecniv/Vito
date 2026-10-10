@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Masaüstünüzün kısayol iletişim penceresini kapattınız, bu yüzden henüz bir kısayol atanmadı.",
 "Your desktop didn't bind the shortcut.": "Masaüstünüz kısayolu atamadı.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Masaüstünüz ({desktop}) genel kısayolları uygulamalara iletemiyor, bu yüzden Vito ondan kısayol istemiyor. Bunun yerine aşağıdaki komutları compositor'ınızda tuşlara atayın.",
-"your desktop": "masaüstünüz"
+"your desktop": "masaüstünüz",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito, Flatpak içinden bu masaüstünde henüz tuşlara basamıyor, bu yüzden diktelerinizi panoya kopyalıyor. Masaüstünüzün başlangıcına eklenecek tek bir satır, yazmasını sağlar — Linux ayarlarında gösteriliyor.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Bağlantı mevcut, ancak önceki bir oturuma ait. Komutu yeniden çalıştırın.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Bu masaüstünde RemoteDesktop portalı yok ve Flatpak'in masaüstüne kendi bağlantısı tuşlara basamıyor. Vito'ya doğrudan bir bağlantı verin — bunu bir kez çalıştırın:",
+"Then add this to {file}, so it is there after every login:": "Ardından, her oturum açışınızdan sonra hazır olması için bunu {file} dosyasına ekleyin:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Ardından, her oturum açışınızdan sonra hazır olması için aynı komutu masaüstünüzün başlangıcına ekleyin.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Hiç kurulumla uğraşmak istemiyor musunuz? AppImage bu masaüstünde kutudan çıktığı gibi yazar.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito, masaüstünüze kurduğunuz doğrudan bağlantı üzerinden yazıyor."
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",

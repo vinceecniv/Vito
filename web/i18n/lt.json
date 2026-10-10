@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Uždarėte darbalaukio sparčiųjų klavišų dialogo langą, todėl spartusis klavišas dar nesusietas.",
 "Your desktop didn't bind the shortcut.": "Jūsų darbalaukis nesusiejo sparčiojo klavišo.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Jūsų darbalaukis ({desktop}) negali perduoti visuotinių sparčiųjų klavišų programoms, todėl Vito jo neprašo. Vietoj to susiekite toliau pateiktas komandas su klavišais savo kompozitoriuje.",
-"your desktop": "jūsų darbalaukis"
+"your desktop": "jūsų darbalaukis",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Šiame darbalaukyje Vito kol kas negali spausti klavišų iš Flatpak vidaus, todėl jūsų diktavimai patenka į iškarpinę. Viena eilutė darbalaukio paleisties nustatymuose leis jam rašyti — kaip, parodyta Linux nustatymuose.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Ryšys yra, bet jis priklauso ankstesnei sesijai. Paleiskite komandą dar kartą.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Šis darbalaukis neturi RemoteDesktop portalo, o paties Flatpak ryšys su juo negali spausti klavišų. Suteikite Vito tiesioginį ryšį — vieną kartą paleiskite tai:",
+"Then add this to {file}, so it is there after every login:": "Tada pridėkite tai į {file}, kad ryšys būtų po kiekvieno prisijungimo:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Tada pridėkite tą pačią komandą į darbalaukio paleisties nustatymus, kad ryšys būtų po kiekvieno prisijungimo.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Norite visai nieko nenustatinėti? AppImage šiame darbalaukyje rašo iškart, be jokių nustatymų.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito rašo per jūsų sukurtą tiesioginį ryšį su darbalaukiu."
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Anda menutup dialog pintasan desktop Anda, jadi belum ada pintasan yang terikat.",
 "Your desktop didn't bind the shortcut.": "Desktop Anda tidak mengikat pintasan.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Desktop Anda ({desktop}) tidak dapat meneruskan pintasan global ke aplikasi, jadi Vito tidak memintanya. Sebagai gantinya, ikat perintah-perintah di bawah ke tombol di compositor Anda.",
-"your desktop": "desktop Anda"
+"your desktop": "desktop Anda",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito belum bisa menekan tombol di desktop ini dari dalam Flatpak, jadi dikte Anda dikirim ke papan klip. Satu baris di startup desktop Anda memungkinkannya mengetik — pengaturan Linux menunjukkan caranya.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "Tautannya ada, tetapi milik sesi sebelumnya. Jalankan perintahnya lagi.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Desktop ini tidak punya portal RemoteDesktop, dan koneksi Flatpak sendiri ke desktop tidak bisa menekan tombol. Beri Vito koneksi langsung — jalankan ini sekali:",
+"Then add this to {file}, so it is there after every login:": "Lalu tambahkan ini ke {file}, agar tetap ada setelah setiap login:",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Lalu tambahkan perintah yang sama ke startup desktop Anda, agar tetap ada setelah setiap login.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Lebih suka tanpa penyiapan sama sekali? AppImage langsung bisa mengetik di desktop ini.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito mengetik melalui koneksi langsung ke desktop Anda yang telah Anda siapkan."
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",

@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "デスクトップのショートカットダイアログが閉じられたため、まだショートカットは割り当てられていません。",
 "Your desktop didn't bind the shortcut.": "デスクトップがショートカットを割り当てませんでした。",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "お使いのデスクトップ（{desktop}）はグローバルショートカットをアプリに渡せないため、Vito はショートカットを要求しません。代わりに、以下のコマンドをコンポジタでキーに割り当ててください。",
-"your desktop": "お使いのデスクトップ"
+"your desktop": "お使いのデスクトップ",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "VitoはまだFlatpakの中からこのデスクトップでキーを押せないため、口述はクリップボードに送られます。デスクトップの起動処理に1行追加すればタイプ入力できるようになります — 方法はLinux設定に表示されています。",
+"The link is there, but it belongs to an earlier session. Run the command again.": "接続はありますが、以前のセッションのものです。もう一度コマンドを実行してください。",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "このデスクトップにはRemoteDesktopポータルがなく、Flatpak自身の接続ではキーを押せません。Vitoに直接の接続を用意しましょう — 次を一度実行してください：",
+"Then add this to {file}, so it is there after every login:": "次に、ログインのたびに有効になるよう、これを{file}に追加してください：",
+"Then add the same command to your desktop's startup, so it is there after every login.": "次に、ログインのたびに有効になるよう、同じコマンドをデスクトップの起動処理に追加してください。",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "設定なしで使いたいですか？AppImage版ならこのデスクトップでそのままタイプ入力できます。",
+"Vito types through the direct connection to your desktop that you set up.": "Vitoは、あなたが設定したデスクトップへの直接接続を通じてタイプ入力します。"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",

@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Жұмыс үстеліңіздің жедел перне диалогын жаптыңыз, сондықтан әзірге ешбір жедел перне байланыстырылмаған.",
 "Your desktop didn't bind the shortcut.": "Жұмыс үстеліңіз жедел пернені байланыстырмады.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Жұмыс үстеліңіз ({desktop}) жаһандық жедел пернелерді қолданбаларға жеткізе алмайды, сондықтан Vito одан жедел перне сұрамайды. Оның орнына төмендегі командаларды компоситорыңыздағы пернелермен байланыстырыңыз.",
-"your desktop": "жұмыс үстеліңіз"
+"your desktop": "жұмыс үстеліңіз",
+    "Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito бұл жұмыс үстелінде Flatpak ішінен әзірге перне баса алмайды, сондықтан диктовкаларыңыз алмасу буферіне түседі. Жұмыс үстеліңіздің іске қосылу командаларына бір жол қоссаңыз, ол тере алады — оны Linux параметрлерінен көресіз.",
+    "The link is there, but it belongs to an earlier session. Run the command again.": "Байланыс бар, бірақ ол алдыңғы сеансқа тиесілі. Команданы қайта іске қосыңыз.",
+    "This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Бұл жұмыс үстелінде RemoteDesktop порталы жоқ, ал Flatpak-тың өз байланысы перне баса алмайды. Vito-ға тікелей байланыс беріңіз — мұны бір рет іске қосыңыз:",
+    "Then add this to {file}, so it is there after every login:": "Содан кейін әр кіруден кейін де болуы үшін мұны {file} файлына қосыңыз:",
+    "Then add the same command to your desktop's startup, so it is there after every login.": "Содан кейін әр кіруден кейін де болуы үшін дәл осы команданы жұмыс үстеліңіздің іске қосылу командаларына қосыңыз.",
+    "Prefer no setup at all? The AppImage types on this desktop out of the box.": "Ешқандай баптаусыз болғанын қалайсыз ба? AppImage бұл жұмыс үстелінде бірден тере алады.",
+    "Vito types through the direct connection to your desktop that you set up.": "Vito сіз баптаған жұмыс үстелімен тікелей байланыс арқылы тереді."
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",

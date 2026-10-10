@@ -1047,7 +1047,14 @@
 "You closed your desktop's shortcut dialog, so no shortcut is bound yet.": "Vous avez fermé la boîte de dialogue des raccourcis de votre bureau, aucun raccourci n'est donc encore lié.",
 "Your desktop didn't bind the shortcut.": "Votre bureau n'a pas lié le raccourci.",
 "Your desktop ({desktop}) can't pass global shortcuts on to apps, so Vito doesn't ask it for one. Bind the commands below to keys in your compositor instead.": "Votre bureau ({desktop}) ne peut pas transmettre les raccourcis globaux aux applications, Vito ne lui en demande donc pas. Liez plutôt les commandes ci-dessous à des touches dans votre compositeur.",
-"your desktop": "votre bureau"
+"your desktop": "votre bureau",
+"Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito ne peut pas encore simuler de frappes clavier sur ce bureau depuis le Flatpak ; vos dictées partent donc dans le presse-papiers. Une seule ligne dans le démarrage de votre bureau lui permet de saisir le texte — les paramètres Linux vous la montrent.",
+"The link is there, but it belongs to an earlier session. Run the command again.": "La connexion existe, mais elle appartient à une session précédente. Relancez la commande.",
+"This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Ce bureau ne propose pas de portail RemoteDesktop, et la connexion propre au Flatpak ne peut pas appuyer sur des touches. Donnez à Vito une connexion directe — exécutez ceci une fois :",
+"Then add this to {file}, so it is there after every login:": "Ajoutez ensuite ceci à {file}, pour qu'elle soit en place après chaque connexion :",
+"Then add the same command to your desktop's startup, so it is there after every login.": "Ajoutez ensuite la même commande au démarrage de votre bureau, pour qu'elle soit en place après chaque connexion.",
+"Prefer no setup at all? The AppImage types on this desktop out of the box.": "Vous préférez n'avoir rien à configurer ? L'AppImage saisit le texte sur ce bureau dès l'installation.",
+"Vito types through the direct connection to your desktop that you set up.": "Vito saisit le texte via la connexion directe à votre bureau que vous avez configurée."
 },
 "help": {
 "theme": "Clair, sombre ou automatique — le mode automatique suit le réglage clair/sombre de votre système.",
