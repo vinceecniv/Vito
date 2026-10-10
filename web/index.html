@@ -1416,7 +1416,13 @@
   @media (min-width:821px){ .modal-backdrop, #offline-overlay { padding-left:var(--side); } }
   @media (max-width:980px){ .modal-backdrop, #offline-overlay { --side:180px; } }
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
-  .modal { width:360px; max-width:92vw; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:20px; box-shadow:0 24px 64px rgba(20,10,40,.45); }
+  .modal { --mpad:20px; width:360px; max-width:92vw; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:var(--mpad); box-shadow:0 24px 64px rgba(20,10,40,.45);
+    /* Never taller than the screen (dvh: the part a phone's browser bars leave
+       free): the content scrolls inside, and the buttons stay pinned to the
+       bottom edge, so Close can't end up out of reach. */
+    max-height:calc(100dvh - 24px); overflow-y:auto; overscroll-behavior:contain; }
+  .modal > .rowflex:last-child { position:sticky; bottom:calc(-1 * var(--mpad)); margin-bottom:calc(-1 * var(--mpad));
+    padding:12px 0 var(--mpad); background:var(--card); }
   .modal.relnotes-modal { width:560px; }
   .keyinfo .ki-guide { margin:2px 0 12px; }
   .keyinfo .ki-guide a { display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-weight:600; text-decoration:none; }
@@ -1583,7 +1589,7 @@
   .wl-ico { flex:none; width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.2); }
   .wl-ico svg { width:17px; height:17px; }
   .wl-note { position:relative; margin:0 0 4px; font-size:12.5px; line-height:1.5; opacity:.9; max-width:900px; }
-  .modal.dl-modal { width:460px; padding:24px; }
+  .modal.dl-modal { --mpad:24px; width:460px; }
   .dl-modal h3 { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
   .dl-ver { font-size:11px; font-weight:600; color:var(--violet); background:color-mix(in srgb, var(--violet) 12%, transparent); border-radius:99px; padding:2px 8px; }
   .dl-why { list-style:none; margin:0 0 18px; padding:0; display:flex; flex-direction:column; gap:10px; }
@@ -1602,6 +1608,22 @@
   .dl-pane p { margin:12px 0 0; line-height:1.55; }
   .dl-all { margin:18px 0 0; padding-top:14px; border-top:1px solid var(--card-border); font-size:12.5px; }
   .dl-pane pre { background:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:8px 10px; font-size:11.5px; overflow:auto; margin:8px 0 0; }
+  /* On a phone the app can't be installed anyway: the benefits shrink to their
+     headline, the systems to a slim row, so it all fits without scrolling. */
+  @media (max-width:520px), (max-height:700px){
+    .modal.dl-modal { --mpad:18px; max-width:calc(100vw - 24px); }
+    .dl-modal h3 { margin-bottom:12px; }
+    .dl-why { gap:7px; margin-bottom:14px; }
+    .dl-why li { align-items:center; }
+    .dl-why .dl-sub { display:none; }
+    .dl-ico { width:26px; height:26px; border-radius:8px; }
+    .dl-ico svg { width:15px; height:15px; }
+    .dl-tabs { grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; margin-bottom:14px; }
+    .dl-os { flex-direction:row; justify-content:center; gap:6px; padding:9px 6px; font-size:12.5px; }
+    .dl-os svg { width:18px; height:18px; }
+    .dl-all { margin-top:14px; padding-top:10px; }
+  }
+  @media (max-width:360px){ .dl-os svg { display:none; } }
   .banner.app-more { flex-direction:column; align-items:flex-start; gap:14px; padding:18px 20px; margin-bottom:18px; line-height:1.6; }
   .app-more .grow { flex:none; }
   .app-more .rowflex { gap:10px; flex-wrap:wrap; margin-top:6px; }
@@ -6794,7 +6816,7 @@ flatpak install --user vito io.github.vinceecniv.vito</pre>`,
   const tabs = [["windows", "Windows", OS_ICONS.windows], ["macos", "macOS", OS_ICONS.macos], ["linux", "Linux", TUX_SVG]];
   modal(t("Get the Vito app") + (ver ? ` <span class="dl-ver">${ver}</span>` : ""),
     (os === "other" ? `<p class="ki-note">${t("The Vito app is for desktop computers: Windows, macOS and Linux.")}</p>` : "") +
-    `<ul class="dl-why">${DL_BENEFITS.map(([ico, b, s]) => `<li><span class="dl-ico">${ico}</span><span><b>${t(b)}</b> ${t(s)}</span></li>`).join("")}</ul>
+    `<ul class="dl-why">${DL_BENEFITS.map(([ico, b, s]) => `<li><span class="dl-ico">${ico}</span><span><b>${t(b)}</b> <span class="dl-sub">${t(s)}</span></span></li>`).join("")}</ul>
      <div class="dl-tabs">${tabs.map(([k, n, ico]) => `<button type="button" class="dl-os" data-os="${k}">${ico}<span>${n}</span></button>`).join("")}</div>
      <div class="dl-pane" id="dl-pane"></div>
      <p class="dl-all"><a href="${all}" target="_blank" rel="noopener">${t("All downloads and release notes")}</a></p>`,
