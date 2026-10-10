@@ -144,7 +144,7 @@ def to16k(path):
 
 def resample_dir(d):
     files = list(Path(d).glob("*.wav"))
-    with ProcessPoolExecutor() as ex:
+    with ProcessPoolExecutor(max_workers=8) as ex:
         list(ex.map(to16k, files, chunksize=64))
 
 
@@ -235,6 +235,7 @@ def main():
         have = count(d)
         if have >= 0.95 * n:
             log.info("%s: %d clips already", name, have)
+            resample_dir(d)  # an interrupted run may have left some at the TTS rate
             continue
         todo = n - have
         log.info("%s: generating %d", name, todo)

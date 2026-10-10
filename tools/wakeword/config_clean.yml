@@ -8,7 +8,7 @@ n_samples: 40000
 n_samples_val: 4000
 tts_batch_size: 50
 augmentation_batch_size: 16
-piper_sample_generator_path: "/root/ww/piper-sample-generator"
+piper_sample_generator_path: "/mnt/c/Users/vblok/CODE/Vito/tools/wakeword/pshim"
 output_dir: "/mnt/e/vito-wakeword/work_clean"
 
 rir_paths:
