@@ -70,10 +70,36 @@ func ProviderName(cfg config.Cleanup) string {
 	}
 }
 
+type precedingKey struct{}
+
+// WithPreceding marks a transcript as the continuation of text already typed
+// just before it (a hands-free dictation resumed after a pause), so the model
+// writes only what follows and joins it on: lower case mid-sentence, or the
+// full stop the earlier text was waiting for when a new sentence begins.
+func WithPreceding(ctx context.Context, before string) context.Context {
+	return context.WithValue(ctx, precedingKey{}, before)
+}
+
+func preceding(ctx context.Context) string {
+	s, _ := ctx.Value(precedingKey{}).(string)
+	return s
+}
+
+// continuationNote is added to the user turn of a continuation.
+const continuationNote = `This transcript continues text that is already typed, after a short pause. The typed text is below; it ends without its final full stop. Do not repeat or change it — output only the new text, written so that it reads on seamlessly:
+- If the transcript continues the same sentence, start in lower case (a name or a word that is always capitalised keeps its capital), with nothing in front.
+- If it starts a new sentence, begin with the punctuation that ends the typed text (normally ". "), then the capital.
+- If the sentence needs a comma or other mark at the join, begin with that.
+Already typed: «%s»
+`
+
 // buildUserPrompt assembles the user turn shared by both providers: the language,
 // the dictionary corrections and the raw transcript.
-func buildUserPrompt(text, language string, corrections []config.Correction) string {
+func buildUserPrompt(ctx context.Context, text, language string, corrections []config.Correction) string {
 	var user strings.Builder
+	if before := preceding(ctx); before != "" {
+		fmt.Fprintf(&user, continuationNote, before)
+	}
 	fmt.Fprintf(&user, "Language: %s\n", language)
 	if len(corrections) > 0 {
 		user.WriteString("Corrections (misheard -> intended):\n")
@@ -294,7 +320,7 @@ func (c *AnthropicCleaner) Clean(ctx context.Context, text, language string, cor
 		Temperature: anthropic.Float(0),
 		System:      []anthropic.TextBlockParam{{Text: systemPromptWith(instruction, c.rules)}},
 		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(buildUserPrompt(text, language, corrections))),
+			anthropic.NewUserMessage(anthropic.NewTextBlock(buildUserPrompt(ctx, text, language, corrections))),
 		},
 	})
 	if err != nil {
@@ -384,7 +410,7 @@ func (c *OpenAICleaner) Clean(ctx context.Context, text, language string, correc
 		ReasoningEffort: c.effort,
 		Messages: []openAIMessage{
 			{Role: "system", Content: systemPromptWith(instruction, c.rules)},
-			{Role: "user", Content: buildUserPrompt(text, language, corrections)},
+			{Role: "user", Content: buildUserPrompt(ctx, text, language, corrections)},
 		},
 	})
 	if err != nil {
