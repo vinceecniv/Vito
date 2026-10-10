@@ -207,6 +207,7 @@ jobs:
               echo "- **Windows** — \`Vito-Setup-$V.exe\` (per-user, no admin)."
               echo "- **macOS** — \`Vito-$V.dmg\` — drag Vito to Applications. First launch needs **right-click → Open**, then two permissions (Microphone, Accessibility)."
               echo "- **Linux** — \`Vito-$V-x86_64.AppImage\` — \`chmod +x\` and run — or the Flatpak from [vinceecniv.github.io/Vito](https://vinceecniv.github.io/Vito/)."
+              echo "- **No install** — [vito.talk/app](https://vito.talk/app)."
               echo
               echo "### Checksums (SHA-256)"
               echo
