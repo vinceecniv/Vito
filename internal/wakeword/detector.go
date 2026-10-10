@@ -21,8 +21,6 @@ const (
 	melWindow    = 76 // frames the embedding looks at
 	embDim       = 96
 	featWindow   = 16 // embeddings a classifier looks at, unless its input says otherwise
-	// warmup steps return 0: the buffers still hold start-up values.
-	warmup = 5
 )
 
 var (
@@ -168,7 +166,11 @@ func (d *Detector) step(chunk []int16) (float32, error) {
 		return 0, err
 	}
 	d.steps++
-	if d.steps <= warmup {
+	// Until both windows hold real audio the classifier sees start-up filler,
+	// which it can score as high as a real phrase (0.98 on silence for
+	// hey_vito): about 2 s after every (re)start stays silent. openWakeWord
+	// suppresses only 5 steps, but it seeds its buffers with noise embeddings.
+	if d.steps <= (melWindow+7)/8+d.window {
 		return 0, nil
 	}
 	return out[0].Data[0], nil

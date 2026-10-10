@@ -162,6 +162,10 @@ func TestStreamMatchesOpenWakeWord(t *testing.T) {
 	if len(got) != len(want) {
 		t.Fatalf("%d scores, want %d", len(got), len(want))
 	}
+	// openWakeWord scores from step 6 on, Vito only once its windows are full
+	// of real audio; compare where both score.
+	skip := (melWindow+7)/8 + d.window
+	got, want = got[skip:], want[skip:]
 	if diff := maxDiff(got, want); diff > 0.01 {
 		t.Errorf("scores differ by up to %g\n got %v\nwant %v", diff, got, want)
 	}
@@ -253,5 +257,34 @@ func TestDot(t *testing.T) {
 		if got, want := dot(a, b), dotGo(a, b); math.Abs(float64(got-want)) > 1e-3 {
 			t.Errorf("n=%d: %g, want %g", n, got, want)
 		}
+	}
+}
+
+// Right after a (re)start the windows hold filler, not audio; that must not
+// wake Vito — it did, every time the listener came back after a dictation.
+func TestNoWakeOnSilenceAfterStart(t *testing.T) {
+	cls, err := classifierFor("hey_vito")
+	if err != nil {
+		t.Skip("no classifier")
+	}
+	d, err := NewDetector(cls)
+	if err != nil {
+		t.Fatal(err)
+	}
+	pcm := make([]int16, 16000*5)
+	for i := range pcm {
+		pcm[i] = int16(30 * math.Sin(float64(i)*0.7))
+	}
+	for round := 0; round < 2; round++ {
+		s, err := d.Write(pcm)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for i, v := range s {
+			if v >= 0.3 {
+				t.Fatalf("round %d step %d: score %.2f on near-silence", round, i, v)
+			}
+		}
+		d.Reset()
 	}
 }
