@@ -6873,8 +6873,7 @@ async function showDownload(){
       <p class="act-note">${t("One download for Apple Silicon and Intel. The first time, open it with right-click → Open, as Vito isn't notarised yet.")}</p>`,
     linux: `<a class="btn primary js-dl" href="${asset(/x86_64\.AppImage$/)}">${t("Download the AppImage (x86-64)")}</a>
       <p class="act-note">${t("Make it executable and run it. Or install the Flatpak:")}</p>
-      <pre>flatpak remote-add --user --if-not-exists vito https://vinceecniv.github.io/Vito/vito.flatpakrepo
-flatpak install --user vito io.github.vinceecniv.vito</pre>`,
+      <pre>flatpak install --user https://vinceecniv.github.io/Vito/vito.flatpakref</pre>`,
   };
   const os = guessOS();
   const tabs = [["windows", "Windows", OS_ICONS.windows], ["macos", "macOS", OS_ICONS.macos], ["linux", "Linux", TUX_SVG]];

@@ -337,8 +337,7 @@ Vito is **simple to use, but powerful under the hood.**
   **Flatpak** (GNOME, KDE):
 
   ```sh
-  flatpak remote-add --user --if-not-exists vito https://vinceecniv.github.io/Vito/vito.flatpakrepo
-  flatpak install --user vito io.github.vinceecniv.vito
+  flatpak install --user https://vinceecniv.github.io/Vito/vito.flatpakref
   ```
 
   **AppImage** (anything): download `Vito-<version>.AppImage` from [**Releases**](../../releases), make it

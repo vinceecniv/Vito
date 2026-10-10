@@ -86,8 +86,15 @@ jobs:
         if: env.GPG_KEY == ''
         run: flatpak build-update-repo repo --generate-static-deltas
 
-      - name: Add the .flatpakrepo users point at
-        run: cp packaging/flatpak/vito.flatpakrepo repo/vito.flatpakrepo
+      - name: Add the .flatpakref users install from (and the .flatpakrepo)
+        run: |
+          set -eu
+          # Both files carry the signing key; a mismatch would make one of the
+          # two install routes refuse every pull.
+          [ "$(grep '^GPGKey=' packaging/flatpak/vito.flatpakref)" = \
+            "$(grep '^GPGKey=' packaging/flatpak/vito.flatpakrepo)" ] \
+            || { echo "GPGKey differs between vito.flatpakref and vito.flatpakrepo" >&2; exit 1; }
+          cp packaging/flatpak/vito.flatpakref packaging/flatpak/vito.flatpakrepo repo/
 
       - uses: actions/upload-pages-artifact@v5
         with:

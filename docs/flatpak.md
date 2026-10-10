@@ -14,12 +14,31 @@ not.
 ## Installing (what to tell users)
 
 ```sh
+flatpak install --user https://vinceecniv.github.io/Vito/vito.flatpakref
+```
+
+Flatpak asks three things — keep the `vito` remote, add Flathub as `flathub`,
+install the runtime — and the answer to each is yes. Nothing else: the
+repository is signed, and `vito.flatpakref` carries the public key, so flatpak
+verifies every pull without the user doing anything.
+
+Why a `.flatpakref` and not the `.flatpakrepo` that came first: the runtime
+(`org.freedesktop.Platform`) lives on Flathub, and flatpak only looks for a
+missing runtime in the remotes of the installation it installs into. Plenty of
+systems have Flathub system-wide only — Fedora, filtered at that — so a `--user`
+install failed with *"requires the runtime org.freedesktop.Platform/x86_64/25.08,
+which was not found"*. Only a `.flatpakref` can name where runtimes come from
+(`RuntimeRepo=`); `.flatpakrepo` has no such key. The longer route still works
+for anyone who prefers it:
+
+```sh
+flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak remote-add --user --if-not-exists vito https://vinceecniv.github.io/Vito/vito.flatpakrepo
 flatpak install --user vito io.github.vinceecniv.vito
 ```
 
-Nothing else: the repository is signed, and `vito.flatpakrepo` carries the public
-key, so flatpak verifies every pull without the user doing anything.
+Both files carry the same `GPGKey=`; the workflow refuses to publish when they
+differ.
 
 ## What is in the sandbox, and what is not
 
@@ -154,7 +173,7 @@ self-hosted repository does not, and not vendoring keeps the tree small.
 
 `.github/workflows/flatpak.yml` runs on a `v*` tag: it builds the app into an
 ostree repository, generates static deltas, and publishes the result to GitHub
-Pages together with `vito.flatpakrepo`. Publishing a *repository* rather than a
+Pages together with `vito.flatpakref` and `vito.flatpakrepo`. Publishing a *repository* rather than a
 single `.flatpak` bundle is what makes `flatpak update` work at all — a bundle
 would have to be downloaded and reinstalled by hand for every release.
 
