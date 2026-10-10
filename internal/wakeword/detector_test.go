@@ -50,6 +50,7 @@ func refDir(t *testing.T) string {
 	return d
 }
 
+// classifier is the reference dir's own .onnx, or else the shipped hey_vito.
 func classifier(t *testing.T, dir string) []byte {
 	m, _ := filepath.Glob(filepath.Join(dir, "*.onnx"))
 	for _, p := range m {
@@ -63,8 +64,38 @@ func classifier(t *testing.T, dir string) []byte {
 		}
 		return b
 	}
-	t.Skip("no classifier in reference dir")
-	return nil
+	b, err := classifierFor("hey_vito")
+	if err != nil {
+		t.Skip("no classifier")
+	}
+	return b
+}
+
+// streamAudio is the clip make_reference.py streamed: 1 s of silence, the
+// clip, 1 s of silence, cut to whole 80 ms steps.
+func streamAudio(t *testing.T, dir string) []int16 {
+	if _, err := os.Stat(filepath.Join(dir, "stream_in.f32")); err == nil {
+		a := readF32(t, filepath.Join(dir, "stream_in.f32")).Data
+		pcm := make([]int16, len(a))
+		for i, v := range a {
+			pcm[i] = int16(v)
+		}
+		return pcm
+	}
+	w, _ := filepath.Glob(filepath.Join(dir, "*.wav"))
+	if len(w) == 0 {
+		t.Skip("no reference clip")
+	}
+	b, err := os.ReadFile(w[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	clip, err := decodeWAV(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+	pcm := append(append(make([]int16, 16000), clip...), make([]int16, 16000)...)
+	return pcm[:len(pcm)/ChunkSamples*ChunkSamples]
 }
 
 func TestNetworksMatchOnnxRuntime(t *testing.T) {
@@ -117,12 +148,8 @@ func TestStreamMatchesOpenWakeWord(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	audio := readF32(t, filepath.Join(dir, "stream_in.f32")).Data
+	pcm := streamAudio(t, dir)
 	want := readF32(t, filepath.Join(dir, "stream_out.f32")).Data
-	pcm := make([]int16, len(audio))
-	for i, v := range audio {
-		pcm[i] = int16(v)
-	}
 	// feed in odd-sized pieces: the chunking must not matter
 	var got []float32
 	for i := 0; i < len(pcm); i += 1000 {
@@ -150,14 +177,10 @@ func BenchmarkStep(b *testing.B) {
 	if dir == "" {
 		dir = "testdata"
 	}
-	m, _ := filepath.Glob(filepath.Join(dir, "*vito*.onnx"))
-	if len(m) == 0 {
-		m, _ = filepath.Glob(filepath.Join(dir, "hey_jarvis*.onnx"))
-	}
-	if len(m) == 0 {
+	cls, err := classifierFor("hey_vito")
+	if err != nil {
 		b.Skip("no classifier")
 	}
-	cls, _ := os.ReadFile(m[0])
 	d, err := NewDetector(cls)
 	if err != nil {
 		b.Fatal(err)

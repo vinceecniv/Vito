@@ -38,6 +38,6 @@ func wakeTest(args []string) error {
 		}
 	}
 	fmt.Printf("peak %.2f at %.2f s — %s at the default sensitivity\n", peak, float64(at+1)*0.08-1,
-		map[bool]string{true: "would wake Vito", false: "would not wake Vito"}[peak >= wakeword.DefaultThreshold])
+		map[bool]string{true: "would wake Vito", false: "would not wake Vito"}[peak >= wakeword.Threshold(phrase, 0.5)])
 	return nil
 }

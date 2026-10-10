@@ -40,17 +40,33 @@ func classifierFor(phrase string) ([]byte, error) {
 	return b, nil
 }
 
-// DefaultThreshold is the score at which a phrase counts as heard.
+// defaultThresholds is each model's score threshold at the middle
+// sensitivity, chosen from its evaluation (tools/wakeword): where false
+// accepts on hours of Dutch speech and meetings drop under ~0.5 an hour.
+var defaultThresholds = map[string]float32{
+	"hey_vito": 0.9,
+	"oke_vito": 0.9,
+}
+
+// DefaultThreshold is the threshold for a model without its own.
 const DefaultThreshold = 0.5
 
-// Threshold maps the user's sensitivity (0–1, 0.5 the default; higher
-// reacts sooner) to a score threshold.
-func Threshold(sensitivity float64) float32 {
-	if sensitivity <= 0 || sensitivity >= 1 {
-		return DefaultThreshold
+// Threshold maps the user's sensitivity (0–1, 0.5 the default; higher reacts
+// sooner) to a score threshold for phrase: the model's own default in the
+// middle, 0.3 at the eager end and 0.99 at the strict one.
+func Threshold(phrase string, sensitivity float64) float32 {
+	d, ok := defaultThresholds[phrase]
+	if !ok {
+		d = DefaultThreshold
 	}
-	// 0.5 → 0.5; 1 → 0.1 (eager); 0 → 0.9 (strict)
-	return float32(0.9 - 0.8*sensitivity)
+	switch {
+	case sensitivity <= 0 || sensitivity >= 1 || sensitivity == 0.5:
+		return d
+	case sensitivity > 0.5:
+		return d - float32((sensitivity-0.5)/0.5)*(d-0.3)
+	default:
+		return d + float32((0.5-sensitivity)/0.5)*(0.99-d)
+	}
 }
 
 // Listener keeps a microphone open and calls OnWake when the phrase is

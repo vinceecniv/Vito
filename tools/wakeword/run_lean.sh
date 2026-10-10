@@ -15,7 +15,7 @@ step() { echo "=== $(date '+%F %T') $*"; }
 step "MLS join"
 [ -f $D/mls_windows.npy ] || cap 6G python $T/prep_mls.py --join $D/mls_parts/*.npy --out $D/mls_windows.npy
 step "waiting for $W clips"
-until grep -q "GEN-HEY-OK" ~/ww/gen_all.log; do grep -q GEN-HEY-FAILED ~/ww/gen_all.log && { echo "clips failed"; exit 1; }; sleep 30; done
+[ "$W" != hey_vito ] || until grep -q "GEN-HEY-OK" ~/ww/gen_all.log; do sleep 30; done
 step "cleaning $W clips"
 cap 4G python $T/clean_clips.py /mnt/e/vito-wakeword/work/$W
 step "training $W"

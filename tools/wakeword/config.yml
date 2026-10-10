@@ -34,8 +34,13 @@ batch_n_per_class:
   "adversarial_negative": 70
   "positive": 70
 
+# Chosen by experiment (experiment.sh, 2026-10-10): a wider network and a much
+# milder negative weight than openWakeWord's defaults. Its auto-training doubles
+# the weight whenever the false-accept target is missed, and with the default
+# 1500/0.2 it ended at 6000 and recognised under half the held-out phrases.
+# The threshold, not training, is where Vito trades recall for false accepts.
 model_type: "dnn"
-layer_size: 32
+layer_size: 64
 steps: 50000
-max_negative_weight: 1500
-target_false_positives_per_hour: 0.2
+max_negative_weight: 300
+target_false_positives_per_hour: 1.0

@@ -34,6 +34,9 @@ type WakeStatus struct {
 	Status  string   `json:"status"` // "" (off), listening, paused, paused_call, error
 	Error   string   `json:"error,omitempty"`
 	Phrases []string `json:"phrases"`
+	// Thresholds maps each phrase to its threshold at the middle sensitivity,
+	// for the settings page's meter.
+	Thresholds map[string]float32 `json:"thresholds"`
 }
 
 func (d *Daemon) wakeInit() {
@@ -58,7 +61,11 @@ func (d *Daemon) Wake() WakeStatus {
 	if ph == nil {
 		ph = []string{}
 	}
-	return WakeStatus{Status: d.wake.status, Error: d.wake.err, Phrases: ph}
+	th := map[string]float32{}
+	for _, p := range ph {
+		th[p] = wakeword.Threshold(p, 0.5)
+	}
+	return WakeStatus{Status: d.wake.status, Error: d.wake.err, Phrases: ph, Thresholds: th}
 }
 
 // SyncWake starts or stops the listener to match the settings and what Vito
@@ -93,7 +100,7 @@ func (d *Daemon) SyncWake() {
 	} else {
 		key := fmt.Sprintf("%s|%s|%g|%g", phrase, cfg.Audio.InputDevice, cfg.Audio.InputGain, ww.Sensitivity)
 		if d.wake.l.Running() == "" || d.wake.key != key {
-			if err := d.wake.l.Start(cfg.Audio.InputDevice, cfg.Audio.InputGain, phrase, wakeword.Threshold(ww.Sensitivity)); err != nil {
+			if err := d.wake.l.Start(cfg.Audio.InputDevice, cfg.Audio.InputGain, phrase, wakeword.Threshold(phrase, ww.Sensitivity)); err != nil {
 				status, errText = "error", err.Error()
 				if errText != d.wake.err { // the poll retries; say it once
 					d.log.Error("wake word", "err", err)

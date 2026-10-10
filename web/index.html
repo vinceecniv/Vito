@@ -9470,13 +9470,18 @@ function renderActivation(info){
 // ---- Wake word -------------------------------------------------------------
 // The phrases the app ships a model for (GET /api/wake), shown as tags.
 const WAKE_NAMES = { hey_vito: "Hey Vito", oke_vito: "Okay Vito" };
-let wakePhrases = ["hey_vito", "oke_vito"], wakeOS = "";
+let wakePhrases = ["hey_vito", "oke_vito"], wakeOS = "", wakeThresholds = {};
 function wakePhrase(){
   const sel = document.querySelector("#wake-phrases .tag.sel");
   return sel ? sel.dataset.phrase : ((cfg && cfg.wake_word && cfg.wake_word.phrase) || "hey_vito");
 }
-// sensitivity → the score at which Vito wakes (wakeword.Threshold)
-const wakeThreshold = (s) => (s > 0 && s < 1) ? 0.9 - 0.8 * s : 0.5;
+// sensitivity → the score at which Vito wakes (wakeword.Threshold): the
+// model's own threshold in the middle, 0.3 eager, 0.99 strict
+function wakeThreshold(s){
+  const d = wakeThresholds[wakePhrase()] || 0.5;
+  if (!(s > 0 && s < 1) || s === 0.5) return d;
+  return s > 0.5 ? d - (s - 0.5) / 0.5 * (d - 0.3) : d + (0.5 - s) / 0.5 * (0.99 - d);
+}
 function renderWakeSettings(){
   if (!$("s-wake") || !cfg) return;
   const w = cfg.wake_word || {};
@@ -9490,7 +9495,7 @@ function renderWakeSettings(){
     b.textContent = t(WAKE_NAMES[p] || p);
     b.onclick = () => {
       $("wake-phrases").querySelectorAll(".tag").forEach(x => x.classList.toggle("sel", x === b));
-      autoSaveSettings();
+      syncWakeUI(); autoSaveSettings();
     };
     return b;
   }));
@@ -9509,9 +9514,10 @@ async function loadWake(){
   if (STANDALONE || !$("wake-status")) return;
   let st;
   try { st = await api("/api/wake"); } catch { return; }
+  if (st.thresholds) wakeThresholds = st.thresholds;
   if (Array.isArray(st.phrases) && st.phrases.length && st.phrases.join() !== wakePhrases.join()) {
     wakePhrases = st.phrases; renderWakeSettings();
-  }
+  } else syncWakeUI();
   const el = $("wake-status");
   const phrase = t(WAKE_NAMES[wakePhrase()] || wakePhrase());
   const text = {
