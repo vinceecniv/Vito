@@ -317,6 +317,12 @@ func deliverable(conn *dbus.Conn) bool {
 	if xdgportal.Backend(implIfaceGS) != "gnome" {
 		return true
 	}
+	// Flatpak's bus proxy hides names the app may not talk to, so from a
+	// sandbox org.gnome.Shell never has an owner — asking would rule out the
+	// portal on GNOME itself. The session's desktop name says it instead.
+	if xdgportal.InFlatpak() {
+		return strings.Contains(strings.ToLower(os.Getenv("XDG_CURRENT_DESKTOP")), "gnome")
+	}
 	var owned bool
 	if err := conn.BusObject().Call("org.freedesktop.DBus.NameHasOwner", 0, "org.gnome.Shell").Store(&owned); err != nil {
 		return true

@@ -131,6 +131,18 @@ cost nothing and remain the documented route for scripts and older setups).
    owns `org.gnome.Shell` on the bus, the portal state is `undeliverable` and
    the settings page points at the compositor bindings instead.
 
+   **In the Flatpak both halves of that test go blind.** `/usr` and `/etc`
+   are the runtime's and the XDG variables point into the sandbox, so
+   `portals.conf` is not found and `Backend` answers `""` — and the bus proxy
+   hides `org.gnome.Shell` even on GNOME. The first made the dialog appear on
+   niri regardless; fixing only that would have made the second switch the
+   portal off on GNOME itself. So in a sandbox `Backend` reads the host's
+   configuration through `/run/host` (manifest: `host-os:ro`, plus the user's
+   `xdg-desktop-portal` config and data directories read-only), and GNOME
+   Shell is inferred from `XDG_CURRENT_DESKTOP`. Measured on niri: `Backend`
+   went from `""` to `gnome` in the sandbox, matching the host
+   (`TestBackendHere`).
+
    Where the portal does work, the settings page offers **Register again**
    (`POST /api/hotkey/reregister`): the session is closed and the shortcuts
    are bound anew. GNOME only asks about shortcuts it has not stored, so for

@@ -32,6 +32,16 @@ finish-args:
   # (internal/inject, docs/flatpak.md). :create makes the directory exist
   # whichever starts first, so the link shows up in a running sandbox.
   - --filesystem=xdg-run/vito:create
+  # Read-only: how the host routes its portals. On niri the GlobalShortcuts
+  # portal goes to GNOME's backend, which shows its dialog and then never
+  # delivers a key without GNOME Shell; Vito recognises that from portals.conf
+  # and skips the dialog (internal/xdgportal Backend). In the sandbox /usr is
+  # the runtime's, so the host's comes in at /run/host/usr (host-os — Flatpak
+  # does not share a single directory under /usr), plus the user's own
+  # overrides, which keep their real paths.
+  - --filesystem=host-os:ro
+  - --filesystem=xdg-config/xdg-desktop-portal:ro
+  - --filesystem=xdg-data/xdg-desktop-portal:ro
   # Microphone capture. PipeWire serves this through its PulseAudio compatibility.
   - --socket=pulseaudio
   # Speech-to-text and AI cleanup are network calls to the user's own providers,
