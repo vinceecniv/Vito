@@ -12,8 +12,7 @@ import (
 // Backend names the implementation ("gnome", "kde", "hyprland", …) that
 // xdg-desktop-portal routes an interface to, such as
 // "org.freedesktop.impl.portal.GlobalShortcuts", or "" when that cannot be
-// worked out — inside a Flatpak, for one, the host's configuration is out of
-// sight.
+// worked out.
 //
 // It exists because the frontend's own answer is useless here: it advertises
 // every interface whatever sits behind it (see docs/linux-portals.md). Knowing
@@ -82,6 +81,22 @@ var (
 	sysDataDir = "/usr/share"
 )
 
+// hostRoot is where the host's /usr is visible, or "" when Vito is not in a
+// sandbox. Inside a Flatpak /usr and /etc are the runtime's, and XDG_CONFIG_HOME
+// and XDG_DATA_DIRS point into Flatpak's own trees, so none of them say how the
+// host routes its portals — Backend would find nothing, and the GNOME
+// backend's dialog on niri would be shown after all. The manifest grants
+// host-os:ro (the host's /usr at /run/host/usr) and, read-only, the user's own
+// xdg-desktop-portal directories, which keep their real paths. The host's /etc
+// stays hidden (host-etc would expose all of it); portals.conf lives in /usr
+// on the distributions that ship one. A variable for the tests.
+var hostRoot = func() string {
+	if InFlatpak() {
+		return "/run/host"
+	}
+	return ""
+}
+
 func currentDesktops() []string {
 	var out []string
 	for _, d := range strings.Split(os.Getenv("XDG_CURRENT_DESKTOP"), ":") {
@@ -100,6 +115,17 @@ func configDirs() []string {
 			dirs = append(dirs, filepath.Join(base, "xdg-desktop-portal"))
 		}
 	}
+	if root := hostRoot(); root != "" {
+		if home, err := os.UserHomeDir(); err == nil {
+			add(filepath.Join(home, ".config"))
+		}
+		add(filepath.Join(root, "etc", "xdg"))
+		add(filepath.Join(root, "etc"))
+		for _, d := range dataDirs() {
+			add(d)
+		}
+		return dirs
+	}
 	if h := os.Getenv("XDG_CONFIG_HOME"); h != "" {
 		add(h)
 	} else if home, err := os.UserHomeDir(); err == nil {
@@ -116,6 +142,13 @@ func configDirs() []string {
 }
 
 func dataDirs() []string {
+	if root := hostRoot(); root != "" {
+		var dirs []string
+		if home, err := os.UserHomeDir(); err == nil {
+			dirs = append(dirs, filepath.Join(home, ".local", "share"))
+		}
+		return append(dirs, filepath.Join(root, "usr", "local", "share"), filepath.Join(root, "usr", "share"))
+	}
 	var dirs []string
 	if h := os.Getenv("XDG_DATA_HOME"); h != "" {
 		dirs = append(dirs, h)

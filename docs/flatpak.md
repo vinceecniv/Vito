@@ -50,8 +50,11 @@ differ.
 | `--talk-name=org.freedesktop.Notifications` | desktop notifications |
 | `--talk-name=org.kde.StatusNotifierWatcher` | tray icon |
 | `--talk-name=org.mpris.MediaPlayer2.*` | pausing media while recording |
+| `--filesystem=xdg-run/vito:create` | the direct Wayland connection on compositors without the RemoteDesktop portal (below) |
+| `--filesystem=host-os:ro` + `xdg-config`/`xdg-data` `xdg-desktop-portal:ro` | reading how the host routes its portals, so the GNOME backend's useless shortcut dialog is skipped on niri (`docs/linux-portals.md`) |
 
-No `--device=all`, no uinput, no broad filesystem access. Text delivery goes
+No `--device=all`, no uinput, and no access to personal files: `host-os` is the
+host's `/usr`, read-only — Flatpak shares nothing narrower under `/usr`. Text delivery goes
 through the RemoteDesktop portal (GNOME, KDE) or the bundled `wtype` over the
 virtual-keyboard protocol (niri, wlroots); the hotkey through GlobalShortcuts.
 
