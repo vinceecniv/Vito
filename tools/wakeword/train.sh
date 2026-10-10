@@ -12,4 +12,9 @@ export PYTHONPATH=~/ww/piper-sample-generator
 sed "s/MODEL/$W/g" "$HERE/$CFG" > ~/ww/cfg_$W.yml
 cd ~/ww/openWakeWord
 python openwakeword/train.py --training_config ~/ww/cfg_$W.yml --augment_clips
-python openwakeword/train.py --training_config ~/ww/cfg_$W.yml --train_model
+# train.py ends by converting to TFLite, which Vito doesn't use (and needs
+# onnx_tf); success is the .onnx it writes before that.
+OUT=$(python -c "import yaml,sys; print(yaml.safe_load(open(sys.argv[1]))['output_dir'])" ~/ww/cfg_$W.yml)
+rm -f "$OUT/$W.onnx"
+python openwakeword/train.py --training_config ~/ww/cfg_$W.yml --train_model || true
+test -s "$OUT/$W.onnx"
