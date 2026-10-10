@@ -147,6 +147,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/hotkey", s.auth(s.handleGetHotkey))
 	mux.HandleFunc("POST /api/accessibility", s.auth(s.handleRequestAccessibility))
 	mux.HandleFunc("POST /api/hotkey/configure", s.auth(s.handleConfigureHotkey))
+	mux.HandleFunc("POST /api/hotkey/reregister", s.auth(s.handleReregisterHotkey))
 	mux.HandleFunc("POST /api/test-key", s.auth(s.handleTestKey))
 	mux.HandleFunc("GET /api/costs", s.auth(s.handleCosts))
 	mux.HandleFunc("GET /api/achievements", s.auth(s.handleAchievements))
@@ -667,6 +668,13 @@ func (s *Server) handleGetHotkey(w http.ResponseWriter, r *http.Request) {
 		// lists the method whatever the backend supports — so ask the manager,
 		// which knows the version, rather than assuming.
 		"configurable": s.hk.CanConfigure(),
+		// Linux: how the GlobalShortcuts portal attempt stands ("bound",
+		// "pending", "cancelled", "failed", "undeliverable", or "" for no
+		// portal), and whether asking the desktop again is possible.
+		"portal":     s.hk.Portal(),
+		"reregister": s.hk.CanReregister(),
+		// Names the desktop in the "bind it in your compositor" advice.
+		"desktop": os.Getenv("XDG_CURRENT_DESKTOP"),
 		// macOS gates both the hotkey and pasting behind one permission; the
 		// settings page offers to ask for it when this is false. Always true
 		// elsewhere, so the UI can read it without checking the OS first.
@@ -694,6 +702,17 @@ func (s *Server) handleRequestAccessibility(w http.ResponseWriter, r *http.Reque
 // settings page offers to change it without inventing a key-capture UI.
 func (s *Server) handleConfigureHotkey(w http.ResponseWriter, r *http.Request) {
 	if err := s.hk.Configure(); err != nil {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
+// handleReregisterHotkey asks the desktop for Vito's shortcuts again, which
+// brings its dialog back. It returns before the user answers; the settings page
+// follows the outcome through GET /api/hotkey.
+func (s *Server) handleReregisterHotkey(w http.ResponseWriter, r *http.Request) {
+	if err := s.hk.Reregister(); err != nil {
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}

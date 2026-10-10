@@ -40,3 +40,12 @@ func (m *Manager) Configure() error { return errors.New("not supported on this p
 
 // CanConfigure is false: there is no portal to open an editor.
 func (m *Manager) CanConfigure() bool { return false }
+
+// Portal reports no portal: this platform registers its hotkeys itself.
+func (m *Manager) Portal() string { return "" }
+
+// CanReregister is false: there is no desktop to ask.
+func (m *Manager) CanReregister() bool { return false }
+
+// Reregister is unsupported here: there is no desktop to ask.
+func (m *Manager) Reregister() error { return errors.New("not supported on this platform") }

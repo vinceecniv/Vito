@@ -385,3 +385,12 @@ func (m *Manager) Configure() error { return fmt.Errorf("not supported on Window
 // CanConfigure is false on Windows: the hotkey is Vito's own setting, edited in
 // Vito's settings page rather than by the desktop.
 func (m *Manager) CanConfigure() bool { return false }
+
+// Portal reports no portal: this platform registers its hotkeys itself.
+func (m *Manager) Portal() string { return "" }
+
+// CanReregister is false: there is no desktop to ask.
+func (m *Manager) CanReregister() bool { return false }
+
+// Reregister is unsupported here: there is no desktop to ask.
+func (m *Manager) Reregister() error { return fmt.Errorf("not supported on this platform") }

@@ -121,6 +121,21 @@ cost nothing and remain the documented route for scripts and older setups).
    keys needs gnome-shell. Check any desktop with
    `VITO_GS_TEST=1 go test ./internal/hotkey/ -run TestGlobalShortcutsSession -v`.
 
+   GNOME 50 made that worse: its backend now hands the request to GNOME
+   Settings (`org.gnome.Settings.GlobalShortcutsProvider`), which *does* show
+   its dialog under niri, stores the answer in dconf
+   (`/org/gnome/settings-daemon/global-shortcuts/<app-id>/`) — and then
+   `BindShortcuts` still ends with code 2 and no key ever arrives. So Vito no
+   longer asks there: when `xdgportal.Backend` resolves GlobalShortcuts to
+   `gnome` (by reading `portals.conf` the way the frontend does) and nobody
+   owns `org.gnome.Shell` on the bus, the portal state is `undeliverable` and
+   the settings page points at the compositor bindings instead.
+
+   Where the portal does work, the settings page offers **Register again**
+   (`POST /api/hotkey/reregister`): the session is closed and the shortcuts
+   are bound anew. GNOME only asks about shortcuts it has not stored, so for
+   the GNOME backend Vito first resets its stored entry with `gsettings`.
+
    **The app-id requirement.** GlobalShortcuts refuses callers it cannot
    identify — `CreateSession` fails outright with *"An app id is required"*. For
    a host application the portal derives that id from the systemd scope the
