@@ -69,6 +69,8 @@ func main() {
 		err = request(http.MethodPost, "/api/quit")
 	case "status":
 		err = request(http.MethodGet, "/api/status")
+	case "wake-test":
+		err = wakeTest(os.Args[2:])
 	case "version", "--version":
 		fmt.Println("vito", version)
 	case "help", "--help", "-h":
@@ -95,6 +97,8 @@ Usage:
   vito quit      shut the daemon down
   vito pwa       install the web interface as an app (Windows)
   vito status    show daemon state
+  vito wake-test <file.wav> [hey_vito|oke_vito]
+                 score a recording with the wake word model
   vito version
 
 Environment:
