@@ -242,6 +242,13 @@ placeholder such as `MAC_DMG_SHA256`) and writes the real hash into the
 "Checksums" block of its notes. Always use it for a release; publishing the
 draft stays a separate, deliberate step.
 
+No Mac at hand: `.github/workflows/macos.yml` runs the same script on a GitHub
+macOS runner. A `v*` tag builds the dmg, keeps it as a workflow artifact and,
+when release `v<version>` already exists, attaches it and fills in the checksum
+like `--release`. Push the tag after the Windows draft exists, or re-run the
+job; it can also be started by hand (Actions → macOS build) with a version. A
+VM is not an option: macOS may only be virtualised on Apple hardware.
+
 Two `Info.plist` keys carry the behaviour the binary cannot have on its own:
 `NSMicrophoneUsageDescription` (without it macOS denies the microphone outright
 instead of asking, and dictation records silence) and `LSUIElement` (keeps Vito
