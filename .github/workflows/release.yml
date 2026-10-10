@@ -126,7 +126,7 @@ jobs:
       - name: Toolchain
         run: |
           apt-get update -qq
-          apt-get install -y -qq --no-install-recommends gcc libc6-dev curl ca-certificates file >/dev/null
+          apt-get install -y -qq --no-install-recommends gcc libc6-dev curl ca-certificates file zsync >/dev/null
 
       - uses: actions/checkout@v7
 
@@ -139,6 +139,7 @@ jobs:
           path: |
             dist/Vito-${{ needs.meta.outputs.version }}-x86_64.AppImage
             dist/Vito-${{ needs.meta.outputs.version }}-x86_64.AppImage.sha256
+            dist/Vito-${{ needs.meta.outputs.version }}-x86_64.AppImage.zsync
           if-no-files-found: error
 
   macos:
@@ -232,3 +233,11 @@ jobs:
           for f in "${files[@]}"; do
             gh release upload "v$V" "$f" "$f.sha256" --clobber
           done
+          # The AppImage's embedded update information points AppImage tools
+          # at this file (gh-releases-zsync, see build-appimage.sh).
+          zs="Vito-$V-x86_64.AppImage.zsync"
+          if [ -f "$zs" ]; then
+            gh release upload "v$V" "$zs" --clobber
+          else
+            echo "::warning::$zs is missing; AppImage tools will not see this release as an update"
+          fi

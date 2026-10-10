@@ -35,13 +35,19 @@ CGO_ENABLED=1 go build -trimpath \
   -o "$APPDIR/usr/bin/vito" ./cmd/vito
 
 # ---- AppDir contents ---------------------------------------------------------
-cp packaging/vito.desktop "$APPDIR/usr/share/applications/vito.desktop"
+# X-AppImage-Version is where AppImage tools (AppImageLauncher, Gear Lever,
+# appimaged) read the version from — without it the version lives only in the
+# file name, and is gone once the file is renamed to Vito.AppImage.
 cp packaging/vito.desktop "$APPDIR/vito.desktop"
+echo "X-AppImage-Version=$VERSION" >> "$APPDIR/vito.desktop"
+cp "$APPDIR/vito.desktop" "$APPDIR/usr/share/applications/vito.desktop"
 cp web/icon-512.png "$APPDIR/usr/share/icons/hicolor/512x512/apps/vito.png"
 cp web/icon-512.png "$APPDIR/vito.png"
 # The metainfo filename must match the component id (io.github.vinceecniv.vito),
 # or appstreamcli — which appimagetool runs when present — fails validation.
 cp packaging/io.github.vinceecniv.vito.metainfo.xml "$APPDIR/usr/share/metainfo/io.github.vinceecniv.vito.metainfo.xml"
+# ...and name this release in it, which is where software centres look.
+sh packaging/stamp-metainfo.sh "$APPDIR/usr/share/metainfo/io.github.vinceecniv.vito.metainfo.xml" "$VERSION"
 
 # AppRun passes its arguments straight through, so every subcommand works:
 #   ./Vito.AppImage serve | toggle | status | quit
@@ -66,10 +72,24 @@ if [ ! -x "$TOOL" ]; then
   chmod +x "$TOOL"
 fi
 
+# Update information (the AppImage spec's .upd_info section) tells
+# AppImageUpdate, Gear Lever and AppImageLauncher where newer releases live,
+# and lets them fetch only the changed blocks through the .zsync file that
+# appimagetool writes beside the image when zsyncmake is installed. Vito still
+# updates itself (internal/update); this is for the tools people manage their
+# AppImages with. Only release builds get it: a dev build pointing at
+# "latest" would offer to replace itself with something else.
+UPDATE=()
+if printf '%s' "$VERSION" | grep -Eq '^[0-9]{4}\.[0-9]{1,2}(\.[0-9]+)?$' && [ "$VERSION" != 0000.0 ]; then
+  UPDATE=(-u "gh-releases-zsync|vinceecniv|Vito|latest|Vito-*-$ARCH.AppImage.zsync")
+  command -v zsyncmake >/dev/null || echo "    note: zsyncmake not found; no .zsync is written (install zsync)"
+fi
+
 # --appimage-extract-and-run: containers and minimal images have no FUSE, and
-# the tool is an AppImage itself.
-export ARCH
-"$TOOL" --appimage-extract-and-run "$APPDIR" "$OUT/Vito-$VERSION-$ARCH.AppImage"
+# the tool is an AppImage itself. VERSION is read by appimagetool too.
+export ARCH VERSION
+rm -f "$OUT/Vito-$VERSION-$ARCH.AppImage.zsync"
+(cd "$OUT" && "$TOOL" --appimage-extract-and-run "${UPDATE[@]}" "$APPDIR" "Vito-$VERSION-$ARCH.AppImage")
 
 cd "$OUT"
 sha256sum "Vito-$VERSION-$ARCH.AppImage" > "Vito-$VERSION-$ARCH.AppImage.sha256"

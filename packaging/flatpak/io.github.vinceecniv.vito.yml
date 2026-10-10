@@ -96,6 +96,10 @@ modules:
       - sed -i 's|<launchable type="desktop-id">vito.desktop</launchable>|<launchable
           type="desktop-id">io.github.vinceecniv.vito.desktop</launchable>|'
           /app/share/metainfo/io.github.vinceecniv.vito.metainfo.xml
+      # Name this release in it: `flatpak info`, GNOME Software and KDE Discover
+      # take the version from there.
+      - sh packaging/stamp-metainfo.sh
+          /app/share/metainfo/io.github.vinceecniv.vito.metainfo.xml @VITO_VERSION@
     sources:
       - type: dir
         path: ../..

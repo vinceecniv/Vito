@@ -201,6 +201,17 @@ the oldest system the result runs on. `golang:1.26-bookworm` puts the floor at
 glibc 2.34 — Ubuntu 22.04, Debian 12, Fedora 35 and newer. Lower it by building
 on an older image; raise it by accident and older distributions stop working.
 
+The version is recorded where Linux tools look for it, not only in the file
+name (which is gone once a user renames the file to `Vito.AppImage`):
+`X-AppImage-Version` in the embedded `.desktop` files (AppImageLauncher, Gear
+Lever, appimaged), a `<release>` entry in the AppStream metainfo (software
+centres, `flatpak info`; added at build time by `packaging/stamp-metainfo.sh`
+for the AppImage *and* the Flatpak), and update information
+(`gh-releases-zsync|vinceecniv|Vito|latest|Vito-*-x86_64.AppImage.zsync`, read
+with `--appimage-updateinformation`) with a `.zsync` beside the image, which
+the release workflow uploads. Only release versions get the last two; dev
+builds keep the committed metainfo and carry no update information.
+
 Nothing is bundled beyond the binary. miniaudio dlopens ALSA/PulseAudio at
 runtime, so there is no link-time audio dependency (`ldd` shows only libc and
 libm), and the external helpers are checked for by the settings page rather than

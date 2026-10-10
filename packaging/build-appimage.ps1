@@ -24,11 +24,11 @@ if ($LASTEXITCODE -ne 0) { throw "Docker is not running — start Docker Desktop
 Write-Host "Building Vito $Version for Linux in $Image" -ForegroundColor Cyan
 
 # gcc for cgo (malgo/miniaudio), curl to fetch appimagetool, file because
-# appimagetool shells out to it.
+# appimagetool shells out to it, zsync for the .zsync update file.
 $script = @'
 set -e
 apt-get update -qq
-apt-get install -y -qq --no-install-recommends gcc libc6-dev curl ca-certificates file >/dev/null
+apt-get install -y -qq --no-install-recommends gcc libc6-dev curl ca-certificates file zsync >/dev/null
 git config --global --add safe.directory /src
 cd /src
 bash packaging/build-appimage.sh "$VITO_VERSION"
