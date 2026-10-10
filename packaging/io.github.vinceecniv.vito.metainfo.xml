@@ -25,6 +25,23 @@
     </p>
   </description>
   <launchable type="desktop-id">vito.desktop</launchable>
+  <!-- Made in demo mode by scripts/screenshots.py, which says how; regenerate
+       them when the interface changes. Software centres (and Flathub, which
+       requires at least one) load them from these URLs. -->
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/vinceecniv/Vito/main/packaging/screenshots/dashboard.png</image>
+      <caption>Dictate anywhere and see the cleaned-up text and the typing time you saved</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/vinceecniv/Vito/main/packaging/screenshots/history.png</image>
+      <caption>Every dictation in a searchable history, with the raw transcript beside the cleanup</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/vinceecniv/Vito/main/packaging/screenshots/dictionary.png</image>
+      <caption>Teach Vito the words speech recognition gets wrong</caption>
+    </screenshot>
+  </screenshots>
   <url type="homepage">https://github.com/vinceecniv/vito</url>
   <url type="bugtracker">https://github.com/vinceecniv/vito/issues</url>
   <categories>
