@@ -131,8 +131,12 @@ def lang_of(name):
 
 
 def to16k(path):
-    with wave.open(str(path), "rb") as w:
-        sr, data = w.getframerate(), np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16)
+    try:
+        with wave.open(str(path), "rb") as w:
+            sr, data = w.getframerate(), np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16)
+    except (EOFError, wave.Error):
+        Path(path).unlink()  # cut off when a run was interrupted
+        return
     if sr == 16000:
         return
     g = np.gcd(sr, 16000)
