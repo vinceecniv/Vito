@@ -19,7 +19,7 @@ step "waiting for $W clips"
 step "cleaning $W clips"
 cap 4G python $T/clean_clips.py /mnt/e/vito-wakeword/work/$W
 step "training $W"
-cap 10G bash $T/train.sh $W > ~/ww/train_$W.log 2>&1 || echo "train $W failed"
+cap 16G bash $T/train.sh $W > ~/ww/train_$W.log 2>&1 || echo "train $W failed"
 step "evaluating $W"
 cap 6G bash $T/eval_word.sh $W > ~/ww/eval_$W.log 2>&1 || echo "eval $W failed"
 step "MUSAN windows"
@@ -28,7 +28,7 @@ step "MUSAN windows"
 step "training $W without ACAV"
 mkdir -p /mnt/e/vito-wakeword/work_clean
 [ -e /mnt/e/vito-wakeword/work_clean/$W ] || ln -s ../work/$W /mnt/e/vito-wakeword/work_clean/$W
-cap 10G bash $T/train.sh $W config_clean.yml > ~/ww/train_clean_$W.log 2>&1 || echo "train clean $W failed"
+cap 16G bash $T/train.sh $W config_clean.yml > ~/ww/train_clean_$W.log 2>&1 || echo "train clean $W failed"
 step "evaluating $W without ACAV"
 cap 6G bash $T/eval_word.sh $W /mnt/e/vito-wakeword/work_clean/$W.onnx > ~/ww/eval_clean_$W.log 2>&1 || echo "eval clean $W failed"
 step LEAN-DONE
