@@ -142,6 +142,21 @@ in `<UserConfigDir>/vito/updated-from` and reported once as `updated_from` in
 `Vito-<v>-<arch>.AppImage`, `Vito-<v>.dmg`, each with `.sha256`) stable — the
 updater looks them up by name.
 
+## Releases on GitHub
+
+`.github/workflows/release.yml` builds all three downloads on GitHub's runners
+when a `v*` tag is pushed — Windows (`build-installer.ps1`), Linux
+(`build-appimage.sh` in `golang:1.26-bookworm`) and macOS (`build-macos.sh`) —
+and puts them with their `.sha256` in a **draft** release "Vito <version>",
+the checksums filled into the notes. Write the story at the top, then publish.
+If a release for the tag already exists, its files are replaced and only its
+checksum lines are touched. It can also be started by hand (Actions → Release)
+with a version, with or without filling the release. The Flatpak follows from
+`flatpak.yml`; the signed interface bundle stays a manual `publish-ui.ps1`,
+because its key must not live in the repository's secrets.
+
+The local scripts below remain the same builds, for testing or when CI is down.
+
 ## Releases (Windows)
 
 Versions are calendar-based: `year.month`, plus a counter for further releases
@@ -249,6 +264,10 @@ native on Apple Silicon and Intel.
 placeholder such as `MAC_DMG_SHA256`) and writes the real hash into the
 "Checksums" block of its notes. Always use it for a release; publishing the
 draft stays a separate, deliberate step.
+
+No Mac at hand: the release workflow (see "Releases on GitHub") builds the dmg
+on a GitHub macOS runner. A VM is not an option: macOS may only be virtualised
+on Apple hardware.
 
 Two `Info.plist` keys carry the behaviour the binary cannot have on its own:
 `NSMicrophoneUsageDescription` (without it macOS denies the microphone outright
