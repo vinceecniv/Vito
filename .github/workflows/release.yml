@@ -1,0 +1,234 @@
+name: Release
+
+# Builds every download of a release on GitHub's runners — the Windows
+# installer, the Linux AppImage and the macOS dmg — and collects them in a
+# draft release, so cutting a release needs no particular machine:
+#
+#   git tag -a v2026.10 -m "Vito 2026.10" && git push origin v2026.10
+#   → draft "Vito 2026.10" with all six files and the checksums filled in
+#   → write the story at the top of the notes, publish
+#
+# Each package is built on its own OS because it has to be: cgo needs the
+# platform's SDK, and the packagers (Inno Setup, appimagetool in the pinned
+# glibc container, hdiutil) exist nowhere else. The scripts are the same ones
+# used by hand, so a local build and a CI build cannot drift apart.
+#
+# Publishing stays a deliberate step: the release is only ever created as a
+# draft, and the in-app updater ignores drafts. When a release for the tag
+# already exists (a draft written by hand), its files are replaced and the
+# checksum lines in its notes are filled in; nothing else in the notes changes.
+#
+# The Flatpak has its own workflow (flatpak.yml) on the same tag. The signed
+# interface bundle (scripts/publish-ui.ps1) is deliberately not built here: its
+# signing key would have to live in this repository's secrets.
+
+on:
+  push:
+    tags: ["v*"]
+  # A change to the packaging builds all three as a test (version 0000.0, no
+  # release), so a broken build script shows up in its pull request rather
+  # than on release day.
+  pull_request:
+    paths:
+      - "packaging/**"
+      - ".github/workflows/release.yml"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to build, e.g. 2026.10 or 2026.10.1"
+        required: true
+      release:
+        description: "Put the files in the draft release v<version> (the tag must exist)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}-${{ inputs.version }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      release: ${{ steps.v.outputs.release }}
+    steps:
+      - id: v
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_RELEASE: ${{ inputs.release }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            version="${GITHUB_REF_NAME#v}"; release=true
+          elif [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            version=0000.0; release=false
+          else
+            version="$INPUT_VERSION"; release="$INPUT_RELEASE"
+          fi
+          # The same rule build-installer.ps1 enforces: year.month[.n].
+          if ! printf '%s' "$version" | grep -Eq '^[0-9]{4}\.[0-9]{1,2}(\.[0-9]+)?$'; then
+            echo "::error::version '$version' does not look like year.month[.n], e.g. 2026.10 or 2026.10.1"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "release=$release" >> "$GITHUB_OUTPUT"
+
+  windows:
+    needs: meta
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # build-installer.ps1 reads the tags
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Toolchain (mingw-w64 for cgo, Inno Setup)
+        run: |
+          if (-not (Get-Command gcc -ErrorAction SilentlyContinue)) {
+            choco install mingw -y --no-progress
+            if ($LASTEXITCODE -ne 0) { throw "mingw install failed" }
+          }
+          choco install innosetup -y --no-progress
+          if ($LASTEXITCODE -ne 0) { throw "Inno Setup install failed" }
+          "${env:ProgramFiles(x86)}\Inno Setup 6" | Out-File -Append -Encoding utf8 $env:GITHUB_PATH
+
+      - name: Build the installer
+        run: pwsh -File packaging/build-installer.ps1 -Version "${{ needs.meta.outputs.version }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            dist/Vito-Setup-${{ needs.meta.outputs.version }}.exe
+            dist/Vito-Setup-${{ needs.meta.outputs.version }}.exe.sha256
+          if-no-files-found: error
+
+  linux:
+    needs: meta
+    runs-on: ubuntu-latest
+    # The container is the compatibility contract, as in build-appimage.ps1:
+    # cgo links against its glibc, which sets the oldest system the AppImage
+    # runs on (bookworm: glibc 2.34). Change it deliberately or not at all.
+    container: golang:1.26-bookworm
+    env:
+      GOFLAGS: -buildvcs=false
+    steps:
+      - name: Toolchain
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends gcc libc6-dev curl ca-certificates file >/dev/null
+
+      - uses: actions/checkout@v7
+
+      - name: Build the AppImage
+        run: bash packaging/build-appimage.sh "${{ needs.meta.outputs.version }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            dist/Vito-${{ needs.meta.outputs.version }}-x86_64.AppImage
+            dist/Vito-${{ needs.meta.outputs.version }}-x86_64.AppImage.sha256
+          if-no-files-found: error
+
+  macos:
+    needs: meta
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      # Ad-hoc signed like a local build (see build-macos.sh). Testing it —
+      # permissions, hotkey, pasting — still needs a real Mac.
+      - name: Build the dmg
+        run: bash packaging/build-macos.sh "${{ needs.meta.outputs.version }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: |
+            dist/Vito-${{ needs.meta.outputs.version }}.dmg
+            dist/Vito-${{ needs.meta.outputs.version }}.dmg.sha256
+          if-no-files-found: error
+
+  release:
+    needs: [meta, windows, linux, macos]
+    if: needs.meta.outputs.release == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      V: ${{ needs.meta.outputs.version }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Verify the checksums
+        working-directory: dist
+        run: |
+          ls -l
+          sha256sum -c ./*.sha256
+
+      - name: Draft or update release v${{ needs.meta.outputs.version }}
+        working-directory: dist
+        run: |
+          files=("Vito-Setup-$V.exe" "Vito-$V.dmg" "Vito-$V-x86_64.AppImage")
+          sum() { cut -d' ' -f1 "$1.sha256"; }
+
+          if ! gh release view "v$V" >/dev/null 2>&1; then
+            {
+              echo "## ✍️ What's new"
+              echo
+              echo "_Write the release story here before publishing._"
+              echo
+              echo "---"
+              echo
+              echo "### Install"
+              echo
+              echo "- **Windows** — \`Vito-Setup-$V.exe\` (per-user, no admin)."
+              echo "- **macOS** — \`Vito-$V.dmg\` — drag Vito to Applications. First launch needs **right-click → Open**, then two permissions (Microphone, Accessibility)."
+              echo "- **Linux** — \`Vito-$V-x86_64.AppImage\` — \`chmod +x\` and run — or the Flatpak from [vinceecniv.github.io/Vito](https://vinceecniv.github.io/Vito/)."
+              echo
+              echo "### Checksums (SHA-256)"
+              echo
+              for f in "${files[@]}"; do echo "    $(sum "$f")  $f"; done
+              echo
+              echo "Free, open-source, bring-your-own-key — no subscription. Setup guides at [vito.talk](https://vito.talk)."
+            } > notes.md
+            gh release create "v$V" --draft --verify-tag --title "Vito $V" --notes-file notes.md
+            echo "created draft release v$V"
+          else
+            # Every indented "<word>  <file>" line gets the real checksum — the
+            # same substitution build-macos.sh --release does for the dmg.
+            gh release view "v$V" --json body -q .body > notes.md
+            for f in "${files[@]}"; do
+              SUM="$(sum "$f")" NAME="$f" perl -pi -e \
+                's/^(\s+)\S+(\s+)\Q$ENV{NAME}\E\s*$/$1$ENV{SUM}$2$ENV{NAME}\n/' notes.md
+              grep -qF "$(sum "$f")  $f" notes.md \
+                || echo "::warning::No checksum line for $f in the release notes; add it by hand: $(sum "$f")  $f"
+            done
+            gh release edit "v$V" --notes-file notes.md >/dev/null
+            echo "updated release v$V"
+          fi
+
+          for f in "${files[@]}"; do
+            gh release upload "v$V" "$f" "$f.sha256" --clobber
+          done
