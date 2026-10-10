@@ -406,3 +406,12 @@ func parseSpec(spec string) (mods, key uint64, err error) {
 	}
 	return mods, key, nil
 }
+
+// Portal reports no portal: this platform registers its hotkeys itself.
+func (m *Manager) Portal() string { return "" }
+
+// CanReregister is false: there is no desktop to ask.
+func (m *Manager) CanReregister() bool { return false }
+
+// Reregister is unsupported here: there is no desktop to ask.
+func (m *Manager) Reregister() error { return fmt.Errorf("not supported on this platform") }
