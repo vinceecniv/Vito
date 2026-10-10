@@ -57,12 +57,16 @@ def main():
                     continue
                 piece.append(x)
                 plen += len(x)
-                if plen >= 16000 * 120:
-                    emb = F._get_embeddings(np.concatenate(piece))
+                # Always exactly two minutes: onnxruntime keeps a memory arena
+                # per input shape, and varying lengths made it grow by gigabytes.
+                size = 16000 * 120
+                while plen >= size:
+                    y = np.concatenate(piece)
+                    emb = F._get_embeddings(y[:size])
                     n = len(emb) // 16 * 16
                     windows.append(emb[:n].reshape(-1, 16, 96).astype(np.float16))
-                    got += plen
-                    piece, plen = [], 0
+                    got += size
+                    piece, plen = [y[size:]], len(y) - size
             if got >= budget:
                 break
         print(f"{shard.name}: {got/16000/3600:.1f} h", flush=True)

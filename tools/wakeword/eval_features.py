@@ -36,13 +36,18 @@ def stream(args, F):
     plen = 0
     size = 16000 * 120  # two minutes at a time keeps memory small
 
-    def flush():
+    def flush(final=False):
+        # Always exactly `size` samples: onnxruntime keeps a memory arena per
+        # input shape, and pieces of varying length made it grow by gigabytes.
         nonlocal piece, plen, total
-        if piece:
+        while plen >= size or (final and plen > 0):
             x = np.concatenate(piece)
-            out.append(F._get_embeddings(x))
-            total += len(x)
-            piece, plen = [], 0
+            take = min(size, len(x))
+            chunk = np.pad(x[:take], (0, size - take))
+            out.append(F._get_embeddings(chunk)[: max(1, (take - 12400) // 1280 + 1)])
+            total += take
+            rest = x[take:]
+            piece, plen = ([rest] if len(rest) else []), len(rest)
 
     for f in files:
         try:
@@ -51,13 +56,10 @@ def stream(args, F):
             print("skip", f, e)
             continue
         # long recordings are cut; short ones are joined
-        for i in range(0, len(a), size):
-            part = a[i:i + size]
-            piece.append(part)
-            plen += len(part)
-            if plen >= size:
-                flush()
-    flush()
+        piece.append(a)
+        plen += len(a)
+        flush()
+    flush(final=True)
     emb = np.concatenate(out).astype(np.float16)
     np.save(args.out, emb)
     print(f"{len(files)} files, {total/16000/3600:.2f} h, {emb.shape} embeddings -> {args.out}")

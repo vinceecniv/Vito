@@ -21,11 +21,11 @@ background_paths_duplication_rate:
 false_positive_validation_data_path: "/mnt/e/vito-wakeword/data/validation_set_features.npy"
 augmentation_rounds: 1
 
-# General negatives: openWakeWord's 2000 h of mixed audio (ACAV100M) plus
+# General negatives: 1.5 M windows (~530 h) of openWakeWord's ACAV100M plus
 # Multilingual LibriSpeech in Dutch and five more languages, so speech in
 # those languages is learnt as "not the wake word".
 feature_data_files:
-  "ACAV100M_sample": "/mnt/e/vito-wakeword/data/openwakeword_features_ACAV100M_2000_hrs_16bit.npy"
+  "ACAV100M_sample": "/mnt/e/vito-wakeword/data/acav_1500k.npy"
   "mls": "/mnt/e/vito-wakeword/data/mls_windows.npy"
 
 batch_n_per_class:
