@@ -170,12 +170,15 @@ def _gen_onnx_one(args):
                           file_names=[f"{Path(model).stem}-{uuid.uuid4().hex}.wav" for _ in range(n)])
 
 
+WORKERS = 6  # each Piper voice process holds ~1.5 GB
+
+
 def gen_onnx(models, texts_for, out, n, noise):
     if n <= 0 or not models:
         return
     per = -(-n // len(models))
     jobs = [(m, texts_for(m), out, per, noise) for m in models]
-    with ProcessPoolExecutor(max_workers=min(12, len(jobs))) as ex:
+    with ProcessPoolExecutor(max_workers=min(WORKERS, len(jobs))) as ex:
         list(ex.map(_gen_onnx_one, jobs))
 
 
@@ -210,7 +213,13 @@ def main():
     ap.add_argument("--n-val", type=int, default=3000)
     ap.add_argument("--batch", type=int, default=60)
     ap.add_argument("--edge", action="store_true", help="also make the held-out test set with Microsoft neural voices")
+    ap.add_argument("--no-generators", action="store_true",
+                    help="Piper voices only: the speaker-mixing generators need a GPU (on the CPU they take >12 GB)")
+    ap.add_argument("--workers", type=int, default=6)
     a = ap.parse_args()
+    global WORKERS
+    WORKERS = a.workers
+    gens = [] if a.no_generators else GENERATORS
 
     V = Path(a.voices)
     train_onnx = [str(V / f"{m}.onnx") for m in TRAIN_VOICES]
@@ -244,7 +253,7 @@ def main():
         todo = n - have
         log.info("%s: generating %d", name, todo)
         done = 0
-        for model, share in GENERATORS:
+        for model, share in gens:
             gen_pt(str(V / model), texts[lang_of(model)], d, int(todo * share), a.batch, noise)
             done += int(todo * share)
         gen_onnx(train_onnx, lambda m: texts[lang_of(m)], d, todo - done, noise)
