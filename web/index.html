@@ -4758,7 +4758,9 @@ async function showLangPicker(first){
   if (first && !chosen && preferLang(UI_LANGS) !== uiLang) await setUiLang(preferLang(UI_LANGS), true);
   const pref = browserLangs();
   const uiMine = pref.filter(c => UI_LANGS.includes(c));
-  const uiOpts = [...uiMine.filter(c => c !== "en"), "en"];
+  // The language the interface is in now is always a button, selected — also
+  // when it came from an earlier choice rather than from the browser.
+  const uiOpts = [...new Set([uiLang, ...uiMine].filter(c => c !== "en")), "en"];
   // Every language Whistle knows, the browser's own first — and of those, one
   // other than English before English: a browser that lists both was set up by
   // someone who speaks the other one, English being everyone's second.
