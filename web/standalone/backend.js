@@ -632,6 +632,34 @@ registerProcessor("vito-pcm",P)`;
     } catch {}
   }
 
+  // ---- usage counting (vito.talk only) ----
+  // A few things are counted, through the same self-hosted Matomo as the rest
+  // of vito.talk and with the same rules: no cookies, nothing when the browser
+  // sends Do Not Track. A page load, and once per browser each milestone: the
+  // first dictation (it works) and the tenth (it is used). Together they show
+  // where people drop off. Nothing about what is said, nor any setting. The
+  // installed app never loads this file, and a local test build of the site
+  // (any other host) counts nothing.
+  const MILESTONES = [1, 10], LS_COUNTED = "vito-web-counted";
+  const counting = location.hostname === "vito.talk" && navigator.doNotTrack !== "1";
+  function count(params) {
+    if (!counting) return;
+    const q = new URLSearchParams({ idsite: "5", rec: "1", apiv: "1", send_image: "0",
+      url: location.origin + location.pathname, rand: String(Math.random()).slice(2), ...params });
+    fetch("https://stats.vblok.nl/matomo.php?" + q, { method: "POST", mode: "no-cors", credentials: "omit", keepalive: true }).catch(() => {});
+  }
+  count({ action_name: "Vito web app" });
+  function countMilestones() {
+    const done = read(LS_COUNTED, []);
+    let n = 0;
+    for (const k in days) n += days[k].activations || 0;
+    for (const m of MILESTONES) {
+      if (n < m || done.includes(m)) continue;
+      done.push(m); write(LS_COUNTED, done);
+      count({ e_c: "Web app", e_a: m === 1 ? "1 dictation" : m + " dictations" });
+    }
+  }
+
   // ---- history and the permanent day sums ----
   const newID = () => [...crypto.getRandomValues(new Uint8Array(8))].map((b) => b.toString(16).padStart(2, "0")).join("");
   function record(e) {
@@ -642,6 +670,7 @@ registerProcessor("vito-pcm",P)`;
     d.words += words; d.sentences += sentences; d.activations++; d.duration_ms += e.duration_ms;
     if (e.command_text) { d.commands = (d.commands || 0) + 1; if (e.clipboard) d.clipboard_commands = (d.clipboard_commands || 0) + 1; }
     write(LS_DAYS, days);
+    countMilestones();
     if (cfg.history && cfg.history.enabled === false) return null;
     if (privacyOn()) return null; // privacy mode: the sums count, the words are not kept
     const entry = { id: newID(), timestamp: now.toISOString(), duration_ms: e.duration_ms, language: e.language || "",
