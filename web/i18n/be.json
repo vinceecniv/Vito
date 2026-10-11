@@ -343,6 +343,7 @@
 "Privacy & data": "Прыватнасць і даныя",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito ніяк не збірае карыстальніцкія даныя для перадачы, і ў праграму не ўбудавана ніякага адсочвання ці аналітыкі. Вашы налады, слоўнік і гісторыя застаюцца лакальна на вашым камп’ютары.",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Адзіныя даныя, якія праграма дасылае вонкі, — гэта ваша маўленне і тэксты, што ідуць да знешніх правайдэраў мадэлі BYOK (распазнаванне маўлення і AI-ачыстка). На гэтыя даныя распаўсюджваюцца палітыкі прыватнасці тых знешніх правайдэраў.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Браўзерная версія на vito.talk ананімна лічыць, як часта яе адкрываюць і ці дасягае браўзер 1-й і 10-й дыктоўкі — без cookie, а пры ўключаным Do Not Track зусім нічога. Нічога з таго, што вы кажаце або наладжваеце, не адпраўляецца. Усталяваная праграма нічога не лічыць.",
 "Show all": "Паказваць усё",
 "Errors only": "Толькі памылкі",
 "Off": "Выключана",

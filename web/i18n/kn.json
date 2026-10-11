@@ -272,6 +272,7 @@
 "Privacy & data": "ಗೌಪ್ಯತೆ ಮತ್ತು ಡೇಟಾ",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito ಬಳಕೆದಾರ ಡೇಟಾವನ್ನು ಕಳುಹಿಸಲು ಯಾವುದೇ ರೀತಿಯಲ್ಲಿ ಸಂಗ್ರಹಿಸುವುದಿಲ್ಲ, ಮತ್ತು ಆಪ್‌ನಲ್ಲಿ ಯಾವುದೇ ರೀತಿಯ ಟ್ರ್ಯಾಕಿಂಗ್ ಅಥವಾ ಅನಾಲಿಟಿಕ್ಸ್ ನಿರ್ಮಿಸಲಾಗಿಲ್ಲ. ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳು, ಶಬ್ದಕೋಶ ಮತ್ತು ಇತಿಹಾಸ ನಿಮ್ಮ ಸ್ವಂತ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಸ್ಥಳೀಯವಾಗಿ ಉಳಿಯುತ್ತವೆ.",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "ಆಪ್ ಬಾಹ್ಯವಾಗಿ ಕಳುಹಿಸುವ ಏಕೈಕ ಡೇಟಾ ಎಂದರೆ ನಿಮ್ಮ ಧ್ವನಿ ಮತ್ತು BYOK ಮಾದರಿಯ ಬಾಹ್ಯ ಪೂರೈಕೆದಾರರಿಗೆ ಹೋಗುವ ಪಠ್ಯಗಳು (ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ ಮತ್ತು AI ಶುದ್ಧೀಕರಣ). ಆ ಡೇಟಾಕ್ಕೆ ಆ ಬಾಹ್ಯ ಪೂರೈಕೆದಾರರ ಗೌಪ್ಯತೆ ನೀತಿಗಳು ಅನ್ವಯಿಸುತ್ತವೆ.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk ನಲ್ಲಿರುವ ಬ್ರೌಸರ್ ಆವೃತ್ತಿಯು ಅದು ಎಷ್ಟು ಬಾರಿ ತೆರೆಯಲ್ಪಡುತ್ತದೆ ಮತ್ತು ಬ್ರೌಸರ್ ತನ್ನ 1ನೇ ಮತ್ತು 10ನೇ ಡಿಕ್ಟೇಶನ್ ತಲುಪುತ್ತದೆಯೇ ಎಂಬುದನ್ನು ಅನಾಮಧೇಯವಾಗಿ ಎಣಿಸುತ್ತದೆ — ಕುಕೀಗಳಿಲ್ಲದೆ, ಮತ್ತು Do Not Track ಆನ್ ಆಗಿದ್ದರೆ ಏನೂ ಇಲ್ಲ. ನೀವು ಹೇಳುವ ಅಥವಾ ಹೊಂದಿಸುವ ಯಾವುದನ್ನೂ ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ. ಸ್ಥಾಪಿಸಿದ ಆ್ಯಪ್ ಏನನ್ನೂ ಎಣಿಸುವುದಿಲ್ಲ.",
 "Show all": "ಎಲ್ಲವನ್ನೂ ತೋರಿಸಿ",
 "Errors only": "ದೋಷಗಳು ಮಾತ್ರ",
 "Off": "ಆಫ್",

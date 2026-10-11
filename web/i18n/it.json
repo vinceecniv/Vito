@@ -267,6 +267,7 @@
 "Privacy & data": "Privacy e dati",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito non raccoglie in alcun modo dati degli utenti per inviarli altrove, e nell'app non è integrata alcuna forma di tracciamento o analisi. Le tue impostazioni, il dizionario e la cronologia restano in locale sul tuo computer.",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Gli unici dati che l'app invia all'esterno sono la tua voce e i testi che vanno ai provider esterni del modello BYOK (riconoscimento vocale e pulizia AI). A tali dati si applicano le informative sulla privacy di quei provider esterni.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "La versione per browser su vito.talk conta in modo anonimo quante volte viene aperta e se un browser arriva alla sua 1ª e 10ª dettatura — senza cookie, e per niente con Do Not Track attivo. Nulla di ciò che dici o imposti viene inviato. L'app installata non conta nulla.",
 "Show all": "Mostra tutto",
 "Errors only": "Solo errori",
 "Off": "Off",
