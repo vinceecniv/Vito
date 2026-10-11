@@ -359,6 +359,7 @@
 "Privacy & data": "প্রাইভেসি ও তথ্য",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito কোনোভাবেই ব্যবহারকারীর তথ্য সংগ্রহ করে অন্যত্র পাঠায় না, এবং অ্যাপে কোনো ধরনের ট্র্যাকিং বা অ্যানালিটিক্স নেই। আপনার সেটিংস, অভিধান ও ইতিহাস আপনার নিজের কম্পিউটারে স্থানীয়ভাবে থাকে।",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "অ্যাপ বাইরে যে একমাত্র তথ্য পাঠায় তা হলো আপনার কণ্ঠ ও টেক্সট, যা BYOK মডেলের বাহ্যিক প্রোভাইডারদের কাছে যায় (স্পিচ রিকগনিশন ও AI পরিষ্করণ)। সেই তথ্যের উপর সেই বাহ্যিক প্রোভাইডারদের প্রাইভেসি নীতি প্রযোজ্য।",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk-এর ব্রাউজার সংস্করণ বেনামে গোনে এটি কতবার খোলা হয় এবং কোনো ব্রাউজার তার ১ম ও ১০ম ডিক্টেশনে পৌঁছায় কি না — কুকি ছাড়াই, আর Do Not Track চালু থাকলে একেবারেই নয়। আপনি যা বলেন বা সেট করেন তার কিছুই পাঠানো হয় না। ইনস্টল করা অ্যাপ কিছুই গোনে না।",
 "Show all": "সব দেখান",
 "Errors only": "শুধু ত্রুটি",
 "Off": "বন্ধ",

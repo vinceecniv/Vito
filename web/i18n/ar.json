@@ -267,6 +267,7 @@
 "Privacy & data": "الخصوصية والبيانات",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "لا يجمع Vito بيانات المستخدمين بأي شكل لإرسالها، ولا يوجد أي نوع من التتبع أو التحليلات مدمج في التطبيق. تبقى إعداداتك وقاموسك وسجلك محليًا على حاسوبك.",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "البيانات الوحيدة التي يرسلها التطبيق خارجيًا هي كلامك والنصوص التي تذهب إلى مزودي نموذج BYOK الخارجيين (التعرّف على الكلام والتنقيح بالذكاء الاصطناعي). وتخضع تلك البيانات لسياسات الخصوصية الخاصة بهؤلاء المزودين الخارجيين.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "تحسب نسخة المتصفح على vito.talk بشكل مجهول عدد مرات فتحها، وما إذا كان المتصفح قد وصل إلى إملائه الأول والعاشر — دون ملفات تعريف الارتباط، ولا شيء على الإطلاق عند تفعيل Do Not Track. لا يُرسَل أي شيء مما تقوله أو تضبطه. أما التطبيق المثبّت فلا يحسب شيئًا.",
 "Show all": "إظهار الكل",
 "Errors only": "الأخطاء فقط",
 "Off": "معطّل",

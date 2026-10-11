@@ -292,6 +292,7 @@
 "Privacy & data": "Faragha na data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito haikusanyi data ya mtumiaji kwa njia yoyote ili kuituma popote, na hakuna aina yoyote ya ufuatiliaji au uchanganuzi iliyojengwa ndani ya programu. Mipangilio yako, kamusi na historia hubaki ndani ya kompyuta yako mwenyewe.",
 "The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Data pekee ambayo programu huituma nje ni sauti yako na maandishi yanayoenda kwa watoa huduma wa nje wa mtindo wa BYOK (utambuzi wa sauti na usafishaji wa AI). Data hiyo inatawaliwa na sera za faragha za watoa huduma hao wa nje.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Toleo la kivinjari kwenye vito.talk huhesabu bila kujulikana ni mara ngapi linafunguliwa na kama kivinjari kinafikia imla yake ya 1 na ya 10 — bila vidakuzi, na hakuna kabisa Do Not Track ikiwa imewashwa. Hakuna chochote unachosema au kuweka kinachotumwa. Programu iliyosakinishwa haihesabu chochote.",
 "Show all": "Onyesha yote",
 "Errors only": "Hitilafu pekee",
 "Off": "Zima",
