@@ -1345,6 +1345,9 @@
   .mascot-card .vm-dev button { font-family:inherit; font-size:10.5px; font-weight:600; line-height:1; padding:4px 7px; border-radius:7px; border:1px dashed var(--card-border); background:transparent; color:var(--text2); cursor:var(--cur-hand); }
   .mascot-card .vm-dev button:hover { color:var(--text); border-style:solid; }
   .qs-card .stag { min-width:0; border-radius:10px; }
+  /* The wake word, under the tags: on or off without going to Settings. */
+  .qs-card .qs-wake { margin:12px 0 0; font-size:12.5px; font-weight:600; }
+  .qs-wake-phrase { color:var(--text3); font-weight:500; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   /* The cleanup rule set, at the right of the card's head: it decides what
      every dictation comes out like, so it sits with the other quick settings. */
   .qs-card .rhythm-head .lbl { flex:none; }
@@ -1841,6 +1844,7 @@
         <div class="card stat qs-card" id="qs-card">
           <div class="rhythm-head"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="9" cy="8" r="2.4" fill="var(--card)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--card)"/></svg></div><div class="lbl">Quick settings</div><button class="pill pill-btn qs-ruleset" id="ruleset-pill" data-help="prompts" aria-haspopup="true" aria-expanded="false" aria-label="Cleanup rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h16M4 18h9"/><path d="M17.5 15.5l3 3-4 1z"/></svg><span id="ruleset-lbl">Vito default</span></button></div>
           <div class="status-tags" id="status-tags"></div>
+          <label class="tgl qs-wake helper-only" id="qs-wake-row"><input type="checkbox" id="qs-wake"><span class="tr"></span><span>Always on</span><span class="qs-wake-phrase" id="qs-wake-phrase"></span></label>
         </div>
       </div>
     </section>
@@ -1948,6 +1952,17 @@
             <label class="fld">Keep listening after a pause <span class="val" id="s-wakefollowval"></span></label>
             <div class="slider-wrap" style="--frac:0.4;"><input type="range" id="s-wakefollow" min="0" max="10" step="1"><span class="slider-mark" aria-hidden="true"></span></div>
             <p class="act-note" style="margin:2px 0 0;">What you say within this time is pasted after the text so far, so you can stop to think. 0 = off.</p>
+            <label class="fld">Switch off after</label>
+            <select id="s-wakeoff" style="width:auto;">
+              <option value="0">Never</option>
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="60">1 hour</option>
+              <option value="120">2 hours</option>
+              <option value="240">4 hours</option>
+              <option value="480">8 hours</option>
+            </select>
+            <p class="act-note" style="margin:6px 0 0;">Counted from the last time you used it, so it is not left listening when you have walked away.</p>
             <div class="wake-live">
               <div class="wake-status" id="wake-status"></div>
               <div class="wake-meter" title="Live score — the line marks where Vito wakes"><span class="wake-bar" id="wake-bar"></span><span class="wake-thr" id="wake-thr"></span></div>
@@ -2905,6 +2920,15 @@ const TR = { nl: {
   "Collapse":"Inklappen","Collapse sidebar":"Zijbalk inklappen","Expand sidebar":"Zijbalk uitklappen",
   "Bring Vito to front":"Vito naar voren halen",
   "Quick settings":"Snelinstellingen",
+  "Always on":"Altijd aan",
+  "Switch off after":"Uitschakelen na",
+  "15 minutes":"15 minuten",
+  "30 minutes":"30 minuten",
+  "2 hours":"2 uur",
+  "4 hours":"4 uur",
+  "8 hours":"8 uur",
+  "Counted from the last time you used it, so it is not left listening when you have walked away.":"Gerekend vanaf de laatste keer dat je het gebruikte, zodat het niet blijft luisteren als je wegloopt.",
+  "Wake word switched off: not used for {n} minutes":"Wake word uitgeschakeld: {n} minuten niet gebruikt",
   "Enter after text":"Enter na tekst",
   "Auto-stop on pause":"Automatisch stoppen bij pauze",
   "Duck media while recording":"Media dempen bij opname",
@@ -5282,6 +5306,7 @@ function handleEvent(e) {
       loadPrivacy();
     } else if (e.type === "wake") {
       if (e.text === "heard") wakeHeard(e.level || 0);
+      else if (e.text === "auto_off") toast(t("Wake word switched off: not used for {n} minutes").replace("{n}", e.level || 0));
       else loadWake();
     } else if (e.type === "wake_score") {
       wakeScore(e.level || 0);
@@ -9494,6 +9519,7 @@ function renderWakeSettings(){
   $("s-wakesens").value = w.sensitivity || 0.5;
   $("s-wakecalls").checked = !!w.keep_listening_in_calls;
   $("s-wakefollow").value = w.follow_sec ?? 4;
+  setWakeOff(w.auto_off_min || 0);
   const cur = w.phrase || "hey_vito";
   $("wake-phrases").replaceChildren(...wakePhrases.map(p => {
     const b = document.createElement("button");
@@ -9507,8 +9533,20 @@ function renderWakeSettings(){
   }));
   syncWakeUI();
 }
+// A value set by hand in the config file still shows, as its own option.
+function setWakeOff(min){
+  const sel = $("s-wakeoff");
+  if (![...sel.options].some(o => +o.value === min)) {
+    const o = document.createElement("option");
+    o.value = min; o.textContent = min + " min";
+    sel.append(o);
+  }
+  sel.value = String(min);
+}
 function syncWakeUI(){
   const on = $("s-wake").checked, sens = parseFloat($("s-wakesens").value) || 0.5;
+  $("qs-wake").checked = on;
+  $("qs-wake-phrase").textContent = "“" + t(WAKE_NAMES[wakePhrase()] || wakePhrase()) + "”";
   $("wake-opts").style.opacity = on ? "" : ".55";
   $("s-wakesensval").textContent = Math.round(sens * 100) + "%";
   const fol = parseInt($("s-wakefollow").value, 10) || 0;
@@ -9559,6 +9597,11 @@ setInterval(() => {
   api("/api/wake/meter", { method: "POST" }).catch(() => {});
 }, 20000);
 if ($("s-wake")) {
+  $("qs-wake").addEventListener("change", () => {
+    $("s-wake").checked = $("qs-wake").checked;
+    $("s-wake").dispatchEvent(new Event("change"));
+  });
+  $("s-wakeoff").addEventListener("change", autoSaveSettings);
   ["s-wake", "s-wakecalls"].forEach(id => $(id).addEventListener("change", () => { syncWakeUI(); autoSaveSettings(); }));
   $("s-wakesens").addEventListener("input", syncWakeUI);
   $("s-wakefollow").addEventListener("input", syncWakeUI);
@@ -9913,6 +9956,7 @@ function collectSettings() {
       phrase: wakePhrase(),
       sensitivity: parseFloat($("s-wakesens").value) || 0.5,
       keep_listening_in_calls: $("s-wakecalls").checked,
+      auto_off_min: parseInt($("s-wakeoff").value, 10) || 0,
       follow_sec: Math.max(0, Math.min(10, parseInt($("s-wakefollow").value, 10) || 0)),
     }),
     demo: $("s-demo").checked,

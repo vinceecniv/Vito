@@ -151,7 +151,10 @@ and every 3 s. It steps aside for a dictation, the microphone test, and — on
 Windows, unless the user opts out — while another program has the microphone
 (`MicInUseByOthers` reads the privacy indicator's registry keys). A dictation
 the wake word starts always auto-stops at the first pause and is cancelled
-after 8 s without speech: there is no key to end it.
+after 8 s without speech: there is no key to end it. `wake_word.auto_off_min`
+switches the setting itself off after that long without a wake or a dictation
+(counted from switching it on, reset by each use); the Status page's quick
+settings card carries an on/off switch for it.
 
 ## Vito updates itself
 

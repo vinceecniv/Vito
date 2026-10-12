@@ -297,6 +297,10 @@ type WakeWord struct {
 	// at a pause; speech within it is pasted after the text so far. Nil is the
 	// default (4 s), 0 switches it off.
 	FollowSec *int `json:"follow_sec,omitempty"`
+	// AutoOffMin switches the wake word off after this many minutes without
+	// use (no wake, no dictation), so it is not left listening by accident.
+	// 0 never does.
+	AutoOffMin int `json:"auto_off_min,omitempty"`
 }
 
 // Sync shares dictations, day sums, achievements and the dictionary between
@@ -582,6 +586,9 @@ func (c *Config) Validate() error {
 	}
 	if f := c.WakeWord.FollowSec; f != nil && (*f < 0 || *f > 30) {
 		return fmt.Errorf("wake_word.follow_sec %d out of range [0, 30]", *f)
+	}
+	if m := c.WakeWord.AutoOffMin; m < 0 || m > 24*60 {
+		return fmt.Errorf("wake_word.auto_off_min %d out of range [0, 1440]", m)
 	}
 	if c.WakeWord.Sensitivity < 0 || c.WakeWord.Sensitivity > 1 {
 		return fmt.Errorf("wake_word.sensitivity %v out of range [0, 1]", c.WakeWord.Sensitivity)

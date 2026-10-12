@@ -37,6 +37,9 @@ type wakeState struct {
 	status   string // "", "listening", "paused_call", "error"
 	err      string
 	meterTil atomic.Int64 // unix ms until which scores are sent to the UI
+	// lastUse is when the wake word was switched on or last used (a wake, a
+	// dictation); AutoOffMin counts from it.
+	lastUse  time.Time
 	pollOnce sync.Once
 }
 
@@ -95,6 +98,16 @@ func (d *Daemon) SyncWake() {
 
 	d.wake.mu.Lock()
 	defer d.wake.mu.Unlock()
+	now := time.Now()
+	switch {
+	case !ww.Enabled:
+		d.wake.lastUse = time.Time{}
+	case d.wake.lastUse.IsZero() || !idle:
+		d.wake.lastUse = now
+	case ww.AutoOffMin > 0 && now.Sub(d.wake.lastUse) >= time.Duration(ww.AutoOffMin)*time.Minute:
+		d.wake.lastUse = now // once; the switch-off below makes it stick
+		go d.wakeAutoOff(ww.AutoOffMin)
+	}
 	status, errText := "", ""
 	switch {
 	case !ww.Enabled:
@@ -128,6 +141,21 @@ func (d *Daemon) SyncWake() {
 	}
 }
 
+// wakeAutoOff switches the wake word off after AutoOffMin without use.
+func (d *Daemon) wakeAutoOff(min int) {
+	cfg := d.Config()
+	if !cfg.WakeWord.Enabled {
+		return
+	}
+	cfg.WakeWord.Enabled = false
+	if err := d.SetConfig(cfg); err != nil {
+		d.log.Warn("wake word: switching off", "err", err)
+		return
+	}
+	d.log.Info("wake word switched off: not used", "min", min)
+	d.emit(Event{Type: "wake", Text: "auto_off", Level: min})
+}
+
 // wakePoll notices what no event announces: a call starting or ending in
 // another program, or an idle state reached without a state event.
 func (d *Daemon) wakePoll() {
@@ -153,6 +181,9 @@ func (d *Daemon) onWake(score float32) {
 	if !idle {
 		return
 	}
+	d.wake.mu.Lock()
+	d.wake.lastUse = time.Now()
+	d.wake.mu.Unlock()
 	d.emit(Event{Type: "wake", Text: "heard", Level: int(score * 100)})
 	if err := d.startWith(true); err != nil {
 		d.log.Warn("wake word: could not start dictation", "err", err)
