@@ -4477,8 +4477,25 @@ setThemeDisplay(themePref); // reflect the theme now the dropdown exists
 
 /* ---- nav ---- */
 const TABS = ["status", "history", "achievements", "dictionary", "settings"];
+// A page you were on a moment ago comes back as you left it, scrolled where you
+// were; after a while away it opens fresh — at the top, Settings on its first
+// section. "A while" counts from leaving the page, or from leaving the window
+// (or closing it) while on it. The pages share the window's scroll, so each
+// one's position is kept here rather than by the browser.
+const TAB_FRESH_MS = 5 * 60 * 1000;
+let curTab = null, tabBooted = false;
+try { history.scrollRestoration = "manual"; } catch {}
+function tabMemo(){ try { return JSON.parse(localStorage.getItem("vito-tab-memo")) || {}; } catch { return {}; } }
+function rememberTab(){
+  if (!curTab) return;
+  const m = tabMemo(); m[curTab] = { y: Math.round(window.scrollY), at: Date.now() };
+  try { localStorage.setItem("vito-tab-memo", JSON.stringify(m)); } catch {}
+}
 function selectTab(name){
   if (!TABS.includes(name)) name = "status";
+  const arriving = name !== curTab;
+  if (arriving) rememberTab();
+  const memo = arriving ? tabMemo()[name] : null;
   document.querySelectorAll(".nav-item").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
   document.querySelectorAll("main section").forEach(s => s.classList.toggle("active", s.id === "tab-" + name));
   positionToasts(); // the column changes width between pages
@@ -4486,10 +4503,28 @@ function selectTab(name){
   if (name === "achievements") loadAchievements();
   // Coming back to Status replays the chart's build-up, the same way opening the
   // page does — the numbers arrive with a little life rather than just being there.
-  if (name === "status") { lastChartKey = ""; replayChartGrow(); loadStats(); }
+  if (name === "status" && tabBooted) { lastChartKey = ""; replayChartGrow(); loadStats(); }
+  if (arriving) {
+    curTab = name;
+    const fresh = memo && Date.now() - memo.at < TAB_FRESH_MS;
+    if (!fresh && name === "settings") selectSetSection("general");
+    const y = fresh ? memo.y : 0;
+    const go = () => { if (curTab === name) window.scrollTo(0, y); };
+    go();
+    // The history list is rebuilt on every visit; scroll once it is there again.
+    // Chained here, before any caller awaits hLoad to jump to an entry itself.
+    if (name === "history" && y) hLoad.then(go, go);
+  }
+  tabBooted = true;
   try { localStorage.setItem("vito-tab", name); } catch {} // restore on next reload
   $("sidebar").classList.remove("open"); // collapse the mobile menu after choosing
 }
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) { rememberTab(); return; }
+  const m = curTab && tabMemo()[curTab];
+  if (m && Date.now() - m.at >= TAB_FRESH_MS) { const name = curTab; curTab = null; selectTab(name); }
+});
+window.addEventListener("pagehide", rememberTab);
 document.querySelectorAll(".nav-item").forEach(btn => btn.onclick = () => selectTab(btn.dataset.tab));
 // Sidebar compact (icons) or expanded (names), by width:
 //   ≥1100px     the user's choice, remembered per browser (default expanded);
@@ -4524,7 +4559,7 @@ $("brand").onclick = () => selectTab("status");
 // Restore the tab that was open before a reload (defaults to status). Deferred to
 // the end of init: selecting History/Achievements calls into state (hPlayRows,
 // achState) that is declared further down and would otherwise be in its TDZ.
-function restoreLastTab(){ const saved = localStorage.getItem("vito-tab"); if (saved && saved !== "status" && TABS.includes(saved)) selectTab(saved); }
+function restoreLastTab(){ let saved = null; try { saved = localStorage.getItem("vito-tab"); } catch {} selectTab(TABS.includes(saved) ? saved : "status"); }
 $("hamburger").onclick = (e) => { e.stopPropagation(); $("sidebar").classList.toggle("open"); };
 
 /* ---- settings sections ---- */
