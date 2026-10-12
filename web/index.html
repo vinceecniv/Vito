@@ -1487,6 +1487,7 @@
      "card + card" would also fire on a visible card whose predecessor is a
      hidden card from another section, and push it down for no reason. */
   .card[data-sec="linux"] + .card[data-sec="linux"],
+  .card[data-sec="activation"] + .card[data-sec="activation"],
   .card[data-sec="cleanup"] + .card[data-sec="cleanup"] { margin-top:20px; }
   /* About section */
   .about-head { display:flex; align-items:center; gap:14px; }
