@@ -47,10 +47,8 @@ differ.
 | `--socket=wayland` | all the virtual-keyboard backend needs |
 | `--socket=pulseaudio` | microphone capture (PipeWire serves this) |
 | `--share=network` | the user's own STT/AI providers, and the local settings server |
-| `--talk-name=org.freedesktop.Notifications` | desktop notifications |
 | `--talk-name=org.kde.StatusNotifierWatcher` | tray icon |
 | `--talk-name=org.mpris.MediaPlayer2.*` | pausing media while recording |
-| `--filesystem=xdg-run/vito:create` | the direct Wayland connection on compositors without the RemoteDesktop portal (below) |
 | `--filesystem=host-os:ro` + `xdg-config`/`xdg-data` `xdg-desktop-portal:ro` | reading how the host routes its portals, so the GNOME backend's useless shortcut dialog is skipped on niri (`docs/linux-portals.md`) |
 
 No `--device=all`, no uinput, and no access to personal files: `host-os` is the
@@ -113,20 +111,24 @@ shadowed. Connecting to it bypasses the filter, which lives only on the socket
 Flatpak creates. One line, run on the host:
 
 ```sh
-mkdir -p "$XDG_RUNTIME_DIR/vito" && ln -f "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/vito/wayland"
+mkdir -p "$XDG_RUNTIME_DIR/app/io.github.vinceecniv.vito" && ln -f "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/app/io.github.vinceecniv.vito/wayland"
 ```
 
-The manifest grants `--filesystem=xdg-run/vito:create`, and wtype connects to
-`$XDG_RUNTIME_DIR/vito/wayland` (an absolute `WAYLAND_DISPLAY`, which libwayland
+The link goes in the app's own runtime directory, `$XDG_RUNTIME_DIR/app/<app-id>`,
+and wtype connects to it (an absolute `WAYLAND_DISPLAY`, which libwayland
 accepts) whenever it exists — only wtype; the clipboard tools keep the managed
 socket. Three details carry it:
 
-* **The directory, not the socket, is granted.** A bind mount of the socket
-  file would pin the inode it found at start; the directory shows a link made
-  later in a sandbox that is already running.
-* **`:create`** makes that directory exist whichever starts first at login,
-  Vito or the compositor's startup line — without it, a missing directory is
-  simply not mounted and the link would only count after a restart.
+* **No permission is needed.** Flatpak mounts that directory into every
+  sandbox of the app by itself (it is where apps share IPC sockets with the
+  host), so the manifest grants nothing for this. Until 2026.10 the link lived
+  in `$XDG_RUNTIME_DIR/vito` behind `--filesystem=xdg-run/vito:create`; Flathub's
+  review pointed at the directory that was already there.
+* **The directory is shared, not the socket.** A bind mount of the socket file
+  would pin the inode it found at start; the directory shows a link made later
+  in a sandbox that is already running. Flatpak creates the directory when the
+  app starts and the host line's `mkdir -p` when it runs first, so the order at
+  login does not matter.
 * **The probe is keyed on the link's inode**, so a link made or remade (a new
   session has a new socket) is probed again without restarting Vito. A link
   left over from an earlier session is reported (`wayland_link` while the
@@ -151,8 +153,10 @@ Bundled: `wl-clipboard` (the clipboard is used by paste mode, clipboard-only mod
 and Vito Assist's clipboard commands) and `wtype`.
 
 `notify-send` and `pactl` turn out to ship in the freedesktop runtime already, so
-notifications and the microphone-level control work without bundling anything —
-and pausing media needs no binary at all since it speaks MPRIS directly. Nothing
+notifications and the microphone-level control work without bundling anything.
+Notifications need no bus permission either: inside a sandbox libnotify sends
+them through the notification portal rather than `org.freedesktop.Notifications`.
+Pausing media needs no binary at all since it speaks MPRIS directly. Nothing
 is missing in the sandbox except ydotool, which cannot work there by definition.
 
 ### Verified in the sandbox

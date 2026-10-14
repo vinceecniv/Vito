@@ -7101,22 +7101,29 @@ function releasesURL(){
 // only makes sense where the user installs the helpers themselves.
 // The direct Wayland connection a Flatpak types through where the desktop has
 // no RemoteDesktop portal: a hard link to the compositor's socket, which only
-// the host can make (internal/inject HostWaylandLink, docs/flatpak.md).
-const FLATPAK_LINK_CMD = 'mkdir -p "$XDG_RUNTIME_DIR/vito" && ln -f "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/vito/wayland"';
+// the host can make (internal/inject HostWaylandLink, docs/flatpak.md). The
+// daemon names the path, relative to $XDG_RUNTIME_DIR; one that doesn't still
+// looks in vito/wayland.
+function flatpakLinkCmd(info){
+  const link = "$XDG_RUNTIME_DIR/" + ((info && info.wayland_link_path) || "vito/wayland");
+  const dir = link.slice(0, link.lastIndexOf("/"));
+  return `mkdir -p "${dir}" && ln -f "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "${link}"`;
+}
 // Where that line goes for the compositors that need it, as [file, line].
-function flatpakLinkStartup(desktop){
+function flatpakLinkStartup(desktop, cmd){
   const d = (desktop || "").toLowerCase();
-  if (d.includes("niri")) return ["~/.config/niri/config.kdl", `spawn-at-startup "sh" "-c" "${FLATPAK_LINK_CMD.replace(/"/g, '\\"')}"`];
-  if (d.includes("hyprland")) return ["~/.config/hypr/hyprland.conf", `exec-once = ${FLATPAK_LINK_CMD}`];
-  if (d.includes("sway")) return ["~/.config/sway/config", `exec sh -c '${FLATPAK_LINK_CMD}'`];
+  if (d.includes("niri")) return ["~/.config/niri/config.kdl", `spawn-at-startup "sh" "-c" "${cmd.replace(/"/g, '\\"')}"`];
+  if (d.includes("hyprland")) return ["~/.config/hypr/hyprland.conf", `exec-once = ${cmd}`];
+  if (d.includes("sway")) return ["~/.config/sway/config", `exec sh -c '${cmd}'`];
   return null;
 }
 function flatpakLinkHTML(info){
-  const start = flatpakLinkStartup(info.desktop);
+  const cmd = flatpakLinkCmd(info);
+  const start = flatpakLinkStartup(info.desktop, cmd);
   return (info.wayland_link
       ? `<p class="act-note" style="color:var(--coral); margin:10px 0 0;">${t("The link is there, but it belongs to an earlier session. Run the command again.")}</p>` : "") +
     `<p class="act-note" style="margin:10px 0 6px;">${t("This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:")}</p>` +
-    `<pre>${ahEsc(FLATPAK_LINK_CMD)}</pre>` +
+    `<pre>${ahEsc(cmd)}</pre>` +
     (start
       ? `<p class="act-note" style="margin:10px 0 6px;">${t("Then add this to {file}, so it is there after every login:").replace("{file}", `<code>${ahEsc(start[0])}</code>`)}</p><pre>${ahEsc(start[1])}</pre>`
       : `<p class="act-note" style="margin:10px 0 0;">${t("Then add the same command to your desktop's startup, so it is there after every login.")}</p>`) +
