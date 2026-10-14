@@ -27,11 +27,10 @@ finish-args:
   - --socket=wayland
   # …except where the compositor has no RemoteDesktop portal (niri, Hyprland,
   # sway): Flatpak's managed socket filters the virtual-keyboard protocol out.
-  # One line in the compositor's startup hard-links its real socket to
-  # $XDG_RUNTIME_DIR/vito/wayland, and wtype connects there instead
-  # (internal/inject, docs/flatpak.md). :create makes the directory exist
-  # whichever starts first, so the link shows up in a running sandbox.
-  - --filesystem=xdg-run/vito:create
+  # One line in the compositor's startup hard-links its real socket into the
+  # app's own runtime directory, $XDG_RUNTIME_DIR/app/<app-id>/wayland, which
+  # every sandbox of the app sees without a permission, and wtype connects
+  # there instead (internal/inject, docs/flatpak.md).
   # Read-only: how the host routes its portals. On niri the GlobalShortcuts
   # portal goes to GNOME's backend, which shows its dialog and then never
   # delivers a key without GNOME Shell; Vito recognises that from portals.conf
@@ -47,8 +46,8 @@ finish-args:
   # Speech-to-text and AI cleanup are network calls to the user's own providers,
   # and the settings UI is a local HTTP server the browser connects to.
   - --share=network
-  # Desktop notifications and the tray icon.
-  - --talk-name=org.freedesktop.Notifications
+  # The tray icon. Notifications need nothing: notify-send (libnotify) goes
+  # through the notification portal inside a sandbox.
   - --talk-name=org.kde.StatusNotifierWatcher
   # Pausing or ducking media while recording, over MPRIS.
   - --talk-name=org.mpris.MediaPlayer2.*

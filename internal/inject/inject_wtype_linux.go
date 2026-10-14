@@ -43,9 +43,20 @@ import (
 // handed in by name — Flatpak already has a symlink of its own at that path,
 // which shadows the grant (docs/flatpak.md). A hard link under another name is
 // the same socket without that clash, and connecting to it bypasses the filter.
-// The manifest grants xdg-run/vito with :create, so the directory exists
-// whichever starts first, and a link made later shows up in a running sandbox.
-const HostWaylandLink = "vito/wayland"
+//
+// The link goes in the app's own runtime directory, $XDG_RUNTIME_DIR/app/<id>,
+// which Flatpak mounts into every sandbox of the app without any permission.
+// It is a bind mount of the host directory, so a link made later shows up in a
+// running sandbox, and the host line creates the directory if it runs first.
+func HostWaylandLink() string { return filepath.Join("app", flatpakID(), "wayland") }
+
+// flatpakID names the app's runtime directory.
+func flatpakID() string {
+	if id := os.Getenv("FLATPAK_ID"); id != "" {
+		return id
+	}
+	return "io.github.vinceecniv.vito"
+}
 
 // hostWayland returns the path of that link when Vito runs in a Flatpak and the
 // link is there, else "". Outside a sandbox wtype uses $WAYLAND_DISPLAY as is.
@@ -57,7 +68,7 @@ func hostWayland() string {
 	if dir == "" {
 		return ""
 	}
-	p := filepath.Join(dir, HostWaylandLink)
+	p := filepath.Join(dir, HostWaylandLink())
 	if fi, err := os.Stat(p); err != nil || fi.Mode()&os.ModeSocket == 0 {
 		return ""
 	}

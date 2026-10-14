@@ -255,3 +255,5 @@ func BackendVerified(cfg config.Injection) bool { return true }
 
 // HasHostWaylandLink is a Flatpak matter, so never on Windows.
 func HasHostWaylandLink() bool { return false }
+
+func HostWaylandLink() string { return "" }

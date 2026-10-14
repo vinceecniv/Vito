@@ -24,3 +24,5 @@ func Sandboxed() bool { return false }
 
 // HasHostWaylandLink is Linux-only for the same reason.
 func HasHostWaylandLink() bool { return false }
+
+func HostWaylandLink() string { return "" }
