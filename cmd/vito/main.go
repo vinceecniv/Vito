@@ -69,6 +69,8 @@ func main() {
 		err = request(http.MethodPost, "/api/quit")
 	case "status":
 		err = request(http.MethodGet, "/api/status")
+	case "wake-test":
+		err = wakeTest(os.Args[2:])
 	case "version", "--version":
 		fmt.Println("vito", version)
 	case "help", "--help", "-h":
@@ -95,6 +97,8 @@ Usage:
   vito quit      shut the daemon down
   vito pwa       install the web interface as an app (Windows)
   vito status    show daemon state
+  vito wake-test <file.wav> [hey_vito|oke_vito]
+                 score a recording with the wake word model
   vito version
 
 Environment:
@@ -187,6 +191,7 @@ func serve() error {
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)
 	notifyUserSignals(d, log)
 	hk.Start(cfg.HotkeyWindows, cfg.HotkeyCancelWindows)
+	go d.SyncWake()
 
 	if cfg.Demo {
 		log.Info("demo mode: serving sample data; your own history and dictionary are hidden, not changed")

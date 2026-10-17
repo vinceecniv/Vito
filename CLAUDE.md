@@ -128,6 +128,34 @@ on CPU, 0.25 s on Vulkan; Whisper large-v3-turbo ≈ 4–9 s on CPU, 0.4 s on CU
 Whisper is the better engine for Dutch with English jargon; Parakeet for CPU.
 Benchmark only on an idle machine — a background encode inflated numbers 2×.
 
+## Wake word ("Hey Vito")
+
+`internal/wakeword` runs openWakeWord's three networks in pure Go: a small
+ONNX interpreter (`onnx.go`, only the operators these graphs use), the
+melspectrogram's STFT convolutions recognised at load time and run as an FFT
+(`stft.go`), the speech embedding computed incrementally as its window moves
+8 frames per 80 ms (`embedstream.go`), and an AVX2 dot product on amd64.
+≈2.6 ms of CPU per 80 ms of audio; the tests compare every network and the
+streamed scores with onnxruntime/openWakeWord (`testdata`, regenerate with
+`tools/wakeword/make_reference.py`). Don't trade this for ONNX Runtime: a
+15 MB library per platform for a few kB of maths.
+
+The models are embedded (`models/*.onnx`): the two shared feature networks
+(Apache-2.0) and one classifier per phrase; a new `<name>.onnx` there is a new
+phrase. They are trained by `tools/wakeword` (README there) on synthetic
+voices in a dozen languages — detection is about the sound, not the language.
+
+The daemon (`internal/daemon/wake.go`) keeps a listener on the microphone only
+while idle and the setting is on; `SyncWake` is called on every state event
+and every 3 s. It steps aside for a dictation, the microphone test, and — on
+Windows, unless the user opts out — while another program has the microphone
+(`MicInUseByOthers` reads the privacy indicator's registry keys). A dictation
+the wake word starts always auto-stops at the first pause and is cancelled
+after 8 s without speech: there is no key to end it. `wake_word.auto_off_min`
+switches the setting itself off after that long without a wake or a dictation
+(counted from switching it on, reset by each use); the Status page's quick
+settings card carries an on/off switch for it.
+
 ## Vito updates itself
 
 `internal/update.Auto` (setting `update.auto`, nil = on, only while the check is

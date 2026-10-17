@@ -1,0 +1,46 @@
+# openWakeWord training configuration for Vito's wake words. train.sh fills
+# in MODEL; the clips come from gen_clips.py, not from train.py's own
+# generator (--generate_clips is never passed).
+model_name: "MODEL"
+target_phrase: ["MODEL"]
+custom_negative_phrases: []
+n_samples: 40000
+n_samples_val: 4000
+tts_batch_size: 50
+augmentation_batch_size: 16
+piper_sample_generator_path: "/mnt/c/Users/vblok/CODE/Vito/tools/wakeword/pshim"
+output_dir: "/mnt/e/vito-wakeword/work"
+
+rir_paths:
+  - "/mnt/e/vito-wakeword/data/rirs"
+background_paths:
+  - "/mnt/e/vito-wakeword/data/bg"
+background_paths_duplication_rate:
+  - 1
+
+false_positive_validation_data_path: "/mnt/e/vito-wakeword/data/validation_set_features.npy"
+augmentation_rounds: 1
+
+# General negatives: 1.5 M windows (~530 h) of openWakeWord's ACAV100M plus
+# Multilingual LibriSpeech in Dutch and five more languages, so speech in
+# those languages is learnt as "not the wake word".
+feature_data_files:
+  "ACAV100M_sample": "/mnt/e/vito-wakeword/data/acav_1500k.npy"
+  "mls": "/mnt/e/vito-wakeword/data/mls_windows.npy"
+
+batch_n_per_class:
+  "ACAV100M_sample": 1024
+  "mls": 256
+  "adversarial_negative": 70
+  "positive": 70
+
+# Chosen by experiment (experiment.sh, 2026-10-10): a wider network and a much
+# milder negative weight than openWakeWord's defaults. Its auto-training doubles
+# the weight whenever the false-accept target is missed, and with the default
+# 1500/0.2 it ended at 6000 and recognised under half the held-out phrases.
+# The threshold, not training, is where Vito trades recall for false accepts.
+model_type: "dnn"
+layer_size: 64
+steps: 50000
+max_negative_weight: 300
+target_false_positives_per_hour: 1.0

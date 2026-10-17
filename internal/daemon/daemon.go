@@ -128,6 +128,50 @@ type session struct {
 	// only arms after speech has actually begun (before that a silent session is a
 	// silence-cancel, not an auto-stop).
 	spoke atomic.Bool
+	// byWake marks a session the wake word started: no key will end it, so
+	// it, and the follow-up a spoken command opens, stop at the first pause.
+	byWake bool
+	// continuation is the recording a wake-started dictation opens the moment
+	// it stops at a pause: what is said within the follow window is pasted
+	// after the text before it; silence ends it without a sound.
+	continuation bool
+	// chain marks a hands-free dictation whose pauses open follow windows; its
+	// text is joined to the next part's (see joinFollow).
+	chain bool
+	// prev is the part a continuation follows; done closes when this part is
+	// finished, so the next one joins onto text that is really there.
+	prev *session
+	done chan struct{}
+	// followed is set when a continuation took over the microphone at this
+	// part's pause; joined when this part's own finish settled the join.
+	followed atomic.Bool
+	joined   bool
+	// route carries the microphone's audio to the session using it; a
+	// continuation takes the capture over instead of reopening the device.
+	route *chunkRoute
+}
+
+// chunkRoute is where a capture's audio goes. Switching it hands a running
+// microphone to the next session without a gap; the lock makes sure no chunk
+// is still on its way to the old session's channel once the switch returns.
+type chunkRoute struct {
+	mu sync.RWMutex
+	ch chan []byte
+}
+
+func (r *chunkRoute) send(b []byte) {
+	r.mu.RLock()
+	select {
+	case r.ch <- b:
+	default: // consumer stalled; drop rather than block the audio thread
+	}
+	r.mu.RUnlock()
+}
+
+func (r *chunkRoute) set(ch chan []byte) {
+	r.mu.Lock()
+	r.ch = ch
+	r.mu.Unlock()
 }
 
 type Daemon struct {
@@ -178,6 +222,9 @@ type Daemon struct {
 	// whistle is the small built-in speech model (provider "whistle"): runs
 	// in-process per clip, so there is nothing to start, only to download.
 	whistle *whistle.Manager
+
+	wake   wakeState   // the wake word listener (wake.go)
+	follow followState // the hands-free chain being typed (joinFollow)
 }
 
 // LocalSTT exposes the managed local engine to the HTTP layer.
@@ -331,6 +378,7 @@ func (d *Daemon) restoreMedia() {
 // Shutdown restores any ducked/paused media and cancels an in-flight recording,
 // so the daemon never exits leaving system audio suppressed. Call before exit.
 func (d *Daemon) Shutdown() {
+	d.wake.l.Stop()
 	_ = d.Cancel()   // restores + tears down when recording
 	d.restoreMedia() // catch the brief stop→finish window, or any leftover
 	if d.local != nil {
@@ -382,6 +430,7 @@ func New(cfg *config.Config, log *slog.Logger, audioCtx *audio.Context, hist *hi
 	d.whistle = whistle.NewManager(log, func(st whistle.Status) { d.emit(Event{Type: "whistle", Whistle: &st}) })
 	stt.WhistleEngine = d.whistle.Engine
 	d.local.SetDesired(cfg.STT.Provider == "local", cfg.STT.LocalVariant)
+	d.wakeInit()
 	go d.retentionLoop()
 	return d
 }
@@ -539,6 +588,7 @@ func (d *Daemon) UpdateConfig(cfg *config.Config) {
 	if d.local != nil {
 		d.local.SetDesired(cfg.STT.Provider == "local", cfg.STT.LocalVariant)
 	}
+	go d.SyncWake()
 	d.log.Info("configuration updated")
 	d.emit(Event{Type: "config"})
 }
@@ -588,6 +638,9 @@ func (d *Daemon) Status() Status {
 }
 
 func (d *Daemon) emit(e Event) {
+	if e.Type == "state" {
+		go d.SyncWake() // the listener steps aside while the microphone is in use
+	}
 	if d.OnEvent != nil {
 		d.OnEvent(e)
 	}
@@ -597,6 +650,15 @@ func (d *Daemon) emit(e Event) {
 	for _, fn := range listeners {
 		fn(e)
 	}
+}
+
+// emitState announces the current state — after a dictation finishes that is
+// idle, unless a follow window is already recording.
+func (d *Daemon) emitState() {
+	d.mu.Lock()
+	st := d.state
+	d.mu.Unlock()
+	d.emit(Event{Type: "state", State: st})
 }
 
 func (d *Daemon) setState(s State) {
@@ -629,7 +691,18 @@ func (d *Daemon) RequestPip() { d.emit(Event{Type: "pip"}) }
 
 func (d *Daemon) Start() error { return d.start() }
 
-func (d *Daemon) start() error {
+func (d *Daemon) start() error { return d.startWith(false) }
+
+// startWith starts a dictation; byWake marks one the wake word started, which
+// has no key to end it: it stops at the first pause, and is dropped soon when
+// nothing is said.
+func (d *Daemon) startWith(byWake bool) error { return d.startSession(byWake, nil) }
+
+// startSession starts a recording. With prev it starts a continuation: it may
+// start while prev is still being processed, and takes over prev's microphone
+// so that nothing said at the join is lost.
+func (d *Daemon) startSession(byWake bool, prev *session) error {
+	continuation := prev != nil
 	// A fresh dictation that isn't carrying an armed command clears the leftover
 	// command indicator (kept visible through the command's own dictation above).
 	d.cmdMu.Lock()
@@ -639,7 +712,7 @@ func (d *Daemon) start() error {
 		d.clearCommandDisplay()
 	}
 	d.mu.Lock()
-	if d.state != StateIdle {
+	if d.state != StateIdle && !(continuation && d.state == StateProcessing && d.sess == nil) {
 		d.mu.Unlock()
 		return fmt.Errorf("cannot start while %s", d.state)
 	}
@@ -651,6 +724,15 @@ func (d *Daemon) start() error {
 	d.status.LastError = ""
 	cfg := *d.cfg // session snapshot: settings changes apply per-dictation
 	d.mu.Unlock()
+	if byWake {
+		cfg.Audio.AutoStop = true
+		if t := cfg.Audio.SilenceTimeoutSec; t <= 0 || t > wakeSilenceSec {
+			cfg.Audio.SilenceTimeoutSec = wakeSilenceSec
+		}
+	}
+	if continuation {
+		cfg.Audio.SilenceTimeoutSec = followSec(cfg)
+	}
 	d.emit(Event{Type: "state", State: StateRecording})
 	d.stopPlayback() // never let the microphone record a recording we're playing
 
@@ -659,7 +741,7 @@ func (d *Daemon) start() error {
 	sttCfg, err := d.resolveSTT(cfg.STT)
 	if err != nil {
 		d.setIdleWithError(err)
-		d.emit(Event{Type: "state", State: StateIdle})
+		d.emitState()
 		d.noteErr("vito: spraakherkenning", err.Error())
 		return err
 	}
@@ -676,13 +758,23 @@ func (d *Daemon) start() error {
 		spool:   spool,
 		started: time.Now(),
 		chunks:  make(chan []byte, 256),
+		byWake:  byWake,
+		done:    make(chan struct{}),
+		prev:    prev,
+
+		continuation: continuation,
+		chain:        byWake && followSec(cfg) > 0,
 	}
 
 	// Duck (or pause) any playing music/video for the duration of the
 	// recording. This runs in the background (see media.Start) so it adds no
 	// start latency; Restore happens the moment recording stops (finish/Cancel).
-	s.media = media.Start(cfg.Audio.MediaAction, d.log)
-	d.trackMedia(s.media) // so shutdown can restore it regardless of session state
+	// A continuation leaves media alone: tracking its own (empty) session would
+	// make the dictation before it restore that instead of the music it ducked.
+	if !continuation {
+		s.media = media.Start(cfg.Audio.MediaAction, d.log)
+		d.trackMedia(s.media) // so shutdown can restore it regardless of session state
+	}
 
 	var keyterms []string
 	if cfg.STT.KeytermsEnabled {
@@ -728,12 +820,30 @@ func (d *Daemon) start() error {
 		}
 	}()
 
-	capture, err := audio.StartCapture(d.audioCtx, cfg.Audio.InputDevice, cfg.Audio.InputGain, func(chunk []byte) {
-		select {
-		case s.chunks <- chunk:
-		default: // consumer stalled; drop rather than block the audio thread
+	if prev != nil && prev.capture != nil {
+		// Take the running microphone over: its audio comes here from now on.
+		s.route, s.capture = prev.route, prev.capture
+		prev.capture = nil
+		s.route.set(s.chunks)
+		d.mu.Lock()
+		d.sess = s
+		d.mu.Unlock()
+		if to := time.Duration(cfg.Audio.SilenceTimeoutSec) * time.Second; to > 0 {
+			go d.watchSilence(s, to)
 		}
-	})
+		if cfg.Audio.AutoStop {
+			pause := time.Duration(cfg.Audio.AutoStopSilenceMS) * time.Millisecond
+			if pause <= 0 {
+				pause = 1200 * time.Millisecond
+			}
+			go d.watchAutoStop(s, pause)
+		}
+		d.log.Info("follow window open", "sec", cfg.Audio.SilenceTimeoutSec)
+		return nil
+	}
+	s.route = &chunkRoute{ch: s.chunks}
+	route := s.route
+	capture, err := audio.StartCapture(d.audioCtx, cfg.Audio.InputDevice, cfg.Audio.InputGain, route.send)
 	if err != nil {
 		s.stream.Abort()
 		close(s.chunks)
@@ -761,7 +871,9 @@ func (d *Daemon) start() error {
 		}
 		go d.watchAutoStop(s, pause)
 	}
-	d.playSound(cfg, assets.SoundStart)
+	if !continuation { // a follow window opens silently
+		d.playSound(cfg, assets.SoundStart)
+	}
 	d.log.Info("recording started", "spool", spool.Path(), "cleanup", d.cleanupEffective(s))
 	return nil
 }
@@ -799,6 +911,9 @@ func (d *Daemon) Cancel() error {
 	d.mu.Unlock()
 
 	d.discard(s)
+	if s.continuation {
+		go d.endFollow(s, false) // what came before stays; close it properly
+	}
 	d.playSound(s.cfg, assets.SoundCancel)
 	d.note("vito: geannuleerd", "")
 	d.log.Info("recording cancelled")
@@ -817,7 +932,8 @@ func (d *Daemon) discard(s *session) {
 	s.stream.Abort()
 	_ = s.spool.Close()
 	s.spool.Remove()
-	d.emit(Event{Type: "state", State: StateIdle})
+	close(s.done)
+	d.emitState()
 }
 
 // watchSilence auto-cancels s if no speech is transcribed for `timeout`, so a
@@ -853,6 +969,11 @@ func (d *Daemon) cancelSilent(s *session, timeout time.Duration) {
 	d.mu.Unlock()
 
 	d.discard(s)
+	if s.continuation { // the follow window passed in silence: the dictation is done
+		d.log.Info("follow window closed")
+		go d.endFollow(s, true)
+		return
+	}
 	d.playSound(s.cfg, assets.SoundCancel)
 	d.note("vito: automatisch gestopt", fmt.Sprintf("geen spraak in %s", timeout))
 	d.log.Info("recording auto-cancelled (silence)", "timeout", timeout)
@@ -896,9 +1017,112 @@ func (d *Daemon) autoStopSession(s *session) {
 	d.state = StateProcessing
 	d.mu.Unlock()
 	d.emit(Event{Type: "state", State: StateProcessing})
-	d.playSound(s.cfg, assets.SoundDone)
 	d.log.Info("recording auto-stopped (end of speech)")
+	// Hands-free, a pause may just be a pause: keep the microphone running in a
+	// follow window, and paste whatever comes next after the text so far. The
+	// done sound waits for the real end — hearing it mid-thought makes people
+	// stop talking. This must happen before finish, which would close the mic.
+	if s.chain {
+		if err := d.startSession(true, s); err != nil {
+			d.log.Info("no follow window", "err", err)
+		} else {
+			s.followed.Store(true)
+		}
+	}
+	if !s.followed.Load() {
+		d.playSound(s.cfg, assets.SoundDone)
+	}
 	go d.finish(s)
+}
+
+// followState is what a chain of hands-free parts shares: the text pasted so
+// far (for the cleanup model to continue it) and whether the last part's
+// closing full stop is still held back.
+type followState struct {
+	mu         sync.Mutex
+	before     string
+	pendingDot bool
+}
+
+// endFollow closes a chain after its follow window passed in silence (or was
+// cancelled): the held-back full stop is typed, and the done sound plays.
+func (d *Daemon) endFollow(s *session, sound bool) {
+	if s.prev != nil {
+		select {
+		case <-s.prev.done:
+		case <-time.After(30 * time.Second):
+		}
+	}
+	d.flushFollow(s.cfg)
+	if sound {
+		d.playSound(s.cfg, assets.SoundDone)
+	}
+}
+
+// flushFollow types the full stop the chain held back, if any.
+func (d *Daemon) flushFollow(cfg config.Config) {
+	d.follow.mu.Lock()
+	dot := d.follow.pendingDot
+	d.follow.pendingDot, d.follow.before = false, ""
+	d.follow.mu.Unlock()
+	if !dot {
+		return
+	}
+	text := "."
+	if cfg.Injection.AppendSpace {
+		text += " "
+	}
+	if _, err := inject.Inject(cfg.Injection, text); err != nil {
+		d.log.Warn("closing full stop", "err", err)
+	}
+}
+
+// joinFollow turns a chain part's text into what is typed: joined onto the
+// part before it, and with its own closing full stop held back while a next
+// part may follow. fromModel says the cleanup model saw the text before and
+// wrote the join itself.
+func (d *Daemon) joinFollow(s *session, text string, fromModel bool) string {
+	d.follow.mu.Lock()
+	defer d.follow.mu.Unlock()
+	out := strings.TrimSpace(text)
+	if s.continuation && out != "" {
+		switch {
+		case fromModel && strings.ContainsRune(".,;:!?", rune(out[0])):
+			// the model ended the earlier sentence itself
+		case fromModel:
+			out = " " + out
+		default:
+			if d.follow.pendingDot {
+				out = ". " + out
+			} else {
+				out = " " + out
+			}
+		}
+		d.follow.pendingDot = false
+	}
+	if s.followed.Load() {
+		// What closes an open part is decided by what comes next: drop the
+		// recognizer's dash for a cut-off sentence, a dangling comma, and the full
+		// stop — the next part's join (or the window closing) puts the right mark.
+		trimmed := strings.TrimRight(out, " —–-,;:")
+		if strings.HasSuffix(trimmed, ".") && !strings.HasSuffix(trimmed, "..") {
+			trimmed = strings.TrimSuffix(trimmed, ".")
+		}
+		if trimmed != "" && !strings.ContainsAny(trimmed[len(trimmed)-1:], "?!") {
+			d.follow.pendingDot = true
+		}
+		out = trimmed
+	}
+	b := d.follow.before + out
+	if !s.continuation {
+		b = out
+	}
+	if len(b) > 600 {
+		b = b[len(b)-600:]
+	}
+	d.follow.before = b
+	s.joined = true
+	return out
 }
 
 // InjectText re-injects arbitrary text (used by the history "re-inject"
@@ -922,10 +1146,12 @@ func (d *Daemon) TestMic(seconds int) error {
 	d.micTesting = true
 	cfg := *d.cfg
 	d.mu.Unlock()
+	d.SyncWake() // let go of the microphone for the test
 	defer func() {
 		d.mu.Lock()
 		d.micTesting = false
 		d.mu.Unlock()
+		go d.SyncWake()
 	}()
 
 	d.emit(Event{Type: "mic_test", Text: "recording"})
@@ -1042,11 +1268,21 @@ func clipboardInput(instr string) (string, bool) {
 }
 
 func (d *Daemon) finish(s *session) {
+	defer func() {
+		// A chain part that ended without typing anything (nothing recognised,
+		// an error) and has nothing after it still owes the held-back full stop.
+		if s.chain && !s.joined && !s.followed.Load() {
+			d.flushFollow(s.cfg)
+		}
+		close(s.done)
+	}()
 	cfg := s.cfg
 	stopAt := time.Now()
 	duration := s.spool.Duration()
 
-	s.capture.Stop()
+	if s.capture != nil { // nil when a continuation took the microphone over
+		s.capture.Stop()
+	}
 	d.restoreMedia() // recording is over — bring the music back right away
 	close(s.chunks)
 	s.consumers.Wait()
@@ -1107,7 +1343,7 @@ func (d *Daemon) finish(s *session) {
 	if raw == "" {
 		d.takePendingCmd() // an empty follow-up drops any command that was armed
 		d.setIdle(func(st *Status) { st.LastPreview = "" })
-		d.emit(Event{Type: "state", State: StateIdle})
+		d.emitState()
 		s.spool.Remove()
 		d.playSound(cfg, assets.SoundCancel)
 		d.note("vito: niets gehoord", "")
@@ -1130,7 +1366,7 @@ func (d *Daemon) finish(s *session) {
 			d.playSound(cfg, assets.SoundCancel)
 			d.note("vito: opdracht genegeerd", "AI-opschoning staat uit — zet die aan voor spraakopdrachten")
 			d.setIdle(func(st *Status) { st.LastPreview = "" })
-			d.emit(Event{Type: "state", State: StateIdle})
+			d.emitState()
 			s.spool.Remove()
 			d.log.Info("command ignored, cleanup disabled", "instruction", instr)
 			return
@@ -1142,7 +1378,7 @@ func (d *Daemon) finish(s *session) {
 				d.playSound(cfg, assets.SoundCancel)
 				d.note("vito: klembord leeg", "geen tekst op het klembord voor deze opdracht")
 				d.setIdle(func(st *Status) { st.LastPreview = "" })
-				d.emit(Event{Type: "state", State: StateIdle})
+				d.emitState()
 				s.spool.Remove()
 				return
 			}
@@ -1159,14 +1395,14 @@ func (d *Daemon) finish(s *session) {
 			d.playSound(cfg, assets.SoundCommand)
 			d.note("vito: opdracht — "+instr, "")
 			d.setIdle(func(st *Status) { st.LastPreview = "" })
-			d.emit(Event{Type: "state", State: StateIdle})
+			d.emitState()
 			s.spool.Remove()
 			d.log.Info("command armed", "instruction", instr)
 			// Re-open the mic right away so you can dictate the target text without
 			// pressing the hotkey again — one continuous flow.
 			go func() {
 				time.Sleep(350 * time.Millisecond) // let the ack sound play and the session tear down
-				if err := d.start(); err != nil {
+				if err := d.startWith(s.byWake); err != nil {
 					d.log.Warn("auto-restart after command failed", "err", err)
 				}
 			}()
@@ -1195,8 +1431,32 @@ func (d *Daemon) finish(s *session) {
 	}
 	// Cleanup must be on. A pending command then forces a pass even below the
 	// min-words threshold (that's how the command is applied).
-	if d.cleanupEffective(s) && (instruction != "" || wordCount(raw) >= cfg.Cleanup.MinWords) {
+	// A continuation joins onto text the part before it is still typing: wait
+	// for that, so the model gets it as context and the order on screen holds.
+	if s.prev != nil {
+		select {
+		case <-s.prev.done:
+		case <-time.After(30 * time.Second):
+		}
+	}
+	chainJoin := s.chain && instruction == "" && !clipboardOut && cfg.Injection.Mode != "clipboard_only"
+	var before string
+	if chainJoin && s.continuation {
+		d.follow.mu.Lock()
+		before = d.follow.before
+		d.follow.mu.Unlock()
+	}
+	// A part with a follow window after it may stop mid-sentence: cleanup must
+	// keep its dangling last words, and not close it with a full stop.
+	openEnded := chainJoin && s.followed.Load()
+	if d.cleanupEffective(s) && (instruction != "" || before != "" || openEnded || wordCount(raw) >= cfg.Cleanup.MinWords) {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cleanCfg.TimeoutMS)*time.Millisecond)
+		if before != "" {
+			ctx = cleanup.WithPreceding(ctx, before)
+		}
+		if openEnded {
+			ctx = cleanup.WithOpenEnd(ctx)
+		}
 		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
 		cancel()
 		cleanUsage = usage // tokens are billed even if we then reject the output
@@ -1230,10 +1490,18 @@ func (d *Daemon) finish(s *session) {
 	if clipboardOut {
 		injCfg = config.Injection{Mode: "clipboard_only"}
 	}
-	mode, err := inject.Inject(injCfg, final)
+	// A hands-free chain is typed as one text: each part joins onto the one
+	// before, its closing full stop waits for whether more follows, and the
+	// trailing space is the chain's to add at the very end.
+	injText := final
+	if chainJoin {
+		injText = d.joinFollow(s, final, cleanupUsed && before != "")
+		injCfg.AppendSpace = false
+	}
+	mode, err := inject.Inject(injCfg, injText)
 	if err != nil {
 		// The text exists; never lose it. Fall back to clipboard only.
-		if _, cbErr := inject.Inject(config.Injection{Mode: "clipboard_only"}, final); cbErr == nil {
+		if _, cbErr := inject.Inject(config.Injection{Mode: "clipboard_only"}, injText); cbErr == nil {
 			mode = inject.ModeClipboardOnly
 			d.noteErr("vito: in klembord (injectie faalde)", err.Error())
 		} else {
@@ -1315,7 +1583,7 @@ func (d *Daemon) finish(s *session) {
 
 	d.emit(Event{Type: "final", Raw: raw, Cleaned: cleaned, Timings: timings, RecordingID: recordingID,
 		CleanupFailed: cleanupFailed, CleanupCredit: cleanupCredit, CleanupError: cleanupErr, EntryID: storedID})
-	d.emit(Event{Type: "state", State: StateIdle})
+	d.emitState()
 	// The "done" chime already played when recording stopped (see Stop). It
 	// promised a finished dictation, so when the cleanup then failed and the raw
 	// transcript went in instead, say so out loud — otherwise the only clue is a
@@ -1364,7 +1632,7 @@ func (d *Daemon) finishWithError(s *session, err error, duration time.Duration) 
 	}
 	// keep the spool: the audio is still recoverable by hand
 	d.emit(Event{Type: "error", Error: err.Error(), Credit: provider})
-	d.emit(Event{Type: "state", State: StateIdle})
+	d.emitState()
 	d.playSound(s.cfg, assets.SoundCancel)
 	if isCredit {
 		d.noteErr("vito: tegoed op", provider+" — audio bewaard: "+s.spool.Path())
@@ -1376,7 +1644,9 @@ func (d *Daemon) finishWithError(s *session, err error, duration time.Duration) 
 
 func (d *Daemon) setIdle(update func(*Status)) {
 	d.mu.Lock()
-	d.state = StateIdle
+	if d.sess == nil { // a follow window may already be recording again
+		d.state = StateIdle
+	}
 	if update != nil {
 		update(&d.status)
 	}

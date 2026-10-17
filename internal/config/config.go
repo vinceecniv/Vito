@@ -269,12 +269,38 @@ type Config struct {
 	Update     Update  `json:"update"`
 	Backup     Backup  `json:"backup"`
 	Sync       Sync    `json:"sync,omitzero"`
+	// WakeWord starts a dictation when the wake phrase is heard, without a key.
+	WakeWord WakeWord `json:"wake_word,omitzero"`
 	// Demo fills the UI with fabricated English sample data — statistics, costs,
 	// history, dictionary and a replayed live transcript — for screenshots and
 	// demos. Deliberately file-only (no setting in the UI) so it can't be turned
 	// on by accident. Your real history and dictionary are left untouched: they
 	// are hidden while it's on, not replaced.
 	Demo bool `json:"demo"`
+}
+
+// WakeWord listens on the microphone for a spoken phrase ("Hé Vito") and
+// starts a dictation when it is heard (internal/wakeword). Detection runs on
+// this machine; nothing is recorded or sent until the phrase is heard. A
+// dictation it starts stops by itself at the first pause.
+type WakeWord struct {
+	Enabled bool `json:"enabled"`
+	// Phrase names the model: "hey_vito" or "oke_vito".
+	Phrase string `json:"phrase,omitempty"`
+	// Sensitivity runs from 0 (only a clear phrase) to 1 (reacts sooner, wakes
+	// by mistake more often); 0 means the default, 0.5.
+	Sensitivity float64 `json:"sensitivity,omitempty"`
+	// KeepListeningInCalls keeps listening while another program uses the
+	// microphone (a call or meeting). Off: Vito pauses listening then.
+	KeepListeningInCalls bool `json:"keep_listening_in_calls,omitempty"`
+	// FollowSec keeps listening this long after a hands-free dictation stopped
+	// at a pause; speech within it is pasted after the text so far. Nil is the
+	// default (4 s), 0 switches it off.
+	FollowSec *int `json:"follow_sec,omitempty"`
+	// AutoOffMin switches the wake word off after this many minutes without
+	// use (no wake, no dictation), so it is not left listening by accident.
+	// 0 never does.
+	AutoOffMin int `json:"auto_off_min,omitempty"`
 }
 
 // Sync shares dictations, day sums, achievements and the dictionary between
@@ -552,6 +578,20 @@ func (c *Config) Validate() error {
 	case "", "duck", "pause", "off":
 	default:
 		return fmt.Errorf("audio.media_action %q invalid (duck|pause|off)", c.Audio.MediaAction)
+	}
+	switch c.WakeWord.Phrase {
+	case "", "hey_vito", "oke_vito":
+	default:
+		return fmt.Errorf("wake_word.phrase %q invalid (hey_vito|oke_vito)", c.WakeWord.Phrase)
+	}
+	if f := c.WakeWord.FollowSec; f != nil && (*f < 0 || *f > 30) {
+		return fmt.Errorf("wake_word.follow_sec %d out of range [0, 30]", *f)
+	}
+	if m := c.WakeWord.AutoOffMin; m < 0 || m > 24*60 {
+		return fmt.Errorf("wake_word.auto_off_min %d out of range [0, 1440]", m)
+	}
+	if c.WakeWord.Sensitivity < 0 || c.WakeWord.Sensitivity > 1 {
+		return fmt.Errorf("wake_word.sensitivity %v out of range [0, 1]", c.WakeWord.Sensitivity)
 	}
 	// Prompt rule sets go into the same JSON file as everything else and are sent
 	// to the model on every dictation, so they are bounded on both counts. The
