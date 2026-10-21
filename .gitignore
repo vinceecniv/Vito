@@ -25,3 +25,7 @@ Thumbs.db
 /build/
 packaging/flatpak/build.yml
 .claude/worktrees/
+
+# Python bytecode
+__pycache__/
+*.pyc
