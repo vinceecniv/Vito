@@ -181,6 +181,11 @@ type UI struct {
 	// "" is treated as "all". Routine notifications are transient (not kept in
 	// the notification server's history); errors are kept.
 	Notifications string `json:"notifications"`
+	// Pill floats a small indicator on screen while dictating. Nil-safe: an unset
+	// value counts as enabled.
+	Pill *bool `json:"pill,omitempty"`
+	// PillIdle keeps a small pill on every screen between dictations too.
+	PillIdle bool `json:"pill_idle,omitempty"`
 	// WelcomeDone records that the onboarding welcome card was dismissed. It lives
 	// here, in Vito's own config, rather than in the browser's localStorage on
 	// purpose: an uninstall+reinstall that deletes all settings must bring the
@@ -294,6 +299,9 @@ type Sync struct {
 
 // PushToTalkEnabled reports whether the hold-to-talk behaviour is on.
 func (c Config) PushToTalkEnabled() bool { return c.PushToTalk == nil || *c.PushToTalk }
+
+// PillEnabled reports whether the dictation pill is on.
+func (u UI) PillEnabled() bool { return u.Pill == nil || *u.Pill }
 
 // TypingWPM maps the configured typing-speed choice to a words-per-minute value
 // used to estimate saved typing time.

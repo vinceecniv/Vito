@@ -58,9 +58,9 @@ func flatpakID() string {
 	return "io.github.vinceecniv.vito"
 }
 
-// hostWayland returns the path of that link when Vito runs in a Flatpak and the
+// HostWayland returns the path of that link when Vito runs in a Flatpak and the
 // link is there, else "". Outside a sandbox wtype uses $WAYLAND_DISPLAY as is.
-func hostWayland() string {
+func HostWayland() string {
 	if !xdgportal.InFlatpak() {
 		return ""
 	}
@@ -78,13 +78,13 @@ func hostWayland() string {
 // HasHostWaylandLink reports whether the link exists — which, while delivery is
 // still clipboard-only, means it points at a socket that no longer serves
 // (a previous session) and wants making again.
-func HasHostWaylandLink() bool { return hostWayland() != "" }
+func HasHostWaylandLink() bool { return HostWayland() != "" }
 
 // wtypeCommand runs wtype over the direct connection when there is one.
 // libwayland accepts an absolute path in WAYLAND_DISPLAY.
 func wtypeCommand(ctx context.Context, args ...string) *exec.Cmd {
 	cmd := exec.CommandContext(ctx, "wtype", args...)
-	if p := hostWayland(); p != "" {
+	if p := HostWayland(); p != "" {
 		cmd.Env = append(os.Environ(), "WAYLAND_DISPLAY="+p)
 	}
 	return cmd
@@ -102,7 +102,7 @@ var wtypeProbe struct {
 // a link made (or remade for a new session) while Vito runs is probed afresh,
 // so it takes effect without a restart.
 func wtypeProbeKey() string {
-	p := hostWayland()
+	p := HostWayland()
 	if p == "" {
 		return ""
 	}

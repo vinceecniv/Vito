@@ -34,12 +34,12 @@ func TestHostWaylandLink(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if _, err := os.Stat("/.flatpak-info"); err != nil && hostWayland() != "" {
+	if _, err := os.Stat("/.flatpak-info"); err != nil && HostWayland() != "" {
 		t.Fatal("link used outside a Flatpak")
 	}
 	t.Setenv("FLATPAK_ID", "io.github.vinceecniv.vito")
-	if got := hostWayland(); got != link {
-		t.Fatalf("hostWayland() = %q, want %q", got, link)
+	if got := HostWayland(); got != link {
+		t.Fatalf("HostWayland() = %q, want %q", got, link)
 	}
 	key := wtypeProbeKey()
 
@@ -60,7 +60,7 @@ func TestHostWaylandLink(t *testing.T) {
 	if err := os.WriteFile(link, nil, 0o600); err != nil {
 		t.Fatal(err)
 	}
-	if hostWayland() != "" || HasHostWaylandLink() {
+	if HostWayland() != "" || HasHostWaylandLink() {
 		t.Fatal("a plain file was taken for the link")
 	}
 }
@@ -92,5 +92,5 @@ func TestFlatpakDirectWayland(t *testing.T) {
 	if got := ActiveBackend(cfg); got != backendWayland {
 		t.Fatalf("ActiveBackend = %q, want %q", got, backendWayland)
 	}
-	t.Logf("delivering through %s via %s", ActiveBackend(cfg), hostWayland())
+	t.Logf("delivering through %s via %s", ActiveBackend(cfg), HostWayland())
 }
