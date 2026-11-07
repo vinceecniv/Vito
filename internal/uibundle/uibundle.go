@@ -40,7 +40,7 @@ import (
 // when the UI starts to depend on something new in the daemon (a route, a
 // field, an event): a bundle built against a higher level is then left alone
 // by older daemons, which keep the interface they shipped with.
-const API = 1
+const API = 2
 
 // PublicKey verifies ui.json. Its private half lives outside the repository on
 // the machine that publishes (packaging/uibundle).

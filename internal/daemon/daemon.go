@@ -77,8 +77,12 @@ type Event struct {
 	Cleaned string `json:"cleaned,omitempty"`
 	Level   int    `json:"level,omitempty"` // peak 0..100
 	Clip    bool   `json:"clip,omitempty"`
-	Timings any    `json:"timings,omitempty"`
-	Error   string `json:"error,omitempty"`
+	// Peak is the loudest sample since the last level event, 0..1 of full scale.
+	// Level is scaled for the meter in the app; this is for whoever scales it
+	// differently, and stays in the daemon.
+	Peak    float64 `json:"-"`
+	Timings any     `json:"timings,omitempty"`
+	Error   string  `json:"error,omitempty"`
 	// Command is the armed one-off spoken command ("vertaal naar Duits"), or ""
 	// when it's cleared. Drives the command-mode indicator in the UI.
 	Command string `json:"command,omitempty"`
@@ -710,6 +714,7 @@ func (d *Daemon) start() error {
 	go func() {
 		defer s.consumers.Done()
 		lastLevel := time.Time{}
+		var loudest float64
 		var meter meterScale // scaled to the last seconds of speech, per session
 		for chunk := range s.chunks {
 			if err := s.spool.Write(chunk); err != nil {
@@ -721,9 +726,11 @@ func (d *Daemon) start() error {
 				s.lastActivity.Store(time.Now().UnixMilli())
 				s.spoke.Store(true)
 			}
+			loudest = max(loudest, r)
 			if now := time.Now(); now.Sub(lastLevel) >= 100*time.Millisecond {
 				lastLevel = now
-				d.emit(Event{Type: "level", Level: meter.level(r, now), Clip: clip})
+				d.emit(Event{Type: "level", Level: meter.level(r, now), Clip: clip, Peak: loudest})
+				loudest = 0
 			}
 		}
 	}()
@@ -788,21 +795,41 @@ func (d *Daemon) Stop() error {
 }
 
 func (d *Daemon) Cancel() error {
-	d.mu.Lock()
-	if d.sess == nil {
-		d.mu.Unlock()
-		return fmt.Errorf("not recording")
+	s, err := d.takeSession()
+	if err != nil {
+		return err
 	}
-	s := d.sess
-	d.sess = nil
-	d.state = StateIdle
-	d.mu.Unlock()
-
 	d.discard(s)
 	d.playSound(s.cfg, assets.SoundCancel)
 	d.note("vito: geannuleerd", "")
 	d.log.Info("recording cancelled")
 	return nil
+}
+
+// Dismiss drops a recording nobody meant to make, a tap on a key that dictates
+// while held, and shows what to do instead. Unlike Cancel it plays no sound:
+// nothing was cancelled, the user is being taught.
+func (d *Daemon) Dismiss(summary, body string) error {
+	s, err := d.takeSession()
+	if err != nil {
+		return err
+	}
+	d.discard(s)
+	d.note(summary, body)
+	d.log.Info("recording dismissed")
+	return nil
+}
+
+func (d *Daemon) takeSession() (*session, error) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	if d.sess == nil {
+		return nil, fmt.Errorf("not recording")
+	}
+	s := d.sess
+	d.sess = nil
+	d.state = StateIdle
+	return s, nil
 }
 
 // discard tears down a recording session and removes its spool, without

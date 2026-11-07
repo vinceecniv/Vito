@@ -26,6 +26,7 @@ import (
 	"vito/internal/daemon"
 	"vito/internal/history"
 	"vito/internal/hotkey"
+	"vito/internal/pill"
 	"vito/internal/server"
 	"vito/internal/tray"
 )
@@ -186,6 +187,7 @@ func serve() error {
 	server.Version = version
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)
 	notifyUserSignals(d, log)
+	pill.Start(d, log)
 	hk.Start(cfg.HotkeyWindows, cfg.HotkeyCancelWindows)
 
 	if cfg.Demo {

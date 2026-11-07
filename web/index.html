@@ -1661,7 +1661,7 @@
   .standalone .settings-pane > .card[data-sec="linux"],
   .standalone [data-help="level"], .standalone #s-inputlevel, .standalone [data-help="media"], .standalone #mediaaction-sel,
   .standalone #btn-mictest, .standalone [data-help="output"], .standalone [data-help="output"] + .isel,
-  .standalone label:has(#s-autostart), .standalone label:has(#s-tray), .standalone label:has(#s-trviz),
+  .standalone label:has(#s-autostart), .standalone label:has(#s-tray), .standalone label:has(#s-trviz), .standalone label:has(#s-pill), .standalone label:has(#s-pill-idle),
   .standalone [data-help="notifications"], .standalone #notify-sel,
   .standalone label:has(#s-updatecheck), .standalone label:has(#s-updateauto), .standalone #upd-auto-note,
   .standalone label:has(#s-demo), .standalone #cost-card, .standalone #whistle-remove { display:none !important; }
@@ -1902,6 +1902,8 @@
           <label class="tgl" data-help="autostart"><input type="checkbox" id="s-autostart"><span class="tr"></span> Start with the system</label>
           <label class="tgl" data-help="tray"><input type="checkbox" id="s-tray"><span class="tr"></span> Show system-tray icon</label>
           <label class="tgl" data-help="trviz"><input type="checkbox" id="s-trviz"><span class="tr"></span> Speech glow in the live transcript</label>
+          <label class="tgl" id="pill-opt" data-help="pill" style="display:none;"><input type="checkbox" id="s-pill"><span class="tr"></span> Show a pill on screen while dictating</label>
+          <label class="tgl" id="pill-idle-opt" data-help="pillidle" style="display:none;"><input type="checkbox" id="s-pill-idle"><span class="tr"></span> Keep a small pill on screen when not dictating</label>
           <label class="fld" data-help="notifications" style="margin-top:16px;">Notifications</label>
           <input type="hidden" id="s-notify">
           <div class="flagsel" id="notify-sel">
@@ -3308,6 +3310,8 @@ const TR = { nl: {
   "Vito's background process is unreachable. Dictation and settings don't work without it.":"Vito's achtergrondproces is niet bereikbaar. Zonder dit proces werken dicteren en de instellingen niet.",
   "Show system-tray icon":"Systeemvak-icoon tonen",
   "Speech glow in the live transcript":"Spraakgloed in het live transcript",
+  "Show a pill on screen while dictating":"Pil op het scherm tonen tijdens dicteren",
+  "Keep a small pill on screen when not dictating":"Kleine pil op het scherm houden als je niet dicteert",
   "Turn off the system-tray icon?":"Systeemvak-icoon uitschakelen?",
   "Turn off anyway":"Toch uitschakelen",
   "The change only takes effect after Vito is restarted.":"De wijziging wordt pas actief nadat Vito opnieuw is gestart.",
@@ -3372,6 +3376,7 @@ const TR = { nl: {
   "System Settings → Shortcuts → Custom Shortcuts → a new command per command, paste it and assign a key.":"Systeeminstellingen → Sneltoetsen → Aangepaste sneltoetsen → nieuwe opdracht per commando, plak het en wijs een toets toe.",
   "Settings → Keyboard → Custom Shortcuts → +, enter a command and press your key combination (repeat for cancel).":"Instellingen → Toetsenbord → Aangepaste sneltoetsen → +, vul een commando in en druk je toetscombinatie (herhaal voor cancel).",
   "Add bindings in ~/.config/niri/config.kdl:":"Voeg bindings toe in ~/.config/niri/config.kdl:",
+  "Caps Lock as the dictation key: hold it to dictate, double-tap for hands-free. This needs a niri newer than 26.04, and Caps Lock stops locking capitals. Add this, keeping your own layout:":"Caps Lock als dicteertoets: vasthouden om te dicteren, dubbeltikken voor handsfree. Dit vraagt een niri nieuwer dan 26.04, en Caps Lock zet dan geen hoofdletters meer vast. Voeg dit toe, met je eigen toetsenbordindeling:",
   "Add bindings in ~/.config/hypr/hyprland.conf:":"Voeg bindings toe in ~/.config/hypr/hyprland.conf:",
   "Add keybinds to your shell or compositor config that run these commands.":"Voeg in je shell- of compositor-config keybinds toe die deze commando's uitvoeren.",
   "This hotkey is already in use by another app. Pick another one.":"Deze sneltoets is al in gebruik door een andere app. Kies een andere.",
@@ -7050,6 +7055,7 @@ async function renderLinuxCard(){
   try { info = await api("/api/linux-tools"); } catch { if (tab) tab.hidden = true; return; }
   const isLinux = !!info && info.os === "linux";
   lastIsLinux = isLinux;
+  for (const id of ["pill-opt", "pill-idle-opt"]) if ($(id)) $(id).style.display = isLinux ? "" : "none";
   lastLinuxInfo = isLinux ? info : null;
   maybeShowLinuxHint();
   if (tab) tab.hidden = !isLinux;
@@ -9296,6 +9302,8 @@ async function fillSettings() {
   setRetentionDisplay(String(cfg.history.retention_days ?? 0));
   syncStoreAudioUI();
   $("s-tray").checked = cfg.tray ? cfg.tray.enabled !== false : true;
+  $("s-pill").checked = !cfg.ui || cfg.ui.pill !== false; // default on
+  $("s-pill-idle").checked = !!(cfg.ui && cfg.ui.pill_idle);
   $("s-trviz").checked = trViz; // client-side (localStorage), not part of cfg
   setTypespeedDisplay((cfg.stats && cfg.stats.typing_speed) || "average");
   setNotifyDisplay((cfg.ui && cfg.ui.notifications) || "all");
@@ -9636,6 +9644,8 @@ function linuxActivationHTML(info){
     <h4>Niri</h4>
     <p>${t("Add bindings in ~/.config/niri/config.kdl:")}</p>
     <pre>binds {\n    ${ahEsc(niriT)} { spawn "pkill" "-USR2" "-f" "vito serve"; }\n    ${ahEsc(niriC)} { spawn "pkill" "-USR1" "-f" "vito serve"; }\n}</pre>
+    <p style="margin-top:8px;">${t("Caps Lock as the dictation key: hold it to dictate, double-tap for hands-free. This needs a niri newer than 26.04, and Caps Lock stops locking capitals. Add this, keeping your own layout:")}</p>
+    <pre>input {\n    keyboard {\n        xkb {\n            layout "us"\n            options "caps:menu"\n        }\n    }\n}\nbinds {\n    Menu repeat=false {\n        press   { spawn "pkill" "-RTMIN+1" "-f" "vito serve"; }\n        release { spawn "pkill" "-RTMIN+2" "-f" "vito serve"; }\n    }\n}</pre>
     <p style="margin-top:8px;">${t("Want the detached window (Detached window) to float instead of tile? Add this window rule:")}</p>
     <pre>window-rule {\n    match title="^Vito Live Transcript$"\n    open-floating true\n}</pre>
     <h4>Hyprland</h4>
@@ -9840,7 +9850,7 @@ function collectSettings() {
     history: Object.assign(cfg.history, { enabled: $("s-history").checked, store_audio: $("s-storeaudio").checked, retention_days: parseInt($("s-retention").value, 10) || 0 }),
     tray: Object.assign(cfg.tray || {}, { enabled: $("s-tray").checked }),
     stats: Object.assign(cfg.stats || {}, { typing_speed: $("s-typespeed").value }),
-    ui: Object.assign(cfg.ui || {}, { notifications: $("s-notify").value }),
+    ui: Object.assign(cfg.ui || {}, { notifications: $("s-notify").value, pill: $("s-pill").checked, pill_idle: $("s-pill-idle").checked }),
     update: Object.assign(cfg.update || {}, { check: $("s-updatecheck").checked, auto: $("s-updateauto").checked }),
     backup: Object.assign(cfg.backup || {}, { auto: $("s-autobackup").checked }),
     push_to_talk: $("s-ptt") ? $("s-ptt").checked : cfg.push_to_talk,
@@ -10032,6 +10042,7 @@ $("demo-off").onclick = () => {
 };
 buildPeriodDropdown(); // choosing a period saves it and reloads the stats
 // Disabling the tray icon warns first (it's the easy way back to settings).
+$("s-pill").onchange = $("s-pill-idle").onchange = () => autoSaveSettings();
 $("s-tray").onchange = () => {
   if ($("s-tray").checked) { autoSaveSettings(); return; }
   modal(t("Turn off the system-tray icon?"),
@@ -10732,6 +10743,8 @@ const HELP = {
   notifications:{nl:"Bureaubladmeldingen bij dictaat. 'Alles' toont elke status (kort, niet bewaard in je meldingsgeschiedenis), 'Alleen fouten' toont enkel problemen, 'Uit' toont niets.",en:"Desktop notifications for dictation. 'Show all' shows every status (briefly, not kept in your notification history), 'Errors only' shows just problems, 'Off' shows nothing."},
   autostart:{nl:"Start Vito automatisch zodra je inlogt, zodat je sneltoets altijd klaarstaat.",en:"Launch Vito automatically at login so your hotkey is always ready."},
   tray:{nl:"Toon het Vito-icoon in het systeemvak voor snelle toegang. Werkt na een herstart van Vito.",en:"Show the Vito icon in the system tray for quick access. Takes effect after restarting Vito."},
+  pill:{nl:"Toont onderaan het scherm een kleine balk die meebeweegt met je stem, zolang je dicteert. Hij pakt nooit de focus en klikken gaan er dwars doorheen. Werkt op desktops met layer-shell, zoals niri; op GNOME nog niet.",en:"Shows a small bar at the bottom of the screen that moves with your voice while you dictate. It never takes the focus and clicks pass through it. Works on desktops with layer-shell, such as niri; not on GNOME yet."},
+  pillidle:{nl:"Laat op elk scherm een klein streepje staan als je niet dicteert. Bij dicteren groeit de pil daaruit, op het scherm waar je werkt. Een fullscreen-venster bedekt het streepje.",en:"Keeps a small mark on every screen when you are not dictating. The pill grows out of it when you dictate, on the screen you are working on. A fullscreen window covers the mark."},
   trviz:{nl:"Laat tijdens het inspreken een rustige, kleurrijke gloed vanaf de onderkant van het live transcript ademen, meebewegend met je stem. Puur visueel. Het losse venster heeft hiervoor een eigen schakelaar in zijn snelinstellingen.",en:"While you speak, breathe a calm, colourful glow up from the bottom of the live transcript, moving with your voice. Purely visual. The detached window has its own switch for this in its quick settings."},
   typingspeed:{nl:"Bepaalt op basis van hoeveel woorden per minuut jij typt hoeveel tijd je bespaart door te dicteren. Gemiddeld ≈ 40 wpm.",en:"Sets how much time dictation saves you, based on how many words per minute you type. Average ≈ 40 wpm."},
   demo:{nl:"Vult de app met verzonnen voorbeeldgegevens — statistieken, kosten, geschiedenis, woordenboek en een live transcript dat zichzelf afspeelt. Je eigen gegevens worden alleen verborgen, nooit overschreven. Gaat vanzelf uit zodra je een spraakherkenning-key invult.",en:"Fills the app with made-up sample data — statistics, costs, history, dictionary and a live transcript that replays itself. Your own data is only hidden, never overwritten. Switches off by itself once you enter a speech-recognition key."},

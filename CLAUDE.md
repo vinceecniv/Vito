@@ -245,6 +245,13 @@ a Flatpak, an AppImage, a distro package or a plain binary. The per-desktop
 commands are shown in the app under Settings → Activation
 (`linuxActivationHTML` in `web/index.html`).
 
+A compositor that reports press and release can send `pkill -RTMIN+1` and
+`-RTMIN+2` instead: key down and up, read by `hotkey.Gesture` as hold to dictate,
+double-tap for hands-free, and a lone tap dropped with a hint. That is how Caps
+Lock works on niri. A bind on `Caps_Lock` itself is not enough, because niri
+updates its XKB state before it looks for binds, so capitals lock anyway. Use
+`caps:menu` in the xkb options and bind `Menu` (measured in a nested niri).
+
 Two portal paths cannot be tested on a compositor that lacks a backend — niri is
 the canary here, and it has neither. Each has a manual test behind an environment
 variable, to be run on GNOME or KDE:
@@ -258,6 +265,21 @@ Where a stable path *is* baked in — the XDG autostart entry and the `vito://` 
 handler that relaunches the daemon for the PWA — use `internal/selfexe`, which
 prefers `$APPIMAGE` over `os.Executable()`; the latter points into the throwaway
 `/tmp/.mount_*` squashfs and would break after a reboot.
+
+The **dictation pill** (`internal/pill`) floats while dictating: `render.go` draws
+it without any platform code, `window_linux.go` is a small hand-written Wayland
+client for a wlr-layer-shell surface, connected only while the pill shows. It
+must never take the keyboard focus, or it would swallow the paste it announces.
+GNOME's Mutter has no layer-shell, so there is no pill there yet; Windows and
+macOS have no window code yet. The optional resting pill (`ui.pill_idle`,
+`idle.go`) is one still window per screen on the Top layer, on its own connection;
+a dictation's window opens over it on the Overlay layer. Light or dark follows
+`ui.theme`, then the Settings portal's `color-scheme`, live. On niri the resting
+pill of the focused screen stands out and the others dim (`focus_niri.go`, the
+IPC event stream: layer-shell cannot tell). Another window manager adds a
+`focusSource`, another OS a `window_*.go`: the seams are listed in `pill.go`. Try
+the window with
+`VITO_PILL_TEST=1 go test ./internal/pill/ -run TestWindow -v`.
 
 ## Releases (macOS)
 
