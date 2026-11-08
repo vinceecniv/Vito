@@ -1,5 +1,5 @@
 //go:build !windows && !darwin
 
-package tray
+package uitext
 
 func osLang() string { return envLang() }

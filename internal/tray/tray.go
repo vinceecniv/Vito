@@ -14,6 +14,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+	"vito/internal/uitext"
 
 	"fyne.io/systray"
 
@@ -135,19 +136,19 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 		state   = daemon.StateIdle
 	)
 	setStatus := func() { // callers hold labelMu
-		label, tip := statusText(state, translator(lang))
+		label, tip := statusText(state, uitext.Translator(lang))
 		mStatus.SetTitle(label)
 		systray.SetTooltip("Vito Tray — " + tip)
 	}
 	relabel := func() {
 		labelMu.Lock()
 		defer labelMu.Unlock()
-		l := resolveLang(d.Config().UI.Lang)
+		l := uitext.ResolveLang(d.Config().UI.Lang)
 		if l == lang {
 			return
 		}
 		lang = l
-		t := translator(l)
+		t := uitext.Translator(l)
 		set := func(it *systray.MenuItem, title, tip string) {
 			it.SetTitle(t(title))
 			if tip != "" {
