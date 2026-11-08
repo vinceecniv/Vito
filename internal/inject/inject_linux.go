@@ -10,6 +10,7 @@ import (
 	"sync"
 
 	"vito/internal/config"
+	"vito/internal/x11"
 	"vito/internal/xdgportal"
 )
 
@@ -35,6 +36,9 @@ const (
 	backendWayland = "wayland"
 	backendPortal  = "portal"
 	backendYdotool = "ydotool"
+	// backendX11 is XTEST in an X11 session (Linux Mint's Cinnamon): no helper,
+	// no permission, the server just takes the keys.
+	backendX11 = "x11"
 	// backendClipboard is not a way of typing but the absence of one: nothing on
 	// this system can press a key, so the text is left on the clipboard.
 	backendClipboard = "clipboard"
@@ -53,8 +57,11 @@ var lastBackend struct {
 // through the other backend, or the text would land twice.
 func resolveBackend(cfg config.Injection) string {
 	switch cfg.Backend {
-	case backendWayland, backendPortal, backendYdotool:
+	case backendWayland, backendPortal, backendYdotool, backendX11:
 		return cfg.Backend
+	}
+	if x11.Session() {
+		return backendX11
 	}
 	if wtypeUsable() {
 		return backendWayland
@@ -112,6 +119,8 @@ func injectPlatform(cfg config.Injection, mode Mode, text string) (Mode, error) 
 	setLastBackend(backend)
 
 	switch backend {
+	case backendX11:
+		return mode, x11Inject(cfg, mode, text)
 	case backendWayland:
 		return mode, wtypeInject(cfg, mode, text)
 	case backendPortal:
@@ -161,6 +170,8 @@ func pressEnter() error {
 	backend := lastBackend.name
 	lastBackend.Unlock()
 	switch backend {
+	case backendX11:
+		return x11PressEnter()
 	case backendWayland:
 		return wtypePressEnter()
 	case backendPortal:
@@ -176,6 +187,9 @@ func pressEnter() error {
 // lands (phase 4 in docs/linux-portals.md).
 
 func copyText(text string) error {
+	if x11.Session() {
+		return x11.SetClipboard(text)
+	}
 	if err := checkTool("wl-copy"); err != nil {
 		return err
 	}
@@ -193,6 +207,9 @@ func copyText(text string) error {
 // readClipboardText returns the current clipboard contents when they are
 // plain text; restoring non-text content (images, files) is skipped.
 func readClipboardText() (string, bool) {
+	if x11.Session() {
+		return x11.ReadClipboard()
+	}
 	types, err := exec.Command("wl-paste", "--list-types").Output()
 	if err != nil || !strings.Contains(string(types), "text/") {
 		return "", false
