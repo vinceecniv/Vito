@@ -44,6 +44,7 @@ import (
 	"vito/internal/history"
 	"vito/internal/hotkey"
 	"vito/internal/inject"
+	"vito/internal/pill"
 	"vito/internal/selfexe"
 	"vito/internal/stt"
 	"vito/internal/uibundle"
@@ -86,6 +87,7 @@ func New(d *daemon.Daemon, log *slog.Logger, audioCtx *audio.Context, hist *hist
 		go s.ui.Run(context.Background())
 	}
 	s.startSync()
+	s.watchAchievements()
 	s.updatedFrom = update.TakeUpdatedFrom(Version)
 	s.auto = update.NewAuto(s.updates, log,
 		func() bool { return d.Config().Update.AutoEnabled() },
@@ -148,10 +150,12 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("POST /api/accessibility", s.auth(s.handleRequestAccessibility))
 	mux.HandleFunc("POST /api/hotkey/configure", s.auth(s.handleConfigureHotkey))
 	mux.HandleFunc("POST /api/hotkey/reregister", s.auth(s.handleReregisterHotkey))
+	mux.HandleFunc("POST /api/hotkey/niri-caps", s.auth(s.handleNiriCaps))
 	mux.HandleFunc("POST /api/test-key", s.auth(s.handleTestKey))
 	mux.HandleFunc("GET /api/costs", s.auth(s.handleCosts))
 	mux.HandleFunc("GET /api/achievements", s.auth(s.handleAchievements))
 	mux.HandleFunc("POST /api/achievements/{id}", s.auth(s.handleAchievementSet))
+	mux.HandleFunc("POST /api/pill/preview", s.auth(s.handlePillPreview))
 	mux.HandleFunc("POST /api/welcome-done", s.auth(s.handleWelcomeDone))
 	mux.HandleFunc("POST /api/credit/dismiss", s.auth(s.handleDismissCredit))
 	mux.HandleFunc("GET /api/local-stt", s.auth(s.handleLocalSTT))
@@ -578,10 +582,7 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	// Decoding into cfg writes through the slice headers it shares with current,
 	// so anything we mean to restore afterwards has to be copied out first —
 	// a plain struct copy would be aliased and get overwritten in place.
-	savedDict := config.Dictionary{
-		Keyterms:    append([]string(nil), current.Dictionary.Keyterms...),
-		Corrections: append([]config.Correction(nil), current.Dictionary.Corrections...),
-	}
+	savedDict := current.Dictionary.Clone()
 	// The dashboard layout is a byte slice too: copy it out, and give the
 	// decode a fresh one to fill, or decoding writes the page's copy into the
 	// live config's bytes and corrupts it for every later save.
@@ -597,7 +598,8 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	// Sync has its own endpoints; a settings save only stamps a dictionary
 	// change, so the newest one wins across computers.
 	cfg.Sync = current.Sync
-	if !slices.Equal(cfg.Dictionary.Keyterms, savedDict.Keyterms) || !slices.Equal(cfg.Dictionary.Corrections, savedDict.Corrections) {
+	if !slices.Equal(cfg.Dictionary.Keyterms, savedDict.Keyterms) || !slices.Equal(cfg.Dictionary.Corrections, savedDict.Corrections) ||
+		!slices.Equal(cfg.Dictionary.Snippets, savedDict.Snippets) {
 		cfg.Sync.DictionaryAt = time.Now().UnixMilli()
 	}
 	if !slices.Equal(cfg.Cleanup.Prompts, current.Cleanup.Prompts) {
@@ -679,7 +681,30 @@ func (s *Server) handleGetHotkey(w http.ResponseWriter, r *http.Request) {
 		// settings page offers to ask for it when this is false. Always true
 		// elsewhere, so the UI can read it without checking the OS first.
 		"accessibility": inject.Accessible(),
+		// niri: whether Caps Lock is set up in its config, which only the
+		// user's config.kdl can do (POST /api/hotkey/niri-caps).
+		"niri_caps": hotkey.NiriCapsStatus(),
 	})
+}
+
+// handleNiriCaps sets Caps Lock up as the dictation key in niri's config, or
+// takes it out again. The page asked the user first; Vito keeps a copy of the
+// file and lets niri check the change. manual says the page should show the
+// lines to add by hand instead.
+func (s *Server) handleNiriCaps(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		On bool `json:"on"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	if err := hotkey.SetNiriCaps(req.On); err != nil {
+		s.writeJSON(w, http.StatusOK, map[string]any{"ok": false, "error": err.Error(),
+			"manual": errors.Is(err, hotkey.ErrNiriManual), "niri_caps": hotkey.NiriCapsStatus()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "niri_caps": hotkey.NiriCapsStatus()})
 }
 
 // handleRequestAccessibility triggers the OS permission prompt for synthesising
@@ -725,7 +750,7 @@ func (s *Server) handleReregisterHotkey(w http.ResponseWriter, r *http.Request) 
 // card there. Detection is cheap (PATH lookups + a socket stat), safe to re-run.
 func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 	if runtime.GOOS != "linux" {
-		s.writeJSON(w, http.StatusOK, map[string]any{"os": runtime.GOOS, "present": map[string]bool{}})
+		s.writeJSON(w, http.StatusOK, map[string]any{"os": runtime.GOOS, "present": map[string]bool{}, "pill": pill.Available()})
 		return
 	}
 	names := []string{"wl-copy", "wl-paste", "wtype", "ydotool", "notify-send", "pactl"}
@@ -756,6 +781,8 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, map[string]any{
 		"os":             runtime.GOOS,
 		"present":        present,
+		"pill":           pill.Available(), // the settings page offers its options only then
+		"gnome_ext":      pill.GnomeExtension(),
 		"ydotool_socket": socket,
 		"backend":        inject.ActiveBackend(s.d.Config().Injection),
 		// False while the backend is the RemoteDesktop portal and no session has
@@ -954,47 +981,10 @@ const subMonthly = 15.0
 // records any newly earned (so their unlock date sticks), and returns the whole
 // set for the UI to render — earned and locked, with progress toward the next.
 func (s *Server) handleAchievements(w http.ResponseWriter, r *http.Request) {
-	wpm := s.d.Config().TypingWPM()
-	st, err := s.hist.AchievementInputs(wpm)
+	st, earned, months, currency, err := s.evaluateAchievements()
 	if err != nil {
 		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"error": err.Error()})
 		return
-	}
-
-	// What a subscription would have cost over the months you've had Vito, minus
-	// what you actually spent in API fees. Both in the display currency.
-	_, _, _, fx, currency := s.costRates()
-	now := time.Now()
-	sttHr, inRate, outRate, _, _ := s.costRates()
-	uploadHr := stt.UploadRateUSD(s.d.Config().STT)
-	aInRate, aOutRate := s.assistTokenRates(inRate, outRate)
-	dur, up, in, out, cmdIn, cmdOut, first, _ := s.hist.CostTotals("", now.Format("2006-01-02"))
-	spent := (float64(dur)/3_600_000.0*sttHr + float64(up)/3_600_000.0*uploadHr +
-		float64(in)/1e6*inRate + float64(out)/1e6*outRate +
-		float64(cmdIn)/1e6*aInRate + float64(cmdOut)/1e6*aOutRate) * fx
-	months := 0.0
-	if first != "" {
-		if fd, e := time.ParseInLocation("2006-01-02", first, now.Location()); e == nil {
-			months = now.Sub(fd).Hours() / 24 / 30.44
-		}
-	}
-	if savings := months*subMonthly - spent; savings > 0 {
-		st.SubscriptionSavings = int64(savings)
-	}
-
-	earned := achievements.Evaluate(st)
-
-	// Persist everything currently earned. On a first run this records the lot in
-	// one pass; the client's own "already seen" set keeps it from celebrating a
-	// long history all at once.
-	ids := make([]string, 0, len(earned))
-	for _, d := range achievements.List {
-		if earned[d.ID] {
-			ids = append(ids, d.ID)
-		}
-	}
-	if _, err := s.hist.RecordAchievements(ids); err != nil {
-		s.log.Warn("recording achievements failed", "err", err)
 	}
 	unlocked, _ := s.hist.UnlockedAchievements()
 
@@ -1027,6 +1017,93 @@ func (s *Server) handleAchievements(w http.ResponseWriter, r *http.Request) {
 		"animated":     s.achievementLotties(r),
 		"achievements": items,
 	})
+}
+
+// evaluateAchievements works out which achievements the usage so far has
+// earned, and records the new ones.
+func (s *Server) evaluateAchievements() (st achievements.Stats, earned map[string]bool, months float64, currency string, err error) {
+	wpm := s.d.Config().TypingWPM()
+	st, err = s.hist.AchievementInputs(wpm)
+	if err != nil {
+		return st, nil, 0, "", err
+	}
+	// What a subscription would have cost over the months you've had Vito, minus
+	// what you actually spent in API fees. Both in the display currency.
+	_, _, _, fx, cur := s.costRates()
+	currency = cur
+	now := time.Now()
+	sttHr, inRate, outRate, _, _ := s.costRates()
+	uploadHr := stt.UploadRateUSD(s.d.Config().STT)
+	aInRate, aOutRate := s.assistTokenRates(inRate, outRate)
+	dur, up, in, out, cmdIn, cmdOut, first, _ := s.hist.CostTotals("", now.Format("2006-01-02"))
+	spent := (float64(dur)/3_600_000.0*sttHr + float64(up)/3_600_000.0*uploadHr +
+		float64(in)/1e6*inRate + float64(out)/1e6*outRate +
+		float64(cmdIn)/1e6*aInRate + float64(cmdOut)/1e6*aOutRate) * fx
+	if first != "" {
+		if fd, e := time.ParseInLocation("2006-01-02", first, now.Location()); e == nil {
+			months = now.Sub(fd).Hours() / 24 / 30.44
+		}
+	}
+	if savings := months*subMonthly - spent; savings > 0 {
+		st.SubscriptionSavings = int64(savings)
+	}
+
+	earned = achievements.Evaluate(st)
+	s.recordAchievements(earned)
+	return st, earned, months, currency, nil
+}
+
+// recordAchievements stores what is earned and announces what is new, for the
+// pill to show where you are working. Whichever asks first records a new one,
+// this or the page, so it is announced once. A first pass over a long history
+// records the lot in silence, as does a jump of more than a few at once (a
+// restored backup, synced history from another computer).
+func (s *Server) recordAchievements(earned map[string]bool) {
+	before, _ := s.hist.UnlockedAchievements()
+	had := 0
+	for id := range before {
+		if id != "_seeded" {
+			had++
+		}
+	}
+	ids := make([]string, 0, len(earned))
+	for _, d := range achievements.List {
+		if earned[d.ID] {
+			ids = append(ids, d.ID)
+		}
+	}
+	added, err := s.hist.RecordAchievements(ids)
+	if err != nil {
+		s.log.Warn("recording achievements failed", "err", err)
+	}
+	if had == 0 || len(added) > 3 {
+		return
+	}
+	for _, id := range added {
+		s.d.Announce(daemon.Event{Type: "achievement", Text: id})
+	}
+}
+
+// watchAchievements checks after every dictation, so a new achievement shows
+// while the page is closed too.
+func (s *Server) watchAchievements() {
+	s.d.AddEventListener(func(e daemon.Event) {
+		if e.Type == "final" && !s.d.Config().Demo {
+			go func() {
+				if _, _, _, _, err := s.evaluateAchievements(); err != nil {
+					s.log.Debug("achievements not checked", "err", err)
+				}
+			}()
+		}
+	})
+}
+
+// handlePillPreview has the pill play a short pretend dictation in a style
+// (?style=bars|glow|vito), so the settings page can show what each looks
+// like. ?style=cards shows one of each of its messages instead.
+func (s *Server) handlePillPreview(w http.ResponseWriter, r *http.Request) {
+	s.d.Announce(daemon.Event{Type: "pill_preview", Text: r.URL.Query().Get("style")})
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // handleAchievementSet ticks or un-ticks an honour-system badge (the donation
