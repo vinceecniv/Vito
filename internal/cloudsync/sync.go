@@ -466,12 +466,13 @@ func mergePrompts(a, b []config.Prompt) []config.Prompt {
 	return out
 }
 
-// MergeDictionary adds b's keyterms and corrections to a's, skipping what a
-// already has (ignoring case).
+// MergeDictionary adds b's keyterms, corrections and snippets to a's, skipping
+// what a already has (ignoring case).
 func MergeDictionary(a, b config.Dictionary) config.Dictionary {
 	out := config.Dictionary{
 		Keyterms:    append([]string(nil), a.Keyterms...),
 		Corrections: append([]config.Correction(nil), a.Corrections...),
+		Snippets:    append([]config.Snippet(nil), a.Snippets...),
 	}
 	seen := map[string]bool{}
 	for _, k := range out.Keyterms {
@@ -491,6 +492,16 @@ func MergeDictionary(a, b config.Dictionary) config.Dictionary {
 		if key := strings.ToLower(strings.TrimSpace(c.Wrong)); key != "" && !wrong[key] {
 			wrong[key] = true
 			out.Corrections = append(out.Corrections, c)
+		}
+	}
+	trigger := map[string]bool{}
+	for _, sn := range out.Snippets {
+		trigger[strings.ToLower(strings.TrimSpace(sn.Trigger))] = true
+	}
+	for _, sn := range b.Snippets {
+		if key := strings.ToLower(strings.TrimSpace(sn.Trigger)); key != "" && !trigger[key] {
+			trigger[key] = true
+			out.Snippets = append(out.Snippets, sn)
 		}
 	}
 	return out

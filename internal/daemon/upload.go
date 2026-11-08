@@ -102,6 +102,8 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 	}
 
 	raw := cleanup.Plain(dictionary.Apply(strings.TrimSpace(out.Text), cfg.Dictionary.Corrections))
+	marked, snips := dictionary.Mark(raw, cfg.Dictionary.Snippets)
+	raw = dictionary.Expand(marked, snips)
 	if raw == "" {
 		err := fmt.Errorf("geen spraak herkend in dit bestand")
 		d.emitUpload(UploadStatus{Phase: "error", Name: name, Error: err.Error()})
@@ -114,10 +116,10 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 	cleaned, cleanupUsed := "", false
 	cleanupErr := ""
 	var usage cleanup.Usage
-	if cfg.Cleanup.Enabled && cleanup.Configured(cfg.Cleanup) && wordCount(raw) <= uploadCleanupMaxWords {
+	if cfg.Cleanup.Enabled && cleanup.Configured(cfg.Cleanup) && wordCount(raw) <= uploadCleanupMaxWords && !dictionary.OnlySnippets(marked) {
 		// A longer window than a dictation gets: there is no cursor waiting on it.
 		cctx, cancel := context.WithTimeout(ctx, 30*time.Second)
-		out, u, err := cleanup.NewCleaner(cfg.Cleanup).Clean(cctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections, "")
+		out, u, err := cleanup.NewCleaner(cfg.Cleanup).Clean(cctx, marked, cfg.STT.Language, cfg.Dictionary.Corrections, "")
 		cancel()
 		usage = u
 		if err != nil {
@@ -127,8 +129,12 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 				d.markCredit(p, true)
 			}
 		} else {
-			cleaned, cleanupUsed = cleanup.Plain(out), true
 			d.markCredit(cleanup.ProviderName(cfg.Cleanup), false)
+			if restored, ok := dictionary.Restore(cleanup.Plain(out), snips); ok {
+				cleaned, cleanupUsed = restored, true
+			} else {
+				d.log.Warn("cleanup of uploaded file lost a text snippet, keeping the raw transcript")
+			}
 		}
 	}
 

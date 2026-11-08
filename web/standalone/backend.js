@@ -111,6 +111,40 @@
     }
     return text;
   }
+  // internal/dictionary/snippets.go: a spoken trigger becomes a placeholder the
+  // cleanup cannot touch (⟦1⟧, ⟦2⟧, …), and the fixed text goes in after.
+  const PH = /⟦(\d+)⟧/g;
+  const SNIPPET_NOTE = "Placeholders such as ⟦1⟧ stand for fixed text the speaker inserts (a link, an address). Keep every placeholder exactly as written, once, where it belongs in the sentence; never remove, translate, explain or reformat it.";
+  function triggerRe(trigger) {
+    const norm = String(trigger || "").trim().replace(/([mz])['’]n/gi, (_, c) => (c.toLowerCase() === "m" ? "mijn" : "zijn"));
+    const words = norm.split(/[^\p{L}\p{N}]+/u).filter(Boolean).flatMap((w) => w.split(/(?<=\p{Ll})(?=\p{Lu})/u));
+    if (!words.length) return null;
+    const parts = words.map((w) => {
+      const l = w.toLowerCase();
+      return l === "mijn" ? "(?:mijn|m['’]n)" : l === "zijn" ? "(?:zijn|z['’]n)" : w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    });
+    return new RegExp("(?<![\\p{L}\\p{N}])" + parts.join("[^\\p{L}\\p{N}⟦⟧]*") + "(?![\\p{L}\\p{N}])", "giu");
+  }
+  function markSnippets(text) {
+    const list = ((cfg.dictionary && cfg.dictionary.snippets) || []).filter((s) => s.text)
+      .map((s) => ({ re: triggerRe(s.trigger), text: s.text, n: String(s.trigger || "").length })).filter((p) => p.re)
+      .sort((a, b) => b.n - a.n);
+    const texts = [];
+    for (const p of list) text = text.replace(p.re, () => { texts.push(p.text); return "⟦" + texts.length + "⟧"; });
+    if (texts.length === 1) {
+      const bare = text.replace(/^(?:(?![⟦⟧])[\s\p{P}])+|(?:(?![⟦⟧])[\s\p{P}])+$/gu, "");
+      if (bare === "⟦1⟧") text = bare;
+    }
+    return { marked: text, texts };
+  }
+  const expandSnippets = (marked, texts) => marked.replace(PH, (ph, i) => (texts[i - 1] !== undefined ? texts[i - 1] : ph));
+  function restoreSnippets(cleaned, texts) {
+    const seen = texts.map(() => 0);
+    for (const m of cleaned.matchAll(PH)) { const i = +m[1]; if (i < 1 || i > texts.length) return null; seen[i - 1]++; }
+    return seen.every((n) => n === 1) ? expandSnippets(cleaned, texts) : null;
+  }
+  const onlySnippets = (marked) => /⟦\d+⟧/.test(marked) && !marked.replace(PH, "").replace(/[\s\p{P}]/gu, "");
+
   // The browser's cleanup: rules, not a model. Hesitations out, a word said
   // twice in a row once, spacing around punctuation, a capital to start with.
   const FILLERS = /(^|[\s,])(?:e+h+m*|u+h+m*|u+m+|e+r+m+|euh+|hmm+)(?=[\s,.!?]|$)/giu;
@@ -122,7 +156,9 @@
   }
   const keyterms = () => {
     const seen = new Set(), out = [];
-    for (let t of (cfg.dictionary && cfg.dictionary.keyterms) || []) {
+    const terms = ((cfg.dictionary && cfg.dictionary.keyterms) || [])
+      .concat(((cfg.dictionary && cfg.dictionary.snippets) || []).filter((s) => s.text).map((s) => s.trigger));
+    for (let t of terms) {
       t = String(t).trim();
       if (!t || seen.has(t.toLowerCase())) continue;
       seen.add(t.toLowerCase()); out.push(t);
@@ -441,6 +477,10 @@ registerProcessor("vito-pcm",P)`;
       }
     } else { instruction = pendingCmd; pendingCmd = ""; }
 
+    // Text snippets: the cleanup works on placeholders.
+    let marked = raw, snips = [];
+    if (!clipboardIn) { ({ marked, texts: snips } = markSnippets(raw)); raw = expandSnippets(marked, snips); }
+
     // AI cleanup when it is set up, as the daemon does it; the rules when not,
     // or when it fails — the text always arrives. A command runs even below the
     // word threshold, on Assist's own model when it has one.
@@ -449,16 +489,19 @@ registerProcessor("vito-pcm",P)`;
     if (instruction && cfg.assist && cfg.assist.use_cleanup_model === false) {
       useCfg = Object.assign({}, cfg.assist.cleanup, { enabled: true, timeout_ms: (cfg.assist.cleanup && cfg.assist.cleanup.timeout_ms) || cl.timeout_ms });
     }
-    if (cleanupOn && (instruction || countWords(raw) >= (cl.min_words || 0))) {
+    if (cleanupOn && (instruction || countWords(raw) >= (cl.min_words || 0)) && !onlySnippets(marked)) {
       const t0 = performance.now();
-      try { cleaned = plain(await aiCleanup(raw, language, useCfg, instruction)); markCredit(cleanupName(useCfg), false); }
+      try {
+        cleaned = plain(await aiCleanup(marked, language, useCfg, instruction)); markCredit(cleanupName(useCfg), false);
+        cleaned = restoreSnippets(cleaned, snips) || ""; // a lost placeholder: keep the transcript, which has them all
+      }
       catch (e) {
         cleanupErr = (e && e.message) || String(e);
         if (e instanceof CreditError) { cleanupCredit = e.provider; markCredit(e.provider, true); }
       }
       cleanupMS = performance.now() - t0;
     }
-    if (!cleaned) raw = ruleCleanup(raw);
+    if (!cleaned) raw = expandSnippets(ruleCleanup(marked), snips);
     const out = cleaned || raw;
     let copied = false;
     // Writing to the clipboard needs no permission, but the browser wants a
@@ -541,6 +584,7 @@ registerProcessor("vito-pcm",P)`;
     let u = "Language: " + language + "\n";
     const cs = (cfg.dictionary && cfg.dictionary.corrections) || [];
     if (cs.length) u += "Corrections (misheard -> intended):\n" + cs.map((c) => "- " + JSON.stringify(c.wrong) + " -> " + JSON.stringify(c.right) + "\n").join("");
+    if (text.includes("⟦")) u += SNIPPET_NOTE + "\n";
     return u + "Transcript:\n" + text;
   }
   const maxTokens = (text) => Math.min(4096, Math.floor(text.length / 2) + 2048);
