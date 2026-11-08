@@ -7,7 +7,8 @@ require (
 	github.com/anthropics/anthropic-sdk-go v1.78.0
 	github.com/coder/websocket v1.8.15
 	github.com/gen2brain/malgo v0.11.26
-	github.com/godbus/dbus/v5 v5.2.2
+	github.com/godbus/dbus/v5 v5.2.4
+	github.com/jezek/xgb v1.3.1
 	golang.org/x/image v0.32.0
 	golang.org/x/sys v0.49.0
 	modernc.org/sqlite v1.60.1
@@ -19,7 +20,6 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/invopop/jsonschema v0.14.0 // indirect
-	github.com/jezek/xgb v1.3.1 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/ncruces/go-strftime v1.0.0 // indirect
 	github.com/pb33f/ordered-map/v2 v2.3.1 // indirect
