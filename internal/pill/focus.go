@@ -46,8 +46,8 @@ func watchFocus(stop <-chan struct{}, changed func(output string)) {
 	}
 }
 
-// screenInUse names the screen in use now, "" when the desktop cannot say.
-func screenInUse() string {
+// focusedScreen names the screen in use now, "" when the desktop cannot say.
+func focusedScreen() string {
 	stop := make(chan struct{})
 	defer close(stop)
 	got := make(chan string, 1)
