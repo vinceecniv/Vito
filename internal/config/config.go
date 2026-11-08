@@ -139,9 +139,27 @@ type Correction struct {
 	Right string `json:"right"`
 }
 
+// Snippet is fixed text that takes the place of a spoken trigger: "mijn
+// LinkedIn" becomes the profile's address. Text may span several lines.
+type Snippet struct {
+	Trigger string `json:"trigger"`
+	Text    string `json:"text"`
+}
+
 type Dictionary struct {
 	Keyterms    []string     `json:"keyterms"`
 	Corrections []Correction `json:"corrections"`
+	Snippets    []Snippet    `json:"snippets,omitempty"`
+}
+
+// Clone copies the dictionary's slices, so a JSON decode into one copy cannot
+// write through into the other.
+func (d Dictionary) Clone() Dictionary {
+	return Dictionary{
+		Keyterms:    append([]string(nil), d.Keyterms...),
+		Corrections: append([]Correction(nil), d.Corrections...),
+		Snippets:    append([]Snippet(nil), d.Snippets...),
+	}
 }
 
 type Injection struct {
@@ -184,8 +202,18 @@ type UI struct {
 	// Pill floats a small indicator on screen while dictating. Nil-safe: an unset
 	// value counts as enabled.
 	Pill *bool `json:"pill,omitempty"`
-	// PillIdle keeps a small pill on every screen between dictations too.
-	PillIdle bool `json:"pill_idle,omitempty"`
+	// PillIdle keeps a small pill on every screen between dictations too, in
+	// the middle at the bottom. Nil-safe: unset counts as on, for new users and
+	// for those updating from a version without it alike.
+	PillIdle *bool `json:"pill_idle,omitempty"`
+	// PillStyle is how the pill shows the voice: "" the glow, "bars" or "vito"
+	// (the character).
+	PillStyle string `json:"pill_style,omitempty"`
+	// PillLive shows the words in the pill while you speak.
+	PillLive bool `json:"pill_live,omitempty"`
+	// IslandPin keeps the island open as a window of its own, where it was
+	// dragged; the pill then shows in it instead of on the screens.
+	IslandPin *IslandPin `json:"island_pin,omitempty"`
 	// WelcomeDone records that the onboarding welcome card was dismissed. It lives
 	// here, in Vito's own config, rather than in the browser's localStorage on
 	// purpose: an uninstall+reinstall that deletes all settings must bring the
@@ -301,7 +329,19 @@ type Sync struct {
 func (c Config) PushToTalkEnabled() bool { return c.PushToTalk == nil || *c.PushToTalk }
 
 // PillEnabled reports whether the dictation pill is on.
+// IslandPin is where the pinned island stands: X logical pixels right of the
+// middle of the screen, Up above where it opens, on the screen named Screen
+// (DP-1), or the one in use when that is gone.
+type IslandPin struct {
+	Screen string `json:"screen,omitempty"`
+	X      int    `json:"x"`
+	Up     int    `json:"up"`
+}
+
 func (u UI) PillEnabled() bool { return u.Pill == nil || *u.Pill }
+
+// PillIdleEnabled reports whether the resting pill shows between dictations.
+func (u UI) PillIdleEnabled() bool { return u.PillIdle == nil || *u.PillIdle }
 
 // TypingWPM maps the configured typing-speed choice to a words-per-minute value
 // used to estimate saved typing time.
@@ -351,13 +391,24 @@ func Default() *Config {
 			PasteDelayMS:     100,
 			RestoreDelayMS:   300,
 		},
-		HotkeyWindows: "ctrl+shift+d", // Ctrl+Alt+Space is often taken (Claude, among others)
+		HotkeyWindows: defaultHotkey(),
 		History:       History{Enabled: true, MaxEntries: 5000},
 		Tray:          Tray{Enabled: true},
 		UI:            UI{Theme: "system", Notifications: "all"},
 		Stats:         Stats{TypingSpeed: "average"},
 		Costs:         Costs{Currency: "eur", SttPerHourUSD: 0.15, CleanupInPerMTokUSD: 1.0, CleanupOutPerMTokUSD: 5.0},
 	}
+}
+
+// defaultHotkey is the dictation key a new install starts with. A Mac gets
+// Fn: hold it to dictate, as in Wispr Flow, which Mac users switching over
+// already know. Elsewhere Ctrl+Shift+D; Ctrl+Alt+Space is often taken (Claude,
+// among others).
+func defaultHotkey() string {
+	if runtime.GOOS == "darwin" {
+		return "fn"
+	}
+	return "ctrl+shift+d"
 }
 
 // Path returns the config file location, honouring the VITO_CONFIG override.

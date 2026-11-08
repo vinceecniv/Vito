@@ -187,7 +187,23 @@ func serve() error {
 	server.Version = version
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)
 	notifyUserSignals(d, log)
-	pill.Start(d, log)
+	pill.Start(d, log, pill.Sources{
+		Today: func() (int, int) {
+			now := time.Now()
+			st, _ := hist.Stats(now, d.Config().TypingWPM(), 1)
+			return st.Words, st.SavedMinutes
+		},
+		Last: func() string {
+			list, err := hist.List("", false, 1, 0)
+			if err != nil || len(list) == 0 {
+				return ""
+			}
+			if list[0].Cleaned != "" {
+				return list[0].Cleaned
+			}
+			return list[0].Raw
+		},
+	})
 	hk.Start(cfg.HotkeyWindows, cfg.HotkeyCancelWindows)
 
 	if cfg.Demo {

@@ -17,7 +17,7 @@ func TestWindow(t *testing.T) {
 		t.Skip("set VITO_PILL_TEST=1 to open the pill on this desktop")
 	}
 	start := time.Now()
-	win, err := openWindow()
+	win, err := openWindow(0, [4]int{})
 	if err != nil {
 		t.Fatal(err)
 	}

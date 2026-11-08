@@ -356,7 +356,7 @@ func Entry(now time.Time, id string) (history.Entry, bool) {
 }
 
 // Transcript is the scripted dictation the daemon replays as live events, so
-// the status page and the detached window show a transcript arriving word by
+// the status page and the pill show a transcript arriving word by
 // word without a microphone ever opening.
 func Transcript() []struct{ Raw, Cleaned string } {
 	out := make([]struct{ Raw, Cleaned string }, 0, len(demoTexts))

@@ -1,0 +1,8 @@
+{
+  "uuid": "vito-pill@vito.talk",
+  "name": "Vito pill",
+  "description": "Shows Vito's dictation pill over every app. Installed and kept up to date by Vito; it does nothing without Vito running.",
+  "shell-version": ["45", "46", "47", "48", "49", "50", "51", "52"],
+  "url": "https://vito.talk",
+  "version": 4
+}

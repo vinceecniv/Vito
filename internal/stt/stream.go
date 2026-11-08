@@ -44,9 +44,10 @@ func NewStream(cfg config.STT, keyterms []string, log *slog.Logger, onPartial fu
 // HasPartials reports whether the provider's session produces text while the
 // recording is still running. The daemon reads speech activity off the partials
 // — for its silence watchdog and auto-stop — and needs another signal when
-// there are none.
+// there are none. Vito local is an openai endpoint once the daemon resolved
+// it, and is named here too for those that read the configured provider.
 func HasPartials(cfg config.STT) bool {
-	return cfg.Provider != "openai"
+	return cfg.Provider != "openai" && cfg.Provider != "local"
 }
 
 // FinishTimeout is how long the daemon waits for Finish. A socket session has

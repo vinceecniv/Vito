@@ -9,7 +9,7 @@ import (
 )
 
 // RunDemo replays fabricated dictations as live events for as long as ctx runs,
-// so the status page and the detached window show a transcript arriving word by
+// so the status page and the pill show a transcript arriving word by
 // word with the meter moving along.
 //
 // It runs for the whole life of the daemon and checks the setting each round
@@ -62,7 +62,7 @@ func (d *Daemon) demoDictation(ctx context.Context, raw, cleaned string) bool {
 		}
 		d.emit(Event{Type: "partial", Text: strings.Join(words[:i+1], " ")})
 		// A level curve with the shape of speech: loud on the word, dropping in
-		// the gap after it, so the meter and the PiP wave have something to do.
+		// the gap after it, so the meter and the speech glow have something to do.
 		d.emit(Event{Type: "level", Level: 55 + int(dayLevel(i))})
 		if !d.demoSleep(ctx, 210*time.Millisecond) {
 			return false
