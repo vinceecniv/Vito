@@ -31,7 +31,10 @@ $block = $html.Substring($start, $end - $start)
 
 $src = [ordered]@{}
 foreach ($m in [regex]::Matches($block, '"((?:[^"\\]|\\.)*)"\s*:\s*"((?:[^"\\]|\\.)*)"')) {
-    $src[$m.Groups[1].Value -replace '\\"', '"'] = $m.Groups[1].Value -replace '\\"', '"'
+    # The keys are JavaScript string literals: unescape \" and \n, the way the
+    # page itself reads them (a key with a newline is looked up with a real one).
+    $k = ($m.Groups[1].Value -replace '\\"', '"') -replace '\\n', "`n"
+    $src[$k] = $k
 }
 
 $files = Get-ChildItem (Join-Path $root "web/i18n/*.json")
