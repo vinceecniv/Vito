@@ -1,4 +1,10 @@
-package tray
+// Package uitext gives the text Vito shows outside the web page (the tray, the
+// pill) the language of the settings page: English source strings are the
+// keys, looked up in the tables the web UI uses. Dutch is read from the inline
+// TR.nl table in index.html (it is the contract every language is checked
+// against, so there is no second copy to drift); the other languages come from
+// the embedded i18n/<code>.json files.
+package uitext
 
 import (
 	"bytes"
@@ -10,20 +16,14 @@ import (
 	"vito/web"
 )
 
-// The tray speaks the same language as the settings page: English source
-// strings are the keys, looked up in the tables the web UI uses. Dutch is read
-// from the inline TR.nl table in index.html (it is the contract every language
-// is checked against, so there is no second copy to drift); the other
-// languages come from the embedded i18n/<code>.json files.
-
 var (
 	trMu    sync.Mutex
 	trCache = map[string]map[string]string{}
 )
 
-// translator returns the lookup for lang; unknown keys fall back to the key,
+// Translator returns the lookup for lang; unknown keys fall back to the key,
 // which is already the English text — exactly like t() in the web UI.
-func translator(lang string) func(string) string {
+func Translator(lang string) func(string) string {
 	tbl := table(lang)
 	return func(s string) string {
 		if v, ok := tbl[s]; ok && v != "" {
@@ -87,9 +87,9 @@ func dutchTable() map[string]string {
 	return tbl
 }
 
-// resolveLang mirrors detectLang() in the web UI: the configured ui.lang when
+// ResolveLang mirrors detectLang() in the web UI: the configured ui.lang when
 // set, otherwise the OS language, and English when that isn't one we ship.
-func resolveLang(configured string) string {
+func ResolveLang(configured string) string {
 	if configured != "" && shipped(configured) {
 		return configured
 	}

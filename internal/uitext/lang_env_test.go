@@ -1,5 +1,5 @@
 //go:build !windows
 
-package tray
+package uitext
 
 func runtimeUsesEnv() bool { return true }

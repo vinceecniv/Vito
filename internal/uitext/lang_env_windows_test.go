@@ -1,3 +1,3 @@
-package tray
+package uitext
 
 func runtimeUsesEnv() bool { return false }

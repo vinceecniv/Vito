@@ -1,4 +1,4 @@
-package tray
+package uitext
 
 import "golang.org/x/sys/windows"
 

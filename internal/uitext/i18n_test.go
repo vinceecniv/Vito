@@ -1,4 +1,4 @@
-package tray
+package uitext
 
 import (
 	"io/fs"
@@ -48,23 +48,23 @@ func TestResolveLang(t *testing.T) {
 	t.Setenv("LC_MESSAGES", "")
 	t.Setenv("LANG", "pt_PT.UTF-8")
 	if runtimeUsesEnv() {
-		if got := resolveLang(""); got != "pt" {
+		if got := ResolveLang(""); got != "pt" {
 			t.Errorf("auto with LANG=pt_PT: got %q, want pt", got)
 		}
 	}
-	if got := resolveLang("de"); got != "de" {
+	if got := ResolveLang("de"); got != "de" {
 		t.Errorf("configured de: got %q", got)
 	}
-	if got := resolveLang("xx"); got != "pt" && got != "en" && runtimeUsesEnv() {
+	if got := ResolveLang("xx"); got != "pt" && got != "en" && runtimeUsesEnv() {
 		t.Errorf("unshipped configured language should fall back, got %q", got)
 	}
-	if got := translator("pt")("Quit Vito"); got != "Sair do Vito" {
+	if got := Translator("pt")("Quit Vito"); got != "Sair do Vito" {
 		t.Errorf("pt Quit Vito = %q", got)
 	}
-	if got := translator("en")("Quit Vito"); got != "Quit Vito" {
+	if got := Translator("en")("Quit Vito"); got != "Quit Vito" {
 		t.Errorf("en Quit Vito = %q", got)
 	}
-	if got := translator("nl")("Quit Vito"); got != "Vito afsluiten" {
+	if got := Translator("nl")("Quit Vito"); got != "Vito afsluiten" {
 		t.Errorf("nl Quit Vito = %q", got)
 	}
 }
