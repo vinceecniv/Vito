@@ -80,7 +80,19 @@ never sees two computers change one file. Entries taken over are marked by
 `origin` and never re-shared. The device file also carries all day_stats
 columns (costs, Assist, uploads), the user's deletions and star changes
 (`sync_deleted`/`sync_favorite`; automatic pruning is not synced), and the
-dictionary and cleanup rule sets (newest wins after a first merge).
+dictionary (with its text snippets) and cleanup rule sets (newest wins after a
+first merge).
+
+## Text snippets
+
+`dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.
+`internal/dictionary/snippets.go` swaps each trigger for a placeholder (`⟦1⟧`)
+before the cleanup pass and the text in after (`Mark`/`Restore`), so the model
+never rewrites it; `cleanup.SnippetNote` tells it to keep them. When the model
+loses or doubles a placeholder, the raw transcript (with every snippet) is
+pasted instead. `web/standalone/backend.js` has the same in JavaScript — keep
+the two in step. Measured with Groq gpt-oss-120b: placeholders survive
+self-corrections and letter layout (`rules_live_test.go`).
 
 ## Translations
 
@@ -229,8 +241,9 @@ or not. Read `docs/linux-portals.md` before touching any of it — in particular
 the rule that the portal frontend advertises interfaces its backend may not
 implement, so only a real attempt tells you anything.
 
-Injection tries, in order: the **RemoteDesktop portal** (GNOME, KDE), then
-**wtype**, then **ydotool**, then clipboard-only. `inject.ActiveBackend` reports
+Injection tries, in order: **XTEST** in an X11 session (`internal/x11`), then the
+**RemoteDesktop portal** (GNOME, KDE), then **wtype**, then **ydotool**, then
+clipboard-only. `inject.ActiveBackend` reports
 which one won, and the settings page shows it — with a fallback chain, "it works"
 and "it works the way you think" are different claims.
 
@@ -251,6 +264,13 @@ double-tap for hands-free, and a lone tap dropped with a hint. That is how Caps
 Lock works on niri. A bind on `Caps_Lock` itself is not enough, because niri
 updates its XKB state before it looks for binds, so capitals lock anyway. Use
 `caps:menu` in the xkb options and bind `Menu` (measured in a nested niri).
+Settings → Activation can write both into the user's `config.kdl` after
+asking (`internal/hotkey/niri_caps_linux.go`): into the existing `binds`
+block (niri allows one per file) between `// Vito: Caps Lock` and
+`// Vito: end`, a dated `.bak` beside it, and `niri validate` on a copy in the
+same folder (so includes resolve) before anything is replaced.
+The Activation tab opens with "Your dictation key" (`dictKeyHTML`): the key in
+use and the one-key option per system; own combinations stay below it.
 
 Two portal paths cannot be tested on a compositor that lacks a backend — niri is
 the canary here, and it has neither. Each has a manual test behind an environment
@@ -261,6 +281,15 @@ VITO_PORTAL_TEST=1 go test ./internal/inject/ -run TestPortalSession -v
 VITO_GS_TEST=1     go test ./internal/hotkey/ -run TestGlobalShortcutsSession -v
 ```
 
+Opening Vito's page (tray, island, first run) goes through `internal/webapp`:
+an installed Chromium-family web app is started instead of a browser tab. Its
+id comes from the browser's web-app sync store (`<profile>/Sync Data/LevelDB`,
+`web_apps-dt-<id>` followed by the start URL), because the id alone does not
+say which page it is; the launcher is found by that id — a desktop entry's
+`--app-id` on Linux, a Start menu `.lnk` (arguments in UTF-16) on Windows, an
+app shim's `CrAppModeShortcutID` in `~/Applications/*/` on macOS. Only the
+Linux path has met a real browser (Brave); the others are tested on fakes.
+
 Where a stable path *is* baked in — the XDG autostart entry and the `vito://` URL
 handler that relaunches the daemon for the PWA — use `internal/selfexe`, which
 prefers `$APPIMAGE` over `os.Executable()`; the latter points into the throwaway
@@ -270,8 +299,46 @@ The **dictation pill** (`internal/pill`) floats while dictating: `render.go` dra
 it without any platform code, `window_linux.go` is a small hand-written Wayland
 client for a wlr-layer-shell surface, connected only while the pill shows. It
 must never take the keyboard focus, or it would swallow the paste it announces.
-GNOME's Mutter has no layer-shell, so there is no pill there yet; Windows and
-macOS have no window code yet. The optional resting pill (`ui.pill_idle`,
+`ui.pill_style` picks how it shows the voice: the glow (default, ""), `bars`, or `vito`,
+the mascot redrawn in Go (`mascot.go`, in the SVG's own coordinates — keep it in
+step with `mascotSVG` in `web/index.html`).
+The live transcript's speech glow (`trGlowPaint` in `web/index.html`, on or
+off in that card's menu) is `drawGlow` ported to a canvas — keep the two in step.
+Only the pill takes the pointer (an input region, `inputBox`): hovering shows ✕
+(cancel) and ✓ (stop), a click on the resting pill starts hands-free on that
+screen. Every object id in `window_linux.go` is taken in order, an unused one by
+a sync, so the ids handed out later (`newID`, for `setInput`) leave no gap.
+The pill also opens into a card (`card.go`, `notes.go`) for a failed dictation
+and for a new achievement, which the server announces after each dictation
+(`recordAchievements` → `Daemon.Announce`). Text is drawn with Sora from
+`internal/pill/font` (OFL) through `golang.org/x/image`; its words come from
+`internal/uitext`, the tray's translation tables, so they belong in TR.nl too.
+Pointing at a resting pill for a moment, or right-clicking it, opens the island
+(`island.go`): its own window per screen (`openIslandWindow`, lower margin) with
+the last dictation to paste again, today's words and saved typing time
+(`pill.Sources`, fed from history in `main.go`), the logo that opens Vito, and behind ☰ the quick settings, with
+the cleanup rule sets as a list of their own. The pin in its header keeps it open as a window
+(`ui.island_pin`): dragged by its free space (an unpinned one pins itself once dragged), the resting pills give way to it
+and a dictation draws into it (`embedWindow`, laid where the microphone is).
+Two niri findings shaped the drag, both measured in a nested niri: during a
+button-held drag niri reports pointer positions from where the surface was when
+the button went down, and a layer surface anchored left and right with a fixed
+width sits against the left edge instead of centred. So the drag prefers
+`zwp_relative_pointer_v1` motion, falls back to start position plus the whole
+way since the press, and places the window from the left edge with the screen
+width from niri's `Outputs` (`screenSize`), which also keeps it on screen. `ui.pill_live` shows the partial
+transcript in a strip over the pill. A lone tap of the dictation key ends in a
+card instead of a desktop notification once a pill window has opened
+(`Daemon.SetHintShown`). After each dictation the pill asks the desktop whether
+a window had the keyboard (`focusSource.window`, niri's `FocusedWindow`); when
+none had, a card offers the text for the clipboard. AT-SPI could tell an
+editable field from the rest, but on niri the accessibility bus is off, so
+browsers and terminals never register there — it was measured, not assumed.
+A cancelled dictation keeps its recording for 5 minutes (`internal/daemon/kept.go`,
+not transcribed, not in the history; a new dictation or quitting deletes it):
+the pill shows a card and the island's last-dictation box offers it, and
+`RestoreCancelled` transcribes the file and pastes it like any dictation.
+The resting pill (`ui.pill_idle`, on unless set to false,
 `idle.go`) is one still window per screen on the Top layer, on its own connection;
 a dictation's window opens over it on the Overlay layer. Light or dark follows
 `ui.theme`, then the Settings portal's `color-scheme`, live. On niri the resting
@@ -280,6 +347,81 @@ IPC event stream: layer-shell cannot tell). Another window manager adds a
 `focusSource`, another OS a `window_*.go`: the seams are listed in `pill.go`. Try
 the window with
 `VITO_PILL_TEST=1 go test ./internal/pill/ -run TestWindow -v`.
+
+### The pill on other desktops
+
+All measured in VMs (`~/VMs/linux` on the development machine: `mk.sh` makes a
+Fedora 45 or Ubuntu desktop VM from the cloud image, `mk-mint.sh` installs
+Linux Mint from its ISO, `run.sh` boots one with ssh, VNC, QMP and the private
+`vmmic` microphone; the Windows VM is the research one).
+
+- **Windows** (`window_windows.go`): a layered, topmost, never-activated window
+  per picture, on its own locked thread with per-monitor DPI awareness for that
+  thread only. The 2× picture is scaled to the screen's DPI (`resample.go`).
+  Click-through except over the input box, which a 16 ms timer watches.
+  `focus_windows.go`: the screen of the foreground window; `theme_windows.go`:
+  `AppsUseLightTheme`. Caps Lock is `hotkey_windows: "capslock"`, read by the
+  existing low-level hook and swallowed, so capitals never lock.
+- **KDE** and **Hyprland** have layer-shell: the Linux window works as is.
+  KDE's screen size comes from `kscreen-doctor -j` (`focus_kde.go`; without it a
+  dragged island leaves the screen and KWin closes it, "invalid geometry");
+  Hyprland's from its IPC (`focus_hyprland.go`). A placed island is anchored at
+  the bottom, so it stays clear of a taskbar.
+- **GNOME** (51 at the time) has none, so Vito installs its own Shell extension
+  (`gnome/extension.js`, embedded, written to the user's extension folder by
+  `gnomeext.go` and enabled). Vito sends it the pictures over D-Bus
+  (`talk.vito.Pill`, `window_gnome.go`); it shows them as chrome, which never
+  takes the keyboard. GNOME loads a new or updated extension only at the next
+  login; `/api/linux-tools` reports `gnome_ext` and the settings page says so.
+  Bump `version` in `metadata.json` (and `VERSION` in the script) with every
+  change, or users keep the old one. GNOME 51 dropped `affectsInputRegion` and
+  `global.display.set_cursor`; the script tries both the old and the new way.
+- **Caps Lock on Linux** reaches the desktop as Menu (XKB `caps:menu`,
+  `hotkey.CapsAsMenu`): GNOME takes it live (gsettings), KDE only after a new
+  login (kxkbrc; neither its reload signal nor `--notify` applied it), Hyprland
+  at runtime with binds that signal Vito (`hyprctl eval` Lua from 0.55, keywords
+  before). KDE and GNOME then bind Menu through the GlobalShortcuts portal,
+  whose Activated/Deactivated feed `Gesture`. On KDE Menu is also the standard
+  "open context menu" key, which its dialog warns about.
+- **X11** (Linux Mint's Cinnamon, still X11 by default in 22.3; any X session):
+  `internal/x11` does what the portals do on Wayland, with no helper tools —
+  a key grab on the root window for the hotkey (press and release, auto-repeat
+  pairs dropped, re-grabbed on a keymap change; Vito owns the keys as on
+  Windows, so the settings page shows the capture fields), XTEST for the
+  keystrokes (`backendX11`), and the clipboard as a selection Vito serves
+  itself. The pill (`window_x11.go`) is an override-redirect ARGB window whose
+  SHAPE input region is the input box; placed by Vito in the screen's work
+  area (`_GTK_WORKAREAS_D0`, else `_NET_WORKAREA`), scaled by `Xft.dpi`.
+  xgb's extension `Init` writes package maps every connection reads, so the
+  first `x11.Open` readies RANDR/SHAPE/XTEST once and later connections only
+  take the opcodes (`Conn.Ext`) — calling `Init` per connection crashed Vito.
+  Caps Lock: `caps:menu` in `org.cinnamon.desktop.input-sources` (Cinnamon 6.4+;
+  libgnomekbd before; `setxkbmap` elsewhere), applied live, then Menu is grabbed.
+- **Ubuntu 26.04** (GNOME 50.1): pill (extension), portal hotkey and pasting
+  work. Caps Lock did not: with `caps:menu` set, the GlobalShortcuts binding on
+  Menu fired for the real Menu key but never for Caps Lock (Fedora's GNOME 51
+  fired for both). Cause not found; F-keys and combinations work.
+- **macOS** (`window_darwin.go`/`.m`, written without a Mac, so untested): a
+  borderless non-activating `NSPanel` per picture that never becomes key, on
+  every Space and over full screen apps (the resting pill one level lower), the
+  2× picture as its layer's contents. Click-through except over the input box,
+  watched by a 16 ms timer as on Windows. AppKit needs the main thread, which
+  is the tray's `NSApplication`: with the tray off there is no pill. The screen
+  in use is the frontmost app's window (`CGWindowListCopyWindowInfo`, which
+  needs no Screen Recording right for bounds). The dictation key defaults to
+  **Fn** (`hotkey_windows: "fn"`), as in Wispr Flow: hold to dictate, double-tap
+  or Fn+Space for hands-free, and Fn with any other key cancels the dictation
+  it began and lets the key through (`Gesture.HandsFree`/`Abort`). Fn arrives
+  as a flags-changed event and is never swallowed, so macOS still acts on 🌐
+  unless “Press 🌐 key to” is “Do Nothing” — the settings page says so. CI's
+  `macos-latest` job (on a pull request) is the only compile check.
+- In the Hyprland VM a release was lost when QEMU's `send-key` and
+  `input-send-event` were mixed; with `input-send-event` alone it never was.
+  Drive keys in these VMs with one of the two.
+
+The settings page offers the pill's options where `pill.Available()` says it
+works. The PWA's detached (Picture-in-Picture) window was removed in its
+favour; it is in the git history.
 
 ## Releases (macOS)
 
