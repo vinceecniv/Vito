@@ -17,7 +17,7 @@ func TestDrawLeavesTheCornersClear(t *testing.T) {
 	if a := buf[3]; a != 0 {
 		t.Errorf("corner alpha = %d, want 0", a)
 	}
-	mid := (h/2*w + w/2) * 4
+	mid := (pillY*scale*w + w/2) * 4
 	if a := buf[mid+3]; a < 230 {
 		t.Errorf("middle alpha = %d, want nearly opaque", a)
 	}
@@ -94,11 +94,11 @@ func TestPushLevelSpreadsSpeech(t *testing.T) {
 func TestDrawIdleIsSmallAndCentred(t *testing.T) {
 	w, h := surfaceW*scale, surfaceH*scale
 	buf := make([]byte, w*h*4)
-	DrawIdle(buf, w, h, true, 1)
-	if a := buf[(h/2*w+w/2)*4+3]; a == 0 || a > 128 {
+	DrawIdle(buf, w, h, true, 1, 0)
+	if a := buf[(pillY*scale*w+w/2)*4+3]; a == 0 || a > 128 {
 		t.Errorf("middle alpha = %d, want a see-through pill", a)
 	}
-	if a := buf[(h/2*w+w/2+(idleW+12)*scale/2)*4+3]; a != 0 {
+	if a := buf[(pillY*scale*w+w/2+(idleW+12)*scale/2)*4+3]; a != 0 {
 		t.Errorf("alpha beside the pill = %d, want 0", a)
 	}
 }
@@ -109,7 +109,7 @@ func TestThemesDiffer(t *testing.T) {
 	var p painter
 	p.Draw(dark, w, h, Frame{Show: 1, Dark: true})
 	p.Draw(light, w, h, Frame{Show: 1})
-	mid := (h/2*w + w/2 + 80) * 4
+	mid := (pillY*scale*w + w/2 + 80) * 4
 	if dark[mid+1] >= light[mid+1] {
 		t.Errorf("dark body %d should be darker than light body %d", dark[mid+1], light[mid+1])
 	}
@@ -119,8 +119,8 @@ func TestDrawIdlePresence(t *testing.T) {
 	w, h := surfaceW*scale, surfaceH*scale
 	alpha := func(presence float64) byte {
 		buf := make([]byte, w*h*4)
-		DrawIdle(buf, w, h, false, presence)
-		return buf[(h/2*w+w/2)*4+3]
+		DrawIdle(buf, w, h, false, presence, 0)
+		return buf[(pillY*scale*w+w/2)*4+3]
 	}
 	dim, plain, lit := alpha(presenceInactive), alpha(1), alpha(presenceActive)
 	if !(dim < plain && plain < lit) {

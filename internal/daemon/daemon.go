@@ -70,7 +70,7 @@ type Status struct {
 
 // Event is broadcast to the web UI over WebSocket via the OnEvent callback.
 type Event struct {
-	Type    string `json:"type"` // state | partial | final | level | error
+	Type    string `json:"type"` // state | partial | final | level | error | achievement | …
 	State   State  `json:"state,omitempty"`
 	Text    string `json:"text,omitempty"`
 	Raw     string `json:"raw,omitempty"`
@@ -132,12 +132,20 @@ type session struct {
 	// only arms after speech has actually begun (before that a silent session is a
 	// silence-cancel, not an auto-stop).
 	spoke atomic.Bool
+	// heard is the last partial transcript (a string), shown with a cancelled
+	// dictation kept for restoring.
+	heard atomic.Value
+	// restored: a cancelled dictation brought back (kept.go). Its recording is
+	// over and its stream gone; finish transcribes the kept audio file.
+	restored bool
 }
 
 type Daemon struct {
-	log      *slog.Logger
-	audioCtx *audio.Context
-	hist     *history.Store
+	// hintShown, see SetHintShown.
+	hintShown atomic.Pointer[func() bool]
+	log       *slog.Logger
+	audioCtx  *audio.Context
+	hist      *history.Store
 
 	// OnEvent, when set, receives live events for the web UI. Must not block.
 	OnEvent func(Event)
@@ -171,6 +179,10 @@ type Daemon struct {
 	// clearing the flag (credit is back) and setting it afresh drop the hush, so
 	// the card returns the next time that account actually runs dry.
 	creditHush map[string]bool
+
+	keptMu    sync.Mutex
+	kept      *session    // the cancelled dictation that can be restored, kept.go
+	keptTimer *time.Timer // deletes it
 
 	cmdMu      sync.Mutex
 	pendingCmd string // one-off spoken command ("Vito, …") armed for the next dictation
@@ -335,7 +347,8 @@ func (d *Daemon) restoreMedia() {
 // Shutdown restores any ducked/paused media and cancels an in-flight recording,
 // so the daemon never exits leaving system audio suppressed. Call before exit.
 func (d *Daemon) Shutdown() {
-	_ = d.Cancel()   // restores + tears down when recording
+	_ = d.Cancel() // restores + tears down when recording
+	d.dropKept()
 	d.restoreMedia() // catch the brief stop→finish window, or any leftover
 	if d.local != nil {
 		d.local.Stop() // the sidecar has no reason to outlive us
@@ -591,6 +604,15 @@ func (d *Daemon) Status() Status {
 	return st
 }
 
+// SetHintShown tells Dismiss whether its explanation is shown already (by the
+// pill), so the desktop notification can stay away.
+func (d *Daemon) SetHintShown(fn func() bool) { d.hintShown.Store(&fn) }
+
+// Announce sends an event that starts outside the daemon to everyone who
+// listens: the page and the pill. The server uses it for a new achievement
+// (Type "achievement", Text its id).
+func (d *Daemon) Announce(e Event) { d.emit(e) }
+
 func (d *Daemon) emit(e Event) {
 	if d.OnEvent != nil {
 		d.OnEvent(e)
@@ -627,10 +649,6 @@ func (d *Daemon) toggle() (State, error) {
 	}
 }
 
-// RequestPip asks any connected web UI to toggle the always-on-top live
-// transcript window (Document Picture-in-Picture). Used by the tray.
-func (d *Daemon) RequestPip() { d.emit(Event{Type: "pip"}) }
-
 func (d *Daemon) Start() error { return d.start() }
 
 func (d *Daemon) start() error {
@@ -656,6 +674,7 @@ func (d *Daemon) start() error {
 	cfg := *d.cfg // session snapshot: settings changes apply per-dictation
 	d.mu.Unlock()
 	d.emit(Event{Type: "state", State: StateRecording})
+	d.dropKept()     // a new dictation: the cancelled one is past restoring
 	d.stopPlayback() // never let the microphone record a recording we're playing
 
 	// The managed local engine may still be installing or warming up; better to
@@ -698,6 +717,7 @@ func (d *Daemon) start() error {
 	s.stream = stt.NewStream(s.stt, keyterms, d.log, func(partial string) {
 		if p := strings.TrimSpace(partial); p != "" && p != lastPartial {
 			lastPartial = p
+			s.heard.Store(p)
 			s.lastActivity.Store(time.Now().UnixMilli())
 			s.spoke.Store(true)
 		}
@@ -799,23 +819,33 @@ func (d *Daemon) Cancel() error {
 	if err != nil {
 		return err
 	}
-	d.discard(s)
+	kept := d.discard(s, true)
 	d.playSound(s.cfg, assets.SoundCancel)
 	d.note("vito: geannuleerd", "")
-	d.log.Info("recording cancelled")
+	d.log.Info("recording cancelled", "kept", kept)
+	if kept {
+		heard, _ := s.heard.Load().(string)
+		d.emit(Event{Type: "kept", Text: heard})
+	}
 	return nil
 }
 
 // Dismiss drops a recording nobody meant to make, a tap on a key that dictates
 // while held, and shows what to do instead. Unlike Cancel it plays no sound:
 // nothing was cancelled, the user is being taught.
+//
+// The explanation goes out as a "hint" event (Text "tap"); a desktop
+// notification carries it as well, unless SetHintShown says someone shows it.
 func (d *Daemon) Dismiss(summary, body string) error {
 	s, err := d.takeSession()
 	if err != nil {
 		return err
 	}
-	d.discard(s)
-	d.note(summary, body)
+	d.discard(s, false)
+	d.emit(Event{Type: "hint", Text: "tap"})
+	if shown := d.hintShown.Load(); shown == nil || !(*shown)() {
+		d.note(summary, body)
+	}
 	d.log.Info("recording dismissed")
 	return nil
 }
@@ -833,8 +863,9 @@ func (d *Daemon) takeSession() (*session, error) {
 }
 
 // discard tears down a recording session and removes its spool, without
-// injecting anything. Shared by Cancel and the silence watchdog.
-func (d *Daemon) discard(s *session) {
+// injecting anything. Shared by Cancel and the silence watchdog. With keep the
+// recording is kept a while to be restored (kept.go); it reports whether it was.
+func (d *Daemon) discard(s *session, keep bool) (kept bool) {
 	if s.capture != nil {
 		s.capture.Stop()
 	}
@@ -843,8 +874,14 @@ func (d *Daemon) discard(s *session) {
 	s.consumers.Wait()
 	s.stream.Abort()
 	_ = s.spool.Close()
-	s.spool.Remove()
+	if keep {
+		kept = d.keep(s)
+	}
+	if !kept {
+		s.spool.Remove()
+	}
 	d.emit(Event{Type: "state", State: StateIdle})
+	return kept
 }
 
 // watchSilence auto-cancels s if no speech is transcribed for `timeout`, so a
@@ -879,7 +916,7 @@ func (d *Daemon) cancelSilent(s *session, timeout time.Duration) {
 	d.state = StateIdle
 	d.mu.Unlock()
 
-	d.discard(s)
+	d.discard(s, false)
 	d.playSound(s.cfg, assets.SoundCancel)
 	d.note("vito: automatisch gestopt", fmt.Sprintf("geen spraak in %s", timeout))
 	d.log.Info("recording auto-cancelled (silence)", "timeout", timeout)
@@ -1073,12 +1110,14 @@ func (d *Daemon) finish(s *session) {
 	stopAt := time.Now()
 	duration := s.spool.Duration()
 
-	s.capture.Stop()
-	d.restoreMedia() // recording is over — bring the music back right away
-	close(s.chunks)
-	s.consumers.Wait()
-	if err := s.spool.Close(); err != nil {
-		d.log.Error("close spool", "err", err)
+	if !s.restored {
+		s.capture.Stop()
+		d.restoreMedia() // recording is over — bring the music back right away
+		close(s.chunks)
+		s.consumers.Wait()
+		if err := s.spool.Close(); err != nil {
+			d.log.Error("close spool", "err", err)
+		}
 	}
 
 	var keyterms []string
@@ -1086,11 +1125,27 @@ func (d *Daemon) finish(s *session) {
 		keyterms = dictionary.Keyterms(cfg.Dictionary)
 	}
 
-	streamCtx, cancel := context.WithTimeout(context.Background(), stt.FinishTimeout(s.stt))
-	text, err := s.stream.Finish(streamCtx)
-	cancel()
+	var text string
+	var err error
 	source := "stream"
-	if err != nil || strings.TrimSpace(text) == "" {
+	if s.restored {
+		// The stream was given up at the cancel; the kept file goes as a whole.
+		source = "async"
+		ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+		var out stt.UploadOutcome
+		out, err = stt.TranscribeUpload(ctx, s.stt, keyterms, s.spool.Path(), nil)
+		cancel()
+		text = out.Text
+		if err != nil {
+			d.finishWithError(s, fmt.Errorf("transcription failed (%s): %w", source, err), duration)
+			return
+		}
+	} else {
+		streamCtx, cancel := context.WithTimeout(context.Background(), stt.FinishTimeout(s.stt))
+		text, err = s.stream.Finish(streamCtx)
+		cancel()
+	}
+	if !s.restored && (err != nil || strings.TrimSpace(text) == "") {
 		if err != nil {
 			// A depleted balance would fail the async path the same way, so skip it
 			// and report the billing problem straight away.
@@ -1203,6 +1258,14 @@ func (d *Daemon) finish(s *session) {
 		instruction = d.takePendingCmd()
 	}
 
+	// Text snippets: the cleanup pass sees a placeholder for each spoken trigger
+	// and the fixed text goes in after, so the model can never rewrite it.
+	marked, snips := raw, []string(nil)
+	if !clipboardOut {
+		marked, snips = dictionary.Mark(raw, cfg.Dictionary.Snippets)
+		raw = dictionary.Expand(marked, snips)
+	}
+
 	cleaned := ""
 	cleanupUsed := false
 	cleanupFailed := false
@@ -1222,9 +1285,9 @@ func (d *Daemon) finish(s *session) {
 	}
 	// Cleanup must be on. A pending command then forces a pass even below the
 	// min-words threshold (that's how the command is applied).
-	if d.cleanupEffective(s) && (instruction != "" || wordCount(raw) >= cfg.Cleanup.MinWords) {
+	if d.cleanupEffective(s) && (instruction != "" || wordCount(raw) >= cfg.Cleanup.MinWords) && !dictionary.OnlySnippets(marked) {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cleanCfg.TimeoutMS)*time.Millisecond)
-		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, raw, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
+		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, marked, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
 		cancel()
 		cleanUsage = usage // tokens are billed even if we then reject the output
 		if err != nil {
@@ -1237,9 +1300,15 @@ func (d *Daemon) finish(s *session) {
 				d.markCredit(p, true)
 			}
 		} else {
-			cleaned = cleanup.Plain(out)
-			cleanupUsed = true
 			d.markCredit(cleanup.ProviderName(cleanCfg), false) // a successful pass clears any prior flag
+			if restored, ok := dictionary.Restore(cleanup.Plain(out), snips); ok {
+				cleaned = restored
+				cleanupUsed = true
+			} else {
+				// The model dropped or mangled a snippet's placeholder: keep the
+				// transcript, which has every snippet exactly.
+				d.log.Warn("cleanup lost a text snippet, injecting the raw transcript")
+			}
 		}
 	}
 	cleanupDone := time.Now()

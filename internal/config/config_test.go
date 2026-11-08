@@ -1,7 +1,9 @@
 package config
 
 import (
+	"encoding/json"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -119,5 +121,28 @@ func TestLoadRetiresGroqModels(t *testing.T) {
 	}
 	if got.Assist.Cleanup.OpenAIModel != "openai/gpt-oss-20b" {
 		t.Errorf("assist model = %q, want openai/gpt-oss-20b", got.Assist.Cleanup.OpenAIModel)
+	}
+}
+
+// The resting pill is on unless switched off: for a new config and for one
+// written by a version that did not know it.
+func TestPillIdleDefaultOn(t *testing.T) {
+	var old UI
+	if err := json.Unmarshal([]byte(`{"theme":"dark"}`), &old); err != nil {
+		t.Fatal(err)
+	}
+	if !old.PillIdleEnabled() {
+		t.Error("a config without pill_idle has no resting pill")
+	}
+	var off UI
+	if err := json.Unmarshal([]byte(`{"pill_idle":false}`), &off); err != nil {
+		t.Fatal(err)
+	}
+	if off.PillIdleEnabled() {
+		t.Error("pill_idle false still shows the resting pill")
+	}
+	b, _ := json.Marshal(off)
+	if !strings.Contains(string(b), `"pill_idle":false`) {
+		t.Errorf("switching it off is not kept: %s", b)
 	}
 }
