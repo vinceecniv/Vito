@@ -971,7 +971,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	// far as the pointer.
 	inUse := ""
 	if w.connector() == "" {
-		inUse = screenInUse()
+		inUse = focusedScreen()
 	}
 	measure := func() {
 		c := w.connector()
