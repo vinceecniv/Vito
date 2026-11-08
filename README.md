@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <b>Press a hotkey. Speak. Clean text lands at your cursor — in any app.</b><br>
+  <b>Hold a key. Speak. Clean text lands at your cursor — in any app.</b><br>
   A free, open-source, cross-platform voice-dictation tool. You bring your own API key; there's no subscription.
 </p>
 
@@ -34,14 +34,16 @@ manage everything — settings, history, dictionary and more — shown just belo
   <img src="assets/marketing/vito-demo.gif" alt="Vito in action — speak and clean text is pasted at your cursor" width="480">
 </p>
 
-You press a hotkey, speak naturally, and Vito:
+You hold your dictation key — **Caps Lock** on its own, **Fn** on a Mac, or a combination of your own — speak
+naturally, and Vito:
 
 1. **Transcribes** your speech with a best-in-class speech-to-text engine — cloud, or a
    [local one](#offline-if-you-want-it) that runs on your own machine, then
 2. **Cleans it up** with AI — stripping the "uhm"s and false starts, fixing punctuation, building proper sentences, and
 3. **Pastes** the finished text straight at your cursor — in your editor, your browser, Slack, an email, anywhere.
 
-No window to switch to, no copy-paste dance. Talk, and the text appears where you're already working.
+No window to switch to, no copy-paste dance. Talk, and the text appears where you're already working —
+while a small [pill](#the-pill) at the bottom of the screen shows that Vito is listening.
 
 > **Try it first, without installing anything:** open **[vito.talk/app](https://vito.talk/app)** and start
 > dictating in your browser — no account, no key needed. [More below](#try-it-in-your-browser).
@@ -49,6 +51,63 @@ No window to switch to, no copy-paste dance. Talk, and the text appears where yo
 <p align="center">
   <img src="assets/marketing/flow.svg" alt="Press → Speak → Paste" width="100%">
 </p>
+
+---
+
+## One key: Caps Lock (Fn on a Mac)
+
+Dictation should be one key away, and the key nobody misses is **Caps Lock**. Make it Vito's dictation key
+with one click under Settings → Activation:
+
+- **Hold** it to dictate — let go and the text lands at your cursor.
+- **Double-tap** it for hands-free — Vito keeps listening until you press it once more.
+- **Tap** it by accident and nothing is recorded; Vito just shows how it works.
+
+Capitals no longer lock, and Shift works as always. On a **Mac** the same key is **Fn (🌐)** — the default
+there, as in Wispr Flow, with **Fn + Space** for hands-free. Prefer a combination? Any key or combination of
+your own works everywhere, and the settings show which one is active.
+
+<details>
+<summary><b>How Caps Lock gets there on each system</b></summary>
+
+<br>
+
+- **Windows, macOS and X11** (Linux Mint, any X session): Vito reads the key itself.
+- **GNOME and KDE:** Vito asks your desktop through the shortcuts portal; you confirm once (on KDE, after
+  logging out and back in once).
+- **Hyprland:** Vito sets it up by itself while it runs.
+- **niri:** Vito offers to add the two lines to your `config.kdl` — it asks first, keeps a copy of the file,
+  and lets niri check the change before anything is replaced.
+- **Ubuntu 24.04** (GNOME 46) has no shortcuts portal yet, and on **Ubuntu 26.04** Caps Lock doesn't reach the
+  binding; a function key or a combination works fine there.
+
+</details>
+
+---
+
+## The pill
+
+While you dictate, a small **pill** floats at the bottom of the screen, over any app, and follows your voice —
+as a rolling **glow** (the default), as **bars**, or as **Vito** himself talking along. It never takes the
+keyboard, so the text still goes where you were typing.
+
+<p align="center">
+  <img src="assets/marketing/vito-pill.png" alt="The pill in its three styles, the cancelled-dictation card, and the island with the last dictation and today's figures" width="100%">
+</p>
+
+- 💬 **Live text** — the words appear in the pill while you speak (with a streaming speech service).
+- 🫧 **A resting pill** stays at the bottom between dictations: click it to start, or point at it to open the
+  **island** — your last dictation to paste again or copy, today's words and saved typing time, and quick
+  settings. Pin the island and it stays open as a small window you can drag anywhere.
+- ↩️ **Cancelled by mistake?** The recording is kept for five minutes on your computer — click the card to get
+  the text after all. Nothing is transcribed or stored unless you do.
+- 🪧 **Cards** for what matters: a failed dictation (with the audio kept), a new achievement, or text that had
+  no window to go to — one click puts it on the clipboard.
+- After **15 seconds** a small clock shows how long you've been talking.
+
+The pill works on **Windows**, **macOS**, and on Linux with **GNOME** (through a small Shell extension Vito
+installs itself — log out and back in once), **KDE**, **Hyprland**, **niri** and other wlroots compositors, and
+**X11**.
 
 ---
 
@@ -170,6 +229,9 @@ Raw speech-to-text gives you a literal transcript. Vito adds an **AI cleanup pas
 you'd actually send:
 
 - **Removes fillers** — "uh", "uhm", "you know", "I mean…", repeated words and false starts.
+- **Follows your corrections** — "at four, no wait, at five" comes out as *at five*.
+- **Lays out lists and emails** — "first… second…" becomes a numbered list; a greeting and sign-off get their
+  own lines; a spoken email or web address is written as one.
 - **Fixes punctuation and capitalization**, and builds well-structured sentences.
 - **Understands spoken commands** — say "new line" / "new paragraph" and it becomes real formatting.
 - **Turns named emoji into emoji** — "thumbs up emoji" → 👍 — but only when you're clearly naming one.
@@ -262,11 +324,14 @@ for AI cleanup) — or browse [all setup guides on vito.talk](https://vito.talk/
 Vito is **simple to use, but powerful under the hood.**
 
 ### Dictation & text
-- 🎙️ **Press-to-talk or push-to-talk** — quick tap to toggle, or hold to talk and release to stop.
+- ⌨️ **One key** — hold [Caps Lock (Fn on a Mac)](#one-key-caps-lock-fn-on-a-mac) to talk, double-tap for hands-free; or any combination of your own, tap to toggle or hold to talk.
 - ✨ **AI cleanup** of every dictation (fillers, punctuation, new lines, spoken emoji).
 - 🪄 **[Vito Assist](https://vito.talk)** — say "Vito, …" with a command to translate, summarise, answer or reshape your dictation (or your clipboard), instead of typing it out.
 - ⏸️ **Auto-stop on pause** — Vito can stop by itself when you stop speaking.
 - 📋 **Paste, type or clipboard-only** injection modes for maximum app compatibility.
+- 📝 **Text snippets** — say *"my sign-off"* or *"my meeting link"* and Vito types the fixed text you set,
+  untouched by the AI cleanup.
+- ↩️ **Undo a cancel** — a cancelled dictation can be restored for five minutes.
 - 🔒 **Offline speech recognition** — a local engine Vito installs for you: free, private, no account.
 - 📁 **Upload an audio file** to have it transcribed to text.
 
@@ -280,11 +345,8 @@ Vito is **simple to use, but powerful under the hood.**
 ### Interface
 - 🌗 **Light & dark mode**, switching automatically with your OS preference.
 - 🌍 **UI translated into 60 languages.**
-- 🪟 **Mini always-on-top overlay** you can place anywhere on screen.
-
-<p align="center">
-  <img src="assets/marketing/vito-overlay.gif" alt="Vito's mini always-on-top overlay you can place anywhere" width="420">
-</p>
+- 💊 **[The pill](#the-pill)** — Vito on screen while you dictate, over any app, with live text; and a resting
+  pill that opens into a small panel with your last dictation and quick settings.
 
 - 🧪 **Built-in demo mode** with sample content, so a fresh install has something to show.
 
@@ -305,7 +367,7 @@ Vito is **simple to use, but powerful under the hood.**
   macOS). You can switch that off and just be told instead. The interface can also be updated between
   releases, with a signed update that is verified before it's used.
 - 🎧 **Configurable media behavior** while dictating — do nothing, duck the audio, or auto pause/play.
-- 🐧 **Linux-friendly** — detects missing utilities/libraries and explains how to bind hotkeys in each desktop environment.
+- 🐧 **Linux-friendly** — Wayland and X11 (Linux Mint included); detects missing helpers and sets up or explains the hotkey for each desktop.
 
 <p align="center">
   <img src="assets/marketing/app-status.png" alt="Vito's dashboard" width="88%">
@@ -325,12 +387,14 @@ Vito is **simple to use, but powerful under the hood.**
   | | **Flatpak** | **AppImage** |
   |---|---|---|
   | **Best for** | GNOME, KDE | everything else — wlroots compositors (niri, Sway, Hyprland), X11, minimal setups |
-  | **Typing into other apps** | through the **RemoteDesktop portal** on GNOME and KDE; on niri, Sway or Hyprland after one line in the compositor's startup | always works — `wtype` on Wayland, `ydotool` on X11 |
+  | **Typing into other apps** | through the **RemoteDesktop portal** on GNOME and KDE; on niri, Sway or Hyprland after one line in the compositor's startup | always works — `wtype` on Wayland, built in on X11 |
+  | **The pill** | not everywhere: the sandbox can't install the GNOME extension or reach X11 | everywhere |
   | **Updates** | `flatpak update`, like any other app | Vito replaces the AppImage itself |
-  | **Setup** | none | none on Wayland; `ydotool` + a udev rule only on X11 |
+  | **Setup** | none | none |
 
   **In doubt, take the AppImage** — it always works, and it keeps itself up to date. The Flatpak fits in with
-  the rest of your Flatpak apps, but the sandbox types by itself only where the RemoteDesktop portal exists. Without
+  the rest of your Flatpak apps, but the sandbox types by itself only where the RemoteDesktop portal exists, and
+it can't show the pill on every desktop. Without
   one it puts the result on the clipboard for you to paste, and the Linux settings show the one line for your
   compositor's startup that lets it type after all.
 
@@ -371,7 +435,7 @@ Vito is **simple to use, but powerful under the hood.**
   </details>
 
 After installing, open Vito, pick a speech-to-text engine — paste an API key, or install one of the local
-ones — choose your hotkey, and start talking. Tried it in the browser first? Open
+ones — pick your dictation key (Caps Lock is one click), and start talking. Tried it in the browser first? Open
 [vito.talk/app](https://vito.talk/app) once more: it finds the app and offers to move your dictations over.
 
 ---
@@ -413,16 +477,17 @@ pwsh -File packaging/build-installer.ps1 -Version 2026.7.2 -Tag
 <br>
 
 Text delivery picks the first route that works, so what you need depends on your desktop. On GNOME and KDE
-the **RemoteDesktop portal** handles it and there is nothing to install. Elsewhere Vito uses **wtype**, and
-`ydotool` remains selectable for X11 and older setups — that is the only route that still wants a daemon
-and a udev rule for `/dev/uinput`. Clipboard-only mode always works.
+the **RemoteDesktop portal** handles it and there is nothing to install. On **X11** Vito does it all itself
+(the hotkey, typing and the clipboard), with no helper tools. Elsewhere Vito uses **wtype**, and `ydotool`
+remains selectable as a last resort — the only route that still wants a daemon and a udev rule for
+`/dev/uinput`. Clipboard-only mode always works.
 
 Runtime helpers (miniaudio dlopens ALSA/PulseAudio, so there's no link-time audio dependency):
 
 - **PipeWire / PulseAudio** — audio capture/playback.
 - **wl-clipboard** (`wl-copy`/`wl-paste`) — clipboard.
 - **wtype** — the paste keystroke where the portal is unavailable (niri, wlroots).
-- **ydotool + ydotoold** (optional) — the older injection route, for X11 and as a last resort.
+- **ydotool + ydotoold** (optional) — the older injection route, as a last resort.
 - **libnotify** (`notify-send`) — state notifications.
 - **pactl** (optional) — duck media while dictating; pausing goes over MPRIS and needs nothing installed.
 
@@ -498,9 +563,12 @@ First run creates `~/.config/vito/config.json` (chmod 600) with defaults and an 
 everything from the **web UI at `http://127.0.0.1:4573`** while the daemon runs — changes apply to the next
 dictation without a restart.
 
-On **Windows and macOS** you set the hotkey in the app itself, under Settings → Activation. On macOS it
-needs the Accessibility permission; until you grant it the settings page shows the hotkey as denied and
-says so.
+Settings → Activation opens with **your dictation key**: the key Vito listens to now, and the one-key option
+for your system — [Caps Lock, or Fn on a Mac](#one-key-caps-lock-fn-on-a-mac) — one click away.
+
+On **Windows, macOS and X11** you set the hotkey in the app itself. On macOS it needs the Accessibility
+permission; until you grant it the settings page shows the hotkey as denied and says so. Fn is the default
+on a Mac; set System Settings → Keyboard → *Press 🌐 key to* → *Do Nothing*, or macOS opens its own menu too.
 
 **On Wayland the binding belongs to the desktop, not to Vito** — an application cannot grab a key for
 itself, so it has to ask. Vito asks through the **GlobalShortcuts portal**: you confirm the shortcut once,
@@ -521,6 +589,8 @@ AppImage or a plain binary) and never wait for a squashfs mount, so they stay su
       Mod+Shift+D { spawn "pkill" "-USR1" "-f" "vito serve"; }
   }
   ```
+  For Caps Lock, Vito adds `caps:menu` and a Menu binding whose press and release send `SIGRTMIN+1` and
+  `+2` (hold to dictate, double-tap for hands-free) — from Settings → Activation, after asking.
 
 `SIGUSR2` toggles a dictation, `SIGUSR1` cancels it (cleanup is the settings toggle, not a hotkey). On
 **Windows and macOS** the daemon registers a global hotkey itself. Which route is actually in use, and the
