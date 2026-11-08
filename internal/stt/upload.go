@@ -183,6 +183,9 @@ func (c *AsyncClient) pollUpload(ctx context.Context, id string) (UploadOutcome,
 		case "completed":
 			return UploadOutcome{Text: out.Text, Language: out.LanguageCode, DurationMS: int64(out.AudioDuration * 1000)}, nil
 		case "error":
+			if e := apierr.FromMessage("AssemblyAI", out.Error); e != nil {
+				return UploadOutcome{}, e
+			}
 			return UploadOutcome{}, fmt.Errorf("transcription failed: %s", out.Error)
 		}
 	}
@@ -331,6 +334,9 @@ func (c *sonioxFileClient) waitFor(ctx context.Context, jobID string) (int64, er
 		case "completed":
 			return out.AudioDurationMS, nil
 		case "error":
+			if e := apierr.FromMessage("Soniox", out.ErrorMessage); e != nil {
+				return 0, e
+			}
 			return 0, fmt.Errorf("transcription failed: %s", out.ErrorMessage)
 		}
 	}

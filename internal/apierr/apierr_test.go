@@ -22,6 +22,8 @@ func TestLooksLikeCredit(t *testing.T) {
 		{200, "credit balance is fine", false},    // success isn't a failure
 		{500, "insufficient memory", false},       // server error, ignore keywords
 		{400, "malformed request", false},         // generic 400
+		{429, `{"error":{"message":"Rate limit reached for model ` + "`openai/gpt-oss-120b`" + ` on tokens per minute (TPM): Limit 8000. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}`, false}, // Groq: a wait, not a wallet
+		{400, "Organization balance exhausted. Please either add funds manually or enable autopay.", true}, // Soniox
 	}
 	for _, c := range cases {
 		if got := LooksLikeCredit(c.status, c.body); got != c.want {

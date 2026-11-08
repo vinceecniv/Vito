@@ -117,6 +117,9 @@ func (c *AsyncClient) poll(ctx context.Context, id string) (string, error) {
 		case "completed":
 			return out.Text, nil
 		case "error":
+			if e := apierr.FromMessage("AssemblyAI", out.Error); e != nil {
+				return "", e
+			}
 			return "", fmt.Errorf("async transcription failed: %s", out.Error)
 		}
 	}

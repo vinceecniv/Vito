@@ -12,6 +12,7 @@ import (
 
 	"github.com/coder/websocket"
 
+	"vito/internal/apierr"
 	"vito/internal/audio"
 	"vito/internal/config"
 )
@@ -260,6 +261,11 @@ func (s *sonioxStream) readLoop(ctx context.Context, conn *websocket.Conn) error
 			continue
 		}
 		if msg.ErrorMessage != "" {
+			// A depleted balance arrives as a message on the socket, not as an
+			// HTTP status, so it has to be classified here.
+			if e := apierr.FromHTTP("Soniox", msg.ErrorCode, msg.ErrorMessage); e != nil {
+				return e
+			}
 			return fmt.Errorf("soniox error %d: %s", msg.ErrorCode, msg.ErrorMessage)
 		}
 

@@ -39,6 +39,14 @@ func CreditProvider(err error) (string, bool) {
 var billingWords = []string{
 	"insufficient", "credit balance", "out of credit", "no credit",
 	"insufficient funds", "billing", "payment required", "top up", "top-up",
+	"balance exhausted", "add funds", // Soniox: "Organization balance exhausted. Please either add funds …"
+}
+
+// rateLimited says a message is about a rate limit, whatever else it mentions:
+// Groq's 429 ends with an upgrade link to its billing page, and "billing" alone
+// would call a minute's wait an empty wallet.
+func rateLimited(b string) bool {
+	return strings.Contains(b, "rate limit") || strings.Contains(b, "rate_limit")
 }
 
 // LooksLikeCredit reports whether an HTTP status and body indicate a depleted
@@ -52,6 +60,9 @@ func LooksLikeCredit(status int, body string) bool {
 		return false
 	}
 	b := strings.ToLower(body)
+	if rateLimited(b) {
+		return false
+	}
 	for _, w := range billingWords {
 		if strings.Contains(b, w) {
 			return true
@@ -74,6 +85,9 @@ func FromHTTP(provider string, status int, body string) *OutOfCredit {
 // status is separately available. Returns nil when it doesn't read as billing.
 func FromMessage(provider, msg string) *OutOfCredit {
 	b := strings.ToLower(msg)
+	if rateLimited(b) {
+		return nil
+	}
 	for _, w := range billingWords {
 		if strings.Contains(b, w) {
 			return &OutOfCredit{Provider: provider, Detail: strings.TrimSpace(msg)}
