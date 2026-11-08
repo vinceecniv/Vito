@@ -31,10 +31,7 @@ func (s *Server) startSync() {
 // saved, applied.
 func (s *Server) updateConfig(f func(*config.Config)) error {
 	cfg := s.d.Config()
-	cfg.Dictionary = config.Dictionary{
-		Keyterms:    append([]string(nil), cfg.Dictionary.Keyterms...),
-		Corrections: append([]config.Correction(nil), cfg.Dictionary.Corrections...),
-	}
+	cfg.Dictionary = cfg.Dictionary.Clone()
 	f(&cfg)
 	if err := cfg.Validate(); err != nil {
 		return err

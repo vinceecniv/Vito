@@ -81,10 +81,18 @@ func buildUserPrompt(text, language string, corrections []config.Correction) str
 			fmt.Fprintf(&user, "- %q -> %q\n", corr.Wrong, corr.Right)
 		}
 	}
+	if strings.Contains(text, "⟦") {
+		user.WriteString(SnippetNote + "\n")
+	}
 	user.WriteString("Transcript:\n")
 	user.WriteString(text)
 	return user.String()
 }
+
+// SnippetNote tells the model about the placeholders that stand in for the
+// user's text snippets (dictionary.Mark); a lost one makes Vito keep the raw
+// transcript.
+const SnippetNote = "Placeholders such as ⟦1⟧ stand for fixed text the speaker inserts (a link, an address). Keep every placeholder exactly as written, once, where it belongs in the sentence; never remove, translate, explain or reformat it."
 
 // DefaultRules is Vito's own cleanup prompt: the part a user may replace. It is
 // exported so the settings page can show it, and offer it as the starting point
@@ -93,8 +101,11 @@ const DefaultRules = `You clean up dictated speech transcripts.
 - Fix punctuation and capitalization.
 - Fix spelling: correct words the speech recognizer clearly garbled — non-words and obvious misspellings — to the word the speaker plainly meant from context (e.g. Dutch "gezakeld" -> "geschakeld", "uitgezakeld" -> "uitgeschakeld"). Only repair evident mis-transcriptions; never change a correctly spelled word, swap in a different word, or rephrase.
 - Remove filler words and false starts ("eh", "uhm", "nou ja", stutters, repeated words) without changing meaning or tone.
+- Resolve self-corrections: when the speaker takes back something they just said and replaces it ("nee wacht", "nee", "of eigenlijk", "sorry", "ik bedoel", "actually no", "I mean", "make that"), drop the retracted words and the correction phrase, put the replacement in their place, and keep the rest of the sentence exactly as spoken — every other word, the verb included. "Laten we dinsdag om tien uur afspreken, nee wacht, woensdag om elf uur, op kantoor in Utrecht" -> "Laten we woensdag om elf uur afspreken, op kantoor in Utrecht"; "Let's meet at three, actually no, make it four thirty, in the main room" -> "Let's meet at four thirty, in the main room". Only when something is plainly replaced. "Eigenlijk", "actually", "nee" and "toch" are ordinary words otherwise, not fillers: "Eigenlijk vind ik het een goed idee" and "Actually, I think it's fine" stay as they are.
 - Apply the corrections list (misheard term -> intended term) strictly wherever a misheard term appears.
-- Interpret spoken editing commands: "nieuwe regel" or "new line" becomes a newline; "nieuwe alinea" or "new paragraph" becomes a blank line. Nothing more clever than that.
+- Write spoken e-mail addresses and web addresses as addresses: "mark punt jansen apenstaartje voorbeeld punt nl" -> "mark.jansen@voorbeeld.nl", "info at vito dot talk" -> "info@vito.talk".
+- Interpret spoken editing commands: "nieuwe regel" or "new line" becomes a newline; "nieuwe alinea" or "new paragraph" becomes a blank line.
+- Lay out structure the speaker clearly dictated. Points counted off ("ten eerste … ten tweede …", "first … second …") become a numbered list, one item per line, directly under the sentence that introduces them, which ends with a colon — no blank line before the first item. A message that opens with a greeting ("Beste Mark", "Hoi Sanne", "Dear Mark") and closes with a sign-off ("Met vriendelijke groet", "Groeten", "Best regards") gets the greeting on its own line followed by a blank line, and the sign-off on its own line with the name on the next. Add no other line breaks, headings or lists.
 - Replace spoken emoji requests with the emoji itself: "duim omhoog emoji" / "thumbs up emoji" -> 👍, "hartje" / "heart emoji" -> ❤️, "smiley" -> 🙂, and so on for any emoji named this way, in either language. Only when the speaker is clearly naming an emoji to insert — leave "ik steek mijn duim omhoog" as words.
 - Keep the language of the transcript; do not translate.`
 
