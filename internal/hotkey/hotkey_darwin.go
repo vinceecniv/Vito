@@ -42,6 +42,14 @@ const (
 
 	modMask = modShift | modControl | modOption | modCommand
 
+	// The Fn key, labelled 🌐 on newer Macs: a modifier of its own, reported
+	// in flags-changed events with this flag and one of these key codes
+	// (kVK_Function; 179 is what some Globe keyboards send).
+	modFn    = 0x00800000
+	keyFn    = 0x3F
+	keyGlobe = 0xB3
+	keySpace = 0x31
+
 	// holdThreshold separates a tap (toggle) from a hold (push-to-talk).
 	holdThreshold = 350 * time.Millisecond
 
@@ -93,6 +101,13 @@ type Manager struct {
 	// no lock: whether the toggle key is currently held down through our tap.
 	toggleHeld bool
 
+	// Fn as the dictation key: hold, double-tap, Fn+Space or a lone tap
+	// (Gesture). Touched only by the tap callback, like toggleHeld.
+	gesture  *Gesture
+	fnDown   bool // Fn is down
+	fnActive bool // and its press went to the Gesture, nothing else with it yet
+	spaceEat bool // Fn+Space's space went down swallowed; so does its release
+
 	events chan hkEvent
 
 	stop     chan struct{}
@@ -105,7 +120,7 @@ var active *Manager
 
 // New creates a Manager; call Start to install the tap.
 func New(d *daemon.Daemon, log *slog.Logger) *Manager {
-	return &Manager{d: d, log: log, stop: make(chan struct{})}
+	return &Manager{d: d, log: log, stop: make(chan struct{}), gesture: NewGesture(d, log)}
 }
 
 // Start installs the event tap on a dedicated OS thread and runs the worker.
@@ -256,6 +271,25 @@ func (m *Manager) handleKey(key, flags uint64, down, repeat bool) bool {
 		return false
 	}
 
+	if m.spaceEat && key == keySpace { // its repeats and its release
+		if !down {
+			m.spaceEat = false
+		}
+		return true
+	}
+	if m.fnActive && down && !repeat {
+		// Fn was the start of something. With Space alone it is the
+		// hands-free shortcut; with any other key a key of its own (Fn+arrow
+		// is Page Up, Fn+F-keys the media keys), so the dictation it began is
+		// taken back and the key goes through.
+		m.fnActive = false
+		if key == keySpace && mods == 0 {
+			m.gesture.HandsFree()
+			m.spaceEat = true
+			return true
+		}
+		m.gesture.Abort()
+	}
 	if cxlOK && key == cxlKey && down && mods == cxlMods {
 		m.send(evCancel)
 		return true
@@ -279,6 +313,55 @@ func (m *Manager) handleKey(key, flags uint64, down, repeat bool) bool {
 		}
 	}
 	return false
+}
+
+// vitoHotkeyFlags is the event tap's callback for a modifier going down or
+// up, called from the run-loop thread. Only Fn matters, and only when it is the
+// dictation key.
+//
+//export vitoHotkeyFlags
+func vitoHotkeyFlags(code C.longlong, flags C.ulonglong) {
+	if m := active; m != nil {
+		m.handleFlags(uint64(code), uint64(flags))
+	}
+}
+
+// handleFlags turns Fn into Gesture presses: Fn alone counts, Fn with another
+// modifier held or added does not.
+func (m *Manager) handleFlags(code, flags uint64) {
+	m.mu.Lock()
+	fn := m.tglOK && m.tglKey == keyFn && m.tglMods == 0
+	denied := m.denied
+	m.mu.Unlock()
+	if !fn || denied {
+		if m.fnActive { // Fn stopped being the key while held
+			m.fnActive = false
+			m.gesture.Abort()
+		}
+		m.fnDown = false
+		return
+	}
+	if code != keyFn && code != keyGlobe {
+		if m.fnActive && flags&modMask != 0 { // Control, Option… joined in
+			m.fnActive = false
+			m.gesture.Abort()
+		}
+		return
+	}
+	switch down := flags&modFn != 0; {
+	case down && !m.fnDown:
+		m.fnDown = true
+		if flags&modMask == 0 {
+			m.fnActive = true
+			m.gesture.Down()
+		}
+	case !down && m.fnDown:
+		m.fnDown = false
+		if m.fnActive {
+			m.fnActive = false
+			m.gesture.Up()
+		}
+	}
 }
 
 func (m *Manager) send(ev hkEvent) {
@@ -384,6 +467,11 @@ func parseSpec(spec string) (mods, key uint64, err error) {
 		default:
 			return 0, 0, fmt.Errorf("unknown modifier %q", p)
 		}
+	}
+	if name == "fn" && len(parts) == 1 {
+		// The one key allowed alone, as Caps Lock is on Windows: Fn means
+		// nothing by itself to an app.
+		return 0, keyFn, nil
 	}
 	switch code, ok := macKeys[name]; {
 	case ok:

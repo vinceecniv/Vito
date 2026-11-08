@@ -43,6 +43,7 @@ const (
 	wmSysKeyDown = 0x0104
 	wmSysKeyUp   = 0x0105
 
+	vkCapital = 0x14 // Caps Lock
 	vkShift   = 0x10
 	vkControl = 0x11
 	vkMenu    = 0x12 // Alt
@@ -108,6 +109,10 @@ type Manager struct {
 	// no lock: whether the toggle key is currently held down through our hook.
 	toggleHeld bool
 
+	// Caps Lock as the dictation key: hold, double-tap or a lone tap
+	// (Gesture), the key itself swallowed so capitals never lock.
+	gesture *Gesture
+
 	events chan hkEvent
 }
 
@@ -117,7 +122,9 @@ var active *Manager
 var hookCallback = syscall.NewCallback(hookProc)
 
 // New creates a Manager; call Start to install the hook.
-func New(d *daemon.Daemon, log *slog.Logger) *Manager { return &Manager{d: d, log: log} }
+func New(d *daemon.Daemon, log *slog.Logger) *Manager {
+	return &Manager{d: d, log: log, gesture: NewGesture(d, log)}
+}
 
 // Start installs the keyboard hook on a dedicated OS thread and runs the worker.
 // Never fatal.
@@ -224,6 +231,19 @@ func (m *Manager) handleKey(vk uint32, down, up bool) bool {
 
 	if cxlOK && vk == cxlVK && down && modsMatch(cxlMods) {
 		m.send(evCancel)
+		return true
+	}
+	if tglOK && vk == tglVK && tglVK == vkCapital && tglMods == 0 {
+		// The key alone means dictation, whatever else is held.
+		if down {
+			if !m.toggleHeld { // key repeat sends more downs
+				m.toggleHeld = true
+				m.gesture.Down()
+			}
+		} else if up && m.toggleHeld {
+			m.toggleHeld = false
+			m.gesture.Up()
+		}
 		return true
 	}
 	if tglOK && vk == tglVK {
@@ -347,6 +367,10 @@ func parseSpec(spec string) (mods uint32, vk uint32, err error) {
 		default:
 			return 0, 0, fmt.Errorf("unknown modifier %q", p)
 		}
+	}
+	if key == "capslock" && len(parts) == 1 {
+		// The one key allowed alone: it means nothing else that matters.
+		return 0, vkCapital, nil
 	}
 	switch {
 	case key == "space":

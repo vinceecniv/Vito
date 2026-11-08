@@ -45,9 +45,11 @@ func notifyUserSignals(d *daemon.Daemon, log *slog.Logger) {
 		for sig := range ch {
 			switch sig {
 			case sigKeyDown:
+				log.Debug("dictation key down (signal)")
 				gesture.Down()
 				continue
 			case sigKeyUp:
+				log.Debug("dictation key up (signal)")
 				gesture.Up()
 				continue
 			}
