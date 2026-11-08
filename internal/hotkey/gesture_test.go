@@ -35,6 +35,12 @@ func (f *fakeActions) dismiss() error {
 	return nil
 }
 
+func (f *fakeActions) cancel() error {
+	f.calls = append(f.calls, "cancel")
+	f.rec = false
+	return nil
+}
+
 func (f *fakeActions) recording() bool { return f.rec }
 
 // script drives a Gesture: "d" press, "u" release, "e" the double-tap wait
@@ -49,6 +55,10 @@ func script(g *Gesture, steps string) {
 			g.release(at)
 		case "e":
 			g.expire()
+		case "h":
+			g.handsFree()
+		case "a":
+			g.abort()
 		default:
 			d, err := time.ParseDuration(s + "ms")
 			if err != nil {
@@ -73,6 +83,12 @@ func TestGesture(t *testing.T) {
 		{name: "repeat does not stop a hold", steps: "d 30 d 30 d 30 d 2000 u", want: "start stop"},
 		{name: "lost release: the next press stops", steps: "d 5000 d", want: "start stop"},
 		{name: "release alone does nothing", steps: "u", want: ""},
+		{name: "another key while held goes hands-free", steps: "d 100 h 100 u", want: "start", recording: true},
+		{name: "hands-free by key ends at the next press", steps: "d 100 h 100 u 3000 d 80 u", want: "start stop"},
+		{name: "a combination takes the press back", steps: "d 100 a 100 u", want: "start cancel"},
+		{name: "abort leaves a hold alone after release", steps: "d 2000 u a", want: "start stop"},
+		{name: "abort after a deliberate hands-free does nothing", steps: "d 100 h 100 u 50 a", want: "start", recording: true},
+		{name: "abort takes back a second tap's hands-free", steps: "d 100 u 200 d 50 a 80 u", want: "start cancel"},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {

@@ -24,6 +24,9 @@ type Gesture struct {
 	state    gestureState
 	lastDown time.Time
 	deadline time.Time // when a tap stops waiting for its second tap
+	// fresh: the press now held is the one that started this dictation or
+	// made it hands-free, so Abort may take it back.
+	fresh bool
 }
 
 const (
@@ -50,12 +53,23 @@ const (
 type keyEvent struct {
 	down bool
 	at   time.Time
+	act  gestureAct
 }
+
+// gestureAct: what a keyEvent asks besides a press or a release.
+type gestureAct int
+
+const (
+	actKey       gestureAct = iota
+	actHandsFree            // another key while held: go hands-free (Fn+Space)
+	actAbort                // the key turned out to be part of a combination
+)
 
 type gestureActions interface {
 	start() error
 	stop() error
 	dismiss() error
+	cancel() error
 	recording() bool
 }
 
@@ -72,6 +86,14 @@ func (g *Gesture) Down() { g.events <- keyEvent{down: true, at: time.Now()} }
 // Up reports the key coming up.
 func (g *Gesture) Up() { g.events <- keyEvent{at: time.Now()} }
 
+// HandsFree turns the dictation the held key started into a hands-free one,
+// as a double tap would: Fn+Space on a Mac.
+func (g *Gesture) HandsFree() { g.events <- keyEvent{act: actHandsFree, at: time.Now()} }
+
+// Abort takes back what the held key did, without a word: it was a modifier
+// after all (Fn+arrow on a Mac), and the recording it started is cancelled.
+func (g *Gesture) Abort() { g.events <- keyEvent{act: actAbort, at: time.Now()} }
+
 // run works through the events one at a time, so a slow Start cannot be
 // overtaken by the release that belongs to it.
 func (g *Gesture) run() {
@@ -82,7 +104,11 @@ func (g *Gesture) run() {
 		}
 		select {
 		case ev := <-g.events:
-			if ev.down {
+			if ev.act == actHandsFree {
+				g.handsFree()
+			} else if ev.act == actAbort {
+				g.abort()
+			} else if ev.down {
 				g.press(ev.at)
 			} else {
 				g.release(ev.at)
@@ -101,6 +127,7 @@ func (g *Gesture) press(at time.Time) {
 	if g.state != gestureIdle && !g.do.recording() {
 		g.state = gestureIdle
 	}
+	g.fresh = false
 	switch g.state {
 	case gestureIdle:
 		if g.do.recording() { // started some other way
@@ -112,6 +139,7 @@ func (g *Gesture) press(at time.Time) {
 			return
 		}
 		g.state = gestureHeld
+		g.fresh = true
 	case gestureHeld:
 		if at.Sub(last) >= keyRepeatGap {
 			g.state = gestureIdle
@@ -124,6 +152,7 @@ func (g *Gesture) press(at time.Time) {
 			return
 		}
 		g.state = gestureHandsFree
+		g.fresh = true
 	case gestureHandsFree:
 		g.state = gestureIdle
 		g.stop()
@@ -131,6 +160,7 @@ func (g *Gesture) press(at time.Time) {
 }
 
 func (g *Gesture) release(at time.Time) {
+	g.fresh = false
 	if g.state != gestureHeld {
 		return
 	}
@@ -141,6 +171,23 @@ func (g *Gesture) release(at time.Time) {
 	}
 	g.state = gestureTapped
 	g.deadline = at.Add(doubleTapWindow)
+}
+
+func (g *Gesture) handsFree() {
+	if g.state == gestureHeld && g.do.recording() {
+		g.state = gestureHandsFree
+		g.fresh = false // a hands-free dictation chosen on purpose stays
+	}
+}
+
+func (g *Gesture) abort() {
+	if !g.fresh || (g.state != gestureHeld && g.state != gestureHandsFree) {
+		return
+	}
+	g.state, g.fresh = gestureIdle, false
+	if err := g.do.cancel(); err != nil {
+		g.log.Debug("gesture cancel rejected", "err", err)
+	}
 }
 
 // expire ends the wait for a second tap: it was a lone tap after all.
@@ -162,8 +209,9 @@ func (g *Gesture) stop() {
 
 type daemonActions struct{ d *daemon.Daemon }
 
-func (a daemonActions) start() error { return a.d.Start() }
-func (a daemonActions) stop() error  { return a.d.Stop() }
+func (a daemonActions) start() error  { return a.d.Start() }
+func (a daemonActions) stop() error   { return a.d.Stop() }
+func (a daemonActions) cancel() error { return a.d.Cancel() }
 func (a daemonActions) dismiss() error {
 	return a.d.Dismiss("vito: houd de toets vast", "Vasthouden om te dicteren, dubbeltikken voor handsfree.")
 }

@@ -17,6 +17,7 @@ import (
 	"github.com/godbus/dbus/v5"
 
 	"vito/internal/daemon"
+	"vito/internal/x11"
 	"vito/internal/xdgportal"
 )
 
@@ -107,10 +108,17 @@ type Manager struct {
 	started   bool
 	listening bool
 	state     string
+	// caps: the toggle is Caps Lock, which reaches the portal as Menu (the
+	// caps:menu XKB option, CapsAsMenu) and means hold, double-tap or a lone
+	// tap (Gesture) rather than tap-to-toggle.
+	caps    bool
+	gesture *Gesture
+	// x11: the keys Vito grabbed itself in an X11 session (hotkey_x11_linux.go).
+	x11 x11Grabs
 }
 
 func New(d *daemon.Daemon, log *slog.Logger) *Manager {
-	return &Manager{d: d, log: log, events: make(chan event, 8)}
+	return &Manager{d: d, log: log, events: make(chan event, 8), gesture: NewGesture(d, log)}
 }
 
 // Start asks the desktop to bind the two shortcuts. It never blocks the caller:
@@ -131,6 +139,20 @@ func (m *Manager) Start(toggle, cancel string) {
 
 // register runs one bind attempt and records how it ended.
 func (m *Manager) register(toggle, cancel string) {
+	caps := isCaps(toggle)
+	m.mu.Lock()
+	was := m.caps
+	m.caps = caps
+	m.mu.Unlock()
+	if caps || was { // only touch the keyboard options for Caps Lock's sake
+		if err := CapsAsMenu(caps); err != nil {
+			m.log.Info("could not change how Caps Lock reaches the desktop", "err", err)
+		}
+	}
+	if x11.Session() {
+		m.bindX11(toggle, cancel)
+		return
+	}
 	m.setState(PortalPending)
 	err := m.bind(toggle, cancel)
 	state := PortalBound
@@ -330,10 +352,15 @@ func deliverable(conn *dbus.Conn) bool {
 	return owned
 }
 
-// Rebind is a no-op: with the portal, the binding belongs to the desktop, not
-// to Vito. The user changes it in their own shortcut settings — see Configure,
-// which is how Vito offers that without pretending to own the key.
-func (m *Manager) Rebind(toggle, cancel string) {}
+// Rebind takes the new keys on X11, where Vito grabs them itself. Elsewhere it
+// is a no-op: with the portal, the binding belongs to the desktop, not to Vito.
+// The user changes it in their own shortcut settings — see Configure, which is
+// how Vito offers that without pretending to own the key.
+func (m *Manager) Rebind(toggle, cancel string) {
+	if x11.Session() {
+		m.register(toggle, cancel)
+	}
+}
 
 // CanConfigure reports whether this desktop can open a shortcut editor for us.
 // GNOME's portal is still at version 1 and cannot, so the button is hidden there
@@ -437,6 +464,9 @@ func (m *Manager) bind(toggleSpec, cancelSpec string) error {
 
 func props(description, preferred string) map[string]dbus.Variant {
 	p := map[string]dbus.Variant{"description": dbus.MakeVariant(description)}
+	if isCaps(preferred) {
+		preferred = "menu"
+	}
 	if trigger := portalTrigger(preferred); trigger != "" {
 		p["preferred_trigger"] = dbus.MakeVariant(trigger)
 	}
@@ -543,6 +573,25 @@ func (m *Manager) worker() {
 	var downAt, lastDown time.Time
 	for ev := range m.events {
 		ptt := m.d.Config().PushToTalkEnabled()
+		m.mu.Lock()
+		caps := m.caps
+		m.mu.Unlock()
+		if caps && ev != evCancel {
+			// Caps Lock: the Gesture tells hold from double-tap; only the
+			// portal's repeats while held are filtered here.
+			now := time.Now()
+			switch {
+			case ev == evToggleDown && held && now.Sub(lastDown) < repeatGap:
+				lastDown = now
+			case ev == evToggleDown:
+				held, lastDown = true, now
+				m.gesture.Down()
+			case held:
+				held = false
+				m.gesture.Up()
+			}
+			continue
+		}
 		switch ev {
 		case evToggleDown:
 			// The portal repeats Activated for as long as the key is held —
@@ -626,6 +675,9 @@ func portalTrigger(spec string) string {
 // keyName maps a key to its XKB keysym name. Single characters and the common
 // named keys pass through; F-keys need their capital.
 func keyName(k string) string {
+	if k == "menu" {
+		return "Menu"
+	}
 	if len(k) == 2 && k[0] == 'f' && k[1] >= '1' && k[1] <= '9' {
 		return strings.ToUpper(k)
 	}

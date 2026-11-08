@@ -24,6 +24,13 @@ static CGEventRef tapCallback(CGEventTapProxy proxy, CGEventType type,
         if (gTap != NULL) CGEventTapEnable(gTap, true);
         return event;
     }
+    if (type == kCGEventFlagsChanged) {
+        // A modifier went down or up, Fn among them. Never swallowed: the
+        // modifier state other apps see must stay true.
+        vitoHotkeyFlags((long long)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode),
+                        (unsigned long long)CGEventGetFlags(event));
+        return event;
+    }
     if (type != kCGEventKeyDown && type != kCGEventKeyUp) return event;
 
     int64_t code = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
@@ -39,7 +46,8 @@ static CGEventRef tapCallback(CGEventTapProxy proxy, CGEventType type,
 }
 
 bool vitoTapCreate(void) {
-    CGEventMask mask = CGEventMaskBit(kCGEventKeyDown) | CGEventMaskBit(kCGEventKeyUp);
+    CGEventMask mask = CGEventMaskBit(kCGEventKeyDown) | CGEventMaskBit(kCGEventKeyUp) |
+                       CGEventMaskBit(kCGEventFlagsChanged);
     gTap = CGEventTapCreate(kCGSessionEventTap, kCGHeadInsertEventTap,
                             kCGEventTapOptionDefault, mask, tapCallback, NULL);
     if (gTap == NULL) return false; // no Accessibility right
