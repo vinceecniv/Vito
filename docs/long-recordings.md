@@ -74,6 +74,16 @@ it; no measurable difference at 48 kbps). Local re-transcription decodes it
 back to WAV first. A setting "Keep audio: always / 30 days / text only"; the
 text is always kept.
 
+Built (`internal/longrec/compress.go`): stopping a session compresses it right
+after the last block, restoring or recording on turns it back into a WAV
+first (`EnsureWAV`, the codec delay of 1057 samples dropped so block times
+still match) and compresses it again afterwards; at start-up every finished
+session still holding a WAV is compressed (`CompressAll`). The encoder is a
+fixed copy of shine-mp3 in `internal/mp3` (LGPL-2, the only non-MIT part —
+see its README for the three fixes); every frame is exactly 216 bytes, which
+`Compress` checks before the WAV goes. Decoding is go-mp3 (Apache-2.0).
+Measured on a 4:21 recording: 8.4 MB → 1.57 MB in ~0.65 s.
+
 ## Phase 1: the mode itself
 
 - **Nothing lost on a crash**: audio goes to disk as it comes; after a crash
@@ -115,7 +125,8 @@ text is always kept.
 `<UserConfigDir>/vito/sessions/<id>/`:
 
 - `audio.wav` — the whole recording; header patched every few seconds and on
-  close, repaired at start-up when the daemon died mid-session.
+  close, repaired at start-up when the daemon died mid-session. Becomes
+  `audio.mp3` once the session is done.
 - `session.json` — title, started, state (`recording`, `paused`,
   `interrupted`, `done`), duration, provider.
 - `blocks.jsonl` — one line per finished block: index, start and end in

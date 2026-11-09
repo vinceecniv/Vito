@@ -293,7 +293,10 @@ func Restore(store *Store, id string, t stt.Transcriber, onBlock func(Block)) (M
 	if m.State != StateInterrupted && m.State != StateDone {
 		return m, fmt.Errorf("session is %s", m.State)
 	}
-	audioPath := store.AudioPath(id)
+	if err := store.EnsureWAV(id); err != nil { // a finished one may be an MP3 by now
+		return m, err
+	}
+	audioPath := store.wavPath(id)
 	total := wavSeconds(audioPath)
 	blocks, err := store.Blocks(id)
 	if err != nil {

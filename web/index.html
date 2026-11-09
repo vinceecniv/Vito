@@ -2612,6 +2612,7 @@
         <div class="card" data-sec="about" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Credits</span></h2>
           <p class="act-note" style="margin:0;">Achievement medals and animations use <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> by Google (static under Apache-2.0, animations under CC BY 4.0), played with <a href="https://github.com/airbnb/lottie-web" target="_blank" rel="noopener">lottie-web</a> by Airbnb (MIT). Country flags are <a href="https://github.com/lipis/flag-icons" target="_blank" rel="noopener">flag-icons</a> by Panayiotis Lipiridis (MIT).</p>
+          <p class="act-note" style="margin:8px 0 0;">Recordings are stored as MP3 with the <a href="https://github.com/braheezy/shine-mp3" target="_blank" rel="noopener">shine</a> encoder (LGPL-2, Go port by braheezy) and read back with <a href="https://github.com/hajimehoshi/go-mp3" target="_blank" rel="noopener">go-mp3</a> by Hajime Hoshi (Apache-2.0).</p>
         </div>
       </div>
     </section>
@@ -3875,6 +3876,9 @@ const TR = { nl: {
   "by Google (static under Apache-2.0, animations under CC BY 4.0), played with":"van Google (statisch onder Apache-2.0, animaties onder CC BY 4.0), afgespeeld met",
   "by Airbnb (MIT). Country flags are":"van Airbnb (MIT). De landvlaggen zijn",
   "by Panayiotis Lipiridis (MIT).":"van Panayiotis Lipiridis (MIT).",
+  "Recordings are stored as MP3 with the":"Opnames worden als MP3 bewaard met de",
+  "encoder (LGPL-2, Go port by braheezy) and read back with":"-encoder (LGPL-2, Go-versie door braheezy) en teruggelezen met",
+  "by Hajime Hoshi (Apache-2.0).":"van Hajime Hoshi (Apache-2.0).",
   "Show all":"Alles tonen",
   "Errors only":"Alleen fouten",
   "Off":"Uit",
@@ -11545,7 +11549,7 @@ function lrRenderStats(){
 function lrBytes(n){
   const one = (v, unit) => `${v.toLocaleString(numLoc(), { maximumFractionDigits: v < 10 ? 1 : 0 })} ${unit}`;
   if (!n) return "–";
-  if (n < 1024 * 1024) return one(Math.max(1, Math.round(n / 1024)), "KB");
+  if (n < 1024 * 1024) return one(Math.max(1, Math.round(n / 1024)), "kB");
   if (n < 1024 ** 3) return one(n / 1024 ** 2, "MB");
   return one(n / 1024 ** 3, "GB");
 }
@@ -12076,7 +12080,7 @@ document.addEventListener("click", () => { $("lr-export-menu").hidden = true; })
 $("lr-export-menu").querySelectorAll("button").forEach(b => b.onclick = () => {
   $("lr-export-menu").hidden = true;
   const id = LR.docID, f = b.dataset.f;
-  if (f === "audio") downloadAuth(`/api/long/${id}/audio?download=1`, `vito-${id}.wav`);
+  if (f === "audio") downloadAuth(`/api/long/${id}/audio?download=1`, `vito-${id}.${LR.doc?.audio_type || "wav"}`);
   else downloadAuth(`/api/long/${id}/export?format=${f}${LR.raw ? "&raw=1" : ""}`, `vito-${id}.${f}`);
 });
 $("lr-delete").onclick = () => lrConfirmDelete(LR.docID, () => { LR.docID = ""; lrShow("list"); loadLong(); });

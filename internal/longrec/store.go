@@ -129,9 +129,6 @@ func ValidID(id string) bool {
 
 func (s *Store) path(id, name string) string { return filepath.Join(s.dir, id, name) }
 
-// AudioPath is the session's WAV.
-func (s *Store) AudioPath(id string) string { return s.path(id, "audio.wav") }
-
 // AudioBytes is the size of a session's audio file, 0 when there is none.
 func (s *Store) AudioBytes(id string) int64 {
 	if fi, err := os.Stat(s.AudioPath(id)); err == nil {
@@ -367,7 +364,7 @@ func (s *Store) Recover() []Meta {
 		if m.State != StateRecording && m.State != StatePaused {
 			continue
 		}
-		sec, err := repairWAV(s.AudioPath(m.ID))
+		sec, err := repairWAV(s.wavPath(m.ID))
 		if err != nil {
 			sec = m.Seconds
 		}

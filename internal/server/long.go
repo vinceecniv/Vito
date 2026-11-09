@@ -185,7 +185,8 @@ func (s *Server) handleLongDoc(w http.ResponseWriter, r *http.Request) {
 		longrec.Doc
 		Cost       longCost `json:"cost"`
 		AudioBytes int64    `json:"audio_bytes"`
-	}{d, s.longCost(d.Meta), store.AudioBytes(id)})
+		AudioType  string   `json:"audio_type"`
+	}{d, s.longCost(d.Meta), store.AudioBytes(id), store.AudioType(id)})
 }
 
 // longCost is what a session has cost so far, roughly: the speech service by
@@ -392,9 +393,10 @@ func (s *Server) handleLongAudio(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	w.Header().Set("Content-Type", "audio/wav")
+	ext := store.AudioType(id) // "mp3" once finished, "wav" before
+	w.Header().Set("Content-Type", map[string]string{"mp3": "audio/mpeg", "wav": "audio/wav"}[ext])
 	if r.URL.Query().Get("download") == "1" {
-		w.Header().Set("Content-Disposition", `attachment; filename="vito-`+id+`.wav"`)
+		w.Header().Set("Content-Disposition", `attachment; filename="vito-`+id+`.`+ext+`"`)
 	}
 	http.ServeFile(w, r, store.AudioPath(id))
 }

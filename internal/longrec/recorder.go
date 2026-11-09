@@ -99,7 +99,7 @@ func Start(o Options, title string) (*Recorder, error) {
 	if err := o.Store.create(m); err != nil {
 		return nil, err
 	}
-	w, err := createWAV(o.Store.AudioPath(m.ID))
+	w, err := createWAV(o.Store.wavPath(m.ID))
 	if err != nil {
 		o.Store.Delete(m.ID)
 		return nil, err
@@ -134,7 +134,7 @@ func Continue(o Options, id string) (*Recorder, error) {
 	if err != nil {
 		return nil, err
 	}
-	w, err := openWAV(o.Store.AudioPath(id))
+	w, err := openWAV(o.Store.wavPath(id))
 	if err != nil {
 		return nil, err
 	}
@@ -296,7 +296,7 @@ func (r *Recorder) finish(b *liveBlock, end float64) {
 }
 
 func (r *Recorder) fromFile(from, to float64) (string, error) {
-	return transcribeSlice(r.o.File, r.o.Store.AudioPath(r.meta.ID), from, to)
+	return transcribeSlice(r.o.File, r.o.Store.wavPath(r.meta.ID), from, to)
 }
 
 func transcribeSlice(t stt.Transcriber, audioPath string, from, to float64) (string, error) {

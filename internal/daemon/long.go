@@ -49,6 +49,31 @@ func (d *Daemon) initLong() {
 		d.emit(Event{Type: "long_doc", Session: id})
 	})
 	d.long = l
+	// Finished sessions still holding a WAV (from before, or a crash in the
+	// middle of compressing) become MP3s.
+	go store.CompressAll(l.busy)
+}
+
+// busy says a session's audio is in use: being recorded or restored.
+func (l *long) busy(id string) bool {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	return l.restoring[id] || (l.rec != nil && l.rec.ID() == id)
+}
+
+// compressLong turns a finished session's WAV into its MP3, unless it is in
+// use again by then.
+func (d *Daemon) compressLong(id string) {
+	l := d.long
+	if l == nil || l.busy(id) {
+		return
+	}
+	if err := l.store.Compress(id); err != nil {
+		d.log.Warn("long recording: audio not compressed; the WAV stays", "session", id, "err", err)
+		return
+	}
+	d.log.Info("long recording: audio compressed", "session", id, "bytes", l.store.AudioBytes(id))
+	d.emit(Event{Type: "long_doc", Session: id})
 }
 
 func (d *Daemon) longCleanSettings() longrec.CleanSettings {
@@ -85,7 +110,13 @@ func (d *Daemon) StartLong(title string) (longrec.Status, error) {
 
 // ContinueLong records on in an existing session.
 func (d *Daemon) ContinueLong(id string) (longrec.Status, error) {
-	return d.startLong(func(o longrec.Options) (*longrec.Recorder, error) { return longrec.Continue(o, id) }, false, func() bool { return d.long.restoring[id] })
+	return d.startLong(func(o longrec.Options) (*longrec.Recorder, error) {
+		// Recording on appends to the WAV: a compressed session gets it back.
+		if err := o.Store.EnsureWAV(id); err != nil {
+			return nil, err
+		}
+		return longrec.Continue(o, id)
+	}, false, func() bool { return d.long.restoring[id] })
 }
 
 // startLong opens the microphone for a session that open starts or continues.
@@ -270,6 +301,7 @@ func (d *Daemon) StopLong() (string, error) {
 		d.log.Info("long recording stopped", "session", id, "seconds", m.Seconds, "words", m.Words)
 		l.cleaner.Finished(id)
 		d.emit(Event{Type: "long_doc", Session: id})
+		d.compressLong(id)
 	}()
 	return id, nil
 }
@@ -342,6 +374,10 @@ func (d *Daemon) RestoreLong(id string) error {
 		}
 		d.long.cleaner.EnqueueMissing(id)
 		d.emit(Event{Type: "long_doc", Session: id})
+		l.mu.Lock()
+		delete(l.restoring, id)
+		l.mu.Unlock()
+		d.compressLong(id)
 	}()
 	return nil
 }
