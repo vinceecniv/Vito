@@ -7,7 +7,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"runtime"
 	"syscall"
 )
 
@@ -15,13 +14,6 @@ import (
 // re-executes it. The running copy is a squashfs mounted from the old file, so
 // replacing the file underneath it is safe: the mount keeps the old inode.
 type appImageInstaller struct{ path string }
-
-func appImageArch() string {
-	if runtime.GOARCH == "arm64" {
-		return "aarch64"
-	}
-	return "x86_64"
-}
 
 func (appImageInstaller) asset(rel *Release) string {
 	name := "Vito-" + rel.Version + "-" + appImageArch() + ".AppImage"

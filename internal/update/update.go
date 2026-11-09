@@ -17,6 +17,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -27,7 +29,10 @@ import (
 // GET; GitHub allows 60 an hour per address, and Vito asks once a day.
 const Repo = "vinceecniv/vito"
 
-const apiURL = "https://api.github.com/repos/" + Repo + "/releases/latest"
+// apiURL lists the latest releases, not only the newest: a release may carry
+// the downloads for some systems only, and each system takes the newest one
+// that has its own.
+const apiURL = "https://api.github.com/repos/" + Repo + "/releases?per_page=30"
 
 // asset is one file attached to a release.
 type asset struct {
@@ -55,7 +60,10 @@ type Release struct {
 type Checker struct {
 	Current string // the running version
 	Client  *http.Client
-	API     string // the latest-release endpoint; a test points it elsewhere
+	API     string // the releases endpoint; a test points it elsewhere
+	// AssetFor names this system's download in a release of that version
+	// ("" on a system without one: any release counts); a test sets it.
+	AssetFor func(version string) string
 
 	mu      sync.Mutex
 	last    *Release
@@ -67,7 +75,29 @@ type Checker struct {
 const MaxAge = 24 * time.Hour
 
 func NewChecker(current string) *Checker {
-	return &Checker{Current: current, API: apiURL, Client: &http.Client{Timeout: 15 * time.Second}}
+	return &Checker{Current: current, API: apiURL, AssetFor: PlatformAsset, Client: &http.Client{Timeout: 15 * time.Second}}
+}
+
+// PlatformAsset is the download a release of version v has for this system,
+// by the names the release workflow gives them. A release without it is not
+// an update here: one made for Windows alone is no news on a Mac.
+func PlatformAsset(v string) string {
+	switch runtime.GOOS {
+	case "windows":
+		return "Vito-Setup-" + v + ".exe"
+	case "darwin":
+		return "Vito-" + v + ".dmg"
+	case "linux":
+		return "Vito-" + v + "-" + appImageArch() + ".AppImage"
+	}
+	return ""
+}
+
+func appImageArch() string {
+	if runtime.GOARCH == "arm64" {
+		return "aarch64"
+	}
+	return "x86_64"
 }
 
 // Cached returns the last result without going near the network.
@@ -124,7 +154,7 @@ func (c *Checker) fetch(ctx context.Context) (*Release, error) {
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("github: HTTP %d", resp.StatusCode)
 	}
-	var out struct {
+	type ghRelease struct {
 		TagName     string    `json:"tag_name"`
 		Name        string    `json:"name"`
 		Body        string    `json:"body"`
@@ -132,17 +162,42 @@ func (c *Checker) fetch(ctx context.Context) (*Release, error) {
 		Draft       bool      `json:"draft"`
 		Prerelease  bool      `json:"prerelease"`
 		PublishedAt time.Time `json:"published_at"`
-		Assets      []struct {
-			Name string `json:"name"`
-			URL  string `json:"browser_download_url"`
-			Size int64  `json:"size"`
-		} `json:"assets"`
+		Assets      []ghAsset `json:"assets"`
 	}
-	if err := json.NewDecoder(io.LimitReader(resp.Body, 1<<20)).Decode(&out); err != nil {
+	raw, err := io.ReadAll(io.LimitReader(resp.Body, 8<<20))
+	if err != nil {
 		return nil, err
 	}
-	if out.Draft || out.Prerelease {
-		return nil, fmt.Errorf("latest release is a draft or pre-release")
+	// The list, newest first; a single release (an endpoint for one) too.
+	var list []ghRelease
+	if t := strings.TrimSpace(string(raw)); strings.HasPrefix(t, "{") {
+		var one ghRelease
+		if err := json.Unmarshal(raw, &one); err != nil {
+			return nil, err
+		}
+		list = []ghRelease{one}
+	} else if err := json.Unmarshal(raw, &list); err != nil {
+		return nil, err
+	}
+
+	// The newest published release with this system's download.
+	var out *ghRelease
+	for i := range list {
+		r := &list[i]
+		v := strings.TrimPrefix(r.TagName, "v")
+		if r.Draft || r.Prerelease {
+			continue
+		}
+		if out != nil && !Newer(v, strings.TrimPrefix(out.TagName, "v")) {
+			continue
+		}
+		if name := c.forSystem(v); name != "" && !slices.ContainsFunc(r.Assets, func(a ghAsset) bool { return a.Name == name }) {
+			continue
+		}
+		out = r
+	}
+	if out == nil {
+		return &Release{}, nil // nothing published for this system yet
 	}
 
 	rel := &Release{
@@ -160,6 +215,21 @@ func (c *Checker) fetch(ctx context.Context) (*Release, error) {
 		}
 	}
 	return rel, nil
+}
+
+type ghAsset struct {
+	Name string `json:"name"`
+	URL  string `json:"browser_download_url"`
+	Size int64  `json:"size"`
+}
+
+// forSystem is this system's download in a release of version v, "" when
+// any release counts.
+func (c *Checker) forSystem(v string) string {
+	if c.AssetFor == nil {
+		return ""
+	}
+	return c.AssetFor(v)
 }
 
 // Newer reports whether version a is later than b. Anything that isn't a

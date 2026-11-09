@@ -152,7 +152,10 @@ distro packages and `dev` builds are left alone. The replaced version is noted
 in `<UserConfigDir>/vito/updated-from` and reported once as `updated_from` in
 `/api/update`. Keep the asset names (`Vito-Setup-<v>.exe`,
 `Vito-<v>-<arch>.AppImage`, `Vito-<v>.dmg`, each with `.sha256`) stable — the
-updater looks them up by name.
+updater looks them up by name. The check (`update.Checker`) also uses those
+names to decide what counts as an update: it lists the recent releases and
+takes the newest one carrying this system's download (`PlatformAsset`), so a
+release with only a Windows setup is no news on a Mac or Linux.
 
 ## Releases on GitHub
 
