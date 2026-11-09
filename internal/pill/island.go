@@ -147,8 +147,8 @@ const (
 	tLongHeader
 	tLongStop
 	tLongRow
-	tLongCount // the countdown before one starts; a click cancels it
-	tRule0 target = 100
+	tLongCount        // the countdown before one starts; a click cancels it
+	tRule0     target = 100
 )
 
 type rect struct{ x, y, w, h float64 }
