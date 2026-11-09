@@ -41,6 +41,10 @@ type Meta struct {
 	Language string    `json:"language,omitempty"`
 	Source   string    `json:"source,omitempty"` // "upload" for an audio file
 	Words    int       `json:"words,omitempty"`
+	// Tokens the cleanup model reported for this session (blocks and titles),
+	// for its cost.
+	CleanIn  int64 `json:"clean_in,omitempty"`
+	CleanOut int64 `json:"clean_out,omitempty"`
 }
 
 // Block is one line of blocks.jsonl: a piece of the recording between two

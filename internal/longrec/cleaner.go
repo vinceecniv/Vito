@@ -145,7 +145,7 @@ func (c *Cleaner) cleanBlock(j job, set CleanSettings) bool {
 	if prev != "" {
 		rules += "\n\nFor context only — the end of the previous block, already cleaned. Never repeat or output it:\n«" + tail(prev, 500) + "»"
 	}
-	out, err := c.ask(set, rules, blk.Text, "")
+	out, err := c.ask(j.id, set, rules, blk.Text, "")
 	cl := Clean{Index: j.index, Text: cleanup.Plain(strings.TrimSpace(out))}
 	if err != nil {
 		cl.Error = err.Error()
@@ -181,7 +181,7 @@ func tail(s string, n int) string {
 
 // ask runs one cleanup request, retrying with growing pauses: a rate limit on
 // a free tier clears within a minute.
-func (c *Cleaner) ask(set CleanSettings, rules, text, instruction string) (string, error) {
+func (c *Cleaner) ask(id string, set CleanSettings, rules, text, instruction string) (string, error) {
 	cfg := set.Cleanup
 	cfg.Enabled = true
 	cfg.Prompts = append([]config.Prompt(nil), config.Prompt{ID: "vito-long-block", Name: "Long recording", Rules: rules})
@@ -193,8 +193,11 @@ func (c *Cleaner) ask(set CleanSettings, rules, text, instruction string) (strin
 			time.Sleep(wait)
 		}
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)
-		out, _, err := cleanup.NewCleaner(cfg).Clean(ctx, text, set.Language, set.Corrections, instruction)
+		out, use, err := cleanup.NewCleaner(cfg).Clean(ctx, text, set.Language, set.Corrections, instruction)
 		cancel()
+		if use.InputTokens > 0 || use.OutputTokens > 0 {
+			c.store.UpdateMeta(id, func(m *Meta) { m.CleanIn += use.InputTokens; m.CleanOut += use.OutputTokens })
+		}
 		if err == nil {
 			return out, nil
 		}
@@ -235,7 +238,7 @@ func (c *Cleaner) titles(j job, set CleanSettings) bool {
 		if text == "" || (!complete && utf8.RuneCountInString(text) < 600) {
 			continue
 		}
-		out, err := c.ask(set, "", tail(text, 1500), titleInstruction)
+		out, err := c.ask(j.id, set, "", tail(text, 1500), titleInstruction)
 		if err != nil {
 			continue
 		}

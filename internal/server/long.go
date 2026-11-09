@@ -171,7 +171,28 @@ func (s *Server) handleLongDoc(w http.ResponseWriter, r *http.Request) {
 		s.longErr(w, http.StatusInternalServerError, err)
 		return
 	}
-	s.writeJSON(w, http.StatusOK, d)
+	s.writeJSON(w, http.StatusOK, struct {
+		longrec.Doc
+		Cost longCost `json:"cost"`
+	}{d, s.longCost(d.Meta)})
+}
+
+// longCost is what a session has cost so far, roughly: the speech service by
+// the recorded time, the cleanup by the tokens its model reported. The
+// interface adds the speech cost of the seconds still being recorded.
+type longCost struct {
+	SttPerHour float64 `json:"stt_per_hour"` // in the display currency
+	Clean      float64 `json:"clean"`        // in the display currency
+	Currency   string  `json:"currency"`
+}
+
+func (s *Server) longCost(m longrec.Meta) longCost {
+	sttHr, inRate, outRate, fx, currency := s.costRates()
+	return longCost{
+		SttPerHour: sttHr * fx,
+		Clean:      (float64(m.CleanIn)/1e6*inRate + float64(m.CleanOut)/1e6*outRate) * fx,
+		Currency:   currency,
+	}
 }
 
 func (s *Server) handleLongDelete(w http.ResponseWriter, r *http.Request) {

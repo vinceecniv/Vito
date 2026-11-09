@@ -1805,11 +1805,20 @@
   .lr-pop[hidden] { display:none; }
   .lr-pop-h { display:flex; align-items:center; font-weight:600; font-size:13.5px; color:var(--amber-ink); }
   .lr-pop-x { margin-left:auto; background:none; border:none; font-size:18px; color:var(--text3); cursor:var(--cur-hand); }
-  .lr-pop-row { display:flex; align-items:center; gap:6px; font-size:13px; }
-  .lr-pop-row span { flex:1; color:var(--text2); }
-  .lr-pop-row button { width:38px; height:34px; border-radius:9px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text); font:inherit; font-size:17px; cursor:var(--cur-hand); }
-  .lr-pop-row button:hover:not(:disabled) { border-color:var(--amber-ink); }
-  .lr-pop-row button:disabled { opacity:.35; cursor:default; }
+  .lr-pop-hint { font-size:12px; color:var(--text3); line-height:1.45; }
+  /* Drag handles at the mark's start and end: a bar the height of the line,
+     a dot above the start and below the end; the button is the wide hit area. */
+  .lr-handle { position:fixed; z-index:59; width:24px; margin-left:-12px; padding:0; border:none; background:none; cursor:ew-resize; touch-action:none; }
+  .lr-handle[hidden] { display:none; }
+  .lr-handle i { position:absolute; left:11px; top:0; bottom:0; width:2.5px; border-radius:2px; background:var(--amber-ink); }
+  .lr-handle i::after { content:""; position:absolute; left:50%; width:13px; height:13px; margin-left:-6.5px; border-radius:50%; background:var(--amber-ink);
+    box-shadow:0 0 0 2.5px var(--card), 0 2px 6px rgba(0,0,0,.3); transition:transform .12s; }
+  .lr-handle-from i::after { top:-11px; }
+  .lr-handle-to i::after { bottom:-11px; }
+  .lr-handle:hover i::after, .lr-handle:focus-visible i::after, .lr-handle.lr-drag i::after { transform:scale(1.3); }
+  .lr-handle:focus-visible { outline:none; }
+  .lr-dragging, .lr-dragging * { cursor:ew-resize !important; user-select:none; }
+  .lr-prev { background:color-mix(in srgb, var(--amber-ink) 40%, transparent); border-radius:3px; }
   .lr-pop-del { margin-top:4px; }
   .lr-selmark { position:fixed; z-index:60; display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:999px; border:none;
     background:var(--amber-ink); color:#fff; font:inherit; font-size:12.5px; font-weight:600; box-shadow:0 8px 22px rgba(0,0,0,.25); cursor:var(--cur-hand); }
@@ -1857,6 +1866,9 @@
   .lr-stats div { display:flex; flex-direction:column; gap:2px; min-width:0; }
   .lr-stats b { font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1; transition:color .4s; }
   .lr-stats span { font-size:12px; color:var(--text3); }
+  .lr-cost { display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-top:14px; padding-top:12px; border-top:1px solid var(--card-border); font-size:12.5px; color:var(--text3); }
+  .lr-cost[hidden] { display:none; }
+  .lr-cost b { font-size:15px; color:var(--text); font-variant-numeric:tabular-nums; }
   .lr-kv { display:flex; justify-content:space-between; gap:8px; font-size:13px; margin:6px 0; }
   .lr-kv span:first-child { color:var(--text2); }
   .lr-kv b { font-weight:500; font-variant-numeric:tabular-nums; }
@@ -2664,6 +2676,7 @@
                 <div><b data-st="heads">0</b><span>headers</span></div>
                 <div><b data-st="marks">0</b><span>marks</span></div>
               </div>
+              <div class="lr-cost" hidden><span>Cost so far, roughly</span><b data-st="cost"></b></div>
             </div>
             <div class="card">
               <div style="font-weight:600; font-size:13.5px; margin-bottom:4px;">Safely stored</div>
@@ -2708,6 +2721,7 @@
                 <div><b data-st="heads">0</b><span>headers</span></div>
                 <div><b data-st="marks">0</b><span>marks</span></div>
               </div>
+              <div class="lr-cost" hidden><span>Cost so far, roughly</span><b data-st="cost"></b></div>
             </div>
             <div class="card" id="lr-marks"></div>
           </aside>
@@ -2715,12 +2729,11 @@
       </div>
       <div class="lr-pop" id="lr-pop" hidden role="dialog" aria-label="Mark">
         <div class="lr-pop-h"><span id="lr-pop-title"></span><button class="lr-pop-x" id="lr-pop-close" aria-label="Close">×</button></div>
-        <div class="lr-pop-row"><span>Starts</span>
-          <button data-edge="from" data-dir="-1" data-tip-text="One sentence earlier">‹</button><button data-edge="from" data-dir="1" data-tip-text="One sentence later">›</button></div>
-        <div class="lr-pop-row"><span>Ends</span>
-          <button data-edge="to" data-dir="-1" data-tip-text="One sentence earlier">‹</button><button data-edge="to" data-dir="1" data-tip-text="One sentence later">›</button></div>
+        <div class="lr-pop-hint">Drag the dots to move the start and end.</div>
         <button class="btn danger small lr-pop-del" id="lr-pop-del">Remove mark</button>
       </div>
+      <button class="lr-handle lr-handle-from" id="lr-h-from" data-edge="from" aria-label="Start of the mark" hidden><i></i></button>
+      <button class="lr-handle lr-handle-to" id="lr-h-to" data-edge="to" aria-label="End of the mark" hidden><i></i></button>
       <button class="lr-selmark" id="lr-selmark" hidden><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Mark selection</button>
     </section>
   </main>
@@ -2820,10 +2833,10 @@ const TR = { nl: {
   "Click again to stop":"Klik nogmaals om te stoppen",
   "All recordings":"Alle opnames",
   "Back to live":"Terug naar live",
-  "Starts":"Begint",
-  "Ends":"Eindigt",
-  "One sentence earlier":"Een zin eerder",
-  "One sentence later":"Een zin later",
+  "Cost so far, roughly":"Kosten tot nu toe, ongeveer",
+  "Drag the dots to move the start and end.":"Sleep de bolletjes om begin en einde te verplaatsen.",
+  "Start of the mark":"Begin van de markering",
+  "End of the mark":"Einde van de markering",
   "Mark selection":"Selectie markeren",
   "Mark removed":"Markering verwijderd",
   "This recording":"Deze opname",
@@ -11414,11 +11427,17 @@ $("lr-discard").onclick = async () => {
 const LR_STATS_MS = 5000;
 function lrRenderStats(){
   const st = LR.running; if (!st) return;
-  lrFillStats($("lr-live-stats"), LR.liveDoc?.items || [], LR.liveDoc?.marks || [], (st.live || []).map(l => l.text || ""), st.seconds);
+  lrFillStats($("lr-live-stats"), LR.liveDoc?.items || [], LR.liveDoc?.marks || [], (st.live || []).map(l => l.text || ""), st.seconds, LR.liveDoc?.cost);
 }
 // lrFillStats writes a recording's numbers into a stats card: the saved text
 // (items), its marks, text still being heard (live) and the audio length.
-function lrFillStats(card, items, marks, live, seconds){
+function lrFillStats(card, items, marks, live, seconds, cost){
+  // The cost: the speech service by the recorded time, the cleanup by its
+  // tokens; hidden when both are free (models on this machine).
+  const costRow = card.querySelector(".lr-cost");
+  costRow.hidden = !cost || !(cost.stt_per_hour > 0 || cost.clean > 0);
+  if (!costRow.hidden) card.querySelector('[data-st="cost"]').textContent =
+    fmtMoney(seconds / 3600 * cost.stt_per_hour + cost.clean, cost.currency || "eur", 2);
   const count = txt => (txt.match(/\S+/g) || []).length;
   // A sentence still being spoken counts once it has its end mark.
   const ends = txt => (txt.match(/[.!?…]+(\s|$)/g) || []).length;
@@ -11501,7 +11520,7 @@ async function lrFetchLiveDoc(){
   if (!LR.running) return;
   try { LR.liveDoc = await api(`/api/long/${LR.running.id}`); } catch { return; }
   lrRenderLiveDoc(); lrRenderLive(); lrRenderStats();
-  if (LR.pop && LR.pop.box.id === "lr-live-text") lrPlacePop();
+  if (LR.pop && LR.pop.box.id === "lr-live-text") (LR.drag ? lrPreview : lrPlacePop)();
 }
 $("lr-pause").onclick = () => api(LR.running && LR.running.state === "paused" ? "/api/long/resume" : "/api/long/pause", { method: "POST" }).catch(e => toast(e.message, "err"));
 $("lr-mark").onclick = () => lrMark();
@@ -11621,7 +11640,7 @@ async function lrFetchDoc(){
   if (id !== LR.docID) return;
   LR.doc = d;
   const m = d.meta;
-  lrFillStats($("lr-doc-stats"), d.items || [], d.marks || [], [], m.seconds);
+  lrFillStats($("lr-doc-stats"), d.items || [], d.marks || [], [], m.seconds, d.cost);
   if (document.activeElement !== $("lr-dtitle")) $("lr-dtitle").value = m.title || "";
   $("lr-continue").hidden = !!LR.running || !(m.state === "done" || m.state === "interrupted");
   $("lr-dtitle").placeholder = lrTitle(Object.assign({}, m, { title: "" }));
@@ -11643,7 +11662,7 @@ async function lrFetchDoc(){
     if (del) del.onclick = () => lrEvent({ type: "delete", of: h.dataset.id });
   });
   lrRenderMarks(d);
-  if (LR.pop && LR.pop.box === box) lrPlacePop();
+  if (LR.pop && LR.pop.box === box) (LR.drag ? lrPreview : lrPlacePop)();
 }
 function lrEditHeader(h){
   if (h.querySelector("input")) return;
@@ -11682,39 +11701,112 @@ function lrOpenPop(box, id){ LR.pop = { box, id }; lrPlacePop(); }
 function lrPlacePop(){
   const pop = $("lr-pop"), p = LR.pop;
   document.querySelectorAll("mark.lr-m-on").forEach(el => el.classList.remove("lr-m-on"));
-  if (!p || p.box.closest("[hidden]")) { pop.hidden = true; return; }
+  if (!p || p.box.closest("[hidden]")) { pop.hidden = true; lrPlaceHandles(); return; }
   const els = lrMarkEls(p.box, p.id);
   if (!els.length) { lrClosePop(); return; }
   els.forEach(el => el.classList.add("lr-m-on"));
-  const all = lrSentEls(p.box), first = all.indexOf(els[0]), last = all.indexOf(els[els.length - 1]);
   const mk = ((p.box.id === "lr-live-text" ? LR.liveDoc : LR.doc)?.marks || []).find(m => m.id === p.id);
   $("lr-pop-title").textContent = `${t("Marked")} · ${lrClock(mk ? mk.at : +els[0].dataset.t)}`;
-  pop.querySelector('[data-edge="from"][data-dir="-1"]').disabled = first <= 0;
-  pop.querySelector('[data-edge="from"][data-dir="1"]').disabled = first >= last;
-  pop.querySelector('[data-edge="to"][data-dir="-1"]').disabled = last <= first;
-  pop.querySelector('[data-edge="to"][data-dir="1"]').disabled = last >= all.length - 1;
+  lrPlaceHandles();
+  if (LR.drag) return;
   pop.hidden = false;
   const r = els[0].getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
   const x = Math.min(Math.max(8, r.left), innerWidth - w - 8);
-  let y = r.top - h - 10;
+  let y = r.top - h - 22; // clear of the start handle's dot
   if (y < 8) y = els[els.length - 1].getBoundingClientRect().bottom + 10;
   pop.style.left = x + "px"; pop.style.top = Math.max(8, Math.min(y, innerHeight - h - 8)) + "px";
 }
 function lrClosePop(){
-  LR.pop = null; $("lr-pop").hidden = true;
+  LR.pop = null; LR.drag = null; $("lr-pop").hidden = true;
+  $("lr-h-from").hidden = $("lr-h-to").hidden = true;
   document.querySelectorAll("mark.lr-m-on").forEach(el => el.classList.remove("lr-m-on"));
 }
 $("lr-pop-close").onclick = lrClosePop;
-$("lr-pop").querySelectorAll("[data-edge]").forEach(b => b.onclick = async () => {
+// The mark's reach as sentence indexes in its box: the one being dragged
+// (LR.drag) or the saved one.
+function lrReach(){
+  const p = LR.pop, all = lrSentEls(p.box);
+  if (LR.drag) return { all, first: LR.drag.first, last: LR.drag.last };
+  const els = lrMarkEls(p.box, p.id);
+  return { all, first: all.indexOf(els[0]), last: all.indexOf(els[els.length - 1]) };
+}
+// lrPlaceHandles puts the handles at the reach's first and last character.
+function lrPlaceHandles(){
+  const p = LR.pop, hf = $("lr-h-from"), ht = $("lr-h-to");
+  if (!p) { hf.hidden = ht.hidden = true; return; }
+  const { all, first, last } = lrReach();
+  if (first < 0 || last < 0) { hf.hidden = ht.hidden = true; return; }
+  const bound = p.box.getBoundingClientRect();
+  const put = (h, rect, x) => {
+    const off = rect.bottom < bound.top || rect.top > bound.bottom;
+    h.hidden = off;
+    h.style.left = x + "px"; h.style.top = rect.top + "px"; h.style.height = rect.height + "px";
+  };
+  const fr = all[first].getClientRects()[0], lr = [...all[last].getClientRects()].pop();
+  if (fr) put(hf, fr, fr.left); if (lr) put(ht, lr, lr.right);
+}
+async function lrSaveReach(first, last){
   const p = LR.pop; if (!p) return;
-  const all = lrSentEls(p.box), els = lrMarkEls(p.box, p.id);
-  let first = all.indexOf(els[0]), last = all.indexOf(els[els.length - 1]);
-  const d = +b.dataset.dir;
-  if (b.dataset.edge === "from") first = Math.min(Math.max(0, first + d), last);
-  else last = Math.max(Math.min(all.length - 1, last + d), first);
+  const all = lrSentEls(p.box);
   await lrPostEvent(p.box, { type: "range", of: p.id, from: +all[first].dataset.t, to: +all[last].dataset.t });
   lrPlacePop();
+}
+// Dragging: the reach follows the sentence under the pointer, shown as a
+// preview, and is saved when you let go.
+["lr-h-from", "lr-h-to"].forEach(hid => {
+  const h = $(hid), edge = h.dataset.edge;
+  h.addEventListener("pointerdown", e => {
+    if (!LR.pop) return;
+    e.preventDefault(); try { h.setPointerCapture(e.pointerId); } catch {}
+    const r = lrReach();
+    LR.drag = { edge, first: r.first, last: r.last, start: [r.first, r.last] };
+    h.classList.add("lr-drag"); document.body.classList.add("lr-dragging");
+    $("lr-pop").hidden = true;
+    lrPreview();
+  });
+  h.addEventListener("pointermove", e => {
+    if (!LR.drag || LR.drag.edge !== edge) return;
+    const box = LR.pop.box, all = lrSentEls(box);
+    // Near the box's top or bottom edge the text scrolls along.
+    const b = box.getBoundingClientRect();
+    if (e.clientY < b.top + 24) box.scrollTop -= 12; else if (e.clientY > b.bottom - 24) box.scrollTop += 12;
+    h.style.pointerEvents = "none";
+    const under = document.elementFromPoint(e.clientX, e.clientY);
+    h.style.pointerEvents = "";
+    let el = under && under.closest("[data-t]");
+    if (!el || !box.contains(el) || el.closest(".lr-livepart")) return;
+    const i = all.indexOf(el); if (i < 0) return;
+    if (edge === "from") LR.drag.first = Math.min(i, LR.drag.last);
+    else LR.drag.last = Math.max(i, LR.drag.first);
+    lrPreview();
+  });
+  const end = async () => {
+    if (!LR.drag) return;
+    const d = LR.drag; LR.drag = null;
+    h.classList.remove("lr-drag"); document.body.classList.remove("lr-dragging");
+    document.querySelectorAll(".lr-prev").forEach(el => el.classList.remove("lr-prev"));
+    if (d.first !== d.start[0] || d.last !== d.start[1]) await lrSaveReach(d.first, d.last);
+    else lrPlacePop();
+  };
+  h.addEventListener("pointerup", end);
+  h.addEventListener("pointercancel", end);
+  // The keyboard: ← and → move a focused handle by one sentence.
+  h.addEventListener("keydown", e => {
+    if (!LR.pop || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+    e.preventDefault();
+    const d = e.key === "ArrowLeft" ? -1 : 1, r = lrReach();
+    let { first, last } = r;
+    if (edge === "from") first = Math.min(Math.max(0, first + d), last);
+    else last = Math.max(Math.min(r.all.length - 1, last + d), first);
+    if (first !== r.first || last !== r.last) lrSaveReach(first, last).then(() => $(hid).focus());
+  });
 });
+function lrPreview(){
+  const { all, first, last } = lrReach();
+  document.querySelectorAll("mark.lr-m-on").forEach(el => el.classList.remove("lr-m-on"));
+  all.forEach((el, i) => el.classList.toggle("lr-prev", i >= first && i <= last));
+  lrPlaceHandles();
+}
 $("lr-pop-del").onclick = async () => {
   const p = LR.pop; if (!p) return;
   lrClosePop();
@@ -11735,7 +11827,7 @@ $("lr-pop-del").onclick = async () => {
     lrOpenPop(box, ids[(i + 1) % ids.length]);
   });
   box.addEventListener("mouseup", () => setTimeout(() => lrOfferSelection(box), 0));
-  box.addEventListener("scroll", () => { if (LR.pop && LR.pop.box === box) lrPlacePop(); $("lr-selmark").hidden = true; });
+  box.addEventListener("scroll", () => { if (LR.pop && LR.pop.box === box) (LR.drag ? lrPlaceHandles : lrPlacePop)(); $("lr-selmark").hidden = true; });
 });
 window.addEventListener("scroll", () => { if (LR.pop) lrPlacePop(); $("lr-selmark").hidden = true; }, { passive: true });
 function lrOfferSelection(box){
@@ -11757,7 +11849,7 @@ function lrOfferSelection(box){
 }
 document.addEventListener("mousedown", e => {
   if (!e.target.closest("#lr-selmark")) $("lr-selmark").hidden = true;
-  if (LR.pop && !e.target.closest("#lr-pop") && !e.target.closest("mark.lr-m")) lrClosePop();
+  if (LR.pop && !e.target.closest("#lr-pop") && !e.target.closest("mark.lr-m") && !e.target.closest(".lr-handle")) lrClosePop();
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && LR.pop) lrClosePop(); });
 window.addEventListener("resize", () => { if (LR.pop) lrPlacePop(); });
