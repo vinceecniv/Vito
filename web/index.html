@@ -11742,7 +11742,7 @@ function lrPlacePop(){
 }
 function lrClosePop(){
   LR.pop = null; LR.drag = null; $("lr-pop").hidden = true;
-  $("tab-long").append($("lr-h-from"), $("lr-h-to"));
+  $("tab-long").append(LR_HF, LR_HT);
   document.querySelectorAll("mark.lr-m-on").forEach(el => el.classList.remove("lr-m-on"));
 }
 $("lr-pop-close").onclick = lrClosePop;
@@ -11754,10 +11754,13 @@ function lrReach(){
   const els = lrMarkEls(p.box, p.id);
   return { all, first: all.indexOf(els[0]), last: all.indexOf(els[els.length - 1]) };
 }
+// The handles, kept here: while they sit in a text, redrawing that text
+// takes them out of the page, so they cannot be looked up by id again.
+const LR_HF = document.getElementById("lr-h-from"), LR_HT = document.getElementById("lr-h-to");
 // lrPlaceHandles puts the handles into the text at the reach's ends, or
 // parks them when no mark is open.
 function lrPlaceHandles(){
-  const p = LR.pop, hf = $("lr-h-from"), ht = $("lr-h-to"), park = $("tab-long");
+  const p = LR.pop, hf = LR_HF, ht = LR_HT, park = $("tab-long");
   if (!p) { park.append(hf, ht); return; }
   const { all, first, last } = lrReach();
   if (first < 0 || last < 0) { park.append(hf, ht); return; }
@@ -11799,7 +11802,7 @@ async function lrDragEnd(){
   else lrPlacePop();
 }
 ["lr-h-from", "lr-h-to"].forEach(hid => {
-  const h = $(hid), edge = h.dataset.edge;
+  const h = hid === "lr-h-from" ? LR_HF : LR_HT, edge = h.dataset.edge;
   h.addEventListener("pointerdown", e => {
     if (!LR.pop) return;
     e.preventDefault(); e.stopPropagation();
@@ -11821,7 +11824,7 @@ async function lrDragEnd(){
     let { first, last } = r;
     if (edge === "from") first = Math.min(Math.max(0, first + d), last);
     else last = Math.max(Math.min(r.all.length - 1, last + d), first);
-    if (first !== r.first || last !== r.last) lrSaveReach(first, last).then(() => $(hid).focus());
+    if (first !== r.first || last !== r.last) lrSaveReach(first, last).then(() => h.focus());
   });
 });
 function lrPreview(){
