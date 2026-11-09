@@ -15,9 +15,10 @@ const markBack = 15.0
 // Sentence is a piece of text with the moment it starts. Blocks carry exact
 // times; within a block a sentence's time is estimated from its position.
 type Sentence struct {
-	Start  float64 `json:"t"`
-	Text   string  `json:"text"`
-	Marked bool    `json:"marked,omitempty"`
+	Start  float64  `json:"t"`
+	Text   string   `json:"text"`
+	Marked bool     `json:"marked,omitempty"`
+	Marks  []string `json:"marks,omitempty"` // the ids of the marks it is in
 }
 
 // Item is a header or a paragraph of the document.
@@ -36,6 +37,10 @@ type MarkInfo struct {
 	At   float64 `json:"at"`
 	Text string  `json:"text"`
 	Note string  `json:"note,omitempty"`
+	// From, To: the reach set by hand (Reach), else the default around At.
+	From  float64 `json:"from,omitempty"`
+	To    float64 `json:"to,omitempty"`
+	Reach bool    `json:"reach,omitempty"`
 }
 
 // Doc is a session as one document.
@@ -116,7 +121,15 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 				continue
 			}
 			markIdx[e.ID] = len(marks)
-			marks = append(marks, MarkInfo{ID: e.ID, At: e.At})
+			mk := MarkInfo{ID: e.ID, At: e.At}
+			if (e.From > 0 || e.To > 0) && e.From <= e.To {
+				mk.From, mk.To, mk.Reach = e.From, e.To, true
+			}
+			marks = append(marks, mk)
+		case "range":
+			if i, ok := markIdx[e.Of]; ok && e.From >= 0 && e.From <= e.To {
+				marks[i].From, marks[i].To, marks[i].Reach = e.From, e.To, true
+			}
 		case "note":
 			if i, ok := markIdx[e.Of]; ok {
 				marks[i].Note = e.Text
@@ -180,10 +193,14 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 			it := &d.Items[ii]
 			for si := range it.Sentences {
 				s := &it.Sentences[si]
-				end := mk.At + 0.5
+				from, to := mk.At-markBack, mk.At+0.5
+				if mk.Reach {
+					from, to = mk.From, mk.To+0.01
+				}
 				next := nextStart(d.Items, ii, si)
-				if s.Start <= end && next > mk.At-markBack {
+				if s.Start <= to && next > from {
 					s.Marked = true
+					s.Marks = append(s.Marks, mk.ID)
 					at = s
 				}
 			}

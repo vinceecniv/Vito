@@ -217,16 +217,23 @@ func (s *Server) handleLongEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	switch e.Type {
-	case "title", "note", "delete":
+	case "title", "note", "delete", "range":
+		if e.Of == "" {
+			s.longErr(w, http.StatusBadRequest, errBadEvent)
+			return
+		}
+	case "mark": // a mark set afterwards over chosen sentences
+		e.Of = ""
+		e.At = e.To
 	default:
 		s.longErr(w, http.StatusBadRequest, errBadEvent)
 		return
 	}
-	if e.Of == "" {
+	if (e.Type == "range" || e.Type == "mark") && (e.From < 0 || e.From > e.To) {
 		s.longErr(w, http.StatusBadRequest, errBadEvent)
 		return
 	}
-	e = longrec.Event{Type: e.Type, Of: e.Of, Title: clipText(e.Title, 200), Text: clipText(e.Text, 1000)}
+	e = longrec.Event{Type: e.Type, Of: e.Of, At: e.At, From: e.From, To: e.To, Title: clipText(e.Title, 200), Text: clipText(e.Text, 1000)}
 	e, err := store.AddEvent(id, e)
 	if err != nil {
 		s.longErr(w, http.StatusInternalServerError, err)
@@ -238,7 +245,9 @@ func (s *Server) handleLongEvent(w http.ResponseWriter, r *http.Request) {
 
 type badEvent struct{}
 
-func (badEvent) Error() string { return "event must be title, note or delete, with of" }
+func (badEvent) Error() string {
+	return "event must be title, note, delete or range (with of), or mark (with from ≤ to)"
+}
 
 var errBadEvent = badEvent{}
 

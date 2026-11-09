@@ -275,3 +275,48 @@ func TestContinueAppendsAndFillsTheGap(t *testing.T) {
 		t.Fatalf("gap: %+v calls %d", blocks, file.calls)
 	}
 }
+
+func TestMarkRange(t *testing.T) {
+	store, _ := NewStore(t.TempDir())
+	id := newID()
+	store.create(Meta{ID: id, State: StateDone, Seconds: 40})
+	// Four sentences of 10 s each: starting at 0, 10, 20, 30.
+	store.AddBlock(id, Block{Index: 0, Start: 0, End: 40, Text: "Aaaa aaaa. Bbbb bbbb. Cccc cccc. Dddd dddd."})
+	mk, _ := store.AddEvent(id, Event{Type: "mark", At: 31})
+	marked := func() string {
+		d, _ := store.Doc(id, false)
+		out := ""
+		for _, s := range d.Items[0].Sentences {
+			if s.Marked {
+				out += s.Text[:1]
+				if len(s.Marks) != 1 || s.Marks[0] != mk.ID {
+					t.Fatalf("marks on %q: %v", s.Text, s.Marks)
+				}
+			}
+		}
+		return out
+	}
+	if got := marked(); got != "BCD" { // the default reaches back 15 s, into B
+		t.Fatalf("default = %q", got)
+	}
+	// The interface sets a reach by the sentences' own start times.
+	d0, _ := store.Doc(id, false)
+	ts := []float64{}
+	for _, s := range d0.Items[0].Sentences {
+		ts = append(ts, s.Start)
+	}
+	store.AddEvent(id, Event{Type: "range", Of: mk.ID, From: ts[1], To: ts[1]})
+	if got := marked(); got != "B" {
+		t.Fatalf("one sentence = %q", got)
+	}
+	store.AddEvent(id, Event{Type: "range", Of: mk.ID, From: ts[0], To: ts[2]})
+	if got := marked(); got != "ABC" {
+		t.Fatalf("widened = %q", got)
+	}
+	// A mark made over chosen sentences.
+	sel, _ := store.AddEvent(id, Event{Type: "mark", At: ts[3], From: ts[3], To: ts[3]})
+	d, _ := store.Doc(id, false)
+	if s := d.Items[0].Sentences[3]; !s.Marked || len(s.Marks) != 1 || s.Marks[0] != sel.ID {
+		t.Fatalf("selection mark: %+v", s)
+	}
+}

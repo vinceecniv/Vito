@@ -64,12 +64,17 @@ type Clean struct {
 // Event is one line of events.jsonl.
 type Event struct {
 	ID    string  `json:"id"`
-	Type  string  `json:"type"` // mark, header, title, note, pause, resume, delete
+	Type  string  `json:"type"` // mark, header, title, note, range, pause, resume, delete
 	At    float64 `json:"at"`   // seconds of audio
 	Of    string  `json:"of,omitempty"`
 	Title string  `json:"title,omitempty"`
 	Auto  bool    `json:"auto,omitempty"` // a title the cleanup pass proposed
 	Text  string  `json:"text,omitempty"` // a note
+	// A mark's own reach (on a mark, or a range event that changes one):
+	// the sentences starting from From up to and including the one starting
+	// at To. Without them a mark reaches back markBack seconds from At.
+	From float64 `json:"from,omitempty"`
+	To   float64 `json:"to,omitempty"`
 }
 
 // Store is the folder that holds every session.
@@ -214,6 +219,36 @@ func readLines[T any](path string) ([]T, error) {
 
 // AddBlock appends a transcribed block.
 func (s *Store) AddBlock(id string, b Block) error { return s.appendLine(id, "blocks.jsonl", b) }
+
+// Words counts the words of a session as its document reads: the cleaned
+// text where a block has one, else the transcript — what the interface shows.
+func (s *Store) Words(id string) int {
+	d, err := s.Doc(id, false)
+	if err != nil {
+		return 0
+	}
+	n := 0
+	for _, it := range d.Items {
+		for _, sn := range it.Sentences {
+			n += len(strings.Fields(sn.Text))
+		}
+	}
+	return n
+}
+
+// Recount brings the word counts of finished sessions in line with Words
+// (sessions counted from the raw transcript before it).
+func (s *Store) Recount() {
+	list, _ := s.List()
+	for _, m := range list {
+		if m.State != StateDone {
+			continue
+		}
+		if w := s.Words(m.ID); w != m.Words {
+			s.UpdateMeta(m.ID, func(m *Meta) { m.Words = w })
+		}
+	}
+}
 
 // AddClean appends a block's cleaned text.
 func (s *Store) AddClean(id string, c Clean) error { return s.appendLine(id, "clean.jsonl", c) }

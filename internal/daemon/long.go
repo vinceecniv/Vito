@@ -43,6 +43,7 @@ func (d *Daemon) initLong() {
 	for _, m := range store.Recover() {
 		d.log.Warn("long recording interrupted; offered for restoring", "session", m.ID, "seconds", m.Seconds)
 	}
+	go store.Recount()
 	l := &long{store: store}
 	l.cleaner = longrec.NewCleaner(store, d.longCleanSettings, d.log, func(id string) {
 		d.emit(Event{Type: "long_doc", Session: id})

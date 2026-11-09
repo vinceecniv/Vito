@@ -157,6 +157,10 @@ func (c *Cleaner) cleanBlock(j job, set CleanSettings) bool {
 	if err := c.store.AddClean(j.id, cl); err != nil {
 		c.log.Error("long recording: cleaned block not saved", "err", err)
 	}
+	if cl.Error == "" {
+		words := c.store.Words(j.id)
+		c.store.UpdateMeta(j.id, func(m *Meta) { m.Words = words })
+	}
 	return cl.Error == ""
 }
 
@@ -295,12 +299,7 @@ func Restore(store *Store, id string, t stt.Transcriber, onBlock func(Block)) (M
 		next++
 		from = to
 	}
-	words := 0
-	if bl, err := store.Blocks(id); err == nil {
-		for _, b := range bl {
-			words += len(strings.Fields(b.Text))
-		}
-	}
+	words := store.Words(id)
 	m, err = store.UpdateMeta(id, func(m *Meta) {
 		m.State = StateDone
 		m.Seconds = total

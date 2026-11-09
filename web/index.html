@@ -1799,6 +1799,22 @@
   .lr-tool.lr-hit { animation:lrHitRing .7s ease-out; }
   #lr-mark.lr-hit { border-color:var(--amber-ink); }
   @keyframes lrHitRing { 0% { box-shadow:0 0 0 0 color-mix(in srgb, var(--amber-ink) 60%, transparent); transform:scale(.96); } 100% { box-shadow:0 0 0 12px color-mix(in srgb, var(--amber-ink) 0%, transparent); transform:scale(1); } }
+  mark.lr-m { cursor:var(--cur-hand); }
+  mark.lr-m.lr-m-on { background:color-mix(in srgb, var(--amber-ink) 40%, transparent); box-shadow:0 0 0 2px color-mix(in srgb, var(--amber-ink) 45%, transparent); }
+  .lr-pop { position:fixed; z-index:60; width:230px; background:var(--card); border:1px solid var(--card-border); border-radius:14px; box-shadow:0 14px 36px rgba(0,0,0,.22); padding:12px; display:flex; flex-direction:column; gap:8px; }
+  .lr-pop[hidden] { display:none; }
+  .lr-pop-h { display:flex; align-items:center; font-weight:600; font-size:13.5px; color:var(--amber-ink); }
+  .lr-pop-x { margin-left:auto; background:none; border:none; font-size:18px; color:var(--text3); cursor:var(--cur-hand); }
+  .lr-pop-row { display:flex; align-items:center; gap:6px; font-size:13px; }
+  .lr-pop-row span { flex:1; color:var(--text2); }
+  .lr-pop-row button { width:38px; height:34px; border-radius:9px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text); font:inherit; font-size:17px; cursor:var(--cur-hand); }
+  .lr-pop-row button:hover:not(:disabled) { border-color:var(--amber-ink); }
+  .lr-pop-row button:disabled { opacity:.35; cursor:default; }
+  .lr-pop-del { margin-top:4px; }
+  .lr-selmark { position:fixed; z-index:60; display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:999px; border:none;
+    background:var(--amber-ink); color:#fff; font:inherit; font-size:12.5px; font-weight:600; box-shadow:0 8px 22px rgba(0,0,0,.25); cursor:var(--cur-hand); }
+  .lr-selmark svg { width:13px; height:13px; }
+  .lr-selmark[hidden] { display:none; }
   .lr-mchip { display:inline-flex; vertical-align:-2px; margin:0 3px; color:var(--amber-ink); }
   .lr-mchip svg { width:15px; height:15px; }
   .lr-new-mark { animation:lrDrop .5s cubic-bezier(.3,1.6,.5,1); }
@@ -2697,6 +2713,15 @@
           </aside>
         </div>
       </div>
+      <div class="lr-pop" id="lr-pop" hidden role="dialog" aria-label="Mark">
+        <div class="lr-pop-h"><span id="lr-pop-title"></span><button class="lr-pop-x" id="lr-pop-close" aria-label="Close">×</button></div>
+        <div class="lr-pop-row"><span>Starts</span>
+          <button data-edge="from" data-dir="-1" data-tip-text="One sentence earlier">‹</button><button data-edge="from" data-dir="1" data-tip-text="One sentence later">›</button></div>
+        <div class="lr-pop-row"><span>Ends</span>
+          <button data-edge="to" data-dir="-1" data-tip-text="One sentence earlier">‹</button><button data-edge="to" data-dir="1" data-tip-text="One sentence later">›</button></div>
+        <button class="btn danger small lr-pop-del" id="lr-pop-del">Remove mark</button>
+      </div>
+      <button class="lr-selmark" id="lr-selmark" hidden><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Mark selection</button>
     </section>
   </main>
 </div>
@@ -2795,6 +2820,12 @@ const TR = { nl: {
   "Click again to stop":"Klik nogmaals om te stoppen",
   "All recordings":"Alle opnames",
   "Back to live":"Terug naar live",
+  "Starts":"Begint",
+  "Ends":"Eindigt",
+  "One sentence earlier":"Een zin eerder",
+  "One sentence later":"Een zin later",
+  "Mark selection":"Selectie markeren",
+  "Mark removed":"Markering verwijderd",
   "This recording":"Deze opname",
   "words per minute":"woorden per minuut",
   "sentences":"zinnen",
@@ -11257,6 +11288,7 @@ function lrShow(view){
   $("lr-list-view").hidden = view !== "list";
   $("lr-live-view").hidden = view !== "live";
   $("lr-count-view").hidden = view !== "count";
+  if (LR.pop) lrClosePop();
   clearInterval(LR.statsT); LR.statsT = 0;
   if (view === "live") { LR.follow = true; lrFitLive(); lrFollow(); lrRenderStats(); LR.statsT = setInterval(lrRenderStats, LR_STATS_MS); }
   $("lr-doc-view").hidden = view !== "doc";
@@ -11310,7 +11342,7 @@ function lrRenderList(){
   $("lr-list").innerHTML = `<div class="lr-row lr-hdr"><span>${escapeHtml(t("Title"))}</span><span>${escapeHtml(t("Date"))}</span><span>${escapeHtml(t("Length"))}</span><span></span></div>` +
     all.map(s => `<div class="lr-row" data-id="${s.id}" tabindex="0" role="button">
       <span style="min-width:0; display:flex; flex-direction:column; gap:2px;"><span class="lr-t">${escapeHtml(lrTitle(s))}</span>
-        <span class="lr-s">${s.words ? s.words.toLocaleString() + " " + escapeHtml(t("words")) : ""}${s.provider ? (s.words ? " · " : "") + escapeHtml(s.provider) : ""}</span></span>
+        <span class="lr-s">${s.words ? s.words.toLocaleString() + " " + escapeHtml(t("words")) : ""}</span></span>
       <span class="lr-c">${escapeHtml(lrWhen(s.started))}</span>
       <span class="lr-c">${lrClock(s.seconds)}</span>
       <span>${chip(s)}</span></div>`).join("");
@@ -11469,6 +11501,7 @@ async function lrFetchLiveDoc(){
   if (!LR.running) return;
   try { LR.liveDoc = await api(`/api/long/${LR.running.id}`); } catch { return; }
   lrRenderLiveDoc(); lrRenderLive(); lrRenderStats();
+  if (LR.pop && LR.pop.box.id === "lr-live-text") lrPlacePop();
 }
 $("lr-pause").onclick = () => api(LR.running && LR.running.state === "paused" ? "/api/long/resume" : "/api/long/pause", { method: "POST" }).catch(e => toast(e.message, "err"));
 $("lr-mark").onclick = () => lrMark();
@@ -11567,7 +11600,7 @@ function lrItemsHTML(doc, editable){
       const title = it.title ? escapeHtml(it.title) : escapeHtml(t("New subject")) + " · " + lrClock(it.at);
       return `<h2 class="lr-h${it.title ? "" : " lr-empty-h"}" data-id="${it.id}"><span class="lr-ht"${editable ? ` title="${escapeHtml(t("Click to type a title"))}"` : ""}>${title}</span>${editable ? `<button class="lr-hx" data-del aria-label="${escapeHtml(t("Remove header"))}">×</button>` : ""}</h2>`;
     }
-    const body = it.sentences.map(s => s.marked ? `<mark class="lr-m" data-t="${s.t}">${escapeHtml(s.text)}</mark>` : `<span data-t="${s.t}">${escapeHtml(s.text)}</span>`).join(" ");
+    const body = it.sentences.map(s => s.marked ? `<mark class="lr-m" data-t="${s.t}" data-marks="${escapeHtml((s.marks || []).join(" "))}">${escapeHtml(s.text)}</mark>` : `<span data-t="${s.t}">${escapeHtml(s.text)}</span>`).join(" ");
     return `<p class="lr-p"><span class="lr-ts">${lrClock(it.at)}</span><span>${body}</span></p>`;
   }).join("");
 }
@@ -11610,6 +11643,7 @@ async function lrFetchDoc(){
     if (del) del.onclick = () => lrEvent({ type: "delete", of: h.dataset.id });
   });
   lrRenderMarks(d);
+  if (LR.pop && LR.pop.box === box) lrPlacePop();
 }
 function lrEditHeader(h){
   if (h.querySelector("input")) return;
@@ -11627,6 +11661,107 @@ function lrEditHeader(h){
   inp.onkeydown = e => { if (e.key === "Enter") finish(true); else if (e.key === "Escape") finish(false); };
   inp.onblur = () => finish(true);
 }
+/* -- editing marks: in the saved text of a recording, live or afterwards -- */
+// Which session a text box belongs to, and how it is fetched again.
+function lrBoxSession(box){
+  return box.id === "lr-live-text" ? { id: LR.running?.id, refresh: lrFetchLiveDoc } : { id: LR.docID, refresh: lrFetchDoc };
+}
+async function lrPostEvent(box, ev){
+  const ses = lrBoxSession(box); if (!ses.id) return false;
+  try { await api(`/api/long/${ses.id}/event`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(ev) }); }
+  catch (e) { toast(e.message, "err"); return false; }
+  await ses.refresh();
+  return true;
+}
+// The saved sentences of a box in order (not the text still being heard).
+function lrSentEls(box){ return [...box.querySelectorAll(".lr-p [data-t]")].filter(el => !el.closest(".lr-livepart")); }
+function lrMarkEls(box, id){ return lrSentEls(box).filter(el => (el.dataset.marks || "").split(" ").includes(id)); }
+function lrOpenPop(box, id){ LR.pop = { box, id }; lrPlacePop(); }
+// lrPlacePop shows the panel beside its mark; called again after every
+// redraw of the text, so it stays with the mark.
+function lrPlacePop(){
+  const pop = $("lr-pop"), p = LR.pop;
+  document.querySelectorAll("mark.lr-m-on").forEach(el => el.classList.remove("lr-m-on"));
+  if (!p || p.box.closest("[hidden]")) { pop.hidden = true; return; }
+  const els = lrMarkEls(p.box, p.id);
+  if (!els.length) { lrClosePop(); return; }
+  els.forEach(el => el.classList.add("lr-m-on"));
+  const all = lrSentEls(p.box), first = all.indexOf(els[0]), last = all.indexOf(els[els.length - 1]);
+  const mk = ((p.box.id === "lr-live-text" ? LR.liveDoc : LR.doc)?.marks || []).find(m => m.id === p.id);
+  $("lr-pop-title").textContent = `${t("Marked")} · ${lrClock(mk ? mk.at : +els[0].dataset.t)}`;
+  pop.querySelector('[data-edge="from"][data-dir="-1"]').disabled = first <= 0;
+  pop.querySelector('[data-edge="from"][data-dir="1"]').disabled = first >= last;
+  pop.querySelector('[data-edge="to"][data-dir="-1"]').disabled = last <= first;
+  pop.querySelector('[data-edge="to"][data-dir="1"]').disabled = last >= all.length - 1;
+  pop.hidden = false;
+  const r = els[0].getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+  const x = Math.min(Math.max(8, r.left), innerWidth - w - 8);
+  let y = r.top - h - 10;
+  if (y < 8) y = els[els.length - 1].getBoundingClientRect().bottom + 10;
+  pop.style.left = x + "px"; pop.style.top = Math.max(8, Math.min(y, innerHeight - h - 8)) + "px";
+}
+function lrClosePop(){
+  LR.pop = null; $("lr-pop").hidden = true;
+  document.querySelectorAll("mark.lr-m-on").forEach(el => el.classList.remove("lr-m-on"));
+}
+$("lr-pop-close").onclick = lrClosePop;
+$("lr-pop").querySelectorAll("[data-edge]").forEach(b => b.onclick = async () => {
+  const p = LR.pop; if (!p) return;
+  const all = lrSentEls(p.box), els = lrMarkEls(p.box, p.id);
+  let first = all.indexOf(els[0]), last = all.indexOf(els[els.length - 1]);
+  const d = +b.dataset.dir;
+  if (b.dataset.edge === "from") first = Math.min(Math.max(0, first + d), last);
+  else last = Math.max(Math.min(all.length - 1, last + d), first);
+  await lrPostEvent(p.box, { type: "range", of: p.id, from: +all[first].dataset.t, to: +all[last].dataset.t });
+  lrPlacePop();
+});
+$("lr-pop-del").onclick = async () => {
+  const p = LR.pop; if (!p) return;
+  lrClosePop();
+  if (await lrPostEvent(p.box, { type: "delete", of: p.id })) toast(t("Mark removed"), "ok", 1400);
+};
+// A click on a highlighted sentence opens its mark; selecting sentences
+// offers to mark exactly those.
+["lr-live-text", "lr-doc-text"].forEach(bid => {
+  const box = $(bid);
+  box.addEventListener("click", e => {
+    if (String(getSelection()).trim()) return;
+    const m = e.target.closest("mark.lr-m");
+    if (!m || m.closest(".lr-livepart")) return;
+    const ids = (m.dataset.marks || "").split(" ").filter(Boolean);
+    if (!ids.length) return;
+    // Several marks on one sentence: each click takes the next.
+    const i = LR.pop && LR.pop.box === box ? ids.indexOf(LR.pop.id) : -1;
+    lrOpenPop(box, ids[(i + 1) % ids.length]);
+  });
+  box.addEventListener("mouseup", () => setTimeout(() => lrOfferSelection(box), 0));
+  box.addEventListener("scroll", () => { if (LR.pop && LR.pop.box === box) lrPlacePop(); $("lr-selmark").hidden = true; });
+});
+window.addEventListener("scroll", () => { if (LR.pop) lrPlacePop(); $("lr-selmark").hidden = true; }, { passive: true });
+function lrOfferSelection(box){
+  const btn = $("lr-selmark"), sel = getSelection();
+  btn.hidden = true;
+  if (!sel.rangeCount || sel.isCollapsed || !String(sel).trim()) return;
+  const range = sel.getRangeAt(0);
+  if (!box.contains(range.commonAncestorContainer)) return;
+  const sents = lrSentEls(box).filter(el => range.intersectsNode(el));
+  if (!sents.length) return;
+  const r = range.getBoundingClientRect();
+  btn.hidden = false;
+  btn.style.left = Math.min(Math.max(8, r.left + r.width / 2 - btn.offsetWidth / 2), innerWidth - btn.offsetWidth - 8) + "px";
+  btn.style.top = Math.max(8, r.top - btn.offsetHeight - 8) + "px";
+  btn.onclick = async () => {
+    btn.hidden = true; sel.removeAllRanges();
+    if (await lrPostEvent(box, { type: "mark", from: +sents[0].dataset.t, to: +sents[sents.length - 1].dataset.t })) toast(t("Marked"), "ok", 1400);
+  };
+}
+document.addEventListener("mousedown", e => {
+  if (!e.target.closest("#lr-selmark")) $("lr-selmark").hidden = true;
+  if (LR.pop && !e.target.closest("#lr-pop") && !e.target.closest("mark.lr-m")) lrClosePop();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && LR.pop) lrClosePop(); });
+window.addEventListener("resize", () => { if (LR.pop) lrPlacePop(); });
+
 async function lrEvent(ev){
   try { await api(`/api/long/${LR.docID}/event`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(ev) }); }
   catch (e) { toast(e.message, "err"); }

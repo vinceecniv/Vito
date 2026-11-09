@@ -385,12 +385,7 @@ func (r *Recorder) Stop() (Meta, error) {
 	r.wg.Wait()
 	sec := r.wav.seconds()
 	err := r.wav.close()
-	words := 0
-	if bl, e := r.o.Store.Blocks(r.meta.ID); e == nil {
-		for _, b := range bl {
-			words += len(strings.Fields(b.Text))
-		}
-	}
+	words := r.o.Store.Words(r.meta.ID)
 	m, e := r.o.Store.UpdateMeta(r.meta.ID, func(m *Meta) {
 		m.State = StateDone
 		m.Seconds = sec
