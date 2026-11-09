@@ -97,6 +97,9 @@ const (
 	// embedLiveUp is how far over the microphone the live words stand in the
 	// pinned island: where the last dictation is, which makes way for them.
 	embedLiveUp = 90
+
+	// statsH is the room today's figures take in the main view.
+	statsH = 34
 )
 
 type view int
@@ -120,6 +123,7 @@ const (
 	tRules
 	tEnter
 	tLive
+	tStats
 	tStyleBars
 	tStyleGlow
 	tStyleVito
@@ -158,6 +162,7 @@ type islandState struct {
 	heard       string // what was heard of it
 	cleanup     bool
 	enter, live bool
+	stats       bool // today's figures shown (ui.island_stats)
 	partials    bool // the speech service sends text while you speak
 	style       Style
 	rules       []ruleSet
@@ -168,9 +173,12 @@ type islandState struct {
 func (st *islandState) height(v view) float64 {
 	switch v {
 	case viewSettings:
-		return 262 - footH
+		return 292 - footH
 	case viewRules:
 		return 50 + ruleRow*float64(min(len(st.rules), maxRules)) + 64 - footH
+	}
+	if !st.stats {
+		return 214 - footH - statsH
 	}
 	return 214 - footH
 }
@@ -499,39 +507,59 @@ func (ip *islandPainter) body(buf []byte, th theme, st islandState, v view, left
 func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, top float64, ink, muted, tint rgb, a float64) {
 	w, h := islandWinW*scale, islandWinH*scale
 	s := float64(scale)
-	// The day in two figures, each behind the icon its tile has on the
-	// stats page: the words, and the typing time they saved. What they are
-	// is the tooltip's to say; the row stays quiet.
-	// A small row: the day's figures are nice to see, the last dictation is
-	// what the island is for.
-	cy := top + 60.0
-	chip := blend(th.body, th.to, 0.13)
-	if st.dark {
-		chip = blend(th.body, th.to, 0.2)
-	}
-	stat := func(tg target, x float64, icon func(cx, cy float64), figure []figPart) {
-		// The stats page's chip: 34 px round 9 for an 18 px icon; here 24 for 13.
-		fill(buf, w, h, rect{x, cy - 12, 24, 24}, 7, chip, a)
-		icon((x+12)*s, cy*s)
-		// The units smaller than the figures, so 59m 59s fits its column.
-		fx := x + 32
-		for i, p := range figure {
-			if p.unit {
-				fx += ip.line(buf, labelFace, p.s, fx+0.5, cy+5.5, ink, a)
-				if i < len(figure)-1 {
-					fx += 3
-				}
-			} else {
-				fx += ip.line(buf, statFace, p.s, fx, cy+6, ink, a)
-			}
+	// The day in two figures, each with the icon its tile has on the stats
+	// page: the words on the left, the typing time they saved on the right,
+	// the icons at the outer ends. What they are is the tooltip's to say; the
+	// row stays quiet, and can be switched off (ui.island_stats).
+	if st.stats {
+		cy := top + 60.0
+		chip := blend(th.body, th.to, 0.13)
+		if st.dark {
+			chip = blend(th.body, th.to, 0.2)
 		}
-		ip.targets[tg] = rect{x - 4, cy - 15, fx - x + 12, 30}
+		// figureW measures a figure: the units smaller than the digits, so
+		// 59m 59s fits its half.
+		figureW := func(figure []figPart) float64 {
+			fw := 0.0
+			for i, p := range figure {
+				if p.unit {
+					_, pw := ip.text(labelFace, p.s)
+					fw += pw + 0.5
+					if i < len(figure)-1 {
+						fw += 3
+					}
+				} else {
+					_, pw := ip.text(statFace, p.s)
+					fw += pw
+				}
+			}
+			return fw
+		}
+		stat := func(tg target, iconX, fx float64, icon func(cx, cy float64), figure []figPart) {
+			// The stats page's chip: 34 px round 9 for an 18 px icon; here 24 for 13.
+			fill(buf, w, h, rect{iconX, cy - 12, 24, 24}, 7, chip, a)
+			icon((iconX+12)*s, cy*s)
+			x0 := min(iconX, fx)
+			for i, p := range figure {
+				if p.unit {
+					fx += ip.line(buf, labelFace, p.s, fx+0.5, cy+5.5, ink, a) + 0.5
+					if i < len(figure)-1 {
+						fx += 3
+					}
+				} else {
+					fx += ip.line(buf, statFace, p.s, fx, cy+6, ink, a)
+				}
+			}
+			x1 := max(iconX+24, fx)
+			ip.targets[tg] = rect{x0 - 4, cy - 15, x1 - x0 + 8, 30}
+		}
+		k := 0.8 * s // the icons a size smaller than in a 30 px chip
+		lx, rx := left+panelPad, left+panelW-panelPad-24
+		words := []figPart{{s: ip.number(st.day.Words)}}
+		saved := ip.durationParts(st.day.Saved)
+		stat(tWords, lx, lx+32, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, k, th.to, a) }, words)
+		stat(tSaved, rx, rx-8-figureW(saved), func(cx, cy float64) { clock(buf, w, h, cx, cy, k, th.to, a) }, saved)
 	}
-	col := left + panelPad
-	col2 := left + panelPad + (panelW-2*panelPad)/2 + 6
-	k := 0.8 * s // the icons a size smaller than in a 30 px chip
-	stat(tWords, col, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, k, th.to, a) }, []figPart{{s: ip.number(st.day.Words)}})
-	stat(tSaved, col2, func(cx, cy float64) { clock(buf, w, h, cx, cy, k, th.to, a) }, ip.durationParts(st.day.Saved))
 
 	// The last dictation, to paste again; in the pinned island it makes way
 	// for the live words while a dictation runs.
@@ -539,7 +567,11 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	if a <= 0.01 {
 		return
 	}
-	lastBox := rect{left + panelPad - 6, top + 82, panelW - 2*panelPad + 12, 68}
+	boxY := top + 82
+	if !st.stats {
+		boxY -= statsH
+	}
+	lastBox := rect{left + panelPad - 6, boxY, panelW - 2*panelPad + 12, 68}
 	boxTint := tint
 	if st.kept {
 		// A cancelled dictation, for a few minutes: the whole box restores it.
@@ -650,6 +682,8 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 		_, nw := ip.text(labelFace, note)
 		ip.line(buf, labelFace, note, right-nw, y+15, muted, a)
 	}
+
+	toggle(5, ip.t("Today's figures"), st.stats, tStats)
 
 	y = row(4, ip.t("Pill style"), tNone)
 	// Three segments in one rounded bar, the chosen one lit.
@@ -1024,6 +1058,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	read := func() {
 		c := p.d.Config()
 		st.cleanup, st.enter, st.live = c.Cleanup.Enabled, c.Injection.AppendEnter, c.UI.PillLiveEnabled()
+		st.stats = c.UI.IslandStatsEnabled()
 		st.partials = stt.HasPartials(c.STT)
 		st.style = StyleOf(c.UI.PillStyle)
 		st.rules = st.rules[:0]
@@ -1349,6 +1384,8 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 				change(func(c *config.Config) { c.Injection.AppendEnter = !c.Injection.AppendEnter })
 			case tg == tLive:
 				change(func(c *config.Config) { on := !c.UI.PillLiveEnabled(); c.UI.PillLive = &on })
+			case tg == tStats:
+				change(func(c *config.Config) { on := !c.UI.IslandStatsEnabled(); c.UI.IslandStats = &on })
 			case tg == tStyleBars, tg == tStyleGlow, tg == tStyleVito:
 				name := map[target]string{tStyleBars: "bars", tStyleGlow: "", tStyleVito: "vito"}[tg]
 				change(func(c *config.Config) { c.UI.PillStyle = name })

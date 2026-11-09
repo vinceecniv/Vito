@@ -213,6 +213,8 @@ type UI struct {
 	// IslandPin keeps the island open as a window of its own, where it was
 	// dragged; the pill then shows in it instead of on the screens.
 	IslandPin *IslandPin `json:"island_pin,omitempty"`
+	// IslandStats shows today's figures in the island. Nil-safe: unset is on.
+	IslandStats *bool `json:"island_stats,omitempty"`
 	// WelcomeDone records that the onboarding welcome card was dismissed. It lives
 	// here, in Vito's own config, rather than in the browser's localStorage on
 	// purpose: an uninstall+reinstall that deletes all settings must bring the
@@ -344,6 +346,9 @@ func (u UI) PillIdleEnabled() bool { return u.PillIdle == nil || *u.PillIdle }
 
 // PillLiveEnabled reports whether the pill shows the words while you speak.
 func (u UI) PillLiveEnabled() bool { return u.PillLive == nil || *u.PillLive }
+
+// IslandStatsEnabled reports whether the island shows today's figures.
+func (u UI) IslandStatsEnabled() bool { return u.IslandStats == nil || *u.IslandStats }
 
 // TypingWPM maps the configured typing-speed choice to a words-per-minute value
 // used to estimate saved typing time.
