@@ -47,9 +47,12 @@ type Today struct {
 type Sources struct {
 	// Today is what was dictated today.
 	Today func() Today
-	// Last is the most recent dictation's text, "" when there is none.
-	Last func() string
+	// Recent is the texts of the last n dictations, the newest first.
+	Recent func(n int) []string
 }
+
+// recentN is how many dictations back the island's box can be browsed.
+const recentN = 20
 
 // The island's window and panel, in logical pixels. The window reaches lower
 // than the pill's, so the panel has room below the microphone, and is tall
@@ -132,6 +135,8 @@ const (
 	tRestore // the cancelled dictation, kept a while
 	tWords   // the stats, which only explain themselves
 	tSaved
+	tOlder // the box's arrows, through the recent dictations
+	tNewer
 	tRule0 target = 100
 )
 
@@ -162,7 +167,10 @@ type islandState struct {
 	heard       string // what was heard of it
 	cleanup     bool
 	enter, live bool
-	stats       bool // today's figures shown (ui.island_stats)
+	stats       bool     // today's figures shown (ui.island_stats)
+	recent      []string // the recent dictations, newest first; last is recent[at]
+	onBox       bool     // the pointer on the box, which shows its arrows
+	at          int
 	partials    bool // the speech service sends text while you speak
 	style       Style
 	rules       []ruleSet
@@ -203,6 +211,9 @@ type islandPainter struct {
 	targets map[target]rect
 	texts   map[string]*image.Alpha
 	frame   []byte // the embedded pill's latest picture
+	// browseArea: the last dictation's box with its arrows, while there are
+	// any; the pointer on it shows them.
+	browseArea rect
 }
 
 func newIslandPainter(lang string) *islandPainter {
@@ -289,6 +300,7 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 	s := float64(scale)
 	th := themeFor(st.dark)
 	ip.targets = map[target]rect{}
+	ip.browseArea = rect{}
 
 	// The panel grows out of the hovered pill (52 × 20 on the pill's spot),
 	// keeping its foot there.
@@ -389,13 +401,15 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 			if st.day.Spoken > 0 {
 				text += "\n" + ip.t("spoken today") + " " + ip.duration(st.day.Spoken)
 			}
-		case tRepaste, tMic, tCopy, tRestore:
+		case tRepaste, tMic, tCopy, tRestore, tOlder, tNewer:
 			// Placed where they were drawn this frame, which the views
 			// and the microphone decide.
 			at, text = ip.targets[st.over], map[target]string{
 				tCopy:    ip.t("Copy"),
 				tRestore: ip.t("Restore and paste"),
 				tRepaste: ip.t("Paste this dictation again"),
+				tOlder:   ip.t("Earlier dictation"),
+				tNewer:   ip.t("Later dictation"),
 				tMic:     ip.t("Dictate: click to start, click again to stop"),
 			}[st.over]
 		}
@@ -632,6 +646,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	for i, l := range lines {
 		ip.line(buf, bodyFace, l, lastBox.x+12, y+float64(i)*lastLine, c, a)
 	}
+	ip.browse(buf, th, st, lastBox, muted, a)
 	if st.last != "" {
 		btn := rect{lastBox.x + lastBox.w - 40, lastBox.y + lastBox.h/2 - 14, 28, 28}
 		// Its hover lights up against the box as the header's do against the
@@ -640,6 +655,37 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 			repasteIcon(buf, w, h, cx, cy, s, c, al)
 		})
 	}
+}
+
+// browse puts an arrow on each side of the box, in the panel's margin, to
+// go through the recent dictations: earlier on the left, later on the right.
+// They show while the pointer is on the box, dimmed where there is no
+// further to go.
+func (ip *islandPainter) browse(buf []byte, th theme, st islandState, box rect, muted rgb, a float64) {
+	if len(st.recent) < 2 {
+		return
+	}
+	w, h := islandWinW*scale, islandWinH*scale
+	s := float64(scale)
+	older := rect{box.x - 13, box.y, 15, box.h}
+	newer := rect{box.x + box.w - 2, box.y, 15, box.h}
+	ip.targets[tOlder], ip.targets[tNewer] = older, newer
+	ip.browseArea = rect{older.x, box.y, newer.x + newer.w - older.x, box.h}
+	if !st.onBox {
+		return
+	}
+	arrow := func(tg target, r rect, can, back bool) {
+		c, al := muted, a
+		switch {
+		case !can:
+			al *= 0.3
+		case st.over == tg:
+			c = th.to
+		}
+		chevron(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, s, c, al, back)
+	}
+	arrow(tOlder, older, st.at < len(st.recent)-1, true)
+	arrow(tNewer, newer, st.at > 0, false)
 }
 
 func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left, top float64, ink, muted, tint rgb, a float64) {
@@ -812,7 +858,7 @@ func (ip *islandPainter) iconButton(buf []byte, th theme, st islandState, tg tar
 // buttons, not the rows that already say what they do.
 func tipped(tg target) bool {
 	switch tg {
-	case tPin, tOpenVito, tMenu, tRepaste, tMic, tCopy, tRestore, tWords, tSaved:
+	case tPin, tOpenVito, tMenu, tRepaste, tMic, tCopy, tRestore, tWords, tSaved, tOlder, tNewer:
 		return true
 	}
 	return false
@@ -1083,8 +1129,11 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		if p.src.Today != nil {
 			st.day = p.src.Today()
 		}
-		if p.src.Last != nil {
-			st.last = p.src.Last()
+		if p.src.Recent != nil {
+			st.recent, st.at, st.last = p.src.Recent(recentN), 0, ""
+			if len(st.recent) > 0 {
+				st.last = st.recent[0]
+			}
 		}
 	}
 	read()
@@ -1373,6 +1422,13 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 						p.log.Warn("island: restore failed", "err", err)
 					}
 				}()
+			case tg == tOlder && st.at < len(st.recent)-1, tg == tNewer && st.at > 0:
+				if tg == tOlder {
+					st.at++
+				} else {
+					st.at--
+				}
+				st.last, st.copied = st.recent[st.at], false
 			case tg == tCopy:
 				text := st.last
 				st.copied, copiedAt = true, time.Now()
@@ -1561,6 +1617,9 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		if over != st.over {
 			st.over, dirty = over, true
 			overSince, st.tip = time.Now(), 0
+		}
+		if on := inside && !dragging && !inPill && ip.browseArea.has(px, py); on != st.onBox {
+			st.onBox, dirty = on, true
 		}
 		// A tooltip for every button: what an icon does is not always plain.
 		if tipped(st.over) && time.Since(overSince) > tipDelay && st.tip < 1 {
