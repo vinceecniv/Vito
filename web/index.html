@@ -5853,7 +5853,7 @@ const COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 // and a soft shadow. The hand carries the logo's five bars on its palm. They
 // are CSS variables, so every rule that wants a hand uses var(--cur-hand), and
 // each falls back to the system cursor should the image not load. Text fields
-// keep their I-beam.
+// get an I-beam in the same style (var(--cur-text)).
 const CURSOR_CSS = (() => {
   const svg = (inner) => `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">` +
     `<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="3" y1="2" x2="25" y2="28"><stop offset="0" stop-color="#FF6B5E"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>` +
@@ -5879,11 +5879,21 @@ const CURSOR_CSS = (() => {
     `<g fill="url(#g)">${parts}</g></g>` +
     `<path d="M14.6 13.2v5.2M18.4 14.2v4.6M22.1 15.6v3.4" stroke="#2B2440" stroke-width=".7" stroke-linecap="round" opacity=".3"/>` +
     `<g fill="#fff" opacity=".92">${bars}</g>`);
+  // The I-beam for text: the same edge-then-fill drawing as the hand, a slim
+  // stem with rounded serifs, hot spot in the middle of the stem.
+  const beam = [
+    `<rect x="14.6" y="4" width="2.8" height="24" rx="1.4"/>`,
+    `<rect x="10.4" y="3" width="11.2" height="3.2" rx="1.6"/>`,
+    `<rect x="10.4" y="25.8" width="11.2" height="3.2" rx="1.6"/>`,
+  ].join("");
+  const text = svg(
+    `<g filter="url(#s)"><g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round">${beam}</g>` +
+    `<g fill="url(#g)">${beam}</g></g>`);
   const url = (x) => `url("data:image/svg+xml,${encodeURIComponent(x)}")`;
-  return `:root{--cur-arrow:${url(arrow)} 4 4, default;--cur-hand:${url(hand)} 12 2, pointer}
+  return `:root{--cur-arrow:${url(arrow)} 4 4, default;--cur-hand:${url(hand)} 12 2, pointer;--cur-text:${url(text)} 16 16, text}
 html{cursor:var(--cur-arrow)}
 input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=button]):not([type=submit]),
-textarea,[contenteditable="true"],[contenteditable=""]{cursor:text}
+textarea,[contenteditable="true"],[contenteditable=""]{cursor:var(--cur-text)}
 a[href],button:not(:disabled),select,summary,label[for],[role="button"]{cursor:var(--cur-hand)}`;
 })();
 (function(){ const s = document.createElement("style"); s.textContent = CURSOR_CSS; document.head.appendChild(s); })();
