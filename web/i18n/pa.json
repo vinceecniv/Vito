@@ -1156,7 +1156,19 @@
 "Hide settings": "ਸੈਟਿੰਗਾਂ ਲੁਕਾਓ",
 "Pill": "ਪਿੱਲ",
 "Updates": "ਅੱਪਡੇਟ",
-"Kind regards,\nYour name": "ਸਤਿਕਾਰ ਸਹਿਤ,\nਤੁਹਾਡਾ ਨਾਮ"
+"Kind regards,\nYour name": "ਸਤਿਕਾਰ ਸਹਿਤ,\nਤੁਹਾਡਾ ਨਾਮ",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "ਡੱਚ, ਅੰਗਰੇਜ਼ੀ, ਜਰਮਨ, ਫ਼ਰਾਂਸੀਸੀ, ਸਪੇਨੀ, ਇਤਾਲਵੀ, ਪੁਰਤਗਾਲੀ, ਪੋਲਿਸ਼, ਚੈੱਕ, ਸਲੋਵਾਕ, ਹੰਗੇਰੀਅਨ, ਰੋਮਾਨੀਅਨ, ਬੁਲਗਾਰੀਅਨ, ਕ੍ਰੋਏਸ਼ੀਅਨ, ਸਲੋਵੇਨੀਅਨ, ਯੂਨਾਨੀ, ਸਵੀਡਿਸ਼, ਡੈਨਿਸ਼, ਫਿਨਿਸ਼, ਐਸਟੋਨੀਅਨ, ਲਾਤਵੀਅਨ, ਲਿਥੁਆਨੀਅਨ, ਮਾਲਟੀਜ਼, ਰੂਸੀ ਅਤੇ ਯੂਕਰੇਨੀ — ਆਪਣੇ ਆਪ ਪਛਾਣੀਆਂ ਜਾਂਦੀਆਂ ਹਨ। ਹੋਰ ਭਾਸ਼ਾਵਾਂ ਲਈ ਢੁਕਵਾਂ ਨਹੀਂ।",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "ਅੰਗਰੇਜ਼ੀ, ਡੱਚ, ਜਰਮਨ, ਫ਼ਰਾਂਸੀਸੀ, ਸਪੇਨੀ, ਇਤਾਲਵੀ, ਪੋਲਿਸ਼।",
+"Type (keystrokes)": "ਟਾਈਪ (ਕੀਸਟ੍ਰੋਕ)",
+"Paste (⌘V)": "ਪੇਸਟ (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "ਸੁਧਾਈਆਂ ਹਰ ਡਿਕਟੇਸ਼ਨ 'ਤੇ ਲਾਗੂ ਹੁੰਦੀਆਂ ਹਨ। ਸੁਝਾਅ: ਇਤਿਹਾਸ ਵਿੱਚ ਕਿਸੇ ਸ਼ਬਦ 'ਤੇ ਮਾਊਸ ਰੱਖੋ ਅਤੇ ਉਸ ਲਈ ਸੁਧਾਈ ਤੁਰੰਤ ਜੋੜਨ ਲਈ ਕਲਿੱਕ ਕਰੋ।",
+"Corrections and text snippets": "ਸੁਧਾਈਆਂ ਅਤੇ ਟੈਕਸਟ ਸਨਿੱਪੇਟ",
+"spoken today": "ਅੱਜ ਬੋਲਿਆ",
+"Today's figures": "ਅੱਜ ਦੇ ਅੰਕੜੇ",
+"Earlier dictation": "ਪਿਛਲੀ ਡਿਕਟੇਸ਼ਨ",
+"Later dictation": "ਅਗਲੀ ਡਿਕਟੇਸ਼ਨ",
+"sentences": "ਵਾਕ",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "ਰੱਦ ਕਰਨ ਲਈ ਕਿਸੇ ਕੀ ਦੀ ਲੋੜ ਨਹੀਂ: ਡਿਕਟੇਟ ਕਰਦੇ ਸਮੇਂ ਪਿੱਲ 'ਤੇ ਪੁਆਇੰਟਰ ਲੈ ਜਾਓ ਅਤੇ × 'ਤੇ ਕਲਿੱਕ ਕਰੋ। ਮਨ ਬਦਲ ਗਿਆ? ਪੰਜ ਮਿੰਟ ਤੱਕ ਪਿੱਲ “ਡਿਕਟੇਸ਼ਨ ਰੱਦ ਕੀਤੀ ਗਈ” ਦਿਖਾਉਂਦੀ ਹੈ: ਉਸ 'ਤੇ ਕਲਿੱਕ ਕਰੋ ਅਤੇ Vito ਫਿਰ ਵੀ ਡਿਕਟੇਸ਼ਨ ਪੇਸਟ ਕਰ ਦੇਵੇਗਾ।"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",

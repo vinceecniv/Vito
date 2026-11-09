@@ -12,6 +12,7 @@ type embedWindow struct {
 	ptr    chan pointerEvent
 	ended  chan struct{}
 	closed bool
+	input  inputArea // what the pill takes the pointer over, on its picture
 }
 
 func newEmbedWindow() *embedWindow {
@@ -43,7 +44,19 @@ func (e *embedWindow) take(dst []byte) bool {
 func (e *embedWindow) connector() string            { return "" }
 func (e *embedWindow) gone() <-chan struct{}        { return e.ended }
 func (e *embedWindow) pointer() <-chan pointerEvent { return e.ptr }
-func (e *embedWindow) setInput([4]int)              {}
+func (e *embedWindow) setInput(boxes ...[4]int) {
+	e.mu.Lock()
+	e.input = append(inputArea(nil), boxes...)
+	e.mu.Unlock()
+}
+
+// inputBoxes is what the pill last said takes the pointer: the island makes
+// room for it under its panel.
+func (e *embedWindow) inputBoxes() inputArea {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	return e.input
+}
 
 // end tells the pill its window is gone: the island closed or was unpinned.
 func (e *embedWindow) end() {

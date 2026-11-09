@@ -1156,7 +1156,19 @@
 "Hide settings": "Скриј поставки",
 "Pill": "Пилула",
 "Updates": "Ажурирања",
-"Kind regards,\nYour name": "Со почит,\nВашето име"
+"Kind regards,\nYour name": "Со почит,\nВашето име",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Холандски, англиски, германски, француски, шпански, италијански, португалски, полски, чешки, словачки, унгарски, романски, бугарски, хрватски, словенечки, грчки, шведски, дански, фински, естонски, латвиски, литвански, малтешки, руски и украински — се препознаваат автоматски. Не е погодно за други јазици.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Англиски, холандски, германски, француски, шпански, италијански, полски.",
+"Type (keystrokes)": "Пишување (притисоци на тастери)",
+"Paste (⌘V)": "Залепи (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Корекциите се применуваат на секој диктат. Совет: во Историја поставете го глувчето над збор и кликнете на него за брзо да додадете корекција за него.",
+"Corrections and text snippets": "Корекции и текстуални исечоци",
+"spoken today": "изговорено денес",
+"Today's figures": "Денешни бројки",
+"Earlier dictation": "Претходен диктат",
+"Later dictation": "Следен диктат",
+"sentences": "реченици",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "За откажување не ви треба копче: додека диктирате, поставете го глувчето над пилулата и кликнете ×. Се предомисливте? Пет минути пилулата прикажува „Диктатот е откажан“: кликнете на неа и Vito сепак ќе го залепи диктатот."
 },
 "help": {
 "theme": "Светла, темна или автоматска — автоматската ја следи светло/темната поставка на вашиот систем.",

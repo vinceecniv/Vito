@@ -1156,7 +1156,19 @@
 "Hide settings": "Paslēpt iestatījumus",
 "Pill": "Tablete",
 "Updates": "Atjauninājumi",
-"Kind regards,\nYour name": "Ar cieņu,\nTavs vārds"
+"Kind regards,\nYour name": "Ar cieņu,\nTavs vārds",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Holandiešu, angļu, vācu, franču, spāņu, itāļu, portugāļu, poļu, čehu, slovāku, ungāru, rumāņu, bulgāru, horvātu, slovēņu, grieķu, zviedru, dāņu, somu, igauņu, latviešu, lietuviešu, maltiešu, krievu un ukraiņu — nosaka automātiski. Nav piemērots citām valodām.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Angļu, holandiešu, vācu, franču, spāņu, itāļu, poļu.",
+"Type (keystrokes)": "Rakstīt (taustiņsitieni)",
+"Paste (⌘V)": "Ielīmēt (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korekcijas tiek piemērotas katram diktātam. Padoms: sadaļā Vēsture virzi peli virs vārda un noklikšķini uz tā, lai ātri pievienotu korekciju.",
+"Corrections and text snippets": "Korekcijas un teksta fragmenti",
+"spoken today": "runāts šodien",
+"Today's figures": "Šodienas skaitļi",
+"Earlier dictation": "Iepriekšējais diktāts",
+"Later dictation": "Nākamais diktāts",
+"sentences": "teikumi",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Lai atceltu, taustiņš nav vajadzīgs: diktēšanas laikā novieto peli virs tabletes un noklikšķini uz ×. Pārdomāji? Piecas minūtes tablete rāda “Diktāts atcelts”: noklikšķini uz tās, un Vito tomēr ielīmēs diktātu."
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

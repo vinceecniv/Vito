@@ -128,7 +128,7 @@ provider (any endpoint speaking `POST /audio/transcriptions`):
   every asset digest (GitHub's release API carries them) and the model's LFS
   sha256. A warm-up request runs before the engine counts as `running`: on a
   Vulkan build the first request compiles shaders and takes ~30 s. Language is
-  detected by the model, keyterms are ignored, uploads must be WAV.
+  detected by the model, uploads must be WAV.
 - **Bring-your-own endpoint** (`stt.provider = "openai"`): whisper-server,
   Speaches, LocalAI, Groq, OpenAI. For whisper.cpp Vito sends `audio_ctx` sized
   to the recording (halves CPU time — Whisper always encodes 30 s otherwise),
@@ -152,7 +152,10 @@ distro packages and `dev` builds are left alone. The replaced version is noted
 in `<UserConfigDir>/vito/updated-from` and reported once as `updated_from` in
 `/api/update`. Keep the asset names (`Vito-Setup-<v>.exe`,
 `Vito-<v>-<arch>.AppImage`, `Vito-<v>.dmg`, each with `.sha256`) stable — the
-updater looks them up by name.
+updater looks them up by name. The check (`update.Checker`) also uses those
+names to decide what counts as an update: it lists the recent releases and
+takes the newest one carrying this system's download (`PlatformAsset`), so a
+release with only a Windows setup is no news on a Mac or Linux.
 
 ## Releases on GitHub
 
@@ -163,7 +166,14 @@ and puts them with their `.sha256` in a **draft** release "Vito <version>",
 the checksums filled into the notes. Write the story at the top, then publish.
 If a release for the tag already exists, its files are replaced and only its
 checksum lines are touched. It can also be started by hand (Actions → Release)
-with a version, with or without filling the release. The Flatpak follows from
+with a version, with or without filling the release.
+
+A release is for all three systems unless its annotated tag says otherwise
+in a line of its message — `git tag -a v2026.12 -m "Vito 2026.12" -m
+"Platforms: windows"` — or a run by hand names them (`platforms` input);
+`scripts/release-platforms.sh` reads both. Only those are built, attached
+and listed in the notes, the Flatpak follows only with linux, and the
+updater announces the release only where it carries that system's download. The Flatpak follows from
 `flatpak.yml`; the signed interface bundle stays a manual `publish-ui.ps1`,
 because its key must not live in the repository's secrets.
 
@@ -361,7 +371,10 @@ Linux Mint from its ISO, `run.sh` boots one with ssh, VNC, QMP and the private
   Click-through except over the input box, which a 16 ms timer watches.
   `focus_windows.go`: the screen of the foreground window; `theme_windows.go`:
   `AppsUseLightTheme`. Caps Lock is `hotkey_windows: "capslock"`, read by the
-  existing low-level hook and swallowed, so capitals never lock.
+  existing low-level hook and swallowed, so capitals never lock. Capitals
+  locked while no hook ran (Vito restarting mid-press) are unlocked when the
+  hook starts and at the next press, with a Caps Lock press tagged
+  `capsMark` that the hook lets through (`capsOff`).
 - **KDE** and **Hyprland** have layer-shell: the Linux window works as is.
   KDE's screen size comes from `kscreen-doctor -j` (`focus_kde.go`; without it a
   dragged island leaves the screen and KWin closes it, "invalid geometry");

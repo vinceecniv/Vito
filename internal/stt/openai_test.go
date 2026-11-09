@@ -75,11 +75,11 @@ func wavFile(t *testing.T, seconds int) string {
 const dutchReply = `{"task":"transcribe","language":"dutch","duration":2.5,"text":" Dit is\n een geto\nond test. \n"}`
 
 // The request carries exactly what the audio API defines: the file, the model,
-// the pinned language, the keyterms as prompt, and verbose_json for the language
+// the pinned language, and verbose_json for the language
 // and duration that come back.
 func TestOpenAIRequestAndReply(t *testing.T) {
 	srv, seen := serveAudio(t, func(int, request) (int, string) { return 200, dutchReply })
-	c := newOpenAIClient(openaiCfg(srv.URL), []string{"Vito", "Soniox"})
+	c := newOpenAIClient(openaiCfg(srv.URL))
 	out, err := c.transcribeUpload(context.Background(), wavFile(t, 1), func(UploadProgress) {})
 	if err != nil {
 		t.Fatal(err)
@@ -91,7 +91,7 @@ func TestOpenAIRequestAndReply(t *testing.T) {
 		t.Errorf("outcome = %+v", out)
 	}
 	r := (*seen)[0]
-	want := map[string]string{"model": "whisper-large-v3-turbo", "language": "nl", "prompt": "Vito, Soniox", "response_format": "verbose_json"}
+	want := map[string]string{"model": "whisper-large-v3-turbo", "language": "nl", "response_format": "verbose_json"}
 	for k, v := range want {
 		if r.fields[k] != v {
 			t.Errorf("field %s = %q, want %q", k, r.fields[k], v)
@@ -108,7 +108,7 @@ func TestOpenAIAutoLanguageAndNoKey(t *testing.T) {
 	srv, seen := serveAudio(t, func(int, request) (int, string) { return 200, `{"text":"ok","language":"dutch"}` })
 	cfg := openaiCfg(srv.URL)
 	cfg.Language, cfg.OpenAIKey, cfg.OpenAIModel = "auto", "", ""
-	out, err := newOpenAIClient(cfg, nil).transcribeUpload(context.Background(), wavFile(t, 1), func(UploadProgress) {})
+	out, err := newOpenAIClient(cfg).transcribeUpload(context.Background(), wavFile(t, 1), func(UploadProgress) {})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -135,7 +135,7 @@ func TestOpenAIRetriesWithoutVerboseJSON(t *testing.T) {
 		}
 		return 200, `{"text":"tweede poging"}`
 	})
-	out, err := newOpenAIClient(openaiCfg(srv.URL), nil).transcribeUpload(context.Background(), wavFile(t, 1), func(UploadProgress) {})
+	out, err := newOpenAIClient(openaiCfg(srv.URL)).transcribeUpload(context.Background(), wavFile(t, 1), func(UploadProgress) {})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -144,7 +144,7 @@ func TestOpenAIRetriesWithoutVerboseJSON(t *testing.T) {
 	}
 	// Any other 400 is final: retrying an unrelated rejection would double it.
 	srv2, seen2 := serveAudio(t, func(int, request) (int, string) { return 400, `{"error":"file too large"}` })
-	if _, err := newOpenAIClient(openaiCfg(srv2.URL), nil).TranscribeFile(context.Background(), wavFile(t, 1)); err == nil || len(*seen2) != 1 {
+	if _, err := newOpenAIClient(openaiCfg(srv2.URL)).TranscribeFile(context.Background(), wavFile(t, 1)); err == nil || len(*seen2) != 1 {
 		t.Errorf("err=%v requests=%d, want one failed request", err, len(*seen2))
 	}
 }
@@ -158,14 +158,14 @@ func TestOpenAIFallsBackToWhisperCppPath(t *testing.T) {
 		}
 		return 200, dutchReply
 	})
-	out, err := newOpenAIClient(openaiCfg(srv.URL), nil).transcribeUpload(context.Background(), wavFile(t, 1), func(UploadProgress) {})
+	out, err := newOpenAIClient(openaiCfg(srv.URL)).transcribeUpload(context.Background(), wavFile(t, 1), func(UploadProgress) {})
 	if err != nil || out.Text != "Dit is een getoond test." {
 		t.Fatalf("out=%+v err=%v", out, err)
 	}
 	if len(*seen) != 2 || (*seen)[1].path != "/inference" || (*seen)[1].fields["language"] != "nl" {
 		t.Errorf("requests = %+v", *seen)
 	}
-	if got := newOpenAIClient(config.STT{OpenAIBaseURL: "http://127.0.0.1:8080/v1/"}, nil).whisperCppEndpoint(); got != "http://127.0.0.1:8080/inference" {
+	if got := newOpenAIClient(config.STT{OpenAIBaseURL: "http://127.0.0.1:8080/v1/"}).whisperCppEndpoint(); got != "http://127.0.0.1:8080/inference" {
 		t.Errorf("whisperCppEndpoint = %q", got)
 	}
 }
@@ -179,7 +179,7 @@ func TestAudioCtx(t *testing.T) {
 		}
 	}
 	srv, seen := serveAudio(t, func(int, request) (int, string) { return 200, dutchReply })
-	s := newOpenAIStream(openaiCfg(srv.URL), nil, slog.Default())
+	s := newOpenAIStream(openaiCfg(srv.URL), slog.Default())
 	s.Send(make([]byte, 32000*5)) // five seconds
 	if _, err := s.Finish(context.Background()); err != nil {
 		t.Fatal(err)
@@ -188,7 +188,7 @@ func TestAudioCtx(t *testing.T) {
 		t.Errorf("audio_ctx = %q, want 314 for a local server", got)
 	}
 	// An uploaded file: length unknown, so the full window.
-	if _, err := newOpenAIClient(openaiCfg(srv.URL), nil).TranscribeFile(context.Background(), wavFile(t, 1)); err != nil {
+	if _, err := newOpenAIClient(openaiCfg(srv.URL)).TranscribeFile(context.Background(), wavFile(t, 1)); err != nil {
 		t.Fatal(err)
 	}
 	if _, ok := (*seen)[1].fields["audio_ctx"]; ok {
@@ -196,14 +196,14 @@ func TestAudioCtx(t *testing.T) {
 	}
 	groq := openaiCfg(srv.URL)
 	groq.OpenAIBaseURL = "https://api.groq.com/openai/v1"
-	if c := newOpenAIClient(groq, nil); c.sendsAudioCtx() {
+	if c := newOpenAIClient(groq); c.sendsAudioCtx() {
 		t.Error("Groq must not be sent whisper.cpp's audio_ctx")
 	}
 }
 
 func TestOpenAICreditAndName(t *testing.T) {
 	srv, _ := serveAudio(t, func(int, request) (int, string) { return 402, `{"error":"insufficient credit"}` })
-	_, err := newOpenAIClient(openaiCfg(srv.URL), nil).TranscribeFile(context.Background(), wavFile(t, 1))
+	_, err := newOpenAIClient(openaiCfg(srv.URL)).TranscribeFile(context.Background(), wavFile(t, 1))
 	if p, ok := apierr.CreditProvider(err); !ok || p != "Local speech model" {
 		t.Errorf("credit provider = %q,%v (err %v)", p, ok, err)
 	}
@@ -246,7 +246,7 @@ func TestIsoLang(t *testing.T) {
 // language it heard is available afterwards.
 func TestOpenAIStreamSendsOneWAV(t *testing.T) {
 	srv, seen := serveAudio(t, func(int, request) (int, string) { return 200, dutchReply })
-	s := newOpenAIStream(openaiCfg(srv.URL), nil, slog.Default())
+	s := newOpenAIStream(openaiCfg(srv.URL), slog.Default())
 	for i := 0; i < 10; i++ {
 		s.Send(make([]byte, 1600))
 	}
@@ -259,7 +259,7 @@ func TestOpenAIStreamSendsOneWAV(t *testing.T) {
 		t.Errorf("sent %d bytes, header %q", len(f), f[:4])
 	}
 	// Nothing recorded means nothing to send — not a request with an empty file.
-	empty := newOpenAIStream(openaiCfg(srv.URL), nil, slog.Default())
+	empty := newOpenAIStream(openaiCfg(srv.URL), slog.Default())
 	if text, err := empty.Finish(context.Background()); err != nil || text != "" || len(*seen) != 1 {
 		t.Errorf("empty session: text=%q err=%v requests=%d", text, err, len(*seen))
 	}
@@ -269,20 +269,20 @@ func TestOpenAIStreamSendsOneWAV(t *testing.T) {
 // endpoint, its own file client as fallback for Soniox, none for the endpoint.
 func TestProviderKnobs(t *testing.T) {
 	ep := config.STT{Provider: "openai"}
-	if HasPartials(ep) || FinishTimeout(ep) < time.Minute || Fallback(ep, nil) != nil {
+	if HasPartials(ep) || FinishTimeout(ep) < time.Minute || Fallback(ep) != nil {
 		t.Error("endpoint provider: want no partials, a long finish, no fallback")
 	}
 	son := config.STT{Provider: "soniox"}
 	if !HasPartials(son) || FinishTimeout(son) != 8*time.Second {
 		t.Error("soniox: want partials and the short finish")
 	}
-	if _, ok := Fallback(son, nil).(*sonioxFileClient); !ok {
+	if _, ok := Fallback(son).(*sonioxFileClient); !ok {
 		t.Error("soniox: fallback should be Soniox's own file client")
 	}
-	if _, ok := Fallback(config.STT{Provider: "assemblyai"}, nil).(*AsyncClient); !ok {
+	if _, ok := Fallback(config.STT{Provider: "assemblyai"}).(*AsyncClient); !ok {
 		t.Error("assemblyai: fallback should be the async client")
 	}
-	if !strings.Contains(newOpenAIClient(config.STT{OpenAIBaseURL: "http://x/v1/"}, nil).endpoint(), "http://x/v1/audio/transcriptions") {
+	if !strings.Contains(newOpenAIClient(config.STT{OpenAIBaseURL: "http://x/v1/"}).endpoint(), "http://x/v1/audio/transcriptions") {
 		t.Error("endpoint: trailing slash should not double up")
 	}
 }

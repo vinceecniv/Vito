@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Нидерландский, английский, немецкий, французский, испанский, итальянский, португальский, польский, чешский, словацкий, венгерский, румынский, болгарский, хорватский, словенский, греческий, шведский, датский, финский, эстонский, латышский, литовский, мальтийский, русский и украинский — определяются автоматически. Для других языков не подходит.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Английский, нидерландский, немецкий, французский, испанский, итальянский, польский.",
+"Type (keystrokes)": "Печать (нажатия клавиш)",
+"Paste (⌘V)": "Вставка (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Исправления применяются к каждой диктовке. Совет: в Истории наведите курсор на слово и нажмите на него, чтобы быстро добавить для него исправление.",
+"Corrections and text snippets": "Исправления и текстовые шаблоны",
+"spoken today": "наговорено сегодня",
+"Today's figures": "Цифры за сегодня",
+"Earlier dictation": "Предыдущая диктовка",
+"Later dictation": "Следующая диктовка",
+"sentences": "предложений",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Для отмены клавиша не нужна: во время диктовки наведите указатель на индикатор и нажмите ×. Передумали? В течение пяти минут индикатор показывает «Диктовка отменена»: нажмите на него, и Vito всё-таки вставит диктовку.",
 "On this computer, free, nothing leaves it. A download of 18 MB.": "На этом компьютере, бесплатно, ничего не уходит наружу. Загрузка 18 МБ.",
 "Requires: nothing but the small download below — no account, no key, no server of your own.": "Нужно только: небольшая загрузка ниже — без аккаунта, без ключа, без собственного сервера.",
 "Best for: trying Vito, and dictating offline": "Подходит для: знакомства с Vito и диктовки без интернета",

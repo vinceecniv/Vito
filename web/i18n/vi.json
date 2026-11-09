@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Tiếng Hà Lan, Anh, Đức, Pháp, Tây Ban Nha, Ý, Bồ Đào Nha, Ba Lan, Séc, Slovakia, Hungary, Romania, Bulgaria, Croatia, Slovenia, Hy Lạp, Thụy Điển, Đan Mạch, Phần Lan, Estonia, Latvia, Litva, Malta, Nga và Ukraina — tự động nhận diện. Không phù hợp với các ngôn ngữ khác.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Tiếng Anh, Hà Lan, Đức, Pháp, Tây Ban Nha, Ý, Ba Lan.",
+"Type (keystrokes)": "Gõ (nhấn phím)",
+"Paste (⌘V)": "Dán (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Các chỉnh sửa được áp dụng cho mọi bản đọc. Mẹo: trong Lịch sử, di chuột lên một từ và nhấp vào để nhanh chóng thêm chỉnh sửa cho từ đó.",
+"Corrections and text snippets": "Chỉnh sửa và đoạn văn mẫu",
+"spoken today": "đã nói hôm nay",
+"Today's figures": "Số liệu hôm nay",
+"Earlier dictation": "Bản đọc trước",
+"Later dictation": "Bản đọc sau",
+"sentences": "câu",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Không cần phím để hủy: khi đang đọc, hãy trỏ vào thanh nổi và nhấp ×. Đổi ý? Trong năm phút, thanh nổi hiển thị “Đã hủy bản đọc”: nhấp vào đó và Vito vẫn dán bản đọc.",
 "Vito now runs as an app on this computer": "Vito hiện chạy như một ứng dụng trên máy tính này",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Các bản đọc của bạn đã chuyển sang ứng dụng. Hãy tiếp tục đọc từ đó — bằng phím tắt của bạn, trong mọi chương trình.",
 "Open Vito": "Mở Vito",

@@ -27,8 +27,8 @@ type openaiStream struct {
 	lang string
 }
 
-func newOpenAIStream(cfg config.STT, keyterms []string, log *slog.Logger) *openaiStream {
-	return &openaiStream{client: newOpenAIClient(cfg, keyterms), log: log}
+func newOpenAIStream(cfg config.STT, log *slog.Logger) *openaiStream {
+	return &openaiStream{client: newOpenAIClient(cfg), log: log}
 }
 
 func (s *openaiStream) Send(pcm []byte) {

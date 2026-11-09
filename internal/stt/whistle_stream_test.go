@@ -65,7 +65,7 @@ func TestWhistleStreamLive(t *testing.T) {
 		t.Fatal(err)
 	}
 	start := time.Now()
-	s := newWhistleStream(config.STT{Provider: "whistle", Language: "nl"}, nil, slog.New(slog.NewTextHandler(io.Discard, nil)), func(p string) {
+	s := newWhistleStream(config.STT{Provider: "whistle", Language: "nl"}, slog.New(slog.NewTextHandler(io.Discard, nil)), func(p string) {
 		t.Logf("%5.1fs  %s", time.Since(start).Seconds(), p)
 	})
 	for off := 0; off < len(pcm); off += 3200 { // 100 ms at a time, in real time

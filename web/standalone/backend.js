@@ -154,18 +154,6 @@
     t = t.replace(/\s+([,.!?;:])/g, "$1").replace(/,\s*([.!?])/g, "$1").replace(/^[\s,]+/, "").replace(/\s{2,}/g, " ").trim();
     return t ? t[0].toLocaleUpperCase() + t.slice(1) : t;
   }
-  const keyterms = () => {
-    const seen = new Set(), out = [];
-    const terms = ((cfg.dictionary && cfg.dictionary.keyterms) || [])
-      .concat(((cfg.dictionary && cfg.dictionary.snippets) || []).filter((s) => s.text).map((s) => s.trigger));
-    for (let t of terms) {
-      t = String(t).trim();
-      if (!t || seen.has(t.toLowerCase())) continue;
-      seen.add(t.toLowerCase()); out.push(t);
-      if (out.length === 100) break;
-    }
-    return out;
-  };
 
   // ---- Whistle (the worker) ----
   let worker = null, whistle = { phase: "absent" }, workerReady = null;
@@ -231,7 +219,7 @@ registerProcessor("vito-pcm",P)`;
     startWorker();
     const buffered = [];
     let done = null;
-    worker.postMessage({ type: "start", lang: cfg.stt.language || "", keywords: cfg.stt.keyterms_enabled === false ? [] : keyterms() });
+    worker.postMessage({ type: "start", lang: cfg.stt.language || "" });
     const send = (pcm) => worker.postMessage({ type: "audio", pcm }, [pcm.buffer]);
     const eng = {
       audio(pcm) {
@@ -322,7 +310,6 @@ registerProcessor("vito-pcm",P)`;
         fd.append("response_format", "json");
         if ((cfg.stt.openai_model || "").trim()) fd.append("model", cfg.stt.openai_model.trim());
         if (cfg.stt.language && cfg.stt.language !== "auto") fd.append("language", cfg.stt.language);
-        if (cfg.stt.keyterms_enabled !== false && keyterms().length) fd.append("prompt", keyterms().join(", "));
         const key = (cfg.stt.openai_key || "").trim();
         let resp;
         try {

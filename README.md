@@ -64,7 +64,7 @@ with one click under Settings → Activation:
 - **Tap** it by accident and nothing is recorded; Vito just shows how it works.
 
 Capitals no longer lock, and Shift works as always. On a **Mac** the same key is **Fn (🌐)** — the default
-there, as in Wispr Flow, with **Fn + Space** for hands-free. Prefer a combination? Any key or combination of
+there, with **Fn + Space** for hands-free. Prefer a combination? Any key or combination of
 your own works everywhere, and the settings show which one is active.
 
 <details>
@@ -97,8 +97,9 @@ keyboard, so the text still goes where you were typing.
 
 - 💬 **Live text** — the words appear in the pill while you speak (with a streaming speech service).
 - 🫧 **A resting pill** stays at the bottom between dictations: click it to start, or point at it to open the
-  **island** — your last dictation to paste again or copy, today's words and saved typing time, and quick
-  settings. Pin the island and it stays open as a small window you can drag anywhere.
+  **island** — your last dictation to paste again or copy (the arrows beside it go back through the ones
+  before), today's words and saved typing time, and quick settings. Pin the island and it stays open as a
+  small window you can drag anywhere; while you dictate, the words run in it, the pill under it.
 - ↩️ **Cancelled by mistake?** The recording is kept for five minutes on your computer — click the card to get
   the text after all. Nothing is transcribed or stored unless you do.
 - 🪧 **Cards** for what matters: a failed dictation (with the audio kept), a new achievement, or text that had

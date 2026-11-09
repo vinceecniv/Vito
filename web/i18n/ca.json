@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Neerlandès, anglès, alemany, francès, castellà, italià, portuguès, polonès, txec, eslovac, hongarès, romanès, búlgar, croat, eslovè, grec, suec, danès, finès, estonià, letó, lituà, maltès, rus i ucraïnès — es detecten automàticament. No és adequat per a altres llengües.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Anglès, neerlandès, alemany, francès, castellà, italià, polonès.",
+"Type (keystrokes)": "Teclejar (pulsacions de tecles)",
+"Paste (⌘V)": "Enganxar (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Les correccions s'apliquen a cada dictat. Consell: a l'Historial, passa el cursor per sobre d'una paraula i fes-hi clic per afegir-hi ràpidament una correcció.",
+"Corrections and text snippets": "Correccions i fragments de text",
+"spoken today": "parlat avui",
+"Today's figures": "Xifres d'avui",
+"Earlier dictation": "Dictat anterior",
+"Later dictation": "Dictat següent",
+"sentences": "frases",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "No cal cap tecla per cancel·lar: mentre dictes, assenyala la píndola i fes clic a ×. Has canviat d'opinió? Durant cinc minuts la píndola mostra “Dictat cancel·lat”: fes-hi clic i Vito enganxarà el dictat igualment.",
 "Status": "Estat",
 "Settings": "Configuració",
 "Dictionary": "Diccionari",

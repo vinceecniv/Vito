@@ -49,7 +49,6 @@ type whistleStream struct {
 	eng       whistle.Engine
 	engErr    error
 	lang      string
-	keywords  []string
 	log       *slog.Logger
 	onPartial func(string)
 
@@ -76,8 +75,8 @@ type whistleStream struct {
 // takes back, which flickers.
 const whistleLookEvery = 1200 * time.Millisecond
 
-func newWhistleStream(cfg config.STT, keyterms []string, log *slog.Logger, onPartial func(string)) *whistleStream {
-	s := &whistleStream{lang: whistleLang(cfg), keywords: keyterms, log: log, onPartial: onPartial, seg: whistle.NewSegmenter()}
+func newWhistleStream(cfg config.STT, log *slog.Logger, onPartial func(string)) *whistleStream {
+	s := &whistleStream{lang: whistleLang(cfg), log: log, onPartial: onPartial, seg: whistle.NewSegmenter()}
 	s.eng, s.engErr = whistleEngine()
 	s.wake = sync.NewCond(&s.mu)
 	if s.engErr == nil {
@@ -141,7 +140,7 @@ func (s *whistleStream) work() {
 		s.busy = true
 		s.mu.Unlock()
 
-		res, err := s.eng.Transcribe(ctx, clip, s.lang, s.keywords)
+		res, err := s.eng.Transcribe(ctx, clip, s.lang)
 
 		s.mu.Lock()
 		s.busy = false
@@ -225,8 +224,7 @@ func (s *whistleStream) Abort() {
 // whistleFile transcribes a WAV file the same way, segment by segment: the
 // spool file after a failed session, or an uploaded recording.
 type whistleFile struct {
-	lang     string
-	keywords []string
+	lang string
 }
 
 func (w whistleFile) TranscribeFile(ctx context.Context, path string) (string, error) {
@@ -256,7 +254,7 @@ func (w whistleFile) TranscribeFile(ctx context.Context, path string) (string, e
 		if c-prev < whistle.SampleRate*2/5 {
 			continue
 		}
-		res, err := e.Transcribe(ctx, pcm[prev:c], w.lang, w.keywords)
+		res, err := e.Transcribe(ctx, pcm[prev:c], w.lang)
 		if err != nil {
 			return "", err
 		}

@@ -235,11 +235,6 @@ func CostTotals(now time.Time, fromDay, toDay string) (durationMS, inTokens, out
 // would plausibly get wrong: product names, jargon and homophones.
 func Dictionary() config.Dictionary {
 	return config.Dictionary{
-		Keyterms: []string{
-			"Kubernetes", "PostgreSQL", "Grafana", "OAuth", "webhook", "changelog",
-			"sprint retrospective", "Anthropic", "AssemblyAI", "Figma", "staging environment",
-			"pull request", "onboarding", "SKU", "Q3 roadmap", "Helvetica Neue",
-		},
 		Corrections: []config.Correction{
 			{Wrong: "cuber netties", Right: "Kubernetes"},
 			{Wrong: "post gres", Right: "PostgreSQL"},

@@ -137,12 +137,12 @@ func (s *Server) handleHandoverSummary(w http.ResponseWriter, r *http.Request) {
 			days++
 		}
 	}
-	terms, fixes := 0, 0
+	fixes := 0
 	if p.Config != nil {
-		terms, fixes = len(p.Config.Dictionary.Keyterms), len(p.Config.Dictionary.Corrections)
+		fixes = len(p.Config.Dictionary.Corrections)
 	}
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "entries": len(p.History), "words": words,
-		"days": days, "keyterms": terms, "corrections": fixes, "settings": p.Config != nil,
+		"days": days, "corrections": fixes, "settings": p.Config != nil,
 		"layout": p.Config != nil && len(p.Config.UI.Dashboard) > 0})
 }
 

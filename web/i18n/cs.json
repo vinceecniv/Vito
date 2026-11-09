@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nizozemština, angličtina, němčina, francouzština, španělština, italština, portugalština, polština, čeština, slovenština, maďarština, rumunština, bulharština, chorvatština, slovinština, řečtina, švédština, dánština, finština, estonština, lotyština, litevština, maltština, ruština a ukrajinština — rozpoznávají se automaticky. Pro jiné jazyky se nehodí.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Angličtina, nizozemština, němčina, francouzština, španělština, italština, polština.",
+"Type (keystrokes)": "Psaní (stisky kláves)",
+"Paste (⌘V)": "Vložit (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Opravy se použijí u každého diktátu. Tip: v Historii najeďte myší na slovo a klikněte na něj, abyste pro něj rychle přidali opravu.",
+"Corrections and text snippets": "Opravy a textové úryvky",
+"spoken today": "namluveno dnes",
+"Today's figures": "Dnešní čísla",
+"Earlier dictation": "Předchozí diktát",
+"Later dictation": "Další diktát",
+"sentences": "vět",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Ke zrušení nepotřebujete klávesu: během diktování najeďte na pilulku a klikněte na ×. Rozmysleli jste si to? Pět minut pilulka ukazuje “Diktát zrušen”: klikněte na ni a Vito diktát přece jen vloží.",
 "Vito now runs as an app on this computer": "Vito nyní běží jako aplikace na tomto počítači",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Vaše diktáty se přesunuly do aplikace. Diktujte dál odtud – pomocí klávesové zkratky, v každém programu.",
 "Open Vito": "Otevřít Vito",

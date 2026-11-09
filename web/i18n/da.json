@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nederlandsk, engelsk, tysk, fransk, spansk, italiensk, portugisisk, polsk, tjekkisk, slovakisk, ungarsk, rumænsk, bulgarsk, kroatisk, slovensk, græsk, svensk, dansk, finsk, estisk, lettisk, litauisk, maltesisk, russisk og ukrainsk — genkendes automatisk. Ikke egnet til andre sprog.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Engelsk, nederlandsk, tysk, fransk, spansk, italiensk, polsk.",
+"Type (keystrokes)": "Skriv (tastetryk)",
+"Paste (⌘V)": "Indsæt (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Rettelser anvendes på hver diktering. Tip: I Historik kan du holde musen over et ord og klikke på det for hurtigt at tilføje en rettelse til det.",
+"Corrections and text snippets": "Rettelser og tekststykker",
+"spoken today": "talt i dag",
+"Today's figures": "Dagens tal",
+"Earlier dictation": "Forrige diktering",
+"Later dictation": "Næste diktering",
+"sentences": "sætninger",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Du behøver ingen tast for at annullere: mens du dikterer, så peg på pillen og klik på ×. Fortrudt? I fem minutter viser pillen “Diktering annulleret”: klik på den, og Vito indsætter dikteringen alligevel.",
 "Status": "Status",
 "Dashboard": "Dashboard",
 "Settings": "Indstillinger",

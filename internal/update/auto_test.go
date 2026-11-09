@@ -58,7 +58,51 @@ func fakeGitHub(t *testing.T, body, sum string) *httptest.Server {
 func checker(srv *httptest.Server, current string) *Checker {
 	c := NewChecker(current)
 	c.API = srv.URL + "/latest"
+	// The fake release carries the Windows setup; on any system the tests run.
+	c.AssetFor = func(v string) string { return "Vito-Setup-" + v + ".exe" }
 	return c
+}
+
+// A release with another system's download only is no update here; the
+// newest one that has this system's is.
+func TestCheckTakesNewestForThisSystem(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		rel := func(tag string, assets ...string) map[string]any {
+			var list []map[string]any
+			for _, a := range assets {
+				list = append(list, map[string]any{"name": a, "browser_download_url": "http://x/" + a})
+			}
+			return map[string]any{"tag_name": tag, "assets": list}
+		}
+		_ = json.NewEncoder(w).Encode([]map[string]any{
+			rel("v2026.12", "Vito-Setup-2026.12.exe"),
+			{"tag_name": "v2026.11.2", "draft": true, "assets": []map[string]any{{"name": "Vito-2026.11.2.dmg"}}},
+			rel("v2026.11.1", "Vito-2026.11.1.dmg", "Vito-Setup-2026.11.1.exe"),
+			rel("v2026.11", "Vito-2026.11.dmg"),
+		})
+	}))
+	t.Cleanup(srv.Close)
+	for _, tc := range []struct {
+		name, current, want string
+		asset               func(string) string
+		available           bool
+	}{
+		{"windows", "2026.10", "2026.12", func(v string) string { return "Vito-Setup-" + v + ".exe" }, true},
+		{"mac", "2026.10", "2026.11.1", func(v string) string { return "Vito-" + v + ".dmg" }, true},
+		{"mac up to date", "2026.11.1", "2026.11.1", func(v string) string { return "Vito-" + v + ".dmg" }, false},
+		{"linux, none yet", "2026.10", "", func(v string) string { return "Vito-" + v + "-x86_64.AppImage" }, false},
+		{"any system", "2026.10", "2026.12", nil, true},
+	} {
+		c := NewChecker(tc.current)
+		c.API, c.AssetFor = srv.URL, tc.asset
+		rel, err := c.Check(context.Background(), true)
+		if err != nil {
+			t.Fatalf("%s: %v", tc.name, err)
+		}
+		if rel.Version != tc.want || rel.Available != tc.available {
+			t.Errorf("%s: got %q available %v, want %q %v", tc.name, rel.Version, rel.Available, tc.want, tc.available)
+		}
+	}
 }
 
 func TestDownloadAssetVerifies(t *testing.T) {

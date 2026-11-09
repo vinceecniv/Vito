@@ -284,7 +284,7 @@ type winWindow struct {
 	mu     sync.Mutex
 	mon    monitor
 	pix    []byte // the latest picture, not yet shown
-	box    [4]int
+	box    inputArea
 	offX   int
 	offUp  int
 	placed bool
@@ -352,7 +352,7 @@ func openWin(output uint32, lw, lh, margin int, input [4]int, front bool) (windo
 	if !ok {
 		return nil, errors.New("no screen")
 	}
-	w := &winWindow{lw: lw, lh: lh, margin: margin, front: front, mon: m, box: input,
+	w := &winWindow{lw: lw, lh: lh, margin: margin, front: front, mon: m, box: inputArea{input},
 		cursor: loadCursor(idcArrow), pointers: make(chan pointerEvent, 32), lost: make(chan struct{})}
 	ready := make(chan error, 1)
 	go w.loop(ready)
@@ -501,7 +501,7 @@ func (w *winWindow) hover() {
 	}
 	p := cursorPos()
 	x, y := w.local(p)
-	in := w.down || shown && x >= float64(box[0]) && y >= float64(box[1]) && x < float64(box[0]+box[2]) && y < float64(box[1]+box[3])
+	in := w.down || shown && box.has(x, y)
 	if in != w.inside {
 		w.inside = in
 		ex, _, _ := procGetWindowLongPtrW.Call(w.hwnd, gwlExStyle)
@@ -642,9 +642,9 @@ func (w *winWindow) connector() string {
 func (w *winWindow) gone() <-chan struct{}        { return w.lost }
 func (w *winWindow) pointer() <-chan pointerEvent { return w.pointers }
 
-func (w *winWindow) setInput(box [4]int) {
+func (w *winWindow) setInput(boxes ...[4]int) {
 	w.mu.Lock()
-	w.box = box
+	w.box = boxes
 	w.mu.Unlock()
 }
 
@@ -727,3 +727,17 @@ func ensureGnomeExtension(log *slog.Logger) {}
 
 // GnomeExtension is a Linux matter.
 func GnomeExtension() string { return "" }
+
+// outputNamed finds the screen called name, 0 when it is gone: the pinned
+// island opens there again.
+func outputNamed(name string) (id uint32) {
+	withDPI(func() {
+		for _, m := range monitors() {
+			if m.name == name {
+				id = outputID(name)
+				return
+			}
+		}
+	})
+	return
+}

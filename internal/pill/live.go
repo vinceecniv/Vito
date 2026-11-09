@@ -26,6 +26,9 @@ type ticker struct {
 	block bool    // two lines of plain text, room wide (the pinned island)
 	wV    float64 // and how fast each is moving, per second
 	offV  float64
+	// sinkTo: how far the block's lines stand lower to sit in the middle of
+	// their room, device pixels, and how fast LiveSink moves there.
+	sinkTo, sinkV float64
 }
 
 func (t *ticker) set(txt string) {
@@ -67,6 +70,7 @@ func (t *ticker) step(f *Frame) {
 	if t.block {
 		f.LiveW = t.room
 		spring(&f.LiveOff, &t.offV, 0)
+		spring(&f.LiveSink, &t.sinkV, t.sinkTo)
 		if f.LiveOff == 0 {
 			f.Live0 = nil
 		}
@@ -123,26 +127,35 @@ func spring(x, v *float64, to float64) {
 	}
 }
 
-// drawBlock lays the words out as lines room wide and keeps the last two;
-// when a third starts, the first goes and the others rise into place.
+// drawBlock lays the words out as lines room wide and keeps the last
+// blockLines; when one more starts, the first goes and the others rise into
+// place.
 func (t *ticker) drawBlock(f *Frame, s string) {
 	words := strings.Fields(s)
 	if t.drop >= len(words) { // a new start
 		t.drop, f.LiveOff, t.offV, f.Live0 = 0, 0, 0, nil
 	}
 	lines := wrapLines(bodyFace, words[t.drop:], fixed.I(int(t.room*scale)))
-	for len(lines) > 2 {
+	for len(lines) > blockLines {
 		t.drop += len(strings.Fields(lines[0]))
 		f.Live0, _ = textMask(bodyFace, lines[0])
 		f.LiveOff += blockLine * scale
 		lines = lines[1:]
 	}
-	f.Live, f.Live2 = nil, nil
-	if len(lines) > 0 {
-		f.Live, _ = textMask(bodyFace, lines[0])
+	// Fewer lines than there is room for stand in the middle of it; the
+	// first one there at once, and they rise as more come.
+	t.sinkTo = float64(blockLines-max(1, len(lines))) * blockLine * scale / 2
+	if f.Live == nil {
+		f.LiveSink, t.sinkV = t.sinkTo, 0
 	}
-	if len(lines) > 1 {
-		f.Live2, _ = textMask(bodyFace, lines[1])
+	f.Live, f.LiveMore = nil, nil
+	for i, l := range lines {
+		m, _ := textMask(bodyFace, l)
+		if i == 0 {
+			f.Live = m
+		} else {
+			f.LiveMore = append(f.LiveMore, m)
+		}
 	}
 }
 

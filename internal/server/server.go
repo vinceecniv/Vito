@@ -598,7 +598,7 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	// Sync has its own endpoints; a settings save only stamps a dictionary
 	// change, so the newest one wins across computers.
 	cfg.Sync = current.Sync
-	if !slices.Equal(cfg.Dictionary.Keyterms, savedDict.Keyterms) || !slices.Equal(cfg.Dictionary.Corrections, savedDict.Corrections) ||
+	if !slices.Equal(cfg.Dictionary.Corrections, savedDict.Corrections) ||
 		!slices.Equal(cfg.Dictionary.Snippets, savedDict.Snippets) {
 		cfg.Sync.DictionaryAt = time.Now().UnixMilli()
 	}
@@ -610,7 +610,7 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	cfg.UI.Dashboard = savedDashboard
 	// In demo mode the UI is showing (and would send back) the sample
 	// dictionary, so keep the real one — saving any settings change from a demo
-	// must not overwrite the user's keyterms and corrections.
+	// must not overwrite the user's corrections and snippets.
 	if s.demo() {
 		cfg.Dictionary = savedDict
 		// Demo mode bows out the moment a speech-recognition key is entered:
@@ -811,8 +811,8 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 // costRates returns the configured provider rates, the USD→display-currency
 // factor and that currency. Shared by the cost card and the per-day amounts in
 // the weekly chart's tooltip.
-// sttRateUSD is the published streaming price per hour for each speech model,
-// plus the keyterms add-on where it isn't included. Source: AssemblyAI's
+// sttRateUSD is the published streaming price per hour for each speech model.
+// Source: AssemblyAI's
 // realtime pricing page. The rate follows the selected model, so switching to
 // Pro immediately shows what it actually costs.
 // An empty model means Vito sends no speech_model at all and AssemblyAI picks
@@ -825,11 +825,8 @@ func sttRateUSD(cfg config.STT) float64 {
 	}
 	switch cfg.Model {
 	case "universal-3-5-pro", "":
-		return 0.45 // keyterm prompting is included in this model
+		return 0.45
 	case "universal-streaming-multilingual", "universal-streaming-english":
-		if cfg.KeytermsEnabled {
-			return 0.15 + 0.04 // keyterms prompting is an add-on here
-		}
 		return 0.15
 	}
 	return 0 // unknown model: fall back to the configured rate

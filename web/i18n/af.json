@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nederlands, Engels, Duits, Frans, Spaans, Italiaans, Portugees, Pools, Tsjeggies, Slowaaks, Hongaars, Roemeens, Bulgaars, Kroaties, Sloweens, Grieks, Sweeds, Deens, Fins, Estnies, Letties, Litaus, Maltees, Russies en Oekraïens — outomaties herken. Nie geskik vir ander tale nie.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Engels, Nederlands, Duits, Frans, Spaans, Italiaans, Pools.",
+"Type (keystrokes)": "Tik (toetsaanslae)",
+"Paste (⌘V)": "Plak (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korreksies word op elke diktaat toegepas. Wenk: hou in Geskiedenis die muis oor 'n woord en klik daarop om vinnig 'n korreksie daarvoor by te voeg.",
+"Corrections and text snippets": "Korreksies en teksbrokkies",
+"spoken today": "vandag gepraat",
+"Today's figures": "Vandag se syfers",
+"Earlier dictation": "Vorige diktaat",
+"Later dictation": "Volgende diktaat",
+"sentences": "sinne",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Geen sleutel nodig om te kanselleer nie: terwyl jy dikteer, wys na die pil en klik op ×. Van plan verander? Vir vyf minute wys die pil “Diktaat gekanselleer”: klik daarop en Vito plak die diktaat tog.",
 "Main figure": "Hoofsyfer",
 "days in a row": "dae agtereen",
 "New record!": "Nuwe rekord!",

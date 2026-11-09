@@ -28,16 +28,16 @@ type Streamer interface {
 
 // NewStream opens a session with the configured provider. Anything unknown
 // falls back to AssemblyAI, which is the setting every existing install has.
-func NewStream(cfg config.STT, keyterms []string, log *slog.Logger, onPartial func(string)) Streamer {
+func NewStream(cfg config.STT, log *slog.Logger, onPartial func(string)) Streamer {
 	switch cfg.Provider {
 	case "soniox":
-		return newSonioxStream(cfg, keyterms, log, onPartial)
+		return newSonioxStream(cfg, log, onPartial)
 	case "openai":
-		return newOpenAIStream(cfg, keyterms, log)
+		return newOpenAIStream(cfg, log)
 	case "whistle":
-		return newWhistleStream(cfg, keyterms, log, onPartial)
+		return newWhistleStream(cfg, log, onPartial)
 	default:
-		return newAssemblyAIStream(cfg, keyterms, log, onPartial)
+		return newAssemblyAIStream(cfg, log, onPartial)
 	}
 }
 
@@ -72,15 +72,15 @@ func FinishTimeout(cfg config.STT) time.Duration {
 // at Soniox rather than at AssemblyAI with a key that may not exist. Nil when
 // there is nothing to retry with: an endpoint session already *was* one
 // request with the whole file, and sending it again would only fail the same way.
-func Fallback(cfg config.STT, keyterms []string) Transcriber {
+func Fallback(cfg config.STT) Transcriber {
 	switch cfg.Provider {
 	case "openai":
 		return nil
 	case "whistle":
-		return whistleFile{lang: whistleLang(cfg), keywords: keyterms}
+		return whistleFile{lang: whistleLang(cfg)}
 	case "soniox":
-		return newSonioxFileClient(cfg, keyterms)
+		return newSonioxFileClient(cfg)
 	default:
-		return NewAsyncClient(cfg, keyterms)
+		return NewAsyncClient(cfg)
 	}
 }

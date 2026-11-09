@@ -1156,7 +1156,19 @@
 "Hide settings": "Slėpti nustatymus",
 "Pill": "Piliulė",
 "Updates": "Naujiniai",
-"Kind regards,\nYour name": "Pagarbiai,\nJūsų vardas"
+"Kind regards,\nYour name": "Pagarbiai,\nJūsų vardas",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Olandų, anglų, vokiečių, prancūzų, ispanų, italų, portugalų, lenkų, čekų, slovakų, vengrų, rumunų, bulgarų, kroatų, slovėnų, graikų, švedų, danų, suomių, estų, latvių, lietuvių, maltiečių, rusų ir ukrainiečių — atpažįstama automatiškai. Netinka kitoms kalboms.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Anglų, olandų, vokiečių, prancūzų, ispanų, italų, lenkų.",
+"Type (keystrokes)": "Rašyti (klavišų paspaudimais)",
+"Paste (⌘V)": "Įklijuoti (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Taisymai taikomi kiekvienam diktavimui. Patarimas: Istorijoje užveskite pelę ant žodžio ir spustelėkite jį, kad greitai pridėtumėte jam taisymą.",
+"Corrections and text snippets": "Taisymai ir teksto fragmentai",
+"spoken today": "kalbėta šiandien",
+"Today's figures": "Šiandienos skaičiai",
+"Earlier dictation": "Ankstesnis diktavimas",
+"Later dictation": "Vėlesnis diktavimas",
+"sentences": "sakinių",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Atšaukti nereikia jokio klavišo: diktuodami nuveskite pelę ant piliulės ir spustelėkite ×. Persigalvojote? Penkias minutes piliulėje rodoma „Diktavimas atšauktas“: spustelėkite ją ir Vito vis tiek įklijuos diktavimą."
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

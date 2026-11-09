@@ -26,3 +26,5 @@ func ensureGnomeExtension(log *slog.Logger) {}
 
 // GnomeExtension is a Linux matter.
 func GnomeExtension() string { return "" }
+
+func outputNamed(name string) uint32 { return 0 }

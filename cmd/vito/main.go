@@ -188,20 +188,25 @@ func serve() error {
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)
 	notifyUserSignals(d, log)
 	pill.Start(d, log, pill.Sources{
-		Today: func() (int, int) {
+		Today: func() pill.Today {
 			now := time.Now()
 			st, _ := hist.Stats(now, d.Config().TypingWPM(), 1)
-			return st.Words, st.SavedMinutes
+			return pill.Today{Words: st.Words, Sentences: st.Sentences, Activations: st.Activations, Saved: st.SavedSeconds, Spoken: st.SpokenSeconds}
 		},
-		Last: func() string {
-			list, err := hist.List("", false, 1, 0)
-			if err != nil || len(list) == 0 {
-				return ""
+		Recent: func(n int) []string {
+			list, err := hist.List("", false, n, 0)
+			if err != nil {
+				return nil
 			}
-			if list[0].Cleaned != "" {
-				return list[0].Cleaned
+			texts := make([]string, 0, len(list))
+			for _, e := range list {
+				t := e.Cleaned
+				if t == "" {
+					t = e.Raw
+				}
+				texts = append(texts, t)
 			}
-			return list[0].Raw
+			return texts
 		},
 	})
 	hk.Start(cfg.HotkeyWindows, cfg.HotkeyCancelWindows)

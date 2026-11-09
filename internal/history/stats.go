@@ -39,6 +39,7 @@ type Stats struct {
 	Commands          int        `json:"commands"` // Vito Assist commands in the period
 	ActivationsPerDay float64    `json:"activations_per_day"`
 	SavedMinutes      int        `json:"saved_minutes"`
+	SavedSeconds      int        `json:"saved_seconds"`  // the same, finer: the island shows seconds under a minute
 	SpokenSeconds     int        `json:"spoken_seconds"` // total dictation time in the period
 	TypingWPM         int        `json:"typing_wpm"`     // wpm baseline used for saved-time
 	FirstDay          string     `json:"first_day"`      // earliest day with any data, "" if none
@@ -169,6 +170,7 @@ func (s *Store) stats(wpm float64, from, anchor time.Time, buckets func(firstDay
 		Commands:          commands,
 		ActivationsPerDay: float64(act) / float64(divisor),
 		SavedMinutes:      int(saved + 0.5),
+		SavedSeconds:      int(saved*60 + 0.5),
 		SpokenSeconds:     int(durMS / 1000),
 		TypingWPM:         int(wpm),
 		FirstDay:          allTimeFirst,

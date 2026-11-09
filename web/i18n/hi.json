@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "डच, अंग्रेज़ी, जर्मन, फ़्रेंच, स्पैनिश, इतालवी, पुर्तगाली, पोलिश, चेक, स्लोवाक, हंगेरियन, रोमानियाई, बल्गेरियाई, क्रोएशियाई, स्लोवेनियाई, ग्रीक, स्वीडिश, डेनिश, फ़िनिश, एस्टोनियाई, लातवियाई, लिथुआनियाई, माल्टीज़, रूसी और यूक्रेनियाई — अपने आप पहचानी जाती हैं। अन्य भाषाओं के लिए उपयुक्त नहीं।",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "अंग्रेज़ी, डच, जर्मन, फ़्रेंच, स्पैनिश, इतालवी, पोलिश।",
+"Type (keystrokes)": "टाइप करें (कीस्ट्रोक)",
+"Paste (⌘V)": "चिपकाएँ (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "सुधार हर डिक्टेशन पर लागू होते हैं। सुझाव: इतिहास में किसी शब्द पर माउस ले जाएँ और उस पर क्लिक करके उसके लिए जल्दी से एक सुधार जोड़ें।",
+"Corrections and text snippets": "सुधार और टेक्स्ट स्निपेट",
+"spoken today": "आज बोला गया",
+"Today's figures": "आज के आँकड़े",
+"Earlier dictation": "पिछला डिक्टेशन",
+"Later dictation": "अगला डिक्टेशन",
+"sentences": "वाक्य",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "रद्द करने के लिए किसी कुंजी की ज़रूरत नहीं: डिक्टेट करते समय पिल पर पॉइंटर ले जाएँ और × पर क्लिक करें। मन बदल गया? पाँच मिनट तक पिल “डिक्टेशन रद्द किया गया” दिखाता है: उस पर क्लिक करें और Vito डिक्टेशन फिर भी चिपका देगा।",
 "Vito now runs as an app on this computer": "Vito अब इस कंप्यूटर पर ऐप के रूप में चलता है",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "आपके डिक्टेशन ऐप में चले गए हैं। अब वहीं से बोलकर लिखवाते रहें — अपनी हॉटकी से, हर प्रोग्राम में।",
 "Open Vito": "Vito खोलें",

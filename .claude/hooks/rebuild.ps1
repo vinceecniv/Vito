@@ -13,6 +13,13 @@ if (-not $f) { exit 0 }
 if ($f -notmatch '\.(go|html|js|css|webmanifest|mod|sum)$') { exit 0 }
 if (-not $f.StartsWith($repo, [System.StringComparison]::OrdinalIgnoreCase)) { exit 0 }
 
+# One rebuild at a time. Edits made together fire this hook in parallel, and
+# parallel builds and restarts trip over the same exe: the first one won and
+# the later edits never reached the daemon. Waiting here means every run builds
+# the files as they are now, so the last one to finish has all the edits.
+$mutex = New-Object System.Threading.Mutex($false, 'Local\VitoRebuildHook')
+try { [void]$mutex.WaitOne() } catch [System.Threading.AbandonedMutexException] { }
+
 $out = & go build -o (Join-Path $repo 'dist\vito.exe') (Join-Path $repo 'cmd\vito') 2>&1
 if ($LASTEXITCODE -ne 0) {
   # Exit 2 feeds the compiler output back to Claude so it can fix the break.
@@ -36,5 +43,6 @@ if ($running) {
 } else {
   $msg = 'Vito herbouwd (daemon draaide niet)'
 }
+$mutex.ReleaseMutex()
 
 @{ systemMessage = $msg; suppressOutput = $true } | ConvertTo-Json -Compress

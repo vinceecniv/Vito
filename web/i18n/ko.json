@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "네덜란드어, 영어, 독일어, 프랑스어, 스페인어, 이탈리아어, 포르투갈어, 폴란드어, 체코어, 슬로바키아어, 헝가리어, 루마니아어, 불가리아어, 크로아티아어, 슬로베니아어, 그리스어, 스웨덴어, 덴마크어, 핀란드어, 에스토니아어, 라트비아어, 리투아니아어, 몰타어, 러시아어, 우크라이나어 — 자동으로 감지됩니다. 다른 언어에는 적합하지 않습니다.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "영어, 네덜란드어, 독일어, 프랑스어, 스페인어, 이탈리아어, 폴란드어.",
+"Type (keystrokes)": "입력 (키 입력)",
+"Paste (⌘V)": "붙여넣기 (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "교정은 모든 받아쓰기에 적용됩니다. 팁: 기록에서 단어 위에 마우스를 올리고 클릭하면 해당 단어의 교정을 빠르게 추가할 수 있습니다.",
+"Corrections and text snippets": "교정 및 텍스트 스니펫",
+"spoken today": "오늘 말한 시간",
+"Today's figures": "오늘의 수치",
+"Earlier dictation": "이전 받아쓰기",
+"Later dictation": "다음 받아쓰기",
+"sentences": "문장",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "취소에는 키가 필요 없어요: 받아쓰는 중에 필을 가리키고 ×를 클릭하세요. 마음이 바뀌었나요? 5분 동안 필에 “받아쓰기 취소됨”이 표시돼요: 클릭하면 Vito가 받아쓴 내용을 그래도 붙여넣어요.",
 "Dictate today to start a streak": "오늘 받아쓰기를 시작해 연속 기록을 만들어 보세요",
 "Nothing cleaned up in this period yet": "이 기간에는 아직 정리된 내용이 없어요",
 "No languages detected in this period yet": "이 기간에는 아직 감지된 언어가 없어요",

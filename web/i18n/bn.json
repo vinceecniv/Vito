@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "ডাচ, ইংরেজি, জার্মান, ফরাসি, স্প্যানিশ, ইতালীয়, পর্তুগিজ, পোলিশ, চেক, স্লোভাক, হাঙ্গেরীয়, রোমানীয়, বুলগেরীয়, ক্রোয়েশীয়, স্লোভেনীয়, গ্রিক, সুইডিশ, ড্যানিশ, ফিনিশ, এস্তোনীয়, লাটভীয়, লিথুয়ানীয়, মাল্টিজ, রুশ ও ইউক্রেনীয় — স্বয়ংক্রিয়ভাবে শনাক্ত হয়। অন্য ভাষার জন্য উপযুক্ত নয়।",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "ইংরেজি, ডাচ, জার্মান, ফরাসি, স্প্যানিশ, ইতালীয়, পোলিশ।",
+"Type (keystrokes)": "টাইপ (কীস্ট্রোক)",
+"Paste (⌘V)": "পেস্ট (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "প্রতিটি ডিকটেশনে সংশোধনগুলো প্রয়োগ করা হয়। টিপ: ইতিহাসে কোনো শব্দের উপর মাউস রেখে সেটিতে ক্লিক করুন, তাহলে দ্রুত সেটির জন্য একটি সংশোধন যোগ করতে পারবেন।",
+"Corrections and text snippets": "সংশোধন ও টেক্সট স্নিপেট",
+"spoken today": "আজ কথা বলা",
+"Today's figures": "আজকের পরিসংখ্যান",
+"Earlier dictation": "আগের ডিকটেশন",
+"Later dictation": "পরের ডিকটেশন",
+"sentences": "বাক্য",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "বাতিল করতে কোনো কী লাগবে না: ডিকটেশনের সময় পিলের উপর পয়েন্টার নিয়ে × এ ক্লিক করুন। মত বদলেছেন? পাঁচ মিনিট ধরে পিলটি “ডিকটেশন বাতিল হয়েছে” দেখায়: সেটিতে ক্লিক করুন, Vito তবুও ডিকটেশনটি পেস্ট করে দেবে।",
 "Vito now runs as an app on this computer": "Vito এখন এই কম্পিউটারে অ্যাপ হিসেবে চলছে",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "আপনার ডিকটেশনগুলো অ্যাপে সরে গেছে। এখন থেকে সেখানেই ডিকটেট করুন — আপনার হটকি দিয়ে, প্রতিটি প্রোগ্রামে।",
 "Open Vito": "Vito খুলুন",

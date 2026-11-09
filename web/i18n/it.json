@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Olandese, inglese, tedesco, francese, spagnolo, italiano, portoghese, polacco, ceco, slovacco, ungherese, rumeno, bulgaro, croato, sloveno, greco, svedese, danese, finlandese, estone, lettone, lituano, maltese, russo e ucraino — rilevate automaticamente. Non adatto ad altre lingue.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Inglese, olandese, tedesco, francese, spagnolo, italiano, polacco.",
+"Type (keystrokes)": "Digita (sequenza di tasti)",
+"Paste (⌘V)": "Incolla (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Le correzioni vengono applicate a ogni dettatura. Suggerimento: nella Cronologia, passa il mouse su una parola e fai clic per aggiungerle rapidamente una correzione.",
+"Corrections and text snippets": "Correzioni e frammenti di testo",
+"spoken today": "parlato oggi",
+"Today's figures": "Cifre di oggi",
+"Earlier dictation": "Dettatura precedente",
+"Later dictation": "Dettatura successiva",
+"sentences": "frasi",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Per annullare non serve un tasto: mentre detti, punta la pillola e fai clic su ×. Hai cambiato idea? Per cinque minuti la pillola mostra “Dettatura annullata”: fai clic e Vito incolla comunque la dettatura.",
 "Status": "Stato",
 "Dashboard": "Dashboard",
 "Settings": "Impostazioni",

@@ -28,6 +28,8 @@ var (
 	procSetWindowsHookExW = user32.NewProc("SetWindowsHookExW")
 	procCallNextHookEx    = user32.NewProc("CallNextHookEx")
 	procGetAsyncKeyState  = user32.NewProc("GetAsyncKeyState")
+	procGetKeyState       = user32.NewProc("GetKeyState")
+	procKeybdEvent        = user32.NewProc("keybd_event")
 )
 
 const (
@@ -44,6 +46,10 @@ const (
 	wmSysKeyUp   = 0x0105
 
 	vkCapital = 0x14 // Caps Lock
+	keyUp     = 0x0002
+	// capsMark tags the Caps Lock presses Vito sends itself to unlock
+	// capitals, so its own hook lets them through.
+	capsMark  = 0x56495430 // "VIT0"
 	vkShift   = 0x10
 	vkControl = 0x11
 	vkMenu    = 0x12 // Alt
@@ -147,6 +153,9 @@ func (m *Manager) Start(toggle, cancel string) {
 			return
 		}
 		m.log.Info("keyboard hook installed (push-to-talk capable)")
+		// Capitals locked while no hook ran (Vito restarting, or not yet
+		// started) can't be unlocked with a key Vito swallows.
+		go m.capsOff() // not on this thread: its pump must run for the hook
 		// A blocking GetMessage keeps the thread pumping so the low-level hook
 		// callback fires; no messages are posted, so this simply parks the thread.
 		var msg winMsg
@@ -166,6 +175,24 @@ func (m *Manager) Rebind(toggle, cancel string) {
 	m.wantToggle, m.wantCancel = toggle, cancel
 	m.mu.Unlock()
 	m.reparse()
+	m.capsOff()
+}
+
+// capsOff unlocks capitals when Caps Lock is the dictation key and they are
+// locked: the hook swallows the key, so the user could not do it.
+func (m *Manager) capsOff() {
+	m.mu.Lock()
+	caps := m.tglOK && m.tglVK == vkCapital && m.tglMods == 0
+	m.mu.Unlock()
+	if !caps {
+		return
+	}
+	if r, _, _ := procGetKeyState.Call(vkCapital); r&1 == 0 {
+		return
+	}
+	m.log.Info("capitals were locked; unlocking them")
+	procKeybdEvent.Call(vkCapital, 0x3A, 0, capsMark)
+	procKeybdEvent.Call(vkCapital, 0x3A, keyUp, capsMark)
 }
 
 // Status reports both hotkeys' state; supported is always true on Windows.
@@ -205,12 +232,14 @@ func hookProc(nCode uintptr, wParam uintptr, lParam uintptr) uintptr {
 			// lParam is the address of a KBDLLHOOKSTRUCT owned by Windows, not
 			// Go's heap; reading it through the variable tells go vet so.
 			ks := (*kbdllHookStruct)(*(*unsafe.Pointer)(unsafe.Pointer(&lParam)))
-			switch wParam {
-			case wmKeyDown, wmSysKeyDown:
+			// Vito's own Caps Lock presses, unlocking capitals, go through.
+			switch {
+			case ks.DwExtraInfo == capsMark:
+			case wParam == wmKeyDown || wParam == wmSysKeyDown:
 				if m.handleKey(ks.VkCode, true, false) {
 					return 1 // swallow: don't let the key reach the focused app
 				}
-			case wmKeyUp, wmSysKeyUp:
+			case wParam == wmKeyUp || wParam == wmSysKeyUp:
 				if m.handleKey(ks.VkCode, false, true) {
 					return 1
 				}
@@ -239,6 +268,7 @@ func (m *Manager) handleKey(vk uint32, down, up bool) bool {
 			if !m.toggleHeld { // key repeat sends more downs
 				m.toggleHeld = true
 				m.gesture.Down()
+				go m.capsOff() // locked meanwhile anyway: the key unlocks them
 			}
 		} else if up && m.toggleHeld {
 			m.toggleHeld = false

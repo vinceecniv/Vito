@@ -1,7 +1,6 @@
 package dictionary
 
 import (
-	"reflect"
 	"testing"
 
 	"vito/internal/config"
@@ -39,36 +38,5 @@ func TestApplyEmptyCorrectionSkipped(t *testing.T) {
 	got := Apply("tekst blijft gelijk", []config.Correction{{Wrong: "", Right: "x"}, {Wrong: "y", Right: ""}})
 	if got != "tekst blijft gelijk" {
 		t.Fatalf("empty corrections must be ignored, got %q", got)
-	}
-}
-
-func TestKeyterms(t *testing.T) {
-	tests := []struct {
-		name string
-		in   []string
-		want []string
-	}{
-		{"dedup case insensitive", []string{"Acme", "acme", "SAP"}, []string{"Acme", "SAP"}},
-		{"trims and drops empties", []string{" Instagr8 ", "", "  "}, []string{"Instagr8"}},
-		{"nil in nil out", nil, []string{}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := Keyterms(config.Dictionary{Keyterms: tt.in})
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Fatalf("Keyterms(%v) = %v, want %v", tt.in, got, tt.want)
-			}
-		})
-	}
-}
-
-func TestKeytermsCap(t *testing.T) {
-	terms := make([]string, 150)
-	for i := range terms {
-		terms[i] = "term" + string(rune('a'+i%26)) + string(rune('0'+i/26))
-	}
-	got := Keyterms(config.Dictionary{Keyterms: terms})
-	if len(got) > 100 {
-		t.Fatalf("keyterms must be capped at 100, got %d", len(got))
 	}
 }

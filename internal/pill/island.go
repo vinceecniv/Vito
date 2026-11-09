@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -37,14 +38,22 @@ import (
 // screens give way to it, and a dictation shows in it, where the microphone
 // is: the pill draws into an embedWindow and the island lays its pictures in.
 
+// Today is the day in figures, as the stats page counts it.
+type Today struct {
+	Words, Sentences, Activations int
+	Saved, Spoken                 int // seconds: typing time saved, time dictated
+}
+
 // Sources is what the island shows that the daemon does not know.
 type Sources struct {
-	// Today is the words dictated today and the typing time they saved, in
-	// minutes.
-	Today func() (words, saved int)
-	// Last is the most recent dictation's text, "" when there is none.
-	Last func() string
+	// Today is what was dictated today.
+	Today func() Today
+	// Recent is the texts of the last n dictations, the newest first.
+	Recent func(n int) []string
 }
+
+// recentN is how many dictations back the island's box can be browsed.
+const recentN = 20
 
 // The island's window and panel, in logical pixels. The window reaches lower
 // than the pill's, so the panel has room below the microphone, and is tall
@@ -55,11 +64,16 @@ const (
 	islandMargin           = 8
 	islandMarkY            = islandWinH - (surfaceH - pillY) - (marginBottom - islandMargin)
 	panelW                 = 272.0
-	panelBottom            = islandMarkY + 30
-	panelPad               = 18.0
-	micR                   = 20.0
-	ruleRow                = 28.0
-	maxRules               = 10
+	// The panel ends above the microphone, which stands free under it, on
+	// the transparent window: panelFoot is the panel's lower edge, panelBottom
+	// the island's, under the microphone, and footH the room between.
+	panelBottom = islandMarkY + 30
+	panelFoot   = islandMarkY - micR - 10
+	footH       = panelBottom - panelFoot
+	panelPad    = 18.0
+	micR        = 20.0
+	ruleRow     = 28.0
+	maxRules    = 10
 
 	islandDwell = 400 * time.Millisecond // the pointer on the pill this long opens it
 	islandGrace = 350 * time.Millisecond // off the island this long closes it
@@ -78,14 +92,18 @@ const (
 	dimAfter = time.Minute
 	dimTo    = 0.45
 	dimTime  = 400 * time.Millisecond
-	// Faded this much longer, it folds up to its logo, which is all that takes
-	// the pointer then; the pointer on it or a dictation unfolds it.
+	// Faded this much longer, it folds back into the resting pill where it
+	// stands, which is all that takes the pointer then; the pointer on it or
+	// a dictation unfolds it.
 	compactAfter = 4 * time.Minute
 	compactTime  = 450 * time.Millisecond
 
 	// embedLiveUp is how far over the microphone the live words stand in the
 	// pinned island: where the last dictation is, which makes way for them.
-	embedLiveUp = 60
+	embedLiveUp = 90
+
+	// statsH is the room today's figures take in the main view.
+	statsH = 34
 )
 
 type view int
@@ -109,6 +127,7 @@ const (
 	tRules
 	tEnter
 	tLive
+	tStats
 	tStyleBars
 	tStyleGlow
 	tStyleVito
@@ -117,6 +136,8 @@ const (
 	tRestore // the cancelled dictation, kept a while
 	tWords   // the stats, which only explain themselves
 	tSaved
+	tOlder // the box's arrows, through the recent dictations
+	tNewer
 	tRule0 target = 100
 )
 
@@ -139,32 +160,40 @@ type islandState struct {
 	embed      float64 // how far the pill has taken the microphone's place
 	copied     bool    // the last dictation was just copied; its label says so
 	rest       Frame   // the character's moment, where it is the microphone
-	compact    float64 // 0 the island .. 1 only its logo, long left alone
+	compact    float64 // 0 the island .. 1 only the resting pill, long left alone
 
-	words, saved int
-	last         string
-	kept         bool   // a cancelled dictation can be restored; it takes last's place
-	heard        string // what was heard of it
-	cleanup      bool
-	enter, live  bool
-	partials     bool // the speech service sends text while you speak
-	style        Style
-	rules        []ruleSet
-	active       string // the active rule set's id
+	day         Today
+	last        string
+	kept        bool   // a cancelled dictation can be restored; it takes last's place
+	heard       string // what was heard of it
+	cleanup     bool
+	enter, live bool
+	stats       bool     // today's figures shown (ui.island_stats)
+	recent      []string // the recent dictations, newest first; last is recent[at]
+	onBox       bool     // the pointer on the box, which shows its arrows
+	words       float64  // 0..1 the live words in the last dictation's place
+	at          int
+	partials    bool // the speech service sends text while you speak
+	style       Style
+	rules       []ruleSet
+	active      string // the active rule set's id
 }
 
 // height is the panel's height for a view.
 func (st *islandState) height(v view) float64 {
 	switch v {
 	case viewSettings:
-		return 262
+		return 292 - footH - 5
 	case viewRules:
-		return 50 + ruleRow*float64(min(len(st.rules), maxRules)) + 64
+		return 45 + ruleRow*float64(min(len(st.rules), maxRules)) + 64 - footH
 	}
-	return 214
+	if !st.stats {
+		return 209 - footH - statsH
+	}
+	return 209 - footH
 }
 
-func (st *islandState) top() float64 { return panelBottom - st.ph }
+func (st *islandState) top() float64 { return panelFoot - st.ph }
 
 func (st *islandState) activeName() string {
 	for _, r := range st.rules {
@@ -184,6 +213,9 @@ type islandPainter struct {
 	targets map[target]rect
 	texts   map[string]*image.Alpha
 	frame   []byte // the embedded pill's latest picture
+	// browseArea: the last dictation's box with its arrows, while there are
+	// any; the pointer on it shows them.
+	browseArea rect
 }
 
 func newIslandPainter(lang string) *islandPainter {
@@ -218,19 +250,50 @@ func (ip *islandPainter) draw(buf []byte, st islandState) {
 	if k <= 0 {
 		return
 	}
-	// Folded: the island gives way to its logo, which stays where it was.
+	// Folded: the island goes back to the resting pill, where its foot is;
+	// the pointer on that pill opens it again.
 	if k >= 1 {
 		clear(buf)
-		ip.targets = map[target]rect{}
 	} else {
 		for i := range buf {
 			buf[i] = byte(float64(buf[i]) * (1 - k))
 		}
 	}
-	left := (islandWinW - panelW) / 2
-	cx, cy := left+panelPad+12, st.top()+27
-	ip.targets[tOpenVito] = rect{cx - 16, cy - 16, 32, 32}
-	brandTile(buf, islandWinW*scale, islandWinH*scale, cx*scale, cy*scale, 24*scale, themeFor(st.dark), k)
+	ip.targets = map[target]rect{}
+	var pic []byte
+	if st.style == StyleMascot {
+		pic = make([]byte, surfaceW*scale*surfaceH*scale*4)
+		DrawIdleMascot(pic, surfaceW*scale, surfaceH*scale, st.dark, 1, 0, st.rest)
+	} else {
+		pic = idlePicture(st.dark, 1, 0, st.style, nil, false)
+	}
+	over(buf, islandWinW*scale, islandWinH*scale, pic, surfaceW*scale, surfaceH*scale, foldDX*scale, foldDY*scale, k)
+}
+
+// The resting pill's picture stands this far from the island window's top
+// left when the island is folded: the pill at the mark it grew out of.
+const (
+	foldDX = (islandWinW - surfaceW) / 2
+	foldDY = islandMarkY - pillY
+)
+
+// over lays the premultiplied picture src (sw × sh) on dst at dx, dy, faded
+// by a, clipping what falls outside.
+func over(dst []byte, dw, dh int, src []byte, sw, sh, dx, dy int, a float64) {
+	for y := max(0, -dy); y < sh && y+dy < dh; y++ {
+		for x := max(0, -dx); x < sw && x+dx < dw; x++ {
+			si := (y*sw + x) * 4
+			sa := float64(src[si+3]) * a / 255
+			if sa <= 0 {
+				continue
+			}
+			di := ((y+dy)*dw + x + dx) * 4
+			keep := 1 - sa
+			for c := range 4 {
+				dst[di+c] = uint8(min(255, float64(dst[di+c])*keep+float64(src[si+c])*a+0.5))
+			}
+		}
+	}
 }
 
 func (ip *islandPainter) drawFull(buf []byte, st islandState) {
@@ -239,13 +302,14 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 	s := float64(scale)
 	th := themeFor(st.dark)
 	ip.targets = map[target]rect{}
+	ip.browseArea = rect{}
 
 	// The panel grows out of the hovered pill (52 × 20 on the pill's spot),
 	// keeping its foot there.
 	e := easeOut(st.open)
 	cx := float64(w) / 2
 	pw, ph := mix(52, panelW, e), mix(20, st.ph, e)
-	bottom := mix(islandMarkY+10, panelBottom, e)
+	bottom := mix(islandMarkY+10, panelFoot, e)
 	pcy := bottom - ph/2
 	r := mix(10, 22, e)
 	shadowR(buf, w, h, cx, (pcy+2)*s, pw*s/2, ph*s/2, r*s, 14*s, th.shadow*1.3*clamp(st.open*2))
@@ -269,16 +333,18 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 	// Header: the mark and the name as in the app, which open Vito, and on
 	// the right the menu button, which turns into a cross in the settings and
 	// an arrow back in the list of rule sets.
-	hy := top + 27.0
-	brand := rect{left + panelPad - 5, hy - 16, 77, 32}
+	// The pin on the left, the menu on the right and the wordmark between
+	// them, alone: a calm title bar.
+	hy := top + 25.0
+	_, ww := ip.text(wordFace, "vito")
+	brand := rect{left + panelW/2 - ww/2 - 12, hy - 16, ww + 24, 32}
 	ip.targets[tOpenVito] = brand
 	if st.over == tOpenVito {
 		fill(buf, w, h, brand, 16, blend(tint, th.to, 0.08), in)
 	}
-	brandTile(buf, w, h, (left+panelPad+12)*s, hy*s, 24*s, th, in)
-	ip.line(buf, wordFace, "vito", left+panelPad+30, hy+6.5, ink, in)
+	ip.line(buf, wordFace, "vito", left+panelW/2-ww/2, hy+6.5, ink, in)
 	menu := rect{left + panelW - panelPad - 28 + 4, hy - 14, 28, 28}
-	pin := rect{menu.x - 32, hy - 14, 28, 28}
+	pin := rect{left + panelPad - 4, hy - 14, 28, 28}
 	ip.iconButton(buf, th, st, tPin, pin, tint, in, func(cx, cy float64, c rgb, a float64) {
 		if st.pinned {
 			c = th.to
@@ -318,19 +384,34 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 			}
 		case tOpenVito:
 			at, text = brand, ip.t("Open Vito")
+			if !st.stats && st.day.Words > 0 {
+				// Today's figures switched off: here they are at a glance.
+				text += "\n" + ip.number(st.day.Words) + " " + ip.t("words today") +
+					"\n" + ip.duration(st.day.Saved) + " " + ip.t("saved typing time")
+			}
 		case tMenu:
 			at = menu
 			text = map[view]string{viewMain: ip.t("Quick settings"), viewSettings: ip.t("Close"),
 				viewRules: ip.t("Back to quick settings")}[st.view]
-		case tWords, tSaved:
-			at, text = ip.targets[st.over], map[target]string{tWords: ip.t("words today"), tSaved: ip.t("saved typing time")}[st.over]
-		case tRepaste, tMic, tCopy, tRestore:
+		case tWords:
+			at, text = ip.targets[st.over], ip.t("words today")
+			if st.day.Words > 0 {
+				text += "\n" + ip.number(st.day.Sentences) + " " + ip.t("sentences") + "\n" + ip.number(st.day.Activations) + " " + ip.t("activations")
+			}
+		case tSaved:
+			at, text = ip.targets[st.over], ip.t("saved typing time")
+			if st.day.Spoken > 0 {
+				text += "\n" + ip.t("spoken today") + " " + ip.duration(st.day.Spoken)
+			}
+		case tRepaste, tMic, tCopy, tRestore, tOlder, tNewer:
 			// Placed where they were drawn this frame, which the views
 			// and the microphone decide.
 			at, text = ip.targets[st.over], map[target]string{
 				tCopy:    ip.t("Copy"),
 				tRestore: ip.t("Restore and paste"),
 				tRepaste: ip.t("Paste this dictation again"),
+				tOlder:   ip.t("Earlier dictation"),
+				tNewer:   ip.t("Later dictation"),
 				tMic:     ip.t("Dictate: click to start, click again to stop"),
 			}[st.over]
 		}
@@ -347,15 +428,21 @@ func (ip *islandPainter) embedded(buf []byte, st islandState, left, top float64)
 	sw := surfaceW * scale
 	dx := (islandWinW - surfaceW) / 2 * scale
 	dy := (islandMarkY - pillY) * scale
+	// Inside the panel's edges over it; under it, where its cards open, the
+	// whole window.
 	x0, x1 := int((left+3)*scale), int((left+panelW-3)*scale)
-	y0, y1 := int(max(top+56, islandMarkY-embedLiveUp-blockLine-6)*scale), int((panelBottom-3)*scale)
+	y0, foot := int(max(top+51, islandMarkY-embedLiveUp-blockLine-6)*scale), int((panelFoot-1)*scale)
 	a := st.embed
-	for y := max(0, y0); y < min(h, y1); y++ {
+	for y := max(0, y0); y < h; y++ {
 		sy := y - dy
 		if sy < 0 || sy >= surfaceH*scale {
 			continue
 		}
-		for x := max(0, x0); x < min(w, x1); x++ {
+		xa, xb := x0, x1
+		if y >= foot {
+			xa, xb = 0, w
+		}
+		for x := max(0, xa); x < min(w, xb); x++ {
 			sx := x - dx
 			if sx < 0 || sx >= sw {
 				continue
@@ -376,29 +463,32 @@ func (ip *islandPainter) embedded(buf []byte, st islandState, left, top float64)
 // panel; over it where the panel ends too soon below (the microphone).
 func (ip *islandPainter) tooltip(buf []byte, th theme, st islandState, at rect, text string, left, a float64) {
 	w, h := islandWinW*scale, islandWinH*scale
-	room := panelW - 40
-	first, rest := wrap(labelFace, text, fixed.I(int(room*scale)))
-	_, w1 := ip.text(labelFace, first)
-	bw := w1
-	if rest != "" {
-		_, w2 := ip.text(labelFace, rest)
-		bw = max(bw, w2)
+	room := fixed.I(int((panelW - 40) * scale))
+	// A line of its own for each thing it says (\n), each wrapped to the room.
+	var lines []string
+	for _, para := range strings.Split(text, "\n") {
+		for para != "" {
+			var first string
+			first, para = wrap(labelFace, para, room)
+			lines = append(lines, first)
+		}
+	}
+	bw := 0.0
+	for _, l := range lines {
+		_, lw := ip.text(labelFace, l)
+		bw = max(bw, lw)
 	}
 	bw += 20
-	bh := 24.0
-	if rest != "" {
-		bh = 40
-	}
+	bh := 8 + 16*float64(len(lines))
 	x := min(max(at.x+at.w/2-bw/2, left+8), left+panelW-8-bw)
 	y := at.y + at.h + 6
-	if y+bh > panelBottom-4 {
+	if y+bh > panelFoot-4 {
 		y = at.y - 6 - bh
 	}
 	bg, fg := inkFor(st.dark), th.body
 	fill(buf, w, h, rect{x, y, bw, bh}, 8, bg, 0.94*a)
-	ip.line(buf, labelFace, first, x+10, y+16, fg, a)
-	if rest != "" {
-		ip.line(buf, labelFace, rest, x+10, y+32, fg, a)
+	for i, l := range lines {
+		ip.line(buf, labelFace, l, x+10, y+16+16*float64(i), fg, a)
 	}
 }
 
@@ -444,33 +534,71 @@ func (ip *islandPainter) body(buf []byte, th theme, st islandState, v view, left
 func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, top float64, ink, muted, tint rgb, a float64) {
 	w, h := islandWinW*scale, islandWinH*scale
 	s := float64(scale)
-	// The day in two figures, each behind the icon its tile has on the
-	// stats page: the words, and the typing time they saved. What they are
-	// is the tooltip's to say; the row stays quiet.
-	cy := top + 68.0
-	chip := blend(th.body, th.to, 0.13)
-	if st.dark {
-		chip = blend(th.body, th.to, 0.2)
+	// The day in two figures, each with the icon its tile has on the stats
+	// page: the words on the left, the typing time they saved on the right,
+	// the icons at the outer ends. What they are is the tooltip's to say; the
+	// row stays quiet, and can be switched off (ui.island_stats).
+	if st.stats {
+		cy := top + 55.0
+		chip := blend(th.body, th.to, 0.13)
+		if st.dark {
+			chip = blend(th.body, th.to, 0.2)
+		}
+		// figureW measures a figure: the units smaller than the digits, so
+		// 59m 59s fits its half.
+		figureW := func(figure []figPart) float64 {
+			fw := 0.0
+			for i, p := range figure {
+				if p.unit {
+					_, pw := ip.text(labelFace, p.s)
+					fw += pw + 0.5
+					if i < len(figure)-1 {
+						fw += 3
+					}
+				} else {
+					_, pw := ip.text(statFace, p.s)
+					fw += pw
+				}
+			}
+			return fw
+		}
+		stat := func(tg target, iconX, fx float64, icon func(cx, cy float64), figure []figPart) {
+			// The stats page's chip: 34 px round 9 for an 18 px icon; here 24 for 13.
+			fill(buf, w, h, rect{iconX, cy - 12, 24, 24}, 7, chip, a)
+			icon((iconX+12)*s, cy*s)
+			x0 := min(iconX, fx)
+			for i, p := range figure {
+				if p.unit {
+					fx += ip.line(buf, labelFace, p.s, fx+0.5, cy+5.5, ink, a) + 0.5
+					if i < len(figure)-1 {
+						fx += 3
+					}
+				} else {
+					fx += ip.line(buf, statFace, p.s, fx, cy+6, ink, a)
+				}
+			}
+			x1 := max(iconX+24, fx)
+			ip.targets[tg] = rect{x0 - 4, cy - 15, x1 - x0 + 8, 30}
+		}
+		k := 0.8 * s // the icons a size smaller than in a 30 px chip
+		lx, rx := left+panelPad, left+panelW-panelPad-24
+		words := []figPart{{s: ip.number(st.day.Words)}}
+		saved := ip.durationParts(st.day.Saved)
+		stat(tWords, lx, lx+32, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, k, th.to, a) }, words)
+		stat(tSaved, rx, rx-8-figureW(saved), func(cx, cy float64) { clock(buf, w, h, cx, cy, k, th.to, a) }, saved)
 	}
-	stat := func(tg target, x float64, icon func(cx, cy float64), figure string) {
-		// The stats page's chip: 34 px round 9 for an 18 px icon; here 30 for 16.
-		fill(buf, w, h, rect{x, cy - 15, 30, 30}, 8, chip, a)
-		icon((x+15)*s, cy*s)
-		fw := ip.line(buf, figureFace, figure, x+40, cy+8.5, ink, a)
-		ip.targets[tg] = rect{x - 4, cy - 18, 40 + fw + 8, 36}
-	}
-	col := left + panelPad
-	col2 := left + panelPad + (panelW-2*panelPad)/2 + 6
-	stat(tWords, col, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, s, th.to, a) }, ip.number(st.words))
-	stat(tSaved, col2, func(cx, cy float64) { clock(buf, w, h, cx, cy, s, th.to, a) }, ip.duration(st.saved))
 
 	// The last dictation, to paste again; in the pinned island it makes way
 	// for the live words while a dictation runs.
-	a *= 1 - smooth(st.embed)
+	a *= 1 - smooth(min(st.embed, st.words))
 	if a <= 0.01 {
 		return
 	}
-	lastBox := rect{left + panelPad - 6, top + 98, panelW - 2*panelPad + 12, 52}
+	boxY := top + 77
+	if !st.stats {
+		boxY -= statsH
+	}
+	lastBox := rect{left + panelPad - 6, boxY, panelW - 2*panelPad + 12, 68}
 	boxTint := tint
 	if st.kept {
 		// A cancelled dictation, for a few minutes: the whole box restores it.
@@ -486,7 +614,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		}
 		room := lastBox.w - 12 - 46
 		ip.line(buf, bodyFace, tailFit(bodyFace, heard, fixed.I(int(room*s))), lastBox.x+12, lastBox.y+38, ink, a)
-		bx, by := lastBox.x+lastBox.w-26, lastBox.y+26
+		bx, by := lastBox.x+lastBox.w-26, lastBox.y+lastBox.h/2
 		if st.over == tRestore {
 			fill(buf, w, h, rect{bx - 14, by - 14, 28, 28}, 8, blend(boxTint, th.to, 0.08), a)
 		}
@@ -501,20 +629,34 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		}
 	}
 	fill(buf, w, h, lastBox, 12, boxTint, a)
-	if st.copied {
-		ip.line(buf, labelFace, ip.t("Copied"), lastBox.x+12, lastBox.y+20, th.to, a)
-	} else {
-		ip.line(buf, labelFace, ip.t("Last dictation"), lastBox.x+12, lastBox.y+20, muted, a)
+	// No label: what the box holds speaks for itself. Up to three lines,
+	// the last one shortened, standing in the middle of the box.
+	last, c := strings.Join(strings.Fields(st.last), " "), ink
+	switch {
+	case st.copied:
+		last, c = ip.t("Copied"), th.to
+	case last == "":
+		last, c = ip.t("Nothing dictated yet"), muted
 	}
-	last := st.last
-	if last == "" {
-		last = ip.t("Nothing dictated yet")
+	room := fixed.I(int((lastBox.w - 12 - 46) * s))
+	var lines []string
+	for rest := last; rest != "" && len(lines) < 3; {
+		var line string
+		if len(lines) == 2 {
+			line, rest = fit(bodyFace, rest, room), ""
+		} else {
+			line, rest = wrap(bodyFace, rest, room)
+		}
+		lines = append(lines, line)
 	}
-	last = strings.Join(strings.Fields(last), " ")
-	room := lastBox.w - 12 - 46
-	ip.line(buf, bodyFace, fit(bodyFace, last, fixed.I(int(room*s))), lastBox.x+12, lastBox.y+38, ink, a)
+	const lastLine = 16.0
+	y := lastBox.y + (lastBox.h-float64(len(lines))*lastLine)/2 + 12
+	for i, l := range lines {
+		ip.line(buf, bodyFace, l, lastBox.x+12, y+float64(i)*lastLine, c, a)
+	}
+	ip.browse(buf, th, st, lastBox, muted, a)
 	if st.last != "" {
-		btn := rect{lastBox.x + lastBox.w - 40, lastBox.y + 12, 28, 28}
+		btn := rect{lastBox.x + lastBox.w - 40, lastBox.y + lastBox.h/2 - 14, 28, 28}
 		// Its hover lights up against the box as the header's do against the
 		// panel.
 		ip.iconButton(buf, th, st, tRepaste, btn, blend(boxTint, th.to, 0.08), a, func(cx, cy float64, c rgb, al float64) {
@@ -523,12 +665,43 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	}
 }
 
+// browse puts an arrow on each side of the box, in the panel's margin, to
+// go through the recent dictations: earlier on the left, later on the right.
+// They show while the pointer is on the box, dimmed where there is no
+// further to go.
+func (ip *islandPainter) browse(buf []byte, th theme, st islandState, box rect, muted rgb, a float64) {
+	if len(st.recent) < 2 {
+		return
+	}
+	w, h := islandWinW*scale, islandWinH*scale
+	s := float64(scale)
+	older := rect{box.x - 13, box.y, 15, box.h}
+	newer := rect{box.x + box.w - 2, box.y, 15, box.h}
+	ip.targets[tOlder], ip.targets[tNewer] = older, newer
+	ip.browseArea = rect{older.x, box.y, newer.x + newer.w - older.x, box.h}
+	if !st.onBox {
+		return
+	}
+	arrow := func(tg target, r rect, can, back bool) {
+		c, al := muted, a
+		switch {
+		case !can:
+			al *= 0.3
+		case st.over == tg:
+			c = th.to
+		}
+		chevron(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, s, c, al, back)
+	}
+	arrow(tOlder, older, st.at < len(st.recent)-1, true)
+	arrow(tNewer, newer, st.at > 0, false)
+}
+
 func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left, top float64, ink, muted, tint rgb, a float64) {
 	w, h := islandWinW*scale, islandWinH*scale
 	s := float64(scale)
 	right := left + panelW - panelPad
 	row := func(i int, label string, tg target) float64 {
-		y := top + 50 + float64(i)*30
+		y := top + 45 + float64(i)*30
 		r := rect{left + panelPad - 6, y - 3, panelW - 2*panelPad + 12, 28}
 		if tg != tNone {
 			ip.targets[tg] = r
@@ -569,6 +742,8 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 		ip.line(buf, labelFace, note, right-nw, y+15, muted, a)
 	}
 
+	toggle(5, ip.t("Today's figures"), st.stats, tStats)
+
 	y = row(4, ip.t("Pill style"), tNone)
 	// Three segments in one rounded bar, the chosen one lit.
 	seg := 30.0
@@ -607,7 +782,7 @@ func (ip *islandPainter) rulesView(buf []byte, th theme, st islandState, left, t
 		if i >= maxRules {
 			break
 		}
-		y := top + 50 + float64(i)*ruleRow
+		y := top + 45 + float64(i)*ruleRow
 		tg := tRule0 + target(i)
 		box := rect{left + panelPad - 6, y - 3, panelW - 2*panelPad + 12, ruleRow - 2}
 		ip.targets[tg] = box
@@ -691,7 +866,7 @@ func (ip *islandPainter) iconButton(buf []byte, th theme, st islandState, tg tar
 // buttons, not the rows that already say what they do.
 func tipped(tg target) bool {
 	switch tg {
-	case tPin, tOpenVito, tMenu, tRepaste, tMic, tCopy, tRestore, tWords, tSaved:
+	case tPin, tOpenVito, tMenu, tRepaste, tMic, tCopy, tRestore, tWords, tSaved, tOlder, tNewer:
 		return true
 	}
 	return false
@@ -782,12 +957,43 @@ func wordsIcon(buf []byte, w, h int, cx, cy, s float64, c rgb, a float64) {
 	}
 }
 
-// duration writes minutes short, as the stats page does: 24m, 1h 24m.
-func (ip *islandPainter) duration(min int) string {
-	if h := min / 60; h > 0 {
-		return fmt.Sprintf("%d%s %d%s", h, ip.t("h"), min%60, ip.t("m"))
+// figPart is a piece of a stat's figure: a number, or its unit drawn smaller.
+type figPart struct {
+	s    string
+	unit bool
+}
+
+// durationParts writes a time given in seconds short, so it fits the stat's
+// column: 40s, 4m 3s, and from an hour on 1h 3m (no seconds then).
+func (ip *islandPainter) durationParts(sec int) []figPart {
+	h, m, s := sec/3600, sec%3600/60, sec%60
+	var out []figPart
+	add := func(n int, u string) { out = append(out, figPart{s: strconv.Itoa(n)}, figPart{s: ip.t(u), unit: true}) }
+	switch {
+	case h > 0:
+		add(h, "h")
+		add(m, "m")
+	case m > 0:
+		add(m, "m")
+		if s > 0 {
+			add(s, "s")
+		}
+	default:
+		add(s, "s")
 	}
-	return fmt.Sprintf("%d%s", min, ip.t("m"))
+	return out
+}
+
+// duration is durationParts as one string, for a tooltip.
+func (ip *islandPainter) duration(sec int) string {
+	var b strings.Builder
+	for i, p := range ip.durationParts(sec) {
+		if i > 0 && !p.unit {
+			b.WriteRune(' ') // a tooltip wraps around the time, not in it
+		}
+		b.WriteString(p.s)
+	}
+	return b.String()
 }
 
 // number writes n with the thousands grouped the way the language does.
@@ -910,7 +1116,8 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	st := islandState{dark: p.dark(), view: viewMain, prev: viewMain, fade: 1}
 	read := func() {
 		c := p.d.Config()
-		st.cleanup, st.enter, st.live = c.Cleanup.Enabled, c.Injection.AppendEnter, c.UI.PillLive
+		st.cleanup, st.enter, st.live = c.Cleanup.Enabled, c.Injection.AppendEnter, c.UI.PillLiveEnabled()
+		st.stats = c.UI.IslandStatsEnabled()
 		st.partials = stt.HasPartials(c.STT)
 		st.style = StyleOf(c.UI.PillStyle)
 		st.rules = st.rules[:0]
@@ -928,10 +1135,13 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	}
 	day := func() {
 		if p.src.Today != nil {
-			st.words, st.saved = p.src.Today()
+			st.day = p.src.Today()
 		}
-		if p.src.Last != nil {
-			st.last = p.src.Last()
+		if p.src.Recent != nil {
+			st.recent, st.at, st.last = p.src.Recent(recentN), 0, ""
+			if len(st.recent) > 0 {
+				st.last = st.recent[0]
+			}
 		}
 	}
 	read()
@@ -944,19 +1154,38 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	// pixels higher in the window than laid out, so the panel can reach the
 	// top of the screen, which the window itself may not cross.
 	var shift int
-	region := func(height float64) [4]int {
-		return [4]int{int((islandWinW - panelW) / 2), int(panelBottom-height) - shift, int(panelW), int(height + 2)}
+	panelBox := func(height float64) [4]int {
+		return [4]int{int((islandWinW - panelW) / 2), int(panelFoot-height) - shift, int(panelW), int(height + 2)}
 	}
-	// logoRegion: the folded island's logo, where it is in the open one.
-	logoRegion := func() [4]int {
-		cx, cy := (islandWinW-panelW)/2+panelPad+12, panelBottom-st.ph+27
-		return [4]int{int(cx - 16), int(cy-16) - shift, 32, 32}
+	// region: the panel, and under it only the microphone's room (or the
+	// embedded pill's), so the free space beside it lets the pointer through.
+	// under: what the embedded pill takes the pointer over (an open card),
+	// on the island.
+	var under inputArea
+	region := func(height float64) [][4]int {
+		r := [][4]int{panelBox(height), {int(islandWinW/2 - 60), int(panelFoot) - shift, 120, int(footH)}}
+		for _, b := range under {
+			r = append(r, [4]int{b[0] + (islandWinW-surfaceW)/2, b[1] + int(islandMarkY-pillY) - shift, b[2], b[3]})
+		}
+		return r
 	}
-	w, err := openIslandWindow(output, islandWinW, islandWinH, region(st.ph))
+	// foldRegion: the folded island's resting pill, where its foot is.
+	foldRegion := func() [4]int {
+		x, y, iw, ih := idleInputBox(st.style)
+		return [4]int{x + foldDX, y + foldDY - shift, iw, ih}
+	}
+	// A pinned island opens on the screen it was pinned to (after a restart,
+	// or when its window came back), not on the one in use; only when that
+	// screen is gone does it fall back to the one in use.
+	if output == 0 && pin != nil {
+		output = outputNamed(pin.Screen)
+	}
+	w, err := openIslandWindow(output, islandWinW, islandWinH, inputArea(region(st.ph)).union())
 	if err != nil {
 		p.log.Debug("no island", "err", err)
 		return false
 	}
+	w.setInput(region(st.ph)...)
 	defer w.close()
 	mv, _ := w.(mover)
 	var offX, offUp int   // where a pinned island stands
@@ -989,7 +1218,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		offX = min(max(offX, -maxX), maxX)
 		// The panel as tall as it is now may reach the top edge; a taller
 		// view moves it down again (goTo).
-		offUp = min(offUp, max(0, sh-islandMargin-int(islandWinH-panelBottom)-int(st.height(st.view))-panelGap))
+		offUp = min(offUp, max(0, sh-islandMargin-int(islandWinH-panelBottom)-int(st.height(st.view)+footH)-panelGap))
 	}
 	// place puts a pinned window where the panel's foot is dragged to: the
 	// window as close over the panel as the screen lets it, and the picture
@@ -1000,12 +1229,12 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			return
 		}
 		foot := sh - islandMargin - int(islandWinH-panelBottom) - offUp
-		top := foot - int(math.Round(st.ph))
+		top := foot - int(math.Round(st.ph+footH))
 		win := min(max(top-panelGap, 0), sh-islandWinH)
 		mv.setPlace(sw/2-islandWinW/2+offX, win, sh)
-		if now := int(math.Round(panelBottom-st.ph)) - (top - win); now != shift {
+		if now := int(math.Round(st.top())) - (top - win); now != shift {
 			shift = now
-			w.setInput(region(max(st.ph, st.height(st.view))))
+			w.setInput(region(max(st.ph, st.height(st.view)))...)
 		}
 	}
 	if st.pinned && mv != nil {
@@ -1068,7 +1297,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	goTo := func(v view) {
 		st.prev, st.view, st.fade = st.view, v, 0
 		// While it changes, the region covers both views' panels.
-		w.setInput(region(max(st.height(st.prev), st.height(v))))
+		w.setInput(region(max(st.height(st.prev), st.height(v)))...)
 		// Pinned near the top, a taller view moves down to fit.
 		if st.pinned && mv != nil {
 			offX, offUp = wantX, wantUp
@@ -1079,7 +1308,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	// overPill says whether a point is on the embedded pill's part of the panel.
 	overPill := func(x, y float64) bool {
 		l := (islandWinW - panelW) / 2
-		return embedded != nil && st.embed > 0.5 && x >= l && x < l+panelW && y >= islandMarkY-embedLiveUp-blockLine-6 && y < panelBottom
+		return embedded != nil && st.embed > 0.5 && x >= l && x < l+panelW && y >= islandMarkY-embedLiveUp-blockLine-6 && y < islandWinH
 	}
 	// toPill turns a point on the island into one on the pill's picture.
 	toPill := func(e pointerEvent) pointerEvent {
@@ -1183,7 +1412,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 					if mv != nil {
 						mv.setOffset(0, 0, 0)
 						shift = 0
-						w.setInput(region(st.height(st.view)))
+						w.setInput(region(st.height(st.view))...)
 					}
 				}
 				p.pinnedUp.Store(st.pinned)
@@ -1208,6 +1437,13 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 						p.log.Warn("island: restore failed", "err", err)
 					}
 				}()
+			case tg == tOlder && st.at < len(st.recent)-1, tg == tNewer && st.at > 0:
+				if tg == tOlder {
+					st.at++
+				} else {
+					st.at--
+				}
+				st.last, st.copied = st.recent[st.at], false
 			case tg == tCopy:
 				text := st.last
 				st.copied, copiedAt = true, time.Now()
@@ -1223,7 +1459,9 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			case tg == tEnter:
 				change(func(c *config.Config) { c.Injection.AppendEnter = !c.Injection.AppendEnter })
 			case tg == tLive:
-				change(func(c *config.Config) { c.UI.PillLive = !c.UI.PillLive })
+				change(func(c *config.Config) { on := !c.UI.PillLiveEnabled(); c.UI.PillLive = &on })
+			case tg == tStats:
+				change(func(c *config.Config) { on := !c.UI.IslandStatsEnabled(); c.UI.IslandStats = &on })
 			case tg == tStyleBars, tg == tStyleGlow, tg == tStyleVito:
 				name := map[target]string{tStyleBars: "bars", tStyleGlow: "", tStyleVito: "vito"}[tg]
 				change(func(c *config.Config) { c.UI.PillStyle = name })
@@ -1324,6 +1562,10 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			if embedded.take(frame) {
 				dirty = true
 			}
+			if now := embedded.inputBoxes(); !slices.Equal(now, under) {
+				under = now
+				w.setInput(region(st.height(st.view))...)
+			}
 			ip.frame = frame
 			if st.embed < 1 {
 				st.embed = min(1, st.embed+step(islandView))
@@ -1331,6 +1573,20 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			}
 		} else if st.embed > 0 {
 			st.embed = max(0, st.embed-step(islandView))
+			moving = true
+		}
+		if embedded == nil && under != nil {
+			under = nil
+			w.setInput(region(st.height(st.view))...)
+		}
+		// The live words take the last dictation's place only while one is
+		// being dictated; under a card it stays.
+		if want := b2f(embedded != nil && p.d.Status().State != daemon.StateIdle); st.words != want {
+			if st.words < want {
+				st.words = min(want, st.words+step(islandView))
+			} else {
+				st.words = max(want, st.words-step(islandView))
+			}
 			moving = true
 		}
 		// Step the animations.
@@ -1344,7 +1600,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		if st.fade < 1 {
 			st.fade = min(1, st.fade+step(islandView))
 			if st.fade == 1 {
-				w.setInput(region(st.height(st.view)))
+				w.setInput(region(st.height(st.view))...)
 			}
 			moving = true
 		}
@@ -1370,12 +1626,12 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		}
 		if fold := st.pinned && time.Since(busyAt) > dimAfter+compactAfter; fold && st.compact < 1 {
 			if st.compact = min(1, st.compact+step(compactTime)); st.compact == 1 {
-				w.setInput(logoRegion())
+				w.setInput(foldRegion())
 			}
 			moving = true
 		} else if !fold && st.compact > 0 {
 			if st.compact == 1 {
-				w.setInput(region(st.height(st.view)))
+				w.setInput(region(st.height(st.view))...)
 			}
 			st.compact = max(0, st.compact-step(compactTime/2))
 			moving = true
@@ -1394,6 +1650,9 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		if over != st.over {
 			st.over, dirty = over, true
 			overSince, st.tip = time.Now(), 0
+		}
+		if on := inside && !dragging && !inPill && ip.browseArea.has(px, py); on != st.onBox {
+			st.onBox, dirty = on, true
 		}
 		// A tooltip for every button: what an icon does is not always plain.
 		if tipped(st.over) && time.Since(overSince) > tipDelay && st.tip < 1 {
@@ -1459,4 +1718,11 @@ func (st *islandState) known(id string) bool {
 		}
 	}
 	return false
+}
+
+func b2f(b bool) float64 {
+	if b {
+		return 1
+	}
+	return 0
 }

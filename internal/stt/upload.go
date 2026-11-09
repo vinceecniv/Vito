@@ -50,21 +50,21 @@ type UploadOutcome struct {
 
 // TranscribeUpload transcribes an audio file with whichever provider is
 // configured, and reports the language it detected when the provider says so.
-func TranscribeUpload(ctx context.Context, cfg config.STT, keyterms []string, path string, onProgress func(UploadProgress)) (UploadOutcome, error) {
+func TranscribeUpload(ctx context.Context, cfg config.STT, path string, onProgress func(UploadProgress)) (UploadOutcome, error) {
 	if onProgress == nil {
 		onProgress = func(UploadProgress) {}
 	}
 	switch cfg.Provider {
 	case "soniox":
-		return newSonioxFileClient(cfg, keyterms).transcribe(ctx, path, onProgress)
+		return newSonioxFileClient(cfg).transcribe(ctx, path, onProgress)
 	case "openai":
-		return newOpenAIClient(cfg, keyterms).transcribeUpload(ctx, path, onProgress)
+		return newOpenAIClient(cfg).transcribeUpload(ctx, path, onProgress)
 	case "whistle":
 		onProgress(UploadProgress{Phase: "transcribe"})
-		text, err := whistleFile{lang: whistleLang(cfg), keywords: keyterms}.TranscribeFile(ctx, path)
+		text, err := whistleFile{lang: whistleLang(cfg)}.TranscribeFile(ctx, path)
 		return UploadOutcome{Text: text}, err
 	}
-	return NewAsyncClient(cfg, keyterms).transcribeWithProgress(ctx, path, onProgress)
+	return NewAsyncClient(cfg).transcribeWithProgress(ctx, path, onProgress)
 }
 
 // UploadRateUSD is the price per hour of audio for file transcription, which is
@@ -199,15 +199,14 @@ const SonioxAsyncModel = "stt-async-v5"
 const sonioxAPI = "https://api.soniox.com"
 
 type sonioxFileClient struct {
-	cfg      config.STT
-	keyterms []string
-	http     *http.Client
+	cfg  config.STT
+	http *http.Client
 }
 
-func newSonioxFileClient(cfg config.STT, keyterms []string) *sonioxFileClient {
+func newSonioxFileClient(cfg config.STT) *sonioxFileClient {
 	// No client-level timeout: an hour of audio takes minutes, and the caller's
 	// context is what should decide when to give up.
-	return &sonioxFileClient{cfg: cfg, keyterms: keyterms, http: &http.Client{}}
+	return &sonioxFileClient{cfg: cfg, http: &http.Client{}}
 }
 
 // TranscribeFile makes the client a Transcriber, so a dropped Soniox stream can
@@ -288,9 +287,6 @@ func (c *sonioxFileClient) createJob(ctx context.Context, fileID string) (string
 	}
 	if c.cfg.Language != "auto" && c.cfg.Language != "" {
 		body["language_hints"] = []string{c.cfg.Language}
-	}
-	if len(c.keyterms) > 0 {
-		body["context"] = map[string]any{"terms": c.keyterms}
 	}
 	data, _ := json.Marshal(body)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, sonioxAPI+"/v1/transcriptions", strings.NewReader(string(data)))

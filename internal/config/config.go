@@ -45,11 +45,10 @@ type STT struct {
 	APIKey   string `json:"api_key"`  // AssemblyAI
 	// SonioxAPIKey is kept separate so switching provider doesn't throw the
 	// other key away — you can keep both configured and flip between them.
-	SonioxAPIKey    string `json:"soniox_api_key"`
-	Language        string `json:"language"` // ISO code or "auto"
-	Model           string `json:"model"`    // AssemblyAI speech_model; empty = server default
-	KeytermsEnabled bool   `json:"keyterms_enabled"`
-	EUEndpoint      bool   `json:"eu_endpoint"`
+	SonioxAPIKey string `json:"soniox_api_key"`
+	Language     string `json:"language"` // ISO code or "auto"
+	Model        string `json:"model"`    // AssemblyAI speech_model; empty = server default
+	EUEndpoint   bool   `json:"eu_endpoint"`
 	// OpenAI-compatible provider (provider="openai"): any endpoint that speaks the
 	// OpenAI audio API (POST /audio/transcriptions) — OpenAI itself, Groq's hosted
 	// Whisper, or a server on this machine (whisper.cpp, Speaches, a Parakeet
@@ -147,7 +146,6 @@ type Snippet struct {
 }
 
 type Dictionary struct {
-	Keyterms    []string     `json:"keyterms"`
 	Corrections []Correction `json:"corrections"`
 	Snippets    []Snippet    `json:"snippets,omitempty"`
 }
@@ -156,7 +154,6 @@ type Dictionary struct {
 // write through into the other.
 func (d Dictionary) Clone() Dictionary {
 	return Dictionary{
-		Keyterms:    append([]string(nil), d.Keyterms...),
 		Corrections: append([]Correction(nil), d.Corrections...),
 		Snippets:    append([]Snippet(nil), d.Snippets...),
 	}
@@ -209,11 +206,15 @@ type UI struct {
 	// PillStyle is how the pill shows the voice: "" the glow, "bars" or "vito"
 	// (the character).
 	PillStyle string `json:"pill_style,omitempty"`
-	// PillLive shows the words in the pill while you speak.
-	PillLive bool `json:"pill_live,omitempty"`
+	// PillLive shows the words in the pill while you speak. Nil-safe: unset
+	// counts as on, for new users and for those updating alike (it used to be
+	// a plain bool whose false was never written).
+	PillLive *bool `json:"pill_live,omitempty"`
 	// IslandPin keeps the island open as a window of its own, where it was
 	// dragged; the pill then shows in it instead of on the screens.
 	IslandPin *IslandPin `json:"island_pin,omitempty"`
+	// IslandStats shows today's figures in the island. Nil-safe: unset is on.
+	IslandStats *bool `json:"island_stats,omitempty"`
 	// WelcomeDone records that the onboarding welcome card was dismissed. It lives
 	// here, in Vito's own config, rather than in the browser's localStorage on
 	// purpose: an uninstall+reinstall that deletes all settings must bring the
@@ -342,6 +343,12 @@ func (u UI) PillEnabled() bool { return u.Pill == nil || *u.Pill }
 
 // PillIdleEnabled reports whether the resting pill shows between dictations.
 func (u UI) PillIdleEnabled() bool { return u.PillIdle == nil || *u.PillIdle }
+
+// PillLiveEnabled reports whether the pill shows the words while you speak.
+func (u UI) PillLiveEnabled() bool { return u.PillLive == nil || *u.PillLive }
+
+// IslandStatsEnabled reports whether the island shows today's figures.
+func (u UI) IslandStatsEnabled() bool { return u.IslandStats == nil || *u.IslandStats }
 
 // TypingWPM maps the configured typing-speed choice to a words-per-minute value
 // used to estimate saved typing time.

@@ -1156,7 +1156,19 @@
 "Hide settings": "ക്രമീകരണങ്ങൾ മറയ്ക്കുക",
 "Pill": "പിൽ",
 "Updates": "അപ്ഡേറ്റുകൾ",
-"Kind regards,\nYour name": "ആദരപൂർവ്വം,\nനിങ്ങളുടെ പേര്"
+"Kind regards,\nYour name": "ആദരപൂർവ്വം,\nനിങ്ങളുടെ പേര്",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "ഡച്ച്, ഇംഗ്ലീഷ്, ജർമ്മൻ, ഫ്രഞ്ച്, സ്പാനിഷ്, ഇറ്റാലിയൻ, പോർച്ചുഗീസ്, പോളിഷ്, ചെക്ക്, സ്ലോവാക്, ഹംഗേറിയൻ, റൊമാനിയൻ, ബൾഗേറിയൻ, ക്രൊയേഷ്യൻ, സ്ലോവേനിയൻ, ഗ്രീക്ക്, സ്വീഡിഷ്, ഡാനിഷ്, ഫിന്നിഷ്, എസ്റ്റോണിയൻ, ലാത്വിയൻ, ലിത്വാനിയൻ, മാൾട്ടീസ്, റഷ്യൻ, ഉക്രേനിയൻ — സ്വയമേവ തിരിച്ചറിയുന്നു. മറ്റ് ഭാഷകൾക്ക് അനുയോജ്യമല്ല.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "ഇംഗ്ലീഷ്, ഡച്ച്, ജർമ്മൻ, ഫ്രഞ്ച്, സ്പാനിഷ്, ഇറ്റാലിയൻ, പോളിഷ്.",
+"Type (keystrokes)": "ടൈപ്പ് ചെയ്യുക (കീസ്ട്രോക്കുകൾ)",
+"Paste (⌘V)": "ഒട്ടിക്കുക (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "എല്ലാ ഡിക്ടേഷനിലും തിരുത്തലുകൾ പ്രയോഗിക്കുന്നു. ടിപ്പ്: ചരിത്രത്തിൽ ഒരു വാക്കിന് മുകളിൽ മൗസ് വച്ച് ക്ലിക്ക് ചെയ്ത് അതിന് ഒരു തിരുത്തൽ വേഗത്തിൽ ചേർക്കുക.",
+"Corrections and text snippets": "തിരുത്തലുകളും ടെക്സ്റ്റ് സ്നിപ്പറ്റുകളും",
+"spoken today": "ഇന്ന് സംസാരിച്ചത്",
+"Today's figures": "ഇന്നത്തെ കണക്കുകൾ",
+"Earlier dictation": "മുമ്പത്തെ ഡിക്ടേഷൻ",
+"Later dictation": "അടുത്ത ഡിക്ടേഷൻ",
+"sentences": "വാക്യങ്ങൾ",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "റദ്ദാക്കാൻ കീ ആവശ്യമില്ല: ഡിക്ടേറ്റ് ചെയ്യുമ്പോൾ പില്ലിലേക്ക് പോയിന്റ് ചെയ്ത് × ക്ലിക്ക് ചെയ്യുക. മനസ്സ് മാറിയോ? അഞ്ച് മിനിറ്റ് നേരം പിൽ “ഡിക്ടേഷൻ റദ്ദാക്കി” എന്ന് കാണിക്കും: അതിൽ ക്ലിക്ക് ചെയ്താൽ Vito ആ ഡിക്ടേഷൻ ഒട്ടിക്കും."
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

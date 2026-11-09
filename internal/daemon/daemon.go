@@ -707,14 +707,10 @@ func (d *Daemon) start() error {
 	s.media = media.Start(cfg.Audio.MediaAction, d.log)
 	d.trackMedia(s.media) // so shutdown can restore it regardless of session state
 
-	var keyterms []string
-	if cfg.STT.KeytermsEnabled {
-		keyterms = dictionary.Keyterms(cfg.Dictionary)
-	}
 	// Prewarm: the STT socket dials while the first chunks are buffered.
 	s.lastActivity.Store(time.Now().UnixMilli())
 	var lastPartial string // reset the silence timer only on genuinely new text
-	s.stream = stt.NewStream(s.stt, keyterms, d.log, func(partial string) {
+	s.stream = stt.NewStream(s.stt, d.log, func(partial string) {
 		if p := strings.TrimSpace(partial); p != "" && p != lastPartial {
 			lastPartial = p
 			s.heard.Store(p)
@@ -1120,11 +1116,6 @@ func (d *Daemon) finish(s *session) {
 		}
 	}
 
-	var keyterms []string
-	if cfg.STT.KeytermsEnabled {
-		keyterms = dictionary.Keyterms(cfg.Dictionary)
-	}
-
 	var text string
 	var err error
 	source := "stream"
@@ -1133,7 +1124,7 @@ func (d *Daemon) finish(s *session) {
 		source = "async"
 		ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 		var out stt.UploadOutcome
-		out, err = stt.TranscribeUpload(ctx, s.stt, keyterms, s.spool.Path(), nil)
+		out, err = stt.TranscribeUpload(ctx, s.stt, s.spool.Path(), nil)
 		cancel()
 		text = out.Text
 		if err != nil {
@@ -1153,7 +1144,7 @@ func (d *Daemon) finish(s *session) {
 				d.finishWithError(s, err, duration)
 				return
 			}
-			if fallback := stt.Fallback(s.stt, keyterms); fallback != nil {
+			if fallback := stt.Fallback(s.stt); fallback != nil {
 				d.log.Warn("stream failed, falling back to async transcription", "err", err)
 				d.note("vito: verwerken…", "streaming viel weg, spool wordt verwerkt")
 				asyncCtx, cancel := context.WithTimeout(context.Background(), 120*time.Second)

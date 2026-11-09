@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Holandski, engleski, njemački, francuski, španski, italijanski, portugalski, poljski, češki, slovački, mađarski, rumunski, bugarski, hrvatski, slovenski, grčki, švedski, danski, finski, estonski, latvijski, litvanski, malteški, ruski i ukrajinski — prepoznaju se automatski. Nije prikladno za druge jezike.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Engleski, holandski, njemački, francuski, španski, italijanski, poljski.",
+"Type (keystrokes)": "Kucanje (pritisci tipki)",
+"Paste (⌘V)": "Zalijepi (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Ispravke se primjenjuju na svaki diktat. Savjet: u Historiji pređite mišem preko riječi i kliknite na nju da brzo dodate ispravku za nju.",
+"Corrections and text snippets": "Ispravke i tekstualni isječci",
+"spoken today": "izgovoreno danas",
+"Today's figures": "Današnje brojke",
+"Earlier dictation": "Prethodni diktat",
+"Later dictation": "Sljedeći diktat",
+"sentences": "rečenica",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Za otkazivanje ne treba tipka: dok diktirate, pokažite na pilulu i kliknite ×. Predomislili ste se? Pet minuta pilula prikazuje “Diktat otkazan”: kliknite na nju i Vito ipak zalijepi diktat.",
 "Most used words": "Najčešće korištene riječi",
 "Chart in background": "Grafikon u pozadini",
 "The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.": "Riječi koje ste u ovom razdoblju najviše diktirali — što veća riječ, to češće. Riječi od tri slova ili manje i uobičajene riječi poput ‘želim’ ili ‘jer’ su izostavljene.",

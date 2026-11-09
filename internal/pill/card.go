@@ -82,12 +82,12 @@ var (
 	labelFace, mainFace  font.Face
 	bodyFace             font.Face // the island's running text
 	wordFace, figureFace font.Face // Baloo: the wordmark, a big figure
+	statFace             font.Face // Baloo: the island's figures for the day
 	facesErr             error
 	medalMu              sync.Mutex
 	medals               = map[string]*image.RGBA{}
 	ellipsis             = "…"
 	textLeft             = cardPadding + cardIcon + 11
-	textRoom             = cardMaxW - textLeft - cardPadRight
 	labelSize, mainSize  = 10.5, 13.0
 	labelBase, mainBaseY = 20.0, 37.0
 	mainLine             = 17.0 // the distance between two main lines
@@ -125,17 +125,25 @@ func faces() error {
 		if wordFace, facesErr = opentype.NewFace(baloo, opts(19)); facesErr != nil {
 			return
 		}
-		figureFace, facesErr = opentype.NewFace(baloo, opts(24))
+		if figureFace, facesErr = opentype.NewFace(baloo, opts(24)); facesErr != nil {
+			return
+		}
+		statFace, facesErr = opentype.NewFace(baloo, opts(17))
 	})
 	return facesErr
 }
 
 // newCard lays out a card; icon is the achievement's medal id, or "".
 func newCard(kind cardKind, label, main, medal string) (*card, error) {
+	return layCard(kind, label, main, medal, cardMaxW)
+}
+
+// layCard lays out a card at most maxW wide (logical pixels).
+func layCard(kind cardKind, label, main, medal string, maxW float64) (*card, error) {
 	if err := faces(); err != nil {
 		return nil, err
 	}
-	room := fixed.I(int(textRoom * scale))
+	room := fixed.I(int((maxW - textLeft - cardPadRight) * scale))
 	label = fit(labelFace, label, room)
 	first, rest := wrap(mainFace, main, room)
 	c := &card{kind: kind, height: cardH}
@@ -147,7 +155,7 @@ func newCard(kind cardKind, label, main, medal string) (*card, error) {
 		c.height = cardH + mainLine
 	}
 	text := float64(max(lw, mw, rw).Ceil()) / scale
-	c.width = math.Max(cardMinW, math.Min(cardMaxW, textLeft+text+cardPadRight))
+	c.width = math.Max(cardMinW, math.Min(maxW, textLeft+text+cardPadRight))
 	if medal != "" {
 		c.icon = medalImage(medal)
 	}
@@ -159,7 +167,8 @@ func wrap(face font.Face, s string, room fixed.Int26_6) (first, rest string) {
 	if font.MeasureString(face, s) <= room {
 		return s, ""
 	}
-	words := strings.Fields(s)
+	// Plain spaces only: a time's no-break space (21m 40s) holds together.
+	words := strings.FieldsFunc(s, func(r rune) bool { return r == ' ' || r == '\n' })
 	for i := len(words) - 1; i > 0; i-- {
 		if line := strings.Join(words[:i], " "); font.MeasureString(face, line) <= room {
 			return line, strings.Join(words[i:], " ")

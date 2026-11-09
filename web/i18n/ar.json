@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "الهولندية، الإنجليزية، الألمانية، الفرنسية، الإسبانية، الإيطالية، البرتغالية، البولندية، التشيكية، السلوفاكية، المجرية، الرومانية، البلغارية، الكرواتية، السلوفينية، اليونانية، السويدية، الدنماركية، الفنلندية، الإستونية، اللاتفية، الليتوانية، المالطية، الروسية والأوكرانية — تُكتشف تلقائيًا. غير مناسب للغات الأخرى.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "الإنجليزية، الهولندية، الألمانية، الفرنسية، الإسبانية، الإيطالية، البولندية.",
+"Type (keystrokes)": "كتابة (ضغطات المفاتيح)",
+"Paste (⌘V)": "لصق (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "تُطبَّق التصحيحات على كل إملاء. نصيحة: في السجل، مرّر المؤشر فوق كلمة وانقر عليها لإضافة تصحيح لها بسرعة.",
+"Corrections and text snippets": "التصحيحات والمقتطفات النصية",
+"spoken today": "وقت التحدث اليوم",
+"Today's figures": "أرقام اليوم",
+"Earlier dictation": "الإملاء السابق",
+"Later dictation": "الإملاء التالي",
+"sentences": "جمل",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "لا حاجة إلى مفتاح للإلغاء: أثناء الإملاء، أشر إلى الكبسولة وانقر على ×. غيّرت رأيك؟ لمدة خمس دقائق تعرض الكبسولة “أُلغي الإملاء”: انقر عليها وسيلصق Vito الإملاء رغم ذلك.",
 "Status": "الحالة",
 "Settings": "الإعدادات",
 "Dictionary": "القاموس",

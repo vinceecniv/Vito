@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "הולנדית, אנגלית, גרמנית, צרפתית, ספרדית, איטלקית, פורטוגזית, פולנית, צ׳כית, סלובקית, הונגרית, רומנית, בולגרית, קרואטית, סלובנית, יוונית, שוודית, דנית, פינית, אסטונית, לטבית, ליטאית, מלטזית, רוסית ואוקראינית — מזוהות אוטומטית. לא מתאים לשפות אחרות.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "אנגלית, הולנדית, גרמנית, צרפתית, ספרדית, איטלקית, פולנית.",
+"Type (keystrokes)": "הקלדה (הקשות מקלדת)",
+"Paste (⌘V)": "הדבקה (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "תיקונים מוחלים על כל הכתבה. טיפ: בהיסטוריה, רחף עם העכבר מעל מילה ולחץ עליה כדי להוסיף לה תיקון במהירות.",
+"Corrections and text snippets": "תיקונים וקטעי טקסט",
+"spoken today": "דובר היום",
+"Today's figures": "הנתונים של היום",
+"Earlier dictation": "הכתבה קודמת",
+"Later dictation": "הכתבה הבאה",
+"sentences": "משפטים",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "אין צורך במקש כדי לבטל: בזמן ההכתבה, הצבע על הגלולה ולחץ על ×. שינית את דעתך? במשך חמש דקות הגלולה מציגה “ההכתבה בוטלה”: לחץ עליה ו-Vito ידביק את ההכתבה בכל זאת.",
 "Status": "סטטוס",
 "Settings": "הגדרות",
 "Dictionary": "מילון",

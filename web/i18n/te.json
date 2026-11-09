@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "డచ్, ఇంగ్లీష్, జర్మన్, ఫ్రెంచ్, స్పానిష్, ఇటాలియన్, పోర్చుగీస్, పోలిష్, చెక్, స్లోవాక్, హంగేరియన్, రొమేనియన్, బల్గేరియన్, క్రొయేషియన్, స్లోవేనియన్, గ్రీక్, స్వీడిష్, డానిష్, ఫిన్నిష్, ఎస్టోనియన్, లాట్వియన్, లిథువేనియన్, మాల్టీస్, రష్యన్ మరియు ఉక్రేనియన్ — స్వయంచాలకంగా గుర్తించబడతాయి. ఇతర భాషలకు తగినది కాదు.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "ఇంగ్లీష్, డచ్, జర్మన్, ఫ్రెంచ్, స్పానిష్, ఇటాలియన్, పోలిష్.",
+"Type (keystrokes)": "టైప్ చేయి (కీస్ట్రోక్‌లు)",
+"Paste (⌘V)": "అతికించు (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "ప్రతి డిక్టేషన్‌కు సవరణలు వర్తిస్తాయి. చిట్కా: చరిత్రలో ఒక పదంపై మౌస్ ఉంచి క్లిక్ చేస్తే దానికి త్వరగా సవరణ జోడించవచ్చు.",
+"Corrections and text snippets": "సవరణలు మరియు టెక్స్ట్ స్నిప్పెట్‌లు",
+"spoken today": "ఈరోజు మాట్లాడినది",
+"Today's figures": "ఈరోజు గణాంకాలు",
+"Earlier dictation": "మునుపటి డిక్టేషన్",
+"Later dictation": "తదుపరి డిక్టేషన్",
+"sentences": "వాక్యాలు",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "రద్దు చేయడానికి ఏ కీ అవసరం లేదు: మీరు డిక్టేట్ చేస్తున్నప్పుడు పిల్‌పై పాయింటర్ ఉంచి × క్లిక్ చేయండి. మనసు మార్చుకున్నారా? ఐదు నిమిషాల పాటు పిల్ “డిక్టేషన్ రద్దు చేయబడింది” అని చూపిస్తుంది: దానిపై క్లిక్ చేస్తే Vito ఆ డిక్టేషన్‌ను ఎలాగైనా అతికిస్తుంది.",
 "Vito now runs as an app on this computer": "Vito ఇప్పుడు ఈ కంప్యూటర్‌లో యాప్‌గా నడుస్తోంది",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "మీ డిక్టేషన్‌లు యాప్‌కు తరలించబడ్డాయి. ఇకపై అక్కడి నుండి డిక్టేట్ చేయండి — మీ హాట్‌కీతో, ప్రతి ప్రోగ్రామ్‌లో.",
 "Open Vito": "Vito తెరవండి",

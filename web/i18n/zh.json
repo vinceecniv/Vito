@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "荷兰语、英语、德语、法语、西班牙语、意大利语、葡萄牙语、波兰语、捷克语、斯洛伐克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛文尼亚语、希腊语、瑞典语、丹麦语、芬兰语、爱沙尼亚语、拉脱维亚语、立陶宛语、马耳他语、俄语和乌克兰语——自动识别。不适用于其他语言。",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "英语、荷兰语、德语、法语、西班牙语、意大利语、波兰语。",
+"Type (keystrokes)": "键入（模拟按键）",
+"Paste (⌘V)": "粘贴（⌘V）",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "更正会应用于每次口述。提示：在历史记录中，将鼠标悬停在某个词上并点击，即可快速为其添加更正。",
+"Corrections and text snippets": "更正与文本片段",
+"spoken today": "今日口述时长",
+"Today's figures": "今日数据",
+"Earlier dictation": "上一条口述",
+"Later dictation": "下一条口述",
+"sentences": "句",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "取消无需按键：口述时，将鼠标指向浮标并点击 ×。改变主意了？五分钟内浮标会显示“口述已取消”：点击它，Vito 仍会粘贴这次口述。",
 "Dictate today to start a streak": "今天口述一次，开启连续记录",
 "Nothing cleaned up in this period yet": "此期间还没有清理过的内容",
 "No languages detected in this period yet": "此期间还没有检测到语言",
