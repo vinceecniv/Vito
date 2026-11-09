@@ -28,6 +28,7 @@ import (
 	"vito/internal/history"
 	"vito/internal/inject"
 	"vito/internal/localstt"
+	"vito/internal/longrec"
 	"vito/internal/media"
 	"vito/internal/notify"
 	"vito/internal/stt"
@@ -113,6 +114,10 @@ type Event struct {
 	// pass was skipped for lack of credit.
 	Credit        string `json:"credit,omitempty"`
 	CleanupCredit string `json:"cleanup_credit,omitempty"`
+	// Long is the running long recording's live state ("long"); Session names
+	// a long recording whose document changed ("long_doc").
+	Long    *longrec.Status `json:"long,omitempty"`
+	Session string          `json:"session,omitempty"`
 }
 
 type session struct {
@@ -194,6 +199,9 @@ type Daemon struct {
 	// whistle is the small built-in speech model (provider "whistle"): runs
 	// in-process per clip, so there is nothing to start, only to download.
 	whistle *whistle.Manager
+	// long is the mode for long recordings (long.go); nil when its folder
+	// could not be opened.
+	long *long
 }
 
 // LocalSTT exposes the managed local engine to the HTTP layer.
@@ -347,6 +355,7 @@ func (d *Daemon) restoreMedia() {
 // Shutdown restores any ducked/paused media and cancels an in-flight recording,
 // so the daemon never exits leaving system audio suppressed. Call before exit.
 func (d *Daemon) Shutdown() {
+	d.shutdownLong()
 	_ = d.Cancel() // restores + tears down when recording
 	d.dropKept()
 	d.restoreMedia() // catch the brief stop→finish window, or any leftover
@@ -399,6 +408,7 @@ func New(cfg *config.Config, log *slog.Logger, audioCtx *audio.Context, hist *hi
 	d.whistle = whistle.NewManager(log, func(st whistle.Status) { d.emit(Event{Type: "whistle", Whistle: &st}) })
 	stt.WhistleEngine = d.whistle.Engine
 	d.local.SetDesired(cfg.STT.Provider == "local", cfg.STT.LocalVariant)
+	d.initLong()
 	go d.retentionLoop()
 	return d
 }

@@ -205,6 +205,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("POST /api/restore", s.auth(s.handleRestore))
 	mux.HandleFunc("GET /api/backups", s.auth(s.handleBackupList))
 	mux.HandleFunc("POST /api/backups", s.auth(s.handleBackupNow))
+	s.longRoutes(mux)
 	mux.HandleFunc("GET /api/backups/{name}", s.auth(s.handleBackupDownload))
 	mux.HandleFunc("POST /api/backups/{name}/restore", s.auth(s.handleBackupRestore))
 	return s.rejectCrossOrigin(mux)

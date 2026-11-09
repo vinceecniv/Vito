@@ -303,6 +303,7 @@ type Config struct {
 	Update     Update  `json:"update"`
 	Backup     Backup  `json:"backup"`
 	Sync       Sync    `json:"sync,omitzero"`
+	Long       Long    `json:"long,omitzero"`
 	// Demo fills the UI with fabricated English sample data — statistics, costs,
 	// history, dictionary and a replayed live transcript — for screenshots and
 	// demos. Deliberately file-only (no setting in the UI) so it can't be turned
@@ -346,6 +347,16 @@ func (u UI) PillIdleEnabled() bool { return u.PillIdle == nil || *u.PillIdle }
 
 // PillLiveEnabled reports whether the pill shows the words while you speak.
 func (u UI) PillLiveEnabled() bool { return u.PillLive == nil || *u.PillLive }
+
+// Long holds the settings of long recordings (internal/longrec).
+type Long struct {
+	// Clean runs the AI cleanup per block (nil = on, while cleanup itself is
+	// configured and on).
+	Clean *bool `json:"clean,omitempty"`
+}
+
+// CleanEnabled reports whether long recordings are cleaned per block.
+func (l Long) CleanEnabled() bool { return l.Clean == nil || *l.Clean }
 
 // IslandStatsEnabled reports whether the island shows today's figures.
 func (u UI) IslandStatsEnabled() bool { return u.IslandStats == nil || *u.IslandStats }
