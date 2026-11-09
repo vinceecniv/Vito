@@ -1918,6 +1918,12 @@
     box-shadow:0 10px 30px rgba(0,0,0,.14); padding:6px; min-width:190px; }
   .lr-menu button { display:block; width:100%; text-align:left; background:none; border:none; font:inherit; font-size:13.5px; color:var(--text); padding:9px 12px; border-radius:8px; cursor:var(--cur-hand); }
   .lr-menu button:hover { background:var(--accent-soft); }
+  .lr-menu button { display:flex; align-items:center; gap:9px; }
+  .lr-menu button svg { width:16px; height:16px; flex:none; color:var(--text2); }
+  .btn.lr-ib { display:inline-flex; align-items:center; justify-content:center; gap:7px; }
+  .btn.lr-ib svg { width:17px; height:17px; flex:none; }
+  .btn.lr-ib .lr-ic-trash { width:18px; height:18px; }
+  .btn.lr-ib .lr-ic-chev { width:14px; height:14px; margin-left:-2px; opacity:.7; }
   .lr-mk { padding:10px 0; border-bottom:1px solid var(--card-border); font-size:13px; }
   .lr-mk:last-child { border-bottom:none; }
   .lr-mk .lr-mt { display:flex; gap:8px; align-items:baseline; cursor:var(--cur-hand); }
@@ -2692,7 +2698,7 @@
           <button class="lr-discard" id="lr-discard" hidden>Started by mistake? <u>Throw away</u></button>
           <span class="lr-clock"><span class="lr-dot"></span><b id="lr-time">0:00</b><span id="lr-state"></span></span>
         </div>
-        <div class="banner warn lr-pausenote"><span class="grow"><b>Paused — nothing is being recorded.</b> Don't forget to resume.</span><button class="btn primary small" id="lr-resume2">Resume</button></div>
+        <div class="banner warn lr-pausenote"><span class="grow"><b>Paused — nothing is being recorded.</b> Don't forget to resume.</span><button class="btn primary small lr-ib" id="lr-resume2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>Resume</button></div>
         <div class="lr-cols">
           <div class="lr-textwrap">
             <div class="card lr-text" id="lr-live-text"></div>
@@ -2738,20 +2744,20 @@
         <div class="lr-docnav">
           <button class="btn ghost lr-back" id="lr-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>All recordings</button>
           <span class="grow"></span>
-          <button class="btn danger small" id="lr-delete">Delete</button>
+          <button class="btn danger small lr-ib" id="lr-delete"><svg class="lr-ic-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l.9 12.1A2 2 0 0 0 9.4 21h5.2a2 2 0 0 0 2-1.9L17.5 7M10 11v6M14 11v6"/></svg>Delete</button>
           <button class="btn primary small lr-new" id="lr-continue" data-tip-text="Record on in this recording; the new text follows the old" hidden><span class="lr-dot"></span>Continue recording</button>
         </div>
         <div class="lr-docbar">
           <div class="lr-dhead"><input class="lr-titlein" id="lr-dtitle" placeholder="Untitled recording" aria-label="Title of the recording"><span class="lr-meta" id="lr-dmeta"></span></div>
           <div class="lr-seg" role="group" aria-label="View"><button type="button" data-v="clean" class="on">Cleaned</button><button type="button" data-v="raw">Raw</button></div>
-          <button class="btn ghost small" id="lr-reclean">Clean again</button>
-          <div class="lr-exp"><button class="btn ghost small" id="lr-export">Export</button>
+          <button class="btn ghost small lr-ib" id="lr-reclean" data-tip-text="Clean the text up again from the raw transcript, with a rule set of your choice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2.5l-8 8"/><path d="M10.5 6.5l6 6-5 6.5L2 10.5z"/><path d="M12 9.5l-5.5 5.5M9 9l-4 4M14.5 12l-4 4.5"/><path d="M1.8 16h.01M4.5 19.5h.01M8 22h.01" stroke-width="2.6"/></svg>Clean again</button>
+          <div class="lr-exp"><button class="btn ghost small lr-ib" id="lr-export"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11M7 10l5 5 5-5M4.5 20h15"/></svg>Export<svg class="lr-ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
             <div class="lr-menu" id="lr-export-menu" hidden>
-              <button type="button" data-f="md">Markdown (.md)</button>
-              <button type="button" data-f="txt">Text (.txt)</button>
-              <button type="button" data-f="srt">Subtitles (.srt)</button>
-              <button type="button" data-f="vtt">Subtitles (.vtt)</button>
-              <button type="button" data-f="audio">Audio (.wav)</button>
+              <button type="button" data-f="md"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Markdown (.md)</button>
+              <button type="button" data-f="txt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Text (.txt)</button>
+              <button type="button" data-f="srt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 12.5h3M12.5 12.5H17M7 15.5h6.5"/></svg>Subtitles (.srt)</button>
+              <button type="button" data-f="vtt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 12.5h3M12.5 12.5H17M7 15.5h6.5"/></svg>Subtitles (.vtt)</button>
+              <button type="button" data-f="audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h1.5M7 8.5v7M11 5v14M15 8v8M19 10.5v3"/></svg><span id="lr-exp-audio">Audio (.mp3)</span></button>
             </div></div>
         </div>
         <div id="lr-dnote"></div>
@@ -2778,7 +2784,7 @@
       <div class="lr-pop" id="lr-pop" hidden role="dialog" aria-label="Mark">
         <div class="lr-pop-h"><span id="lr-pop-title"></span><button class="lr-pop-x" id="lr-pop-close" aria-label="Close">×</button></div>
         <div class="lr-pop-hint">Drag the dots to move the start and end.</div>
-        <button class="btn danger small lr-pop-del" id="lr-pop-del">Remove mark</button>
+        <button class="btn danger small lr-pop-del lr-ib" id="lr-pop-del"><svg class="lr-ic-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l.9 12.1A2 2 0 0 0 9.4 21h5.2a2 2 0 0 0 2-1.9L17.5 7M10 11v6M14 11v6"/></svg>Remove mark</button>
       </div>
       <span class="lr-handle lr-handle-from" id="lr-h-from" data-edge="from" role="button" tabindex="0" aria-label="Start of the mark"><i></i></span>
       <span class="lr-handle lr-handle-to" id="lr-h-to" data-edge="to" role="button" tabindex="0" aria-label="End of the mark"><i></i></span>
@@ -2844,6 +2850,8 @@ const TR = { nl: {
   "Subtitles (.srt)":"Ondertitels (.srt)",
   "Subtitles (.vtt)":"Ondertitels (.vtt)",
   "Audio (.wav)":"Audio (.wav)",
+  "Audio (.mp3)":"Audio (.mp3)",
+  "Clean the text up again from the raw transcript, with a rule set of your choice":"De tekst opnieuw opschonen vanuit de ruwe transcriptie, met een regelset naar keuze",
   "A recording was not finished:":"Een opname is niet afgerond:",
   "of audio is saved. Restoring transcribes what had not been transcribed yet.":"audio is bewaard. Herstellen schrijft uit wat nog niet was uitgeschreven.",
   "Throw away":"Weggooien",
@@ -11440,9 +11448,9 @@ function lrRenderRecover(){
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--coral-ink)" stroke-width="1.8" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>
       <div class="grow"><b>${escapeHtml(t("A recording was not finished:"))} ${escapeHtml(lrTitle(s))}</b><br>
         <span style="color:var(--text2)">${lrClock(s.seconds)} ${escapeHtml(t("of audio is saved. Restoring transcribes what had not been transcribed yet."))}</span></div>
-      <button class="btn ghost small" data-discard>${escapeHtml(t("Throw away"))}</button>
-      <button class="btn ghost small" data-continue>${escapeHtml(t("Continue recording"))}</button>
-      <button class="btn primary small" data-restore>${escapeHtml(t("Restore"))}</button>
+      <button class="btn ghost small lr-ib" data-discard><svg class="lr-ic-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l.9 12.1A2 2 0 0 0 9.4 21h5.2a2 2 0 0 0 2-1.9L17.5 7M10 11v6M14 11v6"/></svg>${escapeHtml(t("Throw away"))}</button>
+      <button class="btn ghost small lr-ib" data-continue><span class="lr-dot"></span>${escapeHtml(t("Continue recording"))}</button>
+      <button class="btn primary small lr-ib" data-restore><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>${escapeHtml(t("Restore"))}</button>
     </div>`).join("");
   $("lr-recover").querySelectorAll(".banner").forEach(b => {
     const id = b.dataset.id;
@@ -12075,7 +12083,11 @@ $("lr-live-prof").onchange = async e => {
   } catch (err) { toast(err.message, "err"); }
   e.target.blur(); // H and M work again
 };
-$("lr-export").onclick = e => { e.stopPropagation(); $("lr-export-menu").hidden = !$("lr-export-menu").hidden; };
+$("lr-export").onclick = e => {
+  e.stopPropagation();
+  $("lr-exp-audio").textContent = t(LR.doc?.audio_type === "wav" ? "Audio (.wav)" : "Audio (.mp3)");
+  $("lr-export-menu").hidden = !$("lr-export-menu").hidden;
+};
 document.addEventListener("click", () => { $("lr-export-menu").hidden = true; });
 $("lr-export-menu").querySelectorAll("button").forEach(b => b.onclick = () => {
   $("lr-export-menu").hidden = true;
