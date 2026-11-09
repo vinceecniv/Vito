@@ -1808,6 +1808,10 @@
   .lr-count { display:flex; flex-direction:column; align-items:center; gap:18px; padding:56px 20px; text-align:center; }
   .lr-count-stage { display:flex; align-items:center; gap:6px; }
   .lr-count-vm { width:140px; height:150px; }
+  /* Vito says each number: the mouth opens and closes once per tick. */
+  .lr-count-vm .vmascot[data-say="1"] .vm-smile, .lr-count-vm .vmascot[data-say="1"] .vm-grin { display:none; }
+  .lr-count-vm .vmascot[data-say="1"] .vm-mouth-open { display:inline; transform-box:fill-box; transform-origin:center top; animation:lrSay .6s ease-in-out both; }
+  @keyframes lrSay { 0% { transform:scaleY(.15); } 30% { transform:scaleY(1.1); } 65% { transform:scaleY(.85); } 100% { transform:scaleY(.15); } }
   .lr-count-n { position:relative; width:104px; height:96px; border-radius:30px; display:grid; place-items:center; font-size:54px; font-weight:700; font-variant-numeric:tabular-nums;
     color:var(--coral-ink); background:var(--coral-soft); align-self:flex-start; margin-top:6px; }
   .lr-count-n::before { content:""; position:absolute; left:-12px; bottom:22px; border:10px solid transparent; border-right:14px solid var(--coral-soft); border-left:0; }
@@ -11314,6 +11318,8 @@ function lrCountdown(label, go){
     n.textContent = left; n.classList.remove("tick"); void n.offsetWidth; n.classList.add("tick");
     const [state, talk] = looks[left] || ["idle", ""];
     face.dataset.state = state; face.dataset.talk = talk;
+    face.dataset.say = "0"; void face.offsetWidth; face.dataset.say = "1";
+    clearTimeout(LR.sayT); LR.sayT = setTimeout(() => { face.dataset.say = "0"; }, 600);
   };
   $("lr-count-t").textContent = label;
   lrShow("count"); show();
@@ -11328,7 +11334,8 @@ function lrCountdown(label, go){
 function lrCancelCount(){
   if (!LR.countT) return;
   clearInterval(LR.countT); LR.countT = 0;
-  lrShow(LR.countBack || "list");
+  const back = LR.countBack;
+  lrShow(back === "doc" ? "doc" : back === "live" && LR.running ? "live" : "list");
 }
 $("lr-count-cancel").onclick = lrCancelCount;
 document.addEventListener("keydown", e => { if (e.key === "Escape" && LR.view === "count") lrCancelCount(); });
