@@ -11328,6 +11328,24 @@ function lrWhen(iso){
   const d = new Date(iso);
   return d.toLocaleString(uiLang === "en" ? undefined : uiLang, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 }
+// lrFriendly says when, the way you would say it: today and yesterday with
+// the time, this week by its day, this year without the year. lrExact is the
+// whole date, for the tooltip.
+function lrFriendly(iso){
+  const d = new Date(iso), now = new Date(), loc = uiLang === "en" ? undefined : uiLang;
+  if (isNaN(d)) return "";
+  const sod = x => new Date(x.getFullYear(), x.getMonth(), x.getDate());
+  const days = Math.round((sod(now) - sod(d)) / 86400000);
+  const time = d.toLocaleTimeString(loc, { hour: "2-digit", minute: "2-digit" });
+  if (days <= 0) return `${t("Today")}, ${time}`;
+  if (days === 1) return `${t("Yesterday")}, ${time}`;
+  if (days < 7) { const wd = d.toLocaleDateString(loc, { weekday: "long" }); return `${wd.charAt(0).toUpperCase() + wd.slice(1)}, ${time}`; }
+  return d.toLocaleDateString(loc, d.getFullYear() === now.getFullYear() ? { day: "numeric", month: "short" } : { day: "numeric", month: "short", year: "numeric" });
+}
+function lrExact(iso){
+  const d = new Date(iso);
+  return isNaN(d) ? "" : d.toLocaleString(uiLang === "en" ? undefined : uiLang, { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" });
+}
 function lrTitle(m){ return (m && m.title) || t("Recording") + " " + lrWhen(m.started); }
 
 function lrShow(view){
@@ -11390,7 +11408,7 @@ function lrRenderList(){
     all.map(s => `<div class="lr-row" data-id="${s.id}" tabindex="0" role="button">
       <span style="min-width:0; display:flex; flex-direction:column; gap:2px;"><span class="lr-t">${escapeHtml(lrTitle(s))}</span>
         <span class="lr-s">${s.words ? s.words.toLocaleString() + " " + escapeHtml(t("words")) : ""}</span></span>
-      <span class="lr-c">${escapeHtml(lrWhen(s.started))}</span>
+      <span class="lr-c" data-tip-text="${escapeHtml(lrExact(s.started))}">${escapeHtml(lrFriendly(s.started))}</span>
       <span class="lr-c">${lrClock(s.seconds)}</span>
       <span>${chip(s)}</span></div>`).join("");
   $("lr-list").querySelectorAll(".lr-row[data-id]").forEach(r => {
