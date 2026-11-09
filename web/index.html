@@ -3539,7 +3539,7 @@ const TR = { nl: {
   "Hotkey cleared":"Sneltoets gewist",
   "Hotkey — start / stop":"Sneltoets — start / stop",
   "Hotkey — cancel":"Sneltoets — annuleren",
-  "No key needed to cancel: while you dictate, hover over the pill and click ×. For a few minutes afterwards, clicking “Dictation cancelled” in the pill brings the dictation back.":"Annuleren kan ook zonder toets: beweeg tijdens het dicteren over de pil en klik op ×. Een paar minuten daarna haal je het dictaat terug door in de pil op ‘Dictaat geannuleerd’ te klikken.",
+  "No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.":"Annuleren kan ook zonder toets: wijs tijdens het dicteren de pil aan en klik op ×. Toch bedacht? Vijf minuten lang toont de pil ‘Dictaat geannuleerd’: klik erop en Vito plakt het dictaat alsnog.",
   "start / stop":"start / stop",
   "cancel":"annuleren",
   "Press these combinations anywhere in Windows. Use at least Ctrl, Alt or {win}. Press Esc in a field to clear it.":"Druk deze combinaties waar dan ook in Windows. Kies een combinatie met minstens Ctrl, Alt of {win}. Druk Esc in een veld om het te wissen.",
@@ -9531,7 +9531,7 @@ function renderActivation(info){
       `<div class="subhead" style="margin-top:20px;">${t("Your own keys")}</div>` +
       hkFieldHTML("toggle", t("Hotkey — start / stop")) +
       hkFieldHTML("cancel", t("Hotkey — cancel")) +
-      `<p class="act-note" style="margin:6px 0 0;">${t("No key needed to cancel: while you dictate, hover over the pill and click ×. For a few minutes afterwards, clicking “Dictation cancelled” in the pill brings the dictation back.")}</p>` +
+      `<p class="act-note" style="margin:6px 0 0;">${t("No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.")}</p>` +
       `<p class="act-note">${hkIsMac
         ? t("Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.")
         : isX11 ? t("Press these combinations anywhere on your desktop. Use at least Ctrl, Alt or Super. Press Esc in a field to clear it.")
