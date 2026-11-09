@@ -403,7 +403,8 @@
      chart and transcript are not .stat cards and would otherwise put it
      somewhere up the page. */
   .statgrid > .card { position:relative; -webkit-touch-callout:none; }
-  .statgrid.dragging, .statgrid.dragging * { user-select:none; -webkit-user-select:none; cursor:grabbing !important; }
+  .statgrid.holding, .statgrid.holding * { cursor:var(--cur-grab) !important; }
+  .statgrid.dragging, .statgrid.dragging * { user-select:none; -webkit-user-select:none; cursor:var(--cur-grabbing) !important; }
   .statgrid > .card.drag-src { opacity:.3; outline:2px dashed var(--accent); outline-offset:-2px; }
   /* Each card's own menu: a small ⋯ in its corner while you point at it. The
      controls some cards keep top right step aside for it. */
@@ -5882,15 +5883,40 @@ const CURSOR_CSS = (() => {
   // The I-beam for text: the same edge-then-fill drawing as the hand, a slim
   // stem with rounded serifs, hot spot in the middle of the stem.
   const beam = [
-    `<rect x="14.6" y="4" width="2.8" height="24" rx="1.4"/>`,
-    `<rect x="10.4" y="3" width="11.2" height="3.2" rx="1.6"/>`,
-    `<rect x="10.4" y="25.8" width="11.2" height="3.2" rx="1.6"/>`,
+    `<rect x="14.9" y="7.5" width="2.2" height="17" rx="1.1"/>`,
+    `<rect x="12" y="6.6" width="8" height="2.6" rx="1.3"/>`,
+    `<rect x="12" y="22.8" width="8" height="2.6" rx="1.3"/>`,
   ].join("");
-  const text = svg(
-    `<g filter="url(#s)"><g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round">${beam}</g>` +
-    `<g fill="url(#g)">${beam}</g></g>`);
+  const edged = (shape, w) =>
+    `<g filter="url(#s)"><g fill="#fff" stroke="#fff" stroke-width="${w}" stroke-linejoin="round">${shape}</g>` +
+    `<g fill="url(#g)">${shape}</g></g>`;
+  const text = svg(edged(beam, 3));
+  // Grab and grabbing, for dragging the dashboard's cards: the same hand open
+  // (fingers spread, while the card waits for the hold) and closed (a fist,
+  // while it moves), with the logo's bars on the palm like the pointing hand.
+  const palm = `<rect x="7.4" y="14" width="18" height="13.6" rx="5.6"/>`;
+  const open = palm + [
+    `<rect x="8.2" y="5.6" width="4.2" height="13" rx="2.1"/>`,
+    `<rect x="12.6" y="3.4" width="4.2" height="14" rx="2.1"/>`,
+    `<rect x="17" y="4.2" width="4.2" height="13" rx="2.1"/>`,
+    `<rect x="21.4" y="7" width="3.9" height="11" rx="1.95"/>`,
+    `<rect x="2.6" y="15.2" width="9" height="4.6" rx="2.3" transform="rotate(42 7 17.5)"/>`,
+  ].join("");
+  const fist = palm + [
+    `<rect x="8.2" y="10.4" width="4.2" height="7" rx="2.1"/>`,
+    `<rect x="12.6" y="9.4" width="4.2" height="7" rx="2.1"/>`,
+    `<rect x="17" y="9.8" width="4.2" height="7" rx="2.1"/>`,
+    `<rect x="21.4" y="11" width="3.9" height="6.4" rx="1.95"/>`,
+    `<rect x="4.4" y="15.4" width="8.6" height="4.6" rx="2.3" transform="rotate(14 8.7 17.7)"/>`,
+  ].join("");
+  const palmBars = `<g fill="#fff" opacity=".92">${[[11.6, 2.4], [14.1, 3.9], [16.6, 5.4], [19.1, 3.9], [21.6, 2.4]]
+    .map(([x, h]) => `<rect x="${x - .75}" y="19.8" width="1.5" height="${h}" rx=".75"/>`).join("")}</g>`;
+  const parting = (d) => `<path d="${d}" stroke="#2B2440" stroke-width=".8" stroke-linecap="round" opacity=".35"/>`;
+  const grab = svg(edged(open, 3.6) + parting("M12.5 7.5v10M16.9 6.5v11M21.3 8v9.5") + palmBars);
+  const grabbing = svg(edged(fist, 3.6) + parting("M12.5 11.6v5.6M16.9 11.4v5.8M21.3 12v5.4") + palmBars);
   const url = (x) => `url("data:image/svg+xml,${encodeURIComponent(x)}")`;
-  return `:root{--cur-arrow:${url(arrow)} 4 4, default;--cur-hand:${url(hand)} 12 2, pointer;--cur-text:${url(text)} 16 16, text}
+  return `:root{--cur-arrow:${url(arrow)} 4 4, default;--cur-hand:${url(hand)} 12 2, pointer;--cur-text:${url(text)} 16 16, text;` +
+    `--cur-grab:${url(grab)} 16 16, grab;--cur-grabbing:${url(grabbing)} 16 16, grabbing}
 html{cursor:var(--cur-arrow)}
 input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=button]):not([type=submit]),
 textarea,[contenteditable="true"],[contenteditable=""]{cursor:var(--cur-text)}
@@ -8440,7 +8466,8 @@ function renderStatCards(all){
   if (!grid) return;
   const HOLD_MS = 300, SLOP = 6;
   const NO_DRAG = "button, a, input, select, textarea, label, [contenteditable], #transcript";
-  let timer = null, down = null, last = null, card = null, ghost = null, off = null, justDragged = false;
+  let timer = null, down = null, last = null, card = null, ghost = null, off = null, justDragged = false, holdHint = null;
+  const endHold = () => { clearTimeout(holdHint); holdHint = null; grid.classList.remove("holding"); };
 
   grid.addEventListener("pointerdown", (e) => {
     if (e.button !== 0 || card) return;
@@ -8448,10 +8475,13 @@ function renderStatCards(all){
     if (!c || e.target.closest(NO_DRAG)) return;
     down = last = { x: e.clientX, y: e.clientY };
     timer = setTimeout(() => begin(c), HOLD_MS);
+    // The open hand says the hold is taking: not on a plain click, which is
+    // over before this.
+    holdHint = setTimeout(() => grid.classList.add("holding"), 120);
   });
   addEventListener("pointermove", (e) => {
     last = { x: e.clientX, y: e.clientY };
-    if (timer && Math.hypot(last.x - down.x, last.y - down.y) > SLOP) { clearTimeout(timer); timer = null; }
+    if (timer && Math.hypot(last.x - down.x, last.y - down.y) > SLOP) { clearTimeout(timer); timer = null; endHold(); }
     if (card) move();
   });
   addEventListener("pointerup", finish);
@@ -8462,6 +8492,7 @@ function renderStatCards(all){
 
   function begin(c){
     timer = null;
+    endHold();
     card = c;
     const z = uiZoom(), r = c.getBoundingClientRect();
     off = { x: last.x - r.left, y: last.y - r.top };
@@ -8516,6 +8547,7 @@ function renderStatCards(all){
   }
   function finish(){
     if (timer) { clearTimeout(timer); timer = null; }
+    endHold();
     if (!card) return;
     ghost.remove();
     card.classList.remove("drag-src");
