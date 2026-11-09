@@ -119,6 +119,8 @@
   .lr-navrec { display:flex; align-items:center; gap:9px; width:100%; margin:0 0 12px; padding:9px 12px; border-radius:10px; border:1px solid color-mix(in srgb, #EF4444 45%, transparent);
     background:color-mix(in srgb, #EF4444 10%, transparent); color:var(--text); font:inherit; font-size:13.5px; font-weight:600; cursor:var(--cur-hand); text-align:left; }
   .lr-navrec[hidden] { display:none; }
+  .dash-long { display:inline-flex; align-items:center; gap:8px; margin-left:auto; }
+  .dash-long:hover { border-color:var(--accent); color:var(--text); background:var(--accent-soft); }
   .lr-navrec:hover { background:color-mix(in srgb, #EF4444 18%, transparent); }
   .lr-navrec-l { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .lr-navrec b { font-variant-numeric:tabular-nums; font-size:12.5px; }
@@ -1810,7 +1812,23 @@
   .lr-two { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
   .lr-tool { display:flex; flex-direction:column; align-items:center; gap:3px; padding:11px 6px; border-radius:12px; border:1px solid var(--input-border);
     background:var(--card); font:inherit; font-size:13px; color:var(--text); cursor:var(--cur-hand); }
-  .lr-tool:hover { border-color:var(--accent); }
+  .lr-tool:hover { border-color:var(--accent); background:var(--accent-soft); }
+  /* Every button on the recordings page answers the pointer. */
+  #tab-long .btn, #lr-navrec, .lr-tool, .lr-seg button, .lr-tolive, .lr-selmark, .lr-pop-x, .lr-hx, .lr-mx, .lr-discard u {
+    transition:background-color .15s, border-color .15s, color .15s, filter .15s, opacity .15s, transform .1s; }
+  #tab-long .btn:not(:disabled):active, .lr-tolive:active, .lr-selmark:active { transform:translateY(1px); }
+  #tab-long .btn.primary:not(:disabled):hover { filter:brightness(1.1) saturate(1.05); }
+  #tab-long .btn.ghost:not(:disabled):hover { border-color:var(--accent); color:var(--text); background:var(--accent-soft); }
+  #tab-long .btn.danger:not(:disabled):hover { border-color:var(--coral); background:color-mix(in srgb, var(--coral) 12%, transparent); }
+  #tab-long .lr-stopbtn:not(:disabled):hover { opacity:.86; }
+  #tab-long .lr-stopbtn.lr-arm:hover { opacity:1; filter:brightness(1.08); }
+  .lr-seg button:not(.on):hover { color:var(--text); background:color-mix(in srgb, var(--card) 55%, transparent); }
+  .lr-tolive:hover, .lr-selmark:hover { filter:brightness(1.1); }
+  .lr-pop-x:hover { color:var(--text); }
+  .lr-hx:hover, .lr-mx:hover { color:var(--coral-ink) !important; }
+  .lr-discard:hover { color:var(--text2); }
+  .lr-discard:hover u { text-decoration-thickness:2px; }
+  .lr-mk .lr-mt:hover span { color:var(--accent); }
   .lr-tool.lr-hit { animation:lrHitRing .7s ease-out; }
   #lr-mark.lr-hit { border-color:var(--amber-ink); }
   @keyframes lrHitRing { 0% { box-shadow:0 0 0 0 color-mix(in srgb, var(--amber-ink) 60%, transparent); transform:scale(.96); } 100% { box-shadow:0 0 0 12px color-mix(in srgb, var(--amber-ink) 0%, transparent); transform:scale(1); } }
@@ -1884,6 +1902,14 @@
   .lr-count-s { font-size:12.5px; color:var(--text3); margin-top:-10px; }
   .lr-discard { background:none; border:none; font:inherit; font-size:12.5px; color:var(--text3); cursor:var(--cur-hand); padding:6px 4px; }
   .lr-discard u { color:var(--coral-ink); text-underline-offset:2px; }
+  .lr-overall { margin-bottom:16px; }
+  .lr-overall[hidden] { display:none; }
+  .lr-ov-h { font-weight:600; font-size:13.5px; margin-bottom:12px; }
+  .lr-ovgrid { display:grid; grid-template-columns:repeat(auto-fit, minmax(92px, 1fr)); gap:14px 14px; }
+  .lr-ovgrid > div { display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .lr-ovgrid > div[hidden] { display:none; }
+  .lr-ovgrid b { font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1; }
+  .lr-ovgrid span { font-size:12px; color:var(--text3); }
   .lr-stats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 12px; }
   .lr-stats div { display:flex; flex-direction:column; gap:2px; min-width:0; }
   .lr-stats b { font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1; transition:color .4s; }
@@ -1917,6 +1943,8 @@
     box-shadow:0 10px 30px rgba(0,0,0,.14); padding:6px; min-width:190px; }
   .lr-menu button { display:block; width:100%; text-align:left; background:none; border:none; font:inherit; font-size:13.5px; color:var(--text); padding:9px 12px; border-radius:8px; cursor:var(--cur-hand); }
   .lr-menu button:hover { background:var(--accent-soft); }
+  .lr-copyw { position:relative; }
+  .lr-menu button span { white-space:nowrap; }
   .lr-menu button { display:flex; align-items:center; gap:9px; }
   .lr-menu button svg { width:16px; height:16px; flex:none; color:var(--text2); }
   .btn.lr-ib { display:inline-flex; align-items:center; justify-content:center; gap:7px; }
@@ -2094,6 +2122,7 @@
           <div class="rowflex">
             <button class="btn primary" id="btn-toggle">Start / Stop</button>
             <button class="btn ghost" id="btn-cancel" hidden>Cancel</button>
+            <button class="btn ghost helper-only dash-long" id="btn-long" data-tip-text="Start a long recording — a lecture, a meeting, a long session. Vito counts down 3, 2, 1 on the Recordings page."><span class="lr-dot"></span>Long recording</button>
           </div>
           <div id="timings"></div>
         </div>
@@ -2693,6 +2722,18 @@
       </div>
       <div id="lr-recover"></div>
       <div id="lr-list-view">
+        <div class="card lr-overall" id="lr-overall" hidden>
+          <div class="lr-ov-h">All recordings</div>
+          <div class="lr-ovgrid">
+            <div><b data-ov="count">0</b><span>recordings</span></div>
+            <div><b data-ov="time">0:00</b><span>recorded in total</span></div>
+            <div><b data-ov="words">0</b><span>words</span></div>
+            <div><b data-ov="wpm">–</b><span>words per minute</span></div>
+            <div><b data-ov="longest">–</b><span>longest recording</span></div>
+            <div><b data-ov="size">–</b><span>audio on disk</span></div>
+            <div data-ov-cost hidden><b data-ov="cost">–</b><span>cost, roughly</span></div>
+          </div>
+        </div>
         <div class="card" id="lr-list"></div>
         <p class="lr-foot">Recordings don't count towards your dictation statistics or history.</p>
       </div>
@@ -2761,6 +2802,13 @@
           <div class="lr-dhead"><input class="lr-titlein" id="lr-dtitle" placeholder="Untitled recording" aria-label="Title of the recording"><span class="lr-meta" id="lr-dmeta"></span></div>
           <div class="lr-seg" role="group" aria-label="View"><button type="button" data-v="clean" class="on">Cleaned</button><button type="button" data-v="raw">Raw</button></div>
           <button class="btn ghost small lr-ib lr-io" id="lr-reclean" aria-label="Clean again" data-tip-text="Clean again — from the raw transcript, with a rule set of your choice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2.5l-8 8"/><path d="M10.5 6.5l6 6-5 6.5L2 10.5z"/><path d="M12 9.5l-5.5 5.5M9 9l-4 4M14.5 12l-4 4.5"/><path d="M1.8 16h.01M4.5 19.5h.01M8 22h.01" stroke-width="2.6"/></svg></button>
+          <div class="lr-copyw"><button class="btn ghost small lr-ib lr-io" id="lr-copy" aria-label="Copy" data-tip-text="Copy the text to the clipboard — plain, as Markdown, formatted for Word or e-mail, or only the marks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="8.5" y="8.5" width="12" height="12" rx="2.2"/><path d="M15.5 8.5V5.5a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></svg><svg class="lr-ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+            <div class="lr-menu" id="lr-copy-menu" hidden>
+              <button type="button" data-c="text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 10h16M4 14h16M4 18h10"/></svg><span>Plain text</span></button>
+              <button type="button" data-c="rich"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18V6h5.5a3 3 0 0 1 0 6H5M10.5 12H12a3 3 0 0 1 0 6H5"/><path d="M16.5 6h4M18.5 6v12"/></svg><span>Formatted (Word, e-mail)</span></button>
+              <button type="button" data-c="md"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5"/><path d="M6 15V9l2.5 3L11 9v6M15.5 9v6M13.5 13l2 2 2-2"/></svg><span>Markdown</span></button>
+              <button type="button" data-c="marks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Only the marks</span></button>
+            </div></div>
           <button class="btn ghost small lr-ib lr-io" id="lr-folder" aria-label="Open folder" data-tip-text="Open folder — Vito keeps this recording here as Word, Markdown, text, subtitles and MP3. Copy what you need; if you change a file here, Vito leaves it and puts its update beside it."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2 2 0 0 1 5 5.5h4l2 2.2h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10.5h18"/></svg></button>
         </div>
         <div id="lr-dnote"></div>
@@ -2855,6 +2903,10 @@ const TR = { nl: {
   "Audio (.wav)":"Audio (.wav)",
   "Audio (.mp3)":"Audio (.mp3)",
   "Open folder":"Map openen",
+  "Copy the text to the clipboard — plain, as Markdown, formatted for Word or e-mail, or only the marks":"De tekst naar het klembord kopiëren — kaal, als Markdown, opgemaakt voor Word of e-mail, of alleen de markeringen",
+  "Plain text":"Kale tekst",
+  "Formatted (Word, e-mail)":"Opgemaakt (Word, e-mail)",
+  "Only the marks":"Alleen de markeringen",
   "Open folder — Vito keeps this recording here as Word, Markdown, text, subtitles and MP3. Copy what you need; if you change a file here, Vito leaves it and puts its update beside it.":"Map openen — Vito bewaart deze opname hier als Word, Markdown, tekst, ondertitels en MP3. Kopieer wat je nodig hebt; pas je hier een bestand aan, dan laat Vito het staan en zet zijn bijgewerkte versie ernaast.",
   "The recording's folder":"De map van de opname",
   "Vito keeps every recording as ordinary files in a folder of its own: Word, Markdown, plain text, subtitles (.srt, .vtt) and the audio as MP3. They follow every change — a title, a mark, more recording.":"Vito bewaart elke opname als gewone bestanden in een eigen map: Word, Markdown, platte tekst, ondertitels (.srt, .vtt) en het geluid als MP3. Ze volgen elke wijziging — een titel, een markering, verder opnemen.",
@@ -3696,6 +3748,13 @@ const TR = { nl: {
   "Last run:":"Laatste run:",
   "injected after":"geïnjecteerd na",
   "Start recording":"Start opname",
+  "Start dictating":"Start dicteren",
+  "recordings":"opnames",
+  "recorded in total":"in totaal opgenomen",
+  "longest recording":"langste opname",
+  "audio on disk":"audio op schijf",
+  "cost, roughly":"kosten, ongeveer",
+  "Start a long recording — a lecture, a meeting, a long session. Vito counts down 3, 2, 1 on the Recordings page.":"Start een lange opname — een college, een vergadering, een lange sessie. Vito telt af 3, 2, 1 op de pagina Opnames.",
   "Correction for «":"Correctie voor «",
   "Privacy mode: dictations aren't saved to history. Click to configure.":"Privacy-modus: dictaten worden niet in de geschiedenis opgeslagen. Klik om in te stellen.",
   "Privacy mode active":"Privacy-modus actief",
@@ -5381,7 +5440,7 @@ function setState(state) {
   const bt = $("btn-toggle");
   if (state === "recording") { bt.innerHTML = ICON_STOP + " " + t("Stop"); bt.disabled = false; }
   else if (state === "processing") { bt.textContent = t("Processing…"); bt.disabled = true; }
-  else { bt.innerHTML = ICON_REC + " " + t("Start recording"); bt.disabled = false; }
+  else { bt.innerHTML = ICON_REC + " " + t("Start dictating"); bt.disabled = false; }
   // There is nothing to cancel unless a recording is running, so the button only
   // exists while one is.
   $("btn-cancel").hidden = state !== "recording";
@@ -7364,10 +7423,10 @@ function renderWelcomeWeb(){
     const r = $("wl-retry"); if (r) r.onclick = () => api("/api/whistle/install", { method: "POST" });
   }
   const s = $("wl-start");
-  if (s && TOUCH_ONLY) s.innerHTML = "<b>" + ahEsc(t("Start recording")) + "</b>";
+  if (s && TOUCH_ONLY) s.innerHTML = "<b>" + ahEsc(t("Start dictating")) + "</b>";
   else if (s) {
     s.innerHTML = t("{start} or {key} · {change}")
-      .replace("{start}", "<b>" + ahEsc(t("Start recording")) + "</b>")
+      .replace("{start}", "<b>" + ahEsc(t("Start dictating")) + "</b>")
       .replace("{key}", "<b>" + ahEsc(fmtHotkey(webHotkey())) + "</b>")
       .replace("{change}", `<button type="button" class="linkbtn" id="wl-hotkey">${t("change")}</button>`);
     $("wl-hotkey").onclick = () => { selectTab("settings"); selectSetSection("activation"); };
@@ -11464,6 +11523,12 @@ function lrNavRec(){
   b.querySelector(".lr-navrec-l").textContent = st.state === "paused" ? t("Recording paused") : t("Recording");
   $("lr-navrec-time").textContent = lrClock(st.seconds);
 }
+// The dashboard's way into a long recording: to Recordings, counting down
+// (or back to the one running).
+$("btn-long").onclick = () => {
+  if (LR.running) { $("lr-navrec").click(); return; }
+  selectTab("long"); lrShow("list"); $("lr-new").click();
+};
 $("lr-navrec").onclick = () => {
   LR.docID = "";
   selectTab("long");
@@ -11486,6 +11551,7 @@ async function loadLong(){
   let r;
   try { r = await api("/api/long"); } catch (e) { $("lr-list").innerHTML = `<div class="lr-empty">${escapeHtml(e.message)}</div>`; return; }
   LR.sessions = r.sessions || [];
+  LR.cost = r.cost || null;
   LR.running = r.running || null;
   if (LR.running && LR.view !== "doc") { lrShow("live"); lrRenderLive(); lrFetchLiveDoc(); }
   else if (LR.view === "live" && !LR.running) lrShow("list");
@@ -11515,7 +11581,28 @@ function lrRenderRecover(){
   });
 }
 
+// lrRenderOverall sums every recording: how many, how long, how many words,
+// the speaking pace, the longest, the audio kept and (when not free) the cost.
+function lrRenderOverall(){
+  const all = (LR.sessions || []).filter(s => s.state !== "interrupted");
+  const card = $("lr-overall");
+  card.hidden = !all.length;
+  if (!all.length) return;
+  const sum = k => all.reduce((n, s) => n + (s[k] || 0), 0);
+  const secs = sum("seconds"), words = sum("words");
+  const set = (k, v) => { card.querySelector(`[data-ov="${k}"]`).textContent = v; };
+  set("count", all.length.toLocaleString());
+  set("time", lrClock(secs));
+  set("words", words.toLocaleString());
+  set("wpm", secs >= 30 && words ? Math.round(words / (secs / 60)).toLocaleString() : "–");
+  set("longest", lrClock(Math.max(...all.map(s => s.seconds || 0))));
+  set("size", lrBytes(sum("audio_bytes")));
+  const c = LR.cost, costBox = card.querySelector("[data-ov-cost]");
+  costBox.hidden = !c || !(c.total > 0);
+  if (!costBox.hidden) set("cost", fmtMoney(c.total, c.currency || "eur", 2));
+}
 function lrRenderList(){
+  lrRenderOverall();
   const rows = LR.sessions.filter(s => s.state !== "interrupted" && !(LR.running && s.id === LR.running.id));
   const live = LR.running ? [Object.assign({}, LR.sessions.find(s => s.id === LR.running.id) || {}, { id: LR.running.id, title: LR.running.title, seconds: LR.running.seconds, state: LR.running.state, started: (LR.sessions.find(s => s.id === LR.running.id) || {}).started || new Date().toISOString() })] : [];
   const all = live.concat(rows);
@@ -12137,6 +12224,40 @@ $("lr-live-prof").onchange = async e => {
   } catch (err) { toast(err.message, "err"); }
   e.target.blur(); // H and M work again
 };
+// Copy: the text as shown (cleaned or raw), in the form asked for.
+$("lr-copy").onclick = e => { e.stopPropagation(); $("lr-copy-menu").hidden = !$("lr-copy-menu").hidden; };
+document.addEventListener("click", () => { $("lr-copy-menu").hidden = true; });
+$("lr-copy-menu").querySelectorAll("button").forEach(b => b.onclick = async () => {
+  $("lr-copy-menu").hidden = true;
+  const d = LR.doc; if (!d) return;
+  const f = lrCopyForms(d);
+  try {
+    if (b.dataset.c === "rich" && window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({
+        "text/html": new Blob([f.html], { type: "text/html" }),
+        "text/plain": new Blob([f.text], { type: "text/plain" }) })]);
+    } else await navigator.clipboard.writeText(f[b.dataset.c] || f.text);
+    toast(t("Copied"), "ok");
+  } catch (er) { toast(er.message, "err"); }
+});
+// lrCopyForms writes a document four ways: plain text, Markdown, HTML (for
+// Word and e-mail: headings, marked sentences highlighted) and the marks alone.
+function lrCopyForms(d){
+  const m = d.meta, title = lrTitle(m), when = lrExact(m.started) + " · " + lrClock(m.seconds);
+  const items = d.items || [], marks = d.marks || [];
+  const head = it => (it.title || "").trim() || lrClock(it.at);
+  const join = (it, wrap) => (it.sentences || []).map(s => s.marked && wrap ? wrap(s.text) : s.text).join(" ");
+  const text = [title, ...items.map(it => it.kind === "header" ? head(it) : join(it))].join("\n\n") + "\n";
+  const markLine = mk => `${lrClock(mk.at)} — ${mk.text || ""}${mk.note ? ` (${mk.note})` : ""}`;
+  let md = `# ${title}\n\n_${when}_\n` + items.map(it => "\n" + (it.kind === "header" ? `## ${head(it)}` : join(it, x => `**${x}**`)) + "\n").join("");
+  if (marks.length) md += "\n---\n\n" + marks.map(mk => "- " + markLine(mk)).join("\n") + "\n";
+  const esc = escapeHtml;
+  let html = `<h1>${esc(title)}</h1><p style="color:#6b7280">${esc(when)}</p>` + items.map(it => it.kind === "header"
+    ? `<h2>${esc(head(it))}</h2>` : `<p>${(it.sentences || []).map(s => s.marked ? `<mark style="background:#fde68a">${esc(s.text)}</mark>` : esc(s.text)).join(" ")}</p>`).join("");
+  if (marks.length) html += "<hr><ul>" + marks.map(mk => `<li><b>${esc(lrClock(mk.at))}</b> — ${esc(mk.text || "")}${mk.note ? ` <i>(${esc(mk.note)})</i>` : ""}</li>`).join("") + "</ul>";
+  const onlyMarks = marks.length ? marks.map(markLine).join("\n\n") + "\n" : "";
+  return { text, md, html, marks: onlyMarks || text };
+}
 // The recording's own folder: Vito keeps its files there (Word, Markdown,
 // text, subtitles, MP3). The first time it says so, and what happens to a
 // file you change there.

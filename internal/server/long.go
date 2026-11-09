@@ -56,10 +56,17 @@ func (s *Server) handleLongList(w http.ResponseWriter, r *http.Request) {
 			AudioBytes int64 `json:"audio_bytes"`
 		}
 		sessions := make([]session, len(list))
+		var cost float64
+		currency := ""
 		for i, m := range list {
 			sessions[i] = session{m, store.AudioBytes(m.ID)}
+			c := s.longCost(m)
+			cost += m.Seconds/3600*c.SttPerHour + c.Clean
+			currency = c.Currency
 		}
 		out["sessions"] = sessions
+		// What all of them cost together, roughly (for the overview).
+		out["cost"] = map[string]any{"total": cost, "currency": currency}
 	}
 	s.writeJSON(w, http.StatusOK, out)
 }

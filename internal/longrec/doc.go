@@ -149,7 +149,10 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 	var paras []para
 	for _, b := range blocks {
 		text := b.Text
-		if c, ok := cleans[b.Index]; ok && c.Error == "" {
+		if strings.TrimSpace(b.Text) == "" {
+			// Nothing to clean (a silent last block, a failed one): done.
+			d.Cleaned++
+		} else if c, ok := cleans[b.Index]; ok && c.Error == "" {
 			d.Cleaned++
 			if !raw && strings.TrimSpace(c.Text) != "" {
 				text = c.Text
