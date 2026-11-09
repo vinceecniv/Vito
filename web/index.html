@@ -1804,7 +1804,17 @@
   .lr-paused .lr-clock b { color:var(--amber-ink); }
   @keyframes lrPulse { 0%,100% { box-shadow:0 0 0 0 color-mix(in srgb, var(--amber-ink) 55%, transparent); } 50% { box-shadow:0 0 0 9px color-mix(in srgb, var(--amber-ink) 0%, transparent); } }
   @media (prefers-reduced-motion:reduce) { .lr-paused #lr-pause, .lr-paused .lr-clock .lr-dot { animation:none; } }
-  .lr-stopbtn .lr-sq { width:11px; height:11px; border-radius:3px; background:var(--coral); }
+  .lr-stopbtn .lr-sq { width:11px; height:11px; flex:0 0 11px; border-radius:3px; background:var(--coral); }
+  .lr-count { display:flex; flex-direction:column; align-items:center; gap:18px; padding:56px 20px; text-align:center; }
+  .lr-count-n { width:120px; height:120px; border-radius:50%; display:grid; place-items:center; font-size:56px; font-weight:700; font-variant-numeric:tabular-nums;
+    color:var(--coral-ink); background:var(--coral-soft); }
+  .lr-count-n.tick { animation:lrTick 1s ease-out; }
+  @keyframes lrTick { 0% { transform:scale(1.18); box-shadow:0 0 0 0 color-mix(in srgb, var(--coral) 45%, transparent); } 100% { transform:scale(1); box-shadow:0 0 0 22px color-mix(in srgb, var(--coral) 0%, transparent); } }
+  @media (prefers-reduced-motion:reduce) { .lr-count-n.tick { animation:none; } }
+  .lr-count-t { font-size:17px; font-weight:600; }
+  .lr-count-s { font-size:12.5px; color:var(--text3); margin-top:-10px; }
+  .lr-discard { background:none; border:none; font:inherit; font-size:12.5px; color:var(--text3); cursor:var(--cur-hand); padding:6px 4px; }
+  .lr-discard u { color:var(--coral-ink); text-underline-offset:2px; }
   .lr-kv { display:flex; justify-content:space-between; gap:8px; font-size:13px; margin:6px 0; }
   .lr-kv span:first-child { color:var(--text2); }
   .lr-kv b { font-weight:500; font-variant-numeric:tabular-nums; }
@@ -2575,9 +2585,16 @@
         <div class="card" id="lr-list"></div>
         <p class="lr-foot">Recordings don't count towards your dictation statistics or history.</p>
       </div>
+      <div id="lr-count-view" class="card lr-count" hidden>
+        <div class="lr-count-n" id="lr-count-n">3</div>
+        <div class="lr-count-t" id="lr-count-t"></div>
+        <div class="lr-count-s">Press Esc to cancel.</div>
+        <button class="btn ghost" id="lr-count-cancel">Cancel</button>
+      </div>
       <div id="lr-live-view" class="lr-live" hidden>
         <div class="card lr-bar">
           <input class="lr-titlein" id="lr-title" placeholder="Untitled recording" aria-label="Title of the recording">
+          <button class="lr-discard" id="lr-discard" hidden>Started by mistake? <u>Throw away</u></button>
           <span class="lr-clock"><span class="lr-dot"></span><b id="lr-time">0:00</b><span id="lr-state"></span></span>
         </div>
         <div class="banner warn lr-pausenote"><span class="grow"><b>Paused — nothing is being recorded.</b> Don't forget to resume.</span><button class="btn primary small" id="lr-resume2">Resume</button></div>
@@ -2724,6 +2741,11 @@ const TR = { nl: {
   "Recording deleted":"Opname verwijderd",
   "Click again to stop":"Klik nogmaals om te stoppen",
   "All recordings":"Alle opnames",
+  "The recording starts…":"De opname begint…",
+  "The recording continues…":"De opname gaat verder…",
+  "Press Esc to cancel.":"Druk op Esc om te annuleren.",
+  "Started by mistake?":"Per ongeluk gestart?",
+  "Recording thrown away":"Opname weggegooid",
   "Continue recording":"Verder opnemen",
   "Record on in this recording; the new text follows the old":"Neem verder op in deze opname; de nieuwe tekst komt achter de oude",
   "Paused — nothing is being recorded.":"Gepauzeerd — er wordt niets opgenomen.",
@@ -11174,6 +11196,7 @@ function lrShow(view){
   LR.view = view;
   $("lr-list-view").hidden = view !== "list";
   $("lr-live-view").hidden = view !== "live";
+  $("lr-count-view").hidden = view !== "count";
   $("lr-doc-view").hidden = view !== "doc";
   $("lr-new").hidden = view !== "list";
 }
@@ -11236,11 +11259,45 @@ function lrRenderList(){
   });
 }
 
-$("lr-new").onclick = async () => {
+// A short countdown before recording starts, so it does not start out of the
+// blue; Cancel or Esc goes back to where you were.
+const LR_COUNT = 3;
+function lrCountdown(label, go){
+  const back = LR.view, n = $("lr-count-n");
+  let left = LR_COUNT;
+  const show = () => { n.textContent = left; n.classList.remove("tick"); void n.offsetWidth; n.classList.add("tick"); };
+  $("lr-count-t").textContent = label;
+  lrShow("count"); show();
+  clearInterval(LR.countT);
+  LR.countBack = back;
+  LR.countT = setInterval(() => {
+    if (--left > 0) { show(); return; }
+    clearInterval(LR.countT); LR.countT = 0;
+    go();
+  }, 1000);
+}
+function lrCancelCount(){
+  if (!LR.countT) return;
+  clearInterval(LR.countT); LR.countT = 0;
+  lrShow(LR.countBack || "list");
+}
+$("lr-count-cancel").onclick = lrCancelCount;
+document.addEventListener("keydown", e => { if (e.key === "Escape" && LR.view === "count") lrCancelCount(); });
+$("lr-new").onclick = () => lrCountdown(t("The recording starts…"), async () => {
   try {
     const r = await api("/api/long/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-    LR.running = r.running; LR.liveDoc = null;
+    LR.running = r.running; LR.liveDoc = null; LR.fresh = true;
+    delete $("lr-live-text").dataset.built;
     lrShow("live"); $("lr-title").value = ""; lrRenderLive();
+  } catch (e) { lrShow("list"); toast(e.message, "err"); }
+});
+// Within the first seconds a session started by mistake goes without a trace.
+const LR_DISCARD_SEC = 10;
+$("lr-discard").onclick = async () => {
+  try {
+    await api("/api/long/discard", { method: "POST" });
+    LR.running = null; LR.fresh = false;
+    lrShow("list"); loadLong(); toast(t("Recording thrown away"), "ok");
   } catch (e) { toast(e.message, "err"); }
 };
 
@@ -11249,6 +11306,7 @@ function lrRenderLive(){
   const st = LR.running; if (!st) return;
   $("lr-live-view").classList.toggle("lr-paused", st.state === "paused");
   $("lr-time").textContent = lrClock(st.seconds);
+  $("lr-discard").hidden = !(LR.fresh && st.seconds < LR_DISCARD_SEC);
   $("lr-s-audio").textContent = lrClock(st.seconds);
   $("lr-s-blocks").textContent = st.blocks || 0;
   $("lr-state").textContent = st.state === "paused" ? t("paused") : t("recording now");
@@ -11428,13 +11486,15 @@ function lrJump(at){
   best.scrollIntoView({ behavior: "smooth", block: "center" });
   best.classList.remove("lr-flash"); void best.offsetWidth; best.classList.add("lr-flash");
 }
-async function lrContinue(id){
-  try {
-    const r = await api(`/api/long/${id}/continue`, { method: "POST" });
-    LR.docID = ""; LR.running = r.running; LR.liveDoc = null;
-    delete $("lr-live-text").dataset.built;
-    lrShow("live"); $("lr-title").value = r.running.title || ""; lrRenderLive(); lrFetchLiveDoc(); loadLong();
-  } catch (e) { toast(e.message, "err"); }
+function lrContinue(id){
+  lrCountdown(t("The recording continues…"), async () => {
+    try {
+      const r = await api(`/api/long/${id}/continue`, { method: "POST" });
+      LR.docID = ""; LR.running = r.running; LR.liveDoc = null; LR.fresh = false;
+      delete $("lr-live-text").dataset.built;
+      lrShow("live"); $("lr-title").value = r.running.title || ""; lrRenderLive(); lrFetchLiveDoc(); loadLong();
+    } catch (e) { lrShow(LR.countBack || "list"); toast(e.message, "err"); }
+  });
 }
 $("lr-continue").onclick = () => { if (LR.docID) lrContinue(LR.docID); };
 $("lr-back").onclick = () => { LR.docID = ""; lrShow(LR.running ? "live" : "list"); loadLong(); };
@@ -11470,7 +11530,7 @@ function lrConfirmDelete(id, after){
 function longEvent(e){
   if (e.type === "long") {
     const st = e.long;
-    if (st.state === "done") { LR.running = null; if (LR.view === "live") lrShow("list"); return; }
+    if (st.state === "done") { LR.running = null; if (LR.view === "live") lrShow("list"); if (curTab === "long" && LR.view === "list") loadLong(); return; }
     const started = !LR.running;
     LR.running = st;
     if (curTab !== "long") return;

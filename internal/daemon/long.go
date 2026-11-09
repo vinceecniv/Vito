@@ -28,6 +28,7 @@ type long struct {
 	chunks    chan []byte
 	feeding   sync.WaitGroup
 	restoring map[string]bool // sessions RestoreLong is working on
+	fresh     bool            // the running session began now (not continued): it may be discarded
 }
 
 // ErrNoLong: the sessions folder could not be opened at start-up.
@@ -159,7 +160,7 @@ func (d *Daemon) startLong(open func(longrec.Options) (*longrec.Recorder, error)
 		}
 		return longrec.Status{}, fmt.Errorf("open microphone: %w", err)
 	}
-	l.rec, l.capture = rec, capture
+	l.rec, l.capture, l.fresh = rec, capture, fresh
 	d.log.Info("long recording started", "session", rec.ID(), "provider", sttProviderName(sttCfg))
 	return rec.Status(), nil
 }
@@ -270,6 +271,39 @@ func (d *Daemon) StopLong() (string, error) {
 		d.emit(Event{Type: "long_doc", Session: id})
 	}()
 	return id, nil
+}
+
+// DiscardLong throws a just-started session away — audio, text and all —
+// without transcribing it. A continued session cannot be: its earlier part
+// would go with it.
+func (d *Daemon) DiscardLong() error {
+	l := d.long
+	if l == nil {
+		return ErrNoLong
+	}
+	l.mu.Lock()
+	rec, capture, chunks := l.rec, l.capture, l.chunks
+	if rec == nil {
+		l.mu.Unlock()
+		return fmt.Errorf("no long recording is running")
+	}
+	if !l.fresh {
+		l.mu.Unlock()
+		return fmt.Errorf("a continued recording cannot be discarded; stop it instead")
+	}
+	l.rec, l.capture, l.chunks = nil, nil, nil
+	l.mu.Unlock()
+	capture.Stop()
+	close(chunks)
+	l.feeding.Wait()
+	rec.Abort()
+	id := rec.ID()
+	if err := l.store.Delete(id); err != nil {
+		return err
+	}
+	d.log.Info("long recording discarded", "session", id)
+	d.emit(Event{Type: "long", Long: &longrec.Status{ID: id, State: longrec.StateDone}})
+	return nil
 }
 
 // RestoreLong transcribes what an interrupted session had not yet, then

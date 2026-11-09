@@ -17,6 +17,7 @@ func (s *Server) longRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/long/pause", s.auth(s.longAction(s.d.PauseLong)))
 	mux.HandleFunc("POST /api/long/resume", s.auth(s.longAction(s.d.ResumeLong)))
 	mux.HandleFunc("POST /api/long/stop", s.auth(s.handleLongStop))
+	mux.HandleFunc("POST /api/long/discard", s.auth(s.longAction(s.d.DiscardLong)))
 	mux.HandleFunc("POST /api/long/mark", s.auth(s.handleLongMark))
 	mux.HandleFunc("POST /api/long/header", s.auth(s.handleLongHeader))
 	mux.HandleFunc("GET /api/long/{id}", s.auth(s.handleLongDoc))
