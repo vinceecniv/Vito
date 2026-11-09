@@ -727,3 +727,17 @@ func ensureGnomeExtension(log *slog.Logger) {}
 
 // GnomeExtension is a Linux matter.
 func GnomeExtension() string { return "" }
+
+// outputNamed finds the screen called name, 0 when it is gone: the pinned
+// island opens there again.
+func outputNamed(name string) (id uint32) {
+	withDPI(func() {
+		for _, m := range monitors() {
+			if m.name == name {
+				id = outputID(name)
+				return
+			}
+		}
+	})
+	return
+}

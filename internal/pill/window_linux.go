@@ -7,9 +7,11 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"maps"
 	"net"
 	"os"
 	"path/filepath"
+	"slices"
 	"sync"
 	"time"
 
@@ -120,16 +122,20 @@ type wlWindow struct {
 	globals   map[string]global
 	outputs   map[uint32]bool        // wl_output globals, by name
 	onChange  func(outputs []uint32) // set by watchOutputs
-	caps      uint32                 // the seat's capabilities
-	seatDone  chan struct{}          // the seat roundtrip is done
-	shaped    bool                   // the cursor-shape manager is bound
-	nextID    uint32                 // see newID
-	pointerCh chan pointerEvent      // nil: no pointer wanted
-	entered   uint32                 // the serial of the pointer's enter, for its cursor
-	relPtr    uint32                 // the relative pointer, once asked for (relative)
-	cursor    uint32                 // the shape shown
-	lw, lh    int                    // the size in logical pixels
-	margin    int                    // above the bottom edge of the screen
+	probe     map[uint32]uint32      // outputNamed: object id -> wl_output global
+	probed    map[uint32]string      // and that global's connector name
+	probeSync uint32                 // the roundtrip after the binds
+	probeDone chan struct{}
+	caps      uint32            // the seat's capabilities
+	seatDone  chan struct{}     // the seat roundtrip is done
+	shaped    bool              // the cursor-shape manager is bound
+	nextID    uint32            // see newID
+	pointerCh chan pointerEvent // nil: no pointer wanted
+	entered   uint32            // the serial of the pointer's enter, for its cursor
+	relPtr    uint32            // the relative pointer, once asked for (relative)
+	cursor    uint32            // the shape shown
+	lw, lh    int               // the size in logical pixels
+	margin    int               // above the bottom edge of the screen
 	shared    []byte
 	stride    int
 	height    int
@@ -259,6 +265,85 @@ func watchOutputs(stop <-chan struct{}, changed func(outputs []uint32)) error {
 	case <-w.lostCh:
 		return errors.New("compositor connection lost")
 	}
+}
+
+// outputNamed finds the screen called name (DP-1), 0 when there is none or
+// the desktop does not say: the pinned island opens there again.
+func outputNamed(name string) uint32 {
+	if name == "" {
+		return 0
+	}
+	if x11.Session() {
+		return x11OutputNamed(name)
+	}
+	if !available() {
+		return gnomeOutputNamed(name)
+	}
+	w, err := connect()
+	if err != nil {
+		return 0
+	}
+	defer w.close()
+	go w.read()
+	w.send(idDisplay, displayGetRegistry, nil, idRegistry)
+	w.send(idDisplay, displaySync, nil, idSync)
+	if w.await(w.ready) != nil {
+		return 0
+	}
+	if w.outputSupport() < outputName {
+		return 0
+	}
+	// Every id and the roundtrip's are set before the first bind goes out, so
+	// the reader never sees them change. Ids run on from the registry's
+	// roundtrip without a gap, in order.
+	w.mu.Lock()
+	globals := slices.Sorted(maps.Keys(w.outputs))
+	w.probe, w.probed, w.probeDone = map[uint32]uint32{}, map[uint32]string{}, make(chan struct{})
+	first := uint32(idSync + 1)
+	for i, g := range globals {
+		w.probe[first+uint32(i)] = g
+	}
+	w.probeSync = first + uint32(len(globals))
+	w.mu.Unlock()
+	for i, g := range globals {
+		w.bind(g, "wl_output", outputVersion, first+uint32(i))
+	}
+	w.send(idDisplay, displaySync, nil, w.probeSync)
+	if w.await(w.probeDone) != nil {
+		return 0
+	}
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	for g, n := range w.probed {
+		if n == name {
+			return g
+		}
+	}
+	return 0
+}
+
+// probing takes outputNamed's events: the roundtrip's end and each name.
+func (w *wlWindow) probing(object, opcode uint32, body []byte) bool {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.probe == nil {
+		return false
+	}
+	if object == w.probeSync && opcode == 0 {
+		close(w.probeDone)
+		return true
+	}
+	g, ok := w.probe[object]
+	if !ok {
+		return false
+	}
+	if opcode == outputName && len(body) > 4 {
+		n := int(binary.LittleEndian.Uint32(body))
+		if n > 0 && len(body) >= 4+n {
+			w.probed[g] = string(body[4 : 4+n-1])
+		}
+	}
+	return true
 }
 
 // available asks the compositor whether it offers layer-shell; an X11
@@ -684,6 +769,8 @@ func (w *wlWindow) event(object, opcode uint32, body []byte) {
 	switch {
 	case object == idDisplay && opcode == 0: // error
 		w.fail(protocolError(body))
+	// Before the cases below: outputNamed's outputs take ids they use too.
+	case object > idSync && w.probing(object, opcode, body):
 	case object == idRegistry && opcode == 0: // global
 		if name, iface, version, ok := parseGlobal(body); ok {
 			w.mu.Lock()

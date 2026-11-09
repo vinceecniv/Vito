@@ -329,3 +329,21 @@ func init() { focusSources = append(focusSources, gnomeFocus) }
 
 // gnomeAvailable: the extension is running.
 func gnomeAvailable() bool { return gnomePill() != nil }
+
+// gnomeOutputNamed finds the monitor gnomeConnector named, 0 when it is gone.
+func gnomeOutputNamed(name string) uint32 {
+	c := gnomePill()
+	if c == nil {
+		return 0
+	}
+	list, err := c.monitors()
+	if err != nil {
+		return 0
+	}
+	for _, m := range list {
+		if gnomeConnector(m.Index) == name {
+			return uint32(m.Index) + 1
+		}
+	}
+	return 0
+}

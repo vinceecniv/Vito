@@ -952,6 +952,12 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		cx, cy := (islandWinW-panelW)/2+panelPad+12, panelBottom-st.ph+27
 		return [4]int{int(cx - 16), int(cy-16) - shift, 32, 32}
 	}
+	// A pinned island opens on the screen it was pinned to (after a restart,
+	// or when its window came back), not on the one in use; only when that
+	// screen is gone does it fall back to the one in use.
+	if output == 0 && pin != nil {
+		output = outputNamed(pin.Screen)
+	}
 	w, err := openIslandWindow(output, islandWinW, islandWinH, region(st.ph))
 	if err != nil {
 		p.log.Debug("no island", "err", err)

@@ -652,3 +652,18 @@ var x11Focus = focusSource{
 }
 
 func init() { focusSources = append([]focusSource{x11Focus}, focusSources...) }
+
+// x11OutputNamed finds the monitor called name, 0 when it is gone.
+func x11OutputNamed(name string) uint32 {
+	c, err := x11.Open()
+	if err != nil {
+		return 0
+	}
+	defer c.Close()
+	for _, m := range x11Monitors(c) {
+		if m.name == name {
+			return x11OutputID(name)
+		}
+	}
+	return 0
+}
