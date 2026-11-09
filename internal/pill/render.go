@@ -56,9 +56,12 @@ type Frame struct {
 	// wide, Live the top one and LiveMore those under it; Live0 is the line
 	// that just went, and LiveOff the device pixels the lines still have to
 	// rise.
+	// LiveSink the device pixels they stand lower while there are fewer
+	// lines than room for, so they sit in the middle.
 	LiveBlock bool
 	Live0     *image.Alpha
 	LiveMore  []*image.Alpha
+	LiveSink  float64
 
 	// The resting character (rest.go): no voice, a smile, eyes Blink open
 	// (0..1), and Pose, PoseT seconds in. ChinY places it, logical; zero is
@@ -138,7 +141,7 @@ func drawBlock(buf []byte, w, h int, f Frame, cx, cy, s, a float64) {
 		if mask == nil {
 			continue
 		}
-		lineTop := cy - lh + float64(i-1)*lh + f.LiveOff
+		lineTop := cy - lh + float64(i-1)*lh + f.LiveOff + f.LiveSink
 		baseline := lineTop + (lh+float64((m.Ascent-m.Descent).Ceil()))/2
 		y0 := int(baseline) - m.Ascent.Ceil() - 1
 		b := mask.Bounds()

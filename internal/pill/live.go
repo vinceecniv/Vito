@@ -26,6 +26,9 @@ type ticker struct {
 	block bool    // two lines of plain text, room wide (the pinned island)
 	wV    float64 // and how fast each is moving, per second
 	offV  float64
+	// sinkTo: how far the block's lines stand lower to sit in the middle of
+	// their room, device pixels, and how fast LiveSink moves there.
+	sinkTo, sinkV float64
 }
 
 func (t *ticker) set(txt string) {
@@ -67,6 +70,7 @@ func (t *ticker) step(f *Frame) {
 	if t.block {
 		f.LiveW = t.room
 		spring(&f.LiveOff, &t.offV, 0)
+		spring(&f.LiveSink, &t.sinkV, t.sinkTo)
 		if f.LiveOff == 0 {
 			f.Live0 = nil
 		}
@@ -137,6 +141,12 @@ func (t *ticker) drawBlock(f *Frame, s string) {
 		f.Live0, _ = textMask(bodyFace, lines[0])
 		f.LiveOff += blockLine * scale
 		lines = lines[1:]
+	}
+	// Fewer lines than there is room for stand in the middle of it; the
+	// first one there at once, and they rise as more come.
+	t.sinkTo = float64(blockLines-max(1, len(lines))) * blockLine * scale / 2
+	if f.Live == nil {
+		f.LiveSink, t.sinkV = t.sinkTo, 0
 	}
 	f.Live, f.LiveMore = nil, nil
 	for i, l := range lines {
