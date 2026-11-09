@@ -3562,6 +3562,7 @@ const TR = { nl: {
   "Hotkey cleared":"Sneltoets gewist",
   "Hotkey — start / stop":"Sneltoets — start / stop",
   "Hotkey — cancel":"Sneltoets — annuleren",
+  "No key needed to cancel: while you dictate, hover over the pill and click ×. For a few minutes afterwards, clicking “Dictation cancelled” in the pill brings the dictation back.":"Annuleren kan ook zonder toets: beweeg tijdens het dicteren over de pil en klik op ×. Een paar minuten daarna haal je het dictaat terug door in de pil op ‘Dictaat geannuleerd’ te klikken.",
   "start / stop":"start / stop",
   "cancel":"annuleren",
   "Press these combinations anywhere in Windows. Use at least Ctrl, Alt or {win}. Press Esc in a field to clear it.":"Druk deze combinaties waar dan ook in Windows. Kies een combinatie met minstens Ctrl, Alt of {win}. Druk Esc in een veld om het te wissen.",
@@ -9507,10 +9508,16 @@ function renderActivation(info){
   // platform rather than on that flag: only Windows, macOS and X11 capture keys
   // themselves — on Wayland the binding belongs to the desktop.
   if (info.os === "windows" || hkIsMac || isX11) { // configurable global hotkeys
+    // Caps Lock and Fn are dictation keys of their own (hotkey.Gesture): hold
+    // to talk, double-tap for hands-free, whatever push_to_talk says. The
+    // switch only means something for a key combination.
+    const tglSpec = info.toggle && (info.toggle.configured || info.toggle.spec);
+    const pttApplies = tglSpec !== "capslock" && tglSpec !== "fn";
     body.innerHTML = dictKeyHTML(info) +
       `<div class="subhead" style="margin-top:20px;">${t("Your own keys")}</div>` +
       hkFieldHTML("toggle", t("Hotkey — start / stop")) +
       hkFieldHTML("cancel", t("Hotkey — cancel")) +
+      `<p class="act-note" style="margin:6px 0 0;">${t("No key needed to cancel: while you dictate, hover over the pill and click ×. For a few minutes afterwards, clicking “Dictation cancelled” in the pill brings the dictation back.")}</p>` +
       `<p class="act-note">${hkIsMac
         ? t("Press these combinations anywhere in macOS. Use at least Control, Option or Command. Press Esc in a field to clear it.")
         : isX11 ? t("Press these combinations anywhere on your desktop. Use at least Ctrl, Alt or Super. Press Esc in a field to clear it.")
@@ -9521,9 +9528,11 @@ function renderActivation(info){
       (hkIsMac && info.accessibility === false
         ? `<p class="act-note" style="margin-top:12px;"><button class="btn ghost small" id="ax-grant">${t("Grant Accessibility permission")}</button><br>${t("Tick Vito in System Settings — the hotkey starts working a few seconds later.")}</p>`
         : "") +
-      `<div class="subhead" style="margin-top:20px;">${t("Push to talk")}</div>` +
-      `<label class="tgl"><input type="checkbox" id="s-ptt"><span class="tr"></span> ${t("Hold the hotkey to talk, release to stop")}</label>` +
-      `<p class="act-note" style="margin:6px 0 0;">${t("A quick tap still toggles start/stop as before; holding the hotkey longer records only while you keep it down, and stops the moment you let go.")}</p>`;
+      (pttApplies
+        ? `<div class="subhead" style="margin-top:20px;">${t("Push to talk")}</div>` +
+          `<label class="tgl"><input type="checkbox" id="s-ptt"><span class="tr"></span> ${t("Hold the hotkey to talk, release to stop")}</label>` +
+          `<p class="act-note" style="margin:6px 0 0;">${t("A quick tap still toggles start/stop as before; holding the hotkey longer records only while you keep it down, and stops the moment you let go.")}</p>`
+        : "");
     ["toggle","cancel"].forEach(k => {
       setHkDisplay(k, info[k].configured || info[k].spec);
       renderHkStatus(k, info[k]);
