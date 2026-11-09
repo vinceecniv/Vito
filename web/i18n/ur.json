@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "ڈچ، انگریزی، جرمن، فرانسیسی، ہسپانوی، اطالوی، پرتگالی، پولش، چیک، سلوواک، ہنگیرین، رومانیائی، بلغاریائی، کروشیائی، سلووینیائی، یونانی، سویڈش، ڈینش، فِنش، اسٹونیائی، لیٹوین، لتھووینیائی، مالٹی، روسی اور یوکرینی — خودکار طور پر پہچانی جاتی ہیں۔ دوسری زبانوں کے لیے موزوں نہیں۔",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "انگریزی، ڈچ، جرمن، فرانسیسی، ہسپانوی، اطالوی، پولش۔",
+"Type (keystrokes)": "ٹائپ کریں (کی اسٹروکس)",
+"Paste (⌘V)": "چسپاں کریں (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "اصلاحات ہر املا پر لاگو ہوتی ہیں۔ تجویز: تاریخچہ میں کسی لفظ پر ماؤس رکھیں اور اس پر کلک کریں تاکہ اس کے لیے جلدی اصلاح شامل کی جا سکے۔",
+"Corrections and text snippets": "اصلاحات اور متنی ٹکڑے",
+"spoken today": "آج بولا گیا",
+"Today's figures": "آج کے اعداد و شمار",
+"Earlier dictation": "پچھلا املا",
+"Later dictation": "اگلا املا",
+"sentences": "جملے",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "منسوخ کرنے کے لیے کسی کی کی ضرورت نہیں: املا کے دوران پِل پر ماؤس رکھیں اور × پر کلک کریں۔ ارادہ بدل گیا؟ پانچ منٹ تک پِل “املا منسوخ ہو گیا” دکھاتا ہے: اس پر کلک کریں اور Vito پھر بھی املا چسپاں کر دیتا ہے۔",
 "Main figure": "مرکزی عدد",
 "days in a row": "مسلسل دن",
 "New record!": "نیا ریکارڈ!",

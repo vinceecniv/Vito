@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Belanda, Inggris, Jerman, Prancis, Spanyol, Italia, Portugis, Polandia, Ceko, Slowakia, Hungaria, Rumania, Bulgaria, Kroasia, Slovenia, Yunani, Swedia, Denmark, Finlandia, Estonia, Latvia, Lituania, Malta, Rusia, dan Ukraina — terdeteksi otomatis. Tidak cocok untuk bahasa lain.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Inggris, Belanda, Jerman, Prancis, Spanyol, Italia, Polandia.",
+"Type (keystrokes)": "Ketik (penekanan tombol)",
+"Paste (⌘V)": "Tempel (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Koreksi diterapkan pada setiap dikte. Kiat: di Riwayat, arahkan kursor ke sebuah kata dan klik untuk menambahkan koreksinya dengan cepat.",
+"Corrections and text snippets": "Koreksi dan cuplikan teks",
+"spoken today": "diucapkan hari ini",
+"Today's figures": "Angka hari ini",
+"Earlier dictation": "Dikte sebelumnya",
+"Later dictation": "Dikte berikutnya",
+"sentences": "kalimat",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Tidak perlu tombol untuk membatalkan: saat Anda mendikte, arahkan kursor ke pil dan klik ×. Berubah pikiran? Selama lima menit pil menampilkan “Dikte dibatalkan”: klik dan Vito tetap menempelkan dikte tersebut.",
 "Dictate today to start a streak": "Mendikte hari ini untuk memulai rentetan",
 "Nothing cleaned up in this period yet": "Belum ada yang dirapikan pada periode ini",
 "No languages detected in this period yet": "Belum ada bahasa terdeteksi pada periode ini",

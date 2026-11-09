@@ -1156,7 +1156,19 @@
 "Hide settings": "Skjul innstillinger",
 "Pill": "Pille",
 "Updates": "Oppdateringer",
-"Kind regards,\nYour name": "Med vennlig hilsen\nNavnet ditt"
+"Kind regards,\nYour name": "Med vennlig hilsen\nNavnet ditt",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nederlandsk, engelsk, tysk, fransk, spansk, italiensk, portugisisk, polsk, tsjekkisk, slovakisk, ungarsk, rumensk, bulgarsk, kroatisk, slovensk, gresk, svensk, dansk, finsk, estisk, latvisk, litauisk, maltesisk, russisk og ukrainsk — gjenkjennes automatisk. Ikke egnet for andre språk.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Engelsk, nederlandsk, tysk, fransk, spansk, italiensk, polsk.",
+"Type (keystrokes)": "Skriv (tastetrykk)",
+"Paste (⌘V)": "Lim inn (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korreksjoner brukes på hver diktering. Tips: hold pekeren over et ord i Historikk og klikk på det for å raskt legge til en korreksjon for det.",
+"Corrections and text snippets": "Korreksjoner og tekstbiter",
+"spoken today": "snakket i dag",
+"Today's figures": "Dagens tall",
+"Earlier dictation": "Forrige diktering",
+"Later dictation": "Neste diktering",
+"sentences": "setninger",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Du trenger ingen tast for å avbryte: mens du dikterer, pek på pillen og klikk ×. Ombestemt deg? I fem minutter viser pillen «Diktering avbrutt»: klikk på den, så limer Vito inn dikteringen likevel."
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger systemets lys/mørk-innstilling.",

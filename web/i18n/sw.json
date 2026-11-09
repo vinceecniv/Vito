@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Kiholanzi, Kiingereza, Kijerumani, Kifaransa, Kihispania, Kiitaliano, Kireno, Kipolandi, Kicheki, Kislovakia, Kihungaria, Kiromania, Kibulgaria, Kikroeshia, Kislovenia, Kigiriki, Kiswidi, Kidenmaki, Kifini, Kiestonia, Kilatvia, Kilithuania, Kimalta, Kirusi na Kiukraini — hutambuliwa kiotomatiki. Haifai kwa lugha nyingine.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Kiingereza, Kiholanzi, Kijerumani, Kifaransa, Kihispania, Kiitaliano, Kipolandi.",
+"Type (keystrokes)": "Andika (mibonyezo ya vitufe)",
+"Paste (⌘V)": "Bandika (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Marekebisho hutumika kwa kila uandishi. Dokezo: katika Historia, weka kishale juu ya neno na ulibofye ili kuongeza marekebisho haraka.",
+"Corrections and text snippets": "Marekebisho na vipande vya maandishi",
+"spoken today": "uliyozungumza leo",
+"Today's figures": "Takwimu za leo",
+"Earlier dictation": "Uandishi uliotangulia",
+"Later dictation": "Uandishi unaofuata",
+"sentences": "sentensi",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Huhitaji kitufe chochote kughairi: unapoandika kwa sauti, elekeza kiashiria kwenye kidonge na ubofye ×. Umebadili nia? Kwa dakika tano kidonge huonyesha “Uandishi umeghairiwa”: kibofye na Vito itabandika uandishi hata hivyo.",
 "Vito now runs as an app on this computer": "Vito sasa inafanya kazi kama programu kwenye kompyuta hii",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Maandishi yako ya sauti yamehamia kwenye programu. Endelea kuandika kwa sauti kutoka huko — kwa mchanganyiko wako wa vitufe, katika kila programu.",
 "Open Vito": "Fungua Vito",

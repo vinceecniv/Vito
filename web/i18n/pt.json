@@ -1157,7 +1157,19 @@
 "Hide settings": "Ocultar definições",
 "Pill": "Pílula",
 "Updates": "Atualizações",
-"Kind regards,\nYour name": "Com os melhores cumprimentos,\nO seu nome"
+"Kind regards,\nYour name": "Com os melhores cumprimentos,\nO seu nome",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Neerlandês, inglês, alemão, francês, espanhol, italiano, português, polaco, checo, eslovaco, húngaro, romeno, búlgaro, croata, esloveno, grego, sueco, dinamarquês, finlandês, estónio, letão, lituano, maltês, russo e ucraniano — detetados automaticamente. Não adequado para outras línguas.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Inglês, neerlandês, alemão, francês, espanhol, italiano, polaco.",
+"Type (keystrokes)": "Digitar (teclas)",
+"Paste (⌘V)": "Colar (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "As correções são aplicadas a cada ditado. Dica: no Histórico, passe o rato sobre uma palavra e clique nela para adicionar rapidamente uma correção.",
+"Corrections and text snippets": "Correções e excertos de texto",
+"spoken today": "falado hoje",
+"Today's figures": "Números de hoje",
+"Earlier dictation": "Ditado anterior",
+"Later dictation": "Ditado seguinte",
+"sentences": "frases",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Não precisa de tecla para cancelar: enquanto dita, aponte para a pílula e clique em ×. Mudou de ideias? Durante cinco minutos a pílula mostra “Ditado cancelado”: clique nela e o Vito cola o ditado na mesma."
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",

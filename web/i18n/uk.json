@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Нідерландська, англійська, німецька, французька, іспанська, італійська, португальська, польська, чеська, словацька, угорська, румунська, болгарська, хорватська, словенська, грецька, шведська, данська, фінська, естонська, латиська, литовська, мальтійська, російська та українська — визначаються автоматично. Не підходить для інших мов.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Англійська, нідерландська, німецька, французька, іспанська, італійська, польська.",
+"Type (keystrokes)": "Друкувати (натискання клавіш)",
+"Paste (⌘V)": "Вставити (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Виправлення застосовуються до кожної диктовки. Порада: в Історії наведіть мишу на слово і клацніть, щоб швидко додати для нього виправлення.",
+"Corrections and text snippets": "Виправлення й текстові фрагменти",
+"spoken today": "наговорено сьогодні",
+"Today's figures": "Сьогоднішні показники",
+"Earlier dictation": "Попередня диктовка",
+"Later dictation": "Наступна диктовка",
+"sentences": "речень",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Щоб скасувати, клавіша не потрібна: під час диктування наведіть мишу на пігулку й клацніть ×. Передумали? Протягом п’яти хвилин пігулка показує «Диктовку скасовано»: клацніть її, і Vito все ж вставить диктовку.",
 "Vito now runs as an app on this computer": "Vito тепер працює як застосунок на цьому комп’ютері",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Ваші диктування переїхали до застосунку. Диктуйте далі звідти — за допомогою гарячої клавіші, в будь-якій програмі.",
 "Open Vito": "Відкрити Vito",

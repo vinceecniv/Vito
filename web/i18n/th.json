@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "ดัตช์ อังกฤษ เยอรมัน ฝรั่งเศส สเปน อิตาลี โปรตุเกส โปแลนด์ เช็ก สโลวัก ฮังการี โรมาเนีย บัลแกเรีย โครเอเชีย สโลวีเนีย กรีก สวีเดน เดนมาร์ก ฟินแลนด์ เอสโตเนีย ลัตเวีย ลิทัวเนีย มอลตา รัสเซีย และยูเครน — ตรวจจับภาษาโดยอัตโนมัติ ไม่เหมาะกับภาษาอื่น",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "อังกฤษ ดัตช์ เยอรมัน ฝรั่งเศส สเปน อิตาลี โปแลนด์",
+"Type (keystrokes)": "พิมพ์ (การกดแป้น)",
+"Paste (⌘V)": "วาง (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "การแก้ไขจะถูกใช้กับการบอกให้พิมพ์ทุกครั้ง เคล็ดลับ: ในหน้าประวัติ ชี้เมาส์เหนือคำแล้วคลิกเพื่อเพิ่มการแก้ไขสำหรับคำนั้นได้อย่างรวดเร็ว",
+"Corrections and text snippets": "การแก้ไขและข้อความสำเร็จรูป",
+"spoken today": "พูดวันนี้",
+"Today's figures": "ตัวเลขของวันนี้",
+"Earlier dictation": "การบอกให้พิมพ์ก่อนหน้า",
+"Later dictation": "การบอกให้พิมพ์ถัดไป",
+"sentences": "ประโยค",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "ยกเลิกได้โดยไม่ต้องกดแป้น: ขณะบอกให้พิมพ์ ให้ชี้ที่แคปซูลแล้วคลิก × เปลี่ยนใจหรือ? ภายในห้านาที แคปซูลจะแสดง “ยกเลิกการบอกให้พิมพ์แล้ว”: คลิกที่นั่น แล้ว Vito จะวางข้อความที่บอกให้ตามเดิม",
 "Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "ทำให้บันทึกเสียงที่พูด สถิติและค่าใช้จ่าย ความสำเร็จ พจนานุกรม และกฎการจัดข้อความเหมือนกันในทุกคอมพิวเตอร์ ผ่านโฟลเดอร์ที่แอปซิงค์ของคุณเองดูแลอยู่ — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing หรือเน็ตเวิร์กแชร์ Vito ไม่ได้ติดต่อกับเซิร์ฟเวอร์ใดๆ เพื่อการนี้",
 "Found on this computer": "พบในคอมพิวเตอร์เครื่องนี้",
 "No sync app found in its usual place. Choose its folder yourself.": "ไม่พบแอปซิงค์ในตำแหน่งปกติ โปรดเลือกโฟลเดอร์ของแอปด้วยตนเอง",

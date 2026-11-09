@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Niderland, ingilis, alman, fransız, ispan, italyan, portuqal, polyak, çex, slovak, macar, rumın, bolqar, xorvat, sloven, yunan, isveç, danimarka, fin, eston, latış, litva, malta, rus və ukrayna dilləri — avtomatik tanınır. Digər dillər üçün uyğun deyil.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "İngilis, niderland, alman, fransız, ispan, italyan, polyak dilləri.",
+"Type (keystrokes)": "Yazma (düymə basışları)",
+"Paste (⌘V)": "Yapışdır (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Düzəlişlər hər diktəyə tətbiq olunur. İpucu: Tarixçədə siçanı sözün üzərinə gətirin və ona tez düzəliş əlavə etmək üçün sözə klikləyin.",
+"Corrections and text snippets": "Düzəlişlər və mətn şablonları",
+"spoken today": "bu gün danışılan",
+"Today's figures": "Bugünkü göstəricilər",
+"Earlier dictation": "Əvvəlki diktə",
+"Later dictation": "Sonrakı diktə",
+"sentences": "cümlə",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Ləğv etmək üçün düymə lazım deyil: diktə edərkən həbə tərəf göstərin və × üzərinə klikləyin. Fikrinizi dəyişdiniz? Beş dəqiqə ərzində həb “Diktə ləğv edildi” göstərir: ona klikləyin və Vito diktəni yenə də yapışdıracaq.",
 "Vito can't press keys on this desktop from inside the Flatpak yet, so your dictations go to the clipboard. One line in your desktop's startup lets it type — the Linux settings show it.": "Vito hələ ki bu masaüstündə Flatpak-ın içindən düymələrə basa bilmir, ona görə diktələriniz mübadilə buferinə düşür. Masaüstünüzün başlanğıcına bir sətir əlavə etsəniz, mətni yaza biləcək — Linux parametrləri bunu göstərir.",
 "The link is there, but it belongs to an earlier session. Run the command again.": "Bağlantı var, amma əvvəlki sessiyaya aiddir. Əmri yenidən işə salın.",
 "This desktop has no RemoteDesktop portal, and the Flatpak's own connection to it can't press keys. Give Vito a direct one — run this once:": "Bu masaüstündə RemoteDesktop portalı yoxdur, Flatpak-ın masaüstü ilə öz bağlantısı isə düymələrə basa bilmir. Vito-ya birbaşa bağlantı verin — bunu bir dəfə işə salın:",

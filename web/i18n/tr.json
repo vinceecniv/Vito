@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Felemenkçe, İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce, Lehçe, Çekçe, Slovakça, Macarca, Romence, Bulgarca, Hırvatça, Slovence, Yunanca, İsveççe, Danca, Fince, Estonca, Letonca, Litvanca, Maltaca, Rusça ve Ukraynaca — otomatik olarak algılanır. Diğer diller için uygun değildir.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "İngilizce, Felemenkçe, Almanca, Fransızca, İspanyolca, İtalyanca, Lehçe.",
+"Type (keystrokes)": "Yaz (tuş vuruşları)",
+"Paste (⌘V)": "Yapıştır (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Düzeltmeler her dikteye uygulanır. İpucu: Geçmiş'te bir kelimenin üzerine gelip tıklayarak onun için hızlıca bir düzeltme ekleyebilirsiniz.",
+"Corrections and text snippets": "Düzeltmeler ve metin parçaları",
+"spoken today": "bugün konuşulan",
+"Today's figures": "Bugünün rakamları",
+"Earlier dictation": "Önceki dikte",
+"Later dictation": "Sonraki dikte",
+"sentences": "cümle",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "İptal etmek için tuşa gerek yok: dikte ederken hapın üzerine gelin ve × simgesine tıklayın. Fikrinizi mi değiştirdiniz? Beş dakika boyunca hap “Dikte iptal edildi” gösterir: üzerine tıklayın, Vito dikteyi yine de yapıştırır.",
 "Keep your dictations, statistics and costs, achievements, dictionary and cleanup rules the same on every computer, through a folder your own sync app keeps in sync — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing or a network share. Vito talks to no server for this.": "Diktelerinizi, istatistiklerinizi ve maliyetlerinizi, başarımlarınızı, sözlüğünüzü ve temizleme kurallarınızı her bilgisayarda aynı tutun; bunu kendi eşitleme uygulamanızın eşitlediği bir klasör üzerinden yapın — Dropbox, OneDrive, Nextcloud, iCloud Drive, Google Drive, Syncthing veya bir ağ paylaşımı. Vito bunun için hiçbir sunucuyla konuşmaz.",
 "Found on this computer": "Bu bilgisayarda bulundu",
 "No sync app found in its usual place. Choose its folder yourself.": "Eşitleme uygulaması her zamanki yerinde bulunamadı. Klasörünü kendiniz seçin.",

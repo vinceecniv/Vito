@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Neerlandeză, engleză, germană, franceză, spaniolă, italiană, portugheză, poloneză, cehă, slovacă, maghiară, română, bulgară, croată, slovenă, greacă, suedeză, daneză, finlandeză, estonă, letonă, lituaniană, malteză, rusă și ucraineană — detectate automat. Nu este potrivit pentru alte limbi.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Engleză, neerlandeză, germană, franceză, spaniolă, italiană, poloneză.",
+"Type (keystrokes)": "Tastare (apăsări de taste)",
+"Paste (⌘V)": "Lipire (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Corecțiile se aplică fiecărei dictări. Sfat: în Istoric, treci cu mouse-ul peste un cuvânt și apasă pe el pentru a adăuga rapid o corecție.",
+"Corrections and text snippets": "Corecții și fragmente de text",
+"spoken today": "rostit azi",
+"Today's figures": "Cifrele zilei",
+"Earlier dictation": "Dictarea anterioară",
+"Later dictation": "Dictarea următoare",
+"sentences": "propoziții",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Nu ai nevoie de nicio tastă pentru a anula: în timp ce dictezi, indică pastila și apasă pe ×. Te-ai răzgândit? Timp de cinci minute pastila afișează „Dictare anulată”: apasă pe ea și Vito lipește totuși dictarea.",
 "Main figure": "Cifra principală",
 "days in a row": "zile la rând",
 "New record!": "Record nou!",

@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Нідэрландская, англійская, нямецкая, французская, іспанская, італьянская, партугальская, польская, чэшская, славацкая, венгерская, румынская, балгарская, харвацкая, славенская, грэчаская, шведская, дацкая, фінская, эстонская, латышская, літоўская, мальтыйская, руская і ўкраінская — вызначаюцца аўтаматычна. Не падыходзіць для іншых моў.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Англійская, нідэрландская, нямецкая, французская, іспанская, італьянская, польская.",
+"Type (keystrokes)": "Набор (націсканні клавіш)",
+"Paste (⌘V)": "Уставіць (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Выпраўленні прымяняюцца да кожнай дыктоўкі. Падказка: у Гісторыі навядзіце курсор на слова і націсніце на яго, каб хутка дадаць для яго выпраўленне.",
+"Corrections and text snippets": "Выпраўленні і тэкставыя шаблоны",
+"spoken today": "прамоўлена сёння",
+"Today's figures": "Лічбы за сёння",
+"Earlier dictation": "Папярэдняя дыктоўка",
+"Later dictation": "Наступная дыктоўка",
+"sentences": "сказаў",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Каб скасаваць, клавіша не патрэбна: пакуль вы дыктуеце, навядзіце на пілюлю і націсніце ×. Перадумалі? На працягу пяці хвілін пілюля паказвае «Дыктоўка скасавана»: націсніце на яе, і Vito ўсё ж уставіць дыктоўку.",
 "Dashboard": "Панэль",
 "Custom range…": "Іншы перыяд…",
 "Previous month": "Папярэдні месяц",

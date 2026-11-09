@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Iseldireg, Saesneg, Almaeneg, Ffrangeg, Sbaeneg, Eidaleg, Portiwgaleg, Pwyleg, Tsieceg, Slofaceg, Hwngareg, Rwmaneg, Bwlgareg, Croateg, Slofeneg, Groeg, Swedeg, Daneg, Ffinneg, Estoneg, Latfieg, Lithwaneg, Malteg, Rwseg ac Wcreineg — yn cael eu canfod yn awtomatig. Ddim yn addas ar gyfer ieithoedd eraill.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Saesneg, Iseldireg, Almaeneg, Ffrangeg, Sbaeneg, Eidaleg, Pwyleg.",
+"Type (keystrokes)": "Teipio (trawiadau bysell)",
+"Paste (⌘V)": "Gludo (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Mae cywiriadau'n cael eu rhoi ar waith ym mhob arddywediad. Awgrym: yn Hanes, hofran dros air a chlicia arno i ychwanegu cywiriad ar ei gyfer yn gyflym.",
+"Corrections and text snippets": "Cywiriadau a phytiau testun",
+"spoken today": "siarad heddiw",
+"Today's figures": "Ffigurau heddiw",
+"Earlier dictation": "Arddywediad cynharach",
+"Later dictation": "Arddywediad diweddarach",
+"sentences": "brawddeg",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Does dim angen bysell i ganslo: wrth i ti arddweud, pwyntia at y bilsen a chlicia ×. Wedi newid dy feddwl? Am bum munud mae'r bilsen yn dangos “Arddywediad wedi'i ganslo”: clicia arni a bydd Vito yn gludo'r arddywediad wedi'r cyfan.",
 "Status": "Statws",
 "Settings": "Gosodiadau",
 "Dictionary": "Geiriadur",

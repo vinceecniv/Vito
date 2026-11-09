@@ -1156,7 +1156,19 @@
 "Hide settings": "सेटिंग्ज लपवा",
 "Pill": "पिल",
 "Updates": "अपडेट्स",
-"Kind regards,\nYour name": "आपला विश्वासू,\nतुमचे नाव"
+"Kind regards,\nYour name": "आपला विश्वासू,\nतुमचे नाव",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "डच, इंग्रजी, जर्मन, फ्रेंच, स्पॅनिश, इटालियन, पोर्तुगीज, पोलिश, चेक, स्लोव्हाक, हंगेरियन, रोमानियन, बल्गेरियन, क्रोएशियन, स्लोव्हेनियन, ग्रीक, स्वीडिश, डॅनिश, फिनिश, एस्टोनियन, लाटव्हियन, लिथुआनियन, माल्टीज, रशियन आणि युक्रेनियन — आपोआप ओळखल्या जातात. इतर भाषांसाठी योग्य नाही.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "इंग्रजी, डच, जर्मन, फ्रेंच, स्पॅनिश, इटालियन, पोलिश.",
+"Type (keystrokes)": "टाइप करा (कीस्ट्रोक)",
+"Paste (⌘V)": "पेस्ट करा (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "प्रत्येक डिक्टेशनवर सुधारणा लागू होतात. टीप: इतिहासात एखाद्या शब्दावर माउस ठेवा आणि त्यावर क्लिक करून त्यासाठी झटकन सुधारणा जोडा.",
+"Corrections and text snippets": "सुधारणा आणि मजकूर स्निपेट्स",
+"spoken today": "आज बोललेले",
+"Today's figures": "आजची आकडेवारी",
+"Earlier dictation": "आधीचे डिक्टेशन",
+"Later dictation": "नंतरचे डिक्टेशन",
+"sentences": "वाक्ये",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "रद्द करण्यासाठी कीची गरज नाही: डिक्टेट करत असताना पिलवर पॉइंटर न्या आणि × वर क्लिक करा. विचार बदलला? पाच मिनिटे पिलवर “डिक्टेशन रद्द केले” दिसते: त्यावर क्लिक करा आणि Vito ते डिक्टेशन तरीही पेस्ट करेल."
 },
 "help": {
 "theme": "उजळ, गडद किंवा आपोआप — आपोआप तुमच्या सिस्टीमच्या उजळ/गडद सेटिंगचे अनुसरण करते.",

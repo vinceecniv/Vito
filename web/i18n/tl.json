@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Olandes, Ingles, Aleman, Pranses, Espanyol, Italyano, Portuges, Polako, Tseko, Eslobako, Unggaro, Rumano, Bulgaro, Kroato, Eslobeno, Griyego, Suweko, Danes, Finnish, Estonyano, Latbyano, Litwano, Maltes, Ruso at Ukranyano — awtomatikong natutukoy. Hindi angkop para sa ibang wika.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Ingles, Olandes, Aleman, Pranses, Espanyol, Italyano, Polako.",
+"Type (keystrokes)": "I-type (mga keystroke)",
+"Paste (⌘V)": "I-paste (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Inilalapat ang mga koreksyon sa bawat diktasyon. Tip: sa Kasaysayan, i-hover ang mouse sa isang salita at i-click ito para mabilis na magdagdag ng koreksyon para dito.",
+"Corrections and text snippets": "Mga koreksyon at text snippet",
+"spoken today": "nasalita ngayong araw",
+"Today's figures": "Mga numero ngayong araw",
+"Earlier dictation": "Naunang diktasyon",
+"Later dictation": "Susunod na diktasyon",
+"sentences": "pangungusap",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Hindi kailangan ng key para magkansela: habang nagdidikta ka, ituro ang pill at i-click ang ×. Nagbago ang isip mo? Sa loob ng limang minuto, ipinapakita ng pill ang “Kinansela ang diktasyon”: i-click ito at ipe-paste pa rin ng Vito ang diktasyon.",
 "Vito now runs as an app on this computer": "Tumatakbo na ang Vito bilang app sa computer na ito",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Nailipat na sa app ang iyong mga dikta. Doon ka na magdikta — gamit ang iyong hotkey, sa bawat programa.",
 "Open Vito": "Buksan ang Vito",

@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nederländska, engelska, tyska, franska, spanska, italienska, portugisiska, polska, tjeckiska, slovakiska, ungerska, rumänska, bulgariska, kroatiska, slovenska, grekiska, svenska, danska, finska, estniska, lettiska, litauiska, maltesiska, ryska och ukrainska — identifieras automatiskt. Inte lämplig för andra språk.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Engelska, nederländska, tyska, franska, spanska, italienska, polska.",
+"Type (keystrokes)": "Skriv (tangenttryckningar)",
+"Paste (⌘V)": "Klistra in (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korrigeringar tillämpas på varje diktering. Tips: håll muspekaren över ett ord i Historik och klicka på det för att snabbt lägga till en korrigering.",
+"Corrections and text snippets": "Korrigeringar och textsnuttar",
+"spoken today": "talat idag",
+"Today's figures": "Dagens siffror",
+"Earlier dictation": "Föregående diktering",
+"Later dictation": "Nästa diktering",
+"sentences": "meningar",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Ingen tangent behövs för att avbryta: medan du dikterar, peka på pillret och klicka på ×. Ångrat dig? I fem minuter visar pillret ”Diktering avbruten”: klicka på det så klistrar Vito in dikteringen ändå.",
 "Dictate today to start a streak": "Diktera idag för att starta en svit",
 "Nothing cleaned up in this period yet": "Inget har rensats upp under den här perioden ännu",
 "No languages detected in this period yet": "Inga språk har identifierats under den här perioden ännu",

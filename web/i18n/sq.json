@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Holandisht, anglisht, gjermanisht, frëngjisht, spanjisht, italisht, portugalisht, polonisht, çekisht, sllovakisht, hungarisht, rumanisht, bullgarisht, kroatisht, sllovenisht, greqisht, suedisht, danisht, finlandisht, estonisht, letonisht, lituanisht, maltisht, rusisht dhe ukrainisht — dallohen automatikisht. Nuk është i përshtatshëm për gjuhë të tjera.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Anglisht, holandisht, gjermanisht, frëngjisht, spanjisht, italisht, polonisht.",
+"Type (keystrokes)": "Shkruaj (shtypje tastesh)",
+"Paste (⌘V)": "Ngjit (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korrigjimet zbatohen në çdo diktim. Këshillë: te Historiku, kalo miun mbi një fjalë dhe kliko për të shtuar shpejt një korrigjim për të.",
+"Corrections and text snippets": "Korrigjime dhe pjesë teksti",
+"spoken today": "folur sot",
+"Today's figures": "Shifrat e sotme",
+"Earlier dictation": "Diktimi i mëparshëm",
+"Later dictation": "Diktimi i radhës",
+"sentences": "fjali",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Nuk të duhet asnjë tast për të anuluar: ndërsa dikton, drejtoje treguesin te pilula dhe kliko ×. Ndërrove mendje? Për pesë minuta pilula shfaq „Diktimi u anulua”: kliko mbi të dhe Vito e ngjit diktimin gjithsesi.",
 "Dictate today to start a streak": "Diktoje sot për të nisur një seri",
 "Nothing cleaned up in this period yet": "Ende asgjë e pastruar në këtë periudhë",
 "No languages detected in this period yet": "Ende nuk është zbuluar asnjë gjuhë në këtë periudhë",

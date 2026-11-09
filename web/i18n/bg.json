@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Нидерландски, английски, немски, френски, испански, италиански, португалски, полски, чешки, словашки, унгарски, румънски, български, хърватски, словенски, гръцки, шведски, датски, фински, естонски, латвийски, литовски, малтийски, руски и украински — разпознават се автоматично. Не е подходящ за други езици.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Английски, нидерландски, немски, френски, испански, италиански, полски.",
+"Type (keystrokes)": "Въвеждане (натискания на клавиши)",
+"Paste (⌘V)": "Поставяне (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Корекциите се прилагат към всяка диктовка. Съвет: в Историята задръжте курсора върху дума и щракнете върху нея, за да добавите бързо корекция за нея.",
+"Corrections and text snippets": "Корекции и текстови шаблони",
+"spoken today": "изговорено днес",
+"Today's figures": "Днешните показатели",
+"Earlier dictation": "Предишна диктовка",
+"Later dictation": "Следваща диктовка",
+"sentences": "изречения",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Не е нужен клавиш за отмяна: докато диктувате, посочете хапчето и щракнете върху ×. Размислихте ли? В продължение на пет минути хапчето показва „Диктовката е отменена“: щракнете върху него и Vito все пак ще постави диктовката.",
 "Dashboard": "Dashboard",
 "Most used words": "Най-използвани думи",
 "Chart in background": "Диаграма на заден план",

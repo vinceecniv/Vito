@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nizozemščina, angleščina, nemščina, francoščina, španščina, italijanščina, portugalščina, poljščina, češčina, slovaščina, madžarščina, romunščina, bolgarščina, hrvaščina, slovenščina, grščina, švedščina, danščina, finščina, estonščina, latvijščina, litovščina, malteščina, ruščina in ukrajinščina — samodejno zaznano. Ni primerno za druge jezike.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Angleščina, nizozemščina, nemščina, francoščina, španščina, italijanščina, poljščina.",
+"Type (keystrokes)": "Tipkanje (pritiski tipk)",
+"Paste (⌘V)": "Lepljenje (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Popravki se uporabijo pri vsakem narekovanju. Namig: v Zgodovini se z miško postavite nad besedo in kliknite nanjo, da zanjo hitro dodate popravek.",
+"Corrections and text snippets": "Popravki in besedilni izrezki",
+"spoken today": "danes izgovorjeno",
+"Today's figures": "Današnje številke",
+"Earlier dictation": "Prejšnji narek",
+"Later dictation": "Naslednji narek",
+"sentences": "stavkov",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Za preklic ne potrebujete tipke: med narekovanjem pokažite na indikator in kliknite ×. Ste si premislili? Pet minut indikator prikazuje »Narekovanje preklicano«: kliknite nanj in Vito narek vseeno prilepi.",
 "Dictate today to start a streak": "Narekujte danes in začnite niz",
 "Nothing cleaned up in this period yet": "V tem obdobju še ni ničesar počiščenega",
 "No languages detected in this period yet": "V tem obdobju še ni zaznanih jezikov",

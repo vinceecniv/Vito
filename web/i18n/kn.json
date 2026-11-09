@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "ಡಚ್, ಇಂಗ್ಲಿಷ್, ಜರ್ಮನ್, ಫ್ರೆಂಚ್, ಸ್ಪ್ಯಾನಿಷ್, ಇಟಾಲಿಯನ್, ಪೋರ್ಚುಗೀಸ್, ಪೋಲಿಷ್, ಜೆಕ್, ಸ್ಲೋವಾಕ್, ಹಂಗೇರಿಯನ್, ರೊಮೇನಿಯನ್, ಬಲ್ಗೇರಿಯನ್, ಕ್ರೊಯೇಷಿಯನ್, ಸ್ಲೊವೇನಿಯನ್, ಗ್ರೀಕ್, ಸ್ವೀಡಿಷ್, ಡ್ಯಾನಿಷ್, ಫಿನ್ನಿಷ್, ಎಸ್ಟೋನಿಯನ್, ಲಾಟ್ವಿಯನ್, ಲಿಥುವೇನಿಯನ್, ಮಾಲ್ಟೀಸ್, ರಷ್ಯನ್ ಮತ್ತು ಉಕ್ರೇನಿಯನ್ — ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪತ್ತೆಯಾಗುತ್ತವೆ. ಇತರ ಭಾಷೆಗಳಿಗೆ ಸೂಕ್ತವಲ್ಲ.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "ಇಂಗ್ಲಿಷ್, ಡಚ್, ಜರ್ಮನ್, ಫ್ರೆಂಚ್, ಸ್ಪ್ಯಾನಿಷ್, ಇಟಾಲಿಯನ್, ಪೋಲಿಷ್.",
+"Type (keystrokes)": "ಟೈಪ್ ಮಾಡಿ (ಕೀಸ್ಟ್ರೋಕ್‌ಗಳು)",
+"Paste (⌘V)": "ಅಂಟಿಸಿ (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "ತಿದ್ದುಪಡಿಗಳು ಪ್ರತಿ ಡಿಕ್ಟೇಶನ್‌ಗೂ ಅನ್ವಯಿಸುತ್ತವೆ. ಸಲಹೆ: ಇತಿಹಾಸದಲ್ಲಿ ಒಂದು ಪದದ ಮೇಲೆ ಮೌಸ್ ಇರಿಸಿ ಮತ್ತು ಅದಕ್ಕೆ ತ್ವರಿತವಾಗಿ ತಿದ್ದುಪಡಿ ಸೇರಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ.",
+"Corrections and text snippets": "ತಿದ್ದುಪಡಿಗಳು ಮತ್ತು ಪಠ್ಯ ತುಣುಕುಗಳು",
+"spoken today": "ಇಂದು ಮಾತನಾಡಿದ್ದು",
+"Today's figures": "ಇಂದಿನ ಅಂಕಿಅಂಶಗಳು",
+"Earlier dictation": "ಹಿಂದಿನ ಡಿಕ್ಟೇಶನ್",
+"Later dictation": "ಮುಂದಿನ ಡಿಕ್ಟೇಶನ್",
+"sentences": "ವಾಕ್ಯಗಳು",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "ರದ್ದುಗೊಳಿಸಲು ಯಾವುದೇ ಕೀ ಬೇಕಿಲ್ಲ: ಡಿಕ್ಟೇಟ್ ಮಾಡುವಾಗ ಪಿಲ್ ಕಡೆಗೆ ಪಾಯಿಂಟರ್ ತೋರಿಸಿ × ಕ್ಲಿಕ್ ಮಾಡಿ. ಮನಸ್ಸು ಬದಲಾಯಿತೇ? ಐದು ನಿಮಿಷಗಳ ಕಾಲ ಪಿಲ್ “ಡಿಕ್ಟೇಶನ್ ರದ್ದಾಗಿದೆ” ಎಂದು ತೋರಿಸುತ್ತದೆ: ಅದನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ, Vito ಆ ಡಿಕ್ಟೇಶನ್ ಅನ್ನು ಹೇಗಿದ್ದರೂ ಅಂಟಿಸುತ್ತದೆ.",
 "Credits": "ಕ್ರೆಡಿಟ್‌ಗಳು",
 "Achievement medals and animations use": "ಸಾಧನೆಯ ಪದಕಗಳು ಮತ್ತು ಅನಿಮೇಷನ್‌ಗಳು ಬಳಸುವುದು",
 "by Google (static under Apache-2.0, animations under CC BY 4.0), played with": "— Google ರಚನೆ (ಸ್ಥಿರ ಚಿತ್ರಗಳು Apache-2.0 ಅಡಿಯಲ್ಲಿ, ಅನಿಮೇಷನ್‌ಗಳು CC BY 4.0 ಅಡಿಯಲ್ಲಿ); ಇವುಗಳನ್ನು ಪ್ಲೇ ಮಾಡುವುದು",

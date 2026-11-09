@@ -1156,7 +1156,19 @@
 "Hide settings": "Sembunyikan tetapan",
 "Pill": "Pil",
 "Updates": "Kemas kini",
-"Kind regards,\nYour name": "Salam hormat,\nNama anda"
+"Kind regards,\nYour name": "Salam hormat,\nNama anda",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Belanda, Inggeris, Jerman, Perancis, Sepanyol, Itali, Portugis, Poland, Czech, Slovak, Hungary, Romania, Bulgaria, Croatia, Slovenia, Greek, Sweden, Denmark, Finland, Estonia, Latvia, Lithuania, Malta, Rusia dan Ukraine — dikesan secara automatik. Tidak sesuai untuk bahasa lain.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Inggeris, Belanda, Jerman, Perancis, Sepanyol, Itali, Poland.",
+"Type (keystrokes)": "Taip (ketukan kekunci)",
+"Paste (⌘V)": "Tampal (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Pembetulan digunakan pada setiap dikte. Petua: dalam Sejarah, tuding pada satu perkataan dan klik untuk cepat menambah pembetulan untuknya.",
+"Corrections and text snippets": "Pembetulan dan coretan teks",
+"spoken today": "bercakap hari ini",
+"Today's figures": "Angka hari ini",
+"Earlier dictation": "Dikte sebelumnya",
+"Later dictation": "Dikte seterusnya",
+"sentences": "ayat",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Tiada kekunci diperlukan untuk membatalkan: semasa anda mendikte, tuding pada pil dan klik ×. Berubah fikiran? Selama lima minit pil menunjukkan “Dikte dibatalkan”: klik padanya dan Vito tetap menampal dikte itu."
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",

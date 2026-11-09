@@ -1156,7 +1156,19 @@
 "Hide settings": "Ukryj ustawienia",
 "Pill": "Pigułka",
 "Updates": "Aktualizacje",
-"Kind regards,\nYour name": "Z poważaniem\nTwoje imię i nazwisko"
+"Kind regards,\nYour name": "Z poważaniem\nTwoje imię i nazwisko",
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Niderlandzki, angielski, niemiecki, francuski, hiszpański, włoski, portugalski, polski, czeski, słowacki, węgierski, rumuński, bułgarski, chorwacki, słoweński, grecki, szwedzki, duński, fiński, estoński, łotewski, litewski, maltański, rosyjski i ukraiński — wykrywane automatycznie. Nie nadaje się do innych języków.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Angielski, niderlandzki, niemiecki, francuski, hiszpański, włoski, polski.",
+"Type (keystrokes)": "Pisanie (naciśnięcia klawiszy)",
+"Paste (⌘V)": "Wklej (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Korekty są stosowane do każdego dyktowania. Wskazówka: w Historii najedź na słowo i kliknij je, aby szybko dodać dla niego korektę.",
+"Corrections and text snippets": "Korekty i fragmenty tekstu",
+"spoken today": "czas mówienia dzisiaj",
+"Today's figures": "Dzisiejsze statystyki",
+"Earlier dictation": "Wcześniejsze dyktowanie",
+"Later dictation": "Późniejsze dyktowanie",
+"sentences": "zdań",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Do anulowania nie potrzebujesz klawisza: podczas dyktowania najedź na pigułkę i kliknij ×. Zmiana zdania? Przez pięć minut pigułka pokazuje „Dyktowanie anulowane”: kliknij ją, a Vito jednak wklei dyktowanie."
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

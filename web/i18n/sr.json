@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Holandski, engleski, nemački, francuski, španski, italijanski, portugalski, poljski, češki, slovački, mađarski, rumunski, bugarski, hrvatski, slovenački, grčki, švedski, danski, finski, estonski, letonski, litvanski, malteški, ruski i ukrajinski — prepoznaju se automatski. Nije pogodno za druge jezike.",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "Engleski, holandski, nemački, francuski, španski, italijanski, poljski.",
+"Type (keystrokes)": "Kucaj (pritisci tastera)",
+"Paste (⌘V)": "Nalepi (⌘V)",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Ispravke se primenjuju na svaki diktat. Savet: u Istoriji pređite mišem preko reči i kliknite na nju da brzo dodate ispravku.",
+"Corrections and text snippets": "Ispravke i tekstualni isečci",
+"spoken today": "izgovoreno danas",
+"Today's figures": "Današnje brojke",
+"Earlier dictation": "Prethodni diktat",
+"Later dictation": "Sledeći diktat",
+"sentences": "rečenica",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Za otkazivanje nije potreban taster: dok diktirate, pokažite na pilulu i kliknite ×. Predomislili ste se? Pet minuta pilula prikazuje „Diktat je otkazan“: kliknite na nju i Vito ipak nalepi diktat.",
 "Dashboard": "Kontrolna tabla",
 "Status": "Status",
 "Settings": "Podešavanja",

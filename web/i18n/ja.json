@@ -1,5 +1,17 @@
 {
 "strings": {
+"Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "オランダ語、英語、ドイツ語、フランス語、スペイン語、イタリア語、ポルトガル語、ポーランド語、チェコ語、スロバキア語、ハンガリー語、ルーマニア語、ブルガリア語、クロアチア語、スロベニア語、ギリシャ語、スウェーデン語、デンマーク語、フィンランド語、エストニア語、ラトビア語、リトアニア語、マルタ語、ロシア語、ウクライナ語 — 自動的に検出されます。その他の言語には適していません。",
+"English, Dutch, German, French, Spanish, Italian, Polish.": "英語、オランダ語、ドイツ語、フランス語、スペイン語、イタリア語、ポーランド語。",
+"Type (keystrokes)": "タイプ入力（キーストローク）",
+"Paste (⌘V)": "貼り付け（⌘V）",
+"Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "修正はすべての口述に適用されます。ヒント：履歴で単語にマウスを合わせてクリックすると、その単語の修正を素早く追加できます。",
+"Corrections and text snippets": "修正とテキストスニペット",
+"spoken today": "今日話した時間",
+"Today's figures": "今日の数値",
+"Earlier dictation": "前の口述",
+"Later dictation": "次の口述",
+"sentences": "文",
+"No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "キャンセルにキーは不要です。口述中にピルにポインターを合わせて × をクリックしてください。気が変わりましたか？5分間、ピルに「口述をキャンセルしました」と表示されます。それをクリックすると、Vito はやはりその口述を貼り付けます。",
 "Vito now runs as an app on this computer": "Vito はこのコンピューターでアプリとして動作しています",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "口述した内容はアプリに移りました。ここからはホットキーを使って、どのプログラムでも口述を続けましょう。",
 "Open Vito": "Vito を開く",

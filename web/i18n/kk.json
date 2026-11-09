@@ -1,5 +1,17 @@
 {
 "strings": {
+    "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Нидерланд, ағылшын, неміс, француз, испан, итальян, португал, поляк, чех, словак, венгр, румын, болгар, хорват, словен, грек, швед, дат, фин, эстон, латыш, литва, мальта, орыс және украин тілдері — автоматты түрде анықталады. Басқа тілдерге жарамайды.",
+    "English, Dutch, German, French, Spanish, Italian, Polish.": "Ағылшын, нидерланд, неміс, француз, испан, итальян, поляк.",
+    "Type (keystrokes)": "Теру (пернелерді басу)",
+    "Paste (⌘V)": "Қою (⌘V)",
+    "Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.": "Түзетулер әр диктовкаға қолданылады. Кеңес: Тарихта тінтуірді сөздің үстіне апарып, оған тез түзету қосу үшін басыңыз.",
+    "Corrections and text snippets": "Түзетулер және мәтін үзінділері",
+    "spoken today": "бүгін айтылғаны",
+    "Today's figures": "Бүгінгі көрсеткіштер",
+    "Earlier dictation": "Алдыңғы диктовка",
+    "Later dictation": "Келесі диктовка",
+    "sentences": "сөйлем",
+    "No key needed to cancel: while you dictate, point at the pill and click ×. Changed your mind? For five minutes the pill shows “Dictation cancelled”: click it and Vito pastes the dictation after all.": "Бас тарту үшін перне керек емес: диктовка кезінде капсулаға меңзеп, × белгісін басыңыз. Ойыңыз өзгерді ме? Бес минут бойы капсулада «Диктовка тоқтатылды» деген жазу тұрады: оны бассаңыз, Vito диктовканы бәрібір қояды.",
     "Vito now runs as an app on this computer": "Vito енді осы компьютерде қолданба ретінде жұмыс істейді",
     "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Диктовкаларыңыз қолданбаға көшірілді. Әрі қарай сол жерден диктовка жасаңыз — тікелей перне арқылы, кез келген бағдарламада.",
     "Open Vito": "Vito ашу",
