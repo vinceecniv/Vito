@@ -147,6 +147,7 @@ const (
 	tLongHeader
 	tLongStop
 	tLongRow
+	tLongCount // the countdown before one starts; a click cancels it
 	tRule0 target = 100
 )
 
@@ -193,6 +194,10 @@ type islandState struct {
 	armed bool
 	// said is a word on what a click just did ("Marked"), for a moment.
 	said string
+	// count: 3, 2, 1 before a long recording starts, as in the app; 0 when
+	// none is counting. countK is how far into this second, 0..1.
+	count  int
+	countK float64
 }
 
 // height is the panel's height for a view.
@@ -629,6 +634,10 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	}
 	lastBox := rect{left + panelPad - 6, boxY, panelW - 2*panelPad + 12, 68}
 	boxTint := tint
+	if st.count > 0 {
+		ip.countBox(buf, th, st, lastBox, ink, muted, tint, a)
+		return
+	}
 	if st.long.on {
 		ip.longBox(buf, th, st, lastBox, ink, muted, tint, a)
 		return
@@ -696,6 +705,29 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 			repasteIcon(buf, w, h, cx, cy, s, c, al)
 		})
 	}
+}
+
+// countBox counts down to a long recording, as the app does: the number in
+// the red dot, popping in each second. The whole box cancels it.
+func (ip *islandPainter) countBox(buf []byte, th theme, st islandState, r rect, ink, muted, tint rgb, a float64) {
+	w, h := islandWinW*scale, islandWinH*scale
+	s := float64(scale)
+	ip.targets[tLongCount] = r
+	bg := tint
+	if st.over == tLongCount {
+		bg = blend(tint, th.to, 0.08)
+	}
+	fill(buf, w, h, r, 12, bg, a)
+	cx, cy := r.x+38, r.y+r.h/2
+	pop := 0.75 + 0.25*easeOut(clamp(st.countK*4))
+	rr := 19 * pop
+	box(buf, w, h, cx*s, cy*s, rr*s, rr*s, rr*s, recRed, a)
+	n := fmt.Sprint(st.count)
+	_, nw := ip.text(figureFace, n)
+	asc := figureFace.Metrics().Ascent.Ceil()
+	ip.line(buf, figureFace, n, cx-nw/2, cy+float64(asc)/s/2-1.5, rgb{1, 1, 1}, a)
+	ip.line(buf, bodyFace, ip.t("The long recording starts…"), r.x+70, r.y+29, ink, a)
+	ip.line(buf, labelFace, ip.t("Click to cancel"), r.x+70, r.y+47, muted, a)
 }
 
 // longBox is the running long recording, in the last dictation's place: the
@@ -1366,6 +1398,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		overSince time.Time // when the pointer came onto st.over
 		copiedAt  time.Time // when the last dictation was copied
 		armedAt   time.Time // when stop was clicked once (st.armed)
+		countAt   time.Time // when the countdown began (st.count)
 		saidAt    time.Time // when st.said was said
 		actor     = newRestActor(time.Now())
 		dragging  bool
@@ -1609,13 +1642,11 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 					p.log.Warn("island: open Vito failed", "err", err)
 				}
 			case tg == tLongRow:
-				if _, err := p.d.StartLong(""); err != nil {
-					p.log.Warn("island: start long recording", "err", err)
-					st.said, saidAt = "The recording did not start", time.Now()
-				} else {
-					st.long, st.said = p.longNow(), ""
-					goTo(viewMain)
-				}
+				// First 3, 2, 1, as in the app: time to settle before it runs.
+				st.count, countAt, st.said = 3, time.Now(), ""
+				goTo(viewMain)
+			case tg == tLongCount:
+				st.count = 0
 			case tg >= tRule0 && int(tg-tRule0) < len(st.rules):
 				id := st.rules[tg-tRule0].id
 				change(func(c *config.Config) { c.Cleanup.ActivePrompt = id })
@@ -1654,6 +1685,21 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 				}
 			}
 		}
+		if st.count > 0 {
+			since := time.Since(countAt)
+			if n := 3 - int(since/time.Second); n <= 0 {
+				st.count, dirty = 0, true
+				if _, err := p.d.StartLong(""); err != nil {
+					p.log.Warn("island: start long recording", "err", err)
+					st.said, saidAt = "The recording did not start", time.Now()
+					goTo(viewSettings) // where that is said
+				} else {
+					st.long, st.said = p.longNow(), ""
+				}
+			} else {
+				st.count, st.countK, dirty = n, float64(since%time.Second)/float64(time.Second), true
+			}
+		}
 		if st.armed && time.Since(armedAt) > longArm {
 			st.armed, dirty = false, true
 		}
@@ -1661,7 +1707,8 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			st.said, dirty = "", true
 		}
 		if !st.pinned {
-			if !inside && time.Since(left) > islandGrace {
+			// A countdown keeps it open: it shows what is about to happen.
+			if !inside && time.Since(left) > islandGrace && st.count == 0 {
 				closing = true
 			}
 			if p.d.Status().State != daemon.StateIdle {
