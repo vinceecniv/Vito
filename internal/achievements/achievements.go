@@ -182,7 +182,7 @@ var List = []Def{
 	{ID: "act-1k", Group: GroupActivations, Icon: "🤖", Name: "Reflex", Desc: "Started {n} dictations", Threshold: 1000},
 	{ID: "act-10k", Group: GroupActivations, Icon: "⌨️", Name: "One with the Hotkey", Desc: "Started {n} dictations", Threshold: 10000},
 
-	{ID: "cmd-1", Group: GroupCommands, Icon: "⚡", Name: "At Your Service", Desc: "Ran your first Vito Assist command", Threshold: 1},
+	{ID: "cmd-1", Group: GroupCommands, Icon: "🛎️", Name: "At Your Service", Desc: "Ran your first Vito Assist command", Threshold: 1},
 	{ID: "cmd-10", Group: GroupCommands, Icon: "🪄", Name: "Getting Assisted", Desc: "Ran {n} Vito Assist commands", Threshold: 10},
 	{ID: "cmd-50", Group: GroupCommands, Icon: "🧠", Name: "Second Brain", Desc: "Ran {n} Vito Assist commands", Threshold: 50},
 	{ID: "cmd-250", Group: GroupCommands, Icon: "🦾", Name: "Power User", Desc: "Ran {n} Vito Assist commands", Threshold: 250},
