@@ -173,14 +173,14 @@ type islandState struct {
 func (st *islandState) height(v view) float64 {
 	switch v {
 	case viewSettings:
-		return 292 - footH
+		return 292 - footH - 5
 	case viewRules:
-		return 50 + ruleRow*float64(min(len(st.rules), maxRules)) + 64 - footH
+		return 45 + ruleRow*float64(min(len(st.rules), maxRules)) + 64 - footH
 	}
 	if !st.stats {
-		return 214 - footH - statsH
+		return 209 - footH - statsH
 	}
-	return 214 - footH
+	return 209 - footH
 }
 
 func (st *islandState) top() float64 { return panelFoot - st.ph }
@@ -321,7 +321,7 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 	// an arrow back in the list of rule sets.
 	// The pin on the left, the menu on the right and the wordmark between
 	// them, alone: a calm title bar.
-	hy := top + 27.0
+	hy := top + 25.0
 	_, ww := ip.text(wordFace, "vito")
 	brand := rect{left + panelW/2 - ww/2 - 12, hy - 16, ww + 24, 32}
 	ip.targets[tOpenVito] = brand
@@ -413,7 +413,7 @@ func (ip *islandPainter) embedded(buf []byte, st islandState, left, top float64)
 	dx := (islandWinW - surfaceW) / 2 * scale
 	dy := (islandMarkY - pillY) * scale
 	x0, x1 := int((left+3)*scale), int((left+panelW-3)*scale)
-	y0, y1 := int(max(top+56, islandMarkY-embedLiveUp-blockLine-6)*scale), int((panelBottom-3)*scale)
+	y0, y1 := int(max(top+51, islandMarkY-embedLiveUp-blockLine-6)*scale), int((panelBottom-3)*scale)
 	a := st.embed
 	for y := max(0, y0); y < min(h, y1); y++ {
 		sy := y - dy
@@ -517,7 +517,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	// the icons at the outer ends. What they are is the tooltip's to say; the
 	// row stays quiet, and can be switched off (ui.island_stats).
 	if st.stats {
-		cy := top + 60.0
+		cy := top + 55.0
 		chip := blend(th.body, th.to, 0.13)
 		if st.dark {
 			chip = blend(th.body, th.to, 0.2)
@@ -572,7 +572,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	if a <= 0.01 {
 		return
 	}
-	boxY := top + 82
+	boxY := top + 77
 	if !st.stats {
 		boxY -= statsH
 	}
@@ -647,7 +647,7 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 	s := float64(scale)
 	right := left + panelW - panelPad
 	row := func(i int, label string, tg target) float64 {
-		y := top + 50 + float64(i)*30
+		y := top + 45 + float64(i)*30
 		r := rect{left + panelPad - 6, y - 3, panelW - 2*panelPad + 12, 28}
 		if tg != tNone {
 			ip.targets[tg] = r
@@ -728,7 +728,7 @@ func (ip *islandPainter) rulesView(buf []byte, th theme, st islandState, left, t
 		if i >= maxRules {
 			break
 		}
-		y := top + 50 + float64(i)*ruleRow
+		y := top + 45 + float64(i)*ruleRow
 		tg := tRule0 + target(i)
 		box := rect{left + panelPad - 6, y - 3, panelW - 2*panelPad + 12, ruleRow - 2}
 		ip.targets[tg] = box
