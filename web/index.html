@@ -41,6 +41,7 @@
     --coral-ink:#C43E30; --amber-ink:#A65E00;
     --save-shadow:0 6px 16px rgba(124,58,237,0.25);
     --bar:#EDE7D9;
+    --selection:rgba(124,58,237,0.20);
   }
   :root[data-theme="dark"] {
     --violet-l:#A78BFA;
@@ -55,6 +56,7 @@
     --coral-ink:#FF6B5E; --amber-ink:#F59E0B;
     --save-shadow:0 6px 16px rgba(124,58,237,0.35);
     --bar:#322B42;
+    --selection:rgba(167,139,250,0.34);
   }
   * { box-sizing:border-box; }
   /* Form controls don't inherit font-family by default — the browser gives
@@ -75,6 +77,9 @@
   ::-webkit-scrollbar-track { background:transparent; }
   ::-webkit-scrollbar-thumb { background:var(--track); border-radius:99px; border:3px solid var(--bg); }
   ::-webkit-scrollbar-thumb:hover { background:var(--text3); }
+  /* Selected text in the brand's violet instead of the system blue; the text
+     keeps its own colour, so links and coloured figures stay readable. */
+  ::selection { background:var(--selection); color:inherit; }
   body {
     margin:0; background:var(--bg); color:var(--text);
     font:400 14px/1.55 'Sora',system-ui,sans-serif;
