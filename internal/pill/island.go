@@ -78,8 +78,9 @@ const (
 	dimAfter = time.Minute
 	dimTo    = 0.45
 	dimTime  = 400 * time.Millisecond
-	// Faded this much longer, it folds up to its logo, which is all that takes
-	// the pointer then; the pointer on it or a dictation unfolds it.
+	// Faded this much longer, it folds back into the resting pill where it
+	// stands, which is all that takes the pointer then; the pointer on it or
+	// a dictation unfolds it.
 	compactAfter = 4 * time.Minute
 	compactTime  = 450 * time.Millisecond
 
@@ -139,7 +140,7 @@ type islandState struct {
 	embed      float64 // how far the pill has taken the microphone's place
 	copied     bool    // the last dictation was just copied; its label says so
 	rest       Frame   // the character's moment, where it is the microphone
-	compact    float64 // 0 the island .. 1 only its logo, long left alone
+	compact    float64 // 0 the island .. 1 only the resting pill, long left alone
 
 	words, saved int
 	last         string
@@ -218,19 +219,50 @@ func (ip *islandPainter) draw(buf []byte, st islandState) {
 	if k <= 0 {
 		return
 	}
-	// Folded: the island gives way to its logo, which stays where it was.
+	// Folded: the island goes back to the resting pill, where its foot is;
+	// the pointer on that pill opens it again.
 	if k >= 1 {
 		clear(buf)
-		ip.targets = map[target]rect{}
 	} else {
 		for i := range buf {
 			buf[i] = byte(float64(buf[i]) * (1 - k))
 		}
 	}
-	left := (islandWinW - panelW) / 2
-	cx, cy := left+panelPad+12, st.top()+27
-	ip.targets[tOpenVito] = rect{cx - 16, cy - 16, 32, 32}
-	brandTile(buf, islandWinW*scale, islandWinH*scale, cx*scale, cy*scale, 24*scale, themeFor(st.dark), k)
+	ip.targets = map[target]rect{}
+	var pic []byte
+	if st.style == StyleMascot {
+		pic = make([]byte, surfaceW*scale*surfaceH*scale*4)
+		DrawIdleMascot(pic, surfaceW*scale, surfaceH*scale, st.dark, 1, 0, st.rest)
+	} else {
+		pic = idlePicture(st.dark, 1, 0, st.style, nil, false)
+	}
+	over(buf, islandWinW*scale, islandWinH*scale, pic, surfaceW*scale, surfaceH*scale, foldDX*scale, foldDY*scale, k)
+}
+
+// The resting pill's picture stands this far from the island window's top
+// left when the island is folded: the pill at the mark it grew out of.
+const (
+	foldDX = (islandWinW - surfaceW) / 2
+	foldDY = islandMarkY - pillY
+)
+
+// over lays the premultiplied picture src (sw × sh) on dst at dx, dy, faded
+// by a, clipping what falls outside.
+func over(dst []byte, dw, dh int, src []byte, sw, sh, dx, dy int, a float64) {
+	for y := max(0, -dy); y < sh && y+dy < dh; y++ {
+		for x := max(0, -dx); x < sw && x+dx < dw; x++ {
+			si := (y*sw + x) * 4
+			sa := float64(src[si+3]) * a / 255
+			if sa <= 0 {
+				continue
+			}
+			di := ((y+dy)*dw + x + dx) * 4
+			keep := 1 - sa
+			for c := range 4 {
+				dst[di+c] = uint8(min(255, float64(dst[di+c])*keep+float64(src[si+c])*a+0.5))
+			}
+		}
+	}
 }
 
 func (ip *islandPainter) drawFull(buf []byte, st islandState) {
@@ -947,10 +979,10 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	region := func(height float64) [4]int {
 		return [4]int{int((islandWinW - panelW) / 2), int(panelBottom-height) - shift, int(panelW), int(height + 2)}
 	}
-	// logoRegion: the folded island's logo, where it is in the open one.
-	logoRegion := func() [4]int {
-		cx, cy := (islandWinW-panelW)/2+panelPad+12, panelBottom-st.ph+27
-		return [4]int{int(cx - 16), int(cy-16) - shift, 32, 32}
+	// foldRegion: the folded island's resting pill, where its foot is.
+	foldRegion := func() [4]int {
+		x, y, iw, ih := idleInputBox(st.style)
+		return [4]int{x + foldDX, y + foldDY - shift, iw, ih}
 	}
 	// A pinned island opens on the screen it was pinned to (after a restart,
 	// or when its window came back), not on the one in use; only when that
@@ -1376,7 +1408,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		}
 		if fold := st.pinned && time.Since(busyAt) > dimAfter+compactAfter; fold && st.compact < 1 {
 			if st.compact = min(1, st.compact+step(compactTime)); st.compact == 1 {
-				w.setInput(logoRegion())
+				w.setInput(foldRegion())
 			}
 			moving = true
 		} else if !fold && st.compact > 0 {
