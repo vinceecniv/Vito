@@ -1764,7 +1764,7 @@
   .lr-cols { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; }
   .lr-text { flex:999 1 520px; min-width:0; }
   .lr-side { flex:1 1 250px; max-width:330px; display:flex; flex-direction:column; gap:16px; }
-  .lr-live .lr-text { font-size:19px; line-height:1.6; min-height:340px; }
+  .lr-live .lr-text { font-size:19px; line-height:1.6; min-height:240px; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; }
   .lr-doc .lr-text { font-size:15.5px; line-height:1.65; }
   .lr-h, .card > h2.lr-h { font-size:17px; font-weight:600; color:var(--accent); margin:22px 0 8px; padding:0; border:none; letter-spacing:0; text-transform:none; display:flex; align-items:center; gap:8px; }
   .lr-h:first-child { margin-top:0; }
@@ -1806,8 +1806,11 @@
   @media (prefers-reduced-motion:reduce) { .lr-paused #lr-pause, .lr-paused .lr-clock .lr-dot { animation:none; } }
   .lr-stopbtn .lr-sq { width:11px; height:11px; flex:0 0 11px; border-radius:3px; background:var(--coral); }
   .lr-count { display:flex; flex-direction:column; align-items:center; gap:18px; padding:56px 20px; text-align:center; }
-  .lr-count-n { width:120px; height:120px; border-radius:50%; display:grid; place-items:center; font-size:56px; font-weight:700; font-variant-numeric:tabular-nums;
-    color:var(--coral-ink); background:var(--coral-soft); }
+  .lr-count-stage { display:flex; align-items:center; gap:6px; }
+  .lr-count-vm { width:140px; height:150px; }
+  .lr-count-n { position:relative; width:104px; height:96px; border-radius:30px; display:grid; place-items:center; font-size:54px; font-weight:700; font-variant-numeric:tabular-nums;
+    color:var(--coral-ink); background:var(--coral-soft); align-self:flex-start; margin-top:6px; }
+  .lr-count-n::before { content:""; position:absolute; left:-12px; bottom:22px; border:10px solid transparent; border-right:14px solid var(--coral-soft); border-left:0; }
   .lr-count-n.tick { animation:lrTick 1s ease-out; }
   @keyframes lrTick { 0% { transform:scale(1.18); box-shadow:0 0 0 0 color-mix(in srgb, var(--coral) 45%, transparent); } 100% { transform:scale(1); box-shadow:0 0 0 22px color-mix(in srgb, var(--coral) 0%, transparent); } }
   @media (prefers-reduced-motion:reduce) { .lr-count-n.tick { animation:none; } }
@@ -2590,7 +2593,7 @@
         <p class="lr-foot">Recordings don't count towards your dictation statistics or history.</p>
       </div>
       <div id="lr-count-view" class="card lr-count" hidden>
-        <div class="lr-count-n" id="lr-count-n">3</div>
+        <div class="lr-count-stage"><div class="lr-count-vm" id="lr-count-vm"></div><div class="lr-count-n" id="lr-count-n">3</div></div>
         <div class="lr-count-t" id="lr-count-t"></div>
         <div class="lr-count-s">Press Esc to cancel.</div>
         <button class="btn ghost" id="lr-count-cancel">Cancel</button>
@@ -2613,15 +2616,15 @@
               </div>
               <button class="btn lr-stopbtn" id="lr-stop"><span class="lr-sq"></span>Stop and finish</button>
             </div>
-            <div class="card">
+            <div class="card" id="lr-live-stats">
               <div style="font-weight:600; font-size:13.5px; margin-bottom:10px;">This recording</div>
               <div class="lr-stats">
-                <div><b id="lr-st-words">0</b><span>words</span></div>
-                <div><b id="lr-st-sents">0</b><span>sentences</span></div>
-                <div><b id="lr-st-read">–</b><span>reading time</span></div>
-                <div><b id="lr-st-wpm">–</b><span>words per minute</span></div>
-                <div><b id="lr-st-heads">0</b><span>headers</span></div>
-                <div><b id="lr-st-marks">0</b><span>marks</span></div>
+                <div><b data-st="words">0</b><span>words</span></div>
+                <div><b data-st="sents">0</b><span>sentences</span></div>
+                <div><b data-st="read">–</b><span>reading time</span></div>
+                <div><b data-st="wpm">–</b><span>words per minute</span></div>
+                <div><b data-st="heads">0</b><span>headers</span></div>
+                <div><b data-st="marks">0</b><span>marks</span></div>
               </div>
             </div>
             <div class="card">
@@ -2656,7 +2659,20 @@
         <div id="lr-dnote"></div>
         <div class="lr-cols">
           <article class="card lr-text" id="lr-doc-text"></article>
-          <aside class="lr-side"><div class="card" id="lr-marks"></div></aside>
+          <aside class="lr-side">
+            <div class="card" id="lr-doc-stats">
+              <div style="font-weight:600; font-size:13.5px; margin-bottom:10px;">This recording</div>
+              <div class="lr-stats">
+                <div><b data-st="words">0</b><span>words</span></div>
+                <div><b data-st="sents">0</b><span>sentences</span></div>
+                <div><b data-st="read">–</b><span>reading time</span></div>
+                <div><b data-st="wpm">–</b><span>words per minute</span></div>
+                <div><b data-st="heads">0</b><span>headers</span></div>
+                <div><b data-st="marks">0</b><span>marks</span></div>
+              </div>
+            </div>
+            <div class="card" id="lr-marks"></div>
+          </aside>
         </div>
       </div>
     </section>
@@ -11219,7 +11235,7 @@ function lrShow(view){
   $("lr-live-view").hidden = view !== "live";
   $("lr-count-view").hidden = view !== "count";
   clearInterval(LR.statsT); LR.statsT = 0;
-  if (view === "live") { lrRenderStats(); LR.statsT = setInterval(lrRenderStats, LR_STATS_MS); }
+  if (view === "live") { LR.follow = true; lrFitLive(); lrFollow(); lrRenderStats(); LR.statsT = setInterval(lrRenderStats, LR_STATS_MS); }
   $("lr-doc-view").hidden = view !== "doc";
   $("lr-new").hidden = view !== "list";
 }
@@ -11288,7 +11304,17 @@ const LR_COUNT = 3;
 function lrCountdown(label, go){
   const back = LR.view, n = $("lr-count-n");
   let left = LR_COUNT;
-  const show = () => { n.textContent = left; n.classList.remove("tick"); void n.offsetWidth; n.classList.add("tick"); };
+  // Vito counts down: a copy of the mascot of its own (not the shared one, so
+  // the dashboard's Vito keeps his mood), with a look per number.
+  const slot = $("lr-count-vm");
+  if (!slot.firstChild) { const vmEl = document.createElement("div"); vmEl.className = "vmascot"; vmEl.innerHTML = mascotSVG(); slot.appendChild(vmEl); }
+  const face = slot.firstChild;
+  const looks = { 3: ["idle", "eager"], 2: ["idle", "nod"], 1: ["happy", ""] };
+  const show = () => {
+    n.textContent = left; n.classList.remove("tick"); void n.offsetWidth; n.classList.add("tick");
+    const [state, talk] = looks[left] || ["idle", ""];
+    face.dataset.state = state; face.dataset.talk = talk;
+  };
   $("lr-count-t").textContent = label;
   lrShow("count"); show();
   clearInterval(LR.countT);
@@ -11330,23 +11356,50 @@ $("lr-discard").onclick = async () => {
 const LR_STATS_MS = 5000;
 function lrRenderStats(){
   const st = LR.running; if (!st) return;
-  const items = LR.liveDoc?.items || [];
+  lrFillStats($("lr-live-stats"), LR.liveDoc?.items || [], LR.liveDoc?.marks || [], (st.live || []).map(l => l.text || ""), st.seconds);
+}
+// lrFillStats writes a recording's numbers into a stats card: the saved text
+// (items), its marks, text still being heard (live) and the audio length.
+function lrFillStats(card, items, marks, live, seconds){
   const count = txt => (txt.match(/\S+/g) || []).length;
   // A sentence still being spoken counts once it has its end mark.
   const ends = txt => (txt.match(/[.!?…]+(\s|$)/g) || []).length;
   let words = 0, sents = 0;
   for (const it of items) for (const sn of it.sentences || []) { words += count(sn.text); sents++; }
-  for (const l of st.live || []) { words += count(l.text || ""); sents += ends(l.text || ""); }
+  for (const l of live) { words += count(l); sents += ends(l); }
   const fmt = n => n.toLocaleString();
-  $("lr-st-words").textContent = fmt(words);
-  $("lr-st-sents").textContent = fmt(sents);
+  const set = (k, v) => { card.querySelector(`[data-st="${k}"]`).textContent = v; };
+  set("words", fmt(words));
+  set("sents", fmt(sents));
   // Reading at about 230 words a minute.
   const read = words / 230;
-  $("lr-st-read").textContent = !words ? "–" : read < 1 ? "< 1 min" : `${fmt(Math.round(read))} min`;
-  $("lr-st-wpm").textContent = st.seconds >= 30 && words ? fmt(Math.round(words / (st.seconds / 60))) : "–";
-  $("lr-st-heads").textContent = fmt(items.filter(i => i.kind === "header").length);
-  $("lr-st-marks").textContent = fmt((LR.liveDoc?.marks || []).length);
+  set("read", !words ? "–" : read < 1 ? "< 1 min" : `${fmt(Math.round(read))} min`);
+  set("wpm", seconds >= 30 && words ? fmt(Math.round(words / (seconds / 60))) : "–");
+  set("heads", fmt(items.filter(i => i.kind === "header").length));
+  set("marks", fmt(marks.length));
 }
+// The live text grows with what is said until it reaches the bottom of the
+// window (less a margin), then scrolls inside itself. It follows the newest
+// text, unless you scrolled up to read; scrolling back down follows again.
+const LR_BOTTOM_GAP = 24;
+function lrFitLive(){
+  const box = $("lr-live-text");
+  if (LR.view !== "live" || !box.offsetParent) return;
+  const top = box.getBoundingClientRect().top + window.scrollY;
+  box.style.maxHeight = Math.max(240, window.innerHeight - top - LR_BOTTOM_GAP) + "px";
+}
+// LR.follow: on unless you scrolled up; only your own scrolling changes it.
+function lrFollow(){
+  const box = $("lr-live-text");
+  if (LR.follow !== false) { box.scrollTop = box.scrollHeight; LR.autoTop = box.scrollTop; }
+}
+function lrAtEnd(box){ return box.scrollHeight - box.scrollTop - box.clientHeight < 48; }
+$("lr-live-text").addEventListener("scroll", () => {
+  const box = $("lr-live-text");
+  if (lrAtEnd(box)) LR.follow = true;                         // back at the newest text
+  else if (box.scrollTop < (LR.autoTop ?? 0) - 2) LR.follow = false; // scrolled up to read
+});
+window.addEventListener("resize", () => { lrFitLive(); lrFollow(); });
 function lrRenderLive(){
   const st = LR.running; if (!st) return;
   $("lr-live-view").classList.toggle("lr-paused", st.state === "paused");
@@ -11364,6 +11417,7 @@ function lrRenderLive(){
   const text = (st.live || []).map(l => l.text).filter(Boolean).join(" ");
   liveEl.innerHTML = escapeHtml(text) + (st.state === "recording" ? '<span class="lr-caret"></span>' : "");
   if (!LR.liveDoc?.items?.length && !text) liveEl.innerHTML = `<span class="lr-pending">${escapeHtml(t("Listening… the text appears here as you speak."))}</span>`;
+  lrFitLive(); lrFollow();
 }
 function lrRenderLiveDoc(){
   const box = $("lr-live-text");
@@ -11465,6 +11519,7 @@ async function lrFetchDoc(){
   if (id !== LR.docID) return;
   LR.doc = d;
   const m = d.meta;
+  lrFillStats($("lr-doc-stats"), d.items || [], d.marks || [], [], m.seconds);
   if (document.activeElement !== $("lr-dtitle")) $("lr-dtitle").value = m.title || "";
   $("lr-continue").hidden = !!LR.running || !(m.state === "done" || m.state === "interrupted");
   $("lr-dtitle").placeholder = lrTitle(Object.assign({}, m, { title: "" }));
