@@ -19,6 +19,7 @@ import (
 // at a time, beside — never instead of — dictation. It has its own capture,
 // so the dictation key keeps working while it runs.
 type long struct {
+	files   longFiles
 	store   *longrec.Store
 	cleaner *longrec.Cleaner
 
@@ -51,7 +52,11 @@ func (d *Daemon) initLong() {
 	d.long = l
 	// Finished sessions still holding a WAV (from before, or a crash in the
 	// middle of compressing) become MP3s.
-	go store.CompressAll(l.busy)
+	// Then every recording's own folder is brought up to date.
+	go func() {
+		store.CompressAll(l.busy)
+		d.writeAllLongFiles()
+	}()
 }
 
 // busy says a session's audio is in use: being recorded or restored.
@@ -331,6 +336,7 @@ func (d *Daemon) DiscardLong() error {
 	l.feeding.Wait()
 	rec.Abort()
 	id := rec.ID()
+	d.trashLongFiles(id)
 	if err := l.store.Delete(id); err != nil {
 		return err
 	}
@@ -438,6 +444,7 @@ func (d *Daemon) DeleteLong(id string) error {
 	if r, err := d.running(); err == nil && r.ID() == id {
 		return fmt.Errorf("stop the recording first")
 	}
+	d.trashLongFiles(id)
 	return d.long.store.Delete(id)
 }
 

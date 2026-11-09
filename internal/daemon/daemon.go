@@ -624,6 +624,12 @@ func (d *Daemon) SetHintShown(fn func() bool) { d.hintShown.Store(&fn) }
 func (d *Daemon) Announce(e Event) { d.emit(e) }
 
 func (d *Daemon) emit(e Event) {
+	switch e.Type {
+	case "long_doc":
+		d.scheduleLongFiles(e.Session)
+	case "config":
+		d.longConfigChanged()
+	}
 	if d.OnEvent != nil {
 		d.OnEvent(e)
 	}

@@ -84,6 +84,21 @@ see its README for the three fixes); every frame is exactly 216 bytes, which
 `Compress` checks before the WAV goes. Decoding is go-mp3 (Apache-2.0).
 Measured on a 4:21 recording: 8.4 MB → 1.57 MB in ~0.65 s.
 
+## The recording's own folder
+
+Every session is also kept as ordinary files under `long.folder` (default
+`<Documents>/Vito/<"Recordings" in the UI language>`), one folder per session
+named `yyyy-mm-dd hh.mm <title>`: `.docx`, `.md`, `.txt`, `.srt`, `.vtt` and,
+once done, the `.mp3` (`internal/longrec/files.go`, `docx.go`). The daemon
+rewrites them 2 s after every `long_doc` event, at start-up and when the
+setting changes (folders move along; across drives they are written anew).
+`files.json` in the session remembers the sha256 of what Vito wrote; a file
+that no longer matches is the user's and is never overwritten — Vito's update
+goes beside it as `<name> (Vito).<ext>` and the doc reports it in
+`files.edited`. Deleting a session moves its folder to the trash
+(`internal/osfiles`: SHFileOperation, ~/.Trash, the freedesktop trash); where
+there is none it stays. The Export menu became "Open folder".
+
 ## Phase 1: the mode itself
 
 - **Nothing lost on a crash**: audio goes to disk as it comes; after a crash

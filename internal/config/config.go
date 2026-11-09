@@ -353,6 +353,9 @@ type Long struct {
 	// Clean runs the AI cleanup per block (nil = on, while cleanup itself is
 	// configured and on).
 	Clean *bool `json:"clean,omitempty"`
+	// Folder holds each recording's files in a folder of its own ("" =
+	// Documents/Vito/<Recordings, in the interface's language>).
+	Folder string `json:"folder,omitempty"`
 }
 
 // CleanEnabled reports whether long recordings are cleaned per block.

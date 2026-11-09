@@ -1913,7 +1913,6 @@
   .lr-seg { display:inline-flex; padding:3px; border-radius:11px; background:var(--track); }
   .lr-seg button { border:none; background:none; font:inherit; font-size:13px; font-weight:600; color:var(--text2); padding:8px 13px; border-radius:9px; cursor:var(--cur-hand); }
   .lr-seg button.on { background:var(--card); color:var(--text); }
-  .lr-exp { position:relative; }
   .lr-menu { position:absolute; right:0; top:calc(100% + 6px); z-index:30; background:var(--card); border:1px solid var(--card-border); border-radius:12px;
     box-shadow:0 10px 30px rgba(0,0,0,.14); padding:6px; min-width:190px; }
   .lr-menu button { display:block; width:100%; text-align:left; background:none; border:none; font:inherit; font-size:13.5px; color:var(--text); padding:9px 12px; border-radius:8px; cursor:var(--cur-hand); }
@@ -2545,6 +2544,16 @@
             <div class="flagsel-list" id="retention-list"></div>
           </div>
         </div>
+        <div class="card" data-sec="output" hidden id="set-lrfolder">
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2 2 0 0 1 5 5.5h4l2 2.2h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10.5h18"/></svg><span>Recordings folder</span></h2>
+          <p class="act-note" style="margin:2px 0 0;">Every recording gets a folder of its own here, with its text as Word, Markdown and plain text, subtitles and the audio as MP3 — kept up to date by Vito. A file you change there yourself is never overwritten.</p>
+          <div class="sync-pickrow" style="margin-top:12px;">
+            <input type="text" id="lrf-path" spellcheck="false">
+            <button type="button" class="btn ghost small" id="lrf-pick">Browse…</button>
+            <button type="button" class="btn primary small" id="lrf-use" hidden>Use this folder</button>
+          </div>
+          <p class="act-note" id="lrf-note" style="margin:8px 0 0;"></p>
+        </div>
         <div class="card" data-sec="linux" hidden>
           <h2><span class="tux-slot" aria-hidden="true"></span><span>Linux — setup &amp; tools</span></h2>
           <div id="linux-tools-body"></div>
@@ -2752,14 +2761,7 @@
           <div class="lr-dhead"><input class="lr-titlein" id="lr-dtitle" placeholder="Untitled recording" aria-label="Title of the recording"><span class="lr-meta" id="lr-dmeta"></span></div>
           <div class="lr-seg" role="group" aria-label="View"><button type="button" data-v="clean" class="on">Cleaned</button><button type="button" data-v="raw">Raw</button></div>
           <button class="btn ghost small lr-ib lr-io" id="lr-reclean" aria-label="Clean again" data-tip-text="Clean again — from the raw transcript, with a rule set of your choice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2.5l-8 8"/><path d="M10.5 6.5l6 6-5 6.5L2 10.5z"/><path d="M12 9.5l-5.5 5.5M9 9l-4 4M14.5 12l-4 4.5"/><path d="M1.8 16h.01M4.5 19.5h.01M8 22h.01" stroke-width="2.6"/></svg></button>
-          <div class="lr-exp"><button class="btn ghost small lr-ib lr-io" id="lr-export" aria-label="Export" data-tip-text="Export — as text, subtitles or audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11M7 10l5 5 5-5M4.5 20h15"/></svg><svg class="lr-ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
-            <div class="lr-menu" id="lr-export-menu" hidden>
-              <button type="button" data-f="md"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Markdown (.md)</button>
-              <button type="button" data-f="txt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Text (.txt)</button>
-              <button type="button" data-f="srt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 12.5h3M12.5 12.5H17M7 15.5h6.5"/></svg>Subtitles (.srt)</button>
-              <button type="button" data-f="vtt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 12.5h3M12.5 12.5H17M7 15.5h6.5"/></svg>Subtitles (.vtt)</button>
-              <button type="button" data-f="audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h1.5M7 8.5v7M11 5v14M15 8v8M19 10.5v3"/></svg><span id="lr-exp-audio">Audio (.mp3)</span></button>
-            </div></div>
+          <button class="btn ghost small lr-ib lr-io" id="lr-folder" aria-label="Open folder" data-tip-text="Open folder — Vito keeps this recording here as Word, Markdown, text, subtitles and MP3. Copy what you need; if you change a file here, Vito leaves it and puts its update beside it."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2 2 0 0 1 5 5.5h4l2 2.2h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10.5h18"/></svg></button>
         </div>
         <div id="lr-dnote"></div>
         <div class="lr-cols">
@@ -2852,6 +2854,21 @@ const TR = { nl: {
   "Subtitles (.vtt)":"Ondertitels (.vtt)",
   "Audio (.wav)":"Audio (.wav)",
   "Audio (.mp3)":"Audio (.mp3)",
+  "Open folder":"Map openen",
+  "Open folder — Vito keeps this recording here as Word, Markdown, text, subtitles and MP3. Copy what you need; if you change a file here, Vito leaves it and puts its update beside it.":"Map openen — Vito bewaart deze opname hier als Word, Markdown, tekst, ondertitels en MP3. Kopieer wat je nodig hebt; pas je hier een bestand aan, dan laat Vito het staan en zet zijn bijgewerkte versie ernaast.",
+  "The recording's folder":"De map van de opname",
+  "Vito keeps every recording as ordinary files in a folder of its own: Word, Markdown, plain text, subtitles (.srt, .vtt) and the audio as MP3. They follow every change — a title, a mark, more recording.":"Vito bewaart elke opname als gewone bestanden in een eigen map: Word, Markdown, platte tekst, ondertitels (.srt, .vtt) en het geluid als MP3. Ze volgen elke wijziging — een titel, een markering, verder opnemen.",
+  "Copy what you need from it and do with it what you like.":"Kopieer eruit wat je nodig hebt en doe ermee wat je wilt.",
+  "Changing a file in the folder itself is safe too: Vito never overwrites it, and puts its own update beside it as “… (Vito)”.":"Een bestand in de map zelf aanpassen kan ook gerust: Vito overschrijft het nooit en zet zijn eigen bijgewerkte versie ernaast als “… (Vito)”.",
+  "You changed a file in the recording's folder:":"Je hebt een bestand in de map van de opname aangepast:",
+  "Vito left it alone; its update is beside it as “… (Vito)”.":"Vito heeft het laten staan; de bijgewerkte versie staat ernaast als “… (Vito)”.",
+  "Its folder with the files goes to the recycle bin.":"De map met de bestanden gaat naar de prullenbak.",
+  "Recordings folder":"Map voor opnames",
+  "Every recording gets a folder of its own here, with its text as Word, Markdown and plain text, subtitles and the audio as MP3 — kept up to date by Vito. A file you change there yourself is never overwritten.":"Elke opname krijgt hier een eigen map, met de tekst als Word, Markdown en platte tekst, ondertitels en het geluid als MP3 — door Vito bijgehouden. Een bestand dat je daar zelf aanpast, wordt nooit overschreven.",
+  "Default:":"Standaard:",
+  "Use the default":"Standaard gebruiken",
+  "This is the default folder.":"Dit is de standaardmap.",
+  "Choose the folder for your recordings":"Kies de map voor je opnames",
   "Delete — the recording, its audio and its text":"Verwijderen — de opname, het geluid en de tekst",
   "Clean again — from the raw transcript, with a rule set of your choice":"Opnieuw opschonen — vanuit de ruwe transcriptie, met een regelset naar keuze",
   "Export — as text, subtitles or audio":"Exporteren — als tekst, ondertitels of geluid",
@@ -5871,7 +5888,7 @@ function connectWS() {
 // handleEvent takes one event from the daemon (or, in the browser, from
 // standalone/backend.js).
 function handleEvent(e) {
-    if (e.type === "long" || e.type === "long_doc") { longEvent(e); return; }
+    if (e.type === "long" || e.type === "long_doc" || e.type === "long_files") { longEvent(e); return; }
     // The island asks to see a page (the running long recording).
     if (e.type === "show") { if (TABS.includes(e.text)) { selectTab(e.text); window.focus(); } return; }
     if (e.type === "state") {
@@ -10532,6 +10549,38 @@ $("s-assist-usecleanup").addEventListener("change", () => { syncAssistMode(); au
 // The auto-backup toggle saves like the rest, and refreshes its own note.
 $("s-autobackup").addEventListener("change", () => { autoSaveSettings(); renderBackupAutoNote(); });
 
+/* ---- recordings folder ---- */
+// Where each recording's folder goes. Changing it moves the folders along
+// (on another drive they are written anew and the old ones stay).
+async function lrFolderLoad(){
+  if (STANDALONE) return;
+  try {
+    const r = await api("/api/long/folder");
+    $("lrf-path").value = r.folder; $("lrf-path").dataset.cur = r.folder; $("lrf-use").hidden = true;
+    $("lrf-note").innerHTML = r.custom
+      ? `${escapeHtml(t("Default:"))} ${escapeHtml(r.default)} · <a href="#" id="lrf-reset">${escapeHtml(t("Use the default"))}</a>`
+      : escapeHtml(t("This is the default folder."));
+    const rs = $("lrf-reset"); if (rs) rs.onclick = (e) => { e.preventDefault(); lrFolderSet(""); };
+  } catch {}
+}
+async function lrFolderSet(folder){
+  await saveConfig({ long: Object.assign(cfg.long || {}, { folder }) }, "Saved");
+  setTimeout(lrFolderLoad, 300);
+}
+$("lrf-path").oninput = () => { $("lrf-use").hidden = !$("lrf-path").value.trim() || $("lrf-path").value.trim() === $("lrf-path").dataset.cur; };
+$("lrf-path").onkeydown = (e) => { if (e.key === "Enter" && !$("lrf-use").hidden) $("lrf-use").click(); };
+$("lrf-use").onclick = () => lrFolderSet($("lrf-path").value.trim());
+$("lrf-pick").onclick = async () => {
+  try {
+    const r = await api("/api/sync/pick", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: t("Choose the folder for your recordings"), start: $("lrf-path").value.trim() }) });
+    if (r.ok && r.path) { $("lrf-path").value = r.path; $("lrf-path").oninput(); $("lrf-use").focus(); return; }
+    if (!r.ok && r.error === "no_picker") { toast(t("No folder window on this system — type or paste the path."), "info", 6000); $("lrf-path").focus(); return; }
+    if (!r.ok) throw new Error(r.error);
+  } catch (e) { toast(e.message, "err"); }
+};
+lrFolderLoad();
+
 /* ---- backup & restore ---- */
 const BK_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z"/><path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>';
 const BK_DL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg>';
@@ -11789,6 +11838,8 @@ async function lrFetchDoc(){
   else if (m.state !== "done") note = t("Still recording.");
   else if (d.blocks && d.cleaned < d.blocks && !LR.raw && (d.items || []).length) note = `${t("Cleaning up…")} ${d.cleaned} / ${d.blocks} ${t("blocks")}`;
   if (d.failed) note += (note ? " " : "") + `${d.failed} ${t("block(s) could not be transcribed; their audio is kept.")}`;
+  const edited = d.files?.edited || [];
+  if (edited.length) note += (note ? " " : "") + `${t("You changed a file in the recording's folder:")} ${edited.join(", ")}. ${t("Vito left it alone; its update is beside it as “… (Vito)”.")}`;
   $("lr-dnote").innerHTML = note ? `<div class="banner tip"><span class="grow">${escapeHtml(note)}</span></div>` : "";
   const box = $("lr-doc-text");
   box.innerHTML = (d.items || []).length ? lrItemsHTML(d, true)
@@ -12086,18 +12137,20 @@ $("lr-live-prof").onchange = async e => {
   } catch (err) { toast(err.message, "err"); }
   e.target.blur(); // H and M work again
 };
-$("lr-export").onclick = e => {
-  e.stopPropagation();
-  $("lr-exp-audio").textContent = t(LR.doc?.audio_type === "wav" ? "Audio (.wav)" : "Audio (.mp3)");
-  $("lr-export-menu").hidden = !$("lr-export-menu").hidden;
+// The recording's own folder: Vito keeps its files there (Word, Markdown,
+// text, subtitles, MP3). The first time it says so, and what happens to a
+// file you change there.
+$("lr-folder").onclick = () => {
+  const id = LR.docID;
+  const open = () => api(`/api/long/${id}/open`, { method: "POST" }).catch(e => toast(e.message, "err"));
+  let seen = false; try { seen = localStorage.getItem("vito.lrFolderSeen") === "1"; } catch {}
+  if (seen) { open(); return; }
+  modal(t("The recording's folder"),
+    `<p style="color:var(--text2); font-size:13.5px; margin:0 0 10px;">${escapeHtml(t("Vito keeps every recording as ordinary files in a folder of its own: Word, Markdown, plain text, subtitles (.srt, .vtt) and the audio as MP3. They follow every change — a title, a mark, more recording."))}</p>
+     <p style="color:var(--text2); font-size:13.5px; margin:0 0 10px;">${escapeHtml(t("Copy what you need from it and do with it what you like."))}</p>
+     <p style="color:var(--text2); font-size:13.5px; margin:0;">${escapeHtml(t("Changing a file in the folder itself is safe too: Vito never overwrites it, and puts its own update beside it as “… (Vito)”."))}</p>`,
+    () => { try { localStorage.setItem("vito.lrFolderSeen", "1"); } catch {} open(); }, "Open folder");
 };
-document.addEventListener("click", () => { $("lr-export-menu").hidden = true; });
-$("lr-export-menu").querySelectorAll("button").forEach(b => b.onclick = () => {
-  $("lr-export-menu").hidden = true;
-  const id = LR.docID, f = b.dataset.f;
-  if (f === "audio") downloadAuth(`/api/long/${id}/audio?download=1`, `vito-${id}.${LR.doc?.audio_type || "wav"}`);
-  else downloadAuth(`/api/long/${id}/export?format=${f}${LR.raw ? "&raw=1" : ""}`, `vito-${id}.${f}`);
-});
 $("lr-delete").onclick = () => lrConfirmDelete(LR.docID, () => { LR.docID = ""; lrShow("list"); loadLong(); });
 function lrConfirmDelete(id, after){
   // Which recording it is, so nobody throws away the wrong one: its title,
@@ -12107,7 +12160,7 @@ function lrConfirmDelete(id, after){
   const facts = ses ? [lrFriendly(ses.started), lrClock(ses.seconds), ses.words ? ses.words.toLocaleString() + " " + t("words") : "", ses.audio_bytes ? lrBytes(ses.audio_bytes) : ""].filter(Boolean).join(" · ") : "";
   const what = ses ? `<div class="lr-delwhat"><b>${escapeHtml(lrTitle(ses))}</b><span>${escapeHtml(facts)}</span></div>` : "";
   const m = modal(t("Delete recording"),
-    what + `<p style="color:var(--text2); font-size:13.5px; margin:0;">${escapeHtml(t("The recording, its audio and its text are permanently deleted."))}</p>`,
+    what + `<p style="color:var(--text2); font-size:13.5px; margin:0;">${escapeHtml(t("The recording, its audio and its text are permanently deleted."))}</p><p style="color:var(--text2); font-size:13.5px; margin:8px 0 0;">${escapeHtml(t("Its folder with the files goes to the recycle bin."))}</p>`,
     () => { api(`/api/long/${id}`, { method: "DELETE" }).then(after).then(() => toast(t("Recording deleted"), "ok")).catch(e => toast(e.message, "err")); },
     "Delete", true);
   return m;

@@ -30,6 +30,8 @@ func (s *Server) longRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("PUT /api/long/{id}/profile", s.auth(s.handleLongProfile))
 	mux.HandleFunc("GET /api/long/{id}/export", s.auth(s.handleLongExport))
 	mux.HandleFunc("GET /api/long/{id}/audio", s.auth(s.handleLongAudio))
+	mux.HandleFunc("POST /api/long/{id}/open", s.auth(s.handleLongOpen))
+	mux.HandleFunc("GET /api/long/folder", s.auth(s.handleLongFolder))
 }
 
 func (s *Server) longErr(w http.ResponseWriter, code int, err error) {
@@ -183,10 +185,11 @@ func (s *Server) handleLongDoc(w http.ResponseWriter, r *http.Request) {
 	}
 	s.writeJSON(w, http.StatusOK, struct {
 		longrec.Doc
-		Cost       longCost `json:"cost"`
-		AudioBytes int64    `json:"audio_bytes"`
-		AudioType  string   `json:"audio_type"`
-	}{d, s.longCost(d.Meta), store.AudioBytes(id), store.AudioType(id)})
+		Cost       longCost           `json:"cost"`
+		AudioBytes int64              `json:"audio_bytes"`
+		AudioType  string             `json:"audio_type"`
+		Files      longrec.FilesState `json:"files"`
+	}{d, s.longCost(d.Meta), store.AudioBytes(id), store.AudioType(id), store.Files(id)})
 }
 
 // longCost is what a session has cost so far, roughly: the speech service by
@@ -375,17 +378,30 @@ func (s *Server) handleLongExport(w http.ResponseWriter, r *http.Request) {
 }
 
 // fileName keeps a title safe as a download's name.
-func fileName(title string) string {
-	var b strings.Builder
-	for _, r := range title {
-		switch {
-		case strings.ContainsRune(`<>:"/\|?*`, r) || r < 32:
-			b.WriteRune('-')
-		default:
-			b.WriteRune(r)
+func fileName(title string) string { return longrec.SafeName(title) }
+
+// handleLongOpen brings a recording's folder up to date and shows it in the
+// file manager.
+func (s *Server) handleLongOpen(w http.ResponseWriter, r *http.Request) {
+	if _, id, ok := s.longStore(w, r); ok {
+		dir, err := s.d.OpenLongFolder(id)
+		if err != nil {
+			s.longErr(w, http.StatusInternalServerError, err)
+			return
 		}
+		s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "dir": dir})
 	}
-	return strings.TrimSpace(clipText(b.String(), 80))
+}
+
+// handleLongFolder tells the settings page where the recordings' folders go,
+// and where they go when no folder is set.
+func (s *Server) handleLongFolder(w http.ResponseWriter, r *http.Request) {
+	cfg := s.d.Config()
+	s.writeJSON(w, http.StatusOK, map[string]any{
+		"folder":  s.d.LongFolder(),
+		"default": daemon.DefaultLongFolder(cfg.UI.Lang),
+		"custom":  cfg.Long.Folder != "",
+	})
 }
 
 func (s *Server) handleLongAudio(w http.ResponseWriter, r *http.Request) {

@@ -41,6 +41,10 @@ finish-args:
   - --filesystem=host-os:ro
   - --filesystem=xdg-config/xdg-desktop-portal:ro
   - --filesystem=xdg-data/xdg-desktop-portal:ro
+  # Long recordings keep their files under Documents/Vito (internal/longrec
+  # files.go); user-dirs.dirs says where Documents is (it can be localized).
+  - --filesystem=xdg-documents/Vito:create
+  - --filesystem=xdg-config/user-dirs.dirs:ro
   # Microphone capture. PipeWire serves this through its PulseAudio compatibility.
   - --socket=pulseaudio
   # Speech-to-text and AI cleanup are network calls to the user's own providers,
