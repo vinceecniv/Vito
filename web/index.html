@@ -120,7 +120,6 @@
     background:color-mix(in srgb, #EF4444 10%, transparent); color:var(--text); font:inherit; font-size:13.5px; font-weight:600; cursor:var(--cur-hand); text-align:left; }
   .lr-navrec[hidden] { display:none; }
   .dash-long { display:inline-flex; align-items:center; gap:8px; margin-left:auto; }
-  .dash-long:hover { border-color:var(--accent); color:var(--text); background:var(--accent-soft); }
   .lr-navrec:hover { background:color-mix(in srgb, #EF4444 18%, transparent); }
   .lr-navrec-l { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .lr-navrec b { font-variant-numeric:tabular-nums; font-size:12.5px; }
@@ -1081,6 +1080,20 @@
   .btn.ghost { background:none; border:1px solid var(--input-border); color:var(--text2); }
   .btn.small { padding:8px 14px; border-radius:10px; }
   .btn.danger { background:none; border:1px solid var(--input-border); color:var(--coral-ink); }
+  /* Every button answers the pointer. */
+  .btn { transition:background-color .15s, border-color .15s, color .15s, filter .15s, opacity .15s, transform .1s; }
+  .btn:active:not(:disabled) { transform:translateY(1px); }
+  .btn.primary:hover:not(:disabled) { filter:brightness(1.1) saturate(1.05); }
+  .btn.ghost:hover:not(:disabled) { border-color:var(--accent); color:var(--text); background:var(--accent-soft); }
+  .btn.danger:hover:not(:disabled) { border-color:var(--coral); background:color-mix(in srgb, var(--coral) 12%, transparent); }
+  .btn:not(.primary):not(.ghost):not(.danger):hover:not(:disabled) { filter:brightness(1.08); }
+  .welcome-actions .btn:hover:not(:disabled) { filter:brightness(.97); }
+  .welcome-actions .btn.ghost:hover:not(:disabled) { background:rgba(255,255,255,.28); color:#fff; border-color:transparent; }
+  .flagsel-btn { transition:border-color .15s; }
+  .flagsel-btn:hover { border-color:var(--accent); }
+  .hamburger:hover { color:var(--text); border-color:var(--accent); }
+  .ib-x:hover { background:rgba(255,255,255,.3); }
+  .banner .x:hover { color:var(--text); }
   .msg { margin-left:12px; font-size:12.5px; color:var(--text2); }
   .msg.ok, .msg.err { font-weight:600; display:inline-flex; align-items:center; gap:5px; padding:3px 10px; border-radius:99px; animation:pop .25s ease; }
   .msg.ok { color:#0f9d58; background:rgba(52,199,123,0.14); }
@@ -1814,12 +1827,9 @@
     background:var(--card); font:inherit; font-size:13px; color:var(--text); cursor:var(--cur-hand); }
   .lr-tool:hover { border-color:var(--accent); background:var(--accent-soft); }
   /* Every button on the recordings page answers the pointer. */
-  #tab-long .btn, #lr-navrec, .lr-tool, .lr-seg button, .lr-tolive, .lr-selmark, .lr-pop-x, .lr-hx, .lr-mx, .lr-discard u {
+  #lr-navrec, .lr-tool, .lr-seg button, .lr-tolive, .lr-selmark, .lr-pop-x, .lr-hx, .lr-mx, .lr-discard u {
     transition:background-color .15s, border-color .15s, color .15s, filter .15s, opacity .15s, transform .1s; }
-  #tab-long .btn:not(:disabled):active, .lr-tolive:active, .lr-selmark:active { transform:translateY(1px); }
-  #tab-long .btn.primary:not(:disabled):hover { filter:brightness(1.1) saturate(1.05); }
-  #tab-long .btn.ghost:not(:disabled):hover { border-color:var(--accent); color:var(--text); background:var(--accent-soft); }
-  #tab-long .btn.danger:not(:disabled):hover { border-color:var(--coral); background:color-mix(in srgb, var(--coral) 12%, transparent); }
+  .lr-tolive:active, .lr-selmark:active { transform:translateY(1px); }
   #tab-long .lr-stopbtn:not(:disabled):hover { opacity:.86; }
   #tab-long .lr-stopbtn.lr-arm:hover { opacity:1; filter:brightness(1.08); }
   .lr-seg button:not(.on):hover { color:var(--text); background:color-mix(in srgb, var(--card) 55%, transparent); }
