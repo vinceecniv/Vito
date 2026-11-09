@@ -85,6 +85,8 @@ const (
 	// surfaces get none), but every one reports the pointer leaving.
 	optionsGrace = 2500 * time.Millisecond
 	copiedFor    = 1500 * time.Millisecond // "Copied" stands in for the label this long
+	longArm      = 4 * time.Second         // stop waits this long for its second click
+	longSaid     = 1800 * time.Millisecond // "Marked" stands in for the label this long
 	panelGap     = 8                       // window above a pinned panel, logical pixels
 
 	// A pinned island left alone this long fades to dimTo, and comes back at
@@ -138,6 +140,13 @@ const (
 	tSaved
 	tOlder // the box's arrows, through the recent dictations
 	tNewer
+	// The long recording: its controls in the main view, and the row in the
+	// settings that starts one (or opens it in Vito).
+	tLongPause
+	tLongMark
+	tLongHeader
+	tLongStop
+	tLongRow
 	tRule0 target = 100
 )
 
@@ -177,13 +186,20 @@ type islandState struct {
 	style       Style
 	rules       []ruleSet
 	active      string // the active rule set's id
+
+	// The long recording, while one runs: it takes the last dictation's box.
+	long longView
+	// armed: stop was clicked once; a second click stops (longArm).
+	armed bool
+	// said is a word on what a click just did ("Marked"), for a moment.
+	said string
 }
 
 // height is the panel's height for a view.
 func (st *islandState) height(v view) float64 {
 	switch v {
 	case viewSettings:
-		return 292 - footH - 5
+		return 322 - footH - 5
 	case viewRules:
 		return 45 + ruleRow*float64(min(len(st.rules), maxRules)) + 64 - footH
 	}
@@ -414,6 +430,19 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 				tNewer:   ip.t("Later dictation"),
 				tMic:     ip.t("Dictate: click to start, click again to stop"),
 			}[st.over]
+		case tLongPause, tLongMark, tLongHeader, tLongStop:
+			at = ip.targets[st.over]
+			text = map[target]string{
+				tLongMark:   ip.t("Mark this moment"),
+				tLongHeader: ip.t("A new section starts here"),
+				tLongStop:   ip.t("Stop and finish"),
+			}[st.over]
+			if st.over == tLongPause {
+				text = ip.t("Pause the long recording")
+				if st.long.paused {
+					text = ip.t("Resume the long recording")
+				}
+			}
 		}
 		if text != "" {
 			ip.tooltip(buf, th, st, at, text, left, in*smooth(st.tip))
@@ -600,6 +629,10 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	}
 	lastBox := rect{left + panelPad - 6, boxY, panelW - 2*panelPad + 12, 68}
 	boxTint := tint
+	if st.long.on {
+		ip.longBox(buf, th, st, lastBox, ink, muted, tint, a)
+		return
+	}
 	if st.kept {
 		// A cancelled dictation, for a few minutes: the whole box restores it.
 		ip.targets[tRestore] = lastBox
@@ -663,6 +696,59 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 			repasteIcon(buf, w, h, cx, cy, s, c, al)
 		})
 	}
+}
+
+// longBox is the running long recording, in the last dictation's place: the
+// dot, what it is doing and its time on top, and under it pause, mark, header
+// and stop. Stop asks for a second click.
+func (ip *islandPainter) longBox(buf []byte, th theme, st islandState, r rect, ink, muted, tint rgb, a float64) {
+	w, h := islandWinW*scale, islandWinH*scale
+	s := float64(scale)
+	fill(buf, w, h, r, 12, tint, a)
+	y := r.y + 19
+	recDot(buf, w, h, (r.x+16)*s, (y-4)*s, s, st.long.paused, a)
+	label, c := ip.t("Long recording"), ink
+	switch {
+	case st.armed:
+		label, c = ip.t("Click stop again"), recRed
+	case st.said != "":
+		label, c = ip.t(st.said), th.to
+	case st.long.paused:
+		label, c = ip.t("Long recording paused"), muted
+	}
+	clock := longClock(st.long.secs)
+	_, cw := ip.text(mainFace, clock)
+	ip.line(buf, bodyFace, fit(bodyFace, label, fixed.I(int((r.w-50-cw)*s))), r.x+28, y, c, a)
+	tc := ink
+	if st.long.paused {
+		tc = muted
+	}
+	ip.line(buf, mainFace, clock, r.x+r.w-12-cw, y+0.5, tc, a)
+
+	// Four buttons spread over the box's width.
+	by := r.y + 31
+	gap := (r.w - 24 - 4*30) / 3
+	btn := func(i int) rect { return rect{r.x + 12 + float64(i)*(30+gap), by, 30, 30} }
+	lit := blend(tint, th.to, 0.08)
+	ip.iconButton(buf, th, st, tLongPause, btn(0), lit, a, func(cx, cy float64, c rgb, al float64) {
+		if st.long.paused {
+			playIcon(buf, w, h, cx, cy, s, c, al)
+		} else {
+			pauseIcon(buf, w, h, cx, cy, s, c, al)
+		}
+	})
+	ip.iconButton(buf, th, st, tLongMark, btn(1), lit, a, func(cx, cy float64, c rgb, al float64) {
+		bookmarkIcon(buf, w, h, cx, cy, s, c, al)
+	})
+	ip.iconButton(buf, th, st, tLongHeader, btn(2), lit, a, func(cx, cy float64, c rgb, al float64) {
+		headerIcon(buf, w, h, cx, cy, s, c, al)
+	})
+	ip.iconButton(buf, th, st, tLongStop, btn(3), lit, a, func(cx, cy float64, c rgb, al float64) {
+		if st.armed {
+			c = recRed
+		}
+		stopIcon(buf, w, h, cx, cy, s, c, al)
+	})
 }
 
 // browse puts an arrow on each side of the box, in the panel's margin, to
@@ -743,6 +829,19 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 	}
 
 	toggle(5, ip.t("Today's figures"), st.stats, tStats)
+
+	if st.long.on {
+		y := row(6, ip.t("Open the long recording"), tLongRow)
+		recDot(buf, w, h, (right-6)*s, (y+11)*s, s, st.long.paused, a)
+	} else {
+		label, c := ip.t("Start a long recording"), ink
+		if st.said != "" {
+			label, c = ip.t(st.said), recRed
+		}
+		y := row(6, "", tLongRow)
+		ip.line(buf, bodyFace, fit(bodyFace, label, fixed.I(int((panelW-2*panelPad-24)*s))), left+panelPad, y+15, c, a)
+		recDot(buf, w, h, (right-6)*s, (y+11)*s, s, false, a)
+	}
 
 	y = row(4, ip.t("Pill style"), tNone)
 	// Three segments in one rounded bar, the chosen one lit.
@@ -866,7 +965,8 @@ func (ip *islandPainter) iconButton(buf []byte, th theme, st islandState, tg tar
 // buttons, not the rows that already say what they do.
 func tipped(tg target) bool {
 	switch tg {
-	case tPin, tOpenVito, tMenu, tRepaste, tMic, tCopy, tRestore, tWords, tSaved, tOlder, tNewer:
+	case tPin, tOpenVito, tMenu, tRepaste, tMic, tCopy, tRestore, tWords, tSaved, tOlder, tNewer,
+		tLongPause, tLongMark, tLongHeader, tLongStop:
 		return true
 	}
 	return false
@@ -1146,6 +1246,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	}
 	read()
 	day()
+	st.long = p.longNow()
 	st.ph = st.height(viewMain)
 	pin := p.d.Config().UI.IslandPin
 	st.pinned = pin != nil
@@ -1264,6 +1365,8 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		dirty     = true
 		overSince time.Time // when the pointer came onto st.over
 		copiedAt  time.Time // when the last dictation was copied
+		armedAt   time.Time // when stop was clicked once (st.armed)
+		saidAt    time.Time // when st.said was said
 		actor     = newRestActor(time.Now())
 		dragging  bool
 		// pressed: the button went down on the free space of an island not
@@ -1465,6 +1568,54 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			case tg == tStyleBars, tg == tStyleGlow, tg == tStyleVito:
 				name := map[target]string{tStyleBars: "bars", tStyleGlow: "", tStyleVito: "vito"}[tg]
 				change(func(c *config.Config) { c.UI.PillStyle = name })
+			case tg == tLongPause:
+				var err error
+				if st.long.paused {
+					err = p.d.ResumeLong()
+				} else {
+					err = p.d.PauseLong()
+				}
+				if err != nil {
+					p.log.Warn("island: long recording pause", "err", err)
+				}
+				st.long, st.armed = p.longNow(), false
+			case tg == tLongMark:
+				if _, err := p.d.MarkLong(); err != nil {
+					p.log.Warn("island: mark", "err", err)
+				} else {
+					st.said, saidAt, st.armed = "Marked", time.Now(), false
+				}
+			case tg == tLongHeader:
+				if _, err := p.d.HeaderLong(""); err != nil {
+					p.log.Warn("island: header", "err", err)
+				} else {
+					st.said, saidAt, st.armed = "Header added", time.Now(), false
+				}
+			case tg == tLongStop && st.armed:
+				st.armed, st.said = false, ""
+				go func() {
+					if _, err := p.d.StopLong(); err != nil {
+						p.log.Warn("island: stop long recording", "err", err)
+					}
+				}()
+			case tg == tLongStop:
+				st.armed, armedAt, st.said = true, time.Now(), ""
+			case tg == tLongRow && st.long.on:
+				// Vito's page opens on the recording: a page that is open
+				// is told, a new one starts there by itself.
+				closing = !st.pinned
+				p.d.Announce(daemon.Event{Type: "show", Text: "long"})
+				if err := webapp.Open(fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)); err != nil {
+					p.log.Warn("island: open Vito failed", "err", err)
+				}
+			case tg == tLongRow:
+				if _, err := p.d.StartLong(""); err != nil {
+					p.log.Warn("island: start long recording", "err", err)
+					st.said, saidAt = "The recording did not start", time.Now()
+				} else {
+					st.long, st.said = p.longNow(), ""
+					goTo(viewMain)
+				}
 			case tg >= tRule0 && int(tg-tRule0) < len(st.rules):
 				id := st.rules[tg-tRule0].id
 				change(func(c *config.Config) { c.Cleanup.ActivePrompt = id })
@@ -1493,6 +1644,21 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		frames++
 		if st.copied && time.Since(copiedAt) > copiedFor {
 			st.copied, dirty = false, true
+		}
+		// The long recording: how it stands, a few times a second.
+		if frames%15 == 0 {
+			if now := p.longNow(); now != st.long {
+				st.long, dirty = now, true
+				if !now.on {
+					st.armed = false
+				}
+			}
+		}
+		if st.armed && time.Since(armedAt) > longArm {
+			st.armed, dirty = false, true
+		}
+		if st.said != "" && time.Since(saidAt) > longSaid {
+			st.said, dirty = "", true
 		}
 		if !st.pinned {
 			if !inside && time.Since(left) > islandGrace {

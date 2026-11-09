@@ -2836,6 +2836,18 @@ const TR = { nl: {
   "Resume":"Hervatten",
   "Listening… the text appears here as you speak.":"Luisteren… de tekst verschijnt hier terwijl je spreekt.",
   "Marked":"Gemarkeerd",
+  "Long recording":"Lange opname",
+  "Long recording paused":"Lange opname gepauzeerd",
+  "Click stop again":"Klik nogmaals op stop",
+  "Header added":"Kopje toegevoegd",
+  "Mark this moment":"Markeer dit moment",
+  "A new section starts here":"Hier begint een nieuw onderdeel",
+  "Pause the long recording":"Lange opname pauzeren",
+  "Resume the long recording":"Lange opname hervatten",
+  "Open the long recording":"Lange opname openen",
+  "Start a long recording":"Lange opname starten",
+  "Stop the long recording":"Lange opname stoppen",
+  "The recording did not start":"De opname is niet gestart",
   "New header — its title follows":"Nieuw kopje — de titel volgt",
   "New subject":"Nieuw onderwerp",
   "Click to type a title":"Klik om een titel te typen",
@@ -5817,6 +5829,8 @@ function connectWS() {
 // standalone/backend.js).
 function handleEvent(e) {
     if (e.type === "long" || e.type === "long_doc") { longEvent(e); return; }
+    // The island asks to see a page (the running long recording).
+    if (e.type === "show") { if (TABS.includes(e.text)) { selectTab(e.text); window.focus(); } return; }
     if (e.type === "state") {
       uiState = e.state; setState(e.state);
       if (e.state === "recording") { showTranscriptHint(LISTENING_HINT); lastFinalText = ""; curPartial = ""; curRaw = ""; curCleaned = ""; }
@@ -11542,6 +11556,7 @@ window.addEventListener("resize", () => { lrFitLive(); lrFollow(); });
 function lrRenderLive(){
   const st = LR.running; if (!st) return;
   $("lr-live-view").classList.toggle("lr-paused", st.state === "paused");
+  lrRenderProfile();
   $("lr-time").textContent = lrClock(st.seconds);
   $("lr-discard").hidden = !(LR.fresh && st.seconds < LR_DISCARD_SEC);
   $("lr-s-audio").textContent = lrClock(st.seconds);
@@ -11985,7 +12000,13 @@ function lrRenderProfile(){
   const card = $("lr-live-profcard"), sel = $("lr-live-prof");
   card.hidden = !(cfg && cfg.cleanup && cfg.cleanup.enabled);
   if (card.hidden || document.activeElement === sel) return;
-  sel.innerHTML = lrProfileOptions(LR.liveDoc?.meta?.profile || "");
+  // Filled the moment the live view shows, before the session's text first
+  // arrives: an empty list looked as if no rule set applied. "" is Vito's
+  // own for recordings, the default.
+  const prof = LR.liveDoc?.meta?.profile || "", key = `${LR.running?.id}|${prof}|${(promptList || []).length}`;
+  if (sel.dataset.key === key && sel.options.length) return;
+  sel.innerHTML = lrProfileOptions(prof);
+  sel.dataset.key = key;
 }
 $("lr-live-prof").onchange = async e => {
   if (!LR.running) return;
@@ -12019,6 +12040,12 @@ function longEvent(e){
     if (st.state === "done") { LR.running = null; if (LR.view === "live") lrShow("list"); if (curTab === "long" && LR.view === "list") loadLong(); return; }
     const started = !LR.running;
     LR.running = st;
+    if (started) {
+      // Started elsewhere too (the island, the tray): a clean live view.
+      LR.liveDoc = null; LR.fresh = true; LR.pendingMarks = [];
+      delete $("lr-live-text").dataset.built;
+      if (document.activeElement !== $("lr-title")) $("lr-title").value = st.title || "";
+    }
     if (curTab !== "long") return;
     if (started && LR.view === "list") { lrShow("live"); lrFetchLiveDoc(); }
     if (LR.view === "live") lrRenderLive();
@@ -12290,6 +12317,9 @@ loadAchievements(true);
 renderPwaTip();
 offerHandover();
 restoreLastTab(); // all module-scope state is initialized by now — safe to open History/Achievements
+// A long recording running when the page opens is what it opens on: it is
+// the thing going on, and opening Vito from the island means to see it.
+if (!STANDALONE) api("/api/long").then(r => { if (r.running && curTab !== "long") selectTab("long"); }).catch(() => {});
 </script>
 </body>
 </html>
