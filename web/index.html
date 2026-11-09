@@ -1832,6 +1832,14 @@
   .lr-doc.lr-hasaudio .lr-ts:hover { color:var(--accent); background:var(--accent-soft); }
   .lr-doc.lr-hasaudio .lr-ts:hover::before { content:"▶ "; font-size:9px; }
   .lr-doc.lr-playing .lr-p span[data-t], .lr-doc.lr-playing .lr-p mark[data-t] { cursor:var(--cur-hand); }
+  .lr-spk { display:block; font-size:12.5px; font-weight:650; color:var(--spk, var(--accent)); margin:0 0 2px; cursor:var(--cur-hand); width:fit-content; }
+  .lr-spk:hover { text-decoration:underline; }
+  .lr-spkrow { display:flex; align-items:center; gap:8px; margin:6px 0; }
+  .lr-spkrow i { width:10px; height:10px; border-radius:50%; background:var(--spk); flex:none; }
+  .lr-spkrow input { flex:1; min-width:0; padding:5px 8px; font-size:13px; }
+  .lr-spkrow small { font-size:11.5px; color:var(--text3); font-variant-numeric:tabular-nums; min-width:34px; text-align:right; }
+  .lr-spkrm { font-size:12px; color:var(--text3); margin-top:10px; display:inline-block; }
+  .lr-spkrm:hover { color:var(--coral-ink); }
   .lr-now { background:color-mix(in srgb, var(--accent) 16%, transparent); border-radius:3px; box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 16%, transparent); }
   mark.lr-m.lr-now { background:color-mix(in srgb, var(--amber-ink) 22%, color-mix(in srgb, var(--accent) 22%, transparent)); }
   .lr-player { position:sticky; top:8px; z-index:5; display:flex; align-items:center; gap:6px; margin:0 0 14px; padding:8px 12px; border:1px solid var(--card-border); border-radius:14px; background:var(--card); box-shadow:0 6px 20px rgba(0,0,0,.08); }
@@ -2857,6 +2865,7 @@
         <div class="lr-docbar">
           <div class="lr-dhead"><input class="lr-titlein" id="lr-dtitle" placeholder="Untitled recording" aria-label="Title of the recording"><span class="lr-meta" id="lr-dmeta"></span></div>
           <div class="lr-seg" role="group" aria-label="View"><button type="button" data-v="clean" class="on">Cleaned</button><button type="button" data-v="raw">Raw</button></div>
+          <button class="btn ghost small lr-ib lr-io" id="lr-speakers" aria-label="Recognise speakers" data-tip-text="Recognise speakers — who said what, with a name for each"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c.6-3.2 3-5 6-5s5.4 1.8 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.2c2.4.2 4 1.7 4.5 4.3"/></svg></button>
           <button class="btn ghost small lr-ib lr-io" id="lr-reclean" aria-label="Clean again" data-tip-text="Clean again — from the raw transcript, with a rule set of your choice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2.5l-8 8"/><path d="M10.5 6.5l6 6-5 6.5L2 10.5z"/><path d="M12 9.5l-5.5 5.5M9 9l-4 4M14.5 12l-4 4.5"/><path d="M1.8 16h.01M4.5 19.5h.01M8 22h.01" stroke-width="2.6"/></svg></button>
           <div class="lr-copyw"><button class="btn ghost small lr-ib lr-io" id="lr-copy" aria-label="Copy" data-tip-text="Copy the text to the clipboard — plain, as Markdown, formatted for Word or e-mail, or only the marks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="8.5" y="8.5" width="12" height="12" rx="2.2"/><path d="M15.5 8.5V5.5a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></svg><svg class="lr-ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
             <div class="lr-menu" id="lr-copy-menu" hidden>
@@ -2893,6 +2902,7 @@
               <div class="lr-cost lr-size"><span>Audio file</span><b data-st="size">–</b></div>
               <div class="lr-cost lr-cost2" hidden><span>Cost so far, roughly</span><b data-st="cost"></b></div>
             </div>
+            <div class="card" id="lr-spk-card" hidden></div>
             <div class="card" id="lr-marks"></div>
           </aside>
         </div>
@@ -2996,6 +3006,23 @@ const TR = { nl: {
   "No recordings yet. Start one for a lecture, a meeting or a long dictation.":"Nog geen opnames. Start er een voor een college, een vergadering of een lang dictaat.",
   "Paused":"Gepauzeerd",
   "Upload":"Upload",
+  "Recognise speakers — who said what, with a name for each":"Sprekers herkennen — wie zei wat, met een naam per spreker",
+  "Recognise speakers":"Sprekers herkennen",
+  "Recognise again":"Opnieuw herkennen",
+  "Recognising speakers":"Sprekers herkennen",
+  "Recognising speakers… The audio goes to the speech service once more; this takes a few minutes for an hour of audio.":"Sprekers worden herkend… De audio gaat nog een keer naar de spraakdienst; voor een uur audio duurt dat een paar minuten.",
+  "Speakers could not be recognised:":"Sprekers konden niet worden herkend:",
+  "Speaker":"Spreker",
+  "Speakers":"Sprekers",
+  "Name of speaker":"Naam van spreker",
+  "Share of the words":"Aandeel van de woorden",
+  "Remove speakers":"Sprekers verwijderen",
+  "Remove speakers?":"Sprekers verwijderen?",
+  "The text goes back to how it was before speakers were recognised. The names you gave are forgotten too.":"De tekst wordt weer zoals hij was voordat de sprekers herkend werden. De namen die je gaf, worden ook vergeten.",
+  "Speaker recognition needs Soniox or AssemblyAI: add a key for one of them under Settings → Speech recognition. A local engine or a Whisper service cannot tell speakers apart.":"Voor sprekerherkenning is Soniox of AssemblyAI nodig: voeg bij Instellingen → Spraakherkenning een sleutel voor een van beide toe. Een lokale engine of een Whisper-dienst kan sprekers niet uit elkaar houden.",
+  "Vito sends the audio of this recording once more to {svc}, this time to hear who speaks when. The text is then shown per speaker and cleaned again; your headers and marks stay.":"Vito stuurt de audio van deze opname nog een keer naar {svc}, nu om te horen wie wanneer spreekt. De tekst wordt daarna per spreker getoond en opnieuw opgeschoond; je kopjes en markeringen blijven.",
+  "The names you gave are kept.":"De namen die je gaf, blijven bewaard.",
+  "Afterwards, give each speaker a name in the card beside the text.":"Geef daarna elke spreker een naam in de kaart naast de tekst.",
   "Play":"Afspelen",
   "Play / pause (space)":"Afspelen / pauzeren (spatie)",
   "15 seconds back":"15 seconden terug",
@@ -11746,6 +11773,8 @@ function lrRenderList(){
       : s.state === "paused" ? c("warn", t("Paused"))
       : s.state === "importing" ? c("busy", `${t("Transcribing")} ${s.blocks || 0}/${s.planned || "…"}`)
       : s.state === "done" && LR.cleanOn && s.blocks && s.cleaned < s.blocks ? c("busy", `${t("Cleaning up")} ${s.cleaned}/${s.blocks}`) : "";
+    if (s.speakers === "running") out += c("busy", t("Recognising speakers"));
+    else if (s.speakers === "done") out += c("", t("Speakers"));
     if (s.source === "upload") out += c("", t("Upload"));
     if (s.state === "done" && !s.audio_bytes) out += `<span class="lr-chip" data-tip-text="${escapeHtml(t("The audio was removed by the setting under Settings → Recordings; the text stays."))}">${escapeHtml(t("Text only"))}</span>`;
     return out;
@@ -12119,14 +12148,31 @@ document.addEventListener("keydown", e => {
 });
 
 /* -- the document -- */
-function lrItemsHTML(doc, editable){
+// Speakers: a colour each, and the name given or "Speaker n".
+const LR_SPK_COLORS = ["#7C3AED", "#0EA5E9", "#F97316", "#10B981", "#E11D48", "#CA8A04", "#6366F1", "#14B8A6"];
+const lrSpkColor = id => LR_SPK_COLORS[(parseInt(id, 10) - 1 + LR_SPK_COLORS.length) % LR_SPK_COLORS.length];
+const lrSpkName = (doc, id) => ((doc.speakers || []).find(x => x.id === id) || {}).name || `${t("Speaker")} ${id}`;
+// lrSpkLabels gives per item the speaker label to write before it: where the
+// speaker changes, or after a header.
+function lrSpkLabels(doc){
+  let last = "";
   return (doc.items || []).map(it => {
+    if (it.kind === "header") { last = ""; return ""; }
+    const out = it.speaker && it.speaker !== last ? it.speaker : "";
+    last = it.speaker || "";
+    return out;
+  });
+}
+function lrItemsHTML(doc, editable){
+  const labels = lrSpkLabels(doc);
+  return (doc.items || []).map((it, i) => {
     if (it.kind === "header") {
       const title = it.title ? escapeHtml(it.title) : escapeHtml(t("New subject")) + " · " + lrClock(it.at);
       return `<h2 class="lr-h${it.title ? "" : " lr-empty-h"}" data-id="${it.id}"><span class="lr-ht"${editable ? ` title="${escapeHtml(t("Click to type a title"))}"` : ""}>${title}</span>${editable ? `<button class="lr-hx" data-del aria-label="${escapeHtml(t("Remove header"))}">×</button>` : ""}</h2>`;
     }
     const body = it.sentences.map(s => s.marked ? `<mark class="lr-m" data-t="${s.t}" data-marks="${escapeHtml((s.marks || []).join(" "))}">${escapeHtml(s.text)}</mark>` : `<span data-t="${s.t}">${escapeHtml(s.text)}</span>`).join(" ");
-    return `<p class="lr-p"><span class="lr-ts" data-at="${it.at}">${lrClock(it.at)}</span><span>${body}</span></p>`;
+    const spk = labels[i] ? `<span class="lr-spk" data-spk="${labels[i]}" style="--spk:${lrSpkColor(labels[i])}">${escapeHtml(lrSpkName(doc, labels[i]))}</span>` : "";
+    return `<p class="lr-p"><span class="lr-ts" data-at="${it.at}">${lrClock(it.at)}</span><span>${spk}${body}</span></p>`;
   }).join("");
 }
 
@@ -12156,9 +12202,11 @@ async function lrFetchDoc(){
   // How far it is.
   let note = "";
   if (m.state === "interrupted") note = t("This recording was not finished. Restore it from the list to transcribe the rest.");
+  else if (m.speakers === "running") note = t("Recognising speakers… The audio goes to the speech service once more; this takes a few minutes for an hour of audio.");
   else if (m.state === "importing") note = `${t("Transcribing the audio file…")} ${d.blocks || 0} / ${m.planned || "…"} ${t("blocks")}`;
   else if (m.state !== "done") note = t("Still recording.");
   else if (d.clean_on && d.blocks && d.cleaned < d.blocks && !LR.raw && (d.items || []).length) note = `${t("Cleaning up…")} ${d.cleaned} / ${d.blocks} ${t("blocks")}`;
+  if (m.speakers === "error" && m.speakers_error) note += (note ? " " : "") + `${t("Speakers could not be recognised:")} ${m.speakers_error}`;
   if (d.failed) note += (note ? " " : "") + `${d.failed} ${t("block(s) could not be transcribed; their audio is kept.")}`;
   const edited = d.files?.edited || [];
   if (edited.length) note += (note ? " " : "") + `${t("You changed a file in the recording's folder:")} ${edited.join(", ")}. ${t("Vito left it alone; its update is beside it as “… (Vito)”.")}`;
@@ -12174,7 +12222,63 @@ async function lrFetchDoc(){
   lrRenderMarks(d);
   if (LR.pop && LR.pop.box === box) (LR.drag ? lrPreview : lrPlacePop)();
   lrPlayerFor(d);
+  lrRenderSpeakers(d);
 }
+// The speakers of a recording: the button, and a card to name them.
+function lrRenderSpeakers(d){
+  const m = d.meta, btn = $("lr-speakers");
+  btn.hidden = m.state !== "done" || !d.audio_bytes && !(d.speakers || []).length;
+  btn.disabled = m.speakers === "running";
+  const card = $("lr-spk-card"), sp = d.speakers || [];
+  card.hidden = !sp.length;
+  if (!sp.length) { card.innerHTML = ""; return; }
+  const total = sp.reduce((n, x) => n + (x.words || 0), 0) || 1;
+  const focused = document.activeElement && card.contains(document.activeElement) ? document.activeElement.dataset.spk : null;
+  if (focused) return; // typing a name: leave the card alone
+  card.innerHTML = `<div style="font-weight:600; font-size:13.5px; margin-bottom:6px;">${escapeHtml(t("Speakers"))}</div>` +
+    sp.map(x => `<div class="lr-spkrow" style="--spk:${lrSpkColor(x.id)}"><i></i><input type="text" data-spk="${x.id}" value="${escapeHtml(x.name || "")}" placeholder="${escapeHtml(t("Speaker") + " " + x.id)}" aria-label="${escapeHtml(t("Name of speaker") + " " + x.id)}" spellcheck="false"><small data-tip-text="${escapeHtml(t("Share of the words"))}">${Math.round((x.words || 0) / total * 100)}%</small></div>`).join("") +
+    `<a href="#" class="lr-spkrm" id="lr-spkrm">${escapeHtml(t("Remove speakers"))}</a>`;
+  card.querySelectorAll("input").forEach(inp => {
+    const save = async () => {
+      const v = inp.value.trim(), was = (sp.find(x => x.id === inp.dataset.spk) || {}).name || "";
+      if (v === was) return;
+      try { await api(`/api/long/${LR.docID}/speakers/${inp.dataset.spk}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: v }) }); }
+      catch (e) { toast(e.message, "err"); }
+    };
+    inp.onchange = save;
+    inp.onkeydown = e => { if (e.key === "Enter") inp.blur(); if (e.key === "Escape") { inp.value = (sp.find(x => x.id === inp.dataset.spk) || {}).name || ""; inp.blur(); } };
+    inp.onblur = () => setTimeout(lrFetchDoc, 50);
+  });
+  $("lr-spkrm").onclick = e => {
+    e.preventDefault();
+    modal(t("Remove speakers?"), `<p>${escapeHtml(t("The text goes back to how it was before speakers were recognised. The names you gave are forgotten too."))}</p>`, async () => {
+      try { await api(`/api/long/${LR.docID}/speakers`, { method: "DELETE" }); lrFetchDoc(); } catch (er) { toast(er.message, "err"); }
+    }, "Remove", true);
+  };
+}
+$("lr-speakers").onclick = () => {
+  const d = LR.doc; if (!d) return;
+  const prov = d.speaker_provider, name = { soniox: "Soniox", assemblyai: "AssemblyAI" }[prov] || prov;
+  if (!prov) {
+    modal(t("Recognise speakers"), `<p>${escapeHtml(t("Speaker recognition needs Soniox or AssemblyAI: add a key for one of them under Settings → Speech recognition. A local engine or a Whisper service cannot tell speakers apart."))}</p>`, () => {}, "OK", false, null, true);
+    return;
+  }
+  const again = (d.speakers || []).length > 0;
+  modal(t("Recognise speakers"), `<p>${escapeHtml(t("Vito sends the audio of this recording once more to {svc}, this time to hear who speaks when. The text is then shown per speaker and cleaned again; your headers and marks stay.")).replace("{svc}", escapeHtml(name))}</p>` +
+    (again ? `<p class="act-note">${escapeHtml(t("The names you gave are kept."))}</p>` : "") +
+    `<p class="act-note">${escapeHtml(t("Afterwards, give each speaker a name in the card beside the text."))}</p>`,
+    async () => {
+      try { await api(`/api/long/${LR.docID}/speakers`, { method: "POST" }); lrFetchDoc(); loadLong(); }
+      catch (e) { toast(e.message, "err"); }
+    }, again ? "Recognise again" : "Recognise speakers");
+};
+// A speaker's label in the text goes to their name.
+$("lr-doc-text").addEventListener("click", e => {
+  const l = e.target.closest(".lr-spk"); if (!l) return;
+  e.stopPropagation();
+  const inp = $("lr-spk-card").querySelector(`input[data-spk="${l.dataset.spk}"]`);
+  if (inp) { inp.focus(); inp.select(); }
+}, true);
 function lrEditHeader(h){
   if (h.querySelector("input")) return;
   const it = (LR.doc.items || []).find(i => i.id === h.dataset.id) || {};
@@ -12600,13 +12704,14 @@ function lrCopyForms(d){
   const items = d.items || [], marks = d.marks || [];
   const head = it => (it.title || "").trim() || lrClock(it.at);
   const join = (it, wrap) => (it.sentences || []).map(s => s.marked && wrap ? wrap(s.text) : s.text).join(" ");
-  const text = [title, ...items.map(it => it.kind === "header" ? head(it) : join(it))].join("\n\n") + "\n";
+  const labels = lrSpkLabels(d), who = i => labels[i] ? lrSpkName(d, labels[i]) : "";
+  const text = [title, ...items.map((it, i) => it.kind === "header" ? head(it) : (who(i) ? who(i) + ": " : "") + join(it))].join("\n\n") + "\n";
   const markLine = mk => `${lrClock(mk.at)} — ${mk.text || ""}${mk.note ? ` (${mk.note})` : ""}`;
-  let md = `# ${title}\n\n_${when}_\n` + items.map(it => "\n" + (it.kind === "header" ? `## ${head(it)}` : join(it, x => `**${x}**`)) + "\n").join("");
+  let md = `# ${title}\n\n_${when}_\n` + items.map((it, i) => "\n" + (it.kind === "header" ? `## ${head(it)}` : (who(i) ? `**${who(i)}:** ` : "") + join(it, x => `**${x}**`)) + "\n").join("");
   if (marks.length) md += "\n---\n\n" + marks.map(mk => "- " + markLine(mk)).join("\n") + "\n";
   const esc = escapeHtml;
-  let html = `<h1>${esc(title)}</h1><p style="color:#6b7280">${esc(when)}</p>` + items.map(it => it.kind === "header"
-    ? `<h2>${esc(head(it))}</h2>` : `<p>${(it.sentences || []).map(s => s.marked ? `<mark style="background:#fde68a">${esc(s.text)}</mark>` : esc(s.text)).join(" ")}</p>`).join("");
+  let html = `<h1>${esc(title)}</h1><p style="color:#6b7280">${esc(when)}</p>` + items.map((it, i) => it.kind === "header"
+    ? `<h2>${esc(head(it))}</h2>` : `<p>${who(i) ? `<b>${esc(who(i))}:</b> ` : ""}${(it.sentences || []).map(s => s.marked ? `<mark style="background:#fde68a">${esc(s.text)}</mark>` : esc(s.text)).join(" ")}</p>`).join("");
   if (marks.length) html += "<hr><ul>" + marks.map(mk => `<li><b>${esc(lrClock(mk.at))}</b> — ${esc(mk.text || "")}${mk.note ? ` <i>(${esc(mk.note)})</i>` : ""}</li>`).join("") + "</ul>";
   const onlyMarks = marks.length ? marks.map(markLine).join("\n\n") + "\n" : "";
   return { text, md, html, marks: onlyMarks || text };

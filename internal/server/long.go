@@ -34,6 +34,9 @@ func (s *Server) longRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/long/{id}/open", s.auth(s.handleLongOpen))
 	mux.HandleFunc("GET /api/long/folder", s.auth(s.handleLongFolder))
 	mux.HandleFunc("POST /api/long/import", s.auth(s.handleLongImport))
+	mux.HandleFunc("POST /api/long/{id}/speakers", s.auth(s.handleLongSpeakers))
+	mux.HandleFunc("DELETE /api/long/{id}/speakers", s.auth(s.longIDAction(s.d.RemoveSpeakers)))
+	mux.HandleFunc("PUT /api/long/{id}/speakers/{speaker}", s.auth(s.handleLongSpeakerName))
 }
 
 func (s *Server) longErr(w http.ResponseWriter, code int, err error) {
@@ -203,7 +206,47 @@ func (s *Server) handleLongDoc(w http.ResponseWriter, r *http.Request) {
 		AudioType  string             `json:"audio_type"`
 		Files      longrec.FilesState `json:"files"`
 		CleanOn    bool               `json:"clean_on"`
-	}{d, s.longCost(d.Meta), store.AudioBytes(id), store.AudioType(id), store.Files(id), s.d.LongCleanOn()})
+		// SpeakerProvider would recognise speakers ("" none can).
+		SpeakerProvider string `json:"speaker_provider"`
+	}{d, s.longCost(d.Meta), store.AudioBytes(id), store.AudioType(id), store.Files(id), s.d.LongCleanOn(), s.d.SpeakerProvider()})
+}
+
+// handleLongSpeakers starts speaker recognition for a finished recording.
+func (s *Server) handleLongSpeakers(w http.ResponseWriter, r *http.Request) {
+	if s.demo() {
+		s.longErr(w, http.StatusForbidden, errors.New("demo mode: transcription is off"))
+		return
+	}
+	_, id, ok := s.longStore(w, r)
+	if !ok {
+		return
+	}
+	m, err := s.d.RecognizeSpeakers(id)
+	if err != nil {
+		s.longErr(w, http.StatusConflict, err)
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "session": m})
+}
+
+// handleLongSpeakerName names a speaker ({"name": ""} goes back to the number).
+func (s *Server) handleLongSpeakerName(w http.ResponseWriter, r *http.Request) {
+	_, id, ok := s.longStore(w, r)
+	if !ok {
+		return
+	}
+	var body struct {
+		Name string `json:"name"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		s.longErr(w, http.StatusBadRequest, err)
+		return
+	}
+	if err := s.d.NameSpeaker(id, clipText(r.PathValue("speaker"), 8), clipText(body.Name, 60)); err != nil {
+		s.longErr(w, http.StatusConflict, err)
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
 // longCost is what a session has cost so far, roughly: the speech service by
@@ -219,8 +262,9 @@ func (s *Server) longCost(m longrec.Meta) longCost {
 	sttHr, inRate, outRate, fx, currency := s.costRates()
 	return longCost{
 		SttPerHour: sttHr * fx,
-		Clean:      (float64(m.CleanIn)/1e6*inRate + float64(m.CleanOut)/1e6*outRate) * fx,
-		Currency:   currency,
+		// The cleanup's tokens, and speaker recognition (billed per hour sent).
+		Clean:    (float64(m.CleanIn)/1e6*inRate + float64(m.CleanOut)/1e6*outRate + m.SpeakerSeconds/3600*m.SpeakerRate) * fx,
+		Currency: currency,
 	}
 }
 

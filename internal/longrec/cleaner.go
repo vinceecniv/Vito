@@ -69,6 +69,9 @@ type job struct {
 	id    string
 	index int  // -1: titles only
 	done  bool // the session is finished: propose titles even for short sections
+	// chunk >= 0 with speaker set: a chunk of speakers' turns (index -1).
+	chunk   int
+	speaker bool
 }
 
 // Cleaner cleans blocks one at a time — a free tier allows few requests per
@@ -98,7 +101,20 @@ func (c *Cleaner) Finished(id string) { c.put(job{id: id, index: -1, done: true}
 func (c *Cleaner) EnqueueMissing(id string) {
 	blocks, _ := c.store.Blocks(id)
 	cleans, _ := c.store.Cleans(id)
+	after := -1.0
+	if sp := c.store.Speakers(id); sp != nil {
+		after = sp.Seconds - 0.5
+		sc, _ := c.store.SpeakerCleans(id)
+		for i, ch := range sp.chunks() {
+			if cl, ok := sc[i]; !ok || cl.Error != "" || len(cl.Turns) != ch[1]-ch[0] {
+				c.put(job{id: id, index: -1, chunk: i, speaker: true})
+			}
+		}
+	}
 	for _, b := range blocks {
+		if after >= 0 && b.Start < after {
+			continue // read from the speakers' turns instead
+		}
 		if cl, ok := cleans[b.Index]; (!ok || cl.Error != "") && strings.TrimSpace(b.Text) != "" {
 			c.Enqueue(id, b.Index)
 		}
@@ -132,6 +148,9 @@ func (c *Cleaner) run() {
 		changed := false
 		if j.index >= 0 {
 			changed = c.cleanBlock(j, set)
+		}
+		if j.speaker {
+			changed = c.cleanChunk(j, set)
 		}
 		if c.titles(j, set) {
 			changed = true
@@ -185,6 +204,56 @@ func (c *Cleaner) cleanBlock(j job, set CleanSettings) bool {
 	}
 	if err := c.store.AddClean(j.id, cl); err != nil {
 		c.log.Error("long recording: cleaned block not saved", "err", err)
+	}
+	if cl.Error == "" {
+		words := c.store.Words(j.id)
+		c.store.UpdateMeta(j.id, func(m *Meta) { m.Words = words })
+	}
+	return cl.Error == ""
+}
+
+// cleanChunk cleans a chunk of speakers' turns, the turn before it as context.
+func (c *Cleaner) cleanChunk(j job, set CleanSettings) bool {
+	sp := c.store.Speakers(j.id)
+	if sp == nil {
+		return false
+	}
+	chunks := sp.chunks()
+	if j.chunk >= len(chunks) {
+		return false
+	}
+	ch := chunks[j.chunk]
+	cleans, _ := c.store.SpeakerCleans(j.id)
+	if cl, ok := cleans[j.chunk]; ok && cl.Error == "" && len(cl.Turns) == ch[1]-ch[0] {
+		return false
+	}
+	turns := sp.Turns[ch[0]:ch[1]]
+	rules := speakerRules
+	if ch[0] > 0 {
+		prev := sp.Turns[ch[0]-1]
+		rules += "\n\nFor context only — the turn before, never repeat or output it:\n«[" + prev.Speaker + "] " + tail(prev.Text, 300) + "»"
+	}
+	raw := chunkText(turns)
+	out, err := c.ask(j.id, set, rules, raw, "")
+	cl := SpeakerClean{Chunk: j.chunk}
+	if err == nil {
+		var got []string
+		if got, err = parseChunk(out, turns); err == nil {
+			for i := range got {
+				got[i] = cleanup.Plain(got[i])
+			}
+			if !plausible(raw, strings.Join(got, " ")) {
+				err = fmt.Errorf("cleaned text much shorter than the transcript")
+			}
+			cl.Turns = got
+		}
+	}
+	if err != nil {
+		cl.Turns, cl.Error = nil, err.Error()
+		c.log.Warn("long recording: speakers' turns not cleaned", "session", j.id, "chunk", j.chunk, "err", err)
+	}
+	if err := c.store.AddSpeakerClean(j.id, cl); err != nil {
+		c.log.Error("long recording: cleaned turns not saved", "err", err)
 	}
 	if cl.Error == "" {
 		words := c.store.Words(j.id)

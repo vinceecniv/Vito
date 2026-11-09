@@ -50,6 +50,14 @@ type Meta struct {
 	Profile  string `json:"profile,omitempty"`
 	CleanIn  int64  `json:"clean_in,omitempty"`
 	CleanOut int64  `json:"clean_out,omitempty"`
+	// Speakers is how far speaker recognition is (SpeakersRunning, …Done,
+	// …Failed with SpeakersError); "" never asked.
+	Speakers      string `json:"speakers,omitempty"`
+	SpeakersError string `json:"speakers_error,omitempty"`
+	// SpeakerSeconds is the audio sent for speaker recognition so far, at
+	// SpeakerRate dollars an hour (for the session's cost).
+	SpeakerSeconds float64 `json:"speaker_seconds,omitempty"`
+	SpeakerRate    float64 `json:"speaker_rate,omitempty"`
 }
 
 // Block is one line of blocks.jsonl: a piece of the recording between two
@@ -272,6 +280,12 @@ func (s *Store) Recount() {
 // CleanProgress is how many blocks a session has and how many of them need
 // no more cleaning (cleaned, or nothing to clean), for the overview.
 func (s *Store) CleanProgress(id string) (blocks, cleaned int) {
+	if sp := s.Speakers(id); sp != nil {
+		d, err := s.Doc(id, false)
+		if err == nil {
+			return d.Blocks, d.Cleaned
+		}
+	}
 	bs, _ := s.Blocks(id)
 	cs, _ := s.Cleans(id)
 	for _, b := range bs {
@@ -329,6 +343,7 @@ func (s *Store) Cleans(id string) (map[int]Clean, error) {
 
 // ResetCleans forgets every cleaned block, for a re-clean of the whole text.
 func (s *Store) ResetCleans(id string) error {
+	os.Remove(s.path(id, "speakers_clean.jsonl"))
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	err := os.Remove(s.path(id, "clean.jsonl"))

@@ -146,12 +146,33 @@ the page hides the button and shows "Text only" in the list).
 
 ## Phase 2: speakers and audio afterwards
 
-- Re-transcribe the whole audio with speaker recognition (Soniox or
-  AssemblyAI), clean per turn, name speakers once ("Speaker 1" → a name),
-  applied everywhere.
-- Listen back: click a word or time and the audio plays from there.
-- A cost estimate first, as with uploads.
-- Local speech recognition has no speaker recognition.
+Started 9 November 2026.
+
+- **Listen back** (built): a player under the title (play, 15 s back and
+  forward, position, speed, space bar). A paragraph's time plays from there;
+  while it plays a click on a sentence jumps to it and the sentence being
+  spoken lights up. The page fetches the audio once as a blob (an `<audio>`
+  element cannot send the token).
+- **Speakers** (built): "Recognise speakers" sends the whole audio once more
+  to Soniox (`enable_speaker_diarization`) or AssemblyAI (`speaker_labels`) —
+  the speech service in use when it can, else whichever has a key
+  (`stt.SpeakerProvider`); a local engine or Whisper cannot. The turns go to
+  `speakers.json` (speakers numbered in order of first speaking, a turn over
+  1500 characters split at sentences) and replace the blocks in the document
+  up to where the audio ended then; anything recorded on afterwards follows
+  from the blocks. Turns are cleaned in chunks of about 2000 characters, one
+  request each with the turns as `[n] text` lines (`speakers_clean.jsonl`); a
+  reply that merges, drops or relabels a turn is refused and the raw turns
+  stand. Names are given once in the card beside the text
+  (`PUT /api/long/{id}/speakers/{n}`) and apply to the page, the copy and
+  every file ("Name: …"); "Remove speakers" goes back to the blocks. The
+  recognition is counted in the session's cost (`speaker_seconds`).
+  Headers and marks are times, so they stay where they were.
+- A cost estimate first: left for later (the user's call, 9 Nov 2026).
+- Test audio: `E:ito-testaudioergadering-3-sprekers.wav` (+ `.txt`), a
+  Dutch meeting of three Soniox TTS voices (`tts-rt-v2`, voices Maya, Daniel,
+  Noah). Soniox's TTS endpoint refuses Python's default User-Agent
+  (Cloudflare 1010); send one of your own.
 
 ## Phase 3: online meetings and summaries
 

@@ -20,7 +20,7 @@ func TestWriteFiles(t *testing.T) {
 	store.create(Meta{ID: id, State: StateDone, Title: "Overleg", Started: started})
 	store.AddBlock(id, Block{Index: 0, Start: 0, End: 10, Text: "First point. Second point."})
 
-	st, err := store.WriteFiles(id, root, "with times")
+	st, err := store.WriteFiles(id, root, "with times", "Speaker")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,7 +54,7 @@ func TestWriteFiles(t *testing.T) {
 
 	// New text: Vito's own files follow.
 	store.AddBlock(id, Block{Index: 1, Start: 10, End: 20, Text: "Third point."})
-	store.WriteFiles(id, root, "with times")
+	store.WriteFiles(id, root, "with times", "Speaker")
 	if md, _ := os.ReadFile(filepath.Join(dir, "Overleg.md")); !strings.Contains(string(md), "Third point.") {
 		t.Fatal("md not updated")
 	}
@@ -62,7 +62,7 @@ func TestWriteFiles(t *testing.T) {
 	// The user edits the Markdown: it stays, Vito's goes beside it.
 	os.WriteFile(filepath.Join(dir, "Overleg.md"), []byte("mine"), 0o644)
 	store.AddBlock(id, Block{Index: 2, Start: 20, End: 30, Text: "Fourth point."})
-	st, _ = store.WriteFiles(id, root, "with times")
+	st, _ = store.WriteFiles(id, root, "with times", "Speaker")
 	if md, _ := os.ReadFile(filepath.Join(dir, "Overleg.md")); string(md) != "mine" {
 		t.Fatal("the user's file was overwritten")
 	}
@@ -76,7 +76,7 @@ func TestWriteFiles(t *testing.T) {
 	// A new title: the folder and Vito's files are renamed, the user's file
 	// stays as it is.
 	store.UpdateMeta(id, func(m *Meta) { m.Title = "Teamoverleg" })
-	st, err = store.WriteFiles(id, root, "with times")
+	st, err = store.WriteFiles(id, root, "with times", "Speaker")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -109,7 +109,7 @@ func TestWriteFilesAudio(t *testing.T) {
 	id := "20261109-120000-cafe0004"
 	store.create(Meta{ID: id, State: StateDone, Title: "Les", Started: time.Date(2026, 11, 9, 9, 0, 0, 0, time.Local)})
 	os.WriteFile(store.mp3Path(id), []byte("one"), 0o644)
-	st, err := store.WriteFiles(id, root, "with times")
+	st, err := store.WriteFiles(id, root, "with times", "Speaker")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -118,13 +118,13 @@ func TestWriteFilesAudio(t *testing.T) {
 		t.Fatal("not copied")
 	}
 	os.WriteFile(store.mp3Path(id), []byte("two!"), 0o644)
-	store.WriteFiles(id, root, "with times")
+	store.WriteFiles(id, root, "with times", "Speaker")
 	if b, _ := os.ReadFile(dst); string(b) != "two!" {
 		t.Fatal("not updated")
 	}
 	os.WriteFile(dst, []byte("user's"), 0o644)
 	os.WriteFile(store.mp3Path(id), []byte("three"), 0o644)
-	st, _ = store.WriteFiles(id, root, "with times")
+	st, _ = store.WriteFiles(id, root, "with times", "Speaker")
 	if b, _ := os.ReadFile(dst); string(b) != "user's" {
 		t.Fatal("the user's copy was overwritten")
 	}
@@ -144,12 +144,12 @@ func TestWriteFilesAudioRemoved(t *testing.T) {
 	id := "20261109-120000-cafe0005"
 	store.create(Meta{ID: id, State: StateDone, Title: "Les", Started: time.Date(2026, 11, 9, 9, 0, 0, 0, time.Local)})
 	os.WriteFile(store.mp3Path(id), []byte("one"), 0o644)
-	st, _ := store.WriteFiles(id, root, "with times")
+	st, _ := store.WriteFiles(id, root, "with times", "Speaker")
 	dst := filepath.Join(st.Dir, "Les.mp3")
 	if err := store.RemoveAudio(id); err != nil || store.AudioBytes(id) != 0 {
 		t.Fatal("audio not removed", err)
 	}
-	st, _ = store.WriteFiles(id, root, "with times")
+	st, _ = store.WriteFiles(id, root, "with times", "Speaker")
 	if exists(dst) || st.Audio != nil {
 		t.Fatal("Vito's copy stayed")
 	}
@@ -161,11 +161,11 @@ func TestWriteFilesAudioRemoved(t *testing.T) {
 	id2 := "20261109-130000-cafe0006"
 	store.create(Meta{ID: id2, State: StateDone, Title: "Twee", Started: time.Date(2026, 11, 9, 13, 0, 0, 0, time.Local)})
 	os.WriteFile(store.mp3Path(id2), []byte("one"), 0o644)
-	st, _ = store.WriteFiles(id2, root, "with times")
+	st, _ = store.WriteFiles(id2, root, "with times", "Speaker")
 	dst = filepath.Join(st.Dir, "Twee.mp3")
 	os.WriteFile(dst, []byte("user's own"), 0o644)
 	store.RemoveAudio(id2)
-	store.WriteFiles(id2, root, "with times")
+	store.WriteFiles(id2, root, "with times", "Speaker")
 	if b, _ := os.ReadFile(dst); string(b) != "user's own" {
 		t.Fatal("the user's file was removed")
 	}

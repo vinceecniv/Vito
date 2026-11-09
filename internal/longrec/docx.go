@@ -25,7 +25,8 @@ func (d Doc) DOCX(title, when string, times bool) ([]byte, error) {
 	}
 	para("Title", run(title, ""))
 	para("Subtitle", run(when+" · "+Clock(d.Meta.Seconds), ""))
-	for _, it := range d.Items {
+	labels := d.labels(d.SpeakerWord)
+	for ii, it := range d.Items {
 		if it.Kind == "header" {
 			para("Heading1", run(headerTitle(it), ""))
 			continue
@@ -33,6 +34,9 @@ func (d Doc) DOCX(title, when string, times bool) ([]byte, error) {
 		var runs []string
 		if times {
 			runs = append(runs, run(Clock(it.At)+" ", `<w:color w:val="8A8F98"/><w:sz w:val="18"/>`))
+		}
+		if labels[ii] != "" {
+			runs = append(runs, run(labels[ii]+": ", `<w:b/><w:color w:val="6D28D9"/>`))
 		}
 		for i, s := range it.Sentences {
 			text := s.Text

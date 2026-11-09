@@ -30,6 +30,7 @@ type long struct {
 	feeding   sync.WaitGroup
 	restoring map[string]bool               // sessions RestoreLong is working on
 	importing map[string]context.CancelFunc // audio files being transcribed
+	speakers  map[string]context.CancelFunc // speaker recognitions running
 	fresh     bool                          // the running session began now (not continued): it may be discarded
 }
 
@@ -63,13 +64,14 @@ func (d *Daemon) initLong() {
 		}
 	}()
 	d.resumeImports()
+	d.resumeSpeakers()
 }
 
 // busy says a session's audio is in use: being recorded or restored.
 func (l *long) busy(id string) bool {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	return l.restoring[id] || l.importing[id] != nil || (l.rec != nil && l.rec.ID() == id)
+	return l.restoring[id] || l.importing[id] != nil || l.speakers[id] != nil || (l.rec != nil && l.rec.ID() == id)
 }
 
 // compressLong turns a finished session's WAV into its MP3, unless it is in
@@ -495,6 +497,7 @@ func (d *Daemon) DeleteLong(id string) error {
 		return fmt.Errorf("stop the recording first")
 	}
 	d.cancelImport(id)
+	d.cancelSpeakers(id)
 	d.trashLongFiles(id)
 	return d.long.store.Delete(id)
 }

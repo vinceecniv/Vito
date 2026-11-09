@@ -75,7 +75,8 @@ func (d *Daemon) writeLongFiles(id string) (longrec.FilesState, error) {
 	}
 	before := l.store.Files(id)
 	root := d.LongFolder()
-	st, err := l.store.WriteFiles(id, root, uitext.Translator(uitext.ResolveLang(d.Config().UI.Lang))("with times"))
+	tr := uitext.Translator(uitext.ResolveLang(d.Config().UI.Lang))
+	st, err := l.store.WriteFiles(id, root, tr("with times"), tr("Speaker"))
 	if err != nil {
 		d.log.Warn("long recording: files not written", "session", id, "folder", root, "err", err)
 		return st, err

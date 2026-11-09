@@ -29,6 +29,10 @@ type Item struct {
 	Auto      bool       `json:"auto,omitempty"`
 	At        float64    `json:"at"`
 	Sentences []Sentence `json:"sentences,omitempty"`
+	// Speaker of a paragraph, once speakers are recognised: the id ("1"…)
+	// and the name given to it, if any.
+	Speaker string `json:"speaker,omitempty"`
+	Name    string `json:"name,omitempty"`
 }
 
 // MarkInfo is a mark for the side column.
@@ -52,6 +56,11 @@ type Doc struct {
 	Cleaned int        `json:"cleaned"`
 	Failed  int        `json:"failed"` // blocks without a transcript
 	Raw     bool       `json:"raw"`
+	// Speakers, once recognised, in the order they first speak.
+	Speakers []SpeakerInfo `json:"speakers,omitempty"`
+	// SpeakerWord is "Speaker" in the interface's language, for a speaker
+	// without a name in the files.
+	SpeakerWord string `json:"-"`
 }
 
 type header struct {
@@ -145,9 +154,27 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 	}
 	sort.SliceStable(heads, func(i, j int) bool { return heads[i].before < heads[j].before })
 
-	// Sentences with times, paragraph by paragraph.
+	// Sentences with times, paragraph by paragraph: per speaker's turn up to
+	// where the audio ended when speakers were recognised, then the blocks.
 	var paras []para
+	sp := s.Speakers(id)
+	after := -1.0
+	if sp != nil {
+		var chunks, cleaned int
+		paras, chunks, cleaned = s.speakerParas(id, sp, raw)
+		d.Blocks, d.Cleaned = chunks, cleaned
+		after = sp.Seconds - 0.5
+	}
 	for _, b := range blocks {
+		if after >= 0 && b.Start < after {
+			if b.Error != "" && strings.TrimSpace(b.Text) == "" {
+				d.Failed++
+			}
+			continue
+		}
+		if after >= 0 {
+			d.Blocks++
+		}
 		text := b.Text
 		if strings.TrimSpace(b.Text) == "" {
 			// Nothing to clean (a silent last block, a failed one): done.
@@ -175,12 +202,15 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 		}
 	}
 	for _, p := range paras {
-		cur := Item{Kind: "para"}
+		cur := Item{Kind: "para", Speaker: p.speaker}
+		if sp != nil && p.speaker != "" {
+			cur.Name = sp.Names[p.speaker]
+		}
 		for _, s := range p.sents {
 			if hi < len(heads) && heads[hi].before <= s.Start {
 				if len(cur.Sentences) > 0 {
 					d.Items = append(d.Items, cur)
-					cur = Item{Kind: "para"}
+					cur = Item{Kind: "para", Speaker: cur.Speaker, Name: cur.Name}
 				}
 				flushHeads(s.Start)
 			}
@@ -220,6 +250,9 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 		}
 	}
 	d.Marks = marks
+	if sp != nil {
+		d.Speakers = speakerInfo(sp, d.Items)
+	}
 	return d, nil
 }
 
@@ -246,7 +279,10 @@ func clip(s string, n int) string {
 
 // splitTimed cuts a block's text into paragraphs (blank lines) and sentences,
 // each sentence timed by where it sits in the block.
-type para struct{ sents []Sentence }
+type para struct {
+	sents   []Sentence
+	speaker string
+}
 
 func splitTimed(text string, start, end float64) []para {
 	text = strings.TrimSpace(text)
@@ -275,7 +311,7 @@ func splitTimed(text string, start, end float64) []para {
 			sents = append(sents, Sentence{Start: at(pos), Text: s})
 		}
 		if len(sents) > 0 {
-			out = append(out, para{sents})
+			out = append(out, para{sents: sents})
 		}
 		offset += utf8.RuneCountInString(p) + 2
 	}
@@ -323,13 +359,17 @@ func sentences(p string) []string {
 // blank lines.
 func (d Doc) Text() string {
 	var b strings.Builder
-	for _, it := range d.Items {
+	labels := d.labels(d.SpeakerWord)
+	for i, it := range d.Items {
 		if b.Len() > 0 {
 			b.WriteString("\n\n")
 		}
 		if it.Kind == "header" {
 			b.WriteString(headerTitle(it))
 			continue
+		}
+		if labels[i] != "" {
+			b.WriteString(labels[i] + ": ")
 		}
 		b.WriteString(joinSentences(it.Sentences, false))
 	}
@@ -368,11 +408,15 @@ func Clock(sec float64) string {
 func (d Doc) Markdown(title, when string) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "# %s\n\n_%s · %s_\n", title, when, Clock(d.Meta.Seconds))
-	for _, it := range d.Items {
+	labels := d.labels(d.SpeakerWord)
+	for i, it := range d.Items {
 		b.WriteString("\n")
 		if it.Kind == "header" {
 			fmt.Fprintf(&b, "## %s\n", headerTitle(it))
 			continue
+		}
+		if labels[i] != "" {
+			b.WriteString("**" + labels[i] + ":** ")
 		}
 		b.WriteString(joinSentences(it.Sentences, true) + "\n")
 	}
@@ -393,8 +437,14 @@ func (d Doc) Markdown(title, when string) string {
 // the next one starts (at most 8 seconds).
 func (d Doc) Subtitles(vtt bool) string {
 	var all []Sentence
-	for _, it := range d.Items {
-		all = append(all, it.Sentences...)
+	labels := d.labels(d.SpeakerWord)
+	for i, it := range d.Items {
+		for j, s := range it.Sentences {
+			if j == 0 && labels[i] != "" {
+				s.Text = labels[i] + ": " + s.Text
+			}
+			all = append(all, s)
+		}
 	}
 	var b strings.Builder
 	if vtt {

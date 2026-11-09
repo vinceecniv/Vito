@@ -100,8 +100,9 @@ func (s *Store) saveFiles(id string, st FilesState) error {
 
 // WriteFiles brings the session's folder under root up to date. timed is
 // the name suffix of the Word file with times ("with times", translated);
-// the plain one carries none.
-func (s *Store) WriteFiles(id, root, timed string) (FilesState, error) {
+// the plain one carries none. speaker is "Speaker", translated, for speakers
+// without a name.
+func (s *Store) WriteFiles(id, root, timed, speaker string) (FilesState, error) {
 	filesMu.Lock()
 	defer filesMu.Unlock()
 	if strings.TrimSpace(root) == "" {
@@ -115,6 +116,7 @@ func (s *Store) WriteFiles(id, root, timed string) (FilesState, error) {
 	if err != nil {
 		return FilesState{}, err
 	}
+	d.SpeakerWord = speaker
 	st := s.Files(id)
 	if st.Hashes == nil {
 		st.Hashes = map[string]string{}
