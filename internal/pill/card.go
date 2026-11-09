@@ -82,6 +82,7 @@ var (
 	labelFace, mainFace  font.Face
 	bodyFace             font.Face // the island's running text
 	wordFace, figureFace font.Face // Baloo: the wordmark, a big figure
+	statFace             font.Face // Baloo: the island's figures for the day
 	facesErr             error
 	medalMu              sync.Mutex
 	medals               = map[string]*image.RGBA{}
@@ -125,7 +126,10 @@ func faces() error {
 		if wordFace, facesErr = opentype.NewFace(baloo, opts(19)); facesErr != nil {
 			return
 		}
-		figureFace, facesErr = opentype.NewFace(baloo, opts(24))
+		if figureFace, facesErr = opentype.NewFace(baloo, opts(24)); facesErr != nil {
+			return
+		}
+		statFace, facesErr = opentype.NewFace(baloo, opts(17))
 	})
 	return facesErr
 }

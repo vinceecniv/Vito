@@ -492,33 +492,36 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	// The day in two figures, each behind the icon its tile has on the
 	// stats page: the words, and the typing time they saved. What they are
 	// is the tooltip's to say; the row stays quiet.
-	cy := top + 68.0
+	// A small row: the day's figures are nice to see, the last dictation is
+	// what the island is for.
+	cy := top + 60.0
 	chip := blend(th.body, th.to, 0.13)
 	if st.dark {
 		chip = blend(th.body, th.to, 0.2)
 	}
 	stat := func(tg target, x float64, icon func(cx, cy float64), figure []figPart) {
-		// The stats page's chip: 34 px round 9 for an 18 px icon; here 30 for 16.
-		fill(buf, w, h, rect{x, cy - 15, 30, 30}, 8, chip, a)
-		icon((x+15)*s, cy*s)
+		// The stats page's chip: 34 px round 9 for an 18 px icon; here 24 for 13.
+		fill(buf, w, h, rect{x, cy - 12, 24, 24}, 7, chip, a)
+		icon((x+12)*s, cy*s)
 		// The units smaller than the figures, so 59m 59s fits its column.
-		fx := x + 40
+		fx := x + 32
 		for i, p := range figure {
 			if p.unit {
-				fx += ip.line(buf, labelFace, p.s, fx+0.5, cy+8.5, ink, a)
+				fx += ip.line(buf, labelFace, p.s, fx+0.5, cy+5.5, ink, a)
 				if i < len(figure)-1 {
-					fx += 4
+					fx += 3
 				}
 			} else {
-				fx += ip.line(buf, figureFace, p.s, fx, cy+8.5, ink, a)
+				fx += ip.line(buf, statFace, p.s, fx, cy+6, ink, a)
 			}
 		}
-		ip.targets[tg] = rect{x - 4, cy - 18, fx - x + 12, 36}
+		ip.targets[tg] = rect{x - 4, cy - 15, fx - x + 12, 30}
 	}
 	col := left + panelPad
 	col2 := left + panelPad + (panelW-2*panelPad)/2 + 6
-	stat(tWords, col, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, s, th.to, a) }, []figPart{{s: ip.number(st.day.Words)}})
-	stat(tSaved, col2, func(cx, cy float64) { clock(buf, w, h, cx, cy, s, th.to, a) }, ip.durationParts(st.day.Saved))
+	k := 0.8 * s // the icons a size smaller than in a 30 px chip
+	stat(tWords, col, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, k, th.to, a) }, []figPart{{s: ip.number(st.day.Words)}})
+	stat(tSaved, col2, func(cx, cy float64) { clock(buf, w, h, cx, cy, k, th.to, a) }, ip.durationParts(st.day.Saved))
 
 	// The last dictation, to paste again; in the pinned island it makes way
 	// for the live words while a dictation runs.
@@ -526,7 +529,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	if a <= 0.01 {
 		return
 	}
-	lastBox := rect{left + panelPad - 6, top + 98, panelW - 2*panelPad + 12, 52}
+	lastBox := rect{left + panelPad - 6, top + 82, panelW - 2*panelPad + 12, 68}
 	boxTint := tint
 	if st.kept {
 		// A cancelled dictation, for a few minutes: the whole box restores it.
@@ -542,7 +545,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		}
 		room := lastBox.w - 12 - 46
 		ip.line(buf, bodyFace, tailFit(bodyFace, heard, fixed.I(int(room*s))), lastBox.x+12, lastBox.y+38, ink, a)
-		bx, by := lastBox.x+lastBox.w-26, lastBox.y+26
+		bx, by := lastBox.x+lastBox.w-26, lastBox.y+lastBox.h/2
 		if st.over == tRestore {
 			fill(buf, w, h, rect{bx - 14, by - 14, 28, 28}, 8, blend(boxTint, th.to, 0.08), a)
 		}
@@ -567,10 +570,14 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		last = ip.t("Nothing dictated yet")
 	}
 	last = strings.Join(strings.Fields(last), " ")
-	room := lastBox.w - 12 - 46
-	ip.line(buf, bodyFace, fit(bodyFace, last, fixed.I(int(room*s))), lastBox.x+12, lastBox.y+38, ink, a)
+	room := fixed.I(int((lastBox.w - 12 - 46) * s))
+	first, rest := wrap(bodyFace, last, room)
+	ip.line(buf, bodyFace, first, lastBox.x+12, lastBox.y+38, ink, a)
+	if rest != "" {
+		ip.line(buf, bodyFace, fit(bodyFace, rest, room), lastBox.x+12, lastBox.y+54, ink, a)
+	}
 	if st.last != "" {
-		btn := rect{lastBox.x + lastBox.w - 40, lastBox.y + 12, 28, 28}
+		btn := rect{lastBox.x + lastBox.w - 40, lastBox.y + lastBox.h/2 - 14, 28, 28}
 		// Its hover lights up against the box as the header's do against the
 		// panel.
 		ip.iconButton(buf, th, st, tRepaste, btn, blend(boxTint, th.to, 0.08), a, func(cx, cy float64, c rgb, al float64) {
