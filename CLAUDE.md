@@ -361,7 +361,10 @@ Linux Mint from its ISO, `run.sh` boots one with ssh, VNC, QMP and the private
   Click-through except over the input box, which a 16 ms timer watches.
   `focus_windows.go`: the screen of the foreground window; `theme_windows.go`:
   `AppsUseLightTheme`. Caps Lock is `hotkey_windows: "capslock"`, read by the
-  existing low-level hook and swallowed, so capitals never lock.
+  existing low-level hook and swallowed, so capitals never lock. Capitals
+  locked while no hook ran (Vito restarting mid-press) are unlocked when the
+  hook starts and at the next press, with a Caps Lock press tagged
+  `capsMark` that the hook lets through (`capsOff`).
 - **KDE** and **Hyprland** have layer-shell: the Linux window works as is.
   KDE's screen size comes from `kscreen-doctor -j` (`focus_kde.go`; without it a
   dragged island leaves the screen and KWin closes it, "invalid geometry");
