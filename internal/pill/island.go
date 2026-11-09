@@ -311,16 +311,18 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 	// Header: the mark and the name as in the app, which open Vito, and on
 	// the right the menu button, which turns into a cross in the settings and
 	// an arrow back in the list of rule sets.
+	// The pin on the left, the menu on the right and the wordmark between
+	// them, alone: a calm title bar.
 	hy := top + 27.0
-	brand := rect{left + panelPad - 5, hy - 16, 77, 32}
+	_, ww := ip.text(wordFace, "vito")
+	brand := rect{left + panelW/2 - ww/2 - 12, hy - 16, ww + 24, 32}
 	ip.targets[tOpenVito] = brand
 	if st.over == tOpenVito {
 		fill(buf, w, h, brand, 16, blend(tint, th.to, 0.08), in)
 	}
-	brandTile(buf, w, h, (left+panelPad+12)*s, hy*s, 24*s, th, in)
-	ip.line(buf, wordFace, "vito", left+panelPad+30, hy+6.5, ink, in)
+	ip.line(buf, wordFace, "vito", left+panelW/2-ww/2, hy+6.5, ink, in)
 	menu := rect{left + panelW - panelPad - 28 + 4, hy - 14, 28, 28}
-	pin := rect{menu.x - 32, hy - 14, 28, 28}
+	pin := rect{left + panelPad - 4, hy - 14, 28, 28}
 	ip.iconButton(buf, th, st, tPin, pin, tint, in, func(cx, cy float64, c rgb, a float64) {
 		if st.pinned {
 			c = th.to
