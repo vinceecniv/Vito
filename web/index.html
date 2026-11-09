@@ -1791,7 +1791,19 @@
   .lr-tool:hover { border-color:var(--accent); }
   .lr-tool svg { width:18px; height:18px; }
   .lr-tool kbd { font:inherit; font-size:11px; color:var(--text3); }
-  .lr-stopbtn { background:var(--text); color:var(--card); }
+  .content:has(#tab-long.active) { max-width:1480px; }
+  .lr-stopbtn { position:relative; overflow:hidden; background:var(--text); color:var(--card); }
+  .lr-stopbtn.lr-arm { background:var(--coral); color:#fff; }
+  .lr-stopbtn.lr-arm .lr-sq { background:#fff; }
+  .lr-stopbtn.lr-arm::after { content:""; position:absolute; left:0; bottom:0; height:3px; width:100%; background:rgba(255,255,255,.75); transform-origin:left; animation:lrDrain var(--lr-arm,4s) linear forwards; }
+  @keyframes lrDrain { from { transform:scaleX(1); } to { transform:scaleX(0); } }
+  .lr-pausenote { display:none; margin-bottom:18px; }
+  .lr-paused .lr-pausenote { display:flex; }
+  .lr-paused #lr-pause { background:var(--amber-ink); border-color:var(--amber-ink); color:#fff; animation:lrPulse 1.6s ease-in-out infinite; }
+  .lr-paused .lr-clock .lr-dot { animation:lrBlink 1.2s steps(1) infinite; }
+  .lr-paused .lr-clock b { color:var(--amber-ink); }
+  @keyframes lrPulse { 0%,100% { box-shadow:0 0 0 0 color-mix(in srgb, var(--amber-ink) 55%, transparent); } 50% { box-shadow:0 0 0 9px color-mix(in srgb, var(--amber-ink) 0%, transparent); } }
+  @media (prefers-reduced-motion:reduce) { .lr-paused #lr-pause, .lr-paused .lr-clock .lr-dot { animation:none; } }
   .lr-stopbtn .lr-sq { width:11px; height:11px; border-radius:3px; background:var(--coral); }
   .lr-kv { display:flex; justify-content:space-between; gap:8px; font-size:13px; margin:6px 0; }
   .lr-kv span:first-child { color:var(--text2); }
@@ -2565,6 +2577,7 @@
           <input class="lr-titlein" id="lr-title" placeholder="Untitled recording" aria-label="Title of the recording">
           <span class="lr-clock"><span class="lr-dot"></span><b id="lr-time">0:00</b><span id="lr-state"></span></span>
         </div>
+        <div class="banner warn lr-pausenote"><span class="grow"><b>Paused — nothing is being recorded.</b> Don't forget to resume.</span><button class="btn primary small" id="lr-resume2">Resume</button></div>
         <div class="lr-cols">
           <div class="card lr-text" id="lr-live-text"></div>
           <div class="lr-side">
@@ -2702,6 +2715,9 @@ const TR = { nl: {
   "Delete recording":"Opname verwijderen",
   "The recording, its audio and its text are permanently deleted.":"De opname, de audio en de tekst worden definitief verwijderd.",
   "Recording deleted":"Opname verwijderd",
+  "Click again to stop":"Klik nogmaals om te stoppen",
+  "Paused — nothing is being recorded.":"Gepauzeerd — er wordt niets opgenomen.",
+  "Don't forget to resume.":"Vergeet niet te hervatten.",
   "recording now":"neemt op",
   "Local or OpenAI-compatible endpoint":"Lokaal of OpenAI-compatibel endpoint",
   "Whisper, Parakeet or any server that speaks the OpenAI audio API.":"Whisper, Parakeet of elke server die de OpenAI-audio-API spreekt.",
@@ -11254,15 +11270,44 @@ async function lrHeader(){
   try { await api("/api/long/header", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }); toast(t("New header — its title follows"), "ok", 1800); }
   catch (e) { toast(e.message, "err"); }
 }
+const LR_ARM_MS = 4000;
+function lrDisarm(){
+  clearTimeout(LR.armT); LR.armT = 0;
+  const b = $("lr-stop"); b.classList.remove("lr-arm");
+  b.innerHTML = `<span class="lr-sq"></span>${escapeHtml(t("Stop and finish"))}`;
+}
+$("lr-resume2").onclick = () => api("/api/long/resume", { method: "POST" }).catch(e => toast(e.message, "err"));
+// Two steps: the first click arms the button for a few seconds, the second stops.
 $("lr-stop").onclick = async () => {
+  const b = $("lr-stop");
+  if (!LR.armT) {
+    b.style.setProperty("--lr-arm", LR_ARM_MS + "ms");
+    b.classList.add("lr-arm");
+    b.innerHTML = `<span class="lr-sq"></span>${escapeHtml(t("Click again to stop"))}`;
+    LR.armT = setTimeout(lrDisarm, LR_ARM_MS);
+    return;
+  }
+  lrDisarm();
   try {
     const r = await api("/api/long/stop", { method: "POST" });
     LR.running = null; delete $("lr-live-text").dataset.built;
     lrOpenDoc(r.id);
   } catch (e) { toast(e.message, "err"); }
 };
-$("lr-title").onchange = () => { if (LR.running) lrSaveTitle(LR.running.id, $("lr-title").value); };
-$("lr-title").onkeydown = e => { if (e.key === "Enter" || e.key === "Escape") e.target.blur(); };
+// The title saves itself while typing and lets go of the focus after a pause,
+// so H and M work again without a click elsewhere.
+function lrAutoTitle(inp, id, blurAfter){
+  let saveT = 0, blurT = 0, saved = null;
+  const save = () => { clearTimeout(saveT); const v = inp.value; const i = id(); if (i && v !== saved) { saved = v; lrSaveTitle(i, v); } };
+  inp.addEventListener("focus", () => { saved = inp.value; });
+  inp.addEventListener("input", () => {
+    clearTimeout(saveT); saveT = setTimeout(save, 700);
+    if (blurAfter) { clearTimeout(blurT); blurT = setTimeout(() => inp.blur(), blurAfter); }
+  });
+  inp.addEventListener("blur", () => { clearTimeout(blurT); save(); });
+  inp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === "Escape") inp.blur(); });
+}
+lrAutoTitle($("lr-title"), () => LR.running && LR.running.id, 4000);
 async function lrSaveTitle(id, title){
   try { await api(`/api/long/${id}/title`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title }) }); }
   catch (e) { toast(e.message, "err"); }
@@ -11371,7 +11416,7 @@ function lrJump(at){
   best.classList.remove("lr-flash"); void best.offsetWidth; best.classList.add("lr-flash");
 }
 $("lr-back").onclick = () => { LR.docID = ""; lrShow(LR.running ? "live" : "list"); loadLong(); };
-$("lr-dtitle").onchange = () => { if (LR.docID) lrSaveTitle(LR.docID, $("lr-dtitle").value); };
+lrAutoTitle($("lr-dtitle"), () => LR.docID, 0);
 $("lr-doc-view").querySelectorAll(".lr-seg button").forEach(b => b.onclick = () => {
   LR.raw = b.dataset.v === "raw";
   $("lr-doc-view").querySelectorAll(".lr-seg button").forEach(x => x.classList.toggle("on", x === b));
