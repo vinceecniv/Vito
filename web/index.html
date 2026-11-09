@@ -1815,6 +1815,10 @@
   .lr-count-s { font-size:12.5px; color:var(--text3); margin-top:-10px; }
   .lr-discard { background:none; border:none; font:inherit; font-size:12.5px; color:var(--text3); cursor:var(--cur-hand); padding:6px 4px; }
   .lr-discard u { color:var(--coral-ink); text-underline-offset:2px; }
+  .lr-stats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 12px; }
+  .lr-stats div { display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .lr-stats b { font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1; transition:color .4s; }
+  .lr-stats span { font-size:12px; color:var(--text3); }
   .lr-kv { display:flex; justify-content:space-between; gap:8px; font-size:13px; margin:6px 0; }
   .lr-kv span:first-child { color:var(--text2); }
   .lr-kv b { font-weight:500; font-variant-numeric:tabular-nums; }
@@ -2610,6 +2614,17 @@
               <button class="btn lr-stopbtn" id="lr-stop"><span class="lr-sq"></span>Stop and finish</button>
             </div>
             <div class="card">
+              <div style="font-weight:600; font-size:13.5px; margin-bottom:10px;">This recording</div>
+              <div class="lr-stats">
+                <div><b id="lr-st-words">0</b><span>words</span></div>
+                <div><b id="lr-st-sents">0</b><span>sentences</span></div>
+                <div><b id="lr-st-read">–</b><span>reading time</span></div>
+                <div><b id="lr-st-wpm">–</b><span>words per minute</span></div>
+                <div><b id="lr-st-heads">0</b><span>headers</span></div>
+                <div><b id="lr-st-marks">0</b><span>marks</span></div>
+              </div>
+            </div>
+            <div class="card">
               <div style="font-weight:600; font-size:13.5px; margin-bottom:4px;">Safely stored</div>
               <div class="lr-kv"><span>Audio on disk</span><b id="lr-s-audio">0:00</b></div>
               <div class="lr-kv"><span>Blocks transcribed</span><b id="lr-s-blocks">0</b></div>
@@ -2741,6 +2756,12 @@ const TR = { nl: {
   "Recording deleted":"Opname verwijderd",
   "Click again to stop":"Klik nogmaals om te stoppen",
   "All recordings":"Alle opnames",
+  "This recording":"Deze opname",
+  "words per minute":"woorden per minuut",
+  "sentences":"zinnen",
+  "reading time":"leestijd",
+  "headers":"kopjes",
+  "marks":"markeringen",
   "The recording starts…":"De opname begint…",
   "The recording continues…":"De opname gaat verder…",
   "Press Esc to cancel.":"Druk op Esc om te annuleren.",
@@ -11197,6 +11218,8 @@ function lrShow(view){
   $("lr-list-view").hidden = view !== "list";
   $("lr-live-view").hidden = view !== "live";
   $("lr-count-view").hidden = view !== "count";
+  clearInterval(LR.statsT); LR.statsT = 0;
+  if (view === "live") { lrRenderStats(); LR.statsT = setInterval(lrRenderStats, LR_STATS_MS); }
   $("lr-doc-view").hidden = view !== "doc";
   $("lr-new").hidden = view !== "list";
 }
@@ -11302,6 +11325,28 @@ $("lr-discard").onclick = async () => {
 };
 
 /* -- live -- */
+// The sidebar's numbers, refreshed every few seconds rather than with every
+// word, so the column stays calm.
+const LR_STATS_MS = 5000;
+function lrRenderStats(){
+  const st = LR.running; if (!st) return;
+  const items = LR.liveDoc?.items || [];
+  const count = txt => (txt.match(/\S+/g) || []).length;
+  // A sentence still being spoken counts once it has its end mark.
+  const ends = txt => (txt.match(/[.!?…]+(\s|$)/g) || []).length;
+  let words = 0, sents = 0;
+  for (const it of items) for (const sn of it.sentences || []) { words += count(sn.text); sents++; }
+  for (const l of st.live || []) { words += count(l.text || ""); sents += ends(l.text || ""); }
+  const fmt = n => n.toLocaleString();
+  $("lr-st-words").textContent = fmt(words);
+  $("lr-st-sents").textContent = fmt(sents);
+  // Reading at about 230 words a minute.
+  const read = words / 230;
+  $("lr-st-read").textContent = !words ? "–" : read < 1 ? "< 1 min" : `${fmt(Math.round(read))} min`;
+  $("lr-st-wpm").textContent = st.seconds >= 30 && words ? fmt(Math.round(words / (st.seconds / 60))) : "–";
+  $("lr-st-heads").textContent = fmt(items.filter(i => i.kind === "header").length);
+  $("lr-st-marks").textContent = fmt((LR.liveDoc?.marks || []).length);
+}
 function lrRenderLive(){
   const st = LR.running; if (!st) return;
   $("lr-live-view").classList.toggle("lr-paused", st.state === "paused");
