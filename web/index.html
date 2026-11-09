@@ -376,6 +376,10 @@
   @media (prefers-reduced-motion: no-preference) {
     section.active .reveal { animation:fadeUp .32s cubic-bezier(.22,.61,.36,1) both; animation-delay:calc(var(--i,0) * 35ms); }
   }
+  /* The filled animation makes every tile a stacking context of its own, so a
+     later tile paints over an open dropdown in an earlier one: lift the tile
+     that holds it (below the sticky settings tabs, z-index 15). */
+  .reveal:has(.flagsel.open) { position:relative; z-index:14; }
 
   /* The browser's own [hidden] rule is a bare element selector, so any class
      that sets display — .card, .grid, .chart-card — silently outranks it and the
