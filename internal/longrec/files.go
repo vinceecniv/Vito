@@ -98,8 +98,10 @@ func (s *Store) saveFiles(id string, st FilesState) error {
 	return writeAtomic(s.path(id, "files.json"), b)
 }
 
-// WriteFiles brings the session's folder under root up to date.
-func (s *Store) WriteFiles(id, root string) (FilesState, error) {
+// WriteFiles brings the session's folder under root up to date. timed is
+// the name suffix of the Word file with times ("with times", translated);
+// the plain one carries none.
+func (s *Store) WriteFiles(id, root, timed string) (FilesState, error) {
 	filesMu.Lock()
 	defer filesMu.Unlock()
 	if strings.TrimSpace(root) == "" {
@@ -140,16 +142,24 @@ func (s *Store) WriteFiles(id, root string) (FilesState, error) {
 
 	title, when := DocTitle(m)
 	base := SafeName(title)
-	docx, err := d.DOCX(title, when)
+	docx, err := d.DOCX(title, when, false)
 	if err != nil {
 		return st, err
 	}
+	docxTimed, err := d.DOCX(title, when, true)
+	if err != nil {
+		return st, err
+	}
+	if timed = SafeName(timed); timed == "Vito" || timed == "" {
+		timed = "with times"
+	}
 	out := map[string][]byte{
-		base + ".docx": docx,
-		base + ".md":   []byte(d.Markdown(title, when)),
-		base + ".txt":  []byte(title + "\n\n" + d.Text() + "\n"),
-		base + ".srt":  []byte(d.Subtitles(false)),
-		base + ".vtt":  []byte(d.Subtitles(true)),
+		base + ".docx":                 docx,
+		base + " (" + timed + ").docx": docxTimed,
+		base + ".md":                   []byte(d.Markdown(title, when)),
+		base + ".txt":                  []byte(title + "\n\n" + d.Text() + "\n"),
+		base + ".srt":                  []byte(d.Subtitles(false)),
+		base + ".vtt":                  []byte(d.Subtitles(true)),
 	}
 
 	// Files under an old name (the title changed): gone when still Vito's,

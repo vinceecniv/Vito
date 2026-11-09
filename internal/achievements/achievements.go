@@ -27,6 +27,9 @@ const (
 	GroupCommands    Group = "commands"
 	GroupMoney       Group = "money"
 	GroupSpecial     Group = "special"
+	// GroupRecordings are the long recordings (internal/longrec); each
+	// definition names its own measure in Flag: count, longest or words.
+	GroupRecordings Group = "recordings"
 	// GroupSupport holds the honour-system "I donated" badges. They aren't derived
 	// from usage — the user ticks them themselves — so they're never evaluated.
 	GroupSupport Group = "support"
@@ -64,9 +67,14 @@ type Stats struct {
 	// currency: the months you've had Vito at ~€15/month, minus your actual API
 	// spend. Computed by the server, which knows the rates and the currency.
 	SubscriptionSavings int64
-	Night               bool // dictated between midnight and 5am
-	Early               bool // dictated between 5am and 7am
-	Comeback            bool // resumed after a gap of 30+ days
+	// Long recordings: how many are finished, the longest in seconds, and the
+	// words in all of them.
+	RecCount   int64
+	RecLongest int64
+	RecWords   int64
+	Night      bool // dictated between midnight and 5am
+	Early      bool // dictated between 5am and 7am
+	Comeback   bool // resumed after a gap of 30+ days
 	// Mode-usage flags for the hidden "Vito Wizard" badge: ever dictated plainly,
 	// ever ran a spoken Assist command, and ever ran a clipboard Assist command.
 	UsedDictation       bool
@@ -99,6 +107,23 @@ func (s Stats) Value(g Group) int64 {
 	return 0
 }
 
+// Progress is the figure a definition is measured by (for progress bars):
+// the group's, or for recordings the one its Flag names.
+func (d Def) Progress(s Stats) int64 {
+	if d.Group == GroupRecordings {
+		switch d.Flag {
+		case "count":
+			return s.RecCount
+		case "longest":
+			return s.RecLongest
+		case "words":
+			return s.RecWords
+		}
+		return 0
+	}
+	return s.Value(d.Group)
+}
+
 // Earned reports whether a definition is met. Manual badges are never derived
 // from usage — they live purely in the stored unlocked set — so they are always
 // "not earned" here, keeping Evaluate from auto-granting them.
@@ -125,7 +150,7 @@ func (d Def) Earned(s Stats) bool {
 		}
 		return false
 	}
-	return s.Value(d.Group) >= d.Threshold
+	return d.Progress(s) >= d.Threshold
 }
 
 // List is every achievement, in display order. Names are deliberately silly.
@@ -195,6 +220,13 @@ var List = []Def{
 	{ID: "money-250", Group: GroupMoney, Icon: "💵", Name: "Serious Savings", Desc: "Saved {n} versus a paid subscription", Threshold: 250},
 	{ID: "money-500", Group: GroupMoney, Icon: "🏦", Name: "The Frugal One", Desc: "Saved {n} versus a paid subscription", Threshold: 500},
 	{ID: "money-1k", Group: GroupMoney, Icon: "🤑", Name: "Subscription Slayer", Desc: "Saved {n} versus a paid subscription", Threshold: 1000},
+
+	// Long recordings: lectures, meetings, long sessions.
+	{ID: "rec-first", Group: GroupRecordings, Icon: "🎬", Name: "First Take", Desc: "Finished your first long recording", Flag: "count", Threshold: 1},
+	{ID: "rec-hour", Group: GroupRecordings, Icon: "🎓", Name: "Lecture Hall", Desc: "Recorded an hour in one go", Flag: "longest", Threshold: 3600},
+	{ID: "rec-3h", Group: GroupRecordings, Icon: "🏁", Name: "Marathon", Desc: "Recorded three hours in one go", Flag: "longest", Threshold: 3 * 3600},
+	{ID: "rec-10", Group: GroupRecordings, Icon: "📦", Name: "Archivist", Desc: "Finished {n} long recordings", Flag: "count", Threshold: 10},
+	{ID: "rec-100k", Group: GroupRecordings, Icon: "✍️", Name: "Spoken Library", Desc: "{n} words in long recordings", Flag: "words", Threshold: 100000},
 
 	// One-offs. The first is a welcome; the rest stay hidden until you stumble on them.
 	{ID: "first", Group: GroupSpecial, Icon: "👋", Name: "Hello, Vito", Desc: "Your first dictation", Flag: "first"},

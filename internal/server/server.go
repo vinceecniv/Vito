@@ -44,6 +44,7 @@ import (
 	"vito/internal/history"
 	"vito/internal/hotkey"
 	"vito/internal/inject"
+	"vito/internal/longrec"
 	"vito/internal/pill"
 	"vito/internal/selfexe"
 	"vito/internal/stt"
@@ -997,8 +998,11 @@ func (s *Server) handleAchievements(w http.ResponseWriter, r *http.Request) {
 		}
 		item := map[string]any{
 			"id": d.ID, "group": d.Group, "icon": d.Icon, "name": d.Name,
-			"desc": d.Desc, "threshold": d.Threshold, "value": st.Value(d.Group),
+			"desc": d.Desc, "threshold": d.Threshold, "value": d.Progress(st),
 			"earned": gotIt, "secret": d.Secret, "manual": d.Manual,
+		}
+		if d.Group == achievements.GroupRecordings {
+			item["flag"] = d.Flag // what it is measured by (longest is a time)
 		}
 		if isUnlocked {
 			item["unlocked_at"] = unlockedAt.UnixMilli()
@@ -1046,6 +1050,20 @@ func (s *Server) evaluateAchievements() (st achievements.Stats, earned map[strin
 		st.SubscriptionSavings = int64(savings)
 	}
 
+	// Long recordings: the finished ones count.
+	if store, e := s.d.LongStore(); e == nil && !s.d.Config().Demo {
+		if list, e := store.List(); e == nil {
+			for _, m := range list {
+				if m.State != longrec.StateDone {
+					continue
+				}
+				st.RecCount++
+				st.RecWords += int64(m.Words)
+				st.RecLongest = max(st.RecLongest, int64(m.Seconds))
+			}
+		}
+	}
+
 	earned = achievements.Evaluate(st)
 	s.recordAchievements(earned)
 	return st, earned, months, currency, nil
@@ -1086,7 +1104,8 @@ func (s *Server) recordAchievements(earned map[string]bool) {
 // while the page is closed too.
 func (s *Server) watchAchievements() {
 	s.d.AddEventListener(func(e daemon.Event) {
-		if e.Type == "final" && !s.d.Config().Demo {
+		// After a dictation, and when a long recording is finished.
+		if (e.Type == "final" || (e.Type == "long" && e.Long != nil && e.Long.State == "done")) && !s.d.Config().Demo {
 			go func() {
 				if _, _, _, _, err := s.evaluateAchievements(); err != nil {
 					s.log.Debug("achievements not checked", "err", err)

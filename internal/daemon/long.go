@@ -180,10 +180,18 @@ func (d *Daemon) startLong(open func(longrec.Options) (*longrec.Recorder, error)
 			rec.Write(c)
 		}
 	}()
+	// The page's level meter: the absolute level (as the microphone test
+	// shows it), a dozen times a second.
+	var lastLevel time.Time
 	capture, err := audio.StartCapture(d.audioCtx, cfg.Audio.InputDevice, cfg.Audio.InputGain, func(chunk []byte) {
 		select {
 		case chunks <- chunk:
 		default: // the writer stalled; drop rather than block the audio thread
+		}
+		if now := time.Now(); now.Sub(lastLevel) >= 80*time.Millisecond {
+			lastLevel = now
+			r, clip := peakRatio(chunk)
+			d.emit(Event{Type: "long_level", Level: absLevel(r), Clip: clip})
 		}
 	})
 	if err != nil {

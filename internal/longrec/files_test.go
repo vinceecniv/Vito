@@ -20,7 +20,7 @@ func TestWriteFiles(t *testing.T) {
 	store.create(Meta{ID: id, State: StateDone, Title: "Overleg", Started: started})
 	store.AddBlock(id, Block{Index: 0, Start: 0, End: 10, Text: "First point. Second point."})
 
-	st, err := store.WriteFiles(id, root)
+	st, err := store.WriteFiles(id, root, "with times")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,7 +28,7 @@ func TestWriteFiles(t *testing.T) {
 	if st.Dir != dir {
 		t.Fatalf("dir %q", st.Dir)
 	}
-	for _, ext := range []string{".docx", ".md", ".txt", ".srt", ".vtt"} {
+	for _, ext := range []string{".docx", " (with times).docx", ".md", ".txt", ".srt", ".vtt"} {
 		if _, err := os.Stat(filepath.Join(dir, "Overleg"+ext)); err != nil {
 			t.Fatal(err)
 		}
@@ -54,7 +54,7 @@ func TestWriteFiles(t *testing.T) {
 
 	// New text: Vito's own files follow.
 	store.AddBlock(id, Block{Index: 1, Start: 10, End: 20, Text: "Third point."})
-	store.WriteFiles(id, root)
+	store.WriteFiles(id, root, "with times")
 	if md, _ := os.ReadFile(filepath.Join(dir, "Overleg.md")); !strings.Contains(string(md), "Third point.") {
 		t.Fatal("md not updated")
 	}
@@ -62,7 +62,7 @@ func TestWriteFiles(t *testing.T) {
 	// The user edits the Markdown: it stays, Vito's goes beside it.
 	os.WriteFile(filepath.Join(dir, "Overleg.md"), []byte("mine"), 0o644)
 	store.AddBlock(id, Block{Index: 2, Start: 20, End: 30, Text: "Fourth point."})
-	st, _ = store.WriteFiles(id, root)
+	st, _ = store.WriteFiles(id, root, "with times")
 	if md, _ := os.ReadFile(filepath.Join(dir, "Overleg.md")); string(md) != "mine" {
 		t.Fatal("the user's file was overwritten")
 	}
@@ -76,7 +76,7 @@ func TestWriteFiles(t *testing.T) {
 	// A new title: the folder and Vito's files are renamed, the user's file
 	// stays as it is.
 	store.UpdateMeta(id, func(m *Meta) { m.Title = "Teamoverleg" })
-	st, err = store.WriteFiles(id, root)
+	st, err = store.WriteFiles(id, root, "with times")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -109,7 +109,7 @@ func TestWriteFilesAudio(t *testing.T) {
 	id := "20261109-120000-cafe0004"
 	store.create(Meta{ID: id, State: StateDone, Title: "Les", Started: time.Date(2026, 11, 9, 9, 0, 0, 0, time.Local)})
 	os.WriteFile(store.mp3Path(id), []byte("one"), 0o644)
-	st, err := store.WriteFiles(id, root)
+	st, err := store.WriteFiles(id, root, "with times")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -118,13 +118,13 @@ func TestWriteFilesAudio(t *testing.T) {
 		t.Fatal("not copied")
 	}
 	os.WriteFile(store.mp3Path(id), []byte("two!"), 0o644)
-	store.WriteFiles(id, root)
+	store.WriteFiles(id, root, "with times")
 	if b, _ := os.ReadFile(dst); string(b) != "two!" {
 		t.Fatal("not updated")
 	}
 	os.WriteFile(dst, []byte("user's"), 0o644)
 	os.WriteFile(store.mp3Path(id), []byte("three"), 0o644)
-	st, _ = store.WriteFiles(id, root)
+	st, _ = store.WriteFiles(id, root, "with times")
 	if b, _ := os.ReadFile(dst); string(b) != "user's" {
 		t.Fatal("the user's copy was overwritten")
 	}

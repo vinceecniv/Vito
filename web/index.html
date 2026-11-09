@@ -1787,6 +1787,16 @@
   .lr-bar { display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-bottom:18px; }
   .lr-titlein { flex:1 1 260px; min-width:0; border:none; border-bottom:1px solid transparent; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text); padding:6px 0; }
   .lr-titlein:focus { outline:none; border-bottom-color:var(--accent); }
+  .lr-level { display:inline-flex; align-items:flex-end; gap:2px; height:22px; padding:0 4px; }
+  .lr-level i { width:4px; border-radius:2px; background:var(--track); transition:background-color .08s; }
+  .lr-level i:nth-child(1) { height:30%; } .lr-level i:nth-child(2) { height:37%; } .lr-level i:nth-child(3) { height:44%; }
+  .lr-level i:nth-child(4) { height:51%; } .lr-level i:nth-child(5) { height:58%; } .lr-level i:nth-child(6) { height:65%; }
+  .lr-level i:nth-child(7) { height:72%; } .lr-level i:nth-child(8) { height:79%; } .lr-level i:nth-child(9) { height:86%; } .lr-level i:nth-child(10) { height:100%; }
+  .lr-level i.on { background:#22C55E; }
+  .lr-level i.on.hi { background:#F59E0B; }
+  .lr-level.clip i.on { background:#EF4444; }
+  .lr-paused .lr-level { opacity:.35; }
+  .lr-quiet[hidden] { display:none; }
   .lr-clock { display:inline-flex; align-items:center; gap:10px; padding:8px 14px; border-radius:999px; background:var(--coral-soft); }
   .lr-clock b { font-size:15px; font-variant-numeric:tabular-nums; }
   .lr-clock span:last-child { font-size:12px; color:var(--text2); }
@@ -2757,8 +2767,10 @@
         <div class="card lr-bar">
           <input class="lr-titlein" id="lr-title" placeholder="Untitled recording" aria-label="Title of the recording">
           <button class="lr-discard" id="lr-discard" hidden>Started by mistake? <u>Throw away</u></button>
+          <span class="lr-level" id="lr-level" data-tip-text="Microphone level: it should move when you speak, and stay out of the red"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
           <span class="lr-clock"><span class="lr-dot"></span><b id="lr-time">0:00</b><span id="lr-state"></span></span>
         </div>
+        <div class="banner warn lr-quiet" id="lr-quiet" hidden><span class="grow"><b>Vito has heard nothing for a while.</b> Is the right microphone on, and not muted? Settings → Audio chooses it.</span></div>
         <div class="banner warn lr-pausenote"><span class="grow"><b>Paused — nothing is being recorded.</b> Don't forget to resume.</span><button class="btn primary small lr-ib" id="lr-resume2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>Resume</button></div>
         <div class="lr-cols">
           <div class="lr-textwrap">
@@ -3759,6 +3771,15 @@ const TR = { nl: {
   "injected after":"geïnjecteerd na",
   "Start recording":"Start opname",
   "Start dictating":"Start dicteren",
+  "with times":"met tijden",
+  "Microphone level: it should move when you speak, and stay out of the red":"Microfoonniveau: het hoort mee te bewegen als je spreekt, en uit het rood te blijven",
+  "Vito has heard nothing for a while.":"Vito hoort al een tijdje niets.",
+  "Is the right microphone on, and not muted? Settings → Audio chooses it.":"Staat de goede microfoon aan, en niet gedempt? Bij Instellingen → Audio kies je hem.",
+  "Finished your first long recording":"Je eerste lange opname afgerond",
+  "Recorded an hour in one go":"Een uur achter elkaar opgenomen",
+  "Recorded three hours in one go":"Drie uur achter elkaar opgenomen",
+  "Finished {n} long recordings":"{n} lange opnames afgerond",
+  "{n} words in long recordings":"{n} woorden in lange opnames",
   "recordings":"opnames",
   "recorded in total":"in totaal opgenomen",
   "longest recording":"langste opname",
@@ -5958,6 +5979,7 @@ function connectWS() {
 // standalone/backend.js).
 function handleEvent(e) {
     if (e.type === "long" || e.type === "long_doc" || e.type === "long_files") { longEvent(e); return; }
+    if (e.type === "long_level") { lrLevel(e); return; }
     // The island asks to see a page (the running long recording).
     if (e.type === "show") { if (TABS.includes(e.text)) { selectTab(e.text); window.focus(); } return; }
     if (e.type === "state") {
@@ -8486,12 +8508,14 @@ const ICON_KOFI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const ICON_SPK_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 0 1 0 7M18.5 6a7 7 0 0 1 0 12"/></svg>';
 const ICON_SPK_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9.5l4 5M21 9.5l-4 5"/></svg>';
 
-const ACH_GROUP_ORDER = ["support","special","words","spoken","saved","streak","day","week","activations","commands","money"];
+const ACH_GROUP_ORDER = ["support","special","words","spoken","saved","streak","day","week","activations","commands","recordings","money"];
 const ACH_GROUP_LABELS = { support:"Support Vito", words:"Words", spoken:"Speaking time", saved:"Time saved", streak:"Streaks",
-  day:"Best day", week:"Best week", activations:"Activations", commands:"Vito Assist", money:"Savings", special:"Milestones" };
+  day:"Best day", week:"Best week", activations:"Activations", commands:"Vito Assist", recordings:"Recordings", money:"Savings", special:"Milestones" };
 const ahEsc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
 // The {n} in a description (and the progress read-out) is formatted the way its
 // group is measured: a duration, a money amount, or a plain count.
+// A recording achievement measured in time reads like speaking time.
+const achG = x => x.group === "recordings" && x.flag === "longest" ? "spoken" : x.group;
 function achFmt(group, n, cur){
   if (group === "spoken") return fmtHMS(n);
   if (group === "saved")  return fmtDuration(n);
@@ -8562,7 +8586,7 @@ function achCardHTML(x, cur){
   const medalHTML = hidden ? "?" : achMedalInner(x);
   const name  = hidden ? t("Secret achievement") : x.name;
   const desc  = hidden ? t("Keep using Vito to uncover this one.")
-                       : t(x.desc).replace("{n}", achFmt(x.group, x.threshold, cur));
+                       : t(x.desc).replace("{n}", achFmt(achG(x), x.threshold, cur));
   let foot = "";
   let whenTxt = "";
   try { if (x.unlocked_at) whenTxt = new Date(x.unlocked_at).toLocaleDateString(numLoc(), { day:"numeric", month:"short", year:"numeric" }); } catch {}
@@ -8578,7 +8602,7 @@ function achCardHTML(x, cur){
   } else if (!hidden && x.group !== "special" && x.threshold > 0) {
     const pct = Math.max(2, Math.min(100, Math.round(x.value / x.threshold * 100)));
     foot = `<div class="ach-prog"><div class="ach-bar"><i data-w="${pct}%"></i></div>` +
-      `<div class="ach-prog-lbl">${achFmt(x.group, x.value, cur)} / ${achFmt(x.group, x.threshold, cur)}</div></div>`;
+      `<div class="ach-prog-lbl">${achFmt(achG(x), x.value, cur)} / ${achFmt(achG(x), x.threshold, cur)}</div></div>`;
   }
   const cls = "ach" + (x.earned ? " earned" : " locked") + (hidden ? " secret" : "")
     + (x.manual ? " support" : "") + (x.manual && x.earned ? " support-earned" : "") + (achToday(x) ? " today" : "");
@@ -8618,7 +8642,8 @@ function renderAchievements(a){
   }
   ACH_GROUP_ORDER.forEach(g => {
     const items = a.achievements.filter(x => x.group === g);
-    if (!items.length) return;
+    // Recordings exist only in the installed app.
+    if (!items.length || (g === "recordings" && STANDALONE)) return;
     html += `<div class="ach-group-head">${t(ACH_GROUP_LABELS[g])}</div>` +
       `<div class="ach-grid">${items.map(x => achCardHTML(x, cur)).join("")}</div>`;
   });
@@ -11769,6 +11794,20 @@ $("lr-live-text").addEventListener("scroll", () => {
   $("lr-tolive").hidden = LR.follow !== false;
 });
 window.addEventListener("resize", () => { lrFitLive(); lrFollow(); });
+// The level meter of a running recording: ten bars (the last two amber,
+// all red when it clips), and a warning when nothing has been heard for
+// LR_QUIET_MS while recording (not paused).
+const LR_QUIET_MS = 20000;
+function lrLevel(e){
+  const box = $("lr-level"); if (!box) return;
+  const on = Math.round((e.level || 0) / 10);
+  box.querySelectorAll("i").forEach((b, i) => { b.classList.toggle("on", i < on); b.classList.toggle("hi", i >= 8); });
+  box.classList.toggle("clip", !!e.clip);
+  const now = Date.now();
+  if ((e.level || 0) >= 12 || !LR.lastLoud || !LR.running || LR.running.state !== "recording") LR.lastLoud = now;
+  const quiet = LR.running && LR.running.state === "recording" && now - LR.lastLoud > LR_QUIET_MS;
+  if ($("lr-quiet").hidden === quiet) $("lr-quiet").hidden = !quiet;
+}
 function lrRenderLive(){
   const st = LR.running; if (!st) return;
   $("lr-live-view").classList.toggle("lr-paused", st.state === "paused");

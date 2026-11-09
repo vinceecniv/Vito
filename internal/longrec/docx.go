@@ -8,10 +8,10 @@ import (
 )
 
 // DOCX writes the document as a Word file: the title and when, headers as
-// headings, each paragraph with its time in grey before it, marked sentences
+// headings, each paragraph (with times set, its time in grey before it), marked sentences
 // highlighted, and the marks with their notes at the end. The bytes depend on
 // the text only (fixed zip times), so an unchanged document hashes the same.
-func (d Doc) DOCX(title, when string) ([]byte, error) {
+func (d Doc) DOCX(title, when string, times bool) ([]byte, error) {
 	var body strings.Builder
 	para := func(style string, runs ...string) {
 		body.WriteString("<w:p>")
@@ -30,7 +30,10 @@ func (d Doc) DOCX(title, when string) ([]byte, error) {
 			para("Heading1", run(headerTitle(it), ""))
 			continue
 		}
-		runs := []string{run(Clock(it.At)+" ", `<w:color w:val="8A8F98"/><w:sz w:val="18"/>`)}
+		var runs []string
+		if times {
+			runs = append(runs, run(Clock(it.At)+" ", `<w:color w:val="8A8F98"/><w:sz w:val="18"/>`))
+		}
 		for i, s := range it.Sentences {
 			text := s.Text
 			if i < len(it.Sentences)-1 {
