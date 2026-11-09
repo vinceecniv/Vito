@@ -176,6 +176,8 @@ Started 9 November 2026.
 
 ## Phase 3: online meetings and summaries
 
+Postponed (9 November 2026): less essential than phases 1 and 2; picked up later.
+
 - Record the computer's own sound for online meetings (different per OS).
 - Summary and action points through Vito Assist.
 - A note that the others must be asked for consent, because a meeting records
