@@ -2836,7 +2836,8 @@ const TR = { nl: {
   "Output":"Uitvoer",
   "Injection method":"Injectiemethode",
   "Paste (Ctrl+V)":"Plakken (Ctrl+V)",
-  "Type (ydotool)":"Typen (ydotool)",
+  "Type (keystrokes)":"Typen (toetsaanslagen)",
+  "Paste (⌘V)":"Plakken (⌘V)",
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
@@ -4328,8 +4329,8 @@ const MEDIAACTION_OPTS = [
   { v:"off",   label:"Do nothing",           icon:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M6.5 6.5l11 11"/></svg>' },
 ];
 const INJECT_OPTS = [
-  { v:"paste",          label:"Paste (Ctrl+V)", icon:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M9 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3"/></svg>' },
-  { v:"type",           label:"Type (ydotool)",  icon:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>' },
+  { v:"paste",          label:/Mac/.test(navigator.platform || navigator.userAgent) ? "Paste (⌘V)" : "Paste (Ctrl+V)", icon:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M9 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3"/></svg>' },
+  { v:"type",           label:"Type (keystrokes)",  icon:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>' },
   { v:"clipboard_only", label:"Clipboard only",  icon:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="4" rx="1"/><rect x="5" y="5" width="14" height="16" rx="2"/></svg>' },
 ];
 // A crossed-out trash for "Never" (auto-delete off); a calendar-with-clock for
