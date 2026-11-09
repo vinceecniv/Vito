@@ -90,8 +90,16 @@ func (p *pill) previewNotes() []note {
 	return out
 }
 
-func (n note) card() (*card, error) {
-	c, err := newCard(n.kind, n.label, n.main, n.medal)
+// card lays the note out; pinned, narrower than the island's panel, so a
+// card of two lines, which reaches over the panel's foot, stands in front of
+// it as a card of its own (under the pill there is no room for it to grow
+// downwards).
+func (n note) card(pinned bool) (*card, error) {
+	maxW := cardMaxW
+	if pinned {
+		maxW = panelW - 24
+	}
+	c, err := layCard(n.kind, n.label, n.main, n.medal, maxW)
 	if err == nil && n.kind == cardKept {
 		c.action = n.restore
 	}

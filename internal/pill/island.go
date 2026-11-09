@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -170,6 +171,7 @@ type islandState struct {
 	stats       bool     // today's figures shown (ui.island_stats)
 	recent      []string // the recent dictations, newest first; last is recent[at]
 	onBox       bool     // the pointer on the box, which shows its arrows
+	words       float64  // 0..1 the live words in the last dictation's place
 	at          int
 	partials    bool // the speech service sends text while you speak
 	style       Style
@@ -426,15 +428,21 @@ func (ip *islandPainter) embedded(buf []byte, st islandState, left, top float64)
 	sw := surfaceW * scale
 	dx := (islandWinW - surfaceW) / 2 * scale
 	dy := (islandMarkY - pillY) * scale
+	// Inside the panel's edges over it; under it, where its cards open, the
+	// whole window.
 	x0, x1 := int((left+3)*scale), int((left+panelW-3)*scale)
-	y0, y1 := int(max(top+51, islandMarkY-embedLiveUp-blockLine-6)*scale), int((panelBottom-3)*scale)
+	y0, foot := int(max(top+51, islandMarkY-embedLiveUp-blockLine-6)*scale), int((panelFoot-1)*scale)
 	a := st.embed
-	for y := max(0, y0); y < min(h, y1); y++ {
+	for y := max(0, y0); y < h; y++ {
 		sy := y - dy
 		if sy < 0 || sy >= surfaceH*scale {
 			continue
 		}
-		for x := max(0, x0); x < min(w, x1); x++ {
+		xa, xb := x0, x1
+		if y >= foot {
+			xa, xb = 0, w
+		}
+		for x := max(0, xa); x < min(w, xb); x++ {
 			sx := x - dx
 			if sx < 0 || sx >= sw {
 				continue
@@ -582,7 +590,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 
 	// The last dictation, to paste again; in the pinned island it makes way
 	// for the live words while a dictation runs.
-	a *= 1 - smooth(st.embed)
+	a *= 1 - smooth(min(st.embed, st.words))
 	if a <= 0.01 {
 		return
 	}
@@ -1151,8 +1159,15 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	}
 	// region: the panel, and under it only the microphone's room (or the
 	// embedded pill's), so the free space beside it lets the pointer through.
+	// under: what the embedded pill takes the pointer over (an open card),
+	// on the island.
+	var under inputArea
 	region := func(height float64) [][4]int {
-		return [][4]int{panelBox(height), {int(islandWinW/2 - 60), int(panelFoot) - shift, 120, int(footH)}}
+		r := [][4]int{panelBox(height), {int(islandWinW/2 - 60), int(panelFoot) - shift, 120, int(footH)}}
+		for _, b := range under {
+			r = append(r, [4]int{b[0] + (islandWinW-surfaceW)/2, b[1] + int(islandMarkY-pillY) - shift, b[2], b[3]})
+		}
+		return r
 	}
 	// foldRegion: the folded island's resting pill, where its foot is.
 	foldRegion := func() [4]int {
@@ -1293,7 +1308,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	// overPill says whether a point is on the embedded pill's part of the panel.
 	overPill := func(x, y float64) bool {
 		l := (islandWinW - panelW) / 2
-		return embedded != nil && st.embed > 0.5 && x >= l && x < l+panelW && y >= islandMarkY-embedLiveUp-blockLine-6 && y < panelBottom
+		return embedded != nil && st.embed > 0.5 && x >= l && x < l+panelW && y >= islandMarkY-embedLiveUp-blockLine-6 && y < islandWinH
 	}
 	// toPill turns a point on the island into one on the pill's picture.
 	toPill := func(e pointerEvent) pointerEvent {
@@ -1547,6 +1562,10 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			if embedded.take(frame) {
 				dirty = true
 			}
+			if now := embedded.inputBoxes(); !slices.Equal(now, under) {
+				under = now
+				w.setInput(region(st.height(st.view))...)
+			}
 			ip.frame = frame
 			if st.embed < 1 {
 				st.embed = min(1, st.embed+step(islandView))
@@ -1554,6 +1573,20 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			}
 		} else if st.embed > 0 {
 			st.embed = max(0, st.embed-step(islandView))
+			moving = true
+		}
+		if embedded == nil && under != nil {
+			under = nil
+			w.setInput(region(st.height(st.view))...)
+		}
+		// The live words take the last dictation's place only while one is
+		// being dictated; under a card it stays.
+		if want := b2f(embedded != nil && p.d.Status().State != daemon.StateIdle); st.words != want {
+			if st.words < want {
+				st.words = min(want, st.words+step(islandView))
+			} else {
+				st.words = max(want, st.words-step(islandView))
+			}
 			moving = true
 		}
 		// Step the animations.
@@ -1685,4 +1718,11 @@ func (st *islandState) known(id string) bool {
 		}
 	}
 	return false
+}
+
+func b2f(b bool) float64 {
+	if b {
+		return 1
+	}
+	return 0
 }

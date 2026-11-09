@@ -88,7 +88,6 @@ var (
 	medals               = map[string]*image.RGBA{}
 	ellipsis             = "…"
 	textLeft             = cardPadding + cardIcon + 11
-	textRoom             = cardMaxW - textLeft - cardPadRight
 	labelSize, mainSize  = 10.5, 13.0
 	labelBase, mainBaseY = 20.0, 37.0
 	mainLine             = 17.0 // the distance between two main lines
@@ -136,10 +135,15 @@ func faces() error {
 
 // newCard lays out a card; icon is the achievement's medal id, or "".
 func newCard(kind cardKind, label, main, medal string) (*card, error) {
+	return layCard(kind, label, main, medal, cardMaxW)
+}
+
+// layCard lays out a card at most maxW wide (logical pixels).
+func layCard(kind cardKind, label, main, medal string, maxW float64) (*card, error) {
 	if err := faces(); err != nil {
 		return nil, err
 	}
-	room := fixed.I(int(textRoom * scale))
+	room := fixed.I(int((maxW - textLeft - cardPadRight) * scale))
 	label = fit(labelFace, label, room)
 	first, rest := wrap(mainFace, main, room)
 	c := &card{kind: kind, height: cardH}
@@ -151,7 +155,7 @@ func newCard(kind cardKind, label, main, medal string) (*card, error) {
 		c.height = cardH + mainLine
 	}
 	text := float64(max(lw, mw, rw).Ceil()) / scale
-	c.width = math.Max(cardMinW, math.Min(cardMaxW, textLeft+text+cardPadRight))
+	c.width = math.Max(cardMinW, math.Min(maxW, textLeft+text+cardPadRight))
 	if medal != "" {
 		c.icon = medalImage(medal)
 	}

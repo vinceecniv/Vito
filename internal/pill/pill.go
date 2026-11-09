@@ -536,7 +536,7 @@ func (p *pill) animate(w window, style Style) {
 		// holds it open; a new dictation puts it away at once.
 		if f.Card == nil && state == daemon.StateIdle {
 			if n, ok := p.nextNote(); ok {
-				if c, err := n.card(); err == nil {
+				if c, err := n.card(pinned); err == nil {
 					f.Card, f.CardShow, until, putAway = c, 0, time.Time{}, false
 					w.setInput(cardBox(c))
 				} else {
