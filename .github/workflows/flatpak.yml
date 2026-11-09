@@ -34,7 +34,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # A release whose tag leaves Linux out (a "Platforms:" line in the tag's
+  # message, see release.yml) publishes no Flatpak. A run by hand always does.
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      linux: ${{ steps.p.outputs.linux }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: p
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = push ]; then
+            bash scripts/release-platforms.sh "" "$GITHUB_REF_NAME"
+          else
+            bash scripts/release-platforms.sh
+          fi
+
   build:
+    needs: gate
+    if: needs.gate.outputs.linux == 'true'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08

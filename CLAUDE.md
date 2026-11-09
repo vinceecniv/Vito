@@ -166,7 +166,14 @@ and puts them with their `.sha256` in a **draft** release "Vito <version>",
 the checksums filled into the notes. Write the story at the top, then publish.
 If a release for the tag already exists, its files are replaced and only its
 checksum lines are touched. It can also be started by hand (Actions → Release)
-with a version, with or without filling the release. The Flatpak follows from
+with a version, with or without filling the release.
+
+A release is for all three systems unless its annotated tag says otherwise
+in a line of its message — `git tag -a v2026.12 -m "Vito 2026.12" -m
+"Platforms: windows"` — or a run by hand names them (`platforms` input);
+`scripts/release-platforms.sh` reads both. Only those are built, attached
+and listed in the notes, the Flatpak follows only with linux, and the
+updater announces the release only where it carries that system's download. The Flatpak follows from
 `flatpak.yml`; the signed interface bundle stays a manual `publish-ui.ps1`,
 because its key must not live in the repository's secrets.
 
