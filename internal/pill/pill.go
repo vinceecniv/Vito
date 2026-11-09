@@ -218,6 +218,16 @@ func Start(d *daemon.Daemon, log *slog.Logger, src Sources) {
 				time.Sleep(retryTime)
 				output = 0
 			}
+			// What asked for an island while one was open is stale: on
+			// Windows the resting pill under it still sees the pointer and
+			// dwells, and would open it once more right after it closed.
+			for drained := false; !drained; {
+				select {
+				case <-p.island:
+				default:
+					drained = true
+				}
+			}
 		}
 	}()
 	if d.Config().UI.IslandPin != nil {
