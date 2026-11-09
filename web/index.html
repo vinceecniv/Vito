@@ -1732,6 +1732,93 @@
   .standalone label:has(#s-updatecheck), .standalone label:has(#s-updateauto), .standalone #upd-auto-note,
   .standalone #set-system, .standalone #set-pill, .standalone #set-updates,
   .standalone label:has(#s-demo), .standalone #cost-card, .standalone #whistle-remove { display:none !important; }
+
+  /* ---- Long recordings (Recordings tab) ---- */
+  .lr-headact { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .lr-new { display:inline-flex; align-items:center; gap:9px; }
+  .lr-new .lr-dot { background:#fff; }
+  .lr-dot { width:10px; height:10px; border-radius:50%; background:var(--coral); flex:0 0 10px; }
+  .lr-paused .lr-dot { background:var(--amber-ink); }
+  .lr-row { display:grid; grid-template-columns:minmax(0,3fr) minmax(0,1.3fr) minmax(0,.8fr) minmax(0,1.4fr); gap:12px; align-items:center;
+    padding:14px 22px; margin:0 -22px; border-bottom:1px solid var(--card-border); cursor:var(--cur-hand); }
+  .lr-row:last-child { border-bottom:none; }
+  .lr-row:hover { background:color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+  .lr-row.lr-hdr { cursor:default; font-size:12px; color:var(--text3); padding-top:0; }
+  .lr-row.lr-hdr:hover { background:none; }
+  .lr-row .lr-t { font-weight:600; font-size:14.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lr-row .lr-s { font-size:12.5px; color:var(--text3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lr-row .lr-c { font-size:13px; color:var(--text2); font-variant-numeric:tabular-nums; }
+  .lr-chip { display:inline-block; font-size:11.5px; padding:3px 9px; border-radius:999px; background:var(--track); color:var(--text2); margin:2px 4px 2px 0; }
+  .lr-chip.rec { background:var(--coral-soft); color:var(--coral-ink); }
+  .lr-chip.warn { background:color-mix(in srgb, var(--amber-ink) 14%, transparent); color:var(--amber-ink); }
+  .lr-chip.ok { background:var(--accent-soft); color:var(--accent); }
+  .lr-empty { color:var(--text3); font-size:13.5px; text-align:center; padding:28px 0; }
+  .lr-foot { color:var(--text3); font-size:12.5px; margin:12px 2px 0; }
+  .lr-bar { display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-bottom:18px; }
+  .lr-titlein { flex:1 1 260px; min-width:0; border:none; border-bottom:1px solid transparent; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text); padding:6px 0; }
+  .lr-titlein:focus { outline:none; border-bottom-color:var(--accent); }
+  .lr-clock { display:inline-flex; align-items:center; gap:10px; padding:8px 14px; border-radius:999px; background:var(--coral-soft); }
+  .lr-clock b { font-size:15px; font-variant-numeric:tabular-nums; }
+  .lr-clock span:last-child { font-size:12px; color:var(--text2); }
+  .lr-paused .lr-clock { background:color-mix(in srgb, var(--amber-ink) 14%, transparent); }
+  .lr-cols { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; }
+  .lr-text { flex:999 1 520px; min-width:0; }
+  .lr-side { flex:1 1 250px; max-width:330px; display:flex; flex-direction:column; gap:16px; }
+  .lr-live .lr-text { font-size:19px; line-height:1.6; min-height:340px; }
+  .lr-doc .lr-text { font-size:15.5px; line-height:1.65; }
+  .lr-h, .card > h2.lr-h { font-size:17px; font-weight:600; color:var(--accent); margin:22px 0 8px; padding:0; border:none; letter-spacing:0; text-transform:none; display:flex; align-items:center; gap:8px; }
+  .lr-h:first-child { margin-top:0; }
+  .lr-live .lr-h { font-size:14px; }
+  .lr-h.lr-empty-h { color:var(--text3); font-weight:500; font-style:italic; }
+  .lr-h .lr-hx { margin-left:auto; visibility:hidden; background:none; border:none; color:var(--text3); font-size:17px; cursor:var(--cur-hand); }
+  .lr-h:hover .lr-hx { visibility:visible; }
+  .lr-h input { flex:1; font:inherit; font-style:normal; color:var(--text); border:1px solid var(--input-border); background:var(--input-bg); border-radius:8px; padding:4px 8px; }
+  .lr-doc .lr-h .lr-ht { cursor:text; }
+  .lr-p { margin:0 0 14px; display:grid; grid-template-columns:52px minmax(0,1fr); gap:12px; }
+  .lr-live .lr-p { display:block; }
+  .lr-ts { font-size:11.5px; color:var(--text3); font-variant-numeric:tabular-nums; padding-top:4px; }
+  .lr-live .lr-ts { display:none; }
+  mark.lr-m { background:color-mix(in srgb, var(--amber-ink) 22%, transparent); color:inherit; border-radius:3px; padding:0 1px; }
+  .lr-pending { color:var(--text3); }
+  .lr-caret { display:inline-block; width:2px; height:1.05em; background:var(--accent); vertical-align:-3px; margin-left:3px; animation:lrBlink 1s steps(1) infinite; }
+  @keyframes lrBlink { 50% { opacity:0; } }
+  .lr-ctrl { display:flex; flex-direction:column; gap:10px; }
+  .lr-ctrl .btn { display:flex; align-items:center; justify-content:center; gap:9px; min-height:46px; }
+  .lr-ctrl .btn svg { width:15px; height:15px; }
+  .lr-two { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .lr-tool { display:flex; flex-direction:column; align-items:center; gap:3px; padding:11px 6px; border-radius:12px; border:1px solid var(--input-border);
+    background:var(--card); font:inherit; font-size:13px; color:var(--text); cursor:var(--cur-hand); }
+  .lr-tool:hover { border-color:var(--accent); }
+  .lr-tool svg { width:18px; height:18px; }
+  .lr-tool kbd { font:inherit; font-size:11px; color:var(--text3); }
+  .lr-stopbtn { background:var(--text); color:var(--card); }
+  .lr-stopbtn .lr-sq { width:11px; height:11px; border-radius:3px; background:var(--coral); }
+  .lr-kv { display:flex; justify-content:space-between; gap:8px; font-size:13px; margin:6px 0; }
+  .lr-kv span:first-child { color:var(--text2); }
+  .lr-kv b { font-weight:500; font-variant-numeric:tabular-nums; }
+  .lr-small { font-size:12px; color:var(--text3); line-height:1.5; margin-top:8px; }
+  .lr-docbar { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:16px; }
+  .lr-back { display:inline-flex; align-items:center; gap:6px; background:none; border:none; font:inherit; font-size:13px; color:var(--text2); cursor:var(--cur-hand); min-height:44px; padding:0 4px; }
+  .lr-back svg { width:16px; height:16px; }
+  .lr-dhead { flex:1 1 260px; min-width:0; display:flex; flex-direction:column; } .lr-dhead .lr-titlein { flex:none; }
+  .lr-meta { font-size:12.5px; color:var(--text3); }
+  .lr-seg { display:inline-flex; padding:3px; border-radius:11px; background:var(--track); }
+  .lr-seg button { border:none; background:none; font:inherit; font-size:13px; font-weight:600; color:var(--text2); padding:8px 13px; border-radius:9px; cursor:var(--cur-hand); }
+  .lr-seg button.on { background:var(--card); color:var(--text); }
+  .lr-exp { position:relative; }
+  .lr-menu { position:absolute; right:0; top:calc(100% + 6px); z-index:30; background:var(--card); border:1px solid var(--card-border); border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.14); padding:6px; min-width:190px; }
+  .lr-menu button { display:block; width:100%; text-align:left; background:none; border:none; font:inherit; font-size:13.5px; color:var(--text); padding:9px 12px; border-radius:8px; cursor:var(--cur-hand); }
+  .lr-menu button:hover { background:var(--accent-soft); }
+  .lr-mk { padding:10px 0; border-bottom:1px solid var(--card-border); font-size:13px; }
+  .lr-mk:last-child { border-bottom:none; }
+  .lr-mk .lr-mt { display:flex; gap:8px; align-items:baseline; cursor:var(--cur-hand); }
+  .lr-mk .lr-mt b { color:var(--amber-ink); font-weight:600; font-variant-numeric:tabular-nums; flex:0 0 auto; }
+  .lr-mk input { width:100%; box-sizing:border-box; margin-top:6px; font:inherit; font-size:12.5px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text); border-radius:8px; padding:6px 8px; }
+  .lr-mk .lr-mx { background:none; border:none; color:var(--text3); margin-left:auto; cursor:var(--cur-hand); font-size:16px; }
+  .lr-flash { animation:lrFlash 1.6s ease-out; }
+  @keyframes lrFlash { 0% { background:color-mix(in srgb, var(--amber-ink) 45%, transparent); } 100% { background:transparent; } }
+  @media (max-width:820px) { .lr-row { grid-template-columns:minmax(0,1fr) auto; } .lr-row > :nth-child(2), .lr-row > :nth-child(4) { display:none; } .lr-p { display:block; } .lr-ts { display:none; } }
 </style>
 </head>
 <body>
@@ -1750,6 +1837,9 @@
     <button class="nav-item" data-tab="history">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
       History</button>
+    <button class="nav-item helper-only" data-tab="long">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M14 10h3.5M14 14h3.5"/></svg>
+      Recordings</button>
     <button class="nav-item" data-tab="achievements">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M9 16h6M8 20h8M12 13v3"/></svg>
       Achievements</button>
@@ -2460,6 +2550,64 @@
         <div id="h-more" class="hmore" hidden></div>
       </div>
     </section>
+
+    <!-- RECORDINGS: long recordings (internal/longrec, docs/long-recordings.md) -->
+    <section id="tab-long" class="helper-only">
+      <div class="page-head"><div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M14 10h3.5M14 14h3.5"/></svg></span><h1>Recordings</h1></div><div class="sub">Lectures, meetings and long sessions — nothing is lost, and the text gets structure.</div></div>
+        <div class="lr-headact"><button class="btn primary lr-new" id="lr-new"><span class="lr-dot"></span>New recording</button></div></div>
+      <div id="lr-recover"></div>
+      <div id="lr-list-view">
+        <div class="card" id="lr-list"></div>
+        <p class="lr-foot">Recordings don't count towards your dictation statistics or history.</p>
+      </div>
+      <div id="lr-live-view" class="lr-live" hidden>
+        <div class="card lr-bar">
+          <input class="lr-titlein" id="lr-title" placeholder="Untitled recording" aria-label="Title of the recording">
+          <span class="lr-clock"><span class="lr-dot"></span><b id="lr-time">0:00</b><span id="lr-state"></span></span>
+        </div>
+        <div class="lr-cols">
+          <div class="card lr-text" id="lr-live-text"></div>
+          <div class="lr-side">
+            <div class="card lr-ctrl">
+              <button class="btn ghost" id="lr-pause"></button>
+              <div class="lr-two">
+                <button class="lr-tool" id="lr-mark" data-tip-text="Mark this moment: the last seconds are highlighted, to find back afterwards"><svg style="color:var(--amber-ink)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Mark</span><kbd>M</kbd></button>
+                <button class="lr-tool" id="lr-header" data-tip-text="A new subject starts here; its title is proposed from what follows"><svg style="color:var(--accent)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 4v16M18 4v16M6 12h12"/></svg><span>Header</span><kbd>H</kbd></button>
+              </div>
+              <button class="btn lr-stopbtn" id="lr-stop"><span class="lr-sq"></span>Stop and finish</button>
+            </div>
+            <div class="card">
+              <div style="font-weight:600; font-size:13.5px; margin-bottom:4px;">Safely stored</div>
+              <div class="lr-kv"><span>Audio on disk</span><b id="lr-s-audio">0:00</b></div>
+              <div class="lr-kv"><span>Blocks transcribed</span><b id="lr-s-blocks">0</b></div>
+              <div class="lr-small">The text arrives in blocks of one to two minutes, cut at pauses. If Vito stops unexpectedly, the recording can be restored.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="lr-doc-view" class="lr-doc" hidden>
+        <div class="lr-docbar">
+          <button class="lr-back" id="lr-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg>Recordings</button>
+          <div class="lr-dhead"><input class="lr-titlein" id="lr-dtitle" placeholder="Untitled recording" aria-label="Title of the recording"><span class="lr-meta" id="lr-dmeta"></span></div>
+          <div class="lr-seg" role="group" aria-label="View"><button type="button" data-v="clean" class="on">Cleaned</button><button type="button" data-v="raw">Raw</button></div>
+          <button class="btn ghost small" id="lr-reclean">Clean again</button>
+          <div class="lr-exp"><button class="btn primary small" id="lr-export">Export</button>
+            <div class="lr-menu" id="lr-export-menu" hidden>
+              <button type="button" data-f="md">Markdown (.md)</button>
+              <button type="button" data-f="txt">Text (.txt)</button>
+              <button type="button" data-f="srt">Subtitles (.srt)</button>
+              <button type="button" data-f="vtt">Subtitles (.vtt)</button>
+              <button type="button" data-f="audio">Audio (.wav)</button>
+            </div></div>
+          <button class="btn danger small" id="lr-delete">Delete</button>
+        </div>
+        <div id="lr-dnote"></div>
+        <div class="lr-cols">
+          <article class="card lr-text" id="lr-doc-text"></article>
+          <aside class="lr-side"><div class="card" id="lr-marks"></div></aside>
+        </div>
+      </div>
+    </section>
   </main>
 </div>
 <div id="toasts"></div>
@@ -2493,6 +2641,68 @@ const $ = (id) => document.getElementById(id);
 
 /* ---- i18n (source strings are English; every other language via a map) ---- */
 const TR = { nl: {
+  "Recordings":"Opnames",
+  "Lectures, meetings and long sessions — nothing is lost, and the text gets structure.":"Colleges, vergaderingen en lange sessies — er gaat niets verloren en de tekst krijgt structuur.",
+  "New recording":"Nieuwe opname",
+  "Recordings don't count towards your dictation statistics or history.":"Opnames tellen niet mee in je dicteerstatistieken en geschiedenis.",
+  "Untitled recording":"Opname zonder titel",
+  "Title of the recording":"Titel van de opname",
+  "Mark this moment: the last seconds are highlighted, to find back afterwards":"Markeer dit moment: de laatste seconden worden gemarkeerd, zodat je ze achteraf terugvindt",
+  "Mark":"Markeren",
+  "A new subject starts here; its title is proposed from what follows":"Hier begint een nieuw onderwerp; de titel wordt voorgesteld op basis van wat volgt",
+  "Header":"Kopje",
+  "Stop and finish":"Stoppen en afronden",
+  "Safely stored":"Veilig opgeslagen",
+  "Audio on disk":"Audio op schijf",
+  "Blocks transcribed":"Blokken uitgeschreven",
+  "The text arrives in blocks of one to two minutes, cut at pauses. If Vito stops unexpectedly, the recording can be restored.":"De tekst komt in blokken van een à twee minuten, geknipt bij pauzes. Stopt Vito onverwacht, dan is de opname te herstellen.",
+  "Cleaned":"Opgeschoond",
+  "Raw":"Ruw",
+  "View":"Weergave",
+  "Clean again":"Opnieuw opschonen",
+  "Markdown (.md)":"Markdown (.md)",
+  "Text (.txt)":"Tekst (.txt)",
+  "Subtitles (.srt)":"Ondertitels (.srt)",
+  "Subtitles (.vtt)":"Ondertitels (.vtt)",
+  "Audio (.wav)":"Audio (.wav)",
+  "A recording was not finished:":"Een opname is niet afgerond:",
+  "of audio is saved. Restoring transcribes what had not been transcribed yet.":"audio is bewaard. Herstellen schrijft uit wat nog niet was uitgeschreven.",
+  "Throw away":"Weggooien",
+  "Restoring the recording…":"Opname wordt hersteld…",
+  "No recordings yet. Start one for a lecture, a meeting or a long dictation.":"Nog geen opnames. Start er een voor een college, een vergadering of een lang dictaat.",
+  "Paused":"Gepauzeerd",
+  "Upload":"Upload",
+  "Title":"Titel",
+  "Date":"Datum",
+  "Length":"Duur",
+  "words":"woorden",
+  "paused":"gepauzeerd",
+  "Resume":"Hervatten",
+  "Listening… the text appears here as you speak.":"Luisteren… de tekst verschijnt hier terwijl je spreekt.",
+  "Marked":"Gemarkeerd",
+  "New header — its title follows":"Nieuw kopje — de titel volgt",
+  "New subject":"Nieuw onderwerp",
+  "Click to type a title":"Klik om een titel te typen",
+  "Remove header":"Kopje verwijderen",
+  "Loading…":"Laden…",
+  "This recording was not finished. Restore it from the list to transcribe the rest.":"Deze opname is niet afgerond. Herstel hem vanuit de lijst om de rest uit te schrijven.",
+  "Still recording.":"Neemt nog op.",
+  "Cleaning up…":"Bezig met opschonen…",
+  "blocks":"blokken",
+  "block(s) could not be transcribed; their audio is kept.":"blok(ken) konden niet worden uitgeschreven; de audio ervan is bewaard.",
+  "Nothing was heard in this recording.":"In deze opname is niets gehoord.",
+  "The text appears here once the first block is transcribed.":"De tekst verschijnt hier zodra het eerste blok is uitgeschreven.",
+  "Title of this part":"Titel van dit deel",
+  "Marks":"Markeringen",
+  "Remove mark":"Markering verwijderen",
+  "Add a note":"Notitie toevoegen",
+  "Note":"Notitie",
+  "No marks. Press M while recording to mark a moment that matters.":"Geen markeringen. Druk tijdens het opnemen op M om een belangrijk moment te markeren.",
+  "The whole text is cleaned again from the raw transcript, block by block. Titles you typed stay.":"De hele tekst wordt opnieuw opgeschoond vanuit het ruwe transcript, blok voor blok. Titels die je zelf typte blijven staan.",
+  "Delete recording":"Opname verwijderen",
+  "The recording, its audio and its text are permanently deleted.":"De opname, de audio en de tekst worden definitief verwijderd.",
+  "Recording deleted":"Opname verwijderd",
+  "recording now":"neemt op",
   "Local or OpenAI-compatible endpoint":"Lokaal of OpenAI-compatibel endpoint",
   "Whisper, Parakeet or any server that speaks the OpenAI audio API.":"Whisper, Parakeet of elke server die de OpenAI-audio-API spreekt.",
   "Best for: privacy — runs on your own machine":"Ideaal voor: privacy — draait op je eigen computer",
@@ -4742,7 +4952,7 @@ buildThemeDropdown();
 setThemeDisplay(themePref); // reflect the theme now the dropdown exists
 
 /* ---- nav ---- */
-const TABS = ["status", "history", "achievements", "dictionary", "settings"];
+const TABS = ["status", "history", "long", "achievements", "dictionary", "settings"];
 // A page you were on a moment ago comes back as you left it, scrolled where you
 // were; after a while away it opens fresh — at the top, Settings on its first
 // section. "A while" counts from leaving the page, or from leaving the window
@@ -4758,7 +4968,7 @@ function rememberTab(){
   try { localStorage.setItem("vito-tab-memo", JSON.stringify(m)); } catch {}
 }
 function selectTab(name){
-  if (!TABS.includes(name)) name = "status";
+  if (!TABS.includes(name) || (STANDALONE && name === "long")) name = "status";
   const arriving = name !== curTab;
   if (arriving) rememberTab();
   const memo = arriving ? tabMemo()[name] : null;
@@ -4767,6 +4977,7 @@ function selectTab(name){
   positionToasts(); // the column changes width between pages
   if (name === "history") loadHistory();
   if (name === "achievements") loadAchievements();
+  if (name === "long") loadLong();
   // Coming back to Status replays the chart's build-up, the same way opening the
   // page does — the numbers arrive with a little life rather than just being there.
   if (name === "status" && tabBooted) { lastChartKey = ""; replayChartGrow(); loadStats(); }
@@ -5419,6 +5630,7 @@ function connectWS() {
 // handleEvent takes one event from the daemon (or, in the browser, from
 // standalone/backend.js).
 function handleEvent(e) {
+    if (e.type === "long" || e.type === "long_doc") { longEvent(e); return; }
     if (e.type === "state") {
       uiState = e.state; setState(e.state);
       if (e.state === "recording") { showTranscriptHint(LISTENING_HINT); lastFinalText = ""; curPartial = ""; curRaw = ""; curCleaned = ""; }
@@ -10910,6 +11122,306 @@ $("h-clear").onclick = async () => {
     "Clear all", true);
   m.querySelector("[data-ok]").insertAdjacentHTML("afterbegin", '<svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v5M14 11v5M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg> ');
 };
+
+/* ---- Recordings: long recordings (internal/longrec, docs/long-recordings.md) ----
+   Three views in one tab: the list of sessions, the live view of the running
+   one, and a finished session as a document. The daemon sends "long" (the
+   running session's timer and unfinished text) and "long_doc" (a session's
+   saved text changed). */
+const LR = { view: "list", running: null, doc: null, docID: "", raw: false, sessions: [], liveDoc: null, docTimer: 0 };
+const LR_MARK = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z"/></svg>';
+const LR_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+const LR_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>';
+
+function lrClock(sec){
+  sec = Math.max(0, Math.floor(sec || 0));
+  const h = Math.floor(sec / 3600), m = Math.floor(sec / 60) % 60, s = sec % 60;
+  return h ? `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}` : `${m}:${String(s).padStart(2, "0")}`;
+}
+function lrWhen(iso){
+  const d = new Date(iso);
+  return d.toLocaleString(uiLang === "en" ? undefined : uiLang, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+}
+function lrTitle(m){ return (m && m.title) || t("Recording") + " " + lrWhen(m.started); }
+
+function lrShow(view){
+  LR.view = view;
+  $("lr-list-view").hidden = view !== "list";
+  $("lr-live-view").hidden = view !== "live";
+  $("lr-doc-view").hidden = view !== "doc";
+  $("lr-new").hidden = view !== "list";
+}
+
+async function loadLong(){
+  let r;
+  try { r = await api("/api/long"); } catch (e) { $("lr-list").innerHTML = `<div class="lr-empty">${escapeHtml(e.message)}</div>`; return; }
+  LR.sessions = r.sessions || [];
+  LR.running = r.running || null;
+  if (LR.running && LR.view !== "doc") { lrShow("live"); lrRenderLive(); lrFetchLiveDoc(); }
+  else if (LR.view === "live" && !LR.running) lrShow("list");
+  lrRenderRecover();
+  lrRenderList();
+}
+
+function lrRenderRecover(){
+  const broken = LR.sessions.filter(s => s.state === "interrupted");
+  $("lr-recover").innerHTML = broken.map(s => `
+    <div class="banner warn" data-id="${s.id}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--coral-ink)" stroke-width="1.8" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>
+      <div class="grow"><b>${escapeHtml(t("A recording was not finished:"))} ${escapeHtml(lrTitle(s))}</b><br>
+        <span style="color:var(--text2)">${lrClock(s.seconds)} ${escapeHtml(t("of audio is saved. Restoring transcribes what had not been transcribed yet."))}</span></div>
+      <button class="btn ghost small" data-discard>${escapeHtml(t("Throw away"))}</button>
+      <button class="btn primary small" data-restore>${escapeHtml(t("Restore"))}</button>
+    </div>`).join("");
+  $("lr-recover").querySelectorAll(".banner").forEach(b => {
+    const id = b.dataset.id;
+    b.querySelector("[data-restore]").onclick = async () => {
+      try { await api(`/api/long/${id}/restore`, { method: "POST" }); b.remove(); toast(t("Restoring the recording…"), "ok"); lrOpenDoc(id); loadLong(); }
+      catch (e) { toast(e.message, "err"); }
+    };
+    b.querySelector("[data-discard]").onclick = () => lrConfirmDelete(id, () => loadLong());
+  });
+}
+
+function lrRenderList(){
+  const rows = LR.sessions.filter(s => s.state !== "interrupted" && !(LR.running && s.id === LR.running.id));
+  const live = LR.running ? [Object.assign({}, LR.sessions.find(s => s.id === LR.running.id) || {}, { id: LR.running.id, title: LR.running.title, seconds: LR.running.seconds, state: LR.running.state, started: (LR.sessions.find(s => s.id === LR.running.id) || {}).started || new Date().toISOString() })] : [];
+  const all = live.concat(rows);
+  if (!all.length) {
+    $("lr-list").innerHTML = `<div class="lr-empty">${escapeHtml(t("No recordings yet. Start one for a lecture, a meeting or a long dictation."))}</div>`;
+    return;
+  }
+  const chip = s => s.state === "recording" ? `<span class="lr-chip rec">${escapeHtml(t("Recording"))}</span>`
+    : s.state === "paused" ? `<span class="lr-chip warn">${escapeHtml(t("Paused"))}</span>`
+    : s.source === "upload" ? `<span class="lr-chip">${escapeHtml(t("Upload"))}</span>` : "";
+  $("lr-list").innerHTML = `<div class="lr-row lr-hdr"><span>${escapeHtml(t("Title"))}</span><span>${escapeHtml(t("Date"))}</span><span>${escapeHtml(t("Length"))}</span><span></span></div>` +
+    all.map(s => `<div class="lr-row" data-id="${s.id}" tabindex="0" role="button">
+      <span style="min-width:0; display:flex; flex-direction:column; gap:2px;"><span class="lr-t">${escapeHtml(lrTitle(s))}</span>
+        <span class="lr-s">${s.words ? s.words.toLocaleString() + " " + escapeHtml(t("words")) : ""}${s.provider ? (s.words ? " · " : "") + escapeHtml(s.provider) : ""}</span></span>
+      <span class="lr-c">${escapeHtml(lrWhen(s.started))}</span>
+      <span class="lr-c">${lrClock(s.seconds)}</span>
+      <span>${chip(s)}</span></div>`).join("");
+  $("lr-list").querySelectorAll(".lr-row[data-id]").forEach(r => {
+    const open = () => (LR.running && r.dataset.id === LR.running.id) ? (lrShow("live"), lrRenderLive(), lrFetchLiveDoc()) : lrOpenDoc(r.dataset.id);
+    r.onclick = open;
+    r.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } };
+  });
+}
+
+$("lr-new").onclick = async () => {
+  try {
+    const r = await api("/api/long/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    LR.running = r.running; LR.liveDoc = null;
+    lrShow("live"); $("lr-title").value = ""; lrRenderLive();
+  } catch (e) { toast(e.message, "err"); }
+};
+
+/* -- live -- */
+function lrRenderLive(){
+  const st = LR.running; if (!st) return;
+  $("lr-live-view").classList.toggle("lr-paused", st.state === "paused");
+  $("lr-time").textContent = lrClock(st.seconds);
+  $("lr-s-audio").textContent = lrClock(st.seconds);
+  $("lr-s-blocks").textContent = st.blocks || 0;
+  $("lr-state").textContent = st.state === "paused" ? t("paused") : t("recording now");
+  $("lr-pause").innerHTML = (st.state === "paused" ? LR_PLAY : LR_PAUSE) + escapeHtml(st.state === "paused" ? t("Resume") : t("Pause"));
+  if (document.activeElement !== $("lr-title")) $("lr-title").value = st.title || "";
+  const box = $("lr-live-text");
+  let liveEl = box.querySelector(".lr-livepart");
+  if (!box.dataset.built) lrRenderLiveDoc();
+  liveEl = box.querySelector(".lr-livepart");
+  const text = (st.live || []).map(l => l.text).filter(Boolean).join(" ");
+  liveEl.innerHTML = escapeHtml(text) + (st.state === "recording" ? '<span class="lr-caret"></span>' : "");
+  if (!LR.liveDoc?.items?.length && !text) liveEl.innerHTML = `<span class="lr-pending">${escapeHtml(t("Listening… the text appears here as you speak."))}</span>`;
+}
+function lrRenderLiveDoc(){
+  const box = $("lr-live-text");
+  box.innerHTML = (LR.liveDoc ? lrItemsHTML(LR.liveDoc, false) : "") + '<p class="lr-p lr-livepart"></p>';
+  box.dataset.built = "1";
+}
+async function lrFetchLiveDoc(){
+  if (!LR.running) return;
+  try { LR.liveDoc = await api(`/api/long/${LR.running.id}`); } catch { return; }
+  lrRenderLiveDoc(); lrRenderLive();
+}
+$("lr-pause").onclick = () => api(LR.running && LR.running.state === "paused" ? "/api/long/resume" : "/api/long/pause", { method: "POST" }).catch(e => toast(e.message, "err"));
+$("lr-mark").onclick = () => lrMark();
+$("lr-header").onclick = () => lrHeader();
+async function lrMark(){
+  try { await api("/api/long/mark", { method: "POST" }); toast(t("Marked"), "ok", 1400); } catch (e) { toast(e.message, "err"); }
+}
+async function lrHeader(){
+  try { await api("/api/long/header", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }); toast(t("New header — its title follows"), "ok", 1800); }
+  catch (e) { toast(e.message, "err"); }
+}
+$("lr-stop").onclick = async () => {
+  try {
+    const r = await api("/api/long/stop", { method: "POST" });
+    LR.running = null; delete $("lr-live-text").dataset.built;
+    lrOpenDoc(r.id);
+  } catch (e) { toast(e.message, "err"); }
+};
+$("lr-title").onchange = () => { if (LR.running) lrSaveTitle(LR.running.id, $("lr-title").value); };
+$("lr-title").onkeydown = e => { if (e.key === "Enter" || e.key === "Escape") e.target.blur(); };
+async function lrSaveTitle(id, title){
+  try { await api(`/api/long/${id}/title`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title }) }); }
+  catch (e) { toast(e.message, "err"); }
+}
+// H and M while recording, when no field has the focus.
+document.addEventListener("keydown", e => {
+  if (curTab !== "long" || LR.view !== "live" || !LR.running || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+  const el = document.activeElement;
+  if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable)) return;
+  const k = e.key.toLowerCase();
+  if (k === "m") { e.preventDefault(); lrMark(); }
+  else if (k === "h") { e.preventDefault(); lrHeader(); }
+});
+
+/* -- the document -- */
+function lrItemsHTML(doc, editable){
+  return (doc.items || []).map(it => {
+    if (it.kind === "header") {
+      const title = it.title ? escapeHtml(it.title) : escapeHtml(t("New subject")) + " · " + lrClock(it.at);
+      return `<h2 class="lr-h${it.title ? "" : " lr-empty-h"}" data-id="${it.id}"><span class="lr-ht"${editable ? ` title="${escapeHtml(t("Click to type a title"))}"` : ""}>${title}</span>${editable ? `<button class="lr-hx" data-del aria-label="${escapeHtml(t("Remove header"))}">×</button>` : ""}</h2>`;
+    }
+    const body = it.sentences.map(s => s.marked ? `<mark class="lr-m" data-t="${s.t}">${escapeHtml(s.text)}</mark>` : `<span data-t="${s.t}">${escapeHtml(s.text)}</span>`).join(" ");
+    return `<p class="lr-p"><span class="lr-ts">${lrClock(it.at)}</span><span>${body}</span></p>`;
+  }).join("");
+}
+
+async function lrOpenDoc(id){
+  LR.docID = id; LR.raw = false;
+  $("lr-doc-view").querySelectorAll(".lr-seg button").forEach(b => b.classList.toggle("on", b.dataset.v === "clean"));
+  lrShow("doc");
+  $("lr-doc-text").innerHTML = `<div class="lr-empty">${escapeHtml(t("Loading…"))}</div>`;
+  $("lr-marks").innerHTML = "";
+  await lrFetchDoc();
+  window.scrollTo(0, 0);
+}
+async function lrFetchDoc(){
+  const id = LR.docID; if (!id) return;
+  let d;
+  try { d = await api(`/api/long/${id}${LR.raw ? "?raw=1" : ""}`); } catch (e) { $("lr-doc-text").innerHTML = `<div class="lr-empty">${escapeHtml(e.message)}</div>`; return; }
+  if (id !== LR.docID) return;
+  LR.doc = d;
+  const m = d.meta;
+  if (document.activeElement !== $("lr-dtitle")) $("lr-dtitle").value = m.title || "";
+  $("lr-dtitle").placeholder = lrTitle(Object.assign({}, m, { title: "" }));
+  const words = (d.items || []).reduce((n, it) => n + (it.sentences || []).reduce((k, s) => k + s.text.split(/\s+/).filter(Boolean).length, 0), 0);
+  $("lr-dmeta").textContent = [lrWhen(m.started), lrClock(m.seconds), words ? words.toLocaleString() + " " + t("words") : "", m.provider || ""].filter(Boolean).join(" · ");
+  // How far it is.
+  let note = "";
+  if (m.state === "interrupted") note = t("This recording was not finished. Restore it from the list to transcribe the rest.");
+  else if (m.state !== "done") note = t("Still recording.");
+  else if (d.blocks && d.cleaned < d.blocks && !LR.raw && (d.items || []).length) note = `${t("Cleaning up…")} ${d.cleaned} / ${d.blocks} ${t("blocks")}`;
+  if (d.failed) note += (note ? " " : "") + `${d.failed} ${t("block(s) could not be transcribed; their audio is kept.")}`;
+  $("lr-dnote").innerHTML = note ? `<div class="banner tip"><span class="grow">${escapeHtml(note)}</span></div>` : "";
+  const box = $("lr-doc-text");
+  box.innerHTML = (d.items || []).length ? lrItemsHTML(d, true)
+    : `<div class="lr-empty">${escapeHtml(m.state === "done" ? t("Nothing was heard in this recording.") : t("The text appears here once the first block is transcribed."))}</div>`;
+  box.querySelectorAll(".lr-h").forEach(h => {
+    h.querySelector(".lr-ht").onclick = () => lrEditHeader(h);
+    const del = h.querySelector("[data-del]");
+    if (del) del.onclick = () => lrEvent({ type: "delete", of: h.dataset.id });
+  });
+  lrRenderMarks(d);
+}
+function lrEditHeader(h){
+  if (h.querySelector("input")) return;
+  const it = (LR.doc.items || []).find(i => i.id === h.dataset.id) || {};
+  const span = h.querySelector(".lr-ht");
+  const inp = document.createElement("input");
+  inp.value = it.title || ""; inp.placeholder = t("Title of this part");
+  span.replaceWith(inp); inp.focus(); inp.select();
+  let done = false;
+  const finish = save => {
+    if (done) return; done = true;
+    if (save && inp.value.trim() !== (it.title || "")) lrEvent({ type: "title", of: h.dataset.id, title: inp.value.trim() });
+    else lrFetchDoc();
+  };
+  inp.onkeydown = e => { if (e.key === "Enter") finish(true); else if (e.key === "Escape") finish(false); };
+  inp.onblur = () => finish(true);
+}
+async function lrEvent(ev){
+  try { await api(`/api/long/${LR.docID}/event`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(ev) }); }
+  catch (e) { toast(e.message, "err"); }
+  lrFetchDoc();
+}
+function lrRenderMarks(d){
+  const marks = d.marks || [];
+  $("lr-marks").innerHTML = `<div style="font-weight:600; font-size:14px; margin-bottom:4px;">${escapeHtml(t("Marks"))}</div>` +
+    (marks.length ? marks.map(mk => `<div class="lr-mk" data-id="${mk.id}">
+      <div class="lr-mt"><b>${lrClock(mk.at)}</b><span>${escapeHtml(mk.text || "")}</span><button class="lr-mx" aria-label="${escapeHtml(t("Remove mark"))}">×</button></div>
+      <input value="${escapeHtml(mk.note || "")}" placeholder="${escapeHtml(t("Add a note"))}" aria-label="${escapeHtml(t("Note"))}"></div>`).join("")
+      : `<div class="lr-small" style="margin-top:4px">${escapeHtml(t("No marks. Press M while recording to mark a moment that matters."))}</div>`);
+  $("lr-marks").querySelectorAll(".lr-mk").forEach(el => {
+    const mk = marks.find(m => m.id === el.dataset.id);
+    el.querySelector(".lr-mt span").onclick = () => lrJump(mk.at);
+    el.querySelector(".lr-mx").onclick = () => lrEvent({ type: "delete", of: mk.id });
+    const inp = el.querySelector("input");
+    inp.onchange = () => lrEvent({ type: "note", of: mk.id, text: inp.value });
+  });
+}
+function lrJump(at){
+  const marked = [...$("lr-doc-text").querySelectorAll("mark.lr-m")];
+  let best = null, bestD = 1e9;
+  for (const m of marked) { const dd = Math.abs(parseFloat(m.dataset.t) - (at - 5)); if (dd < bestD) { bestD = dd; best = m; } }
+  if (!best) return;
+  best.scrollIntoView({ behavior: "smooth", block: "center" });
+  best.classList.remove("lr-flash"); void best.offsetWidth; best.classList.add("lr-flash");
+}
+$("lr-back").onclick = () => { LR.docID = ""; lrShow(LR.running ? "live" : "list"); loadLong(); };
+$("lr-dtitle").onchange = () => { if (LR.docID) lrSaveTitle(LR.docID, $("lr-dtitle").value); };
+$("lr-doc-view").querySelectorAll(".lr-seg button").forEach(b => b.onclick = () => {
+  LR.raw = b.dataset.v === "raw";
+  $("lr-doc-view").querySelectorAll(".lr-seg button").forEach(x => x.classList.toggle("on", x === b));
+  lrFetchDoc();
+});
+$("lr-reclean").onclick = () => {
+  modal(t("Clean again"), `<p style="color:var(--text2); font-size:13.5px; margin:0;">${escapeHtml(t("The whole text is cleaned again from the raw transcript, block by block. Titles you typed stay."))}</p>`,
+    () => { api(`/api/long/${LR.docID}/reclean`, { method: "POST" }).then(() => { toast(t("Cleaning up…"), "ok"); lrFetchDoc(); }).catch(e => toast(e.message, "err")); },
+    "Clean again");
+};
+$("lr-export").onclick = e => { e.stopPropagation(); $("lr-export-menu").hidden = !$("lr-export-menu").hidden; };
+document.addEventListener("click", () => { $("lr-export-menu").hidden = true; });
+$("lr-export-menu").querySelectorAll("button").forEach(b => b.onclick = () => {
+  $("lr-export-menu").hidden = true;
+  const id = LR.docID, f = b.dataset.f;
+  if (f === "audio") downloadAuth(`/api/long/${id}/audio?download=1`, `vito-${id}.wav`);
+  else downloadAuth(`/api/long/${id}/export?format=${f}${LR.raw ? "&raw=1" : ""}`, `vito-${id}.${f}`);
+});
+$("lr-delete").onclick = () => lrConfirmDelete(LR.docID, () => { LR.docID = ""; lrShow("list"); loadLong(); });
+function lrConfirmDelete(id, after){
+  const m = modal(t("Delete recording"),
+    `<p style="color:var(--text2); font-size:13.5px; margin:0;">${escapeHtml(t("The recording, its audio and its text are permanently deleted."))}</p>`,
+    () => { api(`/api/long/${id}`, { method: "DELETE" }).then(after).then(() => toast(t("Recording deleted"), "ok")).catch(e => toast(e.message, "err")); },
+    "Delete", true);
+  return m;
+}
+
+/* -- events from the daemon -- */
+function longEvent(e){
+  if (e.type === "long") {
+    const st = e.long;
+    if (st.state === "done") { LR.running = null; if (LR.view === "live") lrShow("list"); return; }
+    const started = !LR.running;
+    LR.running = st;
+    if (curTab !== "long") return;
+    if (started && LR.view === "list") { lrShow("live"); lrFetchLiveDoc(); }
+    if (LR.view === "live") lrRenderLive();
+    else if (LR.view === "list") lrRenderList();
+    return;
+  }
+  // long_doc: a session's saved text changed. Gathered, so a burst of
+  // events fetches once.
+  if (curTab !== "long") return;
+  clearTimeout(LR.docTimer);
+  LR.docTimer = setTimeout(() => {
+    if (LR.view === "doc" && e.session === LR.docID) lrFetchDoc();
+    else if (LR.view === "live" && LR.running && e.session === LR.running.id) lrFetchLiveDoc();
+    else if (LR.view === "list") loadLong();
+  }, 250);
+}
 
 /* ---- PWA ---- */
 let deferredPrompt = null;

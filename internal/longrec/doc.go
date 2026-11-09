@@ -175,7 +175,7 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 	// Marks: the sentence a mark falls in and those of the seconds before it.
 	for mi := range marks {
 		mk := &marks[mi]
-		var first *Sentence
+		var at *Sentence // the sentence being spoken when the key was pressed
 		for ii := range d.Items {
 			it := &d.Items[ii]
 			for si := range it.Sentences {
@@ -184,14 +184,12 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 				next := nextStart(d.Items, ii, si)
 				if s.Start <= end && next > mk.At-markBack {
 					s.Marked = true
-					if first == nil {
-						first = s
-					}
+					at = s
 				}
 			}
 		}
-		if first != nil {
-			mk.Text = clip(first.Text, 140)
+		if at != nil {
+			mk.Text = clip(at.Text, 140)
 		}
 	}
 	d.Marks = marks
