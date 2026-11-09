@@ -48,7 +48,16 @@ func (s *Server) handleLongList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if list, err := store.List(); err == nil && list != nil && !s.demo() {
-		out["sessions"] = list
+		// With each the size of its audio, which deleting it frees.
+		type session struct {
+			longrec.Meta
+			AudioBytes int64 `json:"audio_bytes"`
+		}
+		sessions := make([]session, len(list))
+		for i, m := range list {
+			sessions[i] = session{m, store.AudioBytes(m.ID)}
+		}
+		out["sessions"] = sessions
 	}
 	s.writeJSON(w, http.StatusOK, out)
 }
@@ -174,8 +183,9 @@ func (s *Server) handleLongDoc(w http.ResponseWriter, r *http.Request) {
 	}
 	s.writeJSON(w, http.StatusOK, struct {
 		longrec.Doc
-		Cost longCost `json:"cost"`
-	}{d, s.longCost(d.Meta)})
+		Cost       longCost `json:"cost"`
+		AudioBytes int64    `json:"audio_bytes"`
+	}{d, s.longCost(d.Meta), store.AudioBytes(id)})
 }
 
 // longCost is what a session has cost so far, roughly: the speech service by

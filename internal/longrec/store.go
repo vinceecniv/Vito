@@ -132,6 +132,14 @@ func (s *Store) path(id, name string) string { return filepath.Join(s.dir, id, n
 // AudioPath is the session's WAV.
 func (s *Store) AudioPath(id string) string { return s.path(id, "audio.wav") }
 
+// AudioBytes is the size of a session's audio file, 0 when there is none.
+func (s *Store) AudioBytes(id string) int64 {
+	if fi, err := os.Stat(s.AudioPath(id)); err == nil {
+		return fi.Size()
+	}
+	return 0
+}
+
 func (s *Store) create(m Meta) error {
 	if err := os.MkdirAll(filepath.Join(s.dir, m.ID), 0o700); err != nil {
 		return err
