@@ -362,12 +362,12 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 		case tWords:
 			at, text = ip.targets[st.over], ip.t("words today")
 			if st.day.Words > 0 {
-				text += " · " + ip.number(st.day.Sentences) + " " + ip.t("sentences") + " · " + ip.number(st.day.Activations) + " " + ip.t("activations")
+				text += "\n" + ip.number(st.day.Sentences) + " " + ip.t("sentences") + "\n" + ip.number(st.day.Activations) + " " + ip.t("activations")
 			}
 		case tSaved:
 			at, text = ip.targets[st.over], ip.t("saved typing time")
 			if st.day.Spoken > 0 {
-				text += " · " + ip.t("spoken today") + " " + ip.duration(st.day.Spoken)
+				text += "\n" + ip.t("spoken today") + " " + ip.duration(st.day.Spoken)
 			}
 		case tRepaste, tMic, tCopy, tRestore:
 			// Placed where they were drawn this frame, which the views
@@ -421,19 +421,23 @@ func (ip *islandPainter) embedded(buf []byte, st islandState, left, top float64)
 // panel; over it where the panel ends too soon below (the microphone).
 func (ip *islandPainter) tooltip(buf []byte, th theme, st islandState, at rect, text string, left, a float64) {
 	w, h := islandWinW*scale, islandWinH*scale
-	room := panelW - 40
-	first, rest := wrap(labelFace, text, fixed.I(int(room*scale)))
-	_, w1 := ip.text(labelFace, first)
-	bw := w1
-	if rest != "" {
-		_, w2 := ip.text(labelFace, rest)
-		bw = max(bw, w2)
+	room := fixed.I(int((panelW - 40) * scale))
+	// A line of its own for each thing it says (\n), each wrapped to the room.
+	var lines []string
+	for _, para := range strings.Split(text, "\n") {
+		for para != "" {
+			var first string
+			first, para = wrap(labelFace, para, room)
+			lines = append(lines, first)
+		}
+	}
+	bw := 0.0
+	for _, l := range lines {
+		_, lw := ip.text(labelFace, l)
+		bw = max(bw, lw)
 	}
 	bw += 20
-	bh := 24.0
-	if rest != "" {
-		bh = 40
-	}
+	bh := 8 + 16*float64(len(lines))
 	x := min(max(at.x+at.w/2-bw/2, left+8), left+panelW-8-bw)
 	y := at.y + at.h + 6
 	if y+bh > panelBottom-4 {
@@ -441,9 +445,8 @@ func (ip *islandPainter) tooltip(buf []byte, th theme, st islandState, at rect, 
 	}
 	bg, fg := inkFor(st.dark), th.body
 	fill(buf, w, h, rect{x, y, bw, bh}, 8, bg, 0.94*a)
-	ip.line(buf, labelFace, first, x+10, y+16, fg, a)
-	if rest != "" {
-		ip.line(buf, labelFace, rest, x+10, y+32, fg, a)
+	for i, l := range lines {
+		ip.line(buf, labelFace, l, x+10, y+16+16*float64(i), fg, a)
 	}
 }
 
