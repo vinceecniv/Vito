@@ -315,7 +315,9 @@ func ChartBuckets(now time.Time, days int, firstDay string) ([]Bucket, string) {
 	}
 	start := today
 	if days > 0 {
-		start = today.Add(-time.Duration(days-1) * day)
+		// Calendar days, not 24-hour steps: across a clock change those land at
+		// 01:00 or 23:00 and the day loop then drops today or adds a day.
+		start = today.AddDate(0, 0, -(days - 1))
 	} else if fd, err := time.ParseInLocation("2006-01-02", firstDay, loc); err == nil {
 		start = fd
 	}
