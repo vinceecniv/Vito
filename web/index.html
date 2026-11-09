@@ -1820,7 +1820,10 @@
   .lr-dragging, .lr-dragging * { cursor:ew-resize !important; user-select:none; }
   .lr-prev { background:color-mix(in srgb, var(--amber-ink) 40%, transparent); border-radius:3px; }
   .lr-pop-del { margin-top:4px; }
-  .lr-selmark { position:fixed; z-index:60; display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:999px; border:none;
+  .lr-seltools { position:fixed; z-index:60; display:flex; gap:6px; }
+  .lr-seltools[hidden] { display:none; }
+  .lr-selhead { background:var(--accent); }
+  .lr-selmark { display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:999px; border:none;
     background:var(--amber-ink); color:#fff; font:inherit; font-size:12.5px; font-weight:600; box-shadow:0 8px 22px rgba(0,0,0,.25); cursor:var(--cur-hand); }
   .lr-selmark svg { width:13px; height:13px; }
   .lr-selmark[hidden] { display:none; }
@@ -1866,6 +1869,9 @@
   .lr-stats div { display:flex; flex-direction:column; gap:2px; min-width:0; }
   .lr-stats b { font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1; transition:color .4s; }
   .lr-stats span { font-size:12px; color:var(--text3); }
+  .lr-profcard label { display:block; font-weight:600; font-size:13.5px; margin-bottom:8px; }
+  .lr-profcard select, .lr-recl select { width:100%; }
+  .lr-recl label { display:block; font-weight:600; font-size:13px; margin:14px 0 6px; }
   .lr-cost { display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-top:14px; padding-top:12px; border-top:1px solid var(--card-border); font-size:12.5px; color:var(--text3); }
   .lr-cost[hidden] { display:none; }
   .lr-cost b { font-size:15px; color:var(--text); font-variant-numeric:tabular-nums; }
@@ -2666,6 +2672,11 @@
               </div>
               <button class="btn lr-stopbtn" id="lr-stop"><span class="lr-sq"></span>Stop and finish</button>
             </div>
+            <div class="card lr-profcard" id="lr-live-profcard">
+              <label for="lr-live-prof">Rule set</label>
+              <select id="lr-live-prof"></select>
+              <div class="lr-small">Applies to the text still to come. Afterwards you can clean the whole recording again with another rule set.</div>
+            </div>
             <div class="card" id="lr-live-stats">
               <div style="font-weight:600; font-size:13.5px; margin-bottom:10px;">This recording</div>
               <div class="lr-stats">
@@ -2734,7 +2745,10 @@
       </div>
       <button class="lr-handle lr-handle-from" id="lr-h-from" data-edge="from" aria-label="Start of the mark" hidden><i></i></button>
       <button class="lr-handle lr-handle-to" id="lr-h-to" data-edge="to" aria-label="End of the mark" hidden><i></i></button>
-      <button class="lr-selmark" id="lr-selmark" hidden><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Mark selection</button>
+      <div class="lr-seltools" id="lr-seltools" hidden>
+        <button class="lr-selmark" id="lr-selmark"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Mark selection</button>
+        <button class="lr-selmark lr-selhead" id="lr-selhead"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 4v16M18 4v16M6 12h12"/></svg>Header here</button>
+      </div>
     </section>
   </main>
 </div>
@@ -2834,10 +2848,14 @@ const TR = { nl: {
   "All recordings":"Alle opnames",
   "Back to live":"Terug naar live",
   "Cost so far, roughly":"Kosten tot nu toe, ongeveer",
+  "Applies to the text still to come. Afterwards you can clean the whole recording again with another rule set.":"Geldt voor de tekst die nog komt. Achteraf kun je de hele opname opnieuw opschonen met een andere regelset.",
+  "Vito for recordings":"Vito voor opnames",
+  "Rule set changed":"Regelset gewijzigd",
   "Drag the dots to move the start and end.":"Sleep de bolletjes om begin en einde te verplaatsen.",
   "Start of the mark":"Begin van de markering",
   "End of the mark":"Einde van de markering",
   "Mark selection":"Selectie markeren",
+  "Header here":"Kopje hier",
   "Mark removed":"Markering verwijderd",
   "This recording":"Deze opname",
   "words per minute":"woorden per minuut",
@@ -11519,7 +11537,7 @@ function lrRenderLiveDoc(){
 async function lrFetchLiveDoc(){
   if (!LR.running) return;
   try { LR.liveDoc = await api(`/api/long/${LR.running.id}`); } catch { return; }
-  lrRenderLiveDoc(); lrRenderLive(); lrRenderStats();
+  lrRenderLiveDoc(); lrRenderLive(); lrRenderStats(); lrRenderProfile();
   if (LR.pop && LR.pop.box.id === "lr-live-text") (LR.drag ? lrPreview : lrPlacePop)();
 }
 $("lr-pause").onclick = () => api(LR.running && LR.running.state === "paused" ? "/api/long/resume" : "/api/long/pause", { method: "POST" }).catch(e => toast(e.message, "err"));
@@ -11827,11 +11845,13 @@ $("lr-pop-del").onclick = async () => {
     lrOpenPop(box, ids[(i + 1) % ids.length]);
   });
   box.addEventListener("mouseup", () => setTimeout(() => lrOfferSelection(box), 0));
-  box.addEventListener("scroll", () => { if (LR.pop && LR.pop.box === box) (LR.drag ? lrPlaceHandles : lrPlacePop)(); $("lr-selmark").hidden = true; });
+  box.addEventListener("scroll", () => { if (LR.pop && LR.pop.box === box) (LR.drag ? lrPlaceHandles : lrPlacePop)(); $("lr-seltools").hidden = true; });
 });
-window.addEventListener("scroll", () => { if (LR.pop) lrPlacePop(); $("lr-selmark").hidden = true; }, { passive: true });
+window.addEventListener("scroll", () => { if (LR.pop) lrPlacePop(); $("lr-seltools").hidden = true; }, { passive: true });
+// Selected text in a recording offers a mark over those sentences, or a
+// header before the first of them — while recording and afterwards.
 function lrOfferSelection(box){
-  const btn = $("lr-selmark"), sel = getSelection();
+  const btn = $("lr-seltools"), sel = getSelection();
   btn.hidden = true;
   if (!sel.rangeCount || sel.isCollapsed || !String(sel).trim()) return;
   const range = sel.getRangeAt(0);
@@ -11842,13 +11862,18 @@ function lrOfferSelection(box){
   btn.hidden = false;
   btn.style.left = Math.min(Math.max(8, r.left + r.width / 2 - btn.offsetWidth / 2), innerWidth - btn.offsetWidth - 8) + "px";
   btn.style.top = Math.max(8, r.top - btn.offsetHeight - 8) + "px";
-  btn.onclick = async () => {
+  $("lr-selmark").onclick = async () => {
     btn.hidden = true; sel.removeAllRanges();
     if (await lrPostEvent(box, { type: "mark", from: +sents[0].dataset.t, to: +sents[sents.length - 1].dataset.t })) toast(t("Marked"), "ok", 1400);
   };
+  $("lr-selhead").onclick = async () => {
+    btn.hidden = true; sel.removeAllRanges();
+    const t0 = +sents[0].dataset.t;
+    if (await lrPostEvent(box, { type: "header", from: t0, to: t0 })) toast(t("New header — its title follows"), "ok", 1800);
+  };
 }
 document.addEventListener("mousedown", e => {
-  if (!e.target.closest("#lr-selmark")) $("lr-selmark").hidden = true;
+  if (!e.target.closest("#lr-seltools")) $("lr-seltools").hidden = true;
   if (LR.pop && !e.target.closest("#lr-pop") && !e.target.closest("mark.lr-m") && !e.target.closest(".lr-handle")) lrClosePop();
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && LR.pop) lrClosePop(); });
@@ -11901,9 +11926,36 @@ $("lr-doc-view").querySelectorAll(".lr-seg button").forEach(b => b.onclick = () 
   lrFetchDoc();
 });
 $("lr-reclean").onclick = () => {
-  modal(t("Clean again"), `<p style="color:var(--text2); font-size:13.5px; margin:0;">${escapeHtml(t("The whole text is cleaned again from the raw transcript, block by block. Titles you typed stay."))}</p>`,
-    () => { api(`/api/long/${LR.docID}/reclean`, { method: "POST" }).then(() => { toast(t("Cleaning up…"), "ok"); lrFetchDoc(); }).catch(e => toast(e.message, "err")); },
+  modal(t("Clean again"), `<div class="lr-recl"><p style="color:var(--text2); font-size:13.5px; margin:0;">${escapeHtml(t("The whole text is cleaned again from the raw transcript, block by block. Titles you typed stay."))}</p>
+    <label for="lr-recl-prof">${escapeHtml(t("Rule set"))}</label><select id="lr-recl-prof">${lrProfileOptions(LR.doc?.meta?.profile || "")}</select></div>`,
+    () => {
+      const profile = $("lr-recl-prof").value;
+      api(`/api/long/${LR.docID}/reclean`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ profile }) })
+        .then(() => { toast(t("Cleaning up…"), "ok"); lrFetchDoc(); }).catch(e => toast(e.message, "err"));
+    },
     "Clean again");
+};
+// The rule sets a recording can be cleaned with: Vito's own for recordings
+// (""), Vito's other sets, then the user's.
+function lrProfileOptions(sel){
+  const opt = (id, name) => `<option value="${escapeHtml(id)}"${id === sel ? " selected" : ""}>${escapeHtml(name)}</option>`;
+  return opt("", t("Vito for recordings"))
+    + (promptBuiltins || []).map(b => opt(b.id, t(b.name))).join("")
+    + (promptList || []).map(p => opt(p.id, p.name || p.id)).join("");
+}
+function lrRenderProfile(){
+  const card = $("lr-live-profcard"), sel = $("lr-live-prof");
+  card.hidden = !(cfg && cfg.cleanup && cfg.cleanup.enabled);
+  if (card.hidden || document.activeElement === sel) return;
+  sel.innerHTML = lrProfileOptions(LR.liveDoc?.meta?.profile || "");
+}
+$("lr-live-prof").onchange = async e => {
+  if (!LR.running) return;
+  try {
+    await api(`/api/long/${LR.running.id}/profile`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ profile: e.target.value }) });
+    toast(t("Rule set changed"), "ok", 1400);
+  } catch (err) { toast(err.message, "err"); }
+  e.target.blur(); // H and M work again
 };
 $("lr-export").onclick = e => { e.stopPropagation(); $("lr-export-menu").hidden = !$("lr-export-menu").hidden; };
 document.addEventListener("click", () => { $("lr-export-menu").hidden = true; });

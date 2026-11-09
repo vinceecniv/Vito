@@ -26,7 +26,8 @@ func (s *Server) longRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/long/{id}/event", s.auth(s.handleLongEvent))
 	mux.HandleFunc("POST /api/long/{id}/continue", s.auth(s.handleLongContinue))
 	mux.HandleFunc("POST /api/long/{id}/restore", s.auth(s.longIDAction(s.d.RestoreLong)))
-	mux.HandleFunc("POST /api/long/{id}/reclean", s.auth(s.longIDAction(s.d.RecleanLong)))
+	mux.HandleFunc("POST /api/long/{id}/reclean", s.auth(s.handleLongReclean))
+	mux.HandleFunc("PUT /api/long/{id}/profile", s.auth(s.handleLongProfile))
 	mux.HandleFunc("GET /api/long/{id}/export", s.auth(s.handleLongExport))
 	mux.HandleFunc("GET /api/long/{id}/audio", s.auth(s.handleLongAudio))
 }
@@ -205,6 +206,50 @@ func (s *Server) handleLongDelete(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// handleLongProfile picks the cleanup rule set for the blocks still to clean.
+func (s *Server) handleLongProfile(w http.ResponseWriter, r *http.Request) {
+	_, id, ok := s.longStore(w, r)
+	if !ok {
+		return
+	}
+	var body struct {
+		Profile string `json:"profile"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		s.longErr(w, http.StatusBadRequest, err)
+		return
+	}
+	if err := s.d.SetLongProfile(id, body.Profile); err != nil {
+		s.longErr(w, http.StatusBadRequest, err)
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
+// handleLongReclean cleans a session again, with another rule set when the
+// body names one ({"profile": …}; no body keeps the session's own).
+func (s *Server) handleLongReclean(w http.ResponseWriter, r *http.Request) {
+	_, id, ok := s.longStore(w, r)
+	if !ok {
+		return
+	}
+	var body struct {
+		Profile *string `json:"profile"`
+	}
+	_ = json.NewDecoder(r.Body).Decode(&body)
+	if body.Profile != nil {
+		if err := s.d.SetLongProfile(id, *body.Profile); err != nil {
+			s.longErr(w, http.StatusBadRequest, err)
+			return
+		}
+	}
+	if err := s.d.RecleanLong(id); err != nil {
+		s.longErr(w, http.StatusConflict, err)
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+}
+
 func (s *Server) handleLongTitle(w http.ResponseWriter, r *http.Request) {
 	_, id, ok := s.longStore(w, r)
 	if !ok {
@@ -246,11 +291,14 @@ func (s *Server) handleLongEvent(w http.ResponseWriter, r *http.Request) {
 	case "mark": // a mark set afterwards over chosen sentences
 		e.Of = ""
 		e.At = e.To
+	case "header": // a header placed afterwards, before the sentence starting at From
+		e.Of, e.Title = "", strings.TrimSpace(e.Title)
+		e.At, e.To = e.From, e.From
 	default:
 		s.longErr(w, http.StatusBadRequest, errBadEvent)
 		return
 	}
-	if (e.Type == "range" || e.Type == "mark") && (e.From < 0 || e.From > e.To) {
+	if (e.Type == "range" || e.Type == "mark" || e.Type == "header") && (e.From < 0 || e.From > e.To) {
 		s.longErr(w, http.StatusBadRequest, errBadEvent)
 		return
 	}
@@ -260,6 +308,9 @@ func (s *Server) handleLongEvent(w http.ResponseWriter, r *http.Request) {
 		s.longErr(w, http.StatusInternalServerError, err)
 		return
 	}
+	if e.Type == "header" && e.Title == "" {
+		s.d.ProposeLongTitles(id)
+	}
 	s.d.Announce(daemon.Event{Type: "long_doc", Session: id})
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "event": e})
 }
@@ -267,7 +318,7 @@ func (s *Server) handleLongEvent(w http.ResponseWriter, r *http.Request) {
 type badEvent struct{}
 
 func (badEvent) Error() string {
-	return "event must be title, note, delete or range (with of), or mark (with from ≤ to)"
+	return "event must be title, note, delete or range (with of), or mark or header (with from ≤ to)"
 }
 
 var errBadEvent = badEvent{}

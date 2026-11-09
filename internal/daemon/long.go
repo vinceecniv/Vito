@@ -346,6 +346,39 @@ func (d *Daemon) RestoreLong(id string) error {
 	return nil
 }
 
+// ProposeLongTitles has the cleanup model propose titles for headers that
+// have none — one placed in a finished recording, say.
+func (d *Daemon) ProposeLongTitles(id string) {
+	if d.long != nil && d.longCleanSettings().On {
+		d.long.cleaner.Finished(id)
+	}
+}
+
+// SetLongProfile picks the cleanup rule set for a session's blocks from now
+// on ("" is Vito's own rules for recordings).
+func (d *Daemon) SetLongProfile(id, profile string) error {
+	if d.long == nil {
+		return ErrNoLong
+	}
+	if profile != "" {
+		found := false
+		for _, p := range d.Config().Cleanup.Prompts {
+			found = found || p.ID == profile
+		}
+		for _, b := range cleanup.Builtins() {
+			found = found || b.ID == profile
+		}
+		if !found {
+			return fmt.Errorf("no such cleanup profile")
+		}
+	}
+	_, err := d.long.store.UpdateMeta(id, func(m *longrec.Meta) { m.Profile = profile })
+	if err == nil {
+		d.emit(Event{Type: "long_doc", Session: id})
+	}
+	return err
+}
+
 // RecleanLong cleans a whole session again.
 func (d *Daemon) RecleanLong(id string) error {
 	if d.long == nil {

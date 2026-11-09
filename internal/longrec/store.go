@@ -43,8 +43,11 @@ type Meta struct {
 	Words    int       `json:"words,omitempty"`
 	// Tokens the cleanup model reported for this session (blocks and titles),
 	// for its cost.
-	CleanIn  int64 `json:"clean_in,omitempty"`
-	CleanOut int64 `json:"clean_out,omitempty"`
+	// Profile is the user's cleanup rule set the blocks are cleaned with
+	// (a config.Prompt id); "" is Vito's own rules for recordings.
+	Profile  string `json:"profile,omitempty"`
+	CleanIn  int64  `json:"clean_in,omitempty"`
+	CleanOut int64  `json:"clean_out,omitempty"`
 }
 
 // Block is one line of blocks.jsonl: a piece of the recording between two
@@ -85,6 +88,9 @@ type Event struct {
 type Store struct {
 	dir string
 	mu  sync.Mutex // serialises appends and meta writes
+	// metaMu makes UpdateMeta's read-change-write one step: the recorder and
+	// the cleaner both change a running session's meta.
+	metaMu sync.Mutex
 }
 
 // NewStore opens <UserConfigDir>/vito/sessions, or dir when given (tests).
@@ -164,6 +170,8 @@ func (s *Store) Meta(id string) (Meta, error) {
 
 // UpdateMeta changes a session's session.json.
 func (s *Store) UpdateMeta(id string, change func(*Meta)) (Meta, error) {
+	s.metaMu.Lock()
+	defer s.metaMu.Unlock()
 	m, err := s.Meta(id)
 	if err != nil {
 		return m, err

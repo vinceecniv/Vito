@@ -58,6 +58,10 @@ type header struct {
 	id, title string
 	auto      bool
 	at        float64
+	// before: the header goes before the first sentence starting at or after
+	// it — a second before the key was pressed (speech runs ahead of the
+	// finger), or exactly the sentence it was placed at afterwards.
+	before float64
 }
 
 // Doc builds the document: cleaned text (or raw when raw is set), headers and
@@ -99,7 +103,10 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 			if deleted[e.ID] {
 				continue
 			}
-			h := &header{id: e.ID, title: e.Title, at: e.At}
+			h := &header{id: e.ID, title: e.Title, at: e.At, before: e.At - 1}
+			if e.From > 0 || e.To > 0 { // placed at a sentence (From = its start)
+				h.before = e.From - 0.001
+			}
 			typed[e.ID] = e.Title != ""
 			heads = append(heads, h)
 			byID[e.ID] = h
@@ -136,7 +143,7 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 			}
 		}
 	}
-	sort.SliceStable(heads, func(i, j int) bool { return heads[i].at < heads[j].at })
+	sort.SliceStable(heads, func(i, j int) bool { return heads[i].before < heads[j].before })
 
 	// Sentences with times, paragraph by paragraph.
 	var paras []para
@@ -158,7 +165,7 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 	// it, and opens a new paragraph.
 	hi := 0
 	flushHeads := func(before float64) {
-		for hi < len(heads) && heads[hi].at <= before+1 {
+		for hi < len(heads) && heads[hi].before <= before {
 			h := heads[hi]
 			d.Items = append(d.Items, Item{Kind: "header", ID: h.id, Title: h.title, Auto: h.auto, At: h.at})
 			hi++
@@ -167,7 +174,7 @@ func (s *Store) Doc(id string, raw bool) (Doc, error) {
 	for _, p := range paras {
 		cur := Item{Kind: "para"}
 		for _, s := range p.sents {
-			if hi < len(heads) && heads[hi].at <= s.Start+1 {
+			if hi < len(heads) && heads[hi].before <= s.Start {
 				if len(cur.Sentences) > 0 {
 					d.Items = append(d.Items, cur)
 					cur = Item{Kind: "para"}

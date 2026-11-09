@@ -35,6 +35,34 @@ const blockRules = `You clean up one block of a long, continuous speech transcri
 - Apply the corrections list (misheard term -> intended term) strictly wherever a misheard term appears.
 - Keep the language of the transcript; do not translate.`
 
+// blockFrame goes with a user's own rule set: what any block of a long
+// recording needs, whatever the style asked for.
+const blockFrame = `
+
+This text is one block of a long, continuous recording (a lecture, a meeting or a long dictation), cleaned block by block:
+- The block may begin or end mid-sentence: keep its first and last words as they are and do not complete or close a sentence that continues in the next block.
+- Keep every fact, number, name and statement. Never summarise, answer or leave anything out.
+- Keep the language of the transcript; do not translate.`
+
+// rulesFor is the rules a session's blocks are cleaned with: its chosen rule
+// set with the block frame, or Vito's rules for recordings (also when the
+// chosen set has since been deleted).
+func (set CleanSettings) rulesFor(profile string) string {
+	if profile != "" {
+		for _, p := range set.Cleanup.Prompts {
+			if p.ID == profile && strings.TrimSpace(p.Rules) != "" {
+				return strings.TrimSpace(p.Rules) + blockFrame
+			}
+		}
+		for _, b := range cleanup.Builtins() {
+			if b.ID == profile {
+				return strings.TrimSpace(b.Rules) + blockFrame
+			}
+		}
+	}
+	return blockRules
+}
+
 const titleInstruction = "Give this passage a short heading of two to six words, in the passage's own language, the way a heading in meeting notes or lecture notes would read. Output only the heading: no quotes, no full stop."
 
 type job struct {
@@ -141,7 +169,8 @@ func (c *Cleaner) cleanBlock(j job, set CleanSettings) bool {
 	if blk == nil || strings.TrimSpace(blk.Text) == "" {
 		return false
 	}
-	rules := blockRules
+	m, _ := c.store.Meta(j.id)
+	rules := set.rulesFor(m.Profile)
 	if prev != "" {
 		rules += "\n\nFor context only — the end of the previous block, already cleaned. Never repeat or output it:\n«" + tail(prev, 500) + "»"
 	}
