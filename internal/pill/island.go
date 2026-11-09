@@ -60,11 +60,16 @@ const (
 	islandMargin           = 8
 	islandMarkY            = islandWinH - (surfaceH - pillY) - (marginBottom - islandMargin)
 	panelW                 = 272.0
-	panelBottom            = islandMarkY + 30
-	panelPad               = 18.0
-	micR                   = 20.0
-	ruleRow                = 28.0
-	maxRules               = 10
+	// The panel ends above the microphone, which stands free under it, on
+	// the transparent window: panelFoot is the panel's lower edge, panelBottom
+	// the island's, under the microphone, and footH the room between.
+	panelBottom = islandMarkY + 30
+	panelFoot   = islandMarkY - micR - 10
+	footH       = panelBottom - panelFoot
+	panelPad    = 18.0
+	micR        = 20.0
+	ruleRow     = 28.0
+	maxRules    = 10
 
 	islandDwell = 400 * time.Millisecond // the pointer on the pill this long opens it
 	islandGrace = 350 * time.Millisecond // off the island this long closes it
@@ -91,7 +96,7 @@ const (
 
 	// embedLiveUp is how far over the microphone the live words stand in the
 	// pinned island: where the last dictation is, which makes way for them.
-	embedLiveUp = 84
+	embedLiveUp = 90
 )
 
 type view int
@@ -163,14 +168,14 @@ type islandState struct {
 func (st *islandState) height(v view) float64 {
 	switch v {
 	case viewSettings:
-		return 262
+		return 262 - footH
 	case viewRules:
-		return 50 + ruleRow*float64(min(len(st.rules), maxRules)) + 64
+		return 50 + ruleRow*float64(min(len(st.rules), maxRules)) + 64 - footH
 	}
-	return 214
+	return 214 - footH
 }
 
-func (st *islandState) top() float64 { return panelBottom - st.ph }
+func (st *islandState) top() float64 { return panelFoot - st.ph }
 
 func (st *islandState) activeName() string {
 	for _, r := range st.rules {
@@ -282,7 +287,7 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 	e := easeOut(st.open)
 	cx := float64(w) / 2
 	pw, ph := mix(52, panelW, e), mix(20, st.ph, e)
-	bottom := mix(islandMarkY+10, panelBottom, e)
+	bottom := mix(islandMarkY+10, panelFoot, e)
 	pcy := bottom - ph/2
 	r := mix(10, 22, e)
 	shadowR(buf, w, h, cx, (pcy+2)*s, pw*s/2, ph*s/2, r*s, 14*s, th.shadow*1.3*clamp(st.open*2))
@@ -440,7 +445,7 @@ func (ip *islandPainter) tooltip(buf []byte, th theme, st islandState, at rect, 
 	bh := 8 + 16*float64(len(lines))
 	x := min(max(at.x+at.w/2-bw/2, left+8), left+panelW-8-bw)
 	y := at.y + at.h + 6
-	if y+bh > panelBottom-4 {
+	if y+bh > panelFoot-4 {
 		y = at.y - 6 - bh
 	}
 	bg, fg := inkFor(st.dark), th.body
@@ -1051,7 +1056,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	// top of the screen, which the window itself may not cross.
 	var shift int
 	region := func(height float64) [4]int {
-		return [4]int{int((islandWinW - panelW) / 2), int(panelBottom-height) - shift, int(panelW), int(height + 2)}
+		return [4]int{int((islandWinW - panelW) / 2), int(panelFoot-height) - shift, int(panelW), int(height + footH + 2)}
 	}
 	// foldRegion: the folded island's resting pill, where its foot is.
 	foldRegion := func() [4]int {
@@ -1101,7 +1106,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		offX = min(max(offX, -maxX), maxX)
 		// The panel as tall as it is now may reach the top edge; a taller
 		// view moves it down again (goTo).
-		offUp = min(offUp, max(0, sh-islandMargin-int(islandWinH-panelBottom)-int(st.height(st.view))-panelGap))
+		offUp = min(offUp, max(0, sh-islandMargin-int(islandWinH-panelBottom)-int(st.height(st.view)+footH)-panelGap))
 	}
 	// place puts a pinned window where the panel's foot is dragged to: the
 	// window as close over the panel as the screen lets it, and the picture
@@ -1112,10 +1117,10 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			return
 		}
 		foot := sh - islandMargin - int(islandWinH-panelBottom) - offUp
-		top := foot - int(math.Round(st.ph))
+		top := foot - int(math.Round(st.ph+footH))
 		win := min(max(top-panelGap, 0), sh-islandWinH)
 		mv.setPlace(sw/2-islandWinW/2+offX, win, sh)
-		if now := int(math.Round(panelBottom-st.ph)) - (top - win); now != shift {
+		if now := int(math.Round(st.top())) - (top - win); now != shift {
 			shift = now
 			w.setInput(region(max(st.ph, st.height(st.view))))
 		}
