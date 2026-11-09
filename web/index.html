@@ -1764,6 +1764,13 @@
   .lr-cols { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; }
   .lr-text { flex:999 1 520px; min-width:0; }
   .lr-side { flex:1 1 250px; max-width:330px; display:flex; flex-direction:column; gap:16px; }
+  .lr-textwrap { flex:999 1 520px; min-width:0; position:relative; }
+  .lr-tolive { position:absolute; left:50%; bottom:16px; transform:translateX(-50%); display:inline-flex; align-items:center; gap:7px;
+    padding:9px 16px 9px 13px; border-radius:999px; border:none; background:var(--accent); color:#fff; font:inherit; font-size:13px; font-weight:600;
+    box-shadow:0 8px 24px rgba(0,0,0,.25); cursor:var(--cur-hand); animation:lrUp .25s ease-out; }
+  .lr-tolive svg { width:15px; height:15px; }
+  .lr-tolive[hidden] { display:none; }
+  @keyframes lrUp { from { opacity:0; transform:translate(-50%, 8px); } to { opacity:1; transform:translate(-50%, 0); } }
   .lr-live .lr-text { font-size:19px; line-height:1.6; min-height:240px; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; }
   .lr-doc .lr-text { font-size:15.5px; line-height:1.65; }
   .lr-h, .card > h2.lr-h { font-size:17px; font-weight:600; color:var(--accent); margin:22px 0 8px; padding:0; border:none; letter-spacing:0; text-transform:none; display:flex; align-items:center; gap:8px; }
@@ -2618,7 +2625,10 @@
         </div>
         <div class="banner warn lr-pausenote"><span class="grow"><b>Paused — nothing is being recorded.</b> Don't forget to resume.</span><button class="btn primary small" id="lr-resume2">Resume</button></div>
         <div class="lr-cols">
-          <div class="card lr-text" id="lr-live-text"></div>
+          <div class="lr-textwrap">
+            <div class="card lr-text" id="lr-live-text"></div>
+            <button class="lr-tolive" id="lr-tolive" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>Back to live</button>
+          </div>
           <div class="lr-side">
             <div class="card lr-ctrl">
               <button class="btn ghost" id="lr-pause"></button>
@@ -2784,6 +2794,7 @@ const TR = { nl: {
   "Recording deleted":"Opname verwijderd",
   "Click again to stop":"Klik nogmaals om te stoppen",
   "All recordings":"Alle opnames",
+  "Back to live":"Terug naar live",
   "This recording":"Deze opname",
   "words per minute":"woorden per minuut",
   "sentences":"zinnen",
@@ -11407,12 +11418,22 @@ function lrFitLive(){
 function lrFollow(){
   const box = $("lr-live-text");
   if (LR.follow !== false) { box.scrollTop = box.scrollHeight; LR.autoTop = box.scrollTop; }
+  $("lr-tolive").hidden = LR.follow !== false;
 }
+$("lr-tolive").onclick = () => {
+  const box = $("lr-live-text");
+  LR.follow = true; $("lr-tolive").hidden = true;
+  box.scrollTo({ top: box.scrollHeight, behavior: "smooth" });
+  LR.autoTop = box.scrollHeight - box.clientHeight;
+  LR.smoothUntil = Date.now() + 900; // the smooth scroll's own steps are not you scrolling up
+};
 function lrAtEnd(box){ return box.scrollHeight - box.scrollTop - box.clientHeight < 48; }
 $("lr-live-text").addEventListener("scroll", () => {
   const box = $("lr-live-text");
+  if (Date.now() < (LR.smoothUntil || 0)) return;
   if (lrAtEnd(box)) LR.follow = true;                         // back at the newest text
   else if (box.scrollTop < (LR.autoTop ?? 0) - 2) LR.follow = false; // scrolled up to read
+  $("lr-tolive").hidden = LR.follow !== false;
 });
 window.addEventListener("resize", () => { lrFitLive(); lrFollow(); });
 function lrRenderLive(){
