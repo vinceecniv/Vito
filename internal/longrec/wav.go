@@ -153,3 +153,27 @@ func sliceWAV(src, dst string, from, to float64) error {
 	}
 	return out.Close()
 }
+
+// openWAV reopens a session's audio to append to it (a session continued
+// later). The header is repaired first, so the length is what the file holds.
+func openWAV(path string) (*wavFile, error) {
+	if _, err := repairWAV(path); err != nil {
+		return nil, err
+	}
+	f, err := os.OpenFile(path, os.O_RDWR, 0)
+	if err != nil {
+		return nil, err
+	}
+	st, err := f.Stat()
+	if err != nil {
+		f.Close()
+		return nil, err
+	}
+	n := st.Size() - wavHeader
+	n -= n % (audio.CaptureChannels * audio.BytesPerSample)
+	if _, err := f.Seek(wavHeader+n, io.SeekStart); err != nil {
+		f.Close()
+		return nil, err
+	}
+	return &wavFile{f: f, n: n, patched: time.Now()}, nil
+}

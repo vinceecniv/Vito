@@ -228,3 +228,50 @@ func TestSentences(t *testing.T) {
 		t.Fatalf("got %q", got)
 	}
 }
+
+func TestContinueAppendsAndFillsTheGap(t *testing.T) {
+	store, _ := NewStore(t.TempDir())
+	file := &fakeFile{}
+	o := Options{Store: store, File: file, NewStream: func(on func(string)) stt.Streamer { return &fakeStream{on: on} }}
+	r, _ := Start(o, "")
+	for range 20 {
+		r.Write(chunk(true))
+	}
+	m, err := r.Stop()
+	if err != nil || m.State != StateDone {
+		t.Fatalf("stop: %v %+v", err, m)
+	}
+	// Continue a finished session: appended audio, the next block number.
+	r, err = Continue(o, m.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for range 10 {
+		r.Write(chunk(true))
+	}
+	m, _ = r.Stop()
+	blocks, _ := store.Blocks(m.ID)
+	if len(blocks) != 2 || blocks[1].Index != 1 || blocks[1].Start < 1.99 || m.Seconds < 2.99 {
+		t.Fatalf("after continue: %+v %+v", blocks, m)
+	}
+	if got := wavSeconds(store.AudioPath(m.ID)); got < 2.99 || got > 3.01 {
+		t.Fatalf("audio %.2f s, want 3", got)
+	}
+
+	// An interrupted session: the tail without a block is transcribed from the file.
+	r, _ = Continue(o, m.ID)
+	for range 10 {
+		r.Write(chunk(true))
+	}
+	r.Abort()
+	store.Recover()
+	r, err = Continue(o, m.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m, _ = r.Stop()
+	blocks, _ = store.Blocks(m.ID)
+	if len(blocks) < 3 || blocks[2].Text != "from the file." || file.calls != 1 {
+		t.Fatalf("gap: %+v calls %d", blocks, file.calls)
+	}
+}

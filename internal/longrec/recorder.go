@@ -112,6 +112,76 @@ func Start(o Options, title string) (*Recorder, error) {
 	return r, nil
 }
 
+// Continue records on in an existing session: the audio is appended to its
+// file and the blocks are numbered on. A session the daemon left unfinished
+// first gets its untranscribed tail transcribed from the file, beside the new
+// recording.
+func Continue(o Options, id string) (*Recorder, error) {
+	if o.Log == nil {
+		o.Log = slog.Default()
+	}
+	if o.FinishTimeout <= 0 {
+		o.FinishTimeout = 30 * time.Second
+	}
+	m, err := o.Store.Meta(id)
+	if err != nil {
+		return nil, err
+	}
+	if m.State != StateDone && m.State != StateInterrupted {
+		return nil, fmt.Errorf("session is %s", m.State)
+	}
+	blocks, err := o.Store.Blocks(id)
+	if err != nil {
+		return nil, err
+	}
+	w, err := openWAV(o.Store.AudioPath(id))
+	if err != nil {
+		return nil, err
+	}
+	next, covered := 0, 0.0
+	for _, b := range blocks {
+		next = max(next, b.Index+1)
+		covered = max(covered, b.End)
+	}
+	r := &Recorder{o: o, meta: m, wav: w, pending: map[int]*liveBlock{}, next: next, blocks: len(blocks)}
+	at := w.seconds()
+	r.mu.Lock()
+	if at-covered > 0.5 { // the tail an interrupted session never transcribed
+		gap := &liveBlock{index: r.next, start: covered, stream: noStream{}}
+		r.next++
+		r.pending[gap.index] = gap
+		r.wg.Add(1)
+		go r.finish(gap, at)
+	}
+	r.openBlock(at)
+	r.mu.Unlock()
+	o.Store.AddEvent(id, Event{Type: "resume", At: at})
+	r.meta, err = o.Store.UpdateMeta(id, func(m *Meta) {
+		m.State = StateRecording
+		m.Seconds = at
+		if o.Provider != "" {
+			m.Provider = o.Provider
+		}
+	})
+	if err != nil {
+		r.Abort()
+		return nil, err
+	}
+	r.update()
+	return r, nil
+}
+
+// noStream stands in for a live session that never was: Finish fails, so
+// finish transcribes the block from the file.
+type noStream struct{}
+
+func (noStream) Send([]byte) {}
+func (noStream) Finish(context.Context) (string, error) {
+	return "", fmt.Errorf("not heard live")
+}
+func (noStream) Language() string { return "" }
+func (noStream) Abort()           {}
+
 // ID is the session's id.
 func (r *Recorder) ID() string { return r.meta.ID }
 

@@ -22,11 +22,12 @@ type long struct {
 	store   *longrec.Store
 	cleaner *longrec.Cleaner
 
-	mu      sync.Mutex
-	rec     *longrec.Recorder
-	capture *audio.Capture
-	chunks  chan []byte
-	feeding sync.WaitGroup
+	mu        sync.Mutex
+	rec       *longrec.Recorder
+	capture   *audio.Capture
+	chunks    chan []byte
+	feeding   sync.WaitGroup
+	restoring map[string]bool // sessions RestoreLong is working on
 }
 
 // ErrNoLong: the sessions folder could not be opened at start-up.
@@ -77,6 +78,17 @@ func (f fileTranscriber) TranscribeFile(ctx context.Context, path string) (strin
 
 // StartLong begins a long recording.
 func (d *Daemon) StartLong(title string) (longrec.Status, error) {
+	return d.startLong(func(o longrec.Options) (*longrec.Recorder, error) { return longrec.Start(o, title) }, true, func() bool { return false })
+}
+
+// ContinueLong records on in an existing session.
+func (d *Daemon) ContinueLong(id string) (longrec.Status, error) {
+	return d.startLong(func(o longrec.Options) (*longrec.Recorder, error) { return longrec.Continue(o, id) }, false, func() bool { return d.long.restoring[id] })
+}
+
+// startLong opens the microphone for a session that open starts or continues.
+// fresh: the session is new, so a microphone that will not open deletes it.
+func (d *Daemon) startLong(open func(longrec.Options) (*longrec.Recorder, error), fresh bool, busy func() bool) (longrec.Status, error) {
 	l := d.long
 	if l == nil {
 		return longrec.Status{}, ErrNoLong
@@ -85,6 +97,9 @@ func (d *Daemon) StartLong(title string) (longrec.Status, error) {
 	defer l.mu.Unlock()
 	if l.rec != nil {
 		return l.rec.Status(), fmt.Errorf("a long recording is already running")
+	}
+	if busy() {
+		return longrec.Status{}, fmt.Errorf("this recording is being restored")
 	}
 	cfg := d.Config()
 	if err := uploadReady(cfg.STT); err != nil {
@@ -95,7 +110,7 @@ func (d *Daemon) StartLong(title string) (longrec.Status, error) {
 		return longrec.Status{}, err
 	}
 	d.stopPlayback()
-	rec, err := longrec.Start(longrec.Options{
+	rec, err := open(longrec.Options{
 		Store: l.store,
 		NewStream: func(onPartial func(string)) stt.Streamer {
 			return stt.NewStream(sttCfg, d.log, onPartial)
@@ -114,7 +129,7 @@ func (d *Daemon) StartLong(title string) (longrec.Status, error) {
 				l.cleaner.Enqueue(id, b.Index)
 			}
 		},
-	}, title)
+	})
 	if err != nil {
 		return longrec.Status{}, err
 	}
@@ -137,7 +152,11 @@ func (d *Daemon) StartLong(title string) (longrec.Status, error) {
 		close(chunks)
 		l.feeding.Wait()
 		rec.Stop()
-		l.store.Delete(rec.ID())
+		if fresh {
+			l.store.Delete(rec.ID())
+		} else {
+			l.cleaner.Finished(rec.ID())
+		}
 		return longrec.Status{}, fmt.Errorf("open microphone: %w", err)
 	}
 	l.rec, l.capture = rec, capture
@@ -267,7 +286,19 @@ func (d *Daemon) RestoreLong(id string) error {
 	if err != nil {
 		return err
 	}
+	l := d.long
+	l.mu.Lock()
+	if l.restoring == nil {
+		l.restoring = map[string]bool{}
+	}
+	if l.restoring[id] || (l.rec != nil && l.rec.ID() == id) {
+		l.mu.Unlock()
+		return fmt.Errorf("this recording is busy")
+	}
+	l.restoring[id] = true
+	l.mu.Unlock()
 	go func() {
+		defer func() { l.mu.Lock(); delete(l.restoring, id); l.mu.Unlock() }()
 		_, err := longrec.Restore(d.long.store, id, fileTranscriber{sttCfg}, func(longrec.Block) {
 			d.emit(Event{Type: "long_doc", Session: id})
 		})

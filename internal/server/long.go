@@ -23,6 +23,7 @@ func (s *Server) longRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("DELETE /api/long/{id}", s.auth(s.handleLongDelete))
 	mux.HandleFunc("PUT /api/long/{id}/title", s.auth(s.handleLongTitle))
 	mux.HandleFunc("POST /api/long/{id}/event", s.auth(s.handleLongEvent))
+	mux.HandleFunc("POST /api/long/{id}/continue", s.auth(s.handleLongContinue))
 	mux.HandleFunc("POST /api/long/{id}/restore", s.auth(s.longIDAction(s.d.RestoreLong)))
 	mux.HandleFunc("POST /api/long/{id}/reclean", s.auth(s.longIDAction(s.d.RecleanLong)))
 	mux.HandleFunc("GET /api/long/{id}/export", s.auth(s.handleLongExport))
@@ -56,6 +57,20 @@ func (s *Server) handleLongStart(w http.ResponseWriter, r *http.Request) {
 	}
 	_ = json.NewDecoder(r.Body).Decode(&body)
 	st, err := s.d.StartLong(body.Title)
+	if err != nil {
+		s.longErr(w, http.StatusConflict, err)
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "running": st})
+}
+
+func (s *Server) handleLongContinue(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	if !longrec.ValidID(id) {
+		s.longErr(w, http.StatusBadRequest, errBadID)
+		return
+	}
+	st, err := s.d.ContinueLong(id)
 	if err != nil {
 		s.longErr(w, http.StatusConflict, err)
 		return

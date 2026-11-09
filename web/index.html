@@ -1810,8 +1810,11 @@
   .lr-kv b { font-weight:500; font-variant-numeric:tabular-nums; }
   .lr-small { font-size:12px; color:var(--text3); line-height:1.5; margin-top:8px; }
   .lr-docbar { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:16px; }
-  .lr-back { display:inline-flex; align-items:center; gap:6px; background:none; border:none; font:inherit; font-size:13px; color:var(--text2); cursor:var(--cur-hand); min-height:44px; padding:0 4px; }
-  .lr-back svg { width:16px; height:16px; }
+  .lr-docnav { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:18px; padding-bottom:16px; border-bottom:1px solid var(--card-border); }
+  .lr-docnav .grow { flex:1; }
+  .lr-back { display:inline-flex; align-items:center; gap:8px; min-height:42px; padding:0 16px 0 12px; font-weight:600; }
+  .lr-back svg { width:17px; height:17px; transition:transform .15s; }
+  .lr-back:hover svg { transform:translateX(-3px); }
   .lr-dhead { flex:1 1 260px; min-width:0; display:flex; flex-direction:column; } .lr-dhead .lr-titlein { flex:none; }
   .lr-meta { font-size:12.5px; color:var(--text3); }
   .lr-seg { display:inline-flex; padding:3px; border-radius:11px; background:var(--track); }
@@ -2599,12 +2602,17 @@
         </div>
       </div>
       <div id="lr-doc-view" class="lr-doc" hidden>
+        <div class="lr-docnav">
+          <button class="btn ghost lr-back" id="lr-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>All recordings</button>
+          <span class="grow"></span>
+          <button class="btn danger small" id="lr-delete">Delete</button>
+          <button class="btn primary small lr-new" id="lr-continue" data-tip-text="Record on in this recording; the new text follows the old" hidden><span class="lr-dot"></span>Continue recording</button>
+        </div>
         <div class="lr-docbar">
-          <button class="lr-back" id="lr-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg>Recordings</button>
           <div class="lr-dhead"><input class="lr-titlein" id="lr-dtitle" placeholder="Untitled recording" aria-label="Title of the recording"><span class="lr-meta" id="lr-dmeta"></span></div>
           <div class="lr-seg" role="group" aria-label="View"><button type="button" data-v="clean" class="on">Cleaned</button><button type="button" data-v="raw">Raw</button></div>
           <button class="btn ghost small" id="lr-reclean">Clean again</button>
-          <div class="lr-exp"><button class="btn primary small" id="lr-export">Export</button>
+          <div class="lr-exp"><button class="btn ghost small" id="lr-export">Export</button>
             <div class="lr-menu" id="lr-export-menu" hidden>
               <button type="button" data-f="md">Markdown (.md)</button>
               <button type="button" data-f="txt">Text (.txt)</button>
@@ -2612,7 +2620,6 @@
               <button type="button" data-f="vtt">Subtitles (.vtt)</button>
               <button type="button" data-f="audio">Audio (.wav)</button>
             </div></div>
-          <button class="btn danger small" id="lr-delete">Delete</button>
         </div>
         <div id="lr-dnote"></div>
         <div class="lr-cols">
@@ -2716,6 +2723,9 @@ const TR = { nl: {
   "The recording, its audio and its text are permanently deleted.":"De opname, de audio en de tekst worden definitief verwijderd.",
   "Recording deleted":"Opname verwijderd",
   "Click again to stop":"Klik nogmaals om te stoppen",
+  "All recordings":"Alle opnames",
+  "Continue recording":"Verder opnemen",
+  "Record on in this recording; the new text follows the old":"Neem verder op in deze opname; de nieuwe tekst komt achter de oude",
   "Paused — nothing is being recorded.":"Gepauzeerd — er wordt niets opgenomen.",
   "Don't forget to resume.":"Vergeet niet te hervatten.",
   "recording now":"neemt op",
@@ -11187,10 +11197,12 @@ function lrRenderRecover(){
       <div class="grow"><b>${escapeHtml(t("A recording was not finished:"))} ${escapeHtml(lrTitle(s))}</b><br>
         <span style="color:var(--text2)">${lrClock(s.seconds)} ${escapeHtml(t("of audio is saved. Restoring transcribes what had not been transcribed yet."))}</span></div>
       <button class="btn ghost small" data-discard>${escapeHtml(t("Throw away"))}</button>
+      <button class="btn ghost small" data-continue>${escapeHtml(t("Continue recording"))}</button>
       <button class="btn primary small" data-restore>${escapeHtml(t("Restore"))}</button>
     </div>`).join("");
   $("lr-recover").querySelectorAll(".banner").forEach(b => {
     const id = b.dataset.id;
+    b.querySelector("[data-continue]").onclick = () => { b.remove(); lrContinue(id); };
     b.querySelector("[data-restore]").onclick = async () => {
       try { await api(`/api/long/${id}/restore`, { method: "POST" }); b.remove(); toast(t("Restoring the recording…"), "ok"); lrOpenDoc(id); loadLong(); }
       catch (e) { toast(e.message, "err"); }
@@ -11351,6 +11363,7 @@ async function lrFetchDoc(){
   LR.doc = d;
   const m = d.meta;
   if (document.activeElement !== $("lr-dtitle")) $("lr-dtitle").value = m.title || "";
+  $("lr-continue").hidden = !!LR.running || !(m.state === "done" || m.state === "interrupted");
   $("lr-dtitle").placeholder = lrTitle(Object.assign({}, m, { title: "" }));
   const words = (d.items || []).reduce((n, it) => n + (it.sentences || []).reduce((k, s) => k + s.text.split(/\s+/).filter(Boolean).length, 0), 0);
   $("lr-dmeta").textContent = [lrWhen(m.started), lrClock(m.seconds), words ? words.toLocaleString() + " " + t("words") : "", m.provider || ""].filter(Boolean).join(" · ");
@@ -11415,6 +11428,15 @@ function lrJump(at){
   best.scrollIntoView({ behavior: "smooth", block: "center" });
   best.classList.remove("lr-flash"); void best.offsetWidth; best.classList.add("lr-flash");
 }
+async function lrContinue(id){
+  try {
+    const r = await api(`/api/long/${id}/continue`, { method: "POST" });
+    LR.docID = ""; LR.running = r.running; LR.liveDoc = null;
+    delete $("lr-live-text").dataset.built;
+    lrShow("live"); $("lr-title").value = r.running.title || ""; lrRenderLive(); lrFetchLiveDoc(); loadLong();
+  } catch (e) { toast(e.message, "err"); }
+}
+$("lr-continue").onclick = () => { if (LR.docID) lrContinue(LR.docID); };
 $("lr-back").onclick = () => { LR.docID = ""; lrShow(LR.running ? "live" : "list"); loadLong(); };
 lrAutoTitle($("lr-dtitle"), () => LR.docID, 0);
 $("lr-doc-view").querySelectorAll(".lr-seg button").forEach(b => b.onclick = () => {
