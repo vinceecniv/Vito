@@ -91,7 +91,7 @@ const (
 
 	// embedLiveUp is how far over the microphone the live words stand in the
 	// pinned island: where the last dictation is, which makes way for them.
-	embedLiveUp = 60
+	embedLiveUp = 84
 )
 
 type view int
@@ -560,21 +560,30 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		}
 	}
 	fill(buf, w, h, lastBox, 12, boxTint, a)
-	if st.copied {
-		ip.line(buf, labelFace, ip.t("Copied"), lastBox.x+12, lastBox.y+20, th.to, a)
-	} else {
-		ip.line(buf, labelFace, ip.t("Last dictation"), lastBox.x+12, lastBox.y+20, muted, a)
+	// No label: what the box holds speaks for itself. Up to three lines,
+	// the last one shortened, standing in the middle of the box.
+	last, c := strings.Join(strings.Fields(st.last), " "), ink
+	switch {
+	case st.copied:
+		last, c = ip.t("Copied"), th.to
+	case last == "":
+		last, c = ip.t("Nothing dictated yet"), muted
 	}
-	last := st.last
-	if last == "" {
-		last = ip.t("Nothing dictated yet")
-	}
-	last = strings.Join(strings.Fields(last), " ")
 	room := fixed.I(int((lastBox.w - 12 - 46) * s))
-	first, rest := wrap(bodyFace, last, room)
-	ip.line(buf, bodyFace, first, lastBox.x+12, lastBox.y+38, ink, a)
-	if rest != "" {
-		ip.line(buf, bodyFace, fit(bodyFace, rest, room), lastBox.x+12, lastBox.y+54, ink, a)
+	var lines []string
+	for rest := last; rest != "" && len(lines) < 3; {
+		var line string
+		if len(lines) == 2 {
+			line, rest = fit(bodyFace, rest, room), ""
+		} else {
+			line, rest = wrap(bodyFace, rest, room)
+		}
+		lines = append(lines, line)
+	}
+	const lastLine = 16.0
+	y := lastBox.y + (lastBox.h-float64(len(lines))*lastLine)/2 + 12
+	for i, l := range lines {
+		ip.line(buf, bodyFace, l, lastBox.x+12, y+float64(i)*lastLine, c, a)
 	}
 	if st.last != "" {
 		btn := rect{lastBox.x + lastBox.w - 40, lastBox.y + lastBox.h/2 - 14, 28, 28}

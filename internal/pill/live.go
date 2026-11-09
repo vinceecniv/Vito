@@ -123,26 +123,29 @@ func spring(x, v *float64, to float64) {
 	}
 }
 
-// drawBlock lays the words out as lines room wide and keeps the last two;
-// when a third starts, the first goes and the others rise into place.
+// drawBlock lays the words out as lines room wide and keeps the last
+// blockLines; when one more starts, the first goes and the others rise into
+// place.
 func (t *ticker) drawBlock(f *Frame, s string) {
 	words := strings.Fields(s)
 	if t.drop >= len(words) { // a new start
 		t.drop, f.LiveOff, t.offV, f.Live0 = 0, 0, 0, nil
 	}
 	lines := wrapLines(bodyFace, words[t.drop:], fixed.I(int(t.room*scale)))
-	for len(lines) > 2 {
+	for len(lines) > blockLines {
 		t.drop += len(strings.Fields(lines[0]))
 		f.Live0, _ = textMask(bodyFace, lines[0])
 		f.LiveOff += blockLine * scale
 		lines = lines[1:]
 	}
-	f.Live, f.Live2 = nil, nil
-	if len(lines) > 0 {
-		f.Live, _ = textMask(bodyFace, lines[0])
-	}
-	if len(lines) > 1 {
-		f.Live2, _ = textMask(bodyFace, lines[1])
+	f.Live, f.LiveMore = nil, nil
+	for i, l := range lines {
+		m, _ := textMask(bodyFace, l)
+		if i == 0 {
+			f.Live = m
+		} else {
+			f.LiveMore = append(f.LiveMore, m)
+		}
 	}
 }
 

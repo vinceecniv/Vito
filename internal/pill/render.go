@@ -52,11 +52,13 @@ type Frame struct {
 	// smaller, to fit the panel; zero means the pill's own placing.
 	LiveY   float64 // logical
 	MascotK float64
-	// LiveBlock: there the words are plain text in two lines, LiveW wide,
-	// Live the upper and Live2 the lower; Live0 is the line that just went,
-	// and LiveOff the device pixels the lines still have to rise.
-	LiveBlock    bool
-	Live0, Live2 *image.Alpha
+	// LiveBlock: there the words are plain text in blockLines lines, LiveW
+	// wide, Live the top one and LiveMore those under it; Live0 is the line
+	// that just went, and LiveOff the device pixels the lines still have to
+	// rise.
+	LiveBlock bool
+	Live0     *image.Alpha
+	LiveMore  []*image.Alpha
 
 	// The resting character (rest.go): no voice, a smile, eyes Blink open
 	// (0..1), and Pose, PoseT seconds in. ChinY places it, logical; zero is
@@ -83,8 +85,10 @@ type Frame struct {
 const (
 	liveRoom = 350 // logical pixels of words at most; older ones scroll off
 	livePad  = 14.0
-	// blockLine is a line of the words in the pinned island, logical.
-	blockLine = 17.0
+	// blockLine is a line of the words in the pinned island, logical, and
+	// blockLines how many show there.
+	blockLine  = 17.0
+	blockLines = 4
 )
 
 // drawLive lays the strip of words over the pill, or for the character over
@@ -122,15 +126,15 @@ func drawLive(buf []byte, w, h int, f Frame) {
 	faded(buf, w, h, f.Live, x, int(baseline)-m.Ascent.Ceil()-1, inkFor(f.Dark), a, left, right, int(30*s), clamp(f.LiveOff/(30*s)))
 }
 
-// drawBlock sets the words as two lines of text in the panel, the upper line
-// centred on LiveY's line above, rising as a new line starts.
+// drawBlock sets the words as blockLines lines of text in the panel, the top
+// one ending on LiveY, rising as a new line starts.
 func drawBlock(buf []byte, w, h int, f Frame, cx, cy, s, a float64) {
 	m := bodyFace.Metrics()
 	lh := blockLine * s
 	x := int(math.Round(cx - f.LiveW*s/2))
-	top, bottom := cy-lh-3*s, cy+lh+3*s // what shows: the two lines
+	top, bottom := cy-lh-3*s, cy+(blockLines-1)*lh+3*s // what shows: the lines
 	ink := inkFor(f.Dark)
-	for i, mask := range []*image.Alpha{f.Live0, f.Live, f.Live2} {
+	for i, mask := range append([]*image.Alpha{f.Live0, f.Live}, f.LiveMore...) {
 		if mask == nil {
 			continue
 		}

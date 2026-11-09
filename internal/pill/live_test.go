@@ -90,13 +90,13 @@ func dropped(s string, drop int) float64 {
 	return float64(all - rest)
 }
 
-func TestTickerBlockKeepsTwoLines(t *testing.T) {
+func TestTickerBlockKeepsItsLines(t *testing.T) {
 	if err := faces(); err != nil {
 		t.Skip(err)
 	}
 	var f Frame
 	tk := ticker{room: 120, block: true}
-	tk.set("een twee drie vier vijf zes zeven acht negen tien elf twaalf dertien veertien")
+	tk.set("een twee drie vier vijf zes zeven acht negen tien elf twaalf dertien veertien vijftien zestien zeventien achttien negentien twintig eenentwintig tweeëntwintig")
 	risen := false
 	for i := 0; i < 400; i++ {
 		tk.step(&f)
@@ -107,7 +107,7 @@ func TestTickerBlockKeepsTwoLines(t *testing.T) {
 	if tk.drop == 0 || !risen {
 		t.Fatalf("no line went: drop %d, rose %v", tk.drop, risen)
 	}
-	if f.Live == nil || f.Live2 == nil || f.LiveOff != 0 || f.Live0 != nil {
-		t.Fatalf("not settled on two lines: off %v", f.LiveOff)
+	if f.Live == nil || len(f.LiveMore) != blockLines-1 || f.LiveOff != 0 || f.Live0 != nil {
+		t.Fatalf("not settled on %d lines: %d more, off %v", blockLines, len(f.LiveMore), f.LiveOff)
 	}
 }
