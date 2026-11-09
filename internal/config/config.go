@@ -356,6 +356,9 @@ type Long struct {
 	// Folder holds each recording's files in a folder of its own ("" =
 	// Documents/Vito/<Recordings, in the interface's language>).
 	Folder string `json:"folder,omitempty"`
+	// KeepAudio is how long a finished recording keeps its audio: "" always,
+	// "30d" thirty days, "text" not at all (the text always stays).
+	KeepAudio string `json:"keep_audio,omitempty"`
 }
 
 // CleanEnabled reports whether long recordings are cleaned per block.

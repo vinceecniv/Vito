@@ -115,6 +115,7 @@ func (d *Daemon) longConfigChanged() {
 	if changed {
 		go d.writeAllLongFiles()
 	}
+	go d.pruneLongAudio() // a shorter keep applies at once
 }
 
 // OpenLongFolder writes a session's folder now and shows it in the file

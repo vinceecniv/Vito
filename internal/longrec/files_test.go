@@ -135,3 +135,38 @@ func TestWriteFilesAudio(t *testing.T) {
 		t.Fatalf("edited %v", st.Edited)
 	}
 }
+
+// Audio removed by the keep-audio setting takes Vito's copy along, never the
+// user's own file.
+func TestWriteFilesAudioRemoved(t *testing.T) {
+	store, _ := NewStore(t.TempDir())
+	root := t.TempDir()
+	id := "20261109-120000-cafe0005"
+	store.create(Meta{ID: id, State: StateDone, Title: "Les", Started: time.Date(2026, 11, 9, 9, 0, 0, 0, time.Local)})
+	os.WriteFile(store.mp3Path(id), []byte("one"), 0o644)
+	st, _ := store.WriteFiles(id, root, "with times")
+	dst := filepath.Join(st.Dir, "Les.mp3")
+	if err := store.RemoveAudio(id); err != nil || store.AudioBytes(id) != 0 {
+		t.Fatal("audio not removed", err)
+	}
+	st, _ = store.WriteFiles(id, root, "with times")
+	if exists(dst) || st.Audio != nil {
+		t.Fatal("Vito's copy stayed")
+	}
+	if !exists(filepath.Join(st.Dir, "Les.txt")) {
+		t.Fatal("the text went too")
+	}
+
+	// The user's own version of the file stays.
+	id2 := "20261109-130000-cafe0006"
+	store.create(Meta{ID: id2, State: StateDone, Title: "Twee", Started: time.Date(2026, 11, 9, 13, 0, 0, 0, time.Local)})
+	os.WriteFile(store.mp3Path(id2), []byte("one"), 0o644)
+	st, _ = store.WriteFiles(id2, root, "with times")
+	dst = filepath.Join(st.Dir, "Twee.mp3")
+	os.WriteFile(dst, []byte("user's own"), 0o644)
+	store.RemoveAudio(id2)
+	store.WriteFiles(id2, root, "with times")
+	if b, _ := os.ReadFile(dst); string(b) != "user's own" {
+		t.Fatal("the user's file was removed")
+	}
+}

@@ -1059,7 +1059,9 @@ func (s *Server) evaluateAchievements() (st achievements.Stats, earned map[strin
 				}
 				st.RecCount++
 				st.RecWords += int64(m.Words)
-				st.RecLongest = max(st.RecLongest, int64(m.Seconds))
+				if m.Source != "upload" { // "in one go" is recorded, not handed over
+					st.RecLongest = max(st.RecLongest, int64(m.Seconds))
+				}
 			}
 		}
 	}
@@ -1105,7 +1107,7 @@ func (s *Server) recordAchievements(earned map[string]bool) {
 func (s *Server) watchAchievements() {
 	s.d.AddEventListener(func(e daemon.Event) {
 		// After a dictation, and when a long recording is finished.
-		if (e.Type == "final" || (e.Type == "long" && e.Long != nil && e.Long.State == "done")) && !s.d.Config().Demo {
+		if (e.Type == "final" || e.Type == "long_imported" || (e.Type == "long" && e.Long != nil && e.Long.State == "done")) && !s.d.Config().Demo {
 			go func() {
 				if _, _, _, _, err := s.evaluateAchievements(); err != nil {
 					s.log.Debug("achievements not checked", "err", err)

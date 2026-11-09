@@ -1782,6 +1782,10 @@
   .lr-chip.rec { background:var(--coral-soft); color:var(--coral-ink); }
   .lr-chip.warn { background:color-mix(in srgb, var(--amber-ink) 14%, transparent); color:var(--amber-ink); }
   .lr-chip.ok { background:var(--accent-soft); color:var(--accent); }
+  .lr-chip.busy { background:color-mix(in srgb, var(--violet) 14%, transparent); color:var(--violet); }
+  .lr-headact { display:flex; gap:8px; flex-wrap:wrap; }
+  .lr-ilabel { display:flex; flex-direction:column; gap:4px; margin-top:12px; font-size:12px; color:var(--text3); }
+  .lr-ilabel[hidden] { display:none; }
   .lr-empty { color:var(--text3); font-size:13.5px; text-align:center; padding:28px 0; }
   .lr-foot { color:var(--text3); font-size:12.5px; margin:12px 2px 0; }
   .lr-bar { display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-bottom:18px; }
@@ -2594,7 +2598,17 @@
           </div>
         </div>
         <div class="card" data-sec="output" hidden id="set-lrfolder">
-          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2 2 0 0 1 5 5.5h4l2 2.2h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10.5h18"/></svg><span>Recordings folder</span></h2>
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2 2 0 0 1 5 5.5h4l2 2.2h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10.5h18"/></svg><span>Recordings</span></h2>
+          <label class="tgl" style="margin-top:4px;"><input type="checkbox" id="lrs-clean"><span class="tr"></span> Clean up each block</label>
+          <p class="act-note" style="margin:4px 0 0;">The AI cleanup (Settings → Cleanup) tidies the text block by block while you record. Off: the raw transcript only.</p>
+          <div class="subhead" style="margin-top:16px;">Keep the audio</div>
+          <select id="lrs-keep" style="max-width:320px;">
+            <option value="">Always</option>
+            <option value="30d">30 days, then only the text</option>
+            <option value="text">Not at all: only the text</option>
+          </select>
+          <p class="act-note" style="margin:6px 0 0;">Without its audio a recording can no longer be played back or continued; its text and files stay. An unfinished recording keeps its audio until it is restored.</p>
+          <div class="subhead" style="margin-top:16px;">Folder</div>
           <p class="act-note" style="margin:2px 0 0;">Every recording gets a folder of its own here, with its text as Word, Markdown and plain text, subtitles and the audio as MP3 — kept up to date by Vito. A file you change there yourself is never overwritten.</p>
           <div class="sync-pickrow" style="margin-top:12px;">
             <input type="text" id="lrf-path" spellcheck="false">
@@ -2602,6 +2616,7 @@
             <button type="button" class="btn primary small" id="lrf-use" hidden>Use this folder</button>
           </div>
           <p class="act-note" id="lrf-note" style="margin:8px 0 0;"></p>
+          <div class="banner tip" style="margin-top:14px;"><span class="grow"><b>Recording other people?</b> Tell them first, and ask whether they agree — in a meeting or a lecture that is courtesy, and in many places the law.</span></div>
         </div>
         <div class="card" data-sec="linux" hidden>
           <h2><span class="tux-slot" aria-hidden="true"></span><span>Linux — setup &amp; tools</span></h2>
@@ -2730,7 +2745,7 @@
     <!-- RECORDINGS: long recordings (internal/longrec, docs/long-recordings.md) -->
     <section id="tab-long">
       <div class="page-head"><div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M14 10h3.5M14 14h3.5"/></svg></span><h1>Recordings</h1></div><div class="sub">Lectures, meetings and long sessions — nothing is lost, and the text gets structure.</div></div>
-        <div class="lr-headact helper-only"><button class="btn primary lr-new" id="lr-new"><span class="lr-dot"></span>New recording</button></div></div>
+        <div class="lr-headact helper-only"><button class="btn ghost lr-ib" id="lr-import" data-tip-text="Turn an audio file (a recorded lecture, meeting or voice memo) into a recording"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0 4 4m-4-4-4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg><span>Audio file</span></button><button class="btn primary lr-new" id="lr-new"><span class="lr-dot"></span>New recording</button></div></div>
       <!-- The browser version: what the app does here, and where to get it. -->
       <div class="banner tip app-more lr-webonly web-only">
         <span class="grow"><b>Recordings work in the installed Vito app.</b> Record a lecture, meeting or long session of an hour or more: Vito writes it out as you speak, cleans it up block by block, and you add headers and marks while you talk. The audio stays on your computer, so nothing is lost if something goes wrong.</span>
@@ -2953,6 +2968,32 @@ const TR = { nl: {
   "No recordings yet. Start one for a lecture, a meeting or a long dictation.":"Nog geen opnames. Start er een voor een college, een vergadering of een lang dictaat.",
   "Paused":"Gepauzeerd",
   "Upload":"Upload",
+  "Turn an audio file (a recorded lecture, meeting or voice memo) into a recording":"Maak van een audiobestand (een opgenomen college, vergadering of spraakmemo) een opname",
+  "Audio file":"Audiobestand",
+  "Audio file as a recording":"Audiobestand als opname",
+  "Vito transcribes the file block by block, cleans it up and keeps it with your recordings — with its own folder, Word file and MP3.":"Vito zet het bestand blok voor blok om in tekst, schoont het op en bewaart het bij je opnames — met een eigen map, Word-bestand en MP3.",
+  "Reading the audio…":"Audio inlezen…",
+  "Handing it to Vito…":"Overdragen aan Vito…",
+  "Transcribing the audio file…":"Audiobestand wordt omgezet…",
+  "This browser cannot read that file. Try another format, such as MP3 or WAV.":"Deze browser kan dat bestand niet lezen. Probeer een ander formaat, zoals MP3 of WAV.",
+  "Transcribing":"Omzetten",
+  "Cleaning up":"Opschonen",
+  "Text only":"Alleen tekst",
+  "The audio was removed by the setting under Settings → Recordings; the text stays.":"De audio is verwijderd door de instelling bij Instellingen → Opnames; de tekst blijft.",
+  "Clean up each block":"Elk blok opschonen",
+  "The AI cleanup (Settings → Cleanup) tidies the text block by block while you record. Off: the raw transcript only.":"De AI-opschoning (Instellingen → Opschonen) maakt de tekst blok voor blok netjes terwijl je opneemt. Uit: alleen de ruwe transcriptie.",
+  "Keep the audio":"Audio bewaren",
+  "Always":"Altijd",
+  "30 days, then only the text":"30 dagen, daarna alleen de tekst",
+  "Not at all: only the text":"Niet: alleen de tekst",
+  "Without its audio a recording can no longer be played back or continued; its text and files stay. An unfinished recording keeps its audio until it is restored.":"Zonder audio kun je een opname niet meer terugluisteren of verder opnemen; de tekst en de bestanden blijven. Een onafgemaakte opname houdt zijn audio tot hij is hersteld.",
+  "Folder":"Map",
+  "Recording other people?":"Neem je anderen op?",
+  "Tell them first, and ask whether they agree — in a meeting or a lecture that is courtesy, and in many places the law.":"Zeg het ze vooraf en vraag of ze akkoord zijn — in een vergadering of college is dat netjes, en op veel plaatsen de wet.",
+  "Remove audio?":"Audio verwijderen?",
+  "Remove audio":"Audio verwijderen",
+  "The audio of every finished recording is removed now, and of each new one once it is done. The text and the files in the folder stay.":"De audio van elke afgeronde opname wordt nu verwijderd, en van elke nieuwe zodra die klaar is. De tekst en de bestanden in de map blijven.",
+  "The audio of finished recordings older than 30 days is removed now, and later as each turns 30 days old. The text and the files in the folder stay.":"De audio van afgeronde opnames ouder dan 30 dagen wordt nu verwijderd, en later van elke opname zodra die 30 dagen oud is. De tekst en de bestanden in de map blijven.",
   "Title":"Titel",
   "Date":"Datum",
   "Length":"Duur",
@@ -9823,7 +9864,7 @@ let loadingSettings = false;
 // change in that page was then dropped without a word.
 async function loadSettings() {
   loadingSettings = true;
-  try { await fillSettings(); }
+  try { await fillSettings(); lrSettingsLoad(); }
   catch (err) {
     // Most often the daemon was just restarting: try once more shortly.
     if (!loadSettings.retry) loadSettings.retry = setTimeout(() => { loadSettings.retry = null; loadSettings().catch(() => {}); }, 1500);
@@ -10674,6 +10715,22 @@ $("lrf-pick").onclick = async () => {
   } catch (e) { toast(e.message, "err"); }
 };
 lrFolderLoad();
+// The other recording settings save at once.
+function lrSettingsLoad(){
+  const l = cfg.long || {};
+  $("lrs-clean").checked = l.clean !== false;
+  $("lrs-keep").value = l.keep_audio || "";
+}
+$("lrs-clean").onchange = () => saveConfig({ long: Object.assign(cfg.long || {}, { clean: $("lrs-clean").checked }) }, "Saved");
+$("lrs-keep").onchange = () => {
+  const v = $("lrs-keep").value, prev = (cfg.long || {}).keep_audio || "";
+  const apply = () => saveConfig({ long: Object.assign(cfg.long || {}, { keep_audio: v }) }, "Saved");
+  if (!v || v === prev) return apply();
+  modal(t("Remove audio?"), `<p>${escapeHtml(v === "text"
+    ? t("The audio of every finished recording is removed now, and of each new one once it is done. The text and the files in the folder stay.")
+    : t("The audio of finished recordings older than 30 days is removed now, and later as each turns 30 days old. The text and the files in the folder stay."))}</p>`,
+    () => { apply(); }, "Remove audio", true, () => { $("lrs-keep").value = prev; });
+};
 
 /* ---- backup & restore ---- */
 const BK_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z"/><path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>';
@@ -11580,6 +11637,7 @@ function lrShow(view){
   if (view === "live") { LR.follow = true; lrFitLive(); lrFollow(); lrRenderStats(); LR.statsT = setInterval(lrRenderStats, LR_STATS_MS); }
   $("lr-doc-view").hidden = view !== "doc";
   $("lr-new").hidden = view !== "list";
+  $("lr-import").hidden = view !== "list";
 }
 
 async function loadLong(){
@@ -11587,6 +11645,7 @@ async function loadLong(){
   try { r = await api("/api/long"); } catch (e) { $("lr-list").innerHTML = `<div class="lr-empty">${escapeHtml(e.message)}</div>`; return; }
   LR.sessions = r.sessions || [];
   LR.cost = r.cost || null;
+  LR.cleanOn = !!r.clean_on;
   LR.running = r.running || null;
   if (LR.running && LR.view !== "doc") { lrShow("live"); lrRenderLive(); lrFetchLiveDoc(); }
   else if (LR.view === "live" && !LR.running) lrShow("list");
@@ -11645,9 +11704,16 @@ function lrRenderList(){
     $("lr-list").innerHTML = `<div class="lr-empty">${escapeHtml(t("No recordings yet. Start one for a lecture, a meeting or a long dictation."))}</div>`;
     return;
   }
-  const chip = s => s.state === "recording" ? `<span class="lr-chip rec">${escapeHtml(t("Recording"))}</span>`
-    : s.state === "paused" ? `<span class="lr-chip warn">${escapeHtml(t("Paused"))}</span>`
-    : s.source === "upload" ? `<span class="lr-chip">${escapeHtml(t("Upload"))}</span>` : "";
+  const chip = s => {
+    const c = (cls, txt) => `<span class="lr-chip${cls ? " " + cls : ""}">${escapeHtml(txt)}</span>`;
+    let out = s.state === "recording" ? c("rec", t("Recording"))
+      : s.state === "paused" ? c("warn", t("Paused"))
+      : s.state === "importing" ? c("busy", `${t("Transcribing")} ${s.blocks || 0}/${s.planned || "…"}`)
+      : s.state === "done" && LR.cleanOn && s.blocks && s.cleaned < s.blocks ? c("busy", `${t("Cleaning up")} ${s.cleaned}/${s.blocks}`) : "";
+    if (s.source === "upload") out += c("", t("Upload"));
+    if (s.state === "done" && !s.audio_bytes) out += `<span class="lr-chip" data-tip-text="${escapeHtml(t("The audio was removed by the setting under Settings → Recordings; the text stays."))}">${escapeHtml(t("Text only"))}</span>`;
+    return out;
+  };
   $("lr-list").innerHTML = `<div class="lr-row lr-hdr"><span>${escapeHtml(t("Title"))}</span><span>${escapeHtml(t("Date"))}</span><span>${escapeHtml(t("Length"))}</span><span></span></div>` +
     all.map(s => `<div class="lr-row" data-id="${s.id}" tabindex="0" role="button">
       <span style="min-width:0; display:flex; flex-direction:column; gap:2px;"><span class="lr-t">${escapeHtml(lrTitle(s))}</span>
@@ -11707,6 +11773,83 @@ $("lr-new").onclick = () => lrCountdown(t("The recording starts…"), async () =
     lrShow("live"); $("lr-title").value = ""; lrRenderLive();
   } catch (e) { lrShow("list"); toast(e.message, "err"); }
 });
+// An audio file becomes a recording: the browser decodes it (any format it
+// plays) to Vito's own WAV, 16 kHz mono, and Vito cuts and transcribes it as
+// it would a recording (POST /api/long/import).
+$("lr-import").onclick = () => {
+  const m = modal(t("Audio file as a recording"),
+    `<p class="act-note" style="margin:0 0 12px;">${escapeHtml(t("Vito transcribes the file block by block, cleans it up and keeps it with your recordings — with its own folder, Word file and MP3."))}</p>
+     <div class="dropzone" id="li-zone" tabindex="0">
+       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+       <div class="dz-main">${escapeHtml(t("Drag an audio file here"))}</div>
+       <div class="dz-sub">${escapeHtml(t("or"))} <button type="button" class="btn ghost small" id="li-browse">${escapeHtml(t("Browse…"))}</button></div>
+       <div class="dz-sub" style="margin-top:8px;">${escapeHtml(t("mp3, m4a, wav, ogg, flac, mp4"))}</div>
+     </div>
+     <input type="file" id="li-file" accept="audio/*,video/mp4,.m4a,.mp3,.wav,.ogg,.flac" hidden>
+     <div class="up-info" id="li-info" hidden></div>
+     <label class="lr-ilabel" id="li-tbox" hidden><span>${escapeHtml(t("Title"))}</span><input type="text" id="li-title" spellcheck="false"></label>
+     <div class="up-prog" id="li-prog" hidden><div class="up-bar indet"><i></i></div><div class="up-stat" id="li-stat"></div></div>`,
+    () => { lrImport(m); return false; }, "Transcribe");
+  const ok = m.querySelector("[data-ok]"); ok.hidden = true;
+  const zone = m.querySelector("#li-zone"), input = m.querySelector("#li-file"), info = m.querySelector("#li-info");
+  m.querySelector("#li-browse").onclick = (e) => { e.stopPropagation(); input.click(); };
+  zone.onclick = () => input.click();
+  zone.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } };
+  ["dragenter","dragover"].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.add("over"); }));
+  ["dragleave","drop"].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.remove("over"); }));
+  zone.addEventListener("drop", (e) => { const f = e.dataTransfer.files[0]; if (f) pick(f); });
+  input.onchange = () => { if (input.files[0]) pick(input.files[0]); };
+  async function pick(file){
+    m._file = file;
+    info.hidden = false; m.querySelector("#li-tbox").hidden = false;
+    m.querySelector("#li-title").value = file.name.replace(/\.[^.]+$/, "");
+    ok.hidden = false;
+    info.innerHTML = `<div class="up-name">${escapeHtml(file.name)}</div><div class="up-meta">${fmtBytes(file.size)} · <span id="li-dur">${escapeHtml(t("reading length…"))}</span></div>`;
+    ok.disabled = false;
+    const secs = await probeDuration(file);
+    const cost = uploadCostEstimate(secs);
+    m.querySelector("#li-dur").innerHTML = (secs ? fmtDur(secs) : escapeHtml(t("length unknown"))) +
+      (cost ? ` · <span style="white-space:nowrap;">${escapeHtml(t("estimated cost"))} <b>≈ ${cost}</b></span>` : "");
+  }
+};
+async function lrImport(m){
+  const file = m._file; if (!file) return;
+  const ok = m.querySelector("[data-ok]"), x = m.querySelector("[data-x]"), stat = m.querySelector("#li-stat");
+  ok.disabled = true; if (x) x.disabled = true;
+  m.querySelector("#li-zone").hidden = true;
+  m.querySelector("#li-prog").hidden = false; m.querySelector("#li-prog").classList.remove("err");
+  try {
+    stat.textContent = t("Reading the audio…");
+    const wav = lrToWav(await new OfflineAudioContext(1, 1, 16000).decodeAudioData(await file.arrayBuffer()));
+    stat.textContent = t("Handing it to Vito…");
+    const title = m.querySelector("#li-title").value.trim();
+    const r = await api(`/api/long/import?title=${encodeURIComponent(title)}`, { method: "POST", headers: { "Content-Type": "audio/wav" }, body: wav });
+    m.remove();
+    toast(t("Transcribing the audio file…"), "ok");
+    await loadLong();
+    lrOpenDoc(r.session.id);
+  } catch (e) {
+    m.querySelector("#li-prog").classList.add("err");
+    stat.textContent = (e && e.name === "EncodingError") ? t("This browser cannot read that file. Try another format, such as MP3 or WAV.") : (e.message || String(e));
+    if (x) x.disabled = false;
+  }
+}
+// lrToWav mixes a decoded file down to 16 kHz mono 16-bit, as Vito records.
+function lrToWav(buf){
+  const n = buf.length, ch = buf.numberOfChannels, out = new DataView(new ArrayBuffer(44 + n * 2));
+  const chans = []; for (let c = 0; c < ch; c++) chans.push(buf.getChannelData(c));
+  const str = (o, v) => { for (let i = 0; i < v.length; i++) out.setUint8(o + i, v.charCodeAt(i)); };
+  str(0, "RIFF"); out.setUint32(4, 36 + n * 2, true); str(8, "WAVEfmt ");
+  out.setUint32(16, 16, true); out.setUint16(20, 1, true); out.setUint16(22, 1, true);
+  out.setUint32(24, 16000, true); out.setUint32(28, 32000, true); out.setUint16(32, 2, true); out.setUint16(34, 16, true);
+  str(36, "data"); out.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) {
+    let v = 0; for (let c = 0; c < ch; c++) v += chans[c][i];
+    v = Math.max(-1, Math.min(1, v / ch));
+    out.setInt16(44 + i * 2, v < 0 ? v * 0x8000 : v * 0x7fff, true);
+  }
+  return new Blob([out.buffer], { type: "audio/wav" });
+}
 // Within the first seconds a session started by mistake goes without a trace.
 const LR_DISCARD_SEC = 10;
 $("lr-discard").onclick = async () => {
@@ -11908,7 +12051,7 @@ $("lr-stop").onclick = async () => {
   try {
     const r = await api("/api/long/stop", { method: "POST" });
     LR.running = null; delete $("lr-live-text").dataset.built;
-    lrOpenDoc(r.id);
+    lrOpenDoc(r.session.id);
   } catch (e) { toast(e.message, "err"); }
 };
 // The title saves itself while typing and lets go of the focus after a pause,
@@ -11969,15 +12112,16 @@ async function lrFetchDoc(){
   const m = d.meta;
   lrFillStats($("lr-doc-stats"), d.items || [], d.marks || [], [], m.seconds, d.cost, d.audio_bytes || 0);
   if (document.activeElement !== $("lr-dtitle")) $("lr-dtitle").value = m.title || "";
-  $("lr-continue").hidden = !!LR.running || !(m.state === "done" || m.state === "interrupted");
+  $("lr-continue").hidden = !!LR.running || !(m.state === "done" || m.state === "interrupted") || !d.audio_bytes;
   $("lr-dtitle").placeholder = lrTitle(Object.assign({}, m, { title: "" }));
   const words = (d.items || []).reduce((n, it) => n + (it.sentences || []).reduce((k, s) => k + s.text.split(/\s+/).filter(Boolean).length, 0), 0);
   $("lr-dmeta").textContent = [lrWhen(m.started), lrClock(m.seconds), words ? words.toLocaleString() + " " + t("words") : "", m.provider || ""].filter(Boolean).join(" · ");
   // How far it is.
   let note = "";
   if (m.state === "interrupted") note = t("This recording was not finished. Restore it from the list to transcribe the rest.");
+  else if (m.state === "importing") note = `${t("Transcribing the audio file…")} ${d.blocks || 0} / ${m.planned || "…"} ${t("blocks")}`;
   else if (m.state !== "done") note = t("Still recording.");
-  else if (d.blocks && d.cleaned < d.blocks && !LR.raw && (d.items || []).length) note = `${t("Cleaning up…")} ${d.cleaned} / ${d.blocks} ${t("blocks")}`;
+  else if (d.clean_on && d.blocks && d.cleaned < d.blocks && !LR.raw && (d.items || []).length) note = `${t("Cleaning up…")} ${d.cleaned} / ${d.blocks} ${t("blocks")}`;
   if (d.failed) note += (note ? " " : "") + `${d.failed} ${t("block(s) could not be transcribed; their audio is kept.")}`;
   const edited = d.files?.edited || [];
   if (edited.length) note += (note ? " " : "") + `${t("You changed a file in the recording's folder:")} ${edited.join(", ")}. ${t("Vito left it alone; its update is beside it as “… (Vito)”.")}`;

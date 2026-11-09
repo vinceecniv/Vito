@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
 
@@ -32,6 +33,7 @@ func (s *Server) longRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/long/{id}/audio", s.auth(s.handleLongAudio))
 	mux.HandleFunc("POST /api/long/{id}/open", s.auth(s.handleLongOpen))
 	mux.HandleFunc("GET /api/long/folder", s.auth(s.handleLongFolder))
+	mux.HandleFunc("POST /api/long/import", s.auth(s.handleLongImport))
 }
 
 func (s *Server) longErr(w http.ResponseWriter, code int, err error) {
@@ -54,17 +56,21 @@ func (s *Server) handleLongList(w http.ResponseWriter, r *http.Request) {
 		type session struct {
 			longrec.Meta
 			AudioBytes int64 `json:"audio_bytes"`
+			Blocks     int   `json:"blocks"`
+			Cleaned    int   `json:"cleaned"`
 		}
 		sessions := make([]session, len(list))
 		var cost float64
 		currency := ""
 		for i, m := range list {
-			sessions[i] = session{m, store.AudioBytes(m.ID)}
+			nb, nc := store.CleanProgress(m.ID)
+			sessions[i] = session{m, store.AudioBytes(m.ID), nb, nc}
 			c := s.longCost(m)
 			cost += m.Seconds/3600*c.SttPerHour + c.Clean
 			currency = c.Currency
 		}
 		out["sessions"] = sessions
+		out["clean_on"] = s.d.LongCleanOn()
 		// What all of them cost together, roughly (for the overview).
 		out["cost"] = map[string]any{"total": cost, "currency": currency}
 	}
@@ -196,7 +202,8 @@ func (s *Server) handleLongDoc(w http.ResponseWriter, r *http.Request) {
 		AudioBytes int64              `json:"audio_bytes"`
 		AudioType  string             `json:"audio_type"`
 		Files      longrec.FilesState `json:"files"`
-	}{d, s.longCost(d.Meta), store.AudioBytes(id), store.AudioType(id), store.Files(id)})
+		CleanOn    bool               `json:"clean_on"`
+	}{d, s.longCost(d.Meta), store.AudioBytes(id), store.AudioType(id), store.Files(id), s.d.LongCleanOn()})
 }
 
 // longCost is what a session has cost so far, roughly: the speech service by
@@ -422,4 +429,23 @@ func (s *Server) handleLongAudio(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Disposition", `attachment; filename="vito-`+id+`.`+ext+`"`)
 	}
 	http.ServeFile(w, r, store.AudioPath(id))
+}
+
+// maxImportBytes caps an imported audio file: 8 hours of Vito's WAV.
+const maxImportBytes = 8 * 3600 * 32000
+
+// handleLongImport makes a session of an audio file. The body is the audio as
+// the page decoded it: a WAV, 16 kHz mono 16-bit; ?title= names it.
+func (s *Server) handleLongImport(w http.ResponseWriter, r *http.Request) {
+	if s.demo() {
+		s.longErr(w, http.StatusForbidden, errors.New("demo mode: transcription is off"))
+		return
+	}
+	body := http.MaxBytesReader(w, r.Body, maxImportBytes+1<<20)
+	m, err := s.d.ImportLong(clipText(r.URL.Query().Get("title"), 200), body)
+	if err != nil {
+		s.longErr(w, http.StatusBadRequest, err)
+		return
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "session": m})
 }

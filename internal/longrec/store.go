@@ -40,7 +40,9 @@ type Meta struct {
 	Provider string    `json:"provider,omitempty"`
 	Language string    `json:"language,omitempty"`
 	Source   string    `json:"source,omitempty"` // "upload" for an audio file
-	Words    int       `json:"words,omitempty"`
+	// Planned is the blocks an audio file is cut into (while importing).
+	Planned int `json:"planned,omitempty"`
+	Words   int `json:"words,omitempty"`
 	// Tokens the cleanup model reported for this session (blocks and titles),
 	// for its cost.
 	// Profile is the user's cleanup rule set the blocks are cleaned with
@@ -265,6 +267,20 @@ func (s *Store) Recount() {
 			s.UpdateMeta(m.ID, func(m *Meta) { m.Words = w })
 		}
 	}
+}
+
+// CleanProgress is how many blocks a session has and how many of them need
+// no more cleaning (cleaned, or nothing to clean), for the overview.
+func (s *Store) CleanProgress(id string) (blocks, cleaned int) {
+	bs, _ := s.Blocks(id)
+	cs, _ := s.Cleans(id)
+	for _, b := range bs {
+		blocks++
+		if c, ok := cs[b.Index]; strings.TrimSpace(b.Text) == "" || (ok && c.Error == "") {
+			cleaned++
+		}
+	}
+	return blocks, cleaned
 }
 
 // AddClean appends a block's cleaned text.

@@ -205,6 +205,15 @@ func (s *Store) WriteFiles(id, root, timed string) (FilesState, error) {
 	}
 
 	// The audio, once it is the MP3 (a WAV only exists while recording).
+	// Audio removed by the setting: Vito's own copy goes too.
+	if s.AudioBytes(id) == 0 && st.Audio != nil {
+		p := filepath.Join(dir, st.Audio.Name)
+		if fi, err := os.Stat(p); err == nil && fi.Size() == st.Audio.Size && fi.ModTime().Equal(st.Audio.Mod) {
+			os.Remove(p)
+		}
+		os.Remove(filepath.Join(dir, besideName(st.Audio.Name)))
+		st.Audio = nil
+	}
 	if s.AudioType(id) == "mp3" {
 		if e, err := s.copyAudio(id, dir, base+".mp3", st.Audio); err == nil {
 			if e.edited {

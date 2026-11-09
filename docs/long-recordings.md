@@ -99,6 +99,31 @@ goes beside it as `<name> (Vito).<ext>` and the doc reports it in
 (`internal/osfiles`: SHFileOperation, ~/.Trash, the freedesktop trash); where
 there is none it stays. The Export menu became "Open folder".
 
+## An audio file as a recording
+
+"Audio file" on the Recordings page: the browser decodes the file (anything
+it plays) with `OfflineAudioContext` at 16 kHz, mixes it to mono 16-bit and
+posts that WAV to `POST /api/long/import?title=`. `longrec.NewImport` writes
+it as the session's audio (state `importing`, source `upload`); `CutPoints`
+cuts it where a recording would be cut (first 0.7 s pause after 60 s, at the
+latest after 150 s) and `Import` transcribes block after block from the file
+(`transcribeSlice`), each one queued for cleanup as it lands. `meta.planned`
+is the number of blocks, for "Transcribing n/N". A daemon stopped mid-import
+carries on 20 s after the next start with the blocks still missing. When done
+the audio is compressed like any recording. Uploads do not count for the
+"longest recording" achievements.
+
+## Recording settings
+
+Settings → Output → Recordings: clean each block (`long.clean`), how long the
+audio is kept (`long.keep_audio`: "" always, `30d`, `text` = not at all), the
+folder, and a note to ask people's consent before recording them. Audio is
+removed only from finished sessions that are not busy (`pruneLongAudio`: at
+start-up, every 6 h, after each compression and when the setting changes);
+the text and the folder's files stay, Vito's MP3 copy goes unless the user
+changed it. A session without audio cannot be continued (the server refuses;
+the page hides the button and shows "Text only" in the list).
+
 ## Phase 1: the mode itself
 
 - **Nothing lost on a crash**: audio goes to disk as it comes; after a crash

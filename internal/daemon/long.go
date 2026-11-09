@@ -28,8 +28,9 @@ type long struct {
 	capture   *audio.Capture
 	chunks    chan []byte
 	feeding   sync.WaitGroup
-	restoring map[string]bool // sessions RestoreLong is working on
-	fresh     bool            // the running session began now (not continued): it may be discarded
+	restoring map[string]bool               // sessions RestoreLong is working on
+	importing map[string]context.CancelFunc // audio files being transcribed
+	fresh     bool                          // the running session began now (not continued): it may be discarded
 }
 
 // ErrNoLong: the sessions folder could not be opened at start-up.
@@ -55,15 +56,20 @@ func (d *Daemon) initLong() {
 	// Then every recording's own folder is brought up to date.
 	go func() {
 		store.CompressAll(l.busy)
+		d.pruneLongAudio()
 		d.writeAllLongFiles()
+		for range time.Tick(6 * time.Hour) {
+			d.pruneLongAudio()
+		}
 	}()
+	d.resumeImports()
 }
 
 // busy says a session's audio is in use: being recorded or restored.
 func (l *long) busy(id string) bool {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	return l.restoring[id] || (l.rec != nil && l.rec.ID() == id)
+	return l.restoring[id] || l.importing[id] != nil || (l.rec != nil && l.rec.ID() == id)
 }
 
 // compressLong turns a finished session's WAV into its MP3, unless it is in
@@ -79,6 +85,35 @@ func (d *Daemon) compressLong(id string) {
 	}
 	d.log.Info("long recording: audio compressed", "session", id, "bytes", l.store.AudioBytes(id))
 	d.emit(Event{Type: "long_doc", Session: id})
+	d.pruneLongAudio()
+}
+
+// pruneLongAudio removes the audio of finished recordings the setting no
+// longer keeps it for: at once ("text"), or after 30 days ("30d").
+func (d *Daemon) pruneLongAudio() {
+	l := d.long
+	if l == nil {
+		return
+	}
+	keep := d.Config().Long.KeepAudio
+	if keep != "text" && keep != "30d" {
+		return
+	}
+	list, _ := l.store.List()
+	for _, m := range list {
+		if m.State != longrec.StateDone || l.busy(m.ID) || l.store.AudioBytes(m.ID) == 0 {
+			continue
+		}
+		if keep == "30d" && time.Since(m.Started.Add(time.Duration(m.Seconds*float64(time.Second)))) < 30*24*time.Hour {
+			continue
+		}
+		if err := l.store.RemoveAudio(m.ID); err != nil {
+			d.log.Warn("long recording: audio not removed", "session", m.ID, "err", err)
+			continue
+		}
+		d.log.Info("long recording: audio removed (setting)", "session", m.ID, "keep", keep)
+		d.emit(Event{Type: "long_doc", Session: m.ID})
+	}
 }
 
 func (d *Daemon) longCleanSettings() longrec.CleanSettings {
@@ -90,6 +125,10 @@ func (d *Daemon) longCleanSettings() longrec.CleanSettings {
 		On:          cfg.Long.CleanEnabled() && cfg.Cleanup.Enabled && cleanup.Configured(cfg.Cleanup),
 	}
 }
+
+// LongCleanOn says whether long recordings are cleaned now (the setting and
+// a configured cleanup), so the page knows whether "cleaning up" is coming.
+func (d *Daemon) LongCleanOn() bool { return d.longCleanSettings().On }
 
 // LongStore exposes the sessions to the HTTP layer.
 func (d *Daemon) LongStore() (*longrec.Store, error) {
@@ -115,13 +154,16 @@ func (d *Daemon) StartLong(title string) (longrec.Status, error) {
 
 // ContinueLong records on in an existing session.
 func (d *Daemon) ContinueLong(id string) (longrec.Status, error) {
+	if m, err := d.long.store.Meta(id); err == nil && m.State == longrec.StateDone && d.long.store.AudioBytes(id) == 0 {
+		return longrec.Status{}, fmt.Errorf("the audio of this recording was removed, so it cannot be continued")
+	}
 	return d.startLong(func(o longrec.Options) (*longrec.Recorder, error) {
 		// Recording on appends to the WAV: a compressed session gets it back.
 		if err := o.Store.EnsureWAV(id); err != nil {
 			return nil, err
 		}
 		return longrec.Continue(o, id)
-	}, false, func() bool { return d.long.restoring[id] })
+	}, false, func() bool { return d.long.restoring[id] || d.long.importing[id] != nil })
 }
 
 // startLong opens the microphone for a session that open starts or continues.
@@ -452,6 +494,7 @@ func (d *Daemon) DeleteLong(id string) error {
 	if r, err := d.running(); err == nil && r.ID() == id {
 		return fmt.Errorf("stop the recording first")
 	}
+	d.cancelImport(id)
 	d.trashLongFiles(id)
 	return d.long.store.Delete(id)
 }

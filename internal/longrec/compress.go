@@ -54,6 +54,19 @@ func (s *Store) AudioPath(id string) string {
 	return s.wavPath(id)
 }
 
+// RemoveAudio deletes a session's audio (its text stays): the setting to
+// keep recordings' audio for a while, or not at all.
+func (s *Store) RemoveAudio(id string) error {
+	audioMu.Lock()
+	defer audioMu.Unlock()
+	for _, p := range []string{s.wavPath(id), s.mp3Path(id)} {
+		if err := os.Remove(p); err != nil && !os.IsNotExist(err) {
+			return err
+		}
+	}
+	return nil
+}
+
 // AudioType is "mp3" or "wav", what AudioPath holds.
 func (s *Store) AudioType(id string) string {
 	if s.AudioPath(id) == s.mp3Path(id) {
