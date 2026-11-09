@@ -159,7 +159,8 @@ func wrap(face font.Face, s string, room fixed.Int26_6) (first, rest string) {
 	if font.MeasureString(face, s) <= room {
 		return s, ""
 	}
-	words := strings.Fields(s)
+	// Plain spaces only: a time's no-break space (21m 40s) holds together.
+	words := strings.FieldsFunc(s, func(r rune) bool { return r == ' ' || r == '\n' })
 	for i := len(words) - 1; i > 0; i-- {
 		if line := strings.Join(words[:i], " "); font.MeasureString(face, line) <= room {
 			return line, strings.Join(words[i:], " ")

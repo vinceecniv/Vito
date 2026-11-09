@@ -497,17 +497,28 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	if st.dark {
 		chip = blend(th.body, th.to, 0.2)
 	}
-	stat := func(tg target, x float64, icon func(cx, cy float64), figure string) {
+	stat := func(tg target, x float64, icon func(cx, cy float64), figure []figPart) {
 		// The stats page's chip: 34 px round 9 for an 18 px icon; here 30 for 16.
 		fill(buf, w, h, rect{x, cy - 15, 30, 30}, 8, chip, a)
 		icon((x+15)*s, cy*s)
-		fw := ip.line(buf, figureFace, figure, x+40, cy+8.5, ink, a)
-		ip.targets[tg] = rect{x - 4, cy - 18, 40 + fw + 8, 36}
+		// The units smaller than the figures, so 59m 59s fits its column.
+		fx := x + 40
+		for i, p := range figure {
+			if p.unit {
+				fx += ip.line(buf, labelFace, p.s, fx+0.5, cy+8.5, ink, a)
+				if i < len(figure)-1 {
+					fx += 4
+				}
+			} else {
+				fx += ip.line(buf, figureFace, p.s, fx, cy+8.5, ink, a)
+			}
+		}
+		ip.targets[tg] = rect{x - 4, cy - 18, fx - x + 12, 36}
 	}
 	col := left + panelPad
 	col2 := left + panelPad + (panelW-2*panelPad)/2 + 6
-	stat(tWords, col, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, s, th.to, a) }, ip.number(st.day.Words))
-	stat(tSaved, col2, func(cx, cy float64) { clock(buf, w, h, cx, cy, s, th.to, a) }, ip.duration(st.day.Saved))
+	stat(tWords, col, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, s, th.to, a) }, []figPart{{s: ip.number(st.day.Words)}})
+	stat(tSaved, col2, func(cx, cy float64) { clock(buf, w, h, cx, cy, s, th.to, a) }, ip.durationParts(st.day.Saved))
 
 	// The last dictation, to paste again; in the pinned island it makes way
 	// for the live words while a dictation runs.
@@ -827,18 +838,43 @@ func wordsIcon(buf []byte, w, h int, cx, cy, s float64, c rgb, a float64) {
 	}
 }
 
-// duration writes a time given in seconds short, as the stats page does:
-// 40s under a minute (so the first dictation of the day already shows
-// something), else 24m, 1h 24m.
+// figPart is a piece of a stat's figure: a number, or its unit drawn smaller.
+type figPart struct {
+	s    string
+	unit bool
+}
+
+// durationParts writes a time given in seconds short, so it fits the stat's
+// column: 40s, 4m 3s, and from an hour on 1h 3m (no seconds then).
+func (ip *islandPainter) durationParts(sec int) []figPart {
+	h, m, s := sec/3600, sec%3600/60, sec%60
+	var out []figPart
+	add := func(n int, u string) { out = append(out, figPart{s: strconv.Itoa(n)}, figPart{s: ip.t(u), unit: true}) }
+	switch {
+	case h > 0:
+		add(h, "h")
+		add(m, "m")
+	case m > 0:
+		add(m, "m")
+		if s > 0 {
+			add(s, "s")
+		}
+	default:
+		add(s, "s")
+	}
+	return out
+}
+
+// duration is durationParts as one string, for a tooltip.
 func (ip *islandPainter) duration(sec int) string {
-	if sec > 0 && sec < 60 {
-		return fmt.Sprintf("%d%s", sec, ip.t("s"))
+	var b strings.Builder
+	for i, p := range ip.durationParts(sec) {
+		if i > 0 && !p.unit {
+			b.WriteRune(' ') // a tooltip wraps around the time, not in it
+		}
+		b.WriteString(p.s)
 	}
-	min := (sec + 30) / 60
-	if h := min / 60; h > 0 {
-		return fmt.Sprintf("%d%s %d%s", h, ip.t("h"), min%60, ip.t("m"))
-	}
-	return fmt.Sprintf("%d%s", min, ip.t("m"))
+	return b.String()
 }
 
 // number writes n with the thousands grouped the way the language does.
