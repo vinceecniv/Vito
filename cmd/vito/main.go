@@ -188,10 +188,10 @@ func serve() error {
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)
 	notifyUserSignals(d, log)
 	pill.Start(d, log, pill.Sources{
-		Today: func() (int, int) {
+		Today: func() pill.Today {
 			now := time.Now()
 			st, _ := hist.Stats(now, d.Config().TypingWPM(), 1)
-			return st.Words, st.SavedMinutes
+			return pill.Today{Words: st.Words, Sentences: st.Sentences, Activations: st.Activations, Saved: st.SavedSeconds, Spoken: st.SpokenSeconds}
 		},
 		Last: func() string {
 			list, err := hist.List("", false, 1, 0)

@@ -37,11 +37,16 @@ import (
 // screens give way to it, and a dictation shows in it, where the microphone
 // is: the pill draws into an embedWindow and the island lays its pictures in.
 
+// Today is the day in figures, as the stats page counts it.
+type Today struct {
+	Words, Sentences, Activations int
+	Saved, Spoken                 int // seconds: typing time saved, time dictated
+}
+
 // Sources is what the island shows that the daemon does not know.
 type Sources struct {
-	// Today is the words dictated today and the typing time they saved, in
-	// minutes.
-	Today func() (words, saved int)
+	// Today is what was dictated today.
+	Today func() Today
 	// Last is the most recent dictation's text, "" when there is none.
 	Last func() string
 }
@@ -142,16 +147,16 @@ type islandState struct {
 	rest       Frame   // the character's moment, where it is the microphone
 	compact    float64 // 0 the island .. 1 only the resting pill, long left alone
 
-	words, saved int
-	last         string
-	kept         bool   // a cancelled dictation can be restored; it takes last's place
-	heard        string // what was heard of it
-	cleanup      bool
-	enter, live  bool
-	partials     bool // the speech service sends text while you speak
-	style        Style
-	rules        []ruleSet
-	active       string // the active rule set's id
+	day         Today
+	last        string
+	kept        bool   // a cancelled dictation can be restored; it takes last's place
+	heard       string // what was heard of it
+	cleanup     bool
+	enter, live bool
+	partials    bool // the speech service sends text while you speak
+	style       Style
+	rules       []ruleSet
+	active      string // the active rule set's id
 }
 
 // height is the panel's height for a view.
@@ -354,8 +359,16 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 			at = menu
 			text = map[view]string{viewMain: ip.t("Quick settings"), viewSettings: ip.t("Close"),
 				viewRules: ip.t("Back to quick settings")}[st.view]
-		case tWords, tSaved:
-			at, text = ip.targets[st.over], map[target]string{tWords: ip.t("words today"), tSaved: ip.t("saved typing time")}[st.over]
+		case tWords:
+			at, text = ip.targets[st.over], ip.t("words today")
+			if st.day.Words > 0 {
+				text += " · " + ip.number(st.day.Sentences) + " " + ip.t("sentences") + " · " + ip.number(st.day.Activations) + " " + ip.t("activations")
+			}
+		case tSaved:
+			at, text = ip.targets[st.over], ip.t("saved typing time")
+			if st.day.Spoken > 0 {
+				text += " · " + ip.t("spoken today") + " " + ip.duration(st.day.Spoken)
+			}
 		case tRepaste, tMic, tCopy, tRestore:
 			// Placed where they were drawn this frame, which the views
 			// and the microphone decide.
@@ -493,8 +506,8 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	}
 	col := left + panelPad
 	col2 := left + panelPad + (panelW-2*panelPad)/2 + 6
-	stat(tWords, col, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, s, th.to, a) }, ip.number(st.words))
-	stat(tSaved, col2, func(cx, cy float64) { clock(buf, w, h, cx, cy, s, th.to, a) }, ip.duration(st.saved))
+	stat(tWords, col, func(cx, cy float64) { wordsIcon(buf, w, h, cx, cy, s, th.to, a) }, ip.number(st.day.Words))
+	stat(tSaved, col2, func(cx, cy float64) { clock(buf, w, h, cx, cy, s, th.to, a) }, ip.duration(st.day.Saved))
 
 	// The last dictation, to paste again; in the pinned island it makes way
 	// for the live words while a dictation runs.
@@ -814,8 +827,14 @@ func wordsIcon(buf []byte, w, h int, cx, cy, s float64, c rgb, a float64) {
 	}
 }
 
-// duration writes minutes short, as the stats page does: 24m, 1h 24m.
-func (ip *islandPainter) duration(min int) string {
+// duration writes a time given in seconds short, as the stats page does:
+// 40s under a minute (so the first dictation of the day already shows
+// something), else 24m, 1h 24m.
+func (ip *islandPainter) duration(sec int) string {
+	if sec > 0 && sec < 60 {
+		return fmt.Sprintf("%d%s", sec, ip.t("s"))
+	}
+	min := (sec + 30) / 60
 	if h := min / 60; h > 0 {
 		return fmt.Sprintf("%d%s %d%s", h, ip.t("h"), min%60, ip.t("m"))
 	}
@@ -960,7 +979,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	}
 	day := func() {
 		if p.src.Today != nil {
-			st.words, st.saved = p.src.Today()
+			st.day = p.src.Today()
 		}
 		if p.src.Last != nil {
 			st.last = p.src.Last()
