@@ -33,12 +33,12 @@ func TestKeptCancelled(t *testing.T) {
 	t.Setenv("XDG_CACHE_HOME", t.TempDir())
 	d := &Daemon{log: slog.New(slog.NewTextHandler(io.Discard, nil))}
 
-	short := keptSession(t, 300*time.Millisecond)
+	short := keptSession(t, 3*time.Second)
 	if d.keep(short) {
 		t.Fatal("a recording shorter than minKept was kept")
 	}
 
-	a := keptSession(t, 2*time.Second)
+	a := keptSession(t, 5*time.Second)
 	a.heard.Store("hallo daar")
 	if !d.keep(a) {
 		t.Fatal("not kept")
@@ -47,7 +47,7 @@ func TestKeptCancelled(t *testing.T) {
 		t.Fatalf("Cancelled() = %q, %v", heard, ok)
 	}
 
-	b := keptSession(t, 2*time.Second)
+	b := keptSession(t, 5*time.Second)
 	d.keep(b)
 	if exists(a.spool.Path()) {
 		t.Error("the earlier kept recording was not deleted")
