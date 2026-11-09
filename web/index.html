@@ -2881,7 +2881,7 @@
         <div class="lr-player" id="lr-player" hidden>
           <button type="button" class="lr-pb" id="lr-pback" aria-label="15 seconds back" data-tip-text="15 seconds back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 8.6A8 8 0 1 0 12 4"/><path d="M12.6 1.2 8.8 4l3.8 2.8z" fill="currentColor"/><text x="12" y="16.3" font-size="7.2" text-anchor="middle" fill="currentColor" stroke="none" font-weight="700">15</text></svg></button>
           <button type="button" class="lr-pb lr-pplay" id="lr-pplay" aria-label="Play" data-tip-text="Play / pause (space)"><svg class="lr-ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg><svg class="lr-ic-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1.2"/><rect x="13.5" y="5" width="4" height="14" rx="1.2"/></svg></button>
-          <button type="button" class="lr-pb" id="lr-pfwd" aria-label="15 seconds forward" data-tip-text="15 seconds forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18.8 8.6A8 8 0 1 1 12 4"/><path d="M11.4 1.2 15.2 4l-3.8 2.8z" fill="currentColor"/><text x="12" y="16.3" font-size="7.2" text-anchor="middle" fill="currentColor" stroke="none" font-weight="700">15</text></svg></button>
+          <button type="button" class="lr-pb" id="lr-pfwd" aria-label="30 seconds forward" data-tip-text="30 seconds forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18.8 8.6A8 8 0 1 1 12 4"/><path d="M11.4 1.2 15.2 4l-3.8 2.8z" fill="currentColor"/><text x="12" y="16.3" font-size="7.2" text-anchor="middle" fill="currentColor" stroke="none" font-weight="700">30</text></svg></button>
           <span class="lr-ptime" id="lr-ptime">0:00</span>
           <input type="range" id="lr-pseek" min="0" max="1000" value="0" step="1" aria-label="Position">
           <span class="lr-ptime" id="lr-plen">0:00</span>
@@ -3027,7 +3027,7 @@ const TR = { nl: {
   "Play":"Afspelen",
   "Play / pause (space)":"Afspelen / pauzeren (spatie)",
   "15 seconds back":"15 seconden terug",
-  "15 seconds forward":"15 seconden vooruit",
+  "30 seconds forward":"30 seconden vooruit",
   "Position":"Positie",
   "Playback speed":"Afspeelsnelheid",
   "The audio could not be loaded.":"De audio kon niet worden geladen.",
@@ -12432,7 +12432,8 @@ $("lr-pop-del").onclick = async () => {
   lrClosePop();
   if (await lrPostEvent(p.box, { type: "delete", of: p.id })) toast(t("Mark removed"), "ok", 1400);
 };
-// Listening back: the recording's audio under the title. A paragraph's time
+// Listening back: the recording's audio under the title (back 15 s, forward
+// 30 s, as podcast players do: going back is to hear a sentence again). A paragraph's time
 // plays from there; while it plays a click on a sentence jumps to it, and the
 // sentence being spoken lights up. The audio is fetched once (the element
 // cannot send the token), on the first play.
@@ -12515,7 +12516,7 @@ addEventListener("wheel", () => { LR.userScroll = Date.now(); }, { passive: true
 addEventListener("touchmove", () => { LR.userScroll = Date.now(); }, { passive: true });
 $("lr-pplay").onclick = () => lrAudio.paused || !LR.audioURL ? lrPlayAt(null) : lrAudio.pause();
 $("lr-pback").onclick = () => lrPlayAt(Math.max(0, (lrAudio.currentTime || 0) - 15));
-$("lr-pfwd").onclick = () => lrPlayAt((lrAudio.currentTime || 0) + 15);
+$("lr-pfwd").onclick = () => lrPlayAt((lrAudio.currentTime || 0) + 30);
 $("lr-pspeed").onclick = () => {
   const i = (LR_SPEEDS.indexOf(LR.speed || 1) + 1) % LR_SPEEDS.length;
   LR.speed = LR_SPEEDS[i]; lrAudio.playbackRate = LR.speed;
