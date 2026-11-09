@@ -1847,6 +1847,7 @@
   .lr-pb { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; border:none; background:transparent; color:var(--text2); cursor:var(--cur-hand); flex:none; transition:background-color .12s, color .12s; }
   .lr-pb:hover { background:var(--accent-soft); color:var(--accent); }
   .lr-pb svg { width:19px; height:19px; }
+  #lr-pback svg, #lr-pfwd svg { width:22px; height:22px; }
   .lr-pplay { background:var(--accent); color:#fff; }
   .lr-pplay:hover { background:var(--accent); color:#fff; filter:brightness(1.1); }
   .lr-pplay .lr-ic-pause, .lr-player.on .lr-pplay .lr-ic-play { display:none; }
@@ -2878,9 +2879,9 @@
         </div>
         <div id="lr-dnote"></div>
         <div class="lr-player" id="lr-player" hidden>
+          <button type="button" class="lr-pb" id="lr-pback" aria-label="15 seconds back" data-tip-text="15 seconds back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 8.6A8 8 0 1 0 12 4"/><path d="M12.6 1.2 8.8 4l3.8 2.8z" fill="currentColor"/><text x="12" y="16.3" font-size="7.2" text-anchor="middle" fill="currentColor" stroke="none" font-weight="700">15</text></svg></button>
           <button type="button" class="lr-pb lr-pplay" id="lr-pplay" aria-label="Play" data-tip-text="Play / pause (space)"><svg class="lr-ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg><svg class="lr-ic-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1.2"/><rect x="13.5" y="5" width="4" height="14" rx="1.2"/></svg></button>
-          <button type="button" class="lr-pb" id="lr-pback" aria-label="15 seconds back" data-tip-text="15 seconds back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><text x="12" y="15.5" font-size="7.5" text-anchor="middle" fill="currentColor" stroke="none" font-weight="700">15</text></svg></button>
-          <button type="button" class="lr-pb" id="lr-pfwd" aria-label="15 seconds forward" data-tip-text="15 seconds forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v4h-4"/><text x="12" y="15.5" font-size="7.5" text-anchor="middle" fill="currentColor" stroke="none" font-weight="700">15</text></svg></button>
+          <button type="button" class="lr-pb" id="lr-pfwd" aria-label="15 seconds forward" data-tip-text="15 seconds forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18.8 8.6A8 8 0 1 1 12 4"/><path d="M11.4 1.2 15.2 4l-3.8 2.8z" fill="currentColor"/><text x="12" y="16.3" font-size="7.2" text-anchor="middle" fill="currentColor" stroke="none" font-weight="700">15</text></svg></button>
           <span class="lr-ptime" id="lr-ptime">0:00</span>
           <input type="range" id="lr-pseek" min="0" max="1000" value="0" step="1" aria-label="Position">
           <span class="lr-ptime" id="lr-plen">0:00</span>
