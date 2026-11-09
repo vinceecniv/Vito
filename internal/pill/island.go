@@ -910,7 +910,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	st := islandState{dark: p.dark(), view: viewMain, prev: viewMain, fade: 1}
 	read := func() {
 		c := p.d.Config()
-		st.cleanup, st.enter, st.live = c.Cleanup.Enabled, c.Injection.AppendEnter, c.UI.PillLive
+		st.cleanup, st.enter, st.live = c.Cleanup.Enabled, c.Injection.AppendEnter, c.UI.PillLiveEnabled()
 		st.partials = stt.HasPartials(c.STT)
 		st.style = StyleOf(c.UI.PillStyle)
 		st.rules = st.rules[:0]
@@ -1223,7 +1223,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			case tg == tEnter:
 				change(func(c *config.Config) { c.Injection.AppendEnter = !c.Injection.AppendEnter })
 			case tg == tLive:
-				change(func(c *config.Config) { c.UI.PillLive = !c.UI.PillLive })
+				change(func(c *config.Config) { on := !c.UI.PillLiveEnabled(); c.UI.PillLive = &on })
 			case tg == tStyleBars, tg == tStyleGlow, tg == tStyleVito:
 				name := map[target]string{tStyleBars: "bars", tStyleGlow: "", tStyleVito: "vito"}[tg]
 				change(func(c *config.Config) { c.UI.PillStyle = name })

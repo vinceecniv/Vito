@@ -48,7 +48,7 @@ type sonioxStream struct {
 	langCount map[string]int // detected language of final tokens, for the flag
 }
 
-func newSonioxStream(cfg config.STT, keyterms []string, log *slog.Logger, onPartial func(string)) *sonioxStream {
+func newSonioxStream(cfg config.STT, log *slog.Logger, onPartial func(string)) *sonioxStream {
 	ctx, cancel := context.WithCancel(context.Background())
 	s := &sonioxStream{
 		log:       log,

@@ -59,7 +59,7 @@ func TestEval(t *testing.T) {
 			if c-prev < frameBytes {
 				continue
 			}
-			res, err := e.Transcribe(ctx, pcm[prev:c], "nl", nil)
+			res, err := e.Transcribe(ctx, pcm[prev:c], "nl")
 			if err != nil {
 				t.Fatalf("%s: %v", id, err)
 			}
@@ -72,7 +72,7 @@ func TestEval(t *testing.T) {
 		line := fmt.Sprintf("%s %5.1fs  %2d segs  seg WER %4.1f%% in %4.1fs", id, secs, len(cuts), 100*segErr/float64(max(1, len(refW))), segTime.Seconds())
 		if secs <= MaxSeconds {
 			t1 := time.Now()
-			res, err := e.Transcribe(ctx, pcm, "nl", nil)
+			res, err := e.Transcribe(ctx, pcm, "nl")
 			if err != nil {
 				t.Fatalf("%s whole: %v", id, err)
 			}

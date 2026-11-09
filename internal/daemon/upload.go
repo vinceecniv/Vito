@@ -74,14 +74,9 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 		return UploadResult{}, err
 	}
 
-	var keyterms []string
-	if cfg.STT.KeytermsEnabled {
-		keyterms = dictionary.Keyterms(cfg.Dictionary)
-	}
-
 	started := time.Now()
 	d.emitUpload(UploadStatus{Phase: "upload", Frac: 0, Name: name})
-	out, err := stt.TranscribeUpload(ctx, sttCfg, keyterms, path, func(p stt.UploadProgress) {
+	out, err := stt.TranscribeUpload(ctx, sttCfg, path, func(p stt.UploadProgress) {
 		d.emitUpload(UploadStatus{Phase: string(p.Phase), Frac: p.Frac, Name: name})
 	})
 	if err != nil {

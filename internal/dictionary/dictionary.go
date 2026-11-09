@@ -1,5 +1,4 @@
-// Package dictionary applies the user's correction list to transcripts and
-// prepares keyterms for the STT session.
+// Package dictionary applies the user's correction list to transcripts.
 package dictionary
 
 import (
@@ -25,31 +24,4 @@ func Apply(text string, corrections []config.Correction) string {
 		text = re.ReplaceAllString(text, c.Right)
 	}
 	return text
-}
-
-// Keyterms returns the deduplicated term list for the STT keyterms prompt,
-// capped at the API maximum of 100 terms. The snippets' triggers come after
-// the user's own terms, so a trigger such as "mijn LinkedIn" is heard as written.
-func Keyterms(d config.Dictionary) []string {
-	const maxTerms = 100
-	seen := make(map[string]bool)
-	out := make([]string, 0, len(d.Keyterms))
-	terms := append([]string(nil), d.Keyterms...)
-	for _, s := range d.Snippets {
-		if s.Text != "" {
-			terms = append(terms, s.Trigger)
-		}
-	}
-	for _, t := range terms {
-		t = strings.TrimSpace(t)
-		if t == "" || seen[strings.ToLower(t)] {
-			continue
-		}
-		seen[strings.ToLower(t)] = true
-		out = append(out, t)
-		if len(out) == maxTerms {
-			break
-		}
-	}
-	return out
 }

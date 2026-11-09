@@ -146,3 +146,22 @@ func TestPillIdleDefaultOn(t *testing.T) {
 		t.Errorf("switching it off is not kept: %s", b)
 	}
 }
+
+// Words in the pill are on unless switched off, also for a config written
+// when pill_live was a plain bool (false was never stored).
+func TestPillLiveDefaultOn(t *testing.T) {
+	var old UI
+	if err := json.Unmarshal([]byte(`{"theme":"dark"}`), &old); err != nil {
+		t.Fatal(err)
+	}
+	if !old.PillLiveEnabled() {
+		t.Error("a config without pill_live shows no words")
+	}
+	var off UI
+	if err := json.Unmarshal([]byte(`{"pill_live":false}`), &off); err != nil {
+		t.Fatal(err)
+	}
+	if off.PillLiveEnabled() {
+		t.Error("pill_live false still shows words")
+	}
+}

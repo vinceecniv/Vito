@@ -95,10 +95,10 @@ func TestTwoComputers(t *testing.T) {
 	a := newComputer(t, "aaaa")
 	a.h.Append(history.Entry{ID: "a1", Timestamp: now, Raw: "een twee drie", DurationMS: 1000})
 	a.h.Append(history.Entry{ID: "a2", Timestamp: now, Raw: "vier", DurationMS: 1000})
-	a.cfg.Dictionary.Keyterms = []string{"Vito"}
+	a.cfg.Dictionary.Corrections = []config.Correction{{Wrong: "vieto", Right: "Vito"}}
 	b := newComputer(t, "bbbb")
 	b.h.Append(history.Entry{ID: "b1", Timestamp: now, Raw: "vijf zes", DurationMS: 1000})
-	b.cfg.Dictionary.Keyterms = []string{"Docker"}
+	b.cfg.Dictionary.Corrections = []config.Correction{{Wrong: "dokker", Right: "Docker"}}
 
 	for range 2 { // a second round must change nothing
 		a.sync(t, r)
@@ -108,20 +108,20 @@ func TestTwoComputers(t *testing.T) {
 			if n, w, act := c.totals(t); n != 3 || w != 6 || act != 3 {
 				t.Fatalf("%s: %d entries, %d words, %d activations; want 3, 6, 3", name, n, w, act)
 			}
-			if !slices.Contains(c.cfg.Dictionary.Keyterms, "Vito") || !slices.Contains(c.cfg.Dictionary.Keyterms, "Docker") {
-				t.Fatalf("%s: dictionary %v, want both words", name, c.cfg.Dictionary.Keyterms)
+			if !hasFix(c.cfg.Dictionary, "Vito") || !hasFix(c.cfg.Dictionary, "Docker") {
+				t.Fatalf("%s: dictionary %v, want both words", name, c.cfg.Dictionary.Corrections)
 			}
 		}
 	}
 
 	// A word removed on one computer is removed on the other: the newest
 	// dictionary wins once the first merge is done.
-	a.cfg.Dictionary.Keyterms = []string{"Vito"}
+	a.cfg.Dictionary.Corrections = []config.Correction{{Wrong: "vieto", Right: "Vito"}}
 	a.cfg.Sync.DictionaryAt = time.Now().UnixMilli() + 1000
 	a.sync(t, r)
 	b.sync(t, r)
-	if slices.Contains(b.cfg.Dictionary.Keyterms, "Docker") {
-		t.Fatalf("b still has the removed word: %v", b.cfg.Dictionary.Keyterms)
+	if hasFix(b.cfg.Dictionary, "Docker") {
+		t.Fatalf("b still has the removed word: %v", b.cfg.Dictionary.Corrections)
 	}
 
 	// B dictates again: only that comes across.
@@ -217,4 +217,8 @@ func TestSyncCarriesDeletesStarsRulesAndCosts(t *testing.T) {
 	if favs, _ := b.h.FavoriteIDs(); favs["a3"] {
 		t.Fatal("b kept a star a removed later")
 	}
+}
+
+func hasFix(d config.Dictionary, right string) bool {
+	return slices.ContainsFunc(d.Corrections, func(c config.Correction) bool { return c.Right == right })
 }

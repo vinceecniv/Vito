@@ -128,7 +128,7 @@ provider (any endpoint speaking `POST /audio/transcriptions`):
   every asset digest (GitHub's release API carries them) and the model's LFS
   sha256. A warm-up request runs before the engine counts as `running`: on a
   Vulkan build the first request compiles shaders and takes ~30 s. Language is
-  detected by the model, keyterms are ignored, uploads must be WAV.
+  detected by the model, uploads must be WAV.
 - **Bring-your-own endpoint** (`stt.provider = "openai"`): whisper-server,
   Speaches, LocalAI, Groq, OpenAI. For whisper.cpp Vito sends `audio_ctx` sized
   to the recording (halves CPU time — Whisper always encodes 30 s otherwise),

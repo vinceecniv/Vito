@@ -18,13 +18,12 @@ import (
 // streaming, but it always works as long as the file exists — this is the
 // "never lose a dictation" path.
 type AsyncClient struct {
-	cfg      config.STT
-	keyterms []string
-	http     *http.Client
+	cfg  config.STT
+	http *http.Client
 }
 
-func NewAsyncClient(cfg config.STT, keyterms []string) *AsyncClient {
-	return &AsyncClient{cfg: cfg, keyterms: keyterms, http: &http.Client{Timeout: 60 * time.Second}}
+func NewAsyncClient(cfg config.STT) *AsyncClient {
+	return &AsyncClient{cfg: cfg, http: &http.Client{Timeout: 60 * time.Second}}
 }
 
 func (c *AsyncClient) TranscribeFile(ctx context.Context, path string) (string, error) {
@@ -68,9 +67,6 @@ func (c *AsyncClient) createTranscript(ctx context.Context, audioURL string) (st
 		body["language_detection"] = true
 	} else {
 		body["language_code"] = c.cfg.Language
-	}
-	if len(c.keyterms) > 0 {
-		body["word_boost"] = c.keyterms
 	}
 	data, _ := json.Marshal(body)
 

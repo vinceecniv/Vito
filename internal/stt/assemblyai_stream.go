@@ -43,7 +43,7 @@ type Stream struct {
 	failed  error
 }
 
-func newAssemblyAIStream(cfg config.STT, keyterms []string, log *slog.Logger, onPartial func(string)) *Stream {
+func newAssemblyAIStream(cfg config.STT, log *slog.Logger, onPartial func(string)) *Stream {
 	ctx, cancel := context.WithCancel(context.Background())
 	s := &Stream{
 		log:       log,
@@ -53,7 +53,7 @@ func newAssemblyAIStream(cfg config.STT, keyterms []string, log *slog.Logger, on
 		done:      make(chan struct{}),
 		turns:     make(map[int]string),
 	}
-	go s.run(ctx, cfg, keyterms)
+	go s.run(ctx, cfg)
 	return s
 }
 
@@ -136,7 +136,7 @@ func (s *Stream) fail(err error) {
 	s.log.Warn("stt stream failed", "err", err)
 }
 
-func (s *Stream) run(ctx context.Context, cfg config.STT, keyterms []string) {
+func (s *Stream) run(ctx context.Context, cfg config.STT) {
 	defer close(s.done)
 
 	q := url.Values{}
@@ -150,11 +150,6 @@ func (s *Stream) run(ctx context.Context, cfg config.STT, keyterms []string) {
 	}
 	if cfg.Model != "" {
 		q.Set("speech_model", cfg.Model)
-	}
-	if len(keyterms) > 0 {
-		if data, err := json.Marshal(keyterms); err == nil {
-			q.Set("keyterms_prompt", string(data))
-		}
 	}
 	wsURL := streamURL(cfg) + "?" + q.Encode()
 

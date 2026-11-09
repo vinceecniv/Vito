@@ -43,9 +43,8 @@ type Result struct {
 }
 
 // Transcribe runs one clip of 16 kHz mono s16le PCM, at most MaxSeconds long.
-// lang is a code from Languages or "" to detect; keywords are words and phrases
-// to favour (Vito's keyterms).
-func (e Engine) Transcribe(ctx context.Context, pcm []byte, lang string, keywords []string) (Result, error) {
+// lang is a code from Languages or "" to detect.
+func (e Engine) Transcribe(ctx context.Context, pcm []byte, lang string) (Result, error) {
 	if len(pcm) < 2 {
 		return Result{}, nil
 	}
@@ -64,13 +63,6 @@ func (e Engine) Transcribe(ctx context.Context, pcm []byte, lang string, keyword
 	args := []string{"--model", e.Model, "--audio", wav}
 	if Languages[lang] {
 		args = append(args, "--audio-language", lang)
-	}
-	if len(keywords) > 0 {
-		kw := filepath.Join(dir, "keywords.txt")
-		if err := os.WriteFile(kw, []byte(strings.Join(keywords, "\n")), 0o600); err != nil {
-			return Result{}, err
-		}
-		args = append(args, "--audio-keywords", kw)
 	}
 	cmd := exec.CommandContext(ctx, e.Bin, args...)
 	hideWindow(cmd)

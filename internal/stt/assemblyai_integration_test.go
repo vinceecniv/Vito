@@ -42,7 +42,7 @@ func TestIntegrationStream(t *testing.T) {
 	cfg := integrationCfg(t)
 	log := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug}))
 
-	s := NewStream(cfg, nil, log, nil)
+	s := NewStream(cfg, log, nil)
 	pcm := tonePCM(1.5)
 	for off := 0; off < len(pcm); off += 1600 {
 		end := min(off+1600, len(pcm))
@@ -84,7 +84,7 @@ func TestIntegrationAsync(t *testing.T) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 90*time.Second)
 	defer cancel()
-	text, err := NewAsyncClient(cfg, nil).TranscribeFile(ctx, path)
+	text, err := NewAsyncClient(cfg).TranscribeFile(ctx, path)
 	if err != nil {
 		t.Fatalf("TranscribeFile: %v", err)
 	}

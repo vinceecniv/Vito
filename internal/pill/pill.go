@@ -414,7 +414,7 @@ func (p *pill) animate(w window, style Style) {
 	f.Style = style
 	_, pinned := w.(*embedWindow)
 	f.FromRest = !pinned && p.idleWanted()
-	live := p.d.Config().UI.PillLive && faces() == nil
+	live := p.d.Config().UI.PillLiveEnabled() && faces() == nil
 	var words ticker // the live words
 	if _, pinned := w.(*embedWindow); pinned {
 		// In the island's panel: two lines of plain text where the last

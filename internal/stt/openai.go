@@ -24,15 +24,14 @@ import (
 // transcript; a recording is sent whole when it ends (see openaiStream).
 
 type openaiClient struct {
-	cfg      config.STT
-	keyterms []string
-	http     *http.Client
+	cfg  config.STT
+	http *http.Client
 }
 
-func newOpenAIClient(cfg config.STT, keyterms []string) *openaiClient {
+func newOpenAIClient(cfg config.STT) *openaiClient {
 	// No client-level timeout: a local model on a slow CPU, or an hour of
 	// uploaded audio, takes as long as it takes — the caller's context decides.
-	return &openaiClient{cfg: cfg, keyterms: keyterms, http: &http.Client{}}
+	return &openaiClient{cfg: cfg, http: &http.Client{}}
 }
 
 // OpenAIConfigured reports whether the endpoint provider has what it needs,
@@ -205,12 +204,6 @@ func (c *openaiClient) post(ctx context.Context, url string, open func() (io.Rea
 		// and, on a short clip, misses — the settings page says to pin it.
 		if l := strings.TrimSpace(c.cfg.Language); l != "" && l != "auto" {
 			fields["language"] = l
-		}
-		// The dictionary's keyterms, as Whisper's prompt: the model leans towards
-		// spellings it has just seen, which is exactly what names and jargon
-		// need. Endpoints that don't prompt (a Parakeet wrapper) ignore the field.
-		if len(c.keyterms) > 0 {
-			fields["prompt"] = strings.Join(c.keyterms, ", ")
 		}
 		if n := audioCtx(seconds); n > 0 && c.sendsAudioCtx() {
 			fields["audio_ctx"] = strconv.Itoa(n)

@@ -29,9 +29,6 @@ word by word.
 - `"EN, ES, FR, DE, IT, PT"` is a list of language codes — leave it unchanged.
 - `"hr"` is the unit in a price like `$0.45/hr` — use your language's short
   form for "hour" (de: `Std.`, fr: `h`, es: `h`, ja: `時間`).
-- `"Keyterms +$0.04/hr"`: keep the amount, translate the rest. "Keyterms" is
-  Vito's term for words you feed the recogniser; keep it if your language has
-  no established equivalent.
 - `"(Voice In, Text Out)"` and `"(Bring your own key)"` are glosses printed
   after the English product terms they gloss. Translate the meaning into your
   language and keep the parentheses; they are hidden when the UI is English.
