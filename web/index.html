@@ -1828,6 +1828,25 @@
   .lr-p { margin:0 0 14px; display:grid; grid-template-columns:52px minmax(0,1fr); gap:12px; }
   .lr-live .lr-p { display:block; }
   .lr-ts { font-size:11.5px; color:var(--text3); font-variant-numeric:tabular-nums; padding-top:4px; }
+  .lr-doc.lr-hasaudio .lr-ts { cursor:var(--cur-hand); border-radius:6px; align-self:start; padding:4px 4px 2px; margin:-0px -4px 0; }
+  .lr-doc.lr-hasaudio .lr-ts:hover { color:var(--accent); background:var(--accent-soft); }
+  .lr-doc.lr-hasaudio .lr-ts:hover::before { content:"▶ "; font-size:9px; }
+  .lr-doc.lr-playing .lr-p span[data-t], .lr-doc.lr-playing .lr-p mark[data-t] { cursor:var(--cur-hand); }
+  .lr-now { background:color-mix(in srgb, var(--accent) 16%, transparent); border-radius:3px; box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 16%, transparent); }
+  mark.lr-m.lr-now { background:color-mix(in srgb, var(--amber-ink) 22%, color-mix(in srgb, var(--accent) 22%, transparent)); }
+  .lr-player { position:sticky; top:8px; z-index:5; display:flex; align-items:center; gap:6px; margin:0 0 14px; padding:8px 12px; border:1px solid var(--card-border); border-radius:14px; background:var(--card); box-shadow:0 6px 20px rgba(0,0,0,.08); }
+  .lr-player[hidden] { display:none; }
+  .lr-pb { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; border:none; background:transparent; color:var(--text2); cursor:var(--cur-hand); flex:none; transition:background-color .12s, color .12s; }
+  .lr-pb:hover { background:var(--accent-soft); color:var(--accent); }
+  .lr-pb svg { width:19px; height:19px; }
+  .lr-pplay { background:var(--accent); color:#fff; }
+  .lr-pplay:hover { background:var(--accent); color:#fff; filter:brightness(1.1); }
+  .lr-pplay .lr-ic-pause, .lr-player.on .lr-pplay .lr-ic-play { display:none; }
+  .lr-player.on .lr-pplay .lr-ic-pause { display:block; }
+  .lr-pspeed { width:auto; padding:0 10px; border-radius:999px; font-size:12.5px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .lr-ptime { font-size:12px; color:var(--text3); font-variant-numeric:tabular-nums; min-width:38px; text-align:center; }
+  #lr-pseek { flex:1; min-width:60px; accent-color:var(--accent); }
+  @media (max-width:560px) { #lr-pback, #lr-pfwd, #lr-plen { display:none; } }
   .lr-live .lr-ts { display:none; }
   mark.lr-m { background:color-mix(in srgb, var(--amber-ink) 22%, transparent); color:inherit; border-radius:3px; padding:0 1px; }
   .lr-pending { color:var(--text3); }
@@ -2849,6 +2868,15 @@
           <button class="btn ghost small lr-ib lr-io" id="lr-folder" aria-label="Open folder" data-tip-text="Open folder — Vito keeps this recording here as Word, Markdown, text, subtitles and MP3. Copy what you need; if you change a file here, Vito leaves it and puts its update beside it."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2 2 0 0 1 5 5.5h4l2 2.2h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10.5h18"/></svg></button>
         </div>
         <div id="lr-dnote"></div>
+        <div class="lr-player" id="lr-player" hidden>
+          <button type="button" class="lr-pb lr-pplay" id="lr-pplay" aria-label="Play" data-tip-text="Play / pause (space)"><svg class="lr-ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg><svg class="lr-ic-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1.2"/><rect x="13.5" y="5" width="4" height="14" rx="1.2"/></svg></button>
+          <button type="button" class="lr-pb" id="lr-pback" aria-label="15 seconds back" data-tip-text="15 seconds back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><text x="12" y="15.5" font-size="7.5" text-anchor="middle" fill="currentColor" stroke="none" font-weight="700">15</text></svg></button>
+          <button type="button" class="lr-pb" id="lr-pfwd" aria-label="15 seconds forward" data-tip-text="15 seconds forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v4h-4"/><text x="12" y="15.5" font-size="7.5" text-anchor="middle" fill="currentColor" stroke="none" font-weight="700">15</text></svg></button>
+          <span class="lr-ptime" id="lr-ptime">0:00</span>
+          <input type="range" id="lr-pseek" min="0" max="1000" value="0" step="1" aria-label="Position">
+          <span class="lr-ptime" id="lr-plen">0:00</span>
+          <button type="button" class="lr-pb lr-pspeed" id="lr-pspeed" data-tip-text="Playback speed">1×</button>
+        </div>
         <div class="lr-cols">
           <article class="card lr-text" id="lr-doc-text"></article>
           <aside class="lr-side">
@@ -2968,6 +2996,13 @@ const TR = { nl: {
   "No recordings yet. Start one for a lecture, a meeting or a long dictation.":"Nog geen opnames. Start er een voor een college, een vergadering of een lang dictaat.",
   "Paused":"Gepauzeerd",
   "Upload":"Upload",
+  "Play":"Afspelen",
+  "Play / pause (space)":"Afspelen / pauzeren (spatie)",
+  "15 seconds back":"15 seconden terug",
+  "15 seconds forward":"15 seconden vooruit",
+  "Position":"Positie",
+  "Playback speed":"Afspeelsnelheid",
+  "The audio could not be loaded.":"De audio kon niet worden geladen.",
   "Turn an audio file (a recorded lecture, meeting or voice memo) into a recording":"Maak van een audiobestand (een opgenomen college, vergadering of spraakmemo) een opname",
   "Audio file":"Audiobestand",
   "Audio file as a recording":"Audiobestand als opname",
@@ -11636,6 +11671,7 @@ function lrShow(view){
   clearInterval(LR.statsT); LR.statsT = 0;
   if (view === "live") { LR.follow = true; lrFitLive(); lrFollow(); lrRenderStats(); LR.statsT = setInterval(lrRenderStats, LR_STATS_MS); }
   $("lr-doc-view").hidden = view !== "doc";
+  if (view !== "doc") lrAudio.pause();
   $("lr-new").hidden = view !== "list";
   $("lr-import").hidden = view !== "list";
 }
@@ -12090,11 +12126,12 @@ function lrItemsHTML(doc, editable){
       return `<h2 class="lr-h${it.title ? "" : " lr-empty-h"}" data-id="${it.id}"><span class="lr-ht"${editable ? ` title="${escapeHtml(t("Click to type a title"))}"` : ""}>${title}</span>${editable ? `<button class="lr-hx" data-del aria-label="${escapeHtml(t("Remove header"))}">×</button>` : ""}</h2>`;
     }
     const body = it.sentences.map(s => s.marked ? `<mark class="lr-m" data-t="${s.t}" data-marks="${escapeHtml((s.marks || []).join(" "))}">${escapeHtml(s.text)}</mark>` : `<span data-t="${s.t}">${escapeHtml(s.text)}</span>`).join(" ");
-    return `<p class="lr-p"><span class="lr-ts">${lrClock(it.at)}</span><span>${body}</span></p>`;
+    return `<p class="lr-p"><span class="lr-ts" data-at="${it.at}">${lrClock(it.at)}</span><span>${body}</span></p>`;
   }).join("");
 }
 
 async function lrOpenDoc(id){
+  if (LR.docID !== id) lrPlayerReset();
   LR.docID = id; LR.raw = false;
   $("lr-doc-view").querySelectorAll(".lr-seg button").forEach(b => b.classList.toggle("on", b.dataset.v === "clean"));
   lrShow("doc");
@@ -12136,6 +12173,7 @@ async function lrFetchDoc(){
   });
   lrRenderMarks(d);
   if (LR.pop && LR.pop.box === box) (LR.drag ? lrPreview : lrPlacePop)();
+  lrPlayerFor(d);
 }
 function lrEditHeader(h){
   if (h.querySelector("input")) return;
@@ -12289,6 +12327,123 @@ $("lr-pop-del").onclick = async () => {
   lrClosePop();
   if (await lrPostEvent(p.box, { type: "delete", of: p.id })) toast(t("Mark removed"), "ok", 1400);
 };
+// Listening back: the recording's audio under the title. A paragraph's time
+// plays from there; while it plays a click on a sentence jumps to it, and the
+// sentence being spoken lights up. The audio is fetched once (the element
+// cannot send the token), on the first play.
+const LR_SPEEDS = [1, 1.25, 1.5, 2, 0.75];
+const lrAudio = new Audio();
+lrAudio.preload = "auto";
+function lrPlayerReset(){
+  lrAudio.pause();
+  if (LR.audioURL) URL.revokeObjectURL(LR.audioURL);
+  LR.audioURL = ""; LR.audioFor = ""; LR.audioKey = "";
+  lrAudio.removeAttribute("src");
+  $("lr-player").classList.remove("on");
+  $("lr-doc-view").classList.remove("lr-playing");
+}
+function lrPlayerFor(d){
+  const has = !!d.audio_bytes && d.meta.state !== "recording" && d.meta.state !== "paused";
+  $("lr-player").hidden = !has;
+  $("lr-doc-view").classList.toggle("lr-hasaudio", has);
+  if (!has) { lrPlayerReset(); return; }
+  // New audio (recorded on, compressed): fetch it again at the next play.
+  const key = d.audio_bytes + ":" + (d.audio_type || "");
+  if (LR.audioKey && LR.audioKey !== key && lrAudio.paused) { const t0 = lrAudio.currentTime; lrPlayerReset(); LR.resumeAt = t0; }
+  if (!LR.audioURL) $("lr-plen").textContent = lrClock(d.meta.seconds || 0);
+  lrPlayerTick();
+}
+async function lrLoadAudio(){
+  const id = LR.docID;
+  if (LR.audioFor === id && LR.audioURL) return true;
+  const btn = $("lr-pplay"); btn.disabled = true;
+  try {
+    const r = await fetch(`/api/long/${id}/audio`, { headers: { Authorization: "Bearer " + TOKEN } });
+    if (!r.ok) throw new Error(t("The audio could not be loaded."));
+    const blob = await r.blob();
+    if (id !== LR.docID) return false;
+    LR.audioURL = URL.createObjectURL(blob); LR.audioFor = id;
+    LR.audioKey = (LR.doc?.audio_bytes || 0) + ":" + (LR.doc?.audio_type || "");
+    lrAudio.src = LR.audioURL;
+    await new Promise(res => { lrAudio.onloadedmetadata = res; lrAudio.onerror = res; });
+    if (LR.resumeAt) { lrAudio.currentTime = LR.resumeAt; LR.resumeAt = 0; }
+    return true;
+  } catch (e) { toast(e.message, "err"); return false; }
+  finally { btn.disabled = false; }
+}
+async function lrPlayAt(sec){
+  if (!(await lrLoadAudio())) return;
+  if (sec != null) lrAudio.currentTime = Math.max(0, sec);
+  lrAudio.playbackRate = LR.speed || 1;
+  LR.followAudio = true;
+  try { await lrAudio.play(); } catch {}
+}
+function lrPlayerTick(){
+  const cur = lrAudio.currentTime || 0, len = isFinite(lrAudio.duration) && lrAudio.duration ? lrAudio.duration : (LR.doc?.meta?.seconds || 0);
+  $("lr-ptime").textContent = lrClock(cur);
+  $("lr-plen").textContent = lrClock(len);
+  if (!LR.seeking) $("lr-pseek").value = len ? Math.round(cur / len * 1000) : 0;
+  lrMarkNow(cur);
+}
+// lrMarkNow lights the sentence that starts last at or before sec.
+function lrMarkNow(sec){
+  const box = $("lr-doc-text");
+  const playing = LR.audioFor === LR.docID && (!lrAudio.paused || lrAudio.currentTime > 0);
+  let best = null;
+  if (playing) for (const el of box.querySelectorAll("[data-t]")) { if (+el.dataset.t <= sec + 0.05) best = el; else break; }
+  if (best === LR.nowEl) return;
+  if (LR.nowEl) LR.nowEl.classList.remove("lr-now");
+  LR.nowEl = best;
+  if (!best) return;
+  best.classList.add("lr-now");
+  // Follow along, unless the reader scrolled away in the last few seconds.
+  if (!lrAudio.paused && LR.followAudio && Date.now() - (LR.userScroll || 0) > 4000) {
+    const r = best.getBoundingClientRect();
+    if (r.top < 120 || r.bottom > innerHeight - 60) best.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+}
+lrAudio.addEventListener("timeupdate", lrPlayerTick);
+lrAudio.addEventListener("play", () => { $("lr-player").classList.add("on"); $("lr-doc-view").classList.add("lr-playing"); $("lr-pplay").setAttribute("aria-label", t("Pause")); });
+lrAudio.addEventListener("pause", () => { $("lr-player").classList.remove("on"); $("lr-pplay").setAttribute("aria-label", t("Play")); });
+lrAudio.addEventListener("ended", lrPlayerTick);
+addEventListener("wheel", () => { LR.userScroll = Date.now(); }, { passive: true });
+addEventListener("touchmove", () => { LR.userScroll = Date.now(); }, { passive: true });
+$("lr-pplay").onclick = () => lrAudio.paused || !LR.audioURL ? lrPlayAt(null) : lrAudio.pause();
+$("lr-pback").onclick = () => lrPlayAt(Math.max(0, (lrAudio.currentTime || 0) - 15));
+$("lr-pfwd").onclick = () => lrPlayAt((lrAudio.currentTime || 0) + 15);
+$("lr-pspeed").onclick = () => {
+  const i = (LR_SPEEDS.indexOf(LR.speed || 1) + 1) % LR_SPEEDS.length;
+  LR.speed = LR_SPEEDS[i]; lrAudio.playbackRate = LR.speed;
+  $("lr-pspeed").textContent = String(LR.speed).replace(".", (0.5).toLocaleString(numLoc())[1] || ".") + "×";
+};
+$("lr-pseek").addEventListener("input", () => {
+  LR.seeking = true;
+  const len = isFinite(lrAudio.duration) && lrAudio.duration ? lrAudio.duration : (LR.doc?.meta?.seconds || 0);
+  $("lr-ptime").textContent = lrClock($("lr-pseek").value / 1000 * len);
+});
+$("lr-pseek").addEventListener("change", async () => {
+  const len = (LR.doc?.meta?.seconds || 0);
+  const v = $("lr-pseek").value / 1000;
+  LR.seeking = false;
+  if (!(await lrLoadAudio())) return;
+  lrAudio.currentTime = v * (isFinite(lrAudio.duration) && lrAudio.duration ? lrAudio.duration : len);
+  lrPlayerTick();
+});
+$("lr-doc-text").addEventListener("click", e => {
+  if (!$("lr-doc-view").classList.contains("lr-hasaudio") || String(getSelection()).trim()) return;
+  const ts = e.target.closest(".lr-ts");
+  if (ts) { lrPlayAt(+ts.dataset.at); return; }
+  // While listening, a sentence (not a mark, which opens its own card) jumps there.
+  if (lrAudio.paused || LR.audioFor !== LR.docID) return;
+  const s = e.target.closest("span[data-t]");
+  if (s) lrPlayAt(+s.dataset.t);
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== " " || LR.view !== "doc" || $("lr-player").hidden) return;
+  if (e.target.closest("input, textarea, select, button, [contenteditable]") || document.querySelector(".modal-backdrop")) return;
+  e.preventDefault();
+  $("lr-pplay").click();
+});
 // A click on a highlighted sentence opens its mark; selecting sentences
 // offers to mark exactly those.
 ["lr-live-text", "lr-doc-text"].forEach(bid => {
