@@ -27,7 +27,7 @@ Flow's Notetaker covers.
   Vito's window is closed; the island offers pause, mark and stop. The
   dictation key keeps dictating; it never silently changes mode.
 - A long uploaded audio file becomes a session in the same list (label
-  "Upload").
+  "From a file").
 - Recordings do not count as dictations: not in "words today", saved typing
   time or History.
 - Settings: one card "Long recordings" in an existing tab (clean per block,

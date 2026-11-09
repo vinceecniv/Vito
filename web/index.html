@@ -3006,7 +3006,8 @@ const TR = { nl: {
   "Restoring the recording…":"Opname wordt hersteld…",
   "No recordings yet. Start one for a lecture, a meeting or a long dictation.":"Nog geen opnames. Start er een voor een college, een vergadering of een lang dictaat.",
   "Paused":"Gepauzeerd",
-  "Upload":"Upload",
+  "From a file":"Uit bestand",
+  "Made from an audio file you chose, not recorded in Vito":"Gemaakt van een audiobestand dat je koos, niet opgenomen in Vito",
   "Recognise speakers — who said what, with a name for each":"Sprekers herkennen — wie zei wat, met een naam per spreker",
   "Recognise speakers":"Sprekers herkennen",
   "Recognise again":"Opnieuw herkennen",
@@ -11776,7 +11777,8 @@ function lrRenderList(){
       : s.state === "done" && LR.cleanOn && s.blocks && s.cleaned < s.blocks ? c("busy", `${t("Cleaning up")} ${s.cleaned}/${s.blocks}`) : "";
     if (s.speakers === "running") out += c("busy", t("Recognising speakers"));
     else if (s.speakers === "done") out += c("", t("Speakers"));
-    if (s.source === "upload") out += c("", t("Upload"));
+    // Made from an audio file rather than recorded here (nothing goes to the cloud for it).
+    if (s.source === "upload") out += `<span class="lr-chip" data-tip-text="${escapeHtml(t("Made from an audio file you chose, not recorded in Vito"))}">${escapeHtml(t("From a file"))}</span>`;
     if (s.state === "done" && !s.audio_bytes) out += `<span class="lr-chip" data-tip-text="${escapeHtml(t("The audio was removed by the setting under Settings → Recordings; the text stays."))}">${escapeHtml(t("Text only"))}</span>`;
     return out;
   };
