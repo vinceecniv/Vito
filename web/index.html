@@ -11796,15 +11796,20 @@ $("lr-live-text").addEventListener("scroll", () => {
 window.addEventListener("resize", () => { lrFitLive(); lrFollow(); });
 // The level meter of a running recording: ten bars (the last two amber,
 // all red when it clips), and a warning when nothing has been heard for
-// LR_QUIET_MS while recording (not paused).
-const LR_QUIET_MS = 20000;
+// LR_QUIET_MS while recording (not paused) — no speech, background noise aside.
+const LR_QUIET_MS = 20000, LR_SPEECH_LEVEL = 30, LR_SPEECH_PEAKS = 3;
 function lrLevel(e){
   const box = $("lr-level"); if (!box) return;
   const on = Math.round((e.level || 0) / 10);
   box.querySelectorAll("i").forEach((b, i) => { b.classList.toggle("on", i < on); b.classList.toggle("hi", i >= 8); });
   box.classList.toggle("clip", !!e.clip);
+  // Speech, not background noise: at least LR_SPEECH_PEAKS readings of 3+
+  // bars within 2 seconds. A hum or a fan that only lifts the first bars
+  // does not count.
   const now = Date.now();
-  if ((e.level || 0) >= 12 || !LR.lastLoud || !LR.running || LR.running.state !== "recording") LR.lastLoud = now;
+  if ((e.level || 0) >= LR_SPEECH_LEVEL) LR.peaks = (LR.peaks || []).filter(t0 => now - t0 < 2000).concat(now);
+  const speech = (LR.peaks || []).filter(t0 => now - t0 < 2000).length >= LR_SPEECH_PEAKS;
+  if (speech || !LR.lastLoud || !LR.running || LR.running.state !== "recording") LR.lastLoud = now;
   const quiet = LR.running && LR.running.state === "recording" && now - LR.lastLoud > LR_QUIET_MS;
   if ($("lr-quiet").hidden === quiet) $("lr-quiet").hidden = !quiet;
 }
