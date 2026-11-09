@@ -43,7 +43,7 @@ func (e *embedWindow) take(dst []byte) bool {
 func (e *embedWindow) connector() string            { return "" }
 func (e *embedWindow) gone() <-chan struct{}        { return e.ended }
 func (e *embedWindow) pointer() <-chan pointerEvent { return e.ptr }
-func (e *embedWindow) setInput([4]int)              {}
+func (e *embedWindow) setInput(...[4]int)           {}
 
 // end tells the pill its window is gone: the island closed or was unpinned.
 func (e *embedWindow) end() {

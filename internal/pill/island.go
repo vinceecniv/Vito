@@ -1055,8 +1055,13 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	// pixels higher in the window than laid out, so the panel can reach the
 	// top of the screen, which the window itself may not cross.
 	var shift int
-	region := func(height float64) [4]int {
-		return [4]int{int((islandWinW - panelW) / 2), int(panelFoot-height) - shift, int(panelW), int(height + footH + 2)}
+	panelBox := func(height float64) [4]int {
+		return [4]int{int((islandWinW - panelW) / 2), int(panelFoot-height) - shift, int(panelW), int(height + 2)}
+	}
+	// region: the panel, and under it only the microphone's room (or the
+	// embedded pill's), so the free space beside it lets the pointer through.
+	region := func(height float64) [][4]int {
+		return [][4]int{panelBox(height), {int(islandWinW/2 - 60), int(panelFoot) - shift, 120, int(footH)}}
 	}
 	// foldRegion: the folded island's resting pill, where its foot is.
 	foldRegion := func() [4]int {
@@ -1069,11 +1074,12 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	if output == 0 && pin != nil {
 		output = outputNamed(pin.Screen)
 	}
-	w, err := openIslandWindow(output, islandWinW, islandWinH, region(st.ph))
+	w, err := openIslandWindow(output, islandWinW, islandWinH, inputArea(region(st.ph)).union())
 	if err != nil {
 		p.log.Debug("no island", "err", err)
 		return false
 	}
+	w.setInput(region(st.ph)...)
 	defer w.close()
 	mv, _ := w.(mover)
 	var offX, offUp int   // where a pinned island stands
@@ -1122,7 +1128,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		mv.setPlace(sw/2-islandWinW/2+offX, win, sh)
 		if now := int(math.Round(st.top())) - (top - win); now != shift {
 			shift = now
-			w.setInput(region(max(st.ph, st.height(st.view))))
+			w.setInput(region(max(st.ph, st.height(st.view)))...)
 		}
 	}
 	if st.pinned && mv != nil {
@@ -1185,7 +1191,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	goTo := func(v view) {
 		st.prev, st.view, st.fade = st.view, v, 0
 		// While it changes, the region covers both views' panels.
-		w.setInput(region(max(st.height(st.prev), st.height(v))))
+		w.setInput(region(max(st.height(st.prev), st.height(v)))...)
 		// Pinned near the top, a taller view moves down to fit.
 		if st.pinned && mv != nil {
 			offX, offUp = wantX, wantUp
@@ -1300,7 +1306,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 					if mv != nil {
 						mv.setOffset(0, 0, 0)
 						shift = 0
-						w.setInput(region(st.height(st.view)))
+						w.setInput(region(st.height(st.view))...)
 					}
 				}
 				p.pinnedUp.Store(st.pinned)
@@ -1461,7 +1467,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		if st.fade < 1 {
 			st.fade = min(1, st.fade+step(islandView))
 			if st.fade == 1 {
-				w.setInput(region(st.height(st.view)))
+				w.setInput(region(st.height(st.view))...)
 			}
 			moving = true
 		}
@@ -1492,7 +1498,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			moving = true
 		} else if !fold && st.compact > 0 {
 			if st.compact == 1 {
-				w.setInput(region(st.height(st.view)))
+				w.setInput(region(st.height(st.view))...)
 			}
 			st.compact = max(0, st.compact-step(compactTime/2))
 			moving = true

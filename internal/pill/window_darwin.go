@@ -123,7 +123,7 @@ type macWindow struct {
 
 	mu       sync.Mutex
 	scr      screen
-	box      [4]int
+	box      inputArea
 	offX     int
 	offUp    int
 	placed   bool
@@ -174,7 +174,7 @@ func openMac(output uint32, lw, lh, margin int, input [4]int, front bool) (windo
 	if !ok {
 		return nil, errors.New("no screen")
 	}
-	w := &macWindow{id: int(nextWindowID.Add(1)), lw: lw, lh: lh, margin: margin, scr: s, box: input,
+	w := &macWindow{id: int(nextWindowID.Add(1)), lw: lw, lh: lh, margin: margin, scr: s, box: inputArea{input},
 		pointers: make(chan pointerEvent, 32), lost: make(chan struct{})}
 	w.mu.Lock()
 	w.place()
@@ -300,8 +300,7 @@ func (w *macWindow) hover() {
 		lx, ly := float64(mx)-w.x, w.y+float64(w.lh)-float64(my)
 		w.mu.Unlock()
 		down := w.down.Load()
-		in := down || shown && lx >= float64(box[0]) && ly >= float64(box[1]) &&
-			lx < float64(box[0]+box[2]) && ly < float64(box[1]+box[3])
+		in := down || shown && box.has(lx, ly)
 		if in != w.inside {
 			w.inside = in
 			C.vitoPillIgnoreMouse(C.int(w.id), C.bool(!in))
@@ -326,9 +325,9 @@ func (w *macWindow) connector() string {
 func (w *macWindow) gone() <-chan struct{}        { return w.lost }
 func (w *macWindow) pointer() <-chan pointerEvent { return w.pointers }
 
-func (w *macWindow) setInput(box [4]int) {
+func (w *macWindow) setInput(boxes ...[4]int) {
 	w.mu.Lock()
-	w.box = box
+	w.box = boxes
 	w.mu.Unlock()
 }
 

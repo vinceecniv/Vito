@@ -192,7 +192,9 @@ func (w *gnomeWindow) present(pixels []byte) error {
 func (w *gnomeWindow) connector() string            { return gnomeConnector(w.monitor) }
 func (w *gnomeWindow) gone() <-chan struct{}        { return w.lost }
 func (w *gnomeWindow) pointer() <-chan pointerEvent { return w.pointers }
-func (w *gnomeWindow) setInput(box [4]int)          { w.call("SetInput", toBox(box)) }
+
+// setInput: the extension takes one box, so the one around them all.
+func (w *gnomeWindow) setInput(boxes ...[4]int) { w.call("SetInput", toBox(inputArea(boxes).union())) }
 
 func (w *gnomeWindow) close() {
 	w.c.mu.Lock()

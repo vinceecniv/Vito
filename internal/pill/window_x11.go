@@ -205,7 +205,7 @@ type x11Window struct {
 	mon    x11Monitor
 	pw, ph int // the window's size, physical
 	pos    [2]int
-	box    [4]int
+	box    inputArea
 	offX   int
 	offUp  int
 	placed bool
@@ -258,7 +258,7 @@ func openX11(output uint32, lw, lh, margin int, input [4]int, front bool) (windo
 		c.Close()
 		return nil, errors.New("no screen")
 	}
-	w := &x11Window{c: c, depth: 32, lw: lw, lh: lh, margin: margin, front: front, mon: m, box: input,
+	w := &x11Window{c: c, depth: 32, lw: lw, lh: lh, margin: margin, front: front, mon: m, box: inputArea{input},
 		pointers: make(chan pointerEvent, 32), lost: make(chan struct{})}
 	w.pw, w.ph = w.size()
 	cmap, _ := c.NewId()
@@ -321,9 +321,10 @@ func (w *x11Window) applyInput() {
 	var rects []xproto.Rectangle
 	if w.shown {
 		k := w.mon.k
-		b := w.box
-		rects = []xproto.Rectangle{{X: int16(math.Floor(float64(b[0]) * k)), Y: int16(math.Floor(float64(b[1]) * k)),
-			Width: uint16(math.Ceil(float64(b[2]) * k)), Height: uint16(math.Ceil(float64(b[3]) * k))}}
+		for _, b := range w.box {
+			rects = append(rects, xproto.Rectangle{X: int16(math.Floor(float64(b[0]) * k)), Y: int16(math.Floor(float64(b[1]) * k)),
+				Width: uint16(math.Ceil(float64(b[2]) * k)), Height: uint16(math.Ceil(float64(b[3]) * k))})
+		}
 	}
 	shape.Rectangles(w.c.Conn, shape.SoSet, shape.SkInput, xproto.ClipOrderingUnsorted, w.win, 0, 0, rects)
 }
@@ -494,9 +495,9 @@ func (w *x11Window) connector() string {
 func (w *x11Window) gone() <-chan struct{}        { return w.lost }
 func (w *x11Window) pointer() <-chan pointerEvent { return w.pointers }
 
-func (w *x11Window) setInput(box [4]int) {
+func (w *x11Window) setInput(boxes ...[4]int) {
 	w.mu.Lock()
-	w.box = box
+	w.box = boxes
 	w.applyInput()
 	w.mu.Unlock()
 }

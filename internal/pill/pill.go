@@ -58,9 +58,36 @@ type window interface {
 	gone() <-chan struct{}
 	// pointer reports the pointer over the window's input box.
 	pointer() <-chan pointerEvent
-	// setInput moves the input box, x, y, w, h in logical pixels.
-	setInput(box [4]int)
+	// setInput moves the input box, x, y, w, h in logical pixels; more than
+	// one box takes the pointer over each (the island: its panel, and the
+	// microphone free under it).
+	setInput(boxes ...[4]int)
 	close()
+}
+
+// inputArea is the part of a window that takes the pointer: boxes of x, y,
+// w, h in logical pixels.
+type inputArea [][4]int
+
+func (a inputArea) has(x, y float64) bool {
+	for _, b := range a {
+		if x >= float64(b[0]) && y >= float64(b[1]) && x < float64(b[0]+b[2]) && y < float64(b[1]+b[3]) {
+			return true
+		}
+	}
+	return false
+}
+
+// union is the one box around them all, for a desktop that takes one.
+func (a inputArea) union() [4]int {
+	if len(a) == 0 {
+		return [4]int{}
+	}
+	x0, y0, x1, y1 := a[0][0], a[0][1], a[0][0]+a[0][2], a[0][1]+a[0][3]
+	for _, b := range a[1:] {
+		x0, y0, x1, y1 = min(x0, b[0]), min(y0, b[1]), max(x1, b[0]+b[2]), max(y1, b[1]+b[3])
+	}
+	return [4]int{x0, y0, x1 - x0, y1 - y0}
 }
 
 type pointerKind int

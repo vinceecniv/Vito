@@ -506,10 +506,12 @@ func (w *wlWindow) newID() uint32 {
 
 // setInput makes box (x, y, w, h in logical pixels) the part of the window that
 // takes the pointer, from the next picture on.
-func (w *wlWindow) setInput(box [4]int) {
+func (w *wlWindow) setInput(boxes ...[4]int) {
 	id := w.newID()
 	w.send(idCompositor, compositorCreateRegion, nil, id)
-	w.send(id, regionAdd, nil, uint32(box[0]), uint32(box[1]), uint32(box[2]), uint32(box[3]))
+	for _, box := range boxes {
+		w.send(id, regionAdd, nil, uint32(box[0]), uint32(box[1]), uint32(box[2]), uint32(box[3]))
+	}
 	w.send(idSurface, surfaceSetInputRegion, nil, id)
 	w.send(id, regionDestroy, nil)
 }
