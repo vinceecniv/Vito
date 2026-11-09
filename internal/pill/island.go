@@ -370,6 +370,11 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 			}
 		case tOpenVito:
 			at, text = brand, ip.t("Open Vito")
+			if !st.stats && st.day.Words > 0 {
+				// Today's figures switched off: here they are at a glance.
+				text += "\n" + ip.number(st.day.Words) + " " + ip.t("words today") +
+					"\n" + ip.duration(st.day.Saved) + " " + ip.t("saved typing time")
+			}
 		case tMenu:
 			at = menu
 			text = map[view]string{viewMain: ip.t("Quick settings"), viewSettings: ip.t("Close"),
