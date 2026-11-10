@@ -666,11 +666,13 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	if st.last != "" {
 		// The text itself copies it; the button pastes it again.
 		ip.targets[tCopy] = rect{lastBox.x, lastBox.y, lastBox.w - 46, lastBox.h}
-		if st.over == tCopy {
-			boxTint = blend(tint, th.to, 0.08)
-		}
 	}
-	fill(buf, w, h, lastBox, 12, boxTint, a)
+	// The box shows only under the pointer: its corners are smaller than the
+	// panel's, and so close to them a box always there looked off.
+	switch st.over {
+	case tCopy, tRepaste, tOlder, tNewer:
+		fill(buf, w, h, lastBox, 12, boxTint, a)
+	}
 	// No label: what the box holds speaks for itself. Up to three lines,
 	// the last one shortened, standing in the middle of the box.
 	last, c := strings.Join(strings.Fields(st.last), " "), ink
