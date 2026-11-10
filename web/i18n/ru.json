@@ -1427,7 +1427,20 @@
 "Confetti": "Конфетти",
 "Ocean": "Океан",
 "High contrast": "Высокий контраст",
-"High contrast black and white": "Высокий контраст, чёрно-белый"
+"High contrast black and white": "Высокий контраст, чёрно-белый",
+"Recordings": "Записи",
+"Audio on disk": "Аудио на диске",
+"No recordings yet. The tape is still blank.": "Записей пока нет. Плёнка ещё чиста.",
+"Quiet on set — nothing recorded yet.": "Тишина на площадке — ещё ничего не записано.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito весь внимание, но пока ничего не записано.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Запись длится столько, сколько вам нужно, — лекция, встреча или долгая диктовка. Vito записывает текст, пока вы говорите, а вы можете отмечать моменты и добавлять заголовки.",
+"Start your first recording": "Начните свою первую запись",
+"or turn an audio file into a recording": "или превратите аудиофайл в запись",
+"Paused": "На паузе",
+"words": "слов",
+"Marks": "Отметки",
+"Follows the colours of your desktop": "Следует цветам вашего рабочего стола",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Нажмите Caps Lock, чтобы начать диктовку, и нажмите ещё раз, чтобы остановить. Для диктовки с удержанием нужен niri новее 26.04; после обновления настройте его заново."
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",

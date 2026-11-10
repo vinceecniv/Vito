@@ -1427,7 +1427,20 @@
 "Confetti": "कंफ़ेटी",
 "Ocean": "सागर",
 "High contrast": "उच्च कंट्रास्ट",
-"High contrast black and white": "उच्च कंट्रास्ट श्वेत-श्याम"
+"High contrast black and white": "उच्च कंट्रास्ट श्वेत-श्याम",
+"Recordings": "रिकॉर्डिंग",
+"Audio on disk": "डिस्क पर ऑडियो",
+"No recordings yet. The tape is still blank.": "अभी तक कोई रिकॉर्डिंग नहीं। टेप अभी भी खाली है।",
+"Quiet on set — nothing recorded yet.": "सेट पर शांति — अभी तक कुछ रिकॉर्ड नहीं हुआ।",
+"Vito is all ears, but nothing has been recorded yet.": "Vito पूरे ध्यान से सुन रहा है, लेकिन अभी तक कुछ रिकॉर्ड नहीं हुआ है।",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "रिकॉर्डिंग तब तक चलती रहती है जब तक आपको ज़रूरत हो — कोई लेक्चर, मीटिंग या लंबा डिक्टेशन। आपके बोलते-बोलते Vito साथ में लिखता जाता है, और आप पलों को चिह्नित कर सकते हैं और शीर्षक जोड़ सकते हैं।",
+"Start your first recording": "अपनी पहली रिकॉर्डिंग शुरू करें",
+"or turn an audio file into a recording": "या किसी ऑडियो फ़ाइल को रिकॉर्डिंग में बदलें",
+"Paused": "रुकी हुई",
+"words": "शब्द",
+"Marks": "चिह्न",
+"Follows the colours of your desktop": "आपके डेस्कटॉप के रंगों का पालन करता है",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "डिक्टेशन शुरू करने के लिए Caps Lock दबाएँ और रोकने के लिए उसे फिर से दबाएँ। उसे दबाए रखकर डिक्टेट करने के लिए 26.04 से नया niri चाहिए; उसके बाद इसे फिर से सेट करें।"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",

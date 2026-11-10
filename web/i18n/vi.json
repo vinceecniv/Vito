@@ -1425,7 +1425,20 @@
 "Confetti": "Hoa giấy",
 "Ocean": "Đại dương",
 "High contrast": "Tương phản cao",
-"High contrast black and white": "Tương phản cao đen trắng"
+"High contrast black and white": "Tương phản cao đen trắng",
+"Recordings": "Bản ghi âm",
+"Audio on disk": "Âm thanh trên ổ đĩa",
+"No recordings yet. The tape is still blank.": "Chưa có bản ghi âm nào. Cuộn băng vẫn còn trống.",
+"Quiet on set — nothing recorded yet.": "Hiện trường yên lặng — chưa ghi gì cả.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito đang lắng tai nghe, nhưng chưa có gì được ghi lại.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Một bản ghi âm kéo dài bao lâu tùy bạn cần — một bài giảng, một cuộc họp hay một bài đọc dài. Vito ghi chép theo khi bạn nói, và bạn có thể đánh dấu các khoảnh khắc và thêm tiêu đề.",
+"Start your first recording": "Bắt đầu bản ghi âm đầu tiên",
+"or turn an audio file into a recording": "hoặc biến một tệp âm thanh thành bản ghi âm",
+"Paused": "Đã tạm dừng",
+"words": "từ",
+"Marks": "Dấu mốc",
+"Follows the colours of your desktop": "Theo màu sắc của màn hình desktop của bạn",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nhấn Caps Lock để bắt đầu đọc chính tả và nhấn lại để dừng. Muốn giữ phím để đọc thì cần niri mới hơn 26.04; khi đó hãy thiết lập lại."
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",

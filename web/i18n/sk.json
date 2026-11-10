@@ -1427,7 +1427,20 @@
 "Confetti": "Konfety",
 "Ocean": "Oceán",
 "High contrast": "Vysoký kontrast",
-"High contrast black and white": "Vysoký kontrast čiernobiely"
+"High contrast black and white": "Vysoký kontrast čiernobiely",
+"Recordings": "Nahrávky",
+"Audio on disk": "Zvuk na disku",
+"No recordings yet. The tape is still blank.": "Zatiaľ žiadne nahrávky. Páska je stále prázdna.",
+"Quiet on set — nothing recorded yet.": "Ticho na pľaci — zatiaľ nič nenahrané.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito je samé ucho, ale zatiaľ sa nič nenahralo.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Nahrávanie beží tak dlho, ako potrebujete — prednáška, porada alebo dlhý diktát. Vito priebežne zapisuje, čo hovoríte, a vy si môžete označovať momenty a pridávať nadpisy.",
+"Start your first recording": "Spustite svoje prvé nahrávanie",
+"or turn an audio file into a recording": "alebo zmeňte zvukový súbor na nahrávku",
+"Paused": "Pozastavené",
+"words": "slov",
+"Marks": "Značky",
+"Follows the colours of your desktop": "Riadi sa farbami vášho pracovného prostredia",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Stlačením klávesu Caps Lock spustíte diktovanie a ďalším stlačením ho zastavíte. Diktovanie podržaním vyžaduje niri novšie ako 26.04; potom ho nastavte znova."
 },
 "help": {
 "theme": "Svetlá, tmavá alebo automatická — automatická sleduje svetlý/tmavý režim vášho systému.",

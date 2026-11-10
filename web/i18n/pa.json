@@ -1427,7 +1427,20 @@
 "Confetti": "ਕਨਫ਼ੈਟੀ",
 "Ocean": "ਸਮੁੰਦਰ",
 "High contrast": "ਉੱਚ ਕੰਟ੍ਰਾਸਟ",
-"High contrast black and white": "ਉੱਚ ਕੰਟ੍ਰਾਸਟ ਕਾਲਾ-ਚਿੱਟਾ"
+"High contrast black and white": "ਉੱਚ ਕੰਟ੍ਰਾਸਟ ਕਾਲਾ-ਚਿੱਟਾ",
+"Recordings": "ਰਿਕਾਰਡਿੰਗਾਂ",
+"Audio on disk": "ਡਿਸਕ 'ਤੇ ਆਡੀਓ",
+"No recordings yet. The tape is still blank.": "ਅਜੇ ਕੋਈ ਰਿਕਾਰਡਿੰਗ ਨਹੀਂ। ਟੇਪ ਅਜੇ ਖ਼ਾਲੀ ਹੈ।",
+"Quiet on set — nothing recorded yet.": "ਸੈੱਟ 'ਤੇ ਖ਼ਾਮੋਸ਼ੀ — ਅਜੇ ਕੁਝ ਵੀ ਰਿਕਾਰਡ ਨਹੀਂ ਹੋਇਆ।",
+"Vito is all ears, but nothing has been recorded yet.": "Vito ਪੂਰੇ ਧਿਆਨ ਨਾਲ ਸੁਣ ਰਿਹਾ ਹੈ, ਪਰ ਅਜੇ ਕੁਝ ਵੀ ਰਿਕਾਰਡ ਨਹੀਂ ਹੋਇਆ।",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "ਰਿਕਾਰਡਿੰਗ ਓਨੀ ਦੇਰ ਚੱਲਦੀ ਰਹਿੰਦੀ ਹੈ ਜਿੰਨੀ ਦੇਰ ਤੁਹਾਨੂੰ ਲੋੜ ਹੋਵੇ — ਕੋਈ ਲੈਕਚਰ, ਮੀਟਿੰਗ ਜਾਂ ਲੰਮੀ ਡਿਕਟੇਸ਼ਨ। ਤੁਸੀਂ ਬੋਲਦੇ ਹੋ ਤਾਂ Vito ਨਾਲ-ਨਾਲ ਲਿਖਦਾ ਜਾਂਦਾ ਹੈ, ਅਤੇ ਤੁਸੀਂ ਪਲਾਂ ਨੂੰ ਨਿਸ਼ਾਨਬੱਧ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਸਿਰਲੇਖ ਜੋੜ ਸਕਦੇ ਹੋ।",
+"Start your first recording": "ਆਪਣੀ ਪਹਿਲੀ ਰਿਕਾਰਡਿੰਗ ਸ਼ੁਰੂ ਕਰੋ",
+"or turn an audio file into a recording": "ਜਾਂ ਕਿਸੇ ਆਡੀਓ ਫ਼ਾਈਲ ਨੂੰ ਰਿਕਾਰਡਿੰਗ ਵਿੱਚ ਬਦਲੋ",
+"Paused": "ਰੁਕਿਆ ਹੋਇਆ",
+"words": "ਸ਼ਬਦ",
+"Marks": "ਨਿਸ਼ਾਨ",
+"Follows the colours of your desktop": "ਤੁਹਾਡੇ ਡੈਸਕਟਾਪ ਦੇ ਰੰਗਾਂ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "ਡਿਕਟੇਟ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰਨ ਲਈ Caps Lock ਦਬਾਓ ਅਤੇ ਰੋਕਣ ਲਈ ਇਸਨੂੰ ਦੁਬਾਰਾ ਦਬਾਓ। ਦਬਾ ਕੇ ਰੱਖ ਕੇ ਡਿਕਟੇਟ ਕਰਨ ਲਈ 26.04 ਤੋਂ ਨਵਾਂ niri ਚਾਹੀਦਾ ਹੈ; ਫਿਰ ਇਸਨੂੰ ਦੁਬਾਰਾ ਸੈੱਟ ਕਰੋ।"
 },
 "help": {
 "theme": "ਹਲਕਾ, ਗੂੜ੍ਹਾ ਜਾਂ ਆਪਣੇ-ਆਪ — ਆਪਣੇ-ਆਪ ਤੁਹਾਡੇ ਸਿਸਟਮ ਦੀ ਹਲਕਾ/ਗੂੜ੍ਹਾ ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਚੱਲਦਾ ਹੈ।",

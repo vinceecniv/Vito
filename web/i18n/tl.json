@@ -1425,7 +1425,20 @@
 "Confetti": "Confetti",
 "Ocean": "Karagatan",
 "High contrast": "Mataas na contrast",
-"High contrast black and white": "Mataas na contrast na itim at puti"
+"High contrast black and white": "Mataas na contrast na itim at puti",
+"Recordings": "Mga recording",
+"Audio on disk": "Audio sa disk",
+"No recordings yet. The tape is still blank.": "Wala pang mga recording. Blangko pa ang tape.",
+"Quiet on set — nothing recorded yet.": "Tahimik sa set — wala pang na-record.",
+"Vito is all ears, but nothing has been recorded yet.": "Nakikinig nang mabuti ang Vito, pero wala pang na-record.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Tuloy-tuloy ang isang recording hangga't kailangan mo — isang lecture, meeting o mahabang diktasyon. Isinusulat ng Vito ang sinasabi mo habang nagsasalita ka, at maaari kang magmarka ng mga sandali at magdagdag ng mga heading.",
+"Start your first recording": "Simulan ang una mong recording",
+"or turn an audio file into a recording": "o gawing recording ang isang audio file",
+"Paused": "Naka-pause",
+"words": "mga salita",
+"Marks": "Mga marka",
+"Follows the colours of your desktop": "Sinusunod ang mga kulay ng desktop mo",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Pindutin ang Caps Lock para magsimulang magdikta at pindutin ito ulit para tumigil. Para magdikta habang pinipindot ito nang matagal, kailangan ng niri na mas bago sa 26.04; pagkatapos ay i-set up ito ulit."
 },
 "help": {
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",

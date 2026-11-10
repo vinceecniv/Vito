@@ -1427,7 +1427,20 @@
 "Confetti": "Konfeti",
 "Ocean": "Ocean",
 "High contrast": "Visok kontrast",
-"High contrast black and white": "Visok kontrast, črno-belo"
+"High contrast black and white": "Visok kontrast, črno-belo",
+"Recordings": "Posnetki",
+"Audio on disk": "Zvok na disku",
+"No recordings yet. The tape is still blank.": "Še ni posnetkov. Trak je še prazen.",
+"Quiet on set — nothing recorded yet.": "Tišina na snemanju — posneto še ni nič.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito je ves ušesa, a posneto še ni bilo nič.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Posnetek teče, kolikor dolgo ga potrebujete — predavanje, sestanek ali dolgo narekovanje. Vito sproti zapisuje, kar govorite, vi pa lahko označujete trenutke in dodajate naslove.",
+"Start your first recording": "Začnite svoj prvi posnetek",
+"or turn an audio file into a recording": "ali zvočno datoteko spremenite v posnetek",
+"Paused": "Na premoru",
+"words": "besed",
+"Marks": "Oznake",
+"Follows the colours of your desktop": "Sledi barvam vašega namizja",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Pritisnite Caps Lock, da začnete narekovati, in ga pritisnite znova, da ustavite. Za narekovanje z držanjem tipke je potreben niri, novejši od 26.04; takrat ga nastavite znova."
 },
 "help": {
 "theme": "Svetla, temna ali samodejna — samodejna sledi svetli/temni nastavitvi vašega sistema.",

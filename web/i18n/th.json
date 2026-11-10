@@ -1425,7 +1425,20 @@
 "Confetti": "คอนเฟตติ",
 "Ocean": "มหาสมุทร",
 "High contrast": "คอนทราสต์สูง",
-"High contrast black and white": "คอนทราสต์สูงขาวดำ"
+"High contrast black and white": "คอนทราสต์สูงขาวดำ",
+"Recordings": "การบันทึก",
+"Audio on disk": "เสียงบนดิสก์",
+"No recordings yet. The tape is still blank.": "ยังไม่มีการบันทึก เทปยังว่างเปล่าอยู่เลย",
+"Quiet on set — nothing recorded yet.": "เงียบกองถ่าย — ยังไม่มีอะไรถูกบันทึก",
+"Vito is all ears, but nothing has been recorded yet.": "Vito ตั้งใจฟังอยู่ แต่ยังไม่มีอะไรถูกบันทึกเลย",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "การบันทึกจะดำเนินต่อไปนานเท่าที่คุณต้องการ — ไม่ว่าจะเป็นการบรรยาย การประชุม หรือการบอกให้พิมพ์ยาวๆ Vito จะเขียนตามไปขณะที่คุณพูด และคุณสามารถทำเครื่องหมายช่วงเวลาสำคัญและเพิ่มหัวข้อได้",
+"Start your first recording": "เริ่มการบันทึกครั้งแรกของคุณ",
+"or turn an audio file into a recording": "หรือเปลี่ยนไฟล์เสียงให้เป็นการบันทึก",
+"Paused": "หยุดชั่วคราวแล้ว",
+"words": "คำ",
+"Marks": "เครื่องหมาย",
+"Follows the colours of your desktop": "ใช้สีตามเดสก์ท็อปของคุณ",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "กด Caps Lock เพื่อเริ่มบอกให้พิมพ์ และกดอีกครั้งเพื่อหยุด การกดค้างไว้เพื่อบอกให้พิมพ์ต้องใช้ niri ที่ใหม่กว่า 26.04 จากนั้นให้ตั้งค่าใหม่อีกครั้ง"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",

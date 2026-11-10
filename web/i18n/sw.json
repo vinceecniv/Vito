@@ -1427,7 +1427,20 @@
 "Confetti": "Konfeti",
 "Ocean": "Bahari",
 "High contrast": "Utofautishaji wa juu",
-"High contrast black and white": "Utofautishaji wa juu nyeusi na nyeupe"
+"High contrast black and white": "Utofautishaji wa juu nyeusi na nyeupe",
+"Recordings": "Rekodi",
+"Audio on disk": "Sauti kwenye diski",
+"No recordings yet. The tape is still blank.": "Bado hakuna rekodi. Kanda bado iko tupu.",
+"Quiet on set — nothing recorded yet.": "Kimya jukwaani — bado hakuna kilichorekodiwa.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito iko tayari kusikiliza, lakini bado hakuna kilichorekodiwa.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Rekodi huendelea kwa muda wowote unaohitaji — hotuba, mkutano au imla ndefu. Vito huandika unapozungumza, na unaweza kuweka alama kwenye nyakati muhimu na kuongeza vichwa.",
+"Start your first recording": "Anza rekodi yako ya kwanza",
+"or turn an audio file into a recording": "au geuza faili la sauti kuwa rekodi",
+"Paused": "Imesimamishwa kidogo",
+"words": "maneno",
+"Marks": "Alama",
+"Follows the colours of your desktop": "Inafuata rangi za eneo-kazi lako",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Bonyeza Caps Lock ili kuanza kuandika kwa sauti na ubonyeze tena ili kusimamisha. Kuishikilia ili kuandika kwa sauti kunahitaji niri mpya zaidi ya 26.04; kisha iweke tena."
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

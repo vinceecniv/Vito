@@ -1427,7 +1427,20 @@
 "Confetti": "കോൺഫെറ്റി",
 "Ocean": "സമുദ്രം",
 "High contrast": "ഉയർന്ന കോൺട്രാസ്റ്റ്",
-"High contrast black and white": "ഉയർന്ന കോൺട്രാസ്റ്റ് കറുപ്പും വെളുപ്പും"
+"High contrast black and white": "ഉയർന്ന കോൺട്രാസ്റ്റ് കറുപ്പും വെളുപ്പും",
+"Recordings": "റെക്കോർഡിംഗുകൾ",
+"Audio on disk": "ഡിസ്കിലെ ഓഡിയോ",
+"No recordings yet. The tape is still blank.": "ഇതുവരെ റെക്കോർഡിംഗുകളൊന്നുമില്ല. ടേപ്പ് ഇപ്പോഴും ശൂന്യമാണ്.",
+"Quiet on set — nothing recorded yet.": "സെറ്റിൽ നിശ്ശബ്ദത — ഇതുവരെ ഒന്നും റെക്കോർഡ് ചെയ്തിട്ടില്ല.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito ശ്രദ്ധയോടെ കേൾക്കാൻ തയ്യാറാണ്, പക്ഷേ ഇതുവരെ ഒന്നും റെക്കോർഡ് ചെയ്തിട്ടില്ല.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "നിങ്ങൾക്ക് ആവശ്യമുള്ളിടത്തോളം ഒരു റെക്കോർഡിംഗ് തുടരും — ഒരു ക്ലാസ്, ഒരു മീറ്റിംഗ് അല്ലെങ്കിൽ ഒരു നീണ്ട ഡിക്ടേഷൻ. നിങ്ങൾ സംസാരിക്കുമ്പോൾ Vito ഒപ്പം എഴുതുന്നു, നിങ്ങൾക്ക് നിമിഷങ്ങൾ അടയാളപ്പെടുത്താനും തലക്കെട്ടുകൾ ചേർക്കാനും കഴിയും.",
+"Start your first recording": "നിങ്ങളുടെ ആദ്യ റെക്കോർഡിംഗ് ആരംഭിക്കുക",
+"or turn an audio file into a recording": "അല്ലെങ്കിൽ ഒരു ഓഡിയോ ഫയൽ റെക്കോർഡിംഗാക്കി മാറ്റുക",
+"Paused": "താൽക്കാലികമായി നിർത്തി",
+"words": "വാക്കുകൾ",
+"Marks": "അടയാളങ്ങൾ",
+"Follows the colours of your desktop": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിന്റെ നിറങ്ങൾ പിന്തുടരുന്നു",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "ഡിക്ടേഷൻ ആരംഭിക്കാൻ Caps Lock അമർത്തുക, നിർത്താൻ വീണ്ടും അമർത്തുക. അമർത്തിപ്പിടിച്ച് ഡിക്ടേറ്റ് ചെയ്യാൻ 26.04-നേക്കാൾ പുതിയ niri വേണം; അതിനുശേഷം ഇത് വീണ്ടും സജ്ജമാക്കുക."
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

@@ -1427,7 +1427,20 @@
 "Confetti": "Konfeti",
 "Ocean": "Okeāns",
 "High contrast": "Augsts kontrasts",
-"High contrast black and white": "Augsts kontrasts melnbalts"
+"High contrast black and white": "Augsts kontrasts melnbalts",
+"Recordings": "Ieraksti",
+"Audio on disk": "Audio diskā",
+"No recordings yet. The tape is still blank.": "Vēl nav ierakstu. Lente joprojām ir tukša.",
+"Quiet on set — nothing recorded yet.": "Klusums filmēšanas laukumā — vēl nekas nav ierakstīts.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito ir pilnā uzmanībā, bet vēl nekas nav ierakstīts.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Ieraksts turpinās tik ilgi, cik tev vajag — lekcija, sapulce vai garš diktāts. Vito raksta līdzi, kamēr tu runā, un tu vari atzīmēt brīžus un pievienot virsrakstus.",
+"Start your first recording": "Sāc savu pirmo ierakstu",
+"or turn an audio file into a recording": "vai pārvērt audio failu ierakstā",
+"Paused": "Pauzēts",
+"words": "vārdi",
+"Marks": "Atzīmes",
+"Follows the colours of your desktop": "Seko tavas darbvirsmas krāsām",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nospied Caps Lock, lai sāktu diktēt, un nospied vēlreiz, lai apturētu. Lai diktētu, turot to nospiestu, vajag niri versiju, kas jaunāka par 26.04; tad iestati to no jauna."
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

@@ -1425,7 +1425,20 @@
 "Confetti": "Konfeti",
 "Ocean": "Okyanus",
 "High contrast": "Yüksek kontrast",
-"High contrast black and white": "Yüksek kontrast siyah-beyaz"
+"High contrast black and white": "Yüksek kontrast siyah-beyaz",
+"Recordings": "Kayıtlar",
+"Audio on disk": "Diskteki ses",
+"No recordings yet. The tape is still blank.": "Henüz kayıt yok. Bant hâlâ boş.",
+"Quiet on set — nothing recorded yet.": "Sette sessizlik — henüz hiçbir şey kaydedilmedi.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito can kulağıyla dinliyor, ama henüz hiçbir şey kaydedilmedi.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Bir kayıt ihtiyacınız olduğu sürece devam eder — bir ders, bir toplantı ya da uzun bir dikte. Vito siz konuşurken yazıya döker; anları işaretleyebilir ve başlıklar ekleyebilirsiniz.",
+"Start your first recording": "İlk kaydınızı başlatın",
+"or turn an audio file into a recording": "ya da bir ses dosyasını kayda dönüştürün",
+"Paused": "Duraklatıldı",
+"words": "kelime",
+"Marks": "İşaretler",
+"Follows the colours of your desktop": "Masaüstünüzün renklerini izler",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Dikte etmeye başlamak için Caps Lock'a basın, durdurmak için yeniden basın. Basılı tutarak dikte etmek için 26.04'ten yeni bir niri gerekir; ardından yeniden ayarlayın."
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",
