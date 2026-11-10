@@ -134,7 +134,7 @@ jobs:
       - name: Build the installer
         run: pwsh -File packaging/build-installer.ps1 -Version "${{ needs.meta.outputs.version }}"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: windows
           path: |
@@ -163,7 +163,7 @@ jobs:
       - name: Build the AppImage
         run: bash packaging/build-appimage.sh "${{ needs.meta.outputs.version }}"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: linux
           path: |
@@ -189,7 +189,7 @@ jobs:
       - name: Build the dmg
         run: bash packaging/build-macos.sh "${{ needs.meta.outputs.version }}"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: macos
           path: |
@@ -212,7 +212,7 @@ jobs:
       V: ${{ needs.meta.outputs.version }}
       PLATFORMS: ${{ needs.meta.outputs.platforms }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true

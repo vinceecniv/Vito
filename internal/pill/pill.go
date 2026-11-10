@@ -30,6 +30,7 @@ import (
 	"time"
 
 	"vito/internal/daemon"
+	"vito/internal/longrec"
 )
 
 const (
@@ -183,6 +184,9 @@ type pill struct {
 	dictating   atomic.Bool
 	dictatingOn atomic.Value // the screen it is on (a connector), "" when not known
 	restNudge   chan struct{}
+	// longOn: a long recording runs, which brings the resting pills out
+	// even where they are switched off (idleWanted).
+	longOn atomic.Bool
 }
 
 // Lengths of the character's moments, as vmFlash's in the app.
@@ -253,6 +257,13 @@ func (p *pill) onEvent(e daemon.Event) {
 		}
 	case "config":
 		p.settingsChanged()
+	case "long":
+		if e.Long != nil {
+			on := e.Long.State != longrec.StateDone
+			if p.longOn.Swap(on) != on {
+				p.settingsChanged()
+			}
+		}
 	case "partial":
 		if e.Text != "" { // empty means nothing new, not nothing heard
 			p.partial = e.Text

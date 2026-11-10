@@ -11,12 +11,15 @@ import (
 // history unless it is restored; then it runs as any dictation does, pasted
 // where the keyboard is. A new dictation, the time running out or Vito
 // quitting deletes it, so a cancel meant as one still ends with nothing kept.
-// Silence and a mistaken tap of the key are not kept: nothing was said.
+// Silence, a mistaken tap of the key and a dictation cancelled within a few
+// seconds are not kept: nothing worth restoring was said.
 
 const (
 	keepCancelled = 5 * time.Minute
-	// minKept: a shorter recording holds nothing worth restoring.
-	minKept = 700 * time.Millisecond
+	// minKept: a shorter recording is not offered back. It is mostly a
+	// dictation started by mistake (a click on the pill) and cancelled at
+	// once, and whatever was said in it is quickly said again.
+	minKept = 4 * time.Second
 )
 
 // keep holds on to s, closed and torn down, in place of an earlier one.

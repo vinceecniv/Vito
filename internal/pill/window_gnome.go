@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/godbus/dbus/v5"
@@ -32,6 +33,7 @@ type gnomeClient struct {
 	windows map[uint32]*gnomeWindow
 	focus   []func(monitor int32) // FocusChanged listeners
 	outputs []func()              // MonitorsChanged listeners
+	oneBox  atomic.Bool           // the running extension predates SetInputs
 }
 
 var (
@@ -193,8 +195,34 @@ func (w *gnomeWindow) connector() string            { return gnomeConnector(w.mo
 func (w *gnomeWindow) gone() <-chan struct{}        { return w.lost }
 func (w *gnomeWindow) pointer() <-chan pointerEvent { return w.pointers }
 
-// setInput: the extension takes one box, so the one around them all.
-func (w *gnomeWindow) setInput(boxes ...[4]int) { w.call("SetInput", toBox(inputArea(boxes).union())) }
+// setInput hands the extension every box (SetInputs, from its version 5); one
+// still running older code until the next login takes the box around them all.
+func (w *gnomeWindow) setInput(boxes ...[4]int) {
+	if !w.c.oneBox.Load() {
+		list := make([]box4, len(boxes))
+		for i, b := range boxes {
+			list[i] = toBox(b)
+		}
+		err := w.call("SetInputs", list)
+		if err == nil {
+			return
+		}
+		if !unknownMethod(err) {
+			return
+		}
+		w.c.oneBox.Store(true)
+	}
+	w.call("SetInput", toBox(inputArea(boxes).union()))
+}
+
+func unknownMethod(err error) bool {
+	var p *dbus.Error
+	if errors.As(err, &p) {
+		return strings.HasSuffix(p.Name, "UnknownMethod")
+	}
+	var v dbus.Error
+	return errors.As(err, &v) && strings.HasSuffix(v.Name, "UnknownMethod")
+}
 
 func (w *gnomeWindow) close() {
 	w.c.mu.Lock()

@@ -3,7 +3,7 @@
 // GNOME offers no protocol for a window that floats over every app without
 // taking the keyboard, so Vito draws its pictures itself (the same ones the
 // Wayland and Windows windows show) and this extension puts them on screen as
-// shell chrome. Only the input box takes the pointer; everything else lets
+// shell chrome. Only the input boxes take the pointer; everything else lets
 // clicks through. Shell chrome never takes the keyboard focus, so a paste still
 // lands in the app it was meant for.
 //
@@ -22,7 +22,7 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const BUS_NAME = 'talk.vito.Pill';
 const OBJECT_PATH = '/talk/vito/Pill';
-const VERSION = 4;
+const VERSION = 5;
 
 const IFACE = `<node><interface name="talk.vito.Pill">
   <property name="Version" type="u" access="read"/>
@@ -45,6 +45,10 @@ const IFACE = `<node><interface name="talk.vito.Pill">
   <method name="SetInput">
     <arg type="u" name="id" direction="in"/>
     <arg type="(iiii)" name="input" direction="in"/>
+  </method>
+  <method name="SetInputs">
+    <arg type="u" name="id" direction="in"/>
+    <arg type="a(iiii)" name="inputs" direction="in"/>
   </method>
   <method name="Place">
     <arg type="u" name="id" direction="in"/>
@@ -136,7 +140,9 @@ class Picture {
         this.width = width;
         this.height = height;
         this.margin = margin;
-        this.input = input;
+        this.inputs = [input];
+        this.boxes = [];
+        this.idle = kind === 'idle';
         this.offX = 0;
         this.offUp = 0;
         this.absolute = false;
@@ -153,19 +159,42 @@ class Picture {
         this.actor.set_content(this.content);
         this.actor.set_content_scaling_filters(Clutter.ScalingFilter.TRILINEAR, Clutter.ScalingFilter.LINEAR);
         this.actor.opacity = 0; // until the first picture
-        this.box = new St.Widget({reactive: true, track_hover: true});
 
         // The resting pill gives way to a fullscreen window; the rest stay up.
-        const idle = kind === 'idle';
-        addChrome(this.actor, {affectsInputRegion: false, trackFullscreen: idle});
-        addChrome(this.box, {affectsInputRegion: true, trackFullscreen: idle});
-
-        this.box.connect('enter-event', (_a, e) => this.enter(e));
-        this.box.connect('leave-event', () => this.leave());
-        this.box.connect('motion-event', (_a, e) => this.motion(e));
-        this.box.connect('button-press-event', (_a, e) => this.press(e));
-        this.box.connect('button-release-event', (_a, e) => this.release(e));
+        addChrome(this.actor, {affectsInputRegion: false, trackFullscreen: this.idle});
         this.place();
+    }
+
+    // One reactive box per input rectangle (the island's panel, its
+    // microphone, a card under it), so the free space between them lets the
+    // pointer through to the windows below.
+    syncBoxes() {
+        while (this.boxes.length < this.inputs.length) {
+            const box = new St.Widget({reactive: true, track_hover: true});
+            addChrome(box, {affectsInputRegion: true, trackFullscreen: this.idle});
+            box.connect('enter-event', (_a, e) => this.enter(e));
+            box.connect('leave-event', () => this.leave());
+            box.connect('motion-event', (_a, e) => this.motion(e));
+            box.connect('button-press-event', (a, e) => this.press(a, e));
+            box.connect('button-release-event', (_a, e) => this.release(e));
+            if (typeof box.set_cursor_type === 'function')
+                box.set_cursor_type(clutterCursor(this.shape));
+            this.boxes.push(box);
+        }
+        while (this.boxes.length > this.inputs.length) {
+            const box = this.boxes.pop();
+            if (this.grab && this.grabbed === box) {
+                this.grab.dismiss();
+                this.grab = null;
+            }
+            Main.layoutManager.removeChrome(box);
+            box.destroy();
+        }
+    }
+
+    over(px, py, x, y) {
+        return this.inputs.some(([bx, by, bw, bh]) =>
+            px >= x + bx && px < x + bx + bw && py >= y + by && py < y + by + bh);
     }
 
     geometry() {
@@ -186,9 +215,11 @@ class Picture {
             y = m.y + m.height - this.margin - this.offUp - this.height;
         }
         this.actor.set_position(x, y);
-        const [bx, by, bw, bh] = this.input;
-        this.box.set_position(x + bx, y + by);
-        this.box.set_size(Math.max(bw, 0), Math.max(bh, 0));
+        this.syncBoxes();
+        this.inputs.forEach(([bx, by, bw, bh], i) => {
+            this.boxes[i].set_position(x + bx, y + by);
+            this.boxes[i].set_size(Math.max(bw, 0), Math.max(bh, 0));
+        });
         this.hoverCheck(x, y);
     }
 
@@ -198,8 +229,7 @@ class Picture {
         if (this.grab)
             return;
         const [px, py] = global.get_pointer();
-        const [bx, by, bw, bh] = this.input;
-        const over = px >= x + bx && px < x + bx + bw && py >= y + by && py < y + by + bh;
+        const over = this.over(px, py, x, y);
         if (over && !this.inside) {
             this.inside = true;
             showCursor(this.shape);
@@ -229,6 +259,8 @@ class Picture {
     }
 
     enter(e) {
+        if (this.inside)
+            return Clutter.EVENT_PROPAGATE; // from one box straight into the next
         this.inside = true;
         showCursor(this.shape);
         const [x, y] = this.local(e);
@@ -237,7 +269,12 @@ class Picture {
     }
 
     leave() {
-        if (this.grab)
+        if (this.grab || !this.inside)
+            return Clutter.EVENT_PROPAGATE;
+        // Into a box beside this one: still inside.
+        const [px, py] = global.get_pointer();
+        const [ax, ay] = this.actor.get_transformed_position();
+        if (this.boxes.length > 1 && this.over(px, py, ax, ay))
             return Clutter.EVENT_PROPAGATE;
         this.inside = false;
         showCursor(0);
@@ -257,13 +294,14 @@ class Picture {
         return Clutter.EVENT_STOP;
     }
 
-    press(e) {
+    press(box, e) {
         const b = e.get_button() === 3 ? BUTTON_RIGHT : BUTTON_LEFT;
         this.button = b;
         const [x, y, sx, sy] = this.local(e);
         this.last = [sx, sy];
         try {
-            this.grab = global.stage.grab(this.box);
+            this.grab = global.stage.grab(box);
+            this.grabbed = box;
         } catch (_e) {
             this.grab = null;
         }
@@ -279,15 +317,15 @@ class Picture {
         this.last = null;
         const [x, y] = this.local(e);
         this.owner.pointer(this.id, RELEASE, x, y, this.button ?? BUTTON_LEFT);
-        if (!this.box.hover)
+        if (!this.boxes.some(b => b.hover))
             this.leave();
         return Clutter.EVENT_STOP;
     }
 
     setCursor(shape) {
         this.shape = shape;
-        if (typeof this.box.set_cursor_type === 'function')
-            this.box.set_cursor_type(clutterCursor(shape));
+        if (this.boxes.length && typeof this.boxes[0].set_cursor_type === 'function')
+            this.boxes.forEach(b => b.set_cursor_type(clutterCursor(shape)));
         else if (this.inside)
             showCursor(shape);
     }
@@ -299,9 +337,12 @@ class Picture {
         }
         if (this.inside)
             showCursor(0);
-        Main.layoutManager.removeChrome(this.box);
+        for (const b of this.boxes) {
+            Main.layoutManager.removeChrome(b);
+            b.destroy();
+        }
+        this.boxes = [];
         Main.layoutManager.removeChrome(this.actor);
-        this.box.destroy();
         this.actor.destroy();
     }
 }
@@ -400,7 +441,15 @@ export default class VitoPillExtension extends Extension {
     SetInput(id, input) {
         const p = this._pictures.get(id);
         if (p) {
-            p.input = input;
+            p.inputs = [input];
+            p.place();
+        }
+    }
+
+    SetInputs(id, inputs) {
+        const p = this._pictures.get(id);
+        if (p) {
+            p.inputs = inputs.length ? inputs : [[0, 0, 0, 0]];
             p.place();
         }
     }

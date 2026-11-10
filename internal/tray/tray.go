@@ -21,6 +21,7 @@ import (
 	"vito/internal/autostart"
 	"vito/internal/config"
 	"vito/internal/daemon"
+	"vito/internal/longrec"
 )
 
 // animator holds one static tray icon per state and swaps it on state change —
@@ -111,6 +112,11 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 	mToggle := systray.AddMenuItem("", "")
 	mCancel := systray.AddMenuItem("", "")
 	systray.AddSeparator()
+	// The long recording: start or stop one, and pause it while it runs.
+	mLong := systray.AddMenuItem("", "")
+	mLongPause := systray.AddMenuItem("", "")
+	mLongPause.Hide()
+	systray.AddSeparator()
 
 	// Media action submenu (radio-style checkboxes).
 	mMedia := systray.AddMenuItem("", "")
@@ -134,7 +140,25 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 		labelMu sync.Mutex
 		lang    string
 		state   = daemon.StateIdle
+		long    string // the long recording's state, "" when none runs
 	)
+	// setLong labels the long recording's items for its state; callers hold
+	// labelMu.
+	setLong := func() {
+		t := uitext.Translator(lang)
+		if long == "" {
+			mLong.SetTitle(t("Start a long recording"))
+			mLongPause.Hide()
+			return
+		}
+		mLong.SetTitle(t("Stop the long recording"))
+		if long == longrec.StatePaused {
+			mLongPause.SetTitle(t("Resume the long recording"))
+		} else {
+			mLongPause.SetTitle(t("Pause the long recording"))
+		}
+		mLongPause.Show()
+	}
 	setStatus := func() { // callers hold labelMu
 		label, tip := statusText(state, uitext.Translator(lang))
 		mStatus.SetTitle(label)
@@ -169,8 +193,15 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 		set(mAutostart, "Start with the system", "Start Vito when you log in")
 		set(mQuit, "Quit Vito", "Stop the daemon")
 		setStatus()
+		setLong()
 	}
 	relabel()
+	if st, ok := d.LongStatus(); ok {
+		labelMu.Lock()
+		long = st.State
+		setLong()
+		labelMu.Unlock()
+	}
 
 	setCheck := func(it *systray.MenuItem, on bool) {
 		if on {
@@ -215,6 +246,20 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 			setStatus()
 			labelMu.Unlock()
 			anim.setState(e.State)
+		case "long":
+			if e.Long == nil {
+				break
+			}
+			now := e.Long.State
+			if now == longrec.StateDone {
+				now = ""
+			}
+			labelMu.Lock()
+			if now != long {
+				long = now
+				setLong()
+			}
+			labelMu.Unlock()
 		case "config", "privacy":
 			relabel()
 			refresh()
@@ -236,6 +281,32 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 			case <-mCancel.ClickedCh:
 				if err := d.Cancel(); err != nil {
 					log.Debug("tray: cancel", "err", err)
+				}
+			case <-mLong.ClickedCh:
+				// Stopping is no loss: a stopped recording can be continued.
+				if _, ok := d.LongStatus(); ok {
+					go func() {
+						if _, err := d.StopLong(); err != nil {
+							log.Warn("tray: stop long recording", "err", err)
+						}
+					}()
+				} else if _, err := d.StartLong(""); err != nil {
+					log.Warn("tray: start long recording", "err", err)
+					if err := OpenURL(url); err != nil { // where it says why
+						log.Warn("tray: open settings failed", "url", url, "err", err)
+					}
+				}
+			case <-mLongPause.ClickedCh:
+				if st, ok := d.LongStatus(); ok {
+					var err error
+					if st.State == longrec.StatePaused {
+						err = d.ResumeLong()
+					} else {
+						err = d.PauseLong()
+					}
+					if err != nil {
+						log.Warn("tray: pause long recording", "err", err)
+					}
 				}
 			case <-mMediaDuck.ClickedCh:
 				change(func(c *config.Config) { c.Audio.MediaAction = "duck" })

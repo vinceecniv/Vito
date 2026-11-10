@@ -2,6 +2,7 @@ package pill
 
 import (
 	"errors"
+	"image"
 	"time"
 
 	"vito/internal/daemon"
@@ -96,6 +97,21 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 		}
 	}
 	rest, restAt := 0.0, time.Now() // how far they have faded, and since when nothing happened
+	// A long recording turns the pills into its chip; clock is its time drawn.
+	lv := p.longNow()
+	var clock *image.Alpha
+	drawClock := func() {
+		if lv.on && faces() == nil {
+			clock, _ = textMask(mainFace, longClock(lv.secs))
+		}
+	}
+	drawClock()
+	inputFor := func() (int, int, int, int) {
+		if lv.on {
+			return longInputBox()
+		}
+		return idleInputBox(style)
+	}
 	slow := time.NewTicker(500 * time.Millisecond)
 	defer slow.Stop()
 	animate := func() {
@@ -120,7 +136,7 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 		if w == nil {
 			return
 		}
-		if err := w.present(idlePicture(dark, presence(w), hover[name], style, actor, p.asideFor(w.connector()))); err != nil {
+		if err := w.present(p.restPicture(dark, presence(w), hover[name], style, actor, w.connector(), lv, clock)); err != nil {
 			p.log.Debug("resting pill not repainted", "err", err)
 		}
 	}
@@ -141,7 +157,7 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 			if windows[name] != nil {
 				continue
 			}
-			x, y, iw, ih := idleInputBox(style)
+			x, y, iw, ih := inputFor()
 			w, err := openIdleWindow(name, [4]int{x, y, iw, ih})
 			if err != nil {
 				p.log.Debug("no resting pill on a screen", "err", err)
@@ -149,7 +165,7 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 			}
 			windows[name] = w
 			p.works.Store(true)
-			if err := w.present(idlePicture(dark, presence(w), 0, style, actor, p.asideFor(w.connector()))); err != nil {
+			if err := w.present(p.restPicture(dark, presence(w), 0, style, actor, w.connector(), lv, clock)); err != nil {
 				p.log.Debug("resting pill not painted", "err", err)
 			}
 			go func() {
@@ -209,10 +225,13 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 				}
 			case pointerClick:
 				p.log.Debug("resting pill clicked", "button", ip.e.button)
-				switch ip.e.button {
-				case buttonLeft:
+				switch {
+				case ip.e.button == buttonLeft && lv.on:
+					// The recording's chip opens its controls.
+					p.openIsland(ip.name)
+				case ip.e.button == buttonLeft:
 					p.clickIdle(ip.name)
-				case buttonRight:
+				case ip.e.button == buttonRight:
 					p.openIsland(ip.name)
 				}
 			}
@@ -222,6 +241,22 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 		case <-slow.C:
 			if state, _, _ := p.snapshot(); state != daemon.StateIdle {
 				restAt = time.Now()
+			}
+			// The long recording's chip: its time, and whether it is there.
+			if now := p.longNow(); now != lv {
+				was := lv.on
+				lv = now
+				drawClock()
+				if lv.on != was {
+					x, y, iw, ih := inputFor()
+					for _, w := range windows {
+						w.setInput([4]int{x, y, iw, ih})
+					}
+				}
+				repaint()
+			}
+			if lv.on {
+				restAt = time.Now() // a running recording does not fade
 			}
 			if want := restWant(restAt); rest != want {
 				animate()
@@ -282,7 +317,7 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 			}
 			if now := StyleOf(p.d.Config().UI.PillStyle); now != style {
 				style = now
-				x, y, iw, ih := idleInputBox(style)
+				x, y, iw, ih := inputFor()
 				for _, w := range windows {
 					w.setInput([4]int{x, y, iw, ih})
 				}
@@ -300,6 +335,17 @@ func restWant(since time.Time) float64 {
 		return 1
 	}
 	return 0
+}
+
+// restPicture is a resting pill's picture: the long recording's chip while
+// one runs, else the pill or the character.
+func (p *pill) restPicture(dark bool, presence, hover float64, style Style, actor *restActor, connector string, lv longView, clock *image.Alpha) []byte {
+	if lv.on {
+		buf := make([]byte, surfaceW*scale*surfaceH*scale*4)
+		DrawLongChip(buf, surfaceW*scale, surfaceH*scale, dark, presence, hover, lv.paused, clock)
+		return buf
+	}
+	return idlePicture(dark, presence, hover, style, actor, p.asideFor(connector))
 }
 
 func idlePicture(dark bool, presence, hover float64, style Style, actor *restActor, aside bool) []byte {
@@ -356,6 +402,7 @@ func (p *pill) clickIdle(output uint32) {
 
 func (p *pill) idleWanted() bool {
 	ui := p.d.Config().UI
-	// A pinned island stands in for the resting pills.
-	return ui.PillEnabled() && ui.PillIdleEnabled() && ui.IslandPin == nil
+	// A pinned island stands in for the resting pills. A long recording
+	// shows on them even when they are off: it must not be forgotten.
+	return ui.PillEnabled() && ui.IslandPin == nil && (ui.PillIdleEnabled() || p.longNow().on)
 }

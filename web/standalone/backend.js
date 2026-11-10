@@ -950,7 +950,7 @@ registerProcessor("vito-pcm",P)`;
   function achievements() {
     const st = achievementInputs();
     const value = (g) => ({ words: st.words, spoken: st.spoken, saved: st.saved, streak: st.streak, day: st.day, week: st.week,
-      activations: st.activations, commands: st.commands, money: 0 }[g] || 0);
+      activations: st.activations, commands: st.commands, money: 0, recordings: 0 }[g] || 0); // no recordings in the browser
     const earned = (d) => {
       if (d.manual) return false;
       if (d.group === "special") return { first: st.activations > 0, night: st.night, early: st.early, comeback: st.comeback, polyglot: st.languages >= 3, wizard: st.wizard }[d.flag] || false;
