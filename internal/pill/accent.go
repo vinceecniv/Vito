@@ -29,6 +29,10 @@ var palettes = map[string]*palette{
 	"solarized":   pal4(0x2AA198, 0x6C71C4, 0x9EA2E0, 0x6C71C4),
 	"flexoki":     pal4(0xDA702C, 0x205EA6, 0x4385BE, 0x205EA6),
 	"dracula":     pal4(0xFF79C6, 0x8B6CEF, 0xBD93F9, 0x8B6CEF),
+	// High contrast: the dark side's bright accents, which the pill's
+	// fills (never text) carry on either surface.
+	"hc":       pal4(0xFFE600, 0x0035D4, 0x00E5FF, 0x00B8E6),
+	"hc-amber": pal4(0xFFB000, 0x8A4B00, 0xFFC94D, 0xFF8A00),
 }
 
 var curPalette atomic.Pointer[palette]

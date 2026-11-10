@@ -87,7 +87,7 @@ first merge).
 
 `ui.accent` ("" Vito default, coral & violet; `ocean`; and the community
 schemes `catppuccin`, `tokyo-night`, `nord`, `gruvbox`, `rose-pine`,
-`kanagawa`, `everforest`, `ristretto`, `solarized`, `flexoki`, `dracula`)
+`kanagawa`, `everforest`, `ristretto`, `solarized`, `flexoki`, `dracula`; and the high-contrast `hc` and `hc-amber`, which set their accent per side)
 sets `data-accent` on `<html>`. The community schemes bring their own light
 and dark surfaces (Latte/Mocha, Day/Night, …) and keep their names
 untranslated (`b:1` in `ACCENTS`); only "Vito default" and "Ocean" go

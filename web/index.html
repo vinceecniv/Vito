@@ -326,6 +326,49 @@
     --text:#F8F8F2; --text2:#C9CBDB; --text3:#9AA3C9; --placeholder:#6272A4;
     --toggle-off:#44475A; --track:#343746; --bar:#343746;
   }
+  /* High contrast: pure black and white surfaces, strong borders, every
+     text colour at 7:1 or more (WCAG AAA), and an accent chosen per side:
+     yellow and cyan on black, blue and magenta on white. "hc-amber" is the
+     same with one warm accent. The base rule is the picker's swatch. */
+  [data-accent="hc"] { --coral:#FFE600; --violet:#0035D4; --grad:linear-gradient(135deg,#FFE600,#00E5FF); }
+  [data-accent="hc-amber"] { --coral:#FFB000; --violet:#8A4B00; --grad:linear-gradient(135deg,#FFB000,#FF7A00); }
+  :root:not([data-theme="dark"])[data-accent="hc"] {
+    --coral:#C2005A; --violet:#0035D4; --violet-l:#3A5BFF; --coral-l:#E0006A; --acc-l:#0029A8; --acc-d:#0029A8; --ink-l:#A3004B;
+    --grad:linear-gradient(135deg,#C2005A,#0035D4);
+  }
+  :root[data-theme="dark"][data-accent="hc"] {
+    --coral:#FFE600; --violet:#00B8E6; --violet-l:#00E5FF; --coral-l:#FFF04D; --acc-l:#FFE600; --acc-d:#FFE600; --ink-l:#FFE600;
+    --grad:linear-gradient(135deg,#FFE600,#00E5FF);
+  }
+  :root:not([data-theme="dark"])[data-accent="hc-amber"] {
+    --coral:#B35F00; --violet:#7A3E00; --violet-l:#B35F00; --coral-l:#C96B00; --acc-l:#6B3600; --acc-d:#6B3600; --ink-l:#6B3600;
+    --grad:linear-gradient(135deg,#B35F00,#6B3600);
+  }
+  :root[data-theme="dark"][data-accent="hc-amber"] {
+    --coral:#FFB000; --violet:#FF8A00; --violet-l:#FFC94D; --coral-l:#FFC94D; --acc-l:#FFB000; --acc-d:#FFB000; --ink-l:#FFB000;
+    --grad:linear-gradient(135deg,#FFC94D,#FF8A00);
+  }
+  :root:not([data-theme="dark"]):is([data-accent="hc"],[data-accent="hc-amber"]) {
+    --bg:#FFFFFF; --sidebar:#FFFFFF; --sidebar-border:#000000;
+    --card:#FFFFFF; --card-border:#1A1A1A;
+    --input-bg:#FFFFFF; --input-border:#000000;
+    --text:#000000; --text2:#1A1A1A; --text3:#333333; --placeholder:#595959;
+    --toggle-off:#595959; --track:#BFBFBF; --bar:#BFBFBF;
+    --accent-soft:color-mix(in srgb, var(--violet) 14%, transparent);
+    --selection:color-mix(in srgb, var(--violet) 30%, transparent);
+  }
+  :root[data-theme="dark"]:is([data-accent="hc"],[data-accent="hc-amber"]) {
+    --bg:#000000; --sidebar:#000000; --sidebar-border:#FFFFFF;
+    --card:#000000; --card-border:#E6E6E6;
+    --input-bg:#000000; --input-border:#FFFFFF;
+    --text:#FFFFFF; --text2:#F2F2F2; --text3:#D9D9D9; --placeholder:#A6A6A6;
+    --toggle-off:#8C8C8C; --toggle-on:var(--coral); --track:#404040; --bar:#404040;
+    --nav-active-bg:color-mix(in srgb, var(--coral) 22%, transparent);
+    --accent-soft:color-mix(in srgb, var(--coral) 18%, transparent);
+    --selection:color-mix(in srgb, var(--coral) 40%, transparent);
+  }
+  /* On the bright yellow or amber fills white text vanishes: black instead. */
+  :root[data-theme="dark"]:is([data-accent="hc"],[data-accent="hc-amber"]) :is(.btn.primary, .privacy-btn.active, .ach-sav-kofi, .ach-sav-ico, .install-banner.done, .dl-web) { color:#000; }
   * { box-sizing:border-box; }
   /* Form controls don't inherit font-family by default — the browser gives
      button/input/select/textarea a UA font (Arial/Liberation Sans on Linux),
@@ -3983,7 +4026,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Confetti":"Confetti","Ocean":"Oceaan",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast amber":"Hoog contrast amber",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -4874,7 +4917,7 @@ function applyTheme(){
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
    palettes in the CSS (:root[data-accent]); cached like the theme ---- */
-const ACCENTS = [{c:"",n:"Vito default"},{c:"ocean",n:"Ocean"},{c:"catppuccin",n:"Catppuccin",b:1},{c:"tokyo-night",n:"Tokyo Night",b:1},{c:"nord",n:"Nord",b:1},{c:"gruvbox",n:"Gruvbox",b:1},{c:"rose-pine",n:"Rosé Pine",b:1},{c:"kanagawa",n:"Kanagawa",b:1},{c:"everforest",n:"Everforest",b:1},{c:"ristretto",n:"Ristretto",b:1},{c:"solarized",n:"Solarized",b:1},{c:"flexoki",n:"Flexoki",b:1},{c:"dracula",n:"Dracula",b:1}];
+const ACCENTS = [{c:"",n:"Vito default"},{c:"ocean",n:"Ocean"},{c:"catppuccin",n:"Catppuccin",b:1},{c:"tokyo-night",n:"Tokyo Night",b:1},{c:"nord",n:"Nord",b:1},{c:"gruvbox",n:"Gruvbox",b:1},{c:"rose-pine",n:"Rosé Pine",b:1},{c:"kanagawa",n:"Kanagawa",b:1},{c:"everforest",n:"Everforest",b:1},{c:"ristretto",n:"Ristretto",b:1},{c:"solarized",n:"Solarized",b:1},{c:"flexoki",n:"Flexoki",b:1},{c:"dracula",n:"Dracula",b:1},{c:"hc",n:"High contrast"},{c:"hc-amber",n:"High contrast amber"}];
 let accentPref = localStorage.getItem("vito-accent") || "";
 function applyAccent(){
   const root = document.documentElement;
