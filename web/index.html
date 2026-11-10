@@ -1593,6 +1593,13 @@
   .btn { transition:background-color .15s, border-color .15s, color .15s, filter .15s, opacity .15s, transform .1s; }
   .btn:active:not(:disabled) { transform:translateY(1px); }
   #s-look-reset:disabled { opacity:.45; cursor:var(--cur-arrow); }
+  /* Reduce motion (ui.reduce_motion), for whoever has not found the system's
+     own switch: every animation and transition ends at once, at its end, so
+     what fades in is still there. JS asks reducedMotion(). */
+  :root[data-motion="reduce"] *, :root[data-motion="reduce"] ::before, :root[data-motion="reduce"] ::after {
+    animation-duration:.001ms !important; animation-delay:0s !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important; transition-delay:0s !important; scroll-behavior:auto !important; }
+  :root[data-motion="reduce"] .bd::before, :root[data-motion="reduce"] .bd::after { animation:none !important; }
   .btn.primary:hover:not(:disabled) { filter:brightness(1.1) saturate(1.05); }
   .btn.ghost:hover:not(:disabled) { border-color:var(--accent); color:var(--text); background:var(--accent-soft); }
   .btn.danger:hover:not(:disabled) { border-color:var(--danger); background:color-mix(in srgb, var(--danger) 12%, transparent); }
@@ -2797,6 +2804,7 @@
           <div class="accent-sel" id="radius-sel" role="radiogroup" aria-label="Corners"></div>
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
+          <label class="tgl" data-help="motion" style="margin-top:16px;"><input type="checkbox" id="s-motion"><span class="tr"></span> Reduce motion</label>
           <button type="button" class="btn ghost small" id="s-look-reset" style="margin-top:16px;">Reset to default</button>
         </div>
         <div class="card" data-sec="appearance" id="set-vito">
@@ -4049,7 +4057,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Reduce motion":"Minder beweging","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -4942,7 +4950,7 @@ function applyTheme(){
 // "Reset to default" only works once something differs from Vito's own look.
 function syncLookReset(){
   const b = document.getElementById("s-look-reset"); if (!b) return;
-  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref; }
+  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref && !motionPref; }
   catch {} // during start-up, before all of them exist; the last apply sets it
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
@@ -5074,10 +5082,27 @@ function setTheme(pref, persist){
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme: pref });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
-// Theme, colours, font, corners and background back to Vito's own, in one save.
+/* ---- reduce motion (ui.reduce_motion): [data-motion] on <html>, an
+   override in the CSS; on top of the system's own setting ---- */
+let motionPref = (() => { try { return localStorage.getItem("vito-motion") === "reduce"; } catch { return false; } })();
+function reducedMotion(){ return motionPref || matchMedia("(prefers-reduced-motion: reduce)").matches; }
+function applyMotion(){
+  if (motionPref) document.documentElement.dataset.motion = "reduce"; else delete document.documentElement.dataset.motion;
+  const c = document.getElementById("s-motion"); if (c) c.checked = motionPref;
+  syncLookReset();
+}
+function setMotion(on, persist){
+  motionPref = !!on;
+  try { localStorage.setItem("vito-motion", motionPref ? "reduce" : ""); } catch {}
+  applyMotion();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { reduce_motion: motionPref });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+applyMotion();
+// Theme, colours, font, corners, background and motion back to Vito's own, in one save.
 function resetLook(){
-  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false);
-  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"" });
+  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setMotion(false, false);
+  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", reduce_motion:false });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(themePref==="system"){ if(typeof fadeTheme==="function") fadeTheme(); applyTheme(); } });
@@ -6100,6 +6125,8 @@ buildAccentPicker();
 buildFontPicker();
 buildBackdropPicker();
 $("s-look-reset").onclick = resetLook;
+$("s-motion").checked = motionPref;
+$("s-motion").addEventListener("change", e => setMotion(e.target.checked, true));
 syncLookReset();
 buildRadiusPicker();
 $("s-dress").onclick = vmGoDress;
@@ -6645,7 +6672,7 @@ function appFound(){
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 function celebrate(near){
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (reducedMotion()) return;
   const r = (near && !near.hidden ? near : document.body).getBoundingClientRect();
   const colors = ["var(--coral)", "var(--violet)", "var(--violet-l)", "#FFB347", "#4ADE80", "#38BDF8", "#F472B6"];
   for (let i = 0; i < 70; i++) {
@@ -8092,7 +8119,7 @@ function trGlowFrame(now){
   const px = TRG.img.data;
   px.fill(0);
   // With reduced motion the light still follows the voice, without rolling.
-  const still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const still = reducedMotion();
   if (TRG.show > 0) trGlowPaint(px, still ? 0 : (now - TRG.t0) / 1000);
   ctx.putImageData(TRG.img, 0, 0);
   if (TRG.show > 0 || want) TRG.raf = requestAnimationFrame(trGlowFrame);
@@ -9366,7 +9393,7 @@ function matrixRain(cv, card){
   // Reduced motion slows the rain to a drizzle rather than freezing it: a
   // remote-desktop session asks for it by default, and the card exists to be
   // noticed.
-  const STEP = matchMedia("(prefers-reduced-motion: reduce)").matches ? 160 : 55;
+  const STEP = reducedMotion() ? 160 : 55;
   let last = 0, lastW = w;
   const tick = (now) => {
     // Stop for good only once the card has been rebuilt without this canvas;
@@ -9724,7 +9751,7 @@ function renderAchievements(a){
     prog.querySelector(".ach-progress-bar i").style.width = prog.dataset.pct + "%";
     const pctEl = prog.querySelector(".ach-progress-pct");
     const to = parseInt(pctEl.dataset.to, 10) || 0;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) { pctEl.textContent = to + "%"; }
+    if (reducedMotion()) { pctEl.textContent = to + "%"; }
     else {
       const t0 = performance.now(), dur = 900;
       const step = (now) => { const p = Math.min(1, (now - t0) / dur); pctEl.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))) + "%"; if (p < 1) requestAnimationFrame(step); };
@@ -10177,7 +10204,7 @@ function renderStatCards(all){
 function tickNumber(el, to, format){
   const from = el.dataset.value === undefined ? to : parseFloat(el.dataset.value);
   el.dataset.value = to;
-  if (from === to || !isFinite(from) || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (from === to || !isFinite(from) || reducedMotion()) {
     el.textContent = format(to);
     return;
   }
@@ -11001,6 +11028,7 @@ async function fillSettings() {
   if (cfg.ui && (cfg.ui.accent || "") !== accentPref) setAccent(cfg.ui.accent || "", false);
   if (cfg.ui && (cfg.ui.font || "") !== fontPref) setFont(cfg.ui.font || "", false);
   if (cfg.ui && (cfg.ui.backdrop || "") !== backdropPref) setBackdrop(cfg.ui.backdrop || "", false);
+  if (cfg.ui && !!cfg.ui.reduce_motion !== motionPref) setMotion(!!cfg.ui.reduce_motion, false);
   if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
   if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {
     vmOutfit = Object.assign({}, cfg.ui.outfit);
@@ -13880,6 +13908,7 @@ const HELP = {
   backdrop:{nl:"Een achtergrond achter de kaarten, in de kleuren van je thema. Noorderlicht, Golven en Bellen bewegen langzaam, behalve als je systeem om minder beweging vraagt.",en:"A background behind the cards, in your colour theme. Aurora, Waves and Bubbles move slowly, unless your system asks for less motion."},
   font:{nl:"Het lettertype van Vito, ook in de pil en het eiland. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill and the island too. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},
   accent:{nl:"De kleuren van Vito: de knoppen, het verloop, de pil en de mascotte. Rood voor fouten en opnemen blijft rood.",en:"Vito's colours: the buttons, the gradient, the pill and the mascot. Red for errors and recording stays red."},
+  motion:{nl:"Zet de animaties in Vito stil: overgangen, bewegende achtergronden en Vito's eigen bewegingen. Je systeem heeft hier ook een instelling voor; staat die aan, dan volgt Vito die al.",en:"Stills Vito's animations: transitions, moving backgrounds and Vito's own movements. Your system has a setting for this too; when that is on, Vito already follows it."},
   cursor:{nl:"De muiswijzer in Vito's kleuren, met het logo in de hand. Uit: de gewone muiswijzer van je systeem.",en:"The mouse pointer in Vito's colours, with the logo in its hand. Off: your system's usual pointer."},
   helptips:{nl:"Ja, dit is er een. Uit: geen uitleg meer als je even boven een instelling blijft hangen — deze ook niet.",en:"Yes, this is one. Off: no more explanations when you linger over a setting — this one included."},
   theme:{nl:"Licht, donker of automatisch — automatisch volgt de licht/donker-stand van je systeem.",en:"Light, dark or automatic — automatic follows your system's light/dark setting."},
