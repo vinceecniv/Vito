@@ -153,11 +153,19 @@ func (d *Daemon) trashLongFiles(id string) {
 	if m, err := l.store.Meta(id); err == nil && !strings.HasPrefix(filepath.Base(dir), m.Started.Local().Format("2006-01-02 15.04")) {
 		return
 	}
-	if err := osfiles.Trash(dir); err != nil {
-		if errors.Is(err, osfiles.ErrNoTrash) {
-			d.log.Info("long recording: its folder stays (no trash there)", "dir", dir)
-		} else {
-			d.log.Warn("long recording: folder not moved to the trash", "dir", dir, "err", err)
+	// Off the caller's path: the move to the recycle bin takes 0.3–1 s on a
+	// local disk and more on a redirected Documents folder (a network
+	// share), and deleting a recording should answer at once.
+	go func() {
+		start := time.Now()
+		if err := osfiles.Trash(dir); err != nil {
+			if errors.Is(err, osfiles.ErrNoTrash) {
+				d.log.Info("long recording: its folder stays (no trash there)", "dir", dir)
+			} else {
+				d.log.Warn("long recording: folder not moved to the trash", "dir", dir, "err", err)
+			}
+			return
 		}
-	}
+		d.log.Debug("long recording: folder moved to the trash", "dir", dir, "took", time.Since(start).Round(time.Millisecond))
+	}()
 }
