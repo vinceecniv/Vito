@@ -1976,7 +1976,7 @@ func b2f(b bool) float64 {
 }
 
 // openingFor is how long the spinner by the logo shows, in seconds.
-const openingFor = 1.6
+const openingFor = 2.0
 
 // spinner draws a turning arc of a circle at (cx, cy) with radius r, a
 // quarter of a turn growing to three quarters and back as it goes round.
