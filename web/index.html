@@ -69,7 +69,7 @@
   [data-accent="ocean"] { --coral:#22C3B5; --violet:#2563EB; --violet-l:#93C5FD; --coral-l:#5EEAD4; --acc-l:#1D4ED8; --acc-d:#93C5FD; --ink-l:#0F766E; }
   [data-accent="sunset"] { --coral:#F7A21B; --violet:#E11D48; --violet-l:#FDA4AF; --coral-l:#FCC56B; --acc-l:#BE123C; --acc-d:#FDA4AF; --ink-l:#B45309; }
   [data-accent="forest"] { --coral:#7CB342; --violet:#0F766E; --violet-l:#5EEAD4; --coral-l:#C5E57A; --acc-l:#0F766E; --acc-d:#5EEAD4; --ink-l:#4D7C0F; }
-  [data-accent="berry"] { --coral:#F472B6; --violet:#9333EA; --violet-l:#F0ABFC; --coral-l:#F9A8D4; --acc-l:#A21CAF; --acc-d:#F0ABFC; --ink-l:#BE185D; }
+  [data-accent="plum"] { --coral:#E8B04B; --violet:#6D2E5B; --violet-l:#E7A9CF; --coral-l:#F2CD85; --acc-l:#6D2E5B; --acc-d:#EDB8D8; --ink-l:#8A5A06; }
   [data-accent="graphite"] { --coral:#94A3B8; --violet:#334155; --violet-l:#CBD5E1; --coral-l:#B6C2D2; --acc-l:#334155; --acc-d:#CBD5E1; --ink-l:#475569; }
   /* The original pair, for its swatch in the picker inside another theme. */
   [data-accent="coral"] { --coral:#FF6B5E; --violet:#7C3AED; }
@@ -81,8 +81,9 @@
     --text:#EEF1F5; --text2:#A3ADBB; --text3:#8C96A4; --placeholder:#525B68;
     --toggle-off:#343C49; --track:#343C49; --bar:#2B323D;
   }
-  /* Graphite's cool end is too dark to read as a fill on a dark surface. */
+  /* Graphite's and Plum's cool ends are too dark to read as a fill on a dark surface. */
   :root[data-theme="dark"][data-accent="graphite"] { --violet:#64748B; }
+  :root[data-theme="dark"][data-accent="plum"] { --violet:#A2477F; }
   * { box-sizing:border-box; }
   /* Form controls don't inherit font-family by default — the browser gives
      button/input/select/textarea a UA font (Arial/Liberation Sans on Linux),
@@ -3526,7 +3527,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Coral & violet":"Koraal & paars","Ocean":"Oceaan","Sunset":"Zonsondergang","Forest":"Bos","Berry":"Bes","Graphite":"Grafiet",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Coral & violet":"Koraal & paars","Ocean":"Oceaan","Sunset":"Zonsondergang","Forest":"Bos","Plum":"Pruim","Graphite":"Grafiet",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -4417,7 +4418,7 @@ function applyTheme(){
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
    palettes in the CSS (:root[data-accent]); cached like the theme ---- */
-const ACCENTS = [{c:"",n:"Coral & violet"},{c:"ocean",n:"Ocean"},{c:"sunset",n:"Sunset"},{c:"forest",n:"Forest"},{c:"berry",n:"Berry"},{c:"graphite",n:"Graphite"}];
+const ACCENTS = [{c:"",n:"Coral & violet"},{c:"ocean",n:"Ocean"},{c:"sunset",n:"Sunset"},{c:"forest",n:"Forest"},{c:"plum",n:"Plum"},{c:"graphite",n:"Graphite"}];
 let accentPref = localStorage.getItem("vito-accent") || "";
 function applyAccent(){
   const root = document.documentElement;
