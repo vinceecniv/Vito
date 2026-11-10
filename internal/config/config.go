@@ -206,6 +206,9 @@ type UI struct {
 	// PillStyle is how the pill shows the voice: "" the glow, "bars" or "vito"
 	// (the character).
 	PillStyle string `json:"pill_style,omitempty"`
+	// Accent is the colour theme: "" coral and violet, or ocean, sunset,
+	// forest, berry, graphite. The page and the pill draw it.
+	Accent string `json:"accent,omitempty"`
 	// PillLive shows the words in the pill while you speak. Nil-safe: unset
 	// counts as on, for new users and for those updating alike (it used to be
 	// a plain bool whose false was never written).

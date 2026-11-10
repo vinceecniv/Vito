@@ -86,6 +86,7 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 	}()
 	var last []uint32
 	dark := p.dark()
+	shown := pal() // the colour theme the pictures are in
 	// The character, when it is the style, lives a little between dictations;
 	// wake brings the frames back for its next blink or gesture.
 	style := StyleOf(p.d.Config().UI.PillStyle)
@@ -311,8 +312,8 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 				close(stop)
 				return <-ended
 			}
-			if now := p.dark(); now != dark {
-				dark = now
+			if now := p.dark(); now != dark || pal() != shown {
+				dark, shown = now, pal()
 				repaint()
 			}
 			if now := StyleOf(p.d.Config().UI.PillStyle); now != style {

@@ -83,6 +83,17 @@ columns (costs, Assist, uploads), the user's deletions and star changes
 dictionary (with its text snippets) and cleanup rule sets (newest wins after a
 first merge).
 
+## Colour themes
+
+`ui.accent` ("" coral & violet, `ocean`, `sunset`, `forest`, `berry`,
+`graphite`) sets `data-accent` on `<html>`. Each theme overrides only the
+palette tokens (`--coral`, `--violet`, `--violet-l`, `--coral-l`, `--acc-l`,
+`--acc-d`, `--ink-l`); everything else derives from them. Use those tokens,
+never a brand hex. Errors and recording use `--danger*`, which no theme
+changes. Canvases and the cursor images read the colours with `accentHex()` /
+`trGlowColors()`. The pill draws the same palettes from `internal/pill/accent.go`
+— keep the two in step.
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.

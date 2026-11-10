@@ -1035,7 +1035,7 @@ func brandTile(buf []byte, w, h int, cx, cy, size float64, th theme, a float64) 
 	eachPixel(w, h, cx, cy, half+1, half+1, func(x, y int, px, py float64) {
 		d := roundBox(px-cx, py-cy, half, half, size*0.24)
 		t := clamp(((px - (cx - half)) + (py - (cy - half))) / (2 * size))
-		put(buf, w, x, y, blend(hex(0xFF6B5E), hex(0x7C3AED), t), a*clamp(0.5-d))
+		put(buf, w, x, y, blend(pal().coral, pal().violet, t), a*clamp(0.5-d))
 	})
 	k := size / 100
 	for i, bh := range []float64{20, 36, 56, 36, 20} {

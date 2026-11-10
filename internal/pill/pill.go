@@ -356,6 +356,7 @@ func (p *pill) settingsChanged() {
 // dark says which side of the theme to draw: Vito's own setting first, as for
 // the tray icon, then the desktop's.
 func (p *pill) dark() bool {
+	setAccent(p.d.Config().UI.Accent) // read with the theme, before every picture
 	switch p.d.Config().UI.Theme {
 	case "dark":
 		return true

@@ -298,11 +298,17 @@ var (
 	}
 )
 
+// themeFor is that side of the theme in the colour theme in use (accent.go).
 func themeFor(dark bool) theme {
+	c := pal()
 	if dark {
-		return darkTheme
+		th := darkTheme
+		th.edge, th.from, th.to = c.violetL, c.coral, c.violetL
+		return th
 	}
-	return lightTheme
+	th := lightTheme
+	th.edge, th.from, th.to = c.violet, c.coral, c.violet
+	return th
 }
 
 func hex(v uint32) rgb {
@@ -316,6 +322,7 @@ type painter struct {
 	backHW    float64
 	backAlpha float64
 	backDark  bool
+	backPal   *palette
 }
 
 // Draw paints f into buf: premultiplied ARGB8888 in memory order B, G, R, A, the
@@ -345,8 +352,8 @@ func (p *painter) Draw(buf []byte, w, h int, f Frame) {
 	barsIn := clamp(open*2 - 1) // once there is room for them
 
 	th := themeFor(f.Dark)
-	if len(p.back) != len(buf) || p.backHW != hw || p.backAlpha != alpha || p.backDark != f.Dark {
-		p.back, p.backHW, p.backAlpha, p.backDark = make([]byte, len(buf)), hw, alpha, f.Dark
+	if len(p.back) != len(buf) || p.backHW != hw || p.backAlpha != alpha || p.backDark != f.Dark || p.backPal != pal() {
+		p.back, p.backHW, p.backAlpha, p.backDark, p.backPal = make([]byte, len(buf)), hw, alpha, f.Dark, pal()
 		// The shadow fades over 10 px outside the pill and is lower than it.
 		shadow(p.back, w, h, cx, cy+1.5*s, hw, hh, 10*s, th.shadow*alpha)
 		box(p.back, w, h, cx, cy, hw, hh, hh, th.body, 0.93*alpha)
