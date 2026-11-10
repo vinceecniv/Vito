@@ -100,7 +100,7 @@ type paint struct {
 }
 
 func (p paint) rgb(dark bool) rgb {
-	t := pal()
+	t := figurePal(dark)
 	switch p.theme {
 	case "coral":
 		return t.coral

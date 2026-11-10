@@ -38,6 +38,25 @@ var palettes = map[string]*palette{
 	"hc-bw": {coral: hex(0x404040), violet: hex(0x000000), violetL: hex(0xFFFFFF), violetDark: hex(0xFFFFFF), mono: true},
 }
 
+// The character in the black-and-white theme: a grey of its own per side,
+// light on dark and mid-grey on light, so its dark eyes and mouth still read.
+// Keep in step with .vm-svg under [data-accent="hc-bw"] in web/index.html.
+var (
+	monoFigureDark  = pal4(0xF2F2F2, 0x9A9A9A, 0xD9D9D9, 0x9A9A9A)
+	monoFigureLight = pal4(0xD9D9D9, 0x5C5C5C, 0x8C8C8C, 0x5C5C5C)
+)
+
+// figurePal is the palette the character is drawn in on that side.
+func figurePal(dark bool) *palette {
+	if p := pal(); !p.mono {
+		return p
+	}
+	if dark {
+		return monoFigureDark
+	}
+	return monoFigureLight
+}
+
 var curPalette atomic.Pointer[palette]
 
 // setAccent makes name the palette drawn from now on; an unknown name is the

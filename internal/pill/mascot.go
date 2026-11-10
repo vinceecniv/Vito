@@ -299,7 +299,7 @@ func drawMascotOn(buf []byte, w, h int, f Frame) {
 			if f.Clip {
 				return darkTheme.warn
 			}
-			c := pal()
+			c := figurePal(f.Dark)
 			return blend(blend(c.coral, rgb{1, 1, 1}, 0.1), blend(c.violetOn(f.Dark), c.violetL, 0.28), clamp((py-top)/(bottom-top)))
 		}
 		g.fill(x-hairW/2, top, x+hairW/2, bottom, sd, col, 1)
@@ -311,7 +311,7 @@ func drawMascotOn(buf []byte, w, h int, f Frame) {
 	fx0, fy0, fx1, fy1 := bbox(mascotFace)
 	g.fill(fx0, fy0, fx1, fy1, faceSD.at, func(x, y float64) rgb {
 		t := math.Hypot(x-44, y-46) / 72
-		c := pal()
+		c := figurePal(f.Dark)
 		if t < 0.38 {
 			return blend(blend(c.coral, rgb{1, 1, 1}, 0.3), c.coral, t/0.38)
 		}
@@ -388,7 +388,7 @@ func drawMascotOn(buf []byte, w, h int, f Frame) {
 	if busy > 0 {
 		for i, d := range [][3]float64{{103, 42, 3}, {109, 32, 4}, {114, 19, 5}} {
 			pulse := 0.25 + 0.75*(0.5-0.5*math.Cos((f.T-0.2*float64(i))*2*math.Pi/1.2))
-			g.fill(d[0]-d[2], d[1]-d[2], d[0]+d[2], d[1]+d[2], ellipse(d[0], d[1], d[2], d[2]), flat(pal().violetL), busy*pulse)
+			g.fill(d[0]-d[2], d[1]-d[2], d[0]+d[2], d[1]+d[2], ellipse(d[0], d[1], d[2], d[2]), flat(figurePal(f.Dark).violetL), busy*pulse)
 		}
 	}
 }

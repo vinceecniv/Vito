@@ -371,6 +371,10 @@
   /* On the bright yellow or white fills white text vanishes: black instead. */
   :root[data-theme="dark"]:is([data-accent="hc"],[data-accent="hc-bw"]) :is(.btn.primary, .privacy-btn.active, .ach-sav-kofi, .ach-sav-ico, .install-banner.done, .dl-web) { color:#000; }
   :root[data-theme="dark"][data-accent="hc-bw"] .tile svg { fill:#000; }
+  /* Vito in black and white: a grey of its own, light on dark and mid-grey
+     on light, so its dark eyes and mouth still read (figurePal in the pill). */
+  :root[data-theme="dark"][data-accent="hc-bw"] .vm-svg { --coral:#F2F2F2; --violet:#9A9A9A; --violet-l:#D9D9D9; }
+  :root:not([data-theme="dark"])[data-accent="hc-bw"] .vm-svg { --coral:#D9D9D9; --violet:#5C5C5C; --violet-l:#8C8C8C; }
   * { box-sizing:border-box; }
   /* Form controls don't inherit font-family by default — the browser gives
      button/input/select/textarea a UA font (Arial/Liberation Sans on Linux),
@@ -7783,7 +7787,7 @@ function mascotSVG(outfit){
   const eye = (cx, side) => `<g class="vm-eye vm-eye-${side}">` +
     `<ellipse cx="${cx}" cy="68" rx="9" ry="11" fill="#fff"/>` +
     `<g class="vm-pupil"><circle cx="${cx}" cy="69" r="5.6" fill="#2B2440"/><circle cx="${cx + 2}" cy="66.5" r="1.9" fill="#fff"/></g></g>`;
-  return `<svg viewBox="0 0 120 130" aria-hidden="true">
+  return `<svg class="vm-svg" viewBox="0 0 120 130" aria-hidden="true">
   <defs>
     <radialGradient id="${u}b" gradientUnits="userSpaceOnUse" cx="44" cy="46" r="72">
       <stop offset="0" style="stop-color:color-mix(in srgb, var(--coral) 70%, #fff)"/><stop offset=".38" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></radialGradient>
