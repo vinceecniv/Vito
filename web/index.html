@@ -1309,9 +1309,17 @@
   .ach-savings .ach-sav-ico { width:54px; height:54px; flex:0 0 54px; border-radius:14px; display:flex; align-items:center; justify-content:center;
     background:linear-gradient(135deg,var(--coral),var(--violet)); color:#fff; }
   .ach-savings .ach-sav-ico svg { width:34px; height:34px; }
-  /* The amount and its line take the room beside the icon, so a narrow
-     window wraps only the button, not the text under the icon. */
+  /* The amount and its line take the room beside the icon. Narrow, the
+     banner is a grid: the icon on the left, the text and the button under it
+     in one column, all aligned on the text's left edge. */
   .ach-savings > div { flex:1 1 220px; min-width:0; }
+  #ach-content { container-type:inline-size; }
+  @container (max-width:600px) {
+    .ach-savings { display:grid; grid-template-columns:auto 1fr; align-items:start; }
+    .ach-savings .ach-sav-kofi { grid-column:2; justify-self:start; margin-left:0; }
+  }
+  .ach-sec-h { display:flex; align-items:center; gap:10px; font-size:16.5px; font-weight:600; margin:6px 0 14px; }
+  .ach-sec-h svg { width:20px; height:20px; flex:none; color:var(--accent); }
   @media (max-width:640px){
     .ach-savings { gap:10px 14px; padding:14px 16px; }
     .ach-savings .ach-sav-ico { width:42px; height:42px; flex-basis:42px; border-radius:12px; }
@@ -1349,6 +1357,7 @@
   .wd-title { font-family:var(--font-head); font-size:19px; font-weight:700; }
   .wd-sub { color:var(--text3); font-size:13px; }
   .wd-slot { padding:8px 0; border-top:1px solid var(--card-border); }
+  .wd-body > .wd-slot:first-child { border-top:0; } /* the head's own line is just above */
   .wd-slot-h { font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--text3); margin:2px 0 6px; }
   .wd-opts { display:flex; flex-wrap:wrap; gap:8px; }
   .wd-opt { position:relative; display:flex; flex-direction:column; align-items:center; gap:2px; width:84px; padding:6px 4px 5px;
@@ -2644,6 +2653,7 @@
         </div>
       </div>
       <div class="wardrobe" id="vm-wardrobe"></div>
+      <h2 class="ach-sec-h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M9 16h6M8 20h8M12 13v3"/></svg><span>Milestones</span></h2>
       <div id="ach-content"></div>
     </section>
 
