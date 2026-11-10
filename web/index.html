@@ -394,6 +394,7 @@
   /* Sticky bars over a background: let it show through, softly. */
   :root[data-backdrop] .settabs, :root[data-backdrop] .setsec-sel { background:color-mix(in srgb, var(--bg) 55%, transparent);
     -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
+  :root[data-backdrop] .setsec-sel { box-shadow:none; }
   /* The long recording's player floats over the page's cards: glass too. */
   :root[data-backdrop] .lr-player { background:color-mix(in srgb, var(--card) 70%, transparent);
     -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
@@ -882,6 +883,12 @@
     .nav-item, .sidebar.open .nav-item { display:flex; width:auto; order:1; flex:none; padding:8px 10px; gap:0; font-size:0; }
     .nav-item.active { gap:7px; font-size:13px; }
     .hamburger + .nav-item { margin-left:auto; }
+  }
+  /* Narrower still, the current page's name no longer fits beside the
+     others and would push one onto a second row: all icons then, the
+     current one marked by its highlight (and named on hover like the rest). */
+  @media (max-width:700px) and (min-width:461px){
+    .nav-item.active { gap:0; font-size:0; }
   }
   @media (max-width:460px){
     .statgrid { grid-template-columns:repeat(2,1fr); }
