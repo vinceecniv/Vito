@@ -16,9 +16,9 @@ import "embed"
 //     as-is (no token) so the app is installable and offline-capable.
 //   - fonts-*.woff2 — self-hosted so the local-first UI renders identically
 //     offline and without the Google Fonts CDN (blocked by many browsers'
-//     tracking protection). Latin subsets only; the ones besides Sora and
-//     Baloo 2 are the ui.font choices, fetched only when chosen. Their
-//     licences are in fonts-licenses.txt.
+//     tracking protection). One file per font and script, each with a
+//     unicode-range in index.html, so a browser fetches only what it shows.
+//     Licences in fonts-licenses.txt.
 //   - flags/<cc>.svg — country flags (lipis/flag-icons, 4x3) for the language
 //     pickers, so the 60-language list renders real flags offline.
 //   - logos/<name>.png — the speech providers' marks for the model cards.

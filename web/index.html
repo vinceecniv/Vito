@@ -14,27 +14,61 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-  /* Self-hosted fonts (variable, latin subset) — served by the daemon so the
-     UI renders identically offline and never depends on the Google Fonts CDN,
-     which many browsers' tracking protection blocks. */
-  @font-face {
-    font-family:'Sora'; font-style:normal; font-weight:400 600;
-    font-display:swap; src:url(fonts-sora.woff2) format('woff2');
-  }
-  @font-face {
-    font-family:'Baloo 2'; font-style:normal; font-weight:600 700;
-    font-display:swap; src:url(fonts-baloo2.woff2) format('woff2');
-  }
-  /* The other typefaces (ui.font → data-font on <html>), each loaded only
-     when chosen. Latin subsets from Fontsource, OFL (fonts-licenses.txt). */
-  @font-face { font-family:'Inter'; font-weight:100 900; font-display:swap; src:url(fonts-inter.woff2) format('woff2'); }
-  @font-face { font-family:'Atkinson Hyperlegible Next'; font-weight:200 800; font-display:swap; src:url(fonts-atkinson.woff2) format('woff2'); }
-  @font-face { font-family:'Lexend'; font-weight:100 900; font-display:swap; src:url(fonts-lexend.woff2) format('woff2'); size-adjust:94%; }
-  @font-face { font-family:'Nunito'; font-weight:200 1000; font-display:swap; src:url(fonts-nunito.woff2) format('woff2'); }
-  @font-face { font-family:'Lora'; font-weight:400 700; font-display:swap; src:url(fonts-lora.woff2) format('woff2'); }
-  @font-face { font-family:'JetBrains Mono'; font-weight:100 800; font-display:swap; src:url(fonts-jetbrains-mono.woff2) format('woff2'); size-adjust:87%; }
-  @font-face { font-family:'iA Writer Quattro'; font-weight:400; font-display:swap; src:url(fonts-iawriter-400.woff2) format('woff2'); }
-  @font-face { font-family:'iA Writer Quattro'; font-weight:700; font-display:swap; src:url(fonts-iawriter-700.woff2) format('woff2'); }
+  /* Self-hosted fonts, served by the daemon so the UI renders identically
+     offline and never depends on the Google Fonts CDN, which many browsers'
+     tracking protection blocks. Variable fonts from Fontsource (OFL, notices
+     in fonts-licenses.txt), cut by script: each file has a unicode-range, so
+     a browser fetches only the scripts on the page, and only for the font in
+     use (ui.font → data-font on <html>). Scripts no bundled font has (Arabic,
+     Hebrew, Thai, the Indic ones, CJK) come from the system's own fonts. */
+  @font-face { font-family:'Sora'; font-weight:100 800; font-display:swap; src:url(fonts-sora-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Sora'; font-weight:100 800; font-display:swap; src:url(fonts-sora-latin.woff2) format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'Baloo 2'; font-weight:400 800; font-display:swap; src:url(fonts-baloo2-devanagari.woff2) format('woff2'); unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+20F0,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09; }
+  @font-face { font-family:'Baloo 2'; font-weight:400 800; font-display:swap; src:url(fonts-baloo2-vietnamese.woff2) format('woff2'); unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB; }
+  @font-face { font-family:'Baloo 2'; font-weight:400 800; font-display:swap; src:url(fonts-baloo2-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Baloo 2'; font-weight:400 800; font-display:swap; src:url(fonts-baloo2-latin.woff2) format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'Inter'; font-weight:100 900; font-display:swap; src:url(fonts-inter-cyrillic-ext.woff2) format('woff2'); unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F; }
+  @font-face { font-family:'Inter'; font-weight:100 900; font-display:swap; src:url(fonts-inter-cyrillic.woff2) format('woff2'); unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family:'Inter'; font-weight:100 900; font-display:swap; src:url(fonts-inter-greek-ext.woff2) format('woff2'); unicode-range:U+1F00-1FFF; }
+  @font-face { font-family:'Inter'; font-weight:100 900; font-display:swap; src:url(fonts-inter-greek.woff2) format('woff2'); unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF; }
+  @font-face { font-family:'Inter'; font-weight:100 900; font-display:swap; src:url(fonts-inter-vietnamese.woff2) format('woff2'); unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB; }
+  @font-face { font-family:'Inter'; font-weight:100 900; font-display:swap; src:url(fonts-inter-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Inter'; font-weight:100 900; font-display:swap; src:url(fonts-inter-latin.woff2) format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'Atkinson Hyperlegible Next'; font-weight:200 800; font-display:swap; src:url(fonts-atkinson-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Atkinson Hyperlegible Next'; font-weight:200 800; font-display:swap; src:url(fonts-atkinson-latin.woff2) format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'Noto Sans'; font-weight:100 900; font-display:swap; src:url(fonts-notosans-cyrillic-ext.woff2) format('woff2'); unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F; }
+  @font-face { font-family:'Noto Sans'; font-weight:100 900; font-display:swap; src:url(fonts-notosans-cyrillic.woff2) format('woff2'); unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family:'Noto Sans'; font-weight:100 900; font-display:swap; src:url(fonts-notosans-devanagari.woff2) format('woff2'); unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+20F0,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09; }
+  @font-face { font-family:'Noto Sans'; font-weight:100 900; font-display:swap; src:url(fonts-notosans-greek-ext.woff2) format('woff2'); unicode-range:U+1F00-1FFF; }
+  @font-face { font-family:'Noto Sans'; font-weight:100 900; font-display:swap; src:url(fonts-notosans-greek.woff2) format('woff2'); unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF; }
+  @font-face { font-family:'Noto Sans'; font-weight:100 900; font-display:swap; src:url(fonts-notosans-vietnamese.woff2) format('woff2'); unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB; }
+  @font-face { font-family:'Noto Sans'; font-weight:100 900; font-display:swap; src:url(fonts-notosans-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Noto Sans'; font-weight:100 900; font-display:swap; src:url(fonts-notosans-latin.woff2) format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'Nunito'; font-weight:200 1000; font-display:swap; src:url(fonts-nunito-cyrillic-ext.woff2) format('woff2'); unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F; }
+  @font-face { font-family:'Nunito'; font-weight:200 1000; font-display:swap; src:url(fonts-nunito-cyrillic.woff2) format('woff2'); unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family:'Nunito'; font-weight:200 1000; font-display:swap; src:url(fonts-nunito-vietnamese.woff2) format('woff2'); unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB; }
+  @font-face { font-family:'Nunito'; font-weight:200 1000; font-display:swap; src:url(fonts-nunito-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Nunito'; font-weight:200 1000; font-display:swap; src:url(fonts-nunito-latin.woff2) format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'Literata'; font-weight:200 900; font-display:swap; src:url(fonts-literata-cyrillic-ext.woff2) format('woff2'); unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F; }
+  @font-face { font-family:'Literata'; font-weight:200 900; font-display:swap; src:url(fonts-literata-cyrillic.woff2) format('woff2'); unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family:'Literata'; font-weight:200 900; font-display:swap; src:url(fonts-literata-greek-ext.woff2) format('woff2'); unicode-range:U+1F00-1FFF; }
+  @font-face { font-family:'Literata'; font-weight:200 900; font-display:swap; src:url(fonts-literata-greek.woff2) format('woff2'); unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF; }
+  @font-face { font-family:'Literata'; font-weight:200 900; font-display:swap; src:url(fonts-literata-vietnamese.woff2) format('woff2'); unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB; }
+  @font-face { font-family:'Literata'; font-weight:200 900; font-display:swap; src:url(fonts-literata-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Literata'; font-weight:200 900; font-display:swap; src:url(fonts-literata-latin.woff2) format('woff2'); unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'JetBrains Mono'; font-weight:100 800; font-display:swap; src:url(fonts-jbmono-cyrillic-ext.woff2) format('woff2'); size-adjust:87%; unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F; }
+  @font-face { font-family:'JetBrains Mono'; font-weight:100 800; font-display:swap; src:url(fonts-jbmono-cyrillic.woff2) format('woff2'); size-adjust:87%; unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family:'JetBrains Mono'; font-weight:100 800; font-display:swap; src:url(fonts-jbmono-greek.woff2) format('woff2'); size-adjust:87%; unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF; }
+  @font-face { font-family:'JetBrains Mono'; font-weight:100 800; font-display:swap; src:url(fonts-jbmono-vietnamese.woff2) format('woff2'); size-adjust:87%; unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB; }
+  @font-face { font-family:'JetBrains Mono'; font-weight:100 800; font-display:swap; src:url(fonts-jbmono-latin-ext.woff2) format('woff2'); size-adjust:87%; unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'JetBrains Mono'; font-weight:100 800; font-display:swap; src:url(fonts-jbmono-latin.woff2) format('woff2'); size-adjust:87%; unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'Noto Sans Mono'; font-weight:100 900; font-display:swap; src:url(fonts-notomono-cyrillic-ext.woff2) format('woff2'); size-adjust:92%; unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F; }
+  @font-face { font-family:'Noto Sans Mono'; font-weight:100 900; font-display:swap; src:url(fonts-notomono-cyrillic.woff2) format('woff2'); size-adjust:92%; unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family:'Noto Sans Mono'; font-weight:100 900; font-display:swap; src:url(fonts-notomono-greek-ext.woff2) format('woff2'); size-adjust:92%; unicode-range:U+1F00-1FFF; }
+  @font-face { font-family:'Noto Sans Mono'; font-weight:100 900; font-display:swap; src:url(fonts-notomono-greek.woff2) format('woff2'); size-adjust:92%; unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF; }
+  @font-face { font-family:'Noto Sans Mono'; font-weight:100 900; font-display:swap; src:url(fonts-notomono-vietnamese.woff2) format('woff2'); size-adjust:92%; unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB; }
+  @font-face { font-family:'Noto Sans Mono'; font-weight:100 900; font-display:swap; src:url(fonts-notomono-latin-ext.woff2) format('woff2'); size-adjust:92%; unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Noto Sans Mono'; font-weight:100 900; font-display:swap; src:url(fonts-notomono-latin.woff2) format('woff2'); size-adjust:92%; unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   /* Typefaces: --font-body for text, --font-head for headings and figures.
      Only Vito's own pair has a separate heading face. Keep "system" in step
      with internal/pill/sysfont*.go, which draws the pill in the same one. */
@@ -42,11 +76,11 @@
   [data-font="system"] { --font-body:system-ui,-apple-system,'Segoe UI',Cantarell,'Noto Sans',Ubuntu,sans-serif; --font-head:var(--font-body); }
   [data-font="inter"] { --font-body:'Inter',system-ui,sans-serif; --font-head:var(--font-body); }
   [data-font="atkinson"] { --font-body:'Atkinson Hyperlegible Next',system-ui,sans-serif; --font-head:var(--font-body); }
-  [data-font="lexend"] { --font-body:'Lexend',system-ui,sans-serif; --font-head:var(--font-body); }
+  [data-font="noto-sans"] { --font-body:'Noto Sans',system-ui,sans-serif; --font-head:var(--font-body); }
   [data-font="nunito"] { --font-body:'Nunito',system-ui,sans-serif; --font-head:var(--font-body); }
-  [data-font="lora"] { --font-body:'Lora',Georgia,serif; --font-head:var(--font-body); }
+  [data-font="literata"] { --font-body:'Literata',Georgia,serif; --font-head:var(--font-body); }
   [data-font="jetbrains-mono"] { --font-body:'JetBrains Mono',ui-monospace,monospace; --font-head:var(--font-body); }
-  [data-font="iawriter"] { --font-body:'iA Writer Quattro',system-ui,sans-serif; --font-head:var(--font-body); }
+  [data-font="noto-mono"] { --font-body:'Noto Sans Mono',ui-monospace,monospace; --font-head:var(--font-body); }
   .font-opt { padding:6px 14px; }
   .font-opt span { font-family:var(--font-body); }
   /* Colour themes (ui.accent → data-accent on <html>). A theme sets only the
@@ -557,6 +591,14 @@
   .cost-card { cursor:var(--cur-hand); } /* a click opens how the costs are worked out */
   .h2-btns { margin-left:auto; display:flex; gap:6px; }
   /* Settings → Activation: the dictation key, on top (dictKeyHTML). */
+  /* One button in three parts (Settings → Display → Theme). */
+  .tri-seg { display:inline-flex; margin:2px 0 14px; border:1px solid var(--input-border); border-radius:999px; background:var(--input-bg); padding:3px; gap:2px; }
+  .tri-seg button { display:inline-flex; align-items:center; gap:7px; padding:6px 16px; border:0; border-radius:999px; background:none;
+    color:var(--text2); font:inherit; font-size:13px; cursor:var(--cur-hand); }
+  .tri-seg button:hover { color:var(--text); }
+  .tri-seg button.sel { background:var(--accent-soft); color:var(--accent); font-weight:600; box-shadow:inset 0 0 0 1px var(--accent); }
+  .tri-seg button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .tri-seg .opt-ic { width:16px; height:16px; flex:none; }
   .seg-pick { display:flex; gap:8px; flex-wrap:wrap; max-width:420px; }
   .seg-pick button { flex:1 1 0; min-width:96px; display:flex; flex-direction:column; align-items:center; gap:6px; padding:10px 8px;
     border:1px solid var(--input-border); border-radius:10px; background:var(--input-bg); color:var(--text2); font:inherit; font-size:12.5px; font-weight:600; cursor:var(--cur-hand); }
@@ -2485,10 +2527,7 @@
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>Display</span></h2>
           <label class="fld" data-help="theme">Theme</label>
           <input type="hidden" id="s-theme">
-          <div class="flagsel" id="theme-sel">
-            <button type="button" class="flagsel-btn" id="theme-btn">System (follow OS)</button>
-            <div class="flagsel-list" id="theme-list"></div>
-          </div>
+          <div class="tri-seg" id="theme-seg" role="radiogroup" aria-label="Theme"></div>
           <label class="fld" data-help="accent">Colours</label>
           <div class="accent-sel" id="accent-sel" role="radiogroup" aria-label="Colours"></div>
           <label class="fld" data-help="font">Font</label>
@@ -2501,7 +2540,7 @@
             <button type="button" class="flagsel-btn" id="uilang-btn">Automatic (OS)</button>
             <div class="flagsel-list" id="uilang-list"></div>
           </div>
-          <label class="tgl"><input type="checkbox" id="s-helptips"><span class="tr"></span> Show help tips on hover</label>
+          <label class="tgl" data-help="helptips"><input type="checkbox" id="s-helptips"><span class="tr"></span> Show help tips on hover</label>
         </div>
         <div class="card" data-sec="general" id="set-system">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg><span>System</span></h2>
@@ -4659,7 +4698,7 @@ function accentHex(){
 }
 /* ---- typeface (ui.font): "" is Sora with Baloo 2, the others are
    [data-font] rules in the CSS; cached like the colour theme ---- */
-const FONTS = [{c:"",n:"Vito default"},{c:"system",n:"System"},{c:"inter",n:"Inter",b:1},{c:"atkinson",n:"Atkinson Hyperlegible",b:1},{c:"lexend",n:"Lexend",b:1},{c:"nunito",n:"Nunito",b:1},{c:"lora",n:"Lora",b:1},{c:"jetbrains-mono",n:"JetBrains Mono",b:1},{c:"iawriter",n:"iA Writer Quattro",b:1}];
+const FONTS = [{c:"",n:"Vito default"},{c:"system",n:"System"},{c:"inter",n:"Inter",b:1},{c:"atkinson",n:"Atkinson Hyperlegible",b:1},{c:"noto-sans",n:"Noto Sans",b:1},{c:"nunito",n:"Nunito",b:1},{c:"literata",n:"Literata",b:1},{c:"jetbrains-mono",n:"JetBrains Mono",b:1},{c:"noto-mono",n:"Noto Sans Mono",b:1}];
 let fontPref = (() => { try { return localStorage.getItem("vito-font") || ""; } catch { return ""; } })();
 function applyFont(){
   const root = document.documentElement;
@@ -5704,19 +5743,17 @@ const TICONS = {
   light:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>',
   dark:'<svg class="opt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>',
 };
-const THEMES = [{c:"system",n:"System (follow OS)"},{c:"light",n:"Light"},{c:"dark",n:"Dark"}];
+const THEMES = [{c:"system",n:"System (follow OS)",s:"System",tip:"System (follow OS)"},{c:"light",n:"Light"},{c:"dark",n:"Dark"}];
 function setThemeDisplay(code){
   const it = THEMES.find(x=>x.c===code) || THEMES[0];
-  $("theme-btn").innerHTML = TICONS[it.c] + "<span>" + t(it.n) + "</span>";
-  [...$("theme-list").children].forEach(o=>o.classList.toggle("sel", o.dataset.code===code));
+  [...$("theme-seg").children].forEach(o=>{ const on = o.dataset.code===it.c; o.classList.toggle("sel", on); o.setAttribute("aria-checked", on ? "true" : "false"); });
   $("s-theme").value = code;
 }
 function buildThemeDropdown(){
-  const list=$("theme-list");
-  list.innerHTML = THEMES.map(x=>`<div class="flagsel-opt" data-code="${x.c}">${TICONS[x.c]}<span>${t(x.n)}</span></div>`).join("");
-  [...list.children].forEach(o=>o.onclick=()=>{ $("theme-sel").classList.remove("open"); setTheme(o.dataset.code, true); });
-  $("theme-btn").onclick=(e)=>{ e.stopPropagation(); $("theme-sel").classList.toggle("open"); };
-  document.addEventListener("click", ()=>$("theme-sel").classList.remove("open"));
+  // One button in three parts: System (follows the OS), Light, Dark.
+  const seg=$("theme-seg");
+  seg.innerHTML = THEMES.map(x=>`<button type="button" role="radio" data-code="${x.c}"${x.tip ? ` data-tip-text="${t(x.tip)}"` : ""}>${TICONS[x.c]}<span>${t(x.s || x.n)}</span></button>`).join("");
+  [...seg.children].forEach(o=>o.onclick=()=>setTheme(o.dataset.code, true));
 }
 buildThemeDropdown();
 buildAccentPicker();
@@ -13238,8 +13275,9 @@ tagReveals();
 
 /* ---- per-option help tooltips (shown after a short delay) ---- */
 const HELP = {
-  font:{nl:"Het lettertype van Vito, ook in de pil als je Systeem kiest. Atkinson Hyperlegible is gemaakt voor slechtzienden, Lexend voor vlot lezen.",en:"Vito's typeface, in the pill too when you choose System. Atkinson Hyperlegible is made for low vision, Lexend for fluent reading."},
+  font:{nl:"Het lettertype van Vito, ook in de pil als je Systeem kiest. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill too when you choose System. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},
   accent:{nl:"De kleuren van Vito: de knoppen, het verloop, de pil en de mascotte. Rood voor fouten en opnemen blijft rood.",en:"Vito's colours: the buttons, the gradient, the pill and the mascot. Red for errors and recording stays red."},
+  helptips:{nl:"Ja, dit is er een. Uit: geen uitleg meer als je even boven een instelling blijft hangen — deze ook niet.",en:"Yes, this is one. Off: no more explanations when you linger over a setting — this one included."},
   theme:{nl:"Licht, donker of automatisch — automatisch volgt de licht/donker-stand van je systeem.",en:"Light, dark or automatic — automatic follows your system's light/dark setting."},
   uilang:{nl:"De taal van deze app-interface. 'Automatisch' gebruikt je systeemtaal (anders Engels).",en:"The language of this app interface. 'Automatic' uses your OS language (English otherwise)."},
   zoom:{nl:"Vergroot of verklein de hele app-interface. Handig op grote of kleine schermen.",en:"Scale the whole app interface up or down. Handy on large or small screens."},

@@ -102,10 +102,13 @@ changes. Canvases and the cursor images read the colours with `accentHex()` /
 ## Typefaces
 
 `ui.font` ("" Sora with Baloo 2 for headings; `system`, `inter`, `atkinson`,
-`lexend`, `nunito`, `lora`, `jetbrains-mono`, `iawriter`) sets `data-font` on
+`noto-sans`, `nunito`, `literata`, `jetbrains-mono`, `noto-mono`) sets `data-font` on
 `<html>`, which sets `--font-body` and `--font-head`; use those, never a font
-name. The faces are `web/fonts-*.woff2` (latin subsets from Fontsource, OFL,
-notices in `fonts-licenses.txt`), each fetched only when chosen. The pill
+name. The faces are `web/fonts-<font>-<subset>.woff2` (Fontsource, OFL, notices in
+`fonts-licenses.txt`), each with a unicode-range: every script a font has
+(latin-ext, Cyrillic, Greek, Vietnamese, Devanagari), fetched only when
+used. Choose fonts without a Reserved Font Name (subsetting is a change)
+and with wide coverage — Vito speaks 60 languages. The pill
 follows only `system`: `internal/pill/sysfont*.go` finds the desktop's font
 (Segoe UI; SF; on Linux GNOME/Cinnamon/KDE's interface font via `fc-match`)
 and keeps Sora for any weight it cannot read. Its faces are one `faceSet`
