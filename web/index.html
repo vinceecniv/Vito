@@ -2790,6 +2790,7 @@
           <div class="accent-sel" id="radius-sel" role="radiogroup" aria-label="Corners"></div>
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
+          <button type="button" class="btn ghost small" id="s-look-reset" style="margin-top:16px;">Reset to default</button>
         </div>
         <div class="card" data-sec="appearance" id="set-vito">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5q3.5 3 7 0"/><circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/></svg><span>Vito</span></h2>
@@ -5056,6 +5057,12 @@ function setTheme(pref, persist){
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme: pref });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
+// Theme, colours, font, corners and background back to Vito's own, in one save.
+function resetLook(){
+  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false);
+  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"" });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(themePref==="system"){ if(typeof fadeTheme==="function") fadeTheme(); applyTheme(); } });
 applyAccent();
 
@@ -6075,6 +6082,7 @@ buildThemeDropdown();
 buildAccentPicker();
 buildFontPicker();
 buildBackdropPicker();
+$("s-look-reset").onclick = resetLook;
 buildRadiusPicker();
 $("s-dress").onclick = vmGoDress;
 // After init: mascotSVG's state is declared further down.
