@@ -1229,9 +1229,16 @@
   .ach-summary { font-size:12.5px; color:var(--text3); margin:-6px 0 16px; }
   /* Overall progress: how much of the set you've earned, filling on open. */
   /* Vito's wardrobe (achievements page) */
-  .wardrobe { background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:16px 18px 8px; margin:0 0 22px; }
-  .wd-head { display:flex; align-items:center; gap:16px; margin-bottom:6px; }
-  .wd-big { width:96px; height:104px; flex:none; }
+  .wardrobe { background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:8px 18px; margin:0 0 22px; }
+  .wardrobe.open { padding-bottom:8px; }
+  .wd-head { display:flex; align-items:center; gap:14px; width:100%; padding:2px 0; border:0; background:none; color:inherit; font:inherit; text-align:left; cursor:var(--cur-hand); }
+  .wardrobe.open .wd-head { margin-bottom:6px; }
+  .wd-txt { display:flex; flex-direction:column; flex:1; min-width:0; }
+  .wd-chev { width:20px; height:20px; flex:none; color:var(--text3); transition:transform .2s; }
+  .wardrobe.open .wd-chev { transform:rotate(180deg); }
+  .wd-head:hover .wd-chev { color:var(--text); }
+  .wd-big { width:52px; height:56px; flex:none; transition:width .2s, height .2s; }
+  .wardrobe.open .wd-big { width:96px; height:104px; }
   .wd-big .vmascot, .wd-opt .vmascot, .wd-pop-vm .vmascot { display:block; width:100%; height:100%; }
   .wd-big svg, .wd-opt svg, .wd-pop-vm svg { width:100%; height:100%; overflow:visible; }
   .wd-title { font-family:var(--font-head); font-size:19px; font-weight:700; }
@@ -7429,11 +7436,22 @@ function renderWardrobe(){
     };
     rows += `<div class="wd-slot"><div class="wd-slot-h">${t(label)}</div><div class="wd-opts">${opt("")}${keys.map(opt).join("")}</div></div>`;
   }
-  box.innerHTML = `<div class="wd-head"><div class="wd-big"><span class="vmascot" data-state="happy">${mascotSVG()}</span></div>` +
-    `<div><div class="wd-title">${t("Dress up Vito")}</div><div class="wd-sub">${t("Unlock more by earning achievements.")}</div></div></div>${rows}`;
+  // Folded by default: the head (Vito as dressed) opens and closes the rest.
+  box.classList.toggle("open", vmWardOpen);
+  box.innerHTML = `<button type="button" class="wd-head" aria-expanded="${vmWardOpen}"><span class="wd-big"><span class="vmascot" data-state="happy">${mascotSVG()}</span></span>` +
+    `<span class="wd-txt"><span class="wd-title">${t("Dress up Vito")}</span><span class="wd-sub">${t("Unlock more by earning achievements.")}</span></span>` +
+    `<svg class="wd-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>` +
+    `<div class="wd-body"${vmWardOpen ? "" : " hidden"}>${rows}</div>`;
+  box.querySelector(".wd-head").onclick = () => setWardrobeOpen(!vmWardOpen);
   // A second click on the piece worn takes it off again.
   box.querySelectorAll(".wd-opt:not(.locked)").forEach(b => b.onclick = () =>
     setOutfit(b.dataset.slot, b.classList.contains("sel") ? "" : b.dataset.k, true));
+}
+let vmWardOpen = (() => { try { return localStorage.getItem("vito-wardrobe-open") === "1"; } catch { return false; } })();
+function setWardrobeOpen(on){
+  vmWardOpen = on;
+  try { localStorage.setItem("vito-wardrobe-open", on ? "1" : "0"); } catch {}
+  renderWardrobe();
 }
 // After new achievements: which pieces they opened, announced once.
 function vmAnnounceUnlocks(before){
@@ -7707,7 +7725,7 @@ vmFollow($("mascot-card"), $("mascot-card").querySelector(".vmascot"));
   box.innerHTML = `<button type="button" class="vm-act" id="vm-dress" aria-label="${t("Dress up")}" data-tip-text="${t("Dress up")}">${ICON_HANGER}</button>` +
     `<button type="button" class="vm-act" id="vm-full" aria-label="${t("Full screen")}" data-tip-text="${t("Full screen")}">${ICON_FULL}</button>`;
   card.appendChild(box);
-  $("vm-dress").onclick = () => { selectTab("achievements"); setTimeout(() => { const w = $("vm-wardrobe"); if (w) w.scrollIntoView({ behavior:"smooth", block:"start" }); }, 80); };
+  $("vm-dress").onclick = () => { setWardrobeOpen(true); selectTab("achievements"); setTimeout(() => { const w = $("vm-wardrobe"); if (w) w.scrollIntoView({ behavior:"smooth", block:"start" }); }, 80); };
   $("vm-full").onclick = vmFullscreen;
 })();
 function vmFullscreen(){
