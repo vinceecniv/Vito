@@ -86,7 +86,10 @@ first merge).
 ## Colour themes
 
 `ui.accent` ("" coral & violet, `ocean`, `sunset`, `forest`, `plum`,
-`graphite`) sets `data-accent` on `<html>`. Each theme overrides only the
+`graphite`, and the community schemes `catppuccin`, `tokyo-night`, `nord`,
+`gruvbox`, `rose-pine`, `kanagawa`) sets `data-accent` on `<html>`. The
+community schemes also bring their own light and dark surfaces (Latte/Mocha,
+Day/Night, …) and keep their names untranslated (`b:1` in `ACCENTS`). Each theme overrides only the
 palette tokens (`--coral`, `--violet`, `--violet-l`, `--coral-l`, `--acc-l`,
 `--acc-d`, `--ink-l`); everything else derives from them. Use those tokens,
 never a brand hex. Errors and recording use `--danger*`, which no theme

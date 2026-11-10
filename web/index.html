@@ -90,6 +90,106 @@
     --text:#F1F0FF; --text2:#A9A6D6; --text3:#9490C4; --placeholder:#575188;
     --toggle-off:#362C66; --track:#362C66; --bar:#2B2257;
   }
+  /* Community schemes (Omarchy's picks and friends): their own surfaces in
+     both flavours (Latte/Mocha, Day/Night, Snow Storm/Polar Night, Dawn/Main,
+     Lotus/Wave). Light surfaces under :not(dark) so the picker swatches,
+     which carry data-accent too, keep the page's own. */
+  [data-accent="catppuccin"] { --coral:#EA76CB; --violet:#8839EF; --violet-l:#CBA6F7; --coral-l:#F5C2E7; --acc-l:#7A2FD9; --acc-d:#CBA6F7; --ink-l:#A8338A;
+    --grad:linear-gradient(135deg,#EA76CB,#8839EF 55%,#7287FD); }
+  :root:not([data-theme="dark"])[data-accent="catppuccin"] {
+    --bg:#E6E9EF; --sidebar:#EFF1F5; --sidebar-border:#CCD0DA;
+    --card:#EFF1F5; --card-border:#CCD0DA;
+    --input-bg:#E6E9EF; --input-border:#BCC0CC;
+    --text:#4C4F69; --text2:#5C5F77; --text3:#5F6278; --placeholder:#9CA0B0;
+    --toggle-off:#BCC0CC; --track:#CCD0DA; --bar:#CCD0DA;
+  }
+  :root[data-theme="dark"][data-accent="catppuccin"] {
+    --bg:#181825; --sidebar:#11111B; --sidebar-border:#313244;
+    --card:#1E1E2E; --card-border:#313244;
+    --input-bg:#262637; --input-border:#45475A;
+    --text:#CDD6F4; --text2:#BAC2DE; --text3:#A6ADC8; --placeholder:#6C7086;
+    --toggle-off:#45475A; --track:#313244; --bar:#313244;
+  }
+  [data-accent="tokyo-night"] { --coral:#7AA2F7; --violet:#9854F1; --violet-l:#BB9AF7; --coral-l:#7DCFFF; --acc-l:#2A58B8; --acc-d:#7AA2F7; --ink-l:#2A58B8;
+    --grad:linear-gradient(135deg,#7DCFFF,#7AA2F7 40%,#9854F1); }
+  :root:not([data-theme="dark"])[data-accent="tokyo-night"] {
+    --bg:#E1E2E7; --sidebar:#E9E9ED; --sidebar-border:#C4C8DA;
+    --card:#F0F0F3; --card-border:#C4C8DA;
+    --input-bg:#E6E7EC; --input-border:#C4C8DA;
+    --text:#343B58; --text2:#4C5374; --text3:#5A6182; --placeholder:#A1A6C5;
+    --toggle-off:#C4C8DA; --track:#D5D7E2; --bar:#D5D7E2;
+  }
+  :root[data-theme="dark"][data-accent="tokyo-night"] {
+    --bg:#16161E; --sidebar:#16161E; --sidebar-border:#292E42;
+    --card:#1A1B26; --card-border:#292E42;
+    --input-bg:#1F2335; --input-border:#3B4261;
+    --text:#C0CAF5; --text2:#A9B1D6; --text3:#8C94BD; --placeholder:#565F89;
+    --toggle-off:#3B4261; --track:#292E42; --bar:#292E42;
+  }
+  [data-accent="nord"] { --coral:#8FBCBB; --violet:#5E81AC; --violet-l:#81A1C1; --coral-l:#88C0D0; --acc-l:#4C6A92; --acc-d:#88C0D0; --ink-l:#2F6469;
+    --grad:linear-gradient(135deg,#8FBCBB,#88C0D0 35%,#5E81AC); }
+  :root:not([data-theme="dark"])[data-accent="nord"] {
+    --bg:#E5E9F0; --sidebar:#ECEFF4; --sidebar-border:#D8DEE9;
+    --card:#ECEFF4; --card-border:#D8DEE9;
+    --input-bg:#E5E9F0; --input-border:#CED5E1;
+    --text:#2E3440; --text2:#3B4252; --text3:#4C566A; --placeholder:#A0A8B7;
+    --toggle-off:#C9D0DB; --track:#D8DEE9; --bar:#D8DEE9;
+  }
+  :root[data-theme="dark"][data-accent="nord"] {
+    --bg:#2E3440; --sidebar:#2B303B; --sidebar-border:#3B4252;
+    --card:#3B4252; --card-border:#434C5E;
+    --input-bg:#3F4757; --input-border:#4C566A;
+    --text:#ECEFF4; --text2:#D8DEE9; --text3:#B4BCCB; --placeholder:#7B869B;
+    --toggle-off:#4C566A; --track:#434C5E; --bar:#434C5E;
+  }
+  [data-accent="gruvbox"] { --coral:#D65D0E; --violet:#458588; --violet-l:#83A598; --coral-l:#FABD2F; --acc-l:#076678; --acc-d:#83A598; --ink-l:#AF3A03;
+    --grad:linear-gradient(135deg,#D79921,#D65D0E 35%,#458588); }
+  :root:not([data-theme="dark"])[data-accent="gruvbox"] {
+    --bg:#F2E5BC; --sidebar:#FBF1C7; --sidebar-border:#D5C4A1;
+    --card:#FBF1C7; --card-border:#D5C4A1;
+    --input-bg:#F2E5BC; --input-border:#D5C4A1;
+    --text:#3C3836; --text2:#504945; --text3:#665C54; --placeholder:#A89984;
+    --toggle-off:#D5C4A1; --track:#EBDBB2; --bar:#EBDBB2;
+  }
+  :root[data-theme="dark"][data-accent="gruvbox"] {
+    --bg:#1D2021; --sidebar:#1D2021; --sidebar-border:#3C3836;
+    --card:#282828; --card-border:#3C3836;
+    --input-bg:#32302F; --input-border:#504945;
+    --text:#EBDBB2; --text2:#D5C4A1; --text3:#BDAE93; --placeholder:#7C6F64;
+    --toggle-off:#504945; --track:#3C3836; --bar:#3C3836;
+  }
+  [data-accent="rose-pine"] { --coral:#D7827E; --violet:#907AA9; --violet-l:#C4A7E7; --coral-l:#EBBCBA; --acc-l:#286983; --acc-d:#C4A7E7; --ink-l:#A3555A;
+    --grad:linear-gradient(135deg,#D7827E,#907AA9 55%,#286983); }
+  :root:not([data-theme="dark"])[data-accent="rose-pine"] {
+    --bg:#FAF4ED; --sidebar:#FFFAF3; --sidebar-border:#EAE1DA;
+    --card:#FFFAF3; --card-border:#EAE1DA;
+    --input-bg:#F4EDE8; --input-border:#DFDAD9;
+    --text:#575279; --text2:#65617D; --text3:#65617D; --placeholder:#9893A5;
+    --toggle-off:#CECACD; --track:#F2E9E1; --bar:#F2E9E1;
+  }
+  :root[data-theme="dark"][data-accent="rose-pine"] {
+    --bg:#191724; --sidebar:#191724; --sidebar-border:#26233A;
+    --card:#1F1D2E; --card-border:#26233A;
+    --input-bg:#26233A; --input-border:#403D52;
+    --text:#E0DEF4; --text2:#B5B1CF; --text3:#908CAA; --placeholder:#6E6A86;
+    --toggle-off:#403D52; --track:#26233A; --bar:#26233A;
+  }
+  [data-accent="kanagawa"] { --coral:#FFA066; --violet:#4D699B; --violet-l:#7E9CD8; --coral-l:#E6C384; --acc-l:#3F5788; --acc-d:#7E9CD8; --ink-l:#8A4700;
+    --grad:linear-gradient(135deg,#FFA066,#7E9CD8 55%,#4D699B); }
+  :root:not([data-theme="dark"])[data-accent="kanagawa"] {
+    --bg:#E5DDB0; --sidebar:#F2ECBC; --sidebar-border:#D5CEA3;
+    --card:#F2ECBC; --card-border:#D5CEA3;
+    --input-bg:#ECE5B6; --input-border:#D5CEA3;
+    --text:#43436C; --text2:#545464; --text3:#5C5C6C; --placeholder:#8A8980;
+    --toggle-off:#D5CEA3; --track:#DCD5AC; --bar:#DCD5AC;
+  }
+  :root[data-theme="dark"][data-accent="kanagawa"] {
+    --bg:#16161D; --sidebar:#181820; --sidebar-border:#2A2A37;
+    --card:#1F1F28; --card-border:#2A2A37;
+    --input-bg:#2A2A37; --input-border:#363646;
+    --text:#DCD7BA; --text2:#C8C093; --text3:#A6A69C; --placeholder:#727169;
+    --toggle-off:#363646; --track:#2A2A37; --bar:#2A2A37;
+  }
   /* Graphite's and Plum's cool ends are too dark to read as a fill on a dark surface. */
   :root[data-theme="dark"][data-accent="graphite"] { --violet:#64748B; }
   :root[data-theme="dark"][data-accent="plum"] { --violet:#A2477F; }
@@ -4427,7 +4527,7 @@ function applyTheme(){
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
    palettes in the CSS (:root[data-accent]); cached like the theme ---- */
-const ACCENTS = [{c:"",n:"Coral & violet"},{c:"ocean",n:"Ocean"},{c:"sunset",n:"Sunset"},{c:"forest",n:"Forest"},{c:"plum",n:"Plum"},{c:"graphite",n:"Graphite"}];
+const ACCENTS = [{c:"",n:"Coral & violet"},{c:"ocean",n:"Ocean"},{c:"sunset",n:"Sunset"},{c:"forest",n:"Forest"},{c:"plum",n:"Plum"},{c:"graphite",n:"Graphite"},{c:"catppuccin",n:"Catppuccin",b:1},{c:"tokyo-night",n:"Tokyo Night",b:1},{c:"nord",n:"Nord",b:1},{c:"gruvbox",n:"Gruvbox",b:1},{c:"rose-pine",n:"Rosé Pine",b:1},{c:"kanagawa",n:"Kanagawa",b:1}];
 let accentPref = localStorage.getItem("vito-accent") || "";
 function applyAccent(){
   const root = document.documentElement;
@@ -4445,7 +4545,7 @@ function setAccent(pref, persist){
 }
 function buildAccentPicker(){
   const box = $("accent-sel"); if (!box) return;
-  box.innerHTML = ACCENTS.map(a => `<button type="button" class="acc-opt" role="radio" data-code="${a.c}" data-accent="${a.c || "coral"}"><i class="acc-sw" aria-hidden="true"></i><span>${t(a.n)}</span></button>`).join("");
+  box.innerHTML = ACCENTS.map(a => `<button type="button" class="acc-opt" role="radio" data-code="${a.c}" data-accent="${a.c || "coral"}"><i class="acc-sw" aria-hidden="true"></i><span>${a.b ? a.n : t(a.n)}</span></button>`).join("");
   box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setAccent(b.dataset.code, true));
   applyAccent();
 }
