@@ -1789,6 +1789,10 @@
   /* The buttons keep one row at the right; the title's text wraps instead.
      Once they do wrap (a narrow window), they still hug the right edge. */
   .lr-headact { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; align-items:center; flex:none; max-width:100%; }
+  .lr-headact .btn.lr-io { align-self:stretch; aspect-ratio:1; flex:none; } /* square, as tall as New recording */
+  .lr-headact .btn.lr-io svg { width:19px; height:19px; }
+  /* On a phone the row goes under the title: New recording takes the width. */
+  @media (max-width:460px) { .lr-headact { flex:1 1 100%; } .lr-headact .lr-new { flex:1; justify-content:center; } }
   .lr-ilabel { display:flex; flex-direction:column; gap:4px; margin-top:12px; font-size:12px; color:var(--text3); }
   .lr-ilabel[hidden] { display:none; }
   .lr-empty { color:var(--text3); font-size:13.5px; text-align:center; padding:28px 0; }
@@ -2779,7 +2783,7 @@
     <!-- RECORDINGS: long recordings (internal/longrec, docs/long-recordings.md) -->
     <section id="tab-long">
       <div class="page-head"><div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="12" r="2.6" fill="currentColor" stroke="none"/><path d="M14 10h3.5M14 14h3.5"/></svg></span><h1>Recordings</h1></div><div class="sub">Lectures, meetings and long sessions — nothing is lost, and the text gets structure.</div></div>
-        <div class="lr-headact helper-only"><button class="btn ghost lr-ib" id="lr-import" data-tip-text="Turn an audio file (a recorded lecture, meeting or voice memo) into a recording"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0 4 4m-4-4-4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg><span>Audio file</span></button><button class="btn primary lr-new" id="lr-new"><span class="lr-dot"></span>New recording</button></div></div>
+        <div class="lr-headact helper-only"><button class="btn ghost lr-ib lr-io" id="lr-import" aria-label="Audio file" data-tip-text="Turn an audio file (a recorded lecture, meeting or voice memo) into a recording"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0 4 4m-4-4-4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></button><button class="btn primary lr-new" id="lr-new"><span class="lr-dot"></span>New recording</button></div></div>
       <!-- The browser version: what the app does here, and where to get it. -->
       <div class="banner tip app-more lr-webonly web-only">
         <span class="grow"><b>Recordings work in the installed Vito app.</b> Record a lecture, meeting or long session of an hour or more: Vito writes it out as you speak, cleans it up block by block, and you add headers and marks while you talk. The audio stays on your computer, so nothing is lost if something goes wrong.</span>
