@@ -2,10 +2,13 @@ package longrec
 
 import (
 	"fmt"
+	"math"
 	"sort"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"vito/internal/stt"
 )
 
 // markBack is how far a mark reaches back: you press it after hearing
@@ -19,6 +22,9 @@ type Sentence struct {
 	Text   string   `json:"text"`
 	Marked bool     `json:"marked,omitempty"`
 	Marks  []string `json:"marks,omitempty"` // the ids of the marks it is in
+	// W: when each word of Text starts (as strings.Fields splits it), where
+	// the speech service gave word times; empty otherwise.
+	W []float64 `json:"w,omitempty"`
 }
 
 // Item is a header or a paragraph of the document.
@@ -285,17 +291,42 @@ type para struct {
 }
 
 func splitTimed(text string, start, end float64) []para {
+	return splitClock(text, clock{start: start, end: end})
+}
+
+// clock tells when a position in a text is spoken: from the word times a
+// speech service gave (words, positions in the text they were given for,
+// scale turning a position in this text into one there), else by where it
+// sits between start and end.
+type clock struct {
+	start, end float64
+	words      []stt.WordTime
+	scale      float64
+}
+
+func (c clock) at(off, total int) float64 {
+	if len(c.words) == 0 {
+		if total == 0 {
+			return c.start
+		}
+		return c.start + (c.end-c.start)*float64(off)/float64(total)
+	}
+	o := int(float64(off)*c.scale + 0.5)
+	i := sort.Search(len(c.words), func(i int) bool { return c.words[i].Off > o })
+	if i == 0 {
+		return c.start
+	}
+	return c.words[i-1].At
+}
+
+// splitClock cuts text into paragraphs (blank lines) and sentences, each
+// timed by c; with word times, every word too.
+func splitClock(text string, c clock) []para {
 	text = strings.TrimSpace(text)
 	if text == "" {
 		return nil
 	}
 	total := utf8.RuneCountInString(text)
-	at := func(offset int) float64 {
-		if total == 0 {
-			return start
-		}
-		return start + (end-start)*float64(offset)/float64(total)
-	}
 	var out []para
 	offset := 0
 	for _, p := range strings.Split(text, "\n\n") {
@@ -308,12 +339,33 @@ func splitTimed(text string, start, end float64) []para {
 			}
 			pos := offset + utf8.RuneCountInString(p[:local+idx])
 			local += idx + len(s)
-			sents = append(sents, Sentence{Start: at(pos), Text: s})
+			sn := Sentence{Start: c.at(pos, total), Text: s}
+			if len(c.words) > 0 {
+				sn.W = wordTimes(s, pos, total, c)
+			}
+			sents = append(sents, sn)
 		}
 		if len(sents) > 0 {
 			out = append(out, para{sents: sents})
 		}
 		offset += utf8.RuneCountInString(p) + 2
+	}
+	return out
+}
+
+// wordTimes gives the start of each word of s, which begins at pos.
+func wordTimes(s string, pos, total int, c clock) []float64 {
+	var out []float64
+	in := false
+	for i, r := range []rune(s) {
+		if unicode.IsSpace(r) {
+			in = false
+			continue
+		}
+		if !in {
+			out = append(out, math.Round(c.at(pos+i, total)*100)/100)
+			in = true
+		}
 	}
 	return out
 }

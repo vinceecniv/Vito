@@ -12174,7 +12174,7 @@ function lrItemsHTML(doc, editable){
       const title = it.title ? escapeHtml(it.title) : escapeHtml(t("New subject")) + " · " + lrClock(it.at);
       return `<h2 class="lr-h${it.title ? "" : " lr-empty-h"}" data-id="${it.id}"><span class="lr-ht"${editable ? ` title="${escapeHtml(t("Click to type a title"))}"` : ""}>${title}</span>${editable ? `<button class="lr-hx" data-del aria-label="${escapeHtml(t("Remove header"))}">×</button>` : ""}</h2>`;
     }
-    const body = it.sentences.map(s => s.marked ? `<mark class="lr-m" data-t="${s.t}" data-marks="${escapeHtml((s.marks || []).join(" "))}">${escapeHtml(s.text)}</mark>` : `<span data-t="${s.t}">${escapeHtml(s.text)}</span>`).join(" ");
+    const body = it.sentences.map(s => s.marked ? `<mark class="lr-m" data-t="${s.t}" data-marks="${escapeHtml((s.marks || []).join(" "))}">${escapeHtml(s.text)}</mark>` : `<span data-t="${s.t}"${s.w ? ` data-w="${s.w.join(" ")}"` : ""}>${escapeHtml(s.text)}</span>`).join(" ");
     const spk = labels[i] ? `<span class="lr-spk" data-spk="${labels[i]}" style="--spk:${lrSpkColor(labels[i])}">${escapeHtml(lrSpkName(doc, labels[i]))}</span>` : "";
     return `<p class="lr-p"><span class="lr-ts" data-at="${it.at}">${lrClock(it.at)}</span><span>${spk}${body}</span></p>`;
   }).join("");
@@ -12546,8 +12546,8 @@ $("lr-doc-text").addEventListener("click", e => {
   const s = e.target.closest("span[data-t]");
   if (s) lrPlayAt(lrWordTime(s, e));
 });
-// lrWordTime estimates when the clicked word is spoken. Only sentences carry
-// a time, so a word is placed by how far into its sentence it sits, between
+// lrWordTime finds when the clicked word is spoken: from the word times
+// speaker recognition brought, else estimated — a word is placed by how far into its sentence it sits, between
 // that sentence's start and the next one's — the way the daemon times
 // sentences within a block — and playback starts a moment before it.
 function lrWordTime(span, e){
@@ -12564,6 +12564,12 @@ function lrWordTime(span, e){
     if (r && span.contains(r.startContainer)) off = r.startOffset;
   }
   while (off > 0 && !/\s/.test(text[off - 1])) off--; // the word's first letter
+  // Word times from speaker recognition (Soniox, AssemblyAI): exact.
+  const w = (span.dataset.w || "").split(" ").filter(Boolean).map(Number);
+  if (w.length) {
+    const i = (text.slice(0, off).match(/\S+/g) || []).length;
+    return Math.max(0, (w[Math.min(i, w.length - 1)]) - 0.15);
+  }
   if (!off || end <= start || !text.length) return start;
   return Math.max(start, start + (end - start) * off / text.length - 0.4);
 }
