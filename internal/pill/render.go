@@ -271,6 +271,7 @@ type rgb struct{ r, g, b float64 }
 type theme struct {
 	body, edge rgb
 	from, to   rgb
+	onAcc      rgb     // a mark on a fill in from or to: white, black on white
 	warn       rgb     // never the coral: that is the brand here, not a warning
 	shadow     float64 // strength under the open pill
 
@@ -304,11 +305,17 @@ func themeFor(dark bool) theme {
 	c := pal()
 	if dark {
 		th := darkTheme
-		th.edge, th.from, th.to = c.violetL, c.coral, c.violetL
+		th.edge, th.from, th.to, th.onAcc = c.violetL, c.coral, c.violetL, rgb{1, 1, 1}
+		if c.mono {
+			th.edge, th.from, th.to, th.onAcc = rgb{1, 1, 1}, rgb{1, 1, 1}, rgb{1, 1, 1}, rgb{}
+		}
 		return th
 	}
 	th := lightTheme
-	th.edge, th.from, th.to = c.violet, c.coral, c.violet
+	th.edge, th.from, th.to, th.onAcc = c.violet, c.coral, c.violet, rgb{1, 1, 1}
+	if c.mono {
+		th.edge, th.from, th.to = rgb{}, rgb{}, rgb{}
+	}
 	return th
 }
 
@@ -578,7 +585,7 @@ func drawButtons(buf []byte, w, h int, f Frame) {
 		}
 		fill, mark := th.body, ink
 		if f.Over == b {
-			fill, mark = th.to, rgb{1, 1, 1}
+			fill, mark = th.to, th.onAcc
 			if b == ButtonCancel {
 				fill = th.from
 			}

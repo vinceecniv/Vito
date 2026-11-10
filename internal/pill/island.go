@@ -995,7 +995,7 @@ func (ip *islandPainter) mic(buf []byte, w, h int, th theme, st islandState) {
 			put(buf, w, x, y, c, e*clamp(0.5-d))
 		})
 	}
-	micCol := blend(blend(th.from, th.to, 0.5), rgb{1, 1, 1}, e)
+	micCol := blend(blend(th.from, th.to, 0.5), th.onAcc, e)
 	microphone(buf, w, h, cx, cy, s*mix(1, 1.35, e), micCol, 1-gone)
 }
 
@@ -1223,7 +1223,11 @@ func switchIcon(buf []byte, w, h int, cx, cy, s float64, on bool, th theme, dark
 	if on {
 		kx = cx + tw - tr
 	}
-	box(buf, w, h, kx, cy, tr-2*s, tr-2*s, kc, rgb{1, 1, 1}, a)
+	knob := rgb{1, 1, 1}
+	if on {
+		knob = th.onAcc
+	}
+	box(buf, w, h, kx, cy, tr-2*s, tr-2*s, kc, knob, a)
 }
 
 // styleIcon is the little picture of a pill style in the segmented control.

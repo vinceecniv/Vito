@@ -7,11 +7,12 @@ import "sync/atomic"
 // gradient, violet the cool end, violetL its light tint, whatever the theme.
 type palette struct {
 	coral, violet, violetL rgb
-	violetDark             rgb // violet on a dark surface, where it differs
+	violetDark             rgb  // violet on a dark surface, where it differs
+	mono                   bool // the accent is white on dark, black on light
 }
 
 func pal4(coral, violet, violetL, violetDark uint32) *palette {
-	return &palette{hex(coral), hex(violet), hex(violetL), hex(violetDark)}
+	return &palette{coral: hex(coral), violet: hex(violet), violetL: hex(violetL), violetDark: hex(violetDark)}
 }
 
 var palettes = map[string]*palette{
@@ -31,8 +32,10 @@ var palettes = map[string]*palette{
 	"dracula":     pal4(0xFF79C6, 0x8B6CEF, 0xBD93F9, 0x8B6CEF),
 	// High contrast: the dark side's bright accents, which the pill's
 	// fills (never text) carry on either surface.
-	"hc":       pal4(0xFFE600, 0x0035D4, 0x00E5FF, 0x00B8E6),
-	"hc-amber": pal4(0xFFB000, 0x8A4B00, 0xFFC94D, 0xFF8A00),
+	"hc": pal4(0xFFE600, 0x0035D4, 0x00E5FF, 0x00B8E6),
+	// Black and white: no colour; themeFor draws the accent as the ink of
+	// each side (mono). coral and violet are what the brand tile shows.
+	"hc-bw": {coral: hex(0x404040), violet: hex(0x000000), violetL: hex(0xFFFFFF), violetDark: hex(0xFFFFFF), mono: true},
 }
 
 var curPalette atomic.Pointer[palette]

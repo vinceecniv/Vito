@@ -208,7 +208,7 @@ type UI struct {
 	PillStyle string `json:"pill_style,omitempty"`
 	// Accent is the colour theme: "" Vito's own coral and violet, ocean, or a
 	// community scheme (catppuccin, tokyo-night, nord, gruvbox, rose-pine,
-	// kanagawa, everforest, ristretto, solarized, flexoki, dracula), or high contrast (hc, hc-amber). The page
+	// kanagawa, everforest, ristretto, solarized, flexoki, dracula), or high contrast (hc, hc-bw). The page
 	// and the pill draw it.
 	Accent string `json:"accent,omitempty"`
 	// Font is the typeface: "" Sora with Baloo 2, "system" the desktop's own
