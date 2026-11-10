@@ -109,6 +109,10 @@ theme works, stronger by `--bd-k` on dark) and also draw the picker's swatches,
 scaled by `--u`. Only transforms animate (aurora, waves, bubbles), and nothing
 under reduced motion. Theme, colours, font, background and the Vito cursor
 live on their own settings tab, Appearance (`data-sec="appearance"`).
+`ui.radius` ("", `minimal`, `none`) sets `data-radius` on `<html>`: one
+`!important` override caps every element's corners at 3px or squares them,
+so new CSS needs no part in it (`.spinner` and the picker's `.rad-sw` are
+left out).
 
 ## Typefaces
 

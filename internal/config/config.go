@@ -219,6 +219,9 @@ type UI struct {
 	// gradient, aurora, sunrise, waves, bubbles, grid, dots, stripes, ripples, contours,
 	// confetti (.bd[data-bd] in web/index.html). The page only.
 	Backdrop string `json:"backdrop,omitempty"`
+	// Radius is the page's corners: "" its own, "minimal" (3px) or "none".
+	// The page only.
+	Radius string `json:"radius,omitempty"`
 	// Outfit is what Vito wears, a piece per slot (head, glasses, ears, neck,
 	// paint), as the page names them (VM_ACC in web/index.html).
 	Outfit map[string]string `json:"outfit,omitempty"`

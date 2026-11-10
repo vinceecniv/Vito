@@ -461,6 +461,14 @@
   .s-vito-prev .vmascot { display:block; width:100%; height:100%; }
   .s-vito-prev svg { width:100%; height:100%; overflow:visible; }
   .bd-sw[data-bd="bubbles"], .bd-sw[data-bd="confetti"], .bd-sw[data-bd="contours"] { --u:.5px; } /* smaller, its rings vanish */
+  /* ---- corners (ui.radius): the page's own radii, or all of them capped at
+     3px ("minimal") or square ("none"). One override for every element, so
+     nothing has to know; spinners stay round, the picker's samples show
+     their own. The pill and the island keep theirs. ---- */
+  :root[data-radius="minimal"] *:not(.spinner):not(.rad-sw), :root[data-radius="minimal"] ::before, :root[data-radius="minimal"] ::after { border-radius:3px !important; }
+  :root[data-radius="none"] *:not(.spinner):not(.rad-sw), :root[data-radius="none"] ::before, :root[data-radius="none"] ::after { border-radius:0 !important; }
+  .rad-sw { width:18px; height:18px; flex:none; border:2px solid var(--text2); border-right:0; border-bottom:0; margin:6px 0 0 6px; }
+  .rad-opt { padding-left:8px; }
   /* Sticky bars over a background: let it show through, softly. */
   :root[data-backdrop] .settabs, :root[data-backdrop] .setsec-sel { background:color-mix(in srgb, var(--bg) 55%, transparent);
     -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
@@ -2773,6 +2781,8 @@
           <div class="accent-sel" id="accent-sel" role="radiogroup" aria-label="Colours"></div>
           <label class="fld" data-help="font">Font</label>
           <div class="accent-sel" id="font-sel" role="radiogroup" aria-label="Font"></div>
+          <label class="fld" data-help="radius">Corners</label>
+          <div class="accent-sel" id="radius-sel" role="radiogroup" aria-label="Corners"></div>
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
         </div>
@@ -4026,7 +4036,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast amber":"Hoog contrast amber",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast amber":"Hoog contrast amber",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -4969,6 +4979,28 @@ function buildFontPicker(){
   applyFont();
 }
 applyFont();
+/* ---- corners (ui.radius): [data-radius] on <html>, an override in the CSS ---- */
+const RADII = [{c:"",n:"Rounded",r:"12px 0 0 0"},{c:"minimal",n:"Minimal",r:"3px 0 0 0"},{c:"none",n:"None",r:"0"}];
+let radiusPref = (() => { try { return localStorage.getItem("vito-radius") || ""; } catch { return ""; } })();
+function applyRadius(){
+  const root = document.documentElement, on = RADII.some(r => r.c === radiusPref) ? radiusPref : "";
+  if (on) root.dataset.radius = on; else delete root.dataset.radius;
+  document.querySelectorAll("#radius-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === on ? "true" : "false"));
+}
+function setRadius(pref, persist){
+  radiusPref = pref || "";
+  try { localStorage.setItem("vito-radius", radiusPref); } catch {}
+  applyRadius();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { radius: radiusPref });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+function buildRadiusPicker(){
+  const box = $("radius-sel"); if (!box) return;
+  box.innerHTML = RADII.map(r => `<button type="button" class="acc-opt rad-opt" role="radio" data-code="${r.c}"><i class="rad-sw" style="border-radius:${r.r}" aria-hidden="true"></i><span>${t(r.n)}</span></button>`).join("");
+  box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setRadius(b.dataset.code, true));
+  applyRadius();
+}
+applyRadius();
 /* ---- the background (ui.backdrop): .bd[data-bd] rules in the CSS, on
    #backdrop and in the picker's swatches; cached like the font ---- */
 const BACKDROPS = [{c:"",n:"None"},{c:"gradient",n:"Gradient"},{c:"aurora",n:"Aurora"},{c:"sunrise",n:"Sunrise"},{c:"waves",n:"Waves"},{c:"bubbles",n:"Bubbles"},
@@ -6038,6 +6070,7 @@ buildThemeDropdown();
 buildAccentPicker();
 buildFontPicker();
 buildBackdropPicker();
+buildRadiusPicker();
 $("s-dress").onclick = vmGoDress;
 // After init: mascotSVG's state is declared further down.
 setTimeout(() => { $("s-vito-prev").innerHTML = mascotSVG(); });
@@ -10929,6 +10962,7 @@ async function fillSettings() {
   if (cfg.ui && (cfg.ui.accent || "") !== accentPref) setAccent(cfg.ui.accent || "", false);
   if (cfg.ui && (cfg.ui.font || "") !== fontPref) setFont(cfg.ui.font || "", false);
   if (cfg.ui && (cfg.ui.backdrop || "") !== backdropPref) setBackdrop(cfg.ui.backdrop || "", false);
+  if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
   if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {
     vmOutfit = Object.assign({}, cfg.ui.outfit);
     try { localStorage.setItem("vito-outfit", JSON.stringify(vmOutfit)); } catch {}
@@ -13803,6 +13837,7 @@ tagReveals();
 
 /* ---- per-option help tooltips (shown after a short delay) ---- */
 const HELP = {
+  radius:{nl:"Hoe rond de hoeken van vensters, kaarten, knoppen en velden zijn: zoals Vito ze maakt, nauwelijks, of helemaal niet. De pil en het eiland houden hun eigen vorm.",en:"How round the corners of windows, cards, buttons and fields are: as Vito makes them, barely, or not at all. The pill and the island keep their own shape."},
   backdrop:{nl:"Een achtergrond achter de kaarten, in de kleuren van je thema. Noorderlicht, Golven en Bellen bewegen langzaam, behalve als je systeem om minder beweging vraagt.",en:"A background behind the cards, in your colour theme. Aurora, Waves and Bubbles move slowly, unless your system asks for less motion."},
   font:{nl:"Het lettertype van Vito, ook in de pil en het eiland. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill and the island too. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},
   accent:{nl:"De kleuren van Vito: de knoppen, het verloop, de pil en de mascotte. Rood voor fouten en opnemen blijft rood.",en:"Vito's colours: the buttons, the gradient, the pill and the mascot. Red for errors and recording stays red."},
