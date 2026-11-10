@@ -1600,6 +1600,8 @@
   /* Every button answers the pointer. */
   .btn { transition:background-color .15s, border-color .15s, color .15s, filter .15s, opacity .15s, transform .1s; }
   .btn:active:not(:disabled) { transform:translateY(1px); }
+  .look-sounds { display:flex; align-items:center; gap:7px; margin-top:4px; }
+  .look-sounds svg { width:16px; height:16px; flex:none; }
   #s-look-reset:disabled { opacity:.45; cursor:var(--cur-arrow); }
   /* Reduce motion (ui.reduce_motion), for whoever has not found the system's
      own switch: every animation and transition ends at once, at its end, so
@@ -1753,6 +1755,7 @@
   .hentry .herr .herr-copy.ok { color:#2AA46A; border-color:#2AA46A; }
   /* The row a "Details" toast just jumped to, so the eye lands on it. */
   .hentry.flash { animation:hflash 1.6s ease; }
+  .flash-hl { animation:hflash 1.6s ease; border-radius:10px; outline:2px solid color-mix(in srgb, var(--coral) 45%, transparent); outline-offset:4px; }
   @keyframes hflash { 0%,55% { background:color-mix(in srgb, var(--coral) 14%, transparent); } 100% { background:transparent; } }
   .correction-pop { position:fixed; z-index:250; width:264px; background:var(--card); border:1px solid var(--card-border);
     border-radius:12px; padding:14px; box-shadow:0 16px 44px rgba(20,10,40,.3); animation:pop .18s ease; }
@@ -2817,6 +2820,7 @@
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
           <label class="tgl" data-help="motion" style="margin-top:16px;"><input type="checkbox" id="s-motion"><span class="tr"></span> Reduce motion</label>
+          <button type="button" class="linkbtn look-sounds" id="s-goto-sounds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Sounds have their own sets, under Audio</span></button>
           <button type="button" class="btn ghost small" id="s-look-reset" style="margin-top:16px;">Reset to default</button>
         </div>
         <div class="card" data-sec="appearance" id="set-vito">
@@ -4071,7 +4075,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Sounds have their own sets, under Audio":"Geluiden hebben eigen sets, onder Audio","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -6163,6 +6167,13 @@ buildFontPicker();
 buildBackdropPicker();
 buildDensityPicker();
 $("s-look-reset").onclick = resetLook;
+// Appearance → the sound sets under Audio, scrolled to and lit for a moment.
+$("s-goto-sounds").onclick = () => {
+  selectSetSection("audio");
+  setTimeout(() => { const el = $("soundset-sel"); if (!el) return;
+    el.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "center" });
+    el.classList.add("flash-hl"); setTimeout(() => el.classList.remove("flash-hl"), 1600); }, 60);
+};
 $("s-motion").checked = motionPref;
 $("s-motion").addEventListener("change", e => setMotion(e.target.checked, true));
 syncLookReset();
