@@ -325,7 +325,7 @@ func (p *painter) Draw(buf []byte, w, h int, f Frame) {
 	if f.Card != nil && f.CardShow > 0 {
 		clear(buf)
 		hw, hh, alpha := pillShape(f, float64(w)/surfaceW)
-		drawCard(buf, w, h, f.Card, f.CardShow, f.Dark, hw, hh, alpha)
+		drawCard(buf, w, h, f.Card, f.CardShow, f.Dark, hw, hh, alpha, f.T)
 		return
 	}
 	if f.Style == StyleMascot {

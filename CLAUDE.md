@@ -320,7 +320,10 @@ screen. Every object id in `window_linux.go` is taken in order, an unused one by
 a sync, so the ids handed out later (`newID`, for `setInput`) leave no gap.
 The pill also opens into a card (`card.go`, `notes.go`) for a failed dictation
 and for a new achievement, which the server announces after each dictation
-(`recordAchievements` → `Daemon.Announce`). Text is drawn with Sora from
+(`recordAchievements` → `Daemon.Announce`). An achievement's card has a turning
+gradient edge (`spinRing`); a click on it opens Vito on the achievements tab
+(a `show` event; with no page open the server hub keeps it for the page that
+connects next, `keptFor`). Text is drawn with Sora from
 `internal/pill/font` (OFL) through `golang.org/x/image`; its words come from
 `internal/uitext`, the tray's translation tables, so they belong in TR.nl too.
 Pointing at a resting pill for a moment, or right-clicking it, opens the island

@@ -1,6 +1,7 @@
 package pill
 
 import (
+	"fmt"
 	"log/slog"
 	"strings"
 
@@ -9,6 +10,7 @@ import (
 	"vito/internal/daemon"
 	"vito/internal/inject"
 	"vito/internal/uitext"
+	"vito/internal/webapp"
 )
 
 // A note is a card waiting to be shown, in words still to be laid out.
@@ -17,7 +19,7 @@ type note struct {
 	label, main string
 	medal       string // achievement id, for its medal
 	text        string // cardNoTarget: the dictation, to copy on a click
-	restore     func() // cardKept: brings the cancelled dictation back
+	restore     func() // cardKept: brings the cancelled dictation back; cardAchievement: opens Vito on it
 }
 
 // noteFor turns a daemon event into a note, in the language of the interface.
@@ -28,7 +30,8 @@ func (p *pill) noteFor(e daemon.Event) (note, bool) {
 		for _, d := range achievements.List {
 			if d.ID == e.Text {
 				// The names stay English everywhere, as on the page.
-				return note{kind: cardAchievement, label: t("Achievement unlocked"), main: d.Name, medal: d.ID}, true
+				return note{kind: cardAchievement, label: t("Achievement unlocked"), main: d.Name, medal: d.ID,
+					restore: p.openAchievements}, true
 			}
 		}
 	case "error":
@@ -103,6 +106,9 @@ func (n note) card(pinned bool) (*card, error) {
 	if err == nil && n.kind == cardKept {
 		c.action = n.restore
 	}
+	if err == nil && n.kind == cardAchievement {
+		c.action = n.restore // opens Vito on its achievements page
+	}
 	if err == nil && n.kind == cardNoTarget {
 		text := n.text
 		c.action = func() {
@@ -114,6 +120,17 @@ func (n note) card(pinned bool) (*card, error) {
 		}
 	}
 	return c, err
+}
+
+// openAchievements opens Vito on its achievements page: a page that is open
+// is told, one the click starts gets it as its first event (server hub).
+func (p *pill) openAchievements() {
+	p.d.Announce(daemon.Event{Type: "show", Text: "achievements"})
+	go func() {
+		if err := webapp.Open(fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)); err != nil {
+			slog.Debug("pill: open Vito failed", "err", err)
+		}
+	}()
 }
 
 // hintNote explains the dictation key after a tap that did nothing.

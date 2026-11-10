@@ -226,7 +226,7 @@ func medalImage(id string) *image.RGBA {
 
 // drawCard paints the pill opening into card c: show 0 is the pill as it is
 // (hw, hh, alpha: its current half sizes and opacity), 1 the open card.
-func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, alpha float64) {
+func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, alpha, t float64) {
 	th := themeFor(dark)
 	s := float64(w) / surfaceW
 	e := easeOut(show)
@@ -239,7 +239,15 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 	}
 	shadow(buf, w, h, cx, cy+1.5*s, cw, ch, 10*s, th.shadow*a)
 	box(buf, w, h, cx, cy, cw, ch, ch, th.body, 0.96*a)
-	ring(buf, w, h, cx, cy, cw, ch, th.edge, 0.22*a, 0.5*s)
+	if c.kind == cardAchievement {
+		// A celebration: a gradient in the brand's colours and gold runs
+		// round the edge, with a soft glow of the same colours outside it.
+		party := smooth(show*1.4) * a
+		spinRing(buf, w, h, cx, cy, cw, ch, t, th, party*0.28, 3.2*s, 3.2*s)
+		spinRing(buf, w, h, cx, cy, cw, ch, t, th, party, 1.6*s, 0)
+	} else {
+		ring(buf, w, h, cx, cy, cw, ch, th.edge, 0.22*a, 0.5*s)
+	}
 
 	// The content once there is room for it, from the left edge of the card.
 	in := clamp((show - 0.55) / 0.45)
@@ -282,6 +290,42 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 		stamp(buf, w, h, c.more, int(tx)-1, int(top+(mainBaseY+mainLine)*s)-mm.Ascent.Ceil()-1, ink, in)
 	}
 }
+
+// spinRing is a ring round the pill shape whose colours turn: coral, gold and
+// violet, one turn in spinTurn. out moves it outwards (a glow, with its
+// thickness fading).
+func spinRing(buf []byte, w, h int, cx, cy, hw, hh, t float64, th theme, a, thick, out float64) {
+	if a <= 0 {
+		return
+	}
+	gold := hex(0xFFC94D)
+	stops := [...]rgb{th.from, gold, th.to, th.from}
+	turn := t / spinTurn * 2 * math.Pi
+	eachPixel(w, h, cx, cy, hw+out+thick+1, hh+out+thick+1, func(x, y int, px, py float64) {
+		d := roundBox(px-cx, py-cy, hw, hh, hh) - out
+		var cover float64
+		if out > 0 {
+			cover = clamp(1 - math.Abs(d)/thick) // a soft band, strongest on the edge
+			cover *= cover
+		} else {
+			cover = clamp(0.5 + thick - math.Abs(d+thick))
+		}
+		if cover <= 0 {
+			return
+		}
+		// The angle round the centre, the shape squashed to a circle so the
+		// colours travel evenly along the long sides too.
+		ang := math.Atan2((py-cy)/hh, (px-cx)/hw) - turn
+		f := math.Mod(ang/(2*math.Pi)+10, 1) * 3
+		i := int(f)
+		k := smooth(f - float64(i))
+		c := rgb{mix(stops[i].r, stops[i+1].r, k), mix(stops[i].g, stops[i+1].g, k), mix(stops[i].b, stops[i+1].b, k)}
+		put(buf, w, x, y, c, a*cover)
+	})
+}
+
+// spinTurn is how long the achievement card's colours take to go round.
+const spinTurn = 2.2
 
 // clipboardIcon is a round badge with a clipboard on it.
 func clipboardIcon(buf []byte, w, h int, cx, cy, r float64, th theme, a float64) {
