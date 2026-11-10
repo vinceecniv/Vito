@@ -120,7 +120,8 @@ toggles, history rows and the line height are written as
 `calc(Npx * var(--dn, 1))` — do the same for new spacing of that kind.
 `ui.reduce_motion` sets `data-motion="reduce"`, on top of the system's
 setting: animations and transitions end at once; scripts ask
-`reducedMotion()`, never `matchMedia` directly.
+`reducedMotion()`, never `matchMedia` directly. The pill follows it too
+(`internal/pill/motion.go`: `step` jumps, `Frame.T` holds).
 
 ## Typefaces
 

@@ -1990,6 +1990,9 @@ func spinner(buf []byte, w, h int, cx, cy, r, thick, t float64, c rgb, a float64
 	if a <= 0 {
 		return
 	}
+	if still() {
+		t = 0.3 // a still arc
+	}
 	head := t * 2 * math.Pi * 1.4
 	span := math.Pi * (0.5 + 0.9*(0.5-0.5*math.Cos(t*2*math.Pi*0.9)))
 	eachPixel(w, h, cx, cy, r+thick, r+thick, func(x, y int, px, py float64) {

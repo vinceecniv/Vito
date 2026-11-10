@@ -44,6 +44,10 @@ func restGap() time.Duration { return 6*time.Second + rand.N(7*time.Second) }
 
 // update moves the timetable to now and says whether the character moves now.
 func (a *restActor) update(now time.Time) bool {
+	if still() {
+		a.pose = "" // stands still: no gestures, no blinks (frame)
+		return false
+	}
 	if a.pose != "" && now.Sub(a.poseAt) >= restPoseFor {
 		a.pose, a.next = "", now.Add(restGap())
 	}
@@ -75,6 +79,9 @@ func (a *restActor) blink(now time.Time) float64 {
 // frame puts the character's moment into f.
 func (a *restActor) frame(now time.Time, f *Frame) {
 	f.Rest, f.Blink, f.Pose = true, a.blink(now), a.pose
+	if still() {
+		f.Blink = 1
+	}
 	f.PoseT = 0
 	if a.pose != "" {
 		f.PoseT = now.Sub(a.poseAt).Seconds()
