@@ -114,6 +114,15 @@ follows only `system`: `internal/pill/sysfont*.go` finds the desktop's font
 and keeps Sora for any weight it cannot read. Its faces are one `faceSet`
 swapped whole (`fcs()`), never package variables.
 
+## Dressing Vito up
+
+`ui.outfit` maps a slot (`head`, `glasses`, `ears`, `neck`, `paint`) to a
+piece in `VM_ACC` (`web/index.html`); `mascotSVG` draws the worn pieces into
+the face or body group of every copy, `vmRedress` redraws them. `VM_UNLOCK`
+says what opens each piece: free, a number of achievements, or one
+achievement's id. The wardrobe sits on the achievements page; the pill's
+`vito` style (`internal/pill/mascot.go`) does not draw the pieces yet.
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.

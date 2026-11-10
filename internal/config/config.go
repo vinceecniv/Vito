@@ -215,6 +215,9 @@ type UI struct {
 	// (the pill draws that one too), or inter, atkinson, noto-sans, nunito,
 	// literata, jetbrains-mono, noto-mono (the page only).
 	Font string `json:"font,omitempty"`
+	// Outfit is what Vito wears, a piece per slot (head, glasses, ears, neck,
+	// paint), as the page names them (VM_ACC in web/index.html).
+	Outfit map[string]string `json:"outfit,omitempty"`
 	// PillLive shows the words in the pill while you speak. Nil-safe: unset
 	// counts as on, for new users and for those updating alike (it used to be
 	// a plain bool whose false was never written).

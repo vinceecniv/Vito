@@ -1228,6 +1228,30 @@
   .ach-savings .ach-sav-sub { font-size:12.5px; color:var(--text2); margin-top:3px; }
   .ach-summary { font-size:12.5px; color:var(--text3); margin:-6px 0 16px; }
   /* Overall progress: how much of the set you've earned, filling on open. */
+  /* Vito's wardrobe (achievements page) */
+  .wardrobe { background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:16px 18px 8px; margin:0 0 22px; }
+  .wd-head { display:flex; align-items:center; gap:16px; margin-bottom:6px; }
+  .wd-big { width:96px; height:104px; flex:none; }
+  .wd-big .vmascot, .wd-opt .vmascot, .wd-pop-vm .vmascot { display:block; width:100%; height:100%; }
+  .wd-big svg, .wd-opt svg, .wd-pop-vm svg { width:100%; height:100%; overflow:visible; }
+  .wd-title { font-family:var(--font-head); font-size:19px; font-weight:700; }
+  .wd-sub { color:var(--text3); font-size:13px; }
+  .wd-slot { padding:8px 0; border-top:1px solid var(--card-border); }
+  .wd-slot-h { font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--text3); margin:2px 0 6px; }
+  .wd-opts { display:flex; flex-wrap:wrap; gap:8px; }
+  .wd-opt { position:relative; display:flex; flex-direction:column; align-items:center; gap:2px; width:84px; padding:6px 4px 5px;
+    border:1px solid var(--input-border); border-radius:12px; background:var(--input-bg); color:var(--text2); font:inherit; font-size:11.5px; cursor:var(--cur-hand); }
+  .wd-opt .vmascot { width:52px; height:56px; }
+  .wd-opt:hover:not(.locked) { border-color:var(--text3); color:var(--text); }
+  .wd-opt.sel { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); color:var(--text); background:var(--accent-soft); }
+  .wd-opt.locked { cursor:var(--cur-arrow); color:var(--text3); }
+  .wd-opt.locked .vmascot { opacity:.35; filter:grayscale(1); }
+  .wd-none { display:flex; align-items:center; justify-content:center; width:52px; height:56px; font-size:26px; color:var(--text3); }
+  .wd-lock { position:absolute; top:22px; left:50%; transform:translateX(-50%); color:var(--text2); }
+  .wd-lock svg { width:18px; height:18px; }
+  .wd-nm { text-align:center; line-height:1.25; min-height:2.5em; display:flex; align-items:center; }
+  .wd-pop { display:flex; align-items:center; gap:10px; }
+  .wd-pop-vm { width:40px; height:44px; flex:none; }
   .ach-progress { margin:2px 0 22px; }
   .ach-progress-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
   .ach-progress-label { font-size:13px; color:var(--text2); font-weight:600; }
@@ -1702,6 +1726,24 @@
     background:transparent; border-color:transparent; box-shadow:none; backdrop-filter:none; }
   /* A fixed height: left to the width, Vito grew with the card (nearly 600px
      tall at three cells). */
+  .mascot-card .vm-acts { position:absolute; top:8px; left:8px; z-index:3; display:flex; flex-direction:column; gap:6px; opacity:0; transition:opacity .15s; }
+  .mascot-card:hover .vm-acts, .mascot-card .vm-acts:focus-within { opacity:1; }
+  @media (hover:none) { .mascot-card .vm-acts { opacity:1; } }
+  .vm-act { display:inline-flex; align-items:center; gap:6px; padding:5px 10px 5px 8px; border-radius:999px; border:1px solid var(--card-border);
+    background:var(--card); color:var(--text2); font:inherit; font-size:12px; font-weight:600; cursor:var(--cur-hand); box-shadow:0 2px 8px rgba(0,0,0,.08); }
+  .vm-act:hover { color:var(--accent); border-color:var(--accent); }
+  .vm-act svg { width:15px; height:15px; flex:none; }
+  .statgrid.dragging .vm-acts { display:none; }
+  .vm-full-ov { position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--violet-l) 22%, var(--bg)), var(--bg) 70%); animation:vmFullIn .25s ease; }
+  .vm-full-ov.out { opacity:0; transition:opacity .2s; }
+  .vm-full-stage { width:min(70vw, 62vh); height:min(76vw, 68vh); cursor:var(--cur-hand); }
+  .vm-full-stage .vmascot, .vm-full-stage svg { width:100%; height:100%; }
+  .vm-full-x { position:absolute; top:18px; right:18px; width:38px; height:38px; border-radius:50%; border:1px solid var(--card-border);
+    background:var(--card); color:var(--text2); display:flex; align-items:center; justify-content:center; cursor:var(--cur-hand); }
+  .vm-full-x:hover { color:var(--text); border-color:var(--accent); }
+  .vm-full-x svg { width:18px; height:18px; }
+  @keyframes vmFullIn { from { opacity:0; transform:scale(.97); } to { opacity:1; transform:none; } }
   .mascot-card .vm-slot { flex:1 1 0; min-width:0; height:170px; align-self:center; cursor:var(--cur-hand); }
   .mascot-card .vm-dev { flex:0 1 48%; display:flex; flex-wrap:wrap; gap:4px; align-content:center; justify-content:flex-start; }
   .mascot-card .vm-dev button { font-family:inherit; font-size:10.5px; font-weight:600; line-height:1; padding:4px 7px; border-radius:7px; border:1px dashed var(--card-border); background:transparent; color:var(--text2); cursor:var(--cur-hand); }
@@ -2487,6 +2529,7 @@
           <button class="privacy-btn" id="ach-sound-btn" aria-label="Achievement sound"></button>
         </div>
       </div>
+      <div class="wardrobe" id="vm-wardrobe"></div>
       <div id="ach-content"></div>
     </section>
 
@@ -3530,6 +3573,13 @@ const TR = { nl: {
   "Milestones you've unlocked with your voice":"Mijlpalen die je met je stem hebt behaald",
   "Achievement unlocked":"Prestatie behaald",
   "Secret achievement":"Geheime prestatie",
+  "Dress up Vito":"Vito aankleden","Dress up":"Aankleden","Full screen":"Volledig scherm","Unlock more by earning achievements.":"Verdien prestaties om meer vrij te spelen.",
+  "On the head":"Op het hoofd","Glasses":"Bril","Earrings":"Oorbellen","Necklace":"Ketting","Face paint":"Schmink",
+  "{n} achievements":"{n} prestaties","Unlocks with {name}":"Komt vrij met {name}","New in Vito's wardrobe: {name}":"Nieuw in Vito's kast: {name}",
+  "Round glasses":"Ronde bril","Sunglasses":"Zonnebril","Heart glasses":"Hartjesbril","Monocle":"Monocle","Freckles":"Sproetjes",
+  "Glitter":"Glitter","Heart cheeks":"Hartjeswangen","Moustache":"Snor","Bow":"Strik","Party hat":"Feesthoed","Crown":"Kroon",
+  "Nightcap":"Slaapmuts","Headphones":"Koptelefoon","Wizard hat":"Tovenaarshoed","Hoop earrings":"Oorringetjes",
+  "Star earrings":"Sterretjes","Pearl necklace":"Parelketting","Gold chain":"Gouden ketting",
   "Keep using Vito to uncover this one.":"Blijf Vito gebruiken om deze te ontdekken.",
   "Unlocked {d}":"Behaald op {d}",
   "Unlocked":"Behaald",
@@ -7227,6 +7277,174 @@ const VM_SHAPE = {
     <ellipse cx="35" cy="58" rx="12" ry="5" fill="#fff" opacity=".38" transform="rotate(-8 35 58)"/>`,
   face: "translate(60 70) scale(.85) translate(-60 -74)", shadow: 22,
 };
+// ---- Dressing Vito up (ui.outfit): one piece per slot, drawn into every
+// copy of the mascot by mascotSVG. A few are free, the rest unlock with the
+// number of achievements earned or with one achievement in particular. The
+// colours follow the colour theme; gold and pearls stay gold and pearls.
+const VM_INK = "#2B2440", VM_GOLD = "#FFC94D", VM_VM_GOLDD = "#D89A1E";
+const vmStar = (cx, cy, r, fill) => {
+  const p = [];
+  for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, d = i % 2 ? r * .45 : r; p.push((cx + Math.cos(a) * d).toFixed(1) + " " + (cy + Math.sin(a) * d).toFixed(1)); }
+  return `<path d="M${p.join(" L")}Z" fill="${fill}" stroke="#fff" stroke-width=".8" stroke-linejoin="round"/>`;
+};
+const vmSpark = (cx, cy, r, fill) => `<path d="M${cx} ${cy - r} Q${cx + r * .18} ${cy - r * .18} ${cx + r} ${cy} Q${cx + r * .18} ${cy + r * .18} ${cx} ${cy + r} Q${cx - r * .18} ${cy + r * .18} ${cx - r} ${cy} Q${cx - r * .18} ${cy - r * .18} ${cx} ${cy - r}Z" fill="${fill}"/>`;
+const vmHeart = (cx, cy, s) => `M${cx} ${cy + s * .9} C${cx - s * 1.25} ${cy + s * .1} ${cx - s * .95} ${cy - s * 1.05} ${cx} ${cy - s * .45} C${cx + s * .95} ${cy - s * 1.05} ${cx + s * 1.25} ${cy + s * .1} ${cx} ${cy + s * .9}Z`;
+const vmCurve = (n, f) => Array.from({ length: n }, (_, i) => f(i / (n - 1)));
+const vmQpt = (t, a, c, b) => [(1 - t) ** 2 * a[0] + 2 * (1 - t) * t * c[0] + t * t * b[0], (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * c[1] + t * t * b[1]];
+const VM_NECK = [[29, 88], [60, 116], [91, 88]];
+
+// space "face": the face group's coordinates (eyes at 45/75, 68); "body": the body's.
+const VM_ACC = {
+  glasses: { name: "Round glasses", slot: "glasses", space: "face", svg:
+    `<g fill="rgba(255,255,255,.22)" stroke="${VM_INK}" stroke-width="2.6"><circle cx="45" cy="68" r="13"/><circle cx="75" cy="68" r="13"/></g>
+     <path d="M58 66 Q60 63 62 66M32 65 L23 61M88 65 L97 61" fill="none" stroke="${VM_INK}" stroke-width="2.6" stroke-linecap="round"/>
+     <path d="M37 61 Q40 58 44 58M67 61 Q70 58 74 58" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>` },
+  shades: { name: "Sunglasses", slot: "glasses", space: "face", svg:
+    `<path d="M29 59 H57 Q59 59 58.6 63 Q57.5 79 44.5 79 Q32 79 30 64 Q29.5 59 29 59Z M91 59 H63 Q61 59 61.4 63 Q62.5 79 75.5 79 Q88 79 90 64 Q90.5 59 91 59Z" fill="${VM_INK}" stroke="${VM_INK}" stroke-width="2.4" stroke-linejoin="round"/>
+     <path d="M57 61 H63M29 60 L22 57M91 60 L98 57" stroke="${VM_INK}" stroke-width="3" stroke-linecap="round"/>
+     <path d="M34 63 L41 63M66 63 L73 63" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".55"/>
+     <path d="M35 69 L46 63M67 70 L78 63" stroke="var(--violet-l)" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>` },
+  hearts: { name: "Heart glasses", slot: "glasses", space: "face", svg:
+    `<g style="fill:color-mix(in srgb, var(--coral) 72%, transparent)" stroke="${VM_INK}" stroke-width="2.4" stroke-linejoin="round"><path d="${vmHeart(45, 68, 14)}"/><path d="${vmHeart(75, 68, 14)}"/></g>
+     <path d="M58 65 Q60 62 62 65M31 63 L23 60M89 63 L97 60" fill="none" stroke="${VM_INK}" stroke-width="2.4" stroke-linecap="round"/>
+     <path d="M37 60 Q39 58 42 59M67 60 Q69 58 72 59" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" opacity=".85"/>` },
+  monocle: { name: "Monocle", slot: "glasses", space: "face", svg:
+    `<circle cx="75" cy="68" r="13.5" fill="rgba(255,255,255,.25)" stroke="${VM_VM_GOLDD}" stroke-width="3"/>
+     <circle cx="75" cy="68" r="13.5" fill="none" stroke="${VM_GOLD}" stroke-width="1.4"/>
+     <path d="M86 77 Q100 92 90 112" fill="none" stroke="${VM_VM_GOLDD}" stroke-width="1.6" stroke-dasharray="2.2 1.6"/>
+     <path d="M67 61 Q70 58 74 58" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>` },
+  freckles: { name: "Freckles", slot: "paint", space: "face", svg:
+    `<g fill="#C77A55" opacity=".75">${[[29, 80], [33.5, 82.5], [36, 78.5], [31, 85], [84, 78.5], [86.5, 82.5], [91, 80], [89, 85]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.25"/>`).join("")}</g>` },
+  glitter: { name: "Glitter", slot: "paint", space: "face", svg:
+    vmSpark(91, 56, 5, VM_GOLD) + vmSpark(97, 66, 3, "var(--violet-l)") + vmSpark(86, 81, 3.4, "#fff") + vmStar(28, 82, 4.2, VM_GOLD) + vmSpark(23, 57, 3, "#fff") },
+  heartcheeks: { name: "Heart cheeks", slot: "paint", space: "face", svg:
+    `<g fill="#FF6F91" stroke="#fff" stroke-width="1"><path d="${vmHeart(33, 84, 5.5)}"/><path d="${vmHeart(87, 84, 5.5)}"/></g>` },
+  mustache: { name: "Moustache", slot: "paint", space: "face", svg:
+    `<path d="M60 83.5 C56 79 48 78.5 44.5 83 C42.5 86 44.6 88.6 47 87 C50 84.6 55.5 85.4 60 86.6 C64.5 85.4 70 84.6 73 87 C75.4 88.6 77.5 86 75.5 83 C72 78.5 64 79 60 83.5Z" fill="#4A3426" stroke="#2E2018" stroke-width="1"/>` },
+  bow: { name: "Bow", slot: "head", space: "body", svg:
+    `<g transform="rotate(22 88 40)" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" style="fill:var(--coral)">
+       <path d="M88 40 L74 31 Q70 40 74 49 Z"/><path d="M88 40 L102 31 Q106 40 102 49 Z"/>
+       <path d="M78 36 L84 39M98 36 L92 39" stroke="rgba(0,0,0,.18)" stroke-width="1.2" fill="none"/>
+       <rect x="84" y="36" width="8" height="8" rx="3"/></g>` },
+  party: { name: "Party hat", slot: "head", space: "body", svg:
+    `<g transform="rotate(-14 58 30)"><path d="M43 33 L58 0 L73 33 Q58 39 43 33Z" style="fill:var(--violet)" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+       <path d="M49 21 L67 21M46 28 L70 28M53 11 L63 11" stroke="${VM_GOLD}" stroke-width="2.6" stroke-linecap="round"/>
+       <circle cx="58" cy="0" r="4.6" fill="${VM_GOLD}" stroke="#fff" stroke-width="1.2"/>
+       <path d="M43 33 Q58 39 73 33" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>` },
+  crown: { name: "Crown", slot: "head", space: "body", svg:
+    `<path d="M37 38 V20 L46 28.5 L53 13 L60 25 L67 13 L74 28.5 L83 20 V38 Q60 42 37 38Z" fill="${VM_GOLD}" stroke="${VM_VM_GOLDD}" stroke-width="1.8" stroke-linejoin="round"/>
+     <path d="M37 33 Q60 37 83 33" fill="none" stroke="${VM_VM_GOLDD}" stroke-width="1.4"/>
+     <circle cx="60" cy="31.5" r="3.2" style="fill:var(--coral)" stroke="#fff" stroke-width=".9"/><circle cx="47.5" cy="31" r="2.3" style="fill:var(--violet-l)" stroke="#fff" stroke-width=".8"/><circle cx="72.5" cy="31" r="2.3" style="fill:var(--violet-l)" stroke="#fff" stroke-width=".8"/>
+     <circle cx="53" cy="13" r="2" fill="#fff"/><circle cx="67" cy="13" r="2" fill="#fff"/>` },
+  nightcap: { name: "Nightcap", slot: "head", space: "body", svg:
+    `<path d="M33 40 C34 14 62 4 86 16 C98 22 106 36 108 54 C100 42 92 36 85 35 L86 40 Z" style="fill:var(--violet)" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+     <g fill="#fff" opacity=".55"><circle cx="50" cy="22" r="1.8"/><circle cx="66" cy="16" r="1.6"/><circle cx="80" cy="24" r="1.8"/><circle cx="60" cy="31" r="1.5"/><circle cx="95" cy="36" r="1.4"/></g>
+     <rect x="29" y="35" width="61" height="10" rx="5" fill="#fff" stroke="#E6E0F2" stroke-width="1"/>
+     <circle cx="108" cy="56" r="5.5" fill="#fff" stroke="#E6E0F2" stroke-width="1"/>` },
+  headphones: { name: "Headphones", slot: "head", space: "body", svg:
+    `<path d="M15 62 Q12 16 60 14 Q108 16 105 62" fill="none" stroke="${VM_INK}" stroke-width="5.5" stroke-linecap="round"/>
+     <path d="M15 62 Q12 16 60 14 Q108 16 105 62" fill="none" style="stroke:var(--violet-l)" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
+     <rect x="4" y="52" width="15" height="25" rx="7" style="fill:var(--violet)" stroke="${VM_INK}" stroke-width="2"/>
+     <rect x="101" y="52" width="15" height="25" rx="7" style="fill:var(--violet)" stroke="${VM_INK}" stroke-width="2"/>
+     <path d="M108 70 Q106 96 82 100" fill="none" stroke="${VM_INK}" stroke-width="2" stroke-linecap="round"/><circle cx="81" cy="100" r="3.4" fill="${VM_INK}"/>` },
+  wizard: { name: "Wizard hat", slot: "head", space: "body", svg:
+    `<path d="M40 36 Q52 20 57 2 Q61 -4 64 4 Q70 22 81 34 Z" fill="#3B2A7A" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+     <ellipse cx="60" cy="37" rx="33" ry="6.5" fill="#3B2A7A" stroke="#fff" stroke-width="1.6"/>
+     <path d="M44 31 Q60 36 77 30" fill="none" style="stroke:var(--coral)" stroke-width="3.4"/>
+     ${vmStar(61, 18, 4.6, VM_GOLD)}${vmSpark(53, 26, 2.6, VM_GOLD)}${vmSpark(70, 10, 2.2, "#fff")}` },
+  hoops: { name: "Hoop earrings", slot: "ears", space: "body", svg:
+    `<g fill="none" stroke-width="2.2"><circle cx="12" cy="72" r="5.5" stroke="${VM_VM_GOLDD}"/><circle cx="108" cy="72" r="5.5" stroke="${VM_VM_GOLDD}"/></g>
+     <g fill="none" stroke-width="1"><circle cx="12" cy="72" r="5.5" stroke="${VM_GOLD}"/><circle cx="108" cy="72" r="5.5" stroke="${VM_GOLD}"/></g>
+     <circle cx="14" cy="66.5" r="1.6" fill="${VM_VM_GOLDD}"/><circle cx="106" cy="66.5" r="1.6" fill="${VM_VM_GOLDD}"/>` },
+  stars: { name: "Star earrings", slot: "ears", space: "body", svg:
+    `<path d="M14 66 V71M106 66 V71" stroke="${VM_VM_GOLDD}" stroke-width="1.2"/>${vmStar(14, 75, 5, VM_GOLD)}${vmStar(106, 75, 5, VM_GOLD)}` },
+  pearls: { name: "Pearl necklace", slot: "neck", space: "body", svg:
+    vmCurve(15, t => vmQpt(t, ...VM_NECK)).map(([x, y], i) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${i === 7 ? 3.4 : 2.6}" fill="#FFFDF7" stroke="#D9D2C4" stroke-width=".8"/><circle cx="${(x - .8).toFixed(1)}" cy="${(y - .9).toFixed(1)}" r=".8" fill="#fff"/>`).join("") },
+  chain: { name: "Gold chain", slot: "neck", space: "body", svg:
+    `<path d="M${VM_NECK[0]} Q${VM_NECK[1]} ${VM_NECK[2]}" fill="none" stroke="${VM_VM_GOLDD}" stroke-width="2" stroke-dasharray="2.6 1.4"/>
+     <circle cx="60" cy="106" r="7.5" fill="${VM_GOLD}" stroke="${VM_VM_GOLDD}" stroke-width="1.6"/>
+     <g fill="${VM_VM_GOLDD}">${[[56, 2.4], [58, 4], [60, 5.6], [62, 4], [64, 2.4]].map(([x, h]) => `<rect x="${x - .6}" y="${106 - h / 2}" width="1.2" height="${h}" rx=".6"/>`).join("")}</g>` },
+};
+
+const VM_SLOTS = [["head", "On the head"], ["glasses", "Glasses"], ["ears", "Earrings"], ["neck", "Necklace"], ["paint", "Face paint"]];
+// What unlocks each piece: free, a number of achievements, or one achievement.
+const VM_UNLOCK = { glasses: 0, bow: 0, freckles: 0, heartcheeks: 0, shades: 3, hoops: 5, party: 8, pearls: 12, mustache: 16,
+  hearts: 20, glitter: 25, stars: 35, crown: 45, nightcap: "night", headphones: "spoken-1h", monocle: "words-250k",
+  chain: "words-1m", wizard: "vito-wizard" };
+let vmAch = null; // the achievements as last loaded, for what is unlocked
+const ICON_LOCK_SM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+let vmOutfit = (() => { try { return JSON.parse(localStorage.getItem("vito-outfit") || "{}") || {}; } catch { return {}; } })();
+// Whether piece k may be worn: unknown while the achievements have not loaded,
+// and then the saved outfit is trusted.
+function vmUnlocked(k){
+  const u = VM_UNLOCK[k];
+  if (u === 0) return true;
+  if (!vmAch) return null;
+  const got = vmAch.achievements.filter(x => x.earned);
+  return typeof u === "number" ? got.length >= u : got.some(x => x.id === u);
+}
+// The outfit's drawings for one space ("face" or "body"). Without an outfit
+// given, the one chosen, less what is (no longer) unlocked; a given one is a
+// preview and drawn whole.
+function vmWorn(space, outfit){
+  return Object.values(outfit || vmOutfit).filter(k => VM_ACC[k] && VM_ACC[k].space === space && (outfit || vmUnlocked(k) !== false))
+    .map(k => `<g class="vm-acc vm-acc-${k}">${VM_ACC[k].svg}</g>`).join("");
+}
+// Every copy of Vito redrawn in the outfit now chosen.
+function vmRedress(){
+  vm.els.forEach(el => { if (el.isConnected) el.innerHTML = mascotSVG(); });
+  const s = $("lr-count-vm"); if (s) s.innerHTML = "";
+  if ($("vm-wardrobe")) renderWardrobe();
+}
+function setOutfit(slot, k, persist){
+  if (k) vmOutfit[slot] = k; else delete vmOutfit[slot];
+  try { localStorage.setItem("vito-outfit", JSON.stringify(vmOutfit)); } catch {}
+  vmRedress();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { outfit: Object.assign({}, vmOutfit) });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+function vmUnlockText(k){
+  const u = VM_UNLOCK[k];
+  if (typeof u === "number") return t("{n} achievements").replace("{n}", u);
+  const a = vmAch && vmAch.achievements.find(x => x.id === u);
+  return t("Unlocks with {name}").replace("{name}", !a || (a.secret && !a.earned) ? t("Secret achievement") : a.name);
+}
+// The wardrobe on the achievements page: Vito as dressed, and per slot the
+// pieces, each shown on a small Vito of its own.
+function renderWardrobe(){
+  const box = $("vm-wardrobe"); if (!box) return;
+  const small = k => { const o = {}; if (k) o[VM_ACC[k].slot] = k;
+    const html = mascotSVG(o); return `<span class="vmascot" data-state="idle">${html}</span>`; };
+  let rows = "";
+  for (const [slot, label] of VM_SLOTS) {
+    const keys = Object.keys(VM_ACC).filter(k => VM_ACC[k].slot === slot);
+    const opt = (k) => {
+      const on = (vmOutfit[slot] || "") === (k || ""), open = !k || vmUnlocked(k) !== false;
+      const name = k ? t(VM_ACC[k].name) : t("None");
+      const tip = open ? name : name + " · " + vmUnlockText(k);
+      return `<button type="button" class="wd-opt${on ? " sel" : ""}${open ? "" : " locked"}" data-slot="${slot}" data-k="${k || ""}"` +
+        ` aria-pressed="${on}" data-tip-text="${escapeHtml(tip)}"${open ? "" : " disabled"}>` +
+        (k ? small(k) : `<span class="wd-none">∅</span>`) + (open ? "" : `<span class="wd-lock">${ICON_LOCK_SM}</span>`) +
+        `<span class="wd-nm">${escapeHtml(open ? name : vmUnlockText(k))}</span></button>`;
+    };
+    rows += `<div class="wd-slot"><div class="wd-slot-h">${t(label)}</div><div class="wd-opts">${opt("")}${keys.map(opt).join("")}</div></div>`;
+  }
+  box.innerHTML = `<div class="wd-head"><div class="wd-big"><span class="vmascot" data-state="happy">${mascotSVG()}</span></div>` +
+    `<div><div class="wd-title">${t("Dress up Vito")}</div><div class="wd-sub">${t("Unlock more by earning achievements.")}</div></div></div>${rows}`;
+  box.querySelectorAll(".wd-opt:not(.locked)").forEach(b => b.onclick = () => setOutfit(b.dataset.slot, b.dataset.k, true));
+}
+// After new achievements: which pieces they opened, announced once.
+function vmAnnounceUnlocks(before){
+  Object.keys(VM_UNLOCK).filter(k => VM_UNLOCK[k] !== 0 && !before.has(k) && vmUnlocked(k)).forEach((k, i) => setTimeout(() => {
+    positionToasts();
+    const el = document.createElement("div");
+    el.className = "toast ok wd-pop";
+    el.innerHTML = `<span class="wd-pop-vm"><span class="vmascot" data-state="happy">${mascotSVG({ x: k })}</span></span><span></span>`;
+    el.lastChild.textContent = t("New in Vito's wardrobe: {name}").replace("{name}", t(VM_ACC[k].name));
+    $("toasts").appendChild(el);
+    setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 250); }, 5200);
+  }, 1600 + i * 1200));
+}
 // A gear for the hatch in Vito's back: n teeth around (cx, cy), outer radius r.
 function vmGear(cx, cy, r, n, fill, cls){
   const ri = r * .74, pts = [];
@@ -7247,7 +7465,7 @@ function vmBurstSVG(){
   }
   return out;
 }
-function mascotSVG(){
+function mascotSVG(outfit){
   const u = "vm" + (++vmSeq), sh = VM_SHAPE, w = sh.hairW;
   const hair = sh.hair
     .map(([x, h, k]) => `<rect x="${x - w / 2}" y="${sh.hairBase - h}" width="${w}" height="${h + 8}" rx="${w / 2}" stroke="#fff" stroke-opacity=".35" stroke-width="1.6" style="--k:${k}" fill="url(#${u}h)"/>`).join("");
@@ -7301,7 +7519,9 @@ function mascotSVG(){
     <g class="vm-crumbs" fill="#C98A4B"><circle cx="55" cy="108" r="1.2"/><circle cx="62" cy="110" r="1"/><circle cx="66" cy="107" r="1.1"/></g>
     <g class="vm-sweat"><path d="M107 62 q4.5 8 0 11 q-4.5 -3 0 -11z" fill="#7CC8FF"/></g>
     <g class="vm-sweat2"><path d="M13 65 q4 7 0 10 q-4 -3 0 -10z" fill="#7CC8FF"/></g>
+    ${vmWorn("face", outfit)}
     </g>
+    ${vmWorn("body", outfit)}
   </g>
   <g class="vm-bubbles" transform="${sh.face}" fill="rgba(170,215,255,.35)" stroke="#6FB8F5" stroke-width="1.8"><circle cx="64" cy="89" r="10" style="--bx:44px;--by:-14px"/><circle cx="64" cy="89" r="7" style="--bx:58px;--by:-2px"/><circle cx="64" cy="89" r="12" style="--bx:36px;--by:-30px"/></g>
   </g>
@@ -7449,9 +7669,8 @@ $("vm-slot").appendChild(makeMascot(document));
 // comes near. The eyes sit at about
 // (60, 65) in the drawing; the pupils move up to 4 units towards the pointer,
 // less when it is close.
-(function vmFollow(){
-  const card = $("mascot-card"), el = card && card.querySelector(".vmascot");
-  if (!el) return;
+function vmFollow(card, el){
+  if (!card || !el) return;
   card.addEventListener("mousemove", (e) => {
     const svg = el.querySelector("svg"); if (!svg) return;
     const r = svg.getBoundingClientRect(), k = Math.min(r.width / 120, r.height / 130);
@@ -7473,7 +7692,36 @@ $("vm-slot").appendChild(makeMascot(document));
     lastAct = vmPick(Object.keys(VM_ACTS).filter(a => a !== lastAct));
     vmPose(lastAct);
   });
+}
+vmFollow($("mascot-card"), $("mascot-card").querySelector(".vmascot"));
+// Two actions on the card, shown on hover: dress Vito up (the wardrobe on the
+// achievements page) and Vito over the whole window, just because it can.
+(function vmCardActs(){
+  const card = $("mascot-card"); if (!card) return;
+  const ICON_HANGER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5a2.2 2.2 0 1 1 2.2-2.2c0 1.2-1 1.7-2.2 2.6v1.3"/><path d="M12 9.2 3.6 15a1.6 1.6 0 0 0 .9 2.9h15a1.6 1.6 0 0 0 .9-2.9z"/></svg>';
+  const ICON_FULL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+  const box = document.createElement("div");
+  box.className = "vm-acts";
+  box.innerHTML = `<button type="button" class="vm-act" id="vm-dress">${ICON_HANGER}<span>${t("Dress up")}</span></button>` +
+    `<button type="button" class="vm-act" id="vm-full">${ICON_FULL}<span>${t("Full screen")}</span></button>`;
+  card.appendChild(box);
+  $("vm-dress").onclick = () => { selectTab("achievements"); setTimeout(() => { const w = $("vm-wardrobe"); if (w) w.scrollIntoView({ behavior:"smooth", block:"start" }); }, 80); };
+  $("vm-full").onclick = vmFullscreen;
 })();
+function vmFullscreen(){
+  if ($("vm-full-ov")) return;
+  const ov = document.createElement("div");
+  ov.id = "vm-full-ov"; ov.className = "vm-full-ov";
+  ov.innerHTML = `<button type="button" class="vm-full-x" aria-label="${t("Close")}" data-tip-text="${t("Close")}">${ICON_X}</button><div class="vm-full-stage"></div>`;
+  const el = makeMascot(document);
+  ov.querySelector(".vm-full-stage").appendChild(el);
+  document.body.appendChild(ov);
+  vmFollow(ov, el);
+  const close = () => { ov.classList.add("out"); document.removeEventListener("keydown", key); setTimeout(() => ov.remove(), 220); };
+  const key = (e) => { if (e.key === "Escape") close(); };
+  document.addEventListener("keydown", key);
+  ov.querySelector(".vm-full-x").onclick = close;
+}
 
 /* ---- Speech glow ---- */
 // The pill's glow (drawGlow in internal/pill/render.go — keep the two in
@@ -8996,7 +9244,9 @@ async function loadAchievements(silent){
   let a;
   try { a = await api("/api/achievements"); }
   catch (e) { if (!silent && $("ach-content")) $("ach-content").innerHTML = `<p class="act-note">${t("Couldn't load achievements.")}</p>`; return; }
-  achState = a;
+  const hadPieces = new Set(vmAch ? Object.keys(VM_UNLOCK).filter(k => vmUnlocked(k)) : Object.keys(VM_UNLOCK));
+  achState = vmAch = a;
+  vmRedress(); vmAnnounceUnlocks(hadPieces);
   achImages = new Set(a.images || []);
   achAnim = new Set(a.animated || []);
   celebrateNew(a);
@@ -10412,6 +10662,11 @@ async function fillSettings() {
   if (cfg.ui && cfg.ui.theme) setTheme(cfg.ui.theme, false); // config is source of truth
   if (cfg.ui && (cfg.ui.accent || "") !== accentPref) setAccent(cfg.ui.accent || "", false);
   if (cfg.ui && (cfg.ui.font || "") !== fontPref) setFont(cfg.ui.font || "", false);
+  if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {
+    vmOutfit = Object.assign({}, cfg.ui.outfit);
+    try { localStorage.setItem("vito-outfit", JSON.stringify(vmOutfit)); } catch {}
+    vmRedress();
+  }
   const savedLang = cfg.ui && cfg.ui.lang ? cfg.ui.lang : "";
   $("s-uilang").value = savedLang;
   setUiLang(savedLang, false); // "" = auto-detect from OS
