@@ -198,6 +198,9 @@ type islandState struct {
 	// none is counting. countK is how far into this second, 0..1.
 	count  int
 	countK float64
+	// opening: seconds since the logo was clicked, while Vito's page is on
+	// its way (finding and starting the PWA can take a moment); 0 otherwise.
+	opening float64
 }
 
 // height is the panel's height for a view.
@@ -364,6 +367,11 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 		fill(buf, w, h, brand, 16, blend(tint, th.to, 0.08), in)
 	}
 	ip.line(buf, fcs().word, "vito", left+panelW/2-ww/2, hy+6.5, ink, in)
+	if st.opening > 0 {
+		// Fades in, turns, fades out by openingFor.
+		k := clamp(st.opening/0.15) * clamp((openingFor-st.opening)/0.25)
+		spinner(buf, w, h, (left+panelW/2+ww/2+16)*s, (hy+1)*s, 6*s, 1.8*s, st.opening, th.to, in*k)
+	}
 	menu := rect{left + panelW - panelPad - 28 + 4, hy - 14, 28, 28}
 	pin := rect{left + panelPad - 4, hy - 14, 28, 28}
 	ip.iconButton(buf, th, st, tPin, pin, tint, in, func(cx, cy float64, c rgb, a float64) {
@@ -1411,6 +1419,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		armedAt   time.Time // when stop was clicked once (st.armed)
 		countAt   time.Time // when the countdown began (st.count)
 		saidAt    time.Time // when st.said was said
+		openingAt time.Time // when the logo was clicked (st.opening)
 		actor     = newRestActor(time.Now())
 		dragging  bool
 		// pressed: the button went down on the free space of an island not
@@ -1545,9 +1554,16 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 				closing = !st.pinned
 				p.clickIdle(output)
 			case tg == tOpenVito:
-				closing = !st.pinned
-				if err := webapp.Open(fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)); err != nil {
-					p.log.Warn("island: open Vito failed", "err", err)
+				// The island stays a moment with a spinner by the name, then
+				// closes (unless pinned): the page takes a while to show.
+				if openingAt.IsZero() {
+					openingAt = time.Now()
+					url := fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)
+					go func() {
+						if err := webapp.Open(url); err != nil {
+							p.log.Warn("island: open Vito failed", "err", err)
+						}
+					}()
 				}
 			case tg == tPin:
 				st.pinned = !st.pinned
@@ -1813,6 +1829,14 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			}
 			moving = true
 		}
+		if !openingAt.IsZero() {
+			st.opening = max(time.Since(openingAt).Seconds(), 1e-3)
+			moving = true
+			if st.opening >= openingFor {
+				openingAt, st.opening = time.Time{}, 0
+				closing = closing || !st.pinned
+			}
+		}
 		// Step the animations.
 		if closing {
 			st.open = max(0, st.open-step(islandOpen))
@@ -1949,4 +1973,31 @@ func b2f(b bool) float64 {
 		return 1
 	}
 	return 0
+}
+
+// openingFor is how long the spinner by the logo shows, in seconds.
+const openingFor = 1.6
+
+// spinner draws a turning arc of a circle at (cx, cy) with radius r, a
+// quarter of a turn growing to three quarters and back as it goes round.
+func spinner(buf []byte, w, h int, cx, cy, r, thick, t float64, c rgb, a float64) {
+	if a <= 0 {
+		return
+	}
+	head := t * 2 * math.Pi * 1.4
+	span := math.Pi * (0.5 + 0.9*(0.5-0.5*math.Cos(t*2*math.Pi*0.9)))
+	eachPixel(w, h, cx, cy, r+thick, r+thick, func(x, y int, px, py float64) {
+		dx, dy := px-cx, py-cy
+		d := math.Abs(math.Hypot(dx, dy)-r) - thick/2
+		cov := clamp(0.5 - d)
+		if cov <= 0 {
+			return
+		}
+		// How far behind the head this pixel is, 0..2π.
+		back := math.Mod(head-math.Atan2(dy, dx)+4*math.Pi, 2*math.Pi)
+		if back > span {
+			return
+		}
+		put(buf, w, x, y, c, a*cov*(0.35+0.65*(1-back/span)))
+	})
 }
