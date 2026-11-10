@@ -15,6 +15,7 @@ import (
 	"io"
 	"io/fs"
 	"log/slog"
+	"maps"
 	"net"
 	"net/http"
 	"os"
@@ -594,9 +595,25 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	savedDashboard := append(json.RawMessage(nil), current.UI.Dashboard...)
 	cfg := current // start from current so omitted fields keep their value
 	cfg.UI.Dashboard = nil
-	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<20)).Decode(&cfg); err != nil {
+	// The outfit is a map: decoding into the live one would merge into it in
+	// place, so a piece taken off would stay on. Decode into a fresh one and
+	// keep the current outfit only when the save does not mention it.
+	cfg.UI.Outfit = nil
+	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 1<<20))
+	if err == nil {
+		err = json.Unmarshal(body, &cfg)
+	}
+	if err != nil {
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "invalid JSON: " + err.Error()})
 		return
+	}
+	var says struct {
+		UI struct {
+			Outfit json.RawMessage `json:"outfit"`
+		} `json:"ui"`
+	}
+	if json.Unmarshal(body, &says) == nil && says.UI.Outfit == nil {
+		cfg.UI.Outfit = maps.Clone(current.UI.Outfit)
 	}
 	// The local API is not allowed to move or re-key the server itself.
 	cfg.Server = current.Server

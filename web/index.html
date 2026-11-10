@@ -7431,7 +7431,9 @@ function renderWardrobe(){
   }
   box.innerHTML = `<div class="wd-head"><div class="wd-big"><span class="vmascot" data-state="happy">${mascotSVG()}</span></div>` +
     `<div><div class="wd-title">${t("Dress up Vito")}</div><div class="wd-sub">${t("Unlock more by earning achievements.")}</div></div></div>${rows}`;
-  box.querySelectorAll(".wd-opt:not(.locked)").forEach(b => b.onclick = () => setOutfit(b.dataset.slot, b.dataset.k, true));
+  // A second click on the piece worn takes it off again.
+  box.querySelectorAll(".wd-opt:not(.locked)").forEach(b => b.onclick = () =>
+    setOutfit(b.dataset.slot, b.classList.contains("sel") ? "" : b.dataset.k, true));
 }
 // After new achievements: which pieces they opened, announced once.
 function vmAnnounceUnlocks(before){
