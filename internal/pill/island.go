@@ -634,6 +634,9 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	}
 	lastBox := rect{left + panelPad - 6, boxY, panelW - 2*panelPad + 12, 68}
 	boxTint := tint
+	// The box shows only under the pointer: its corners are smaller than
+	// the panel's, and so close to them a box always there looked off.
+	ip.browseArea = lastBox
 	if st.count > 0 {
 		ip.countBox(buf, th, st, lastBox, ink, muted, tint, a)
 		return
@@ -648,7 +651,9 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		if st.over == tRestore {
 			boxTint = blend(tint, th.to, 0.08)
 		}
-		fill(buf, w, h, lastBox, 12, boxTint, a)
+		if st.onBox {
+			fill(buf, w, h, lastBox, 12, boxTint, a)
+		}
 		ip.line(buf, labelFace, ip.t("Dictation cancelled"), lastBox.x+12, lastBox.y+20, th.to, a)
 		heard := strings.Join(strings.Fields(st.heard), " ")
 		if heard == "" {
@@ -667,10 +672,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		// The text itself copies it; the button pastes it again.
 		ip.targets[tCopy] = rect{lastBox.x, lastBox.y, lastBox.w - 46, lastBox.h}
 	}
-	// The box shows only under the pointer: its corners are smaller than the
-	// panel's, and so close to them a box always there looked off.
-	switch st.over {
-	case tCopy, tRepaste, tOlder, tNewer:
+	if st.onBox {
 		fill(buf, w, h, lastBox, 12, boxTint, a)
 	}
 	// No label: what the box holds speaks for itself. Up to three lines,
@@ -719,15 +721,20 @@ func (ip *islandPainter) countBox(buf []byte, th theme, st islandState, r rect, 
 	if st.over == tLongCount {
 		bg = blend(tint, th.to, 0.08)
 	}
-	fill(buf, w, h, r, 12, bg, a)
+	if st.onBox {
+		fill(buf, w, h, r, 12, bg, a)
+	}
 	cx, cy := r.x+38, r.y+r.h/2
 	pop := 0.75 + 0.25*easeOut(clamp(st.countK*4))
 	rr := 19 * pop
 	box(buf, w, h, cx*s, cy*s, rr*s, rr*s, rr*s, recRed, a)
+	// Centred on the ink of the figure, not on its advance and the face's
+	// ascent, which left it off the dot's centre.
 	n := fmt.Sprint(st.count)
-	_, nw := ip.text(figureFace, n)
-	asc := figureFace.Metrics().Ascent.Ceil()
-	ip.line(buf, figureFace, n, cx-nw/2, cy+float64(asc)/s/2-1.5, rgb{1, 1, 1}, a)
+	b, _ := font.BoundString(figureFace, n)
+	mx := float64(b.Min.X+b.Max.X) / 128 / s
+	my := float64(b.Min.Y+b.Max.Y) / 128 / s
+	ip.line(buf, figureFace, n, cx-mx, cy-my, rgb{1, 1, 1}, a)
 	ip.line(buf, bodyFace, ip.t("The long recording starts…"), r.x+70, r.y+29, ink, a)
 	ip.line(buf, labelFace, ip.t("Click to cancel"), r.x+70, r.y+47, muted, a)
 }
@@ -738,7 +745,9 @@ func (ip *islandPainter) countBox(buf []byte, th theme, st islandState, r rect, 
 func (ip *islandPainter) longBox(buf []byte, th theme, st islandState, r rect, ink, muted, tint rgb, a float64) {
 	w, h := islandWinW*scale, islandWinH*scale
 	s := float64(scale)
-	fill(buf, w, h, r, 12, tint, a)
+	if st.onBox {
+		fill(buf, w, h, r, 12, tint, a)
+	}
 	y := r.y + 19
 	recDot(buf, w, h, (r.x+16)*s, (y-4)*s, s, st.long.paused, a)
 	label, c := ip.t("Long recording"), ink
