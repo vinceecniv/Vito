@@ -124,8 +124,11 @@ swapped whole (`fcs()`), never package variables.
 piece in `VM_ACC` (`web/index.html`); `mascotSVG` draws the worn pieces into
 the face or body group of every copy, `vmRedress` redraws them. `VM_UNLOCK`
 says what opens each piece: free, a number of achievements, or one
-achievement's id. The wardrobe sits on the achievements page; the pill's
-`vito` style (`internal/pill/mascot.go`) does not draw the pieces yet.
+achievement's id. The wardrobe sits on the achievements page. The pill's
+`vito` style draws the same pieces from `internal/pill/outfit.json`, which
+`node scripts/pill-outfit.mjs` writes from `VM_ACC` — rerun it after changing
+a piece (`TestOutfitInStepWithPage` catches a missing one). `outfit.go`
+reads only the SVG the pieces use; a new element or attribute needs it there.
 
 ## Text snippets
 

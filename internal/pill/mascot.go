@@ -324,6 +324,11 @@ func drawMascotOn(buf []byte, w, h int, f Frame) {
 		c := face(x, 85)
 		g.fill(c.x-7, c.y-4, c.x+7, c.y+4, ellipse(c.x, c.y, 7*0.85, 4.5*0.85), flat(hex(0xFFB3C1)), 0.6)
 	}
+	// What Vito wears (ui.outfit), over the face's features and the face.
+	defer func() {
+		drawOutfit(g, "face", f.Dark)
+		drawOutfit(g, "body", f.Dark)
+	}()
 
 	// Eyes: they blink now and then, and look up while thinking.
 	if f.Happy > 0 || f.Dizzy > 0 {
