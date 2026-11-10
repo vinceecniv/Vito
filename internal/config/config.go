@@ -212,8 +212,8 @@ type UI struct {
 	// and the pill draw it.
 	Accent string `json:"accent,omitempty"`
 	// Font is the typeface: "" Sora with Baloo 2, "system" the desktop's own
-	// (the pill draws that one too), or inter, atkinson, noto-sans, nunito,
-	// literata, jetbrains-mono, noto-mono (the page only).
+	// or inter, atkinson, noto-sans, nunito, literata, jetbrains-mono,
+	// noto-mono. The page and the pill draw it.
 	Font string `json:"font,omitempty"`
 	// Outfit is what Vito wears, a piece per slot (head, glasses, ears, neck,
 	// paint), as the page names them (VM_ACC in web/index.html).

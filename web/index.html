@@ -70,8 +70,8 @@
   @font-face { font-family:'Noto Sans Mono'; font-weight:100 900; font-display:swap; src:url(fonts-notomono-latin-ext.woff2) format('woff2'); size-adjust:92%; unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
   @font-face { font-family:'Noto Sans Mono'; font-weight:100 900; font-display:swap; src:url(fonts-notomono-latin.woff2) format('woff2'); size-adjust:92%; unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   /* Typefaces: --font-body for text, --font-head for headings and figures.
-     Only Vito's own pair has a separate heading face. Keep "system" in step
-     with internal/pill/sysfont*.go, which draws the pill in the same one. */
+     Only Vito's own pair has a separate heading face. The pill draws the
+     same choice (internal/pill/sysfont.go, font/): keep the lists in step. */
   :root, [data-font="sora"] { --font-body:'Sora',system-ui,sans-serif; --font-head:'Baloo 2','Sora',sans-serif; }
   [data-font="system"] { --font-body:system-ui,-apple-system,'Segoe UI',Cantarell,'Noto Sans',Ubuntu,sans-serif; --font-head:var(--font-body); }
   [data-font="inter"] { --font-body:'Inter',system-ui,sans-serif; --font-head:var(--font-body); }
@@ -13556,7 +13556,7 @@ tagReveals();
 
 /* ---- per-option help tooltips (shown after a short delay) ---- */
 const HELP = {
-  font:{nl:"Het lettertype van Vito, ook in de pil als je Systeem kiest. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill too when you choose System. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},
+  font:{nl:"Het lettertype van Vito, ook in de pil en het eiland. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill and the island too. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},
   accent:{nl:"De kleuren van Vito: de knoppen, het verloop, de pil en de mascotte. Rood voor fouten en opnemen blijft rood.",en:"Vito's colours: the buttons, the gradient, the pill and the mascot. Red for errors and recording stays red."},
   cursor:{nl:"De muiswijzer in Vito's kleuren, met het logo in de hand. Uit: de gewone muiswijzer van je systeem.",en:"The mouse pointer in Vito's colours, with the logo in its hand. Off: your system's usual pointer."},
   helptips:{nl:"Ja, dit is er een. Uit: geen uitleg meer als je even boven een instelling blijft hangen — deze ook niet.",en:"Yes, this is one. Off: no more explanations when you linger over a setting — this one included."},

@@ -108,10 +108,14 @@ name. The faces are `web/fonts-<font>-<subset>.woff2` (Fontsource, OFL, notices 
 `fonts-licenses.txt`), each with a unicode-range: every script a font has
 (latin-ext, Cyrillic, Greek, Vietnamese, Devanagari), fetched only when
 used. Choose fonts without a Reserved Font Name (subsetting is a change)
-and with wide coverage — Vito speaks 60 languages. The pill
-follows only `system`: `internal/pill/sysfont*.go` finds the desktop's font
-(Segoe UI; SF; on Linux GNOME/Cinnamon/KDE's interface font via `fc-match`)
-and keeps Sora for any weight it cannot read. Its faces are one `faceSet`
+and with wide coverage — Vito speaks 60 languages. The pill draws every
+choice too, with golang.org/x/image, which reads neither WOFF2 nor variable
+axes: `internal/pill/font/<font>-{regular,semibold,bold}.ttf` are static
+cuts made by `scripts/pill-fonts.py` (pinned google/fonts commit) — rerun
+it when a font is added. For `system`, `internal/pill/sysfont*.go` finds the
+desktop's font (Segoe UI; SF; on Linux GNOME/Cinnamon/KDE's interface font
+via `fc-match`). Each face is a `chainFace`: a character the chosen font
+lacks comes from the system's font, then Sora. The faces are one `faceSet`
 swapped whole (`fcs()`), never package variables.
 
 ## Dressing Vito up
