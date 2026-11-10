@@ -79,7 +79,7 @@ func (s *Store) SaveSpeakers(id, provider string, seconds float64, turns []stt.T
 		sp.Names = old.Names
 	}
 	os.Remove(s.path(id, "speakers_clean.jsonl"))
-	return s.writeSpeakers(id, sp)
+	return s.touchAfter(id, s.writeSpeakers(id, sp))
 }
 
 func (s *Store) writeSpeakers(id string, sp Speakers) error {
@@ -96,12 +96,16 @@ func (s *Store) RemoveSpeakers(id string) error {
 	if err := os.Remove(s.path(id, "speakers.json")); err != nil && !os.IsNotExist(err) {
 		return err
 	}
-	_, err := s.UpdateMeta(id, func(m *Meta) { m.Speakers, m.SpeakersError = "", "" })
+	_, err := s.UpdateMeta(id, func(m *Meta) { m.Speakers, m.SpeakersError, m.Modified = "", "", time.Now() })
 	return err
 }
 
 // NameSpeaker gives a speaker a name ("" goes back to "Speaker n").
 func (s *Store) NameSpeaker(id, speaker, name string) error {
+	return s.touchAfter(id, s.nameSpeaker(id, speaker, name))
+}
+
+func (s *Store) nameSpeaker(id, speaker, name string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	sp := s.Speakers(id)
@@ -174,9 +178,18 @@ func splitTurns(in []stt.Turn) []stt.Turn {
 				return
 			}
 			n := utf8.RuneCountInString(cur.String())
-			start := t.Start + (t.End-t.Start)*float64(done)/float64(total)
-			end := t.Start + (t.End-t.Start)*float64(done+n)/float64(total)
-			out = append(out, stt.Turn{Speaker: t.Speaker, Start: start, End: end, Text: text})
+			c := clock{start: t.Start, end: t.End, words: t.Words, scale: 1}
+			start, end := c.at(done, total), c.at(done+n, total)
+			if done+n >= total {
+				end = t.End
+			}
+			var words []stt.WordTime
+			for _, w := range t.Words {
+				if w.Off >= done && w.Off < done+n {
+					words = append(words, stt.WordTime{Off: w.Off - done, At: w.At})
+				}
+			}
+			out = append(out, stt.Turn{Speaker: t.Speaker, Start: start, End: end, Text: text, Words: words})
 			done += n
 			cur.Reset()
 		}
@@ -263,7 +276,11 @@ func (s *Store) speakerParas(id string, sp *Speakers, raw bool) (paras []para, c
 			if good && !raw {
 				text = c.Turns[ti-ch[0]]
 			}
-			for _, p := range splitTimed(text, t.Start, t.End) {
+			c := clock{start: t.Start, end: t.End, words: t.Words, scale: 1}
+			if n := utf8.RuneCountInString(strings.TrimSpace(text)); n > 0 {
+				c.scale = float64(utf8.RuneCountInString(t.Text)) / float64(n) // cleaned text: about where in the words
+			}
+			for _, p := range splitClock(text, c) {
 				p.speaker = t.Speaker
 				paras = append(paras, p)
 			}

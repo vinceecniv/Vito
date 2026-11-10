@@ -83,6 +83,87 @@ columns (costs, Assist, uploads), the user's deletions and star changes
 dictionary (with its text snippets) and cleanup rule sets (newest wins after a
 first merge).
 
+## Colour themes
+
+`ui.accent` ("" Vito default, coral & violet; `ocean`; and the community
+schemes `catppuccin`, `tokyo-night`, `nord`, `gruvbox`, `rose-pine`,
+`kanagawa`, `everforest`, `ristretto`, `solarized`, `flexoki`, `dracula`; and the high-contrast `hc` and `hc-bw` (no colour: white on black, black on white), which set their accent per side)
+sets `data-accent` on `<html>`. The community schemes bring their own light
+and dark surfaces (Latte/Mocha, Day/Night, …) and keep their names
+untranslated (`b:1` in `ACCENTS`); only "Vito default" and "Ocean" go
+through `t()`. Each theme overrides only the
+palette tokens (`--coral`, `--violet`, `--violet-l`, `--coral-l`, `--acc-l`,
+`--acc-d`, `--ink-l`); everything else derives from them. Use those tokens,
+never a brand hex. Errors and recording use `--danger*`, which no theme
+changes. Canvases and the cursor images read the colours with `accentHex()` /
+`trGlowColors()`. The pill draws the same palettes from `internal/pill/accent.go`
+— keep the two in step.
+
+## Backgrounds
+
+`ui.backdrop` ("" plain; `gradient`, `aurora`, `sunrise`, `waves`, `bubbles`,
+`grid`, `dots`, `stripes`, `ripples`, `contours`, `confetti`) sets `data-backdrop` on
+`<html>` and `data-bd` on `#backdrop`, a fixed layer behind the app. The
+`.bd[data-bd]` rules draw it from the palette tokens only (so every colour
+theme works, stronger by `--bd-k` on dark) and also draw the picker's swatches,
+scaled by `--u`. Only transforms animate (aurora, waves, bubbles), and nothing
+under reduced motion. Theme, colours, font, background and the Vito cursor
+live on their own settings tab, Appearance (`data-sec="appearance"`).
+`ui.radius` ("", `minimal`, `none`) sets `data-radius` on `<html>`: one
+`!important` override caps every element's corners at 3px or squares them,
+so new CSS needs no part in it (`.spinner` and the picker's `.rad-sw` are
+left out). The pill, its cards and the island cap their surfaces the same
+way (`corner()` in `internal/pill/corners.go`); icons keep their shapes.
+`ui.density` ("", `compact`, `spacious`) sets `data-density`, which sets
+`--dn` (.65 / 1.3): the page's margins, the cards' padding and gaps, fields,
+toggles, history rows and the line height are written as
+`calc(Npx * var(--dn, 1))` — do the same for new spacing of that kind.
+`ui.reduce_motion` sets `data-motion="reduce"`, on top of the system's
+setting: animations and transitions end at once; scripts ask
+`reducedMotion()`, never `matchMedia` directly. The pill follows it too
+(`internal/pill/motion.go`: `step` jumps, `Frame.T` holds).
+
+## Typefaces
+
+`ui.font` ("" Sora with Baloo 2 for headings; `system`, `inter`, `atkinson`,
+`noto-sans`, `nunito`, `literata`, `jetbrains-mono`, `noto-mono`) sets `data-font` on
+`<html>`, which sets `--font-body` and `--font-head`; use those, never a font
+name. The faces are `web/fonts-<font>-<subset>.woff2` (Fontsource, OFL, notices in
+`fonts-licenses.txt`), each with a unicode-range: every script a font has
+(latin-ext, Cyrillic, Greek, Vietnamese, Devanagari), fetched only when
+used. Choose fonts without a Reserved Font Name (subsetting is a change)
+and with wide coverage — Vito speaks 60 languages. The pill draws every
+choice too, with golang.org/x/image, which reads neither WOFF2 nor variable
+axes: `internal/pill/font/<font>-{regular,semibold,bold}.ttf` are static
+cuts made by `scripts/pill-fonts.py` (pinned google/fonts commit) — rerun
+it when a font is added. For `system`, `internal/pill/sysfont*.go` finds the
+desktop's font (Segoe UI; SF; on Linux GNOME/Cinnamon/KDE's interface font
+via `fc-match`). Each face is a `chainFace`: a character the chosen font
+lacks comes from the system's font, then Sora. The faces are one `faceSet`
+swapped whole (`fcs()`), never package variables.
+
+## Dressing Vito up
+
+`ui.outfit` maps a slot (`head`, `glasses`, `ears`, `neck`, `paint`) to a
+piece in `VM_ACC` (`web/index.html`); `mascotSVG` draws the worn pieces into
+the face or body group of every copy, `vmRedress` redraws them. `VM_UNLOCK`
+says what opens each piece: free, a number of achievements, or one
+achievement's id. The wardrobe sits on the achievements page. The pill's
+`vito` style draws the same pieces from `internal/pill/outfit.json`, which
+`node scripts/pill-outfit.mjs` writes from `VM_ACC` — rerun it after changing
+a piece (`TestOutfitInStepWithPage` catches a missing one). `outfit.go`
+reads only the SVG the pieces use; a new element or attribute needs it there.
+
+## Feedback sounds
+
+`assets/sounds/*.wav` are the original cues (start, done, cancel, command,
+achievement, warn); `audio.sound_set` picks another voice from
+`assets/sounds/<set>/` (`soft`, `glass`, `retro`, `tick`), made by
+`python scripts/sounds.py`, which matches each clip's loudness to its
+original. `assets.Sound(set, cue)` falls back to the original. The browser
+version fetches the same files (`sounds/<set>/<cue>.wav`, written by
+`packaging/uibundle app`).
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.

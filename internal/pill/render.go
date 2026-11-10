@@ -116,10 +116,11 @@ func drawLive(buf []byte, w, h int, f Frame) {
 		return
 	}
 	hw, hh := f.LiveW*s/2, 13*s
-	shadow(buf, w, h, cx, cy+1*s, hw, hh, 8*s, th.shadow*a)
-	box(buf, w, h, cx, cy, hw, hh, hh, th.body, 0.95*a)
-	ring(buf, w, h, cx, cy, hw, hh, th.edge, 0.22*a, 0.5*s)
-	m := bodyFace.Metrics()
+	r := corner(hh, s)
+	shadowR(buf, w, h, cx, cy+1*s, hw, hh, r, 8*s, th.shadow*a)
+	box(buf, w, h, cx, cy, hw, hh, r, th.body, 0.95*a)
+	ringR(buf, w, h, cx, cy, hw, hh, r, th.edge, 0.22*a, 0.5*s)
+	m := fcs().body.Metrics()
 	// The words start at the strip's left edge, which follows the strip as it
 	// grows, and once they outgrow it they slide left by LiveOff. Both ease,
 	// so a new letter never moves what is already there by a jump.
@@ -132,7 +133,7 @@ func drawLive(buf []byte, w, h int, f Frame) {
 // drawBlock sets the words as blockLines lines of text in the panel, the top
 // one ending on LiveY, rising as a new line starts.
 func drawBlock(buf []byte, w, h int, f Frame, cx, cy, s, a float64) {
-	m := bodyFace.Metrics()
+	m := fcs().body.Metrics()
 	lh := blockLine * s
 	x := int(math.Round(cx - f.LiveW*s/2))
 	top, bottom := cy-lh-3*s, cy+(blockLines-1)*lh+3*s // what shows: the lines
@@ -270,6 +271,7 @@ type rgb struct{ r, g, b float64 }
 type theme struct {
 	body, edge rgb
 	from, to   rgb
+	onAcc      rgb     // a mark on a fill in from or to: white, black on white
 	warn       rgb     // never the coral: that is the brand here, not a warning
 	shadow     float64 // strength under the open pill
 
@@ -298,11 +300,23 @@ var (
 	}
 )
 
+// themeFor is that side of the theme in the colour theme in use (accent.go).
 func themeFor(dark bool) theme {
+	c := pal()
 	if dark {
-		return darkTheme
+		th := darkTheme
+		th.edge, th.from, th.to, th.onAcc = c.violetL, c.coral, c.violetL, rgb{1, 1, 1}
+		if c.mono {
+			th.edge, th.from, th.to, th.onAcc = rgb{1, 1, 1}, rgb{1, 1, 1}, rgb{1, 1, 1}, rgb{}
+		}
+		return th
 	}
-	return lightTheme
+	th := lightTheme
+	th.edge, th.from, th.to, th.onAcc = c.violet, c.coral, c.violet, rgb{1, 1, 1}
+	if c.mono {
+		th.edge, th.from, th.to = rgb{}, rgb{}, rgb{}
+	}
+	return th
 }
 
 func hex(v uint32) rgb {
@@ -312,10 +326,12 @@ func hex(v uint32) rgb {
 // painter draws frames, and keeps the pill's body between them: only the bars
 // move while it listens, and they are a small part of the picture.
 type painter struct {
-	back      []byte
-	backHW    float64
-	backAlpha float64
-	backDark  bool
+	back       []byte
+	backHW     float64
+	backAlpha  float64
+	backDark   bool
+	backPal    *palette
+	backCorner int32
 }
 
 // Draw paints f into buf: premultiplied ARGB8888 in memory order B, G, R, A, the
@@ -345,12 +361,13 @@ func (p *painter) Draw(buf []byte, w, h int, f Frame) {
 	barsIn := clamp(open*2 - 1) // once there is room for them
 
 	th := themeFor(f.Dark)
-	if len(p.back) != len(buf) || p.backHW != hw || p.backAlpha != alpha || p.backDark != f.Dark {
-		p.back, p.backHW, p.backAlpha, p.backDark = make([]byte, len(buf)), hw, alpha, f.Dark
+	if len(p.back) != len(buf) || p.backHW != hw || p.backAlpha != alpha || p.backDark != f.Dark || p.backPal != pal() || p.backCorner != cornersNow() {
+		p.back, p.backHW, p.backAlpha, p.backDark, p.backPal, p.backCorner = make([]byte, len(buf)), hw, alpha, f.Dark, pal(), cornersNow()
+		r := corner(hh, s)
 		// The shadow fades over 10 px outside the pill and is lower than it.
-		shadow(p.back, w, h, cx, cy+1.5*s, hw, hh, 10*s, th.shadow*alpha)
-		box(p.back, w, h, cx, cy, hw, hh, hh, th.body, 0.93*alpha)
-		ring(p.back, w, h, cx, cy, hw, hh, th.edge, 0.22*alpha, 0.5*s)
+		shadowR(p.back, w, h, cx, cy+1.5*s, hw, hh, r, 10*s, th.shadow*alpha)
+		box(p.back, w, h, cx, cy, hw, hh, r, th.body, 0.93*alpha)
+		ringR(p.back, w, h, cx, cy, hw, hh, r, th.edge, 0.22*alpha, 0.5*s)
 	}
 	copy(buf, p.back)
 
@@ -409,8 +426,8 @@ func drawClock(buf []byte, w, h int, cx, cy, s float64, f Frame, th theme, alpha
 	a := smooth(f.ClockShow) * alpha
 	b := f.Clock.Bounds()
 	hw, hh := float64(b.Dx())/2+5*s, 8*s
-	box(buf, w, h, cx, cy, hw, hh, hh, th.body, 0.94*a)
-	m := mainFace.Metrics()
+	box(buf, w, h, cx, cy, hw, hh, corner(hh, s), th.body, 0.94*a)
+	m := fcs().main.Metrics()
 	baseline := cy + float64((m.Ascent-m.Descent).Ceil())/2
 	x0 := int(math.Round(cx - float64(b.Dx())/2))
 	faded(buf, w, h, f.Clock, x0, int(baseline)-m.Ascent.Ceil()-1, inkFor(f.Dark), a, 0, w, 0, 0)
@@ -436,6 +453,7 @@ func drawGlow(buf []byte, w, h int, cx, cy, hw, hh float64, f Frame, th theme, a
 	busy := smooth(f.Busy)
 	t := f.T
 	bottom := cy + hh
+	rad := corner(hh, float64(w)/surfaceW)
 	x0, x1 := max(0, int(cx-hw)), min(w-1, int(cx+hw)+1)
 	y0, y1 := max(0, int(cy-hh)), min(h-1, int(cy+hh)+1)
 	for x := x0; x <= x1; x++ {
@@ -457,7 +475,7 @@ func drawGlow(buf []byte, w, h int, cx, cy, hw, hh float64, f Frame, th theme, a
 
 		for y := y0; y <= y1; y++ {
 			py := float64(y) + 0.5
-			cov := clamp(0.5 - roundBox(px-cx, py-cy, hw, hh, hh))
+			cov := clamp(0.5 - roundBox(px-cx, py-cy, hw, hh, rad))
 			if cov <= 0 {
 				continue
 			}
@@ -519,14 +537,15 @@ func DrawIdle(buf []byte, w, h int, dark bool, presence, hover float64) {
 	cx, cy := float64(w)/2, pillY*s
 	e := smooth(hover)
 	hw, hh := mix(idleW, 52, e)*s/2, mix(idleH, 20, e)*s/2
+	r := corner(hh, s)
 	if e > 0 {
-		shadow(buf, w, h, cx, cy+1*s, hw, hh, 6*s, th.shadow*e)
+		shadowR(buf, w, h, cx, cy+1*s, hw, hh, r, 6*s, th.shadow*e)
 	}
 	// From the see-through mark to the open pill's own body.
-	box(buf, w, h, cx, cy, hw, hh, hh, th.rest, th.restAlpha*presence*(1-e))
-	box(buf, w, h, cx, cy, hw, hh, hh, th.body, 0.95*e)
-	ring(buf, w, h, cx, cy, hw, hh, th.restEdge, th.restEdgeAlpha*presence*(1-e), 0.5*s)
-	ring(buf, w, h, cx, cy, hw, hh, th.edge, 0.3*e, 0.5*s)
+	box(buf, w, h, cx, cy, hw, hh, r, th.rest, th.restAlpha*presence*(1-e))
+	box(buf, w, h, cx, cy, hw, hh, r, th.body, 0.95*e)
+	ringR(buf, w, h, cx, cy, hw, hh, r, th.restEdge, th.restEdgeAlpha*presence*(1-e), 0.5*s)
+	ringR(buf, w, h, cx, cy, hw, hh, r, th.edge, 0.3*e, 0.5*s)
 	if e > 0.3 {
 		microphone(buf, w, h, cx, cy, s, blend(th.from, th.to, 0.5), clamp((e-0.3)/0.7))
 	}
@@ -566,14 +585,15 @@ func drawButtons(buf []byte, w, h int, f Frame) {
 		}
 		fill, mark := th.body, ink
 		if f.Over == b {
-			fill, mark = th.to, rgb{1, 1, 1}
+			fill, mark = th.to, th.onAcc
 			if b == ButtonCancel {
 				fill = th.from
 			}
 		}
-		shadow(buf, w, h, cx, cy+0.8*s, r, r, 4*s, th.shadow*a)
-		box(buf, w, h, cx, cy, r, r, r, fill, a)
-		ring(buf, w, h, cx, cy, r, r, th.edge, 0.3*a, 0.5*s)
+		rr := corner(r, s)
+		shadowR(buf, w, h, cx, cy+0.8*s, r, r, rr, 4*s, th.shadow*a)
+		box(buf, w, h, cx, cy, r, r, rr, fill, a)
+		ringR(buf, w, h, cx, cy, r, r, rr, th.edge, 0.3*a, 0.5*s)
 		k := 3.2 * s
 		if b == ButtonCancel {
 			line(buf, w, h, cx-k, cy-k, cx+k, cy+k, 1.6*s, mark, a)

@@ -356,6 +356,11 @@ func (p *pill) settingsChanged() {
 // dark says which side of the theme to draw: Vito's own setting first, as for
 // the tray icon, then the desktop's.
 func (p *pill) dark() bool {
+	setAccent(p.d.Config().UI.Accent) // read with the theme, before every picture
+	setFont(p.d.Config().UI.Font)
+	setOutfit(p.d.Config().UI.Outfit)
+	setRadius(p.d.Config().UI.Radius)
+	setReduceMotion(p.d.Config().UI.ReduceMotion)
 	switch p.d.Config().UI.Theme {
 	case "dark":
 		return true
@@ -497,7 +502,9 @@ func (p *pill) animate(w window, style Style) {
 			level = 0 // its last value would stand still in the bars
 		}
 		shown += (level - shown) * levelGlide
-		f.T = time.Since(start).Seconds()
+		if !still() {
+			f.T = time.Since(start).Seconds()
+		}
 		f.Clip = clip && state == daemon.StateRecording
 		// The character goes through what the app's does: listening, thinking
 		// while the text is made, then happy (or dizzy) for a moment before it
@@ -584,7 +591,7 @@ func (p *pill) animate(w window, style Style) {
 				if d := time.Since(recSince); d >= clockAfter && faces() == nil {
 					if txt := clockString(d); txt != clockText {
 						clockText = txt
-						f.Clock, _ = textMask(mainFace, txt)
+						f.Clock, _ = textMask(fcs().main, txt)
 					}
 					f.ClockShow = min(1, f.ClockShow+step(openTime))
 				}
@@ -646,7 +653,12 @@ func (p *pill) click(b Button) {
 	}()
 }
 
-func step(d time.Duration) float64 { return float64(frameTime) / float64(d) }
+func step(d time.Duration) float64 {
+	if still() {
+		return 1 // ui.reduce_motion: at once
+	}
+	return float64(frameTime) / float64(d)
+}
 
 // pushLevel moves every bar one place outward and sets the middle one. The level
 // is in decibels (gain.go); the curve spreads it over the height of a bar. On

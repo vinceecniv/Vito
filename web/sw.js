@@ -3,9 +3,9 @@
 // state instead of a browser error). API and WebSocket traffic is never cached.
 // Bumped when cached content changes shape: activate() drops every other cache,
 // which is what clears out translations from a previous version of the app.
-const CACHE = "vito-v5";
+const CACHE = "vito-v6";
 const CORE = ["./", "manifest.webmanifest", "favicon.svg", "icon-192.png", "icon-512.png",
-  "fonts-baloo2.woff2", "fonts-sora.woff2"];
+  "fonts-baloo2-latin.woff2", "fonts-sora-latin.woff2"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));

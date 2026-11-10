@@ -198,6 +198,9 @@ type islandState struct {
 	// none is counting. countK is how far into this second, 0..1.
 	count  int
 	countK float64
+	// opening: seconds since the logo was clicked, while Vito's page is on
+	// its way (finding and starting the PWA can take a moment); 0 otherwise.
+	opening float64
 }
 
 // height is the panel's height for a view.
@@ -332,7 +335,7 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 	pw, ph := mix(52, panelW, e), mix(20, st.ph, e)
 	bottom := mix(islandMarkY+10, panelFoot, e)
 	pcy := bottom - ph/2
-	r := mix(10, 22, e)
+	r := corner(mix(10, 22, e)*s, s) / s
 	shadowR(buf, w, h, cx, (pcy+2)*s, pw*s/2, ph*s/2, r*s, 14*s, th.shadow*1.3*clamp(st.open*2))
 	box(buf, w, h, cx, pcy*s, pw*s/2, ph*s/2, r*s, th.body, 0.97)
 	ringR(buf, w, h, cx, pcy*s, pw*s/2, ph*s/2, r*s, th.edge, 0.22, 0.5*s)
@@ -357,13 +360,18 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 	// The pin on the left, the menu on the right and the wordmark between
 	// them, alone: a calm title bar.
 	hy := top + 25.0
-	_, ww := ip.text(wordFace, "vito")
+	_, ww := ip.text(fcs().word, "vito")
 	brand := rect{left + panelW/2 - ww/2 - 12, hy - 16, ww + 24, 32}
 	ip.targets[tOpenVito] = brand
 	if st.over == tOpenVito {
 		fill(buf, w, h, brand, 16, blend(tint, th.to, 0.08), in)
 	}
-	ip.line(buf, wordFace, "vito", left+panelW/2-ww/2, hy+6.5, ink, in)
+	ip.line(buf, fcs().word, "vito", left+panelW/2-ww/2, hy+6.5, ink, in)
+	if st.opening > 0 {
+		// Fades in, turns, fades out by openingFor.
+		k := clamp(st.opening/0.15) * clamp((openingFor-st.opening)/0.25)
+		spinner(buf, w, h, (left+panelW/2+ww/2+16)*s, (hy+1)*s, 6*s, 1.8*s, st.opening, th.to, in*k)
+	}
 	menu := rect{left + panelW - panelPad - 28 + 4, hy - 14, 28, 28}
 	pin := rect{left + panelPad - 4, hy - 14, 28, 28}
 	ip.iconButton(buf, th, st, tPin, pin, tint, in, func(cx, cy float64, c rgb, a float64) {
@@ -503,13 +511,13 @@ func (ip *islandPainter) tooltip(buf []byte, th theme, st islandState, at rect, 
 	for _, para := range strings.Split(text, "\n") {
 		for para != "" {
 			var first string
-			first, para = wrap(labelFace, para, room)
+			first, para = wrap(fcs().label, para, room)
 			lines = append(lines, first)
 		}
 	}
 	bw := 0.0
 	for _, l := range lines {
-		_, lw := ip.text(labelFace, l)
+		_, lw := ip.text(fcs().label, l)
 		bw = max(bw, lw)
 	}
 	bw += 20
@@ -522,7 +530,7 @@ func (ip *islandPainter) tooltip(buf []byte, th theme, st islandState, at rect, 
 	bg, fg := inkFor(st.dark), th.body
 	fill(buf, w, h, rect{x, y, bw, bh}, 8, bg, 0.94*a)
 	for i, l := range lines {
-		ip.line(buf, labelFace, l, x+10, y+16+16*float64(i), fg, a)
+		ip.line(buf, fcs().label, l, x+10, y+16+16*float64(i), fg, a)
 	}
 }
 
@@ -584,13 +592,13 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 			fw := 0.0
 			for i, p := range figure {
 				if p.unit {
-					_, pw := ip.text(labelFace, p.s)
+					_, pw := ip.text(fcs().label, p.s)
 					fw += pw + 0.5
 					if i < len(figure)-1 {
 						fw += 3
 					}
 				} else {
-					_, pw := ip.text(statFace, p.s)
+					_, pw := ip.text(fcs().stat, p.s)
 					fw += pw
 				}
 			}
@@ -603,12 +611,12 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 			x0 := min(iconX, fx)
 			for i, p := range figure {
 				if p.unit {
-					fx += ip.line(buf, labelFace, p.s, fx+0.5, cy+5.5, ink, a) + 0.5
+					fx += ip.line(buf, fcs().label, p.s, fx+0.5, cy+5.5, ink, a) + 0.5
 					if i < len(figure)-1 {
 						fx += 3
 					}
 				} else {
-					fx += ip.line(buf, statFace, p.s, fx, cy+6, ink, a)
+					fx += ip.line(buf, fcs().stat, p.s, fx, cy+6, ink, a)
 				}
 			}
 			x1 := max(iconX+24, fx)
@@ -654,13 +662,13 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		if st.onBox {
 			fill(buf, w, h, lastBox, 12, boxTint, a)
 		}
-		ip.line(buf, labelFace, ip.t("Dictation cancelled"), lastBox.x+12, lastBox.y+20, th.to, a)
+		ip.line(buf, fcs().label, ip.t("Dictation cancelled"), lastBox.x+12, lastBox.y+20, th.to, a)
 		heard := strings.Join(strings.Fields(st.heard), " ")
 		if heard == "" {
 			heard = ip.t("Click to restore it")
 		}
 		room := lastBox.w - 12 - 46
-		ip.line(buf, bodyFace, tailFit(bodyFace, heard, fixed.I(int(room*s))), lastBox.x+12, lastBox.y+38, ink, a)
+		ip.line(buf, fcs().body, tailFit(fcs().body, heard, fixed.I(int(room*s))), lastBox.x+12, lastBox.y+38, ink, a)
 		bx, by := lastBox.x+lastBox.w-26, lastBox.y+lastBox.h/2
 		if st.over == tRestore {
 			fill(buf, w, h, rect{bx - 14, by - 14, 28, 28}, 8, blend(boxTint, th.to, 0.08), a)
@@ -689,16 +697,16 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	for rest := last; rest != "" && len(lines) < 3; {
 		var line string
 		if len(lines) == 2 {
-			line, rest = fit(bodyFace, rest, room), ""
+			line, rest = fit(fcs().body, rest, room), ""
 		} else {
-			line, rest = wrap(bodyFace, rest, room)
+			line, rest = wrap(fcs().body, rest, room)
 		}
 		lines = append(lines, line)
 	}
 	const lastLine = 16.0
 	y := lastBox.y + (lastBox.h-float64(len(lines))*lastLine)/2 + 12
 	for i, l := range lines {
-		ip.line(buf, bodyFace, l, lastBox.x+12, y+float64(i)*lastLine, c, a)
+		ip.line(buf, fcs().body, l, lastBox.x+12, y+float64(i)*lastLine, c, a)
 	}
 	ip.browse(buf, th, st, lastBox, muted, a)
 	if st.last != "" {
@@ -731,12 +739,12 @@ func (ip *islandPainter) countBox(buf []byte, th theme, st islandState, r rect, 
 	// Centred on the ink of the figure, not on its advance and the face's
 	// ascent, which left it off the dot's centre.
 	n := fmt.Sprint(st.count)
-	b, _ := font.BoundString(figureFace, n)
+	b, _ := font.BoundString(fcs().figure, n)
 	mx := float64(b.Min.X+b.Max.X) / 128 / s
 	my := float64(b.Min.Y+b.Max.Y) / 128 / s
-	ip.line(buf, figureFace, n, cx-mx, cy-my, rgb{1, 1, 1}, a)
-	ip.line(buf, bodyFace, ip.t("The long recording starts…"), r.x+70, r.y+29, ink, a)
-	ip.line(buf, labelFace, ip.t("Click to cancel"), r.x+70, r.y+47, muted, a)
+	ip.line(buf, fcs().figure, n, cx-mx, cy-my, rgb{1, 1, 1}, a)
+	ip.line(buf, fcs().body, ip.t("The long recording starts…"), r.x+70, r.y+29, ink, a)
+	ip.line(buf, fcs().label, ip.t("Click to cancel"), r.x+70, r.y+47, muted, a)
 }
 
 // longBox is the running long recording, in the last dictation's place: the
@@ -760,13 +768,13 @@ func (ip *islandPainter) longBox(buf []byte, th theme, st islandState, r rect, i
 		label, c = ip.t("Long recording paused"), muted
 	}
 	clock := longClock(st.long.secs)
-	_, cw := ip.text(mainFace, clock)
-	ip.line(buf, bodyFace, fit(bodyFace, label, fixed.I(int((r.w-50-cw)*s))), r.x+28, y, c, a)
+	_, cw := ip.text(fcs().main, clock)
+	ip.line(buf, fcs().body, fit(fcs().body, label, fixed.I(int((r.w-50-cw)*s))), r.x+28, y, c, a)
 	tc := ink
 	if st.long.paused {
 		tc = muted
 	}
-	ip.line(buf, mainFace, clock, r.x+r.w-12-cw, y+0.5, tc, a)
+	ip.line(buf, fcs().main, clock, r.x+r.w-12-cw, y+0.5, tc, a)
 
 	// Four buttons spread over the box's width.
 	by := r.y + 31
@@ -838,7 +846,7 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 				fill(buf, w, h, r, 9, tint, a)
 			}
 		}
-		ip.line(buf, bodyFace, label, left+panelPad, y+15, ink, a)
+		ip.line(buf, fcs().body, label, left+panelPad, y+15, ink, a)
 		return y
 	}
 	toggle := func(i int, label string, on bool, tg target) {
@@ -849,13 +857,13 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 
 	// The rule set: its name, and an arrow into the list.
 	y := row(1, ip.t("Cleanup rules"), tRules)
-	name := fit(labelFace, ip.t(st.activeName()), fixed.I(int(110*s)))
-	_, nw := ip.text(labelFace, name)
+	name := fit(fcs().label, ip.t(st.activeName()), fixed.I(int(110*s)))
+	_, nw := ip.text(fcs().label, name)
 	c := muted
 	if st.over == tRules {
 		c = th.to
 	}
-	ip.line(buf, labelFace, name, right-12-nw, y+15, c, a)
+	ip.line(buf, fcs().label, name, right-12-nw, y+15, c, a)
 	chevron(buf, w, h, (right-3)*s, (y+11)*s, s, c, a, false)
 
 	toggle(2, ip.t("Enter after text"), st.enter, tEnter)
@@ -865,10 +873,10 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 		// Nothing to show with a service that hears the recording only
 		// whole: say so where the switch would be.
 		y := row(3, "", tNone)
-		ip.line(buf, bodyFace, ip.t("Live text"), left+panelPad, y+15, muted, a)
+		ip.line(buf, fcs().body, ip.t("Live text"), left+panelPad, y+15, muted, a)
 		note := ip.t("Not with this service")
-		_, nw := ip.text(labelFace, note)
-		ip.line(buf, labelFace, note, right-nw, y+15, muted, a)
+		_, nw := ip.text(fcs().label, note)
+		ip.line(buf, fcs().label, note, right-nw, y+15, muted, a)
 	}
 
 	toggle(5, ip.t("Today's figures"), st.stats, tStats)
@@ -882,7 +890,7 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 			label, c = ip.t(st.said), recRed
 		}
 		y := row(6, "", tLongRow)
-		ip.line(buf, bodyFace, fit(bodyFace, label, fixed.I(int((panelW-2*panelPad-24)*s))), left+panelPad, y+15, c, a)
+		ip.line(buf, fcs().body, fit(fcs().body, label, fixed.I(int((panelW-2*panelPad-24)*s))), left+panelPad, y+15, c, a)
 		recDot(buf, w, h, (right-6)*s, (y+11)*s, s, false, a)
 	}
 
@@ -905,7 +913,7 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 		c := muted
 		if chosen {
 			fill(buf, w, h, rect{r.x + 2, r.y + 2, r.w - 4, r.h - 4}, 10, th.body, a)
-			ringR(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, (r.w/2-2)*s, (r.h/2-2)*s, 10*s, th.edge, 0.25*a, 0.5*s)
+			ringR(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, (r.w/2-2)*s, (r.h/2-2)*s, corner(10*s, s), th.edge, 0.25*a, 0.5*s)
 			c = th.to
 		} else if st.over == tg {
 			c = ink
@@ -939,7 +947,7 @@ func (ip *islandPainter) rulesView(buf []byte, th theme, st islandState, left, t
 			line(buf, w, h, cx-k*1.1, cy+0.1*k, cx-0.25*k, cy+0.9*k, 1.7*s, c, a)
 			line(buf, w, h, cx-0.25*k, cy+0.9*k, cx+k*1.15, cy-0.8*k, 1.7*s, c, a)
 		}
-		ip.line(buf, bodyFace, fit(bodyFace, ip.t(r.name), fixed.I(int((panelW-2*panelPad-24)*s))), left+panelPad, y+15, c, a)
+		ip.line(buf, fcs().body, fit(fcs().body, ip.t(r.name), fixed.I(int((panelW-2*panelPad-24)*s))), left+panelPad, y+15, c, a)
 	}
 }
 
@@ -978,15 +986,16 @@ func (ip *islandPainter) mic(buf []byte, w, h int, th theme, st islandState) {
 		if st.over == tMic {
 			lit = 0.12
 		}
-		shadow(buf, w, h, cx, cy+1.5*s, r*s, r*s, 6*s, th.shadow*e)
+		rr := corner(r*s, s)
+		shadowR(buf, w, h, cx, cy+1.5*s, r*s, r*s, rr, 6*s, th.shadow*e)
 		eachPixel(w, h, cx, cy, r*s+1, r*s+1, func(x, y int, px, py float64) {
-			d := math.Hypot(px-cx, py-cy) - r*s
+			d := roundBox(px-cx, py-cy, r*s, r*s, rr)
 			t := clamp((px - (cx - r*s)) / (2 * r * s))
 			c := blend(blend(th.from, th.to, t), rgb{1, 1, 1}, lit)
 			put(buf, w, x, y, c, e*clamp(0.5-d))
 		})
 	}
-	micCol := blend(blend(th.from, th.to, 0.5), rgb{1, 1, 1}, e)
+	micCol := blend(blend(th.from, th.to, 0.5), th.onAcc, e)
 	microphone(buf, w, h, cx, cy, s*mix(1, 1.35, e), micCol, 1-gone)
 }
 
@@ -998,7 +1007,7 @@ func (ip *islandPainter) iconButton(buf []byte, th theme, st islandState, tg tar
 	cx, cy := (r.x+r.w/2)*s, (r.y+r.h/2)*s
 	c := mutedFor(st.dark)
 	if st.over == tg {
-		box(buf, w, h, cx, cy, r.w*s/2, r.h*s/2, r.h*s/2, blend(tint, th.to, 0.08), a)
+		box(buf, w, h, cx, cy, r.w*s/2, r.h*s/2, corner(r.h*s/2, s), blend(tint, th.to, 0.08), a)
 		c = th.to
 	}
 	icon(cx, cy, c, a)
@@ -1035,7 +1044,7 @@ func brandTile(buf []byte, w, h int, cx, cy, size float64, th theme, a float64) 
 	eachPixel(w, h, cx, cy, half+1, half+1, func(x, y int, px, py float64) {
 		d := roundBox(px-cx, py-cy, half, half, size*0.24)
 		t := clamp(((px - (cx - half)) + (py - (cy - half))) / (2 * size))
-		put(buf, w, x, y, blend(hex(0xFF6B5E), hex(0x7C3AED), t), a*clamp(0.5-d))
+		put(buf, w, x, y, blend(pal().coral, pal().violet, t), a*clamp(0.5-d))
 	})
 	k := size / 100
 	for i, bh := range []float64{20, 36, 56, 36, 20} {
@@ -1176,7 +1185,7 @@ func mutedFor(dark bool) rgb {
 // fill paints a rounded rectangle given in logical pixels.
 func fill(buf []byte, w, h int, r rect, radius float64, c rgb, a float64) {
 	s := float64(scale)
-	box(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, r.w*s/2, r.h*s/2, radius*s, c, a)
+	box(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, r.w*s/2, r.h*s/2, corner(radius*s, s), c, a)
 }
 
 // repasteIcon is a round arrow going back around.
@@ -1201,19 +1210,24 @@ func repasteIcon(buf []byte, w, h int, cx, cy, s float64, c rgb, a float64) {
 func switchIcon(buf []byte, w, h int, cx, cy, s float64, on bool, th theme, dark bool, a float64) {
 	tw, tr := 15*s, 9*s
 	track := blend(th.body, inkFor(dark), 0.18)
+	tc, kc := corner(tr, s), corner(tr-2*s, s)
 	if on {
 		eachPixel(w, h, cx, cy, tw+1, tr+1, func(x, y int, px, py float64) {
 			c := blend(th.from, th.to, clamp((px-(cx-tw))/(2*tw)))
-			put(buf, w, x, y, c, a*clamp(0.5-roundBox(px-cx, py-cy, tw, tr, tr)))
+			put(buf, w, x, y, c, a*clamp(0.5-roundBox(px-cx, py-cy, tw, tr, tc)))
 		})
 	} else {
-		box(buf, w, h, cx, cy, tw, tr, tr, track, a)
+		box(buf, w, h, cx, cy, tw, tr, tc, track, a)
 	}
 	kx := cx - tw + tr
 	if on {
 		kx = cx + tw - tr
 	}
-	box(buf, w, h, kx, cy, tr-2*s, tr-2*s, tr-2*s, rgb{1, 1, 1}, a)
+	knob := rgb{1, 1, 1}
+	if on {
+		knob = th.onAcc
+	}
+	box(buf, w, h, kx, cy, tr-2*s, tr-2*s, kc, knob, a)
 }
 
 // styleIcon is the little picture of a pill style in the segmented control.
@@ -1411,6 +1425,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		armedAt   time.Time // when stop was clicked once (st.armed)
 		countAt   time.Time // when the countdown began (st.count)
 		saidAt    time.Time // when st.said was said
+		openingAt time.Time // when the logo was clicked (st.opening)
 		actor     = newRestActor(time.Now())
 		dragging  bool
 		// pressed: the button went down on the free space of an island not
@@ -1545,9 +1560,16 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 				closing = !st.pinned
 				p.clickIdle(output)
 			case tg == tOpenVito:
-				closing = !st.pinned
-				if err := webapp.Open(fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)); err != nil {
-					p.log.Warn("island: open Vito failed", "err", err)
+				// The island stays a moment with a spinner by the name, then
+				// closes (unless pinned): the page takes a while to show.
+				if openingAt.IsZero() {
+					openingAt = time.Now()
+					url := fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)
+					go func() {
+						if err := webapp.Open(url); err != nil {
+							p.log.Warn("island: open Vito failed", "err", err)
+						}
+					}()
 				}
 			case tg == tPin:
 				st.pinned = !st.pinned
@@ -1813,6 +1835,14 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			}
 			moving = true
 		}
+		if !openingAt.IsZero() {
+			st.opening = max(time.Since(openingAt).Seconds(), 1e-3)
+			moving = true
+			if st.opening >= openingFor {
+				openingAt, st.opening = time.Time{}, 0
+				closing = closing || !st.pinned
+			}
+		}
 		// Step the animations.
 		if closing {
 			st.open = max(0, st.open-step(islandOpen))
@@ -1949,4 +1979,34 @@ func b2f(b bool) float64 {
 		return 1
 	}
 	return 0
+}
+
+// openingFor is how long the spinner by the logo shows, in seconds.
+const openingFor = 2.0
+
+// spinner draws a turning arc of a circle at (cx, cy) with radius r, a
+// quarter of a turn growing to three quarters and back as it goes round.
+func spinner(buf []byte, w, h int, cx, cy, r, thick, t float64, c rgb, a float64) {
+	if a <= 0 {
+		return
+	}
+	if still() {
+		t = 0.3 // a still arc
+	}
+	head := t * 2 * math.Pi * 1.4
+	span := math.Pi * (0.5 + 0.9*(0.5-0.5*math.Cos(t*2*math.Pi*0.9)))
+	eachPixel(w, h, cx, cy, r+thick, r+thick, func(x, y int, px, py float64) {
+		dx, dy := px-cx, py-cy
+		d := math.Abs(math.Hypot(dx, dy)-r) - thick/2
+		cov := clamp(0.5 - d)
+		if cov <= 0 {
+			return
+		}
+		// How far behind the head this pixel is, 0..2π.
+		back := math.Mod(head-math.Atan2(dy, dx)+4*math.Pi, 2*math.Pi)
+		if back > span {
+			return
+		}
+		put(buf, w, x, y, c, a*cov*(0.35+0.65*(1-back/span)))
+	})
 }

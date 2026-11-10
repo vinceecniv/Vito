@@ -24,8 +24,11 @@ type Audio struct {
 	InputGain     float64 `json:"input_gain"`
 	SoundsEnabled bool    `json:"sounds_enabled"`
 	SoundsVolume  float64 `json:"sounds_volume"` // feedback-sound volume 0..2 (1.0 = system level; >1 amplifies)
-	MediaAction   string  `json:"media_action"`  // what to do with playing media while dictating: duck | pause | off
-	KeepSpool     bool    `json:"keep_spool"`    // keep spool WAVs after success (debugging)
+	// SoundSet is the voice of the feedback sounds: "" the original, or one of
+	// assets.SoundSets (soft, glass, retro, tick).
+	SoundSet    string `json:"sound_set,omitempty"`
+	MediaAction string `json:"media_action"` // what to do with playing media while dictating: duck | pause | off
+	KeepSpool   bool   `json:"keep_spool"`   // keep spool WAVs after success (debugging)
 	// SilenceTimeoutSec auto-cancels a recording after this many seconds without
 	// any transcribed speech, so an accidentally-triggered session can't run
 	// unnoticed. 0 disables it.
@@ -206,6 +209,30 @@ type UI struct {
 	// PillStyle is how the pill shows the voice: "" the glow, "bars" or "vito"
 	// (the character).
 	PillStyle string `json:"pill_style,omitempty"`
+	// Accent is the colour theme: "" Vito's own coral and violet, ocean, or a
+	// community scheme (catppuccin, tokyo-night, nord, gruvbox, rose-pine,
+	// kanagawa, everforest, ristretto, solarized, flexoki, dracula), or high contrast (hc, hc-bw). The page
+	// and the pill draw it.
+	Accent string `json:"accent,omitempty"`
+	// Font is the typeface: "" Sora with Baloo 2, "system" the desktop's own
+	// or inter, atkinson, noto-sans, nunito, literata, jetbrains-mono,
+	// noto-mono. The page and the pill draw it.
+	Font string `json:"font,omitempty"`
+	// Backdrop is the page's background behind the cards: "" plain, or
+	// gradient, aurora, sunrise, waves, bubbles, grid, dots, stripes, ripples, contours,
+	// confetti (.bd[data-bd] in web/index.html). The page only.
+	Backdrop string `json:"backdrop,omitempty"`
+	// Radius is the page's corners: "" its own, "minimal" (3px) or "none".
+	// The page only.
+	Radius string `json:"radius,omitempty"`
+	// Outfit is what Vito wears, a piece per slot (head, glasses, ears, neck,
+	// paint), as the page names them (VM_ACC in web/index.html).
+	Outfit map[string]string `json:"outfit,omitempty"`
+	// ReduceMotion stills the page's animations, for whoever has not found
+	// the system's own setting (which the page follows anyway).
+	ReduceMotion bool `json:"reduce_motion,omitempty"`
+	// Density is the page's spacing: "" standard, "compact" or "spacious".
+	Density string `json:"density,omitempty"`
 	// PillLive shows the words in the pill while you speak. Nil-safe: unset
 	// counts as on, for new users and for those updating alike (it used to be
 	// a plain bool whose false was never written).

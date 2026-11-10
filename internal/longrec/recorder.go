@@ -442,7 +442,7 @@ func (r *Recorder) SetTitle(title string) {
 	r.mu.Lock()
 	r.meta.Title = strings.TrimSpace(title)
 	r.mu.Unlock()
-	r.o.Store.UpdateMeta(r.meta.ID, func(m *Meta) { m.Title = strings.TrimSpace(title) })
+	r.o.Store.UpdateMeta(r.meta.ID, func(m *Meta) { m.Title, m.Modified = strings.TrimSpace(title), time.Now() })
 	r.update()
 }
 

@@ -325,7 +325,7 @@ func (d *Daemon) TitleLong(id, title string) error {
 	}
 	if r, err := d.running(); err == nil && r.ID() == id {
 		r.SetTitle(title)
-	} else if _, err := d.long.store.UpdateMeta(id, func(m *longrec.Meta) { m.Title = strings.TrimSpace(title) }); err != nil {
+	} else if _, err := d.long.store.UpdateMeta(id, func(m *longrec.Meta) { m.Title, m.Modified = strings.TrimSpace(title), time.Now() }); err != nil {
 		return err
 	}
 	d.emit(Event{Type: "long_doc", Session: id})
@@ -466,7 +466,7 @@ func (d *Daemon) SetLongProfile(id, profile string) error {
 			return fmt.Errorf("no such cleanup profile")
 		}
 	}
-	_, err := d.long.store.UpdateMeta(id, func(m *longrec.Meta) { m.Profile = profile })
+	_, err := d.long.store.UpdateMeta(id, func(m *longrec.Meta) { m.Profile, m.Modified = profile, time.Now() })
 	if err == nil {
 		d.emit(Event{Type: "long_doc", Session: id})
 	}

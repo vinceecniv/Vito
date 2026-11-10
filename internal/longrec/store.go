@@ -58,6 +58,10 @@ type Meta struct {
 	// SpeakerRate dollars an hour (for the session's cost).
 	SpeakerSeconds float64 `json:"speaker_seconds,omitempty"`
 	SpeakerRate    float64 `json:"speaker_rate,omitempty"`
+	// Modified is when the session last changed for the user: more audio,
+	// a mark, a header, a title, speakers, a rule set. Sessions from before
+	// it get it from their files (List).
+	Modified time.Time `json:"modified,omitzero"`
 }
 
 // Block is one line of blocks.jsonl: a piece of the recording between two
@@ -245,7 +249,28 @@ func readLines[T any](path string) ([]T, error) {
 }
 
 // AddBlock appends a transcribed block.
-func (s *Store) AddBlock(id string, b Block) error { return s.appendLine(id, "blocks.jsonl", b) }
+func (s *Store) AddBlock(id string, b Block) error {
+	return s.touchAfter(id, s.appendLine(id, "blocks.jsonl", b))
+}
+
+// touchAfter notes the session as changed now, when err (the change) is nil.
+func (s *Store) touchAfter(id string, err error) error {
+	if err == nil {
+		s.UpdateMeta(id, func(m *Meta) { m.Modified = time.Now() })
+	}
+	return err
+}
+
+// modifiedFromFiles is when an older session's content files last changed.
+func (s *Store) modifiedFromFiles(m Meta) time.Time {
+	t := m.Started
+	for _, name := range []string{"blocks.jsonl", "events.jsonl", "speakers.json"} {
+		if fi, err := os.Stat(s.path(m.ID, name)); err == nil && fi.ModTime().After(t) {
+			t = fi.ModTime()
+		}
+	}
+	return t
+}
 
 // Words counts the words of a session as its document reads: the cleaned
 // text where a block has one, else the transcript — what the interface shows.
@@ -307,7 +332,7 @@ func (s *Store) AddEvent(id string, e Event) (Event, error) {
 		_, _ = rand.Read(b[:])
 		e.ID = hex.EncodeToString(b[:])
 	}
-	return e, s.appendLine(id, "events.jsonl", e)
+	return e, s.touchAfter(id, s.appendLine(id, "events.jsonl", e))
 }
 
 // Blocks reads the transcribed blocks, in order, the last line per index.
@@ -370,6 +395,9 @@ func (s *Store) List() ([]Meta, error) {
 			continue
 		}
 		if m, err := s.Meta(e.Name()); err == nil {
+			if m.Modified.IsZero() {
+				m.Modified = s.modifiedFromFiles(m)
+			}
 			out = append(out, m)
 		}
 	}

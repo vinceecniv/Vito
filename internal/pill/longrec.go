@@ -51,7 +51,7 @@ func longInputBox() (x, y, w, h int) {
 
 // DrawLongChip paints the resting pill while a long recording runs: a solid
 // little pill with the dot (or the pause bars) and clock, the time drawn in
-// mainFace. presence and hover as for DrawIdle.
+// fcs().main. presence and hover as for DrawIdle.
 func DrawLongChip(buf []byte, w, h int, dark bool, presence, hover float64, paused bool, clock *image.Alpha) {
 	clear(buf)
 	th := themeFor(dark)
@@ -65,9 +65,10 @@ func DrawLongChip(buf []byte, w, h int, dark bool, presence, hover float64, paus
 	}
 	grow := 1 + 0.06*e
 	hw, hh := (tw+30)*s/2*grow, 10*s*grow
-	shadow(buf, w, h, cx, cy+1*s, hw, hh, 6*s, th.shadow*a)
-	box(buf, w, h, cx, cy, hw, hh, hh, th.body, 0.96*a)
-	ring(buf, w, h, cx, cy, hw, hh, th.edge, (0.25+0.3*e)*a, 0.5*s)
+	r := corner(hh, s)
+	shadowR(buf, w, h, cx, cy+1*s, hw, hh, r, 6*s, th.shadow*a)
+	box(buf, w, h, cx, cy, hw, hh, r, th.body, 0.96*a)
+	ringR(buf, w, h, cx, cy, hw, hh, r, th.edge, (0.25+0.3*e)*a, 0.5*s)
 	dx := cx - hw + 11*s
 	recDot(buf, w, h, dx, cy, s, paused, a)
 	if clock == nil {
@@ -77,7 +78,7 @@ func DrawLongChip(buf []byte, w, h int, dark bool, presence, hover float64, paus
 	if paused {
 		ink = mutedFor(dark)
 	}
-	m := mainFace.Metrics()
+	m := fcs().main.Metrics()
 	y0 := int(math.Round(cy-float64((m.Ascent+m.Descent).Ceil())/2)) - 1
 	stamp(buf, w, h, clock, int(math.Round(dx+7*s)), y0, ink, a)
 }

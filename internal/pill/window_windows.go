@@ -89,6 +89,7 @@ const (
 	wmRButtonUp      = 0x0205
 	wmCaptureChanged = 0x0215
 	wmDpiChanged     = 0x02E0
+	wmSettingChange  = 0x001A
 	wmApp            = 0x8000
 	wmPresent        = wmApp + 1
 	wmPlace          = wmApp + 2
@@ -464,6 +465,20 @@ func wndProc(h uintptr, message uint32, wp, lp uintptr) uintptr {
 		w.mu.Unlock()
 		w.reposition()
 		return 0
+	case wmSettingChange:
+		// The taskbar can arrive after the window: at login Vito starts
+		// before Explorer has put a taskbar on every screen, so the work
+		// area read at opening still reaches the screen's bottom edge.
+		w.mu.Lock()
+		m, ok := monitorOf(w.mon.h)
+		moved := ok && m.work != w.mon.work
+		if moved {
+			w.mon = m
+		}
+		w.mu.Unlock()
+		if moved {
+			w.reposition()
+		}
 	}
 	r, _, _ := procDefWindowProcW.Call(h, uintptr(message), wp, lp)
 	return r

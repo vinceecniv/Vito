@@ -299,7 +299,8 @@ func drawMascotOn(buf []byte, w, h int, f Frame) {
 			if f.Clip {
 				return darkTheme.warn
 			}
-			return blend(hex(0xFF7A6B), hex(0x8B5CF6), clamp((py-top)/(bottom-top)))
+			c := figurePal(f.Dark)
+			return blend(blend(c.coral, rgb{1, 1, 1}, 0.1), blend(c.violetOn(f.Dark), c.violetL, 0.28), clamp((py-top)/(bottom-top)))
 		}
 		g.fill(x-hairW/2, top, x+hairW/2, bottom, sd, col, 1)
 		edge := func(px, py float64) float64 { return math.Abs(sd(px, py)+0.4) - 0.8 }
@@ -310,10 +311,11 @@ func drawMascotOn(buf []byte, w, h int, f Frame) {
 	fx0, fy0, fx1, fy1 := bbox(mascotFace)
 	g.fill(fx0, fy0, fx1, fy1, faceSD.at, func(x, y float64) rgb {
 		t := math.Hypot(x-44, y-46) / 72
+		c := figurePal(f.Dark)
 		if t < 0.38 {
-			return blend(hex(0xFF9A8E), hex(0xFF6B5E), t/0.38)
+			return blend(blend(c.coral, rgb{1, 1, 1}, 0.3), c.coral, t/0.38)
 		}
-		return blend(hex(0xFF6B5E), hex(0x7C3AED), clamp((t-0.38)/0.62))
+		return blend(c.coral, c.violetOn(f.Dark), clamp((t-0.38)/0.62))
 	}, 1)
 	g.fill(23, 53, 47, 63, ellipse(35, 58, 12, 5), flat(rgb{1, 1, 1}), 0.38)
 
@@ -322,6 +324,11 @@ func drawMascotOn(buf []byte, w, h int, f Frame) {
 		c := face(x, 85)
 		g.fill(c.x-7, c.y-4, c.x+7, c.y+4, ellipse(c.x, c.y, 7*0.85, 4.5*0.85), flat(hex(0xFFB3C1)), 0.6)
 	}
+	// What Vito wears (ui.outfit), over the face's features and the face.
+	defer func() {
+		drawOutfit(g, "face", f.Dark)
+		drawOutfit(g, "body", f.Dark)
+	}()
 
 	// Eyes: they blink now and then, and look up while thinking.
 	if f.Happy > 0 || f.Dizzy > 0 {
@@ -381,7 +388,7 @@ func drawMascotOn(buf []byte, w, h int, f Frame) {
 	if busy > 0 {
 		for i, d := range [][3]float64{{103, 42, 3}, {109, 32, 4}, {114, 19, 5}} {
 			pulse := 0.25 + 0.75*(0.5-0.5*math.Cos((f.T-0.2*float64(i))*2*math.Pi/1.2))
-			g.fill(d[0]-d[2], d[1]-d[2], d[0]+d[2], d[1]+d[2], ellipse(d[0], d[1], d[2], d[2]), flat(hex(0xA78BFA)), busy*pulse)
+			g.fill(d[0]-d[2], d[1]-d[2], d[0]+d[2], d[1]+d[2], ellipse(d[0], d[1], d[2], d[2]), flat(figurePal(f.Dark).violetL), busy*pulse)
 		}
 	}
 }

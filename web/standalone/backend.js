@@ -647,7 +647,7 @@ registerProcessor("vito-pcm",P)`;
   // ---- feedback sounds (assets/sounds, copied next to this file) ----
   let audioCtx = null;
   const soundBuf = {};
-  async function playSound(name, volume) {
+  async function playSound(name, volume, set) {
     if (volume === undefined && !(cfg.audio && cfg.audio.sounds_enabled)) return;
     try {
       const w = gestureWindow && !gestureWindow.closed ? gestureWindow : window;
@@ -656,10 +656,12 @@ registerProcessor("vito-pcm",P)`;
         for (const k in soundBuf) delete soundBuf[k];
       }
       if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
-      if (!soundBuf[name]) soundBuf[name] = await fetch(BASE + "sounds/" + name + ".wav").then((r) => r.arrayBuffer()).then((b) => audioCtx.decodeAudioData(b));
+      if (set === undefined) set = (cfg.audio && cfg.audio.sound_set) || "";
+      const key = (set ? set + "/" : "") + name; // audio.sound_set: sounds/<set>/<cue>.wav
+      if (!soundBuf[key]) soundBuf[key] = await fetch(BASE + "sounds/" + key + ".wav").then((r) => r.arrayBuffer()).then((b) => audioCtx.decodeAudioData(b));
       const src = audioCtx.createBufferSource(), gain = audioCtx.createGain();
       gain.gain.value = volume !== undefined ? volume : (cfg.audio.sounds_volume ?? 1);
-      src.buffer = soundBuf[name]; src.connect(gain).connect(audioCtx.destination); src.start();
+      src.buffer = soundBuf[key]; src.connect(gain).connect(audioCtx.destination); src.start();
     } catch {}
   }
 
@@ -1059,7 +1061,7 @@ registerProcessor("vito-pcm",P)`;
       return { input, output: [] };
     }
     if (p === "/api/backups") return { backups: [] };
-    if (p === "/api/play-sound") { const v = parseFloat(q.get("volume")); playSound(q.get("name"), isNaN(v) ? (cfg.audio.sounds_volume ?? 1) : v); return ok(); }
+    if (p === "/api/play-sound") { const v = parseFloat(q.get("volume")); playSound(q.get("name"), isNaN(v) ? (cfg.audio.sounds_volume ?? 1) : v, q.has("set") ? q.get("set") : undefined); return ok(); }
     if (p === "/api/credit/dismiss") {
       let changed = false;
       for (const pr of creditOut) if ((!body || !body.provider || body.provider === pr) && !creditHush.has(pr)) { creditHush.add(pr); changed = true; }

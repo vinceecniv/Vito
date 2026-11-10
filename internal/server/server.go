@@ -15,6 +15,7 @@ import (
 	"io"
 	"io/fs"
 	"log/slog"
+	"maps"
 	"net"
 	"net/http"
 	"os"
@@ -129,8 +130,11 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /favicon.svg", s.static("favicon.svg", "image/svg+xml", true))
 	mux.HandleFunc("GET /icon-192.png", s.static("icon-192.png", "image/png", true))
 	mux.HandleFunc("GET /icon-512.png", s.static("icon-512.png", "image/png", true))
-	mux.HandleFunc("GET /fonts-baloo2.woff2", s.static("fonts-baloo2.woff2", "font/woff2", true))
-	mux.HandleFunc("GET /fonts-sora.woff2", s.static("fonts-sora.woff2", "font/woff2", true))
+	fonts, _ := fs.Glob(web.Files, "fonts-*.woff2")
+	for _, f := range fonts {
+		mux.HandleFunc("GET /"+f, s.static(f, "font/woff2", true))
+	}
+	mux.HandleFunc("GET /fonts-licenses.txt", s.static("fonts-licenses.txt", "text/plain; charset=utf-8", true))
 	mux.HandleFunc("GET /flags/{name}", s.handleFlag)
 	mux.HandleFunc("GET /logos/{name}", s.handleLogo)
 	mux.HandleFunc("GET /i18n/{name}", s.handleI18n)
@@ -591,9 +595,25 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	savedDashboard := append(json.RawMessage(nil), current.UI.Dashboard...)
 	cfg := current // start from current so omitted fields keep their value
 	cfg.UI.Dashboard = nil
-	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<20)).Decode(&cfg); err != nil {
+	// The outfit is a map: decoding into the live one would merge into it in
+	// place, so a piece taken off would stay on. Decode into a fresh one and
+	// keep the current outfit only when the save does not mention it.
+	cfg.UI.Outfit = nil
+	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 1<<20))
+	if err == nil {
+		err = json.Unmarshal(body, &cfg)
+	}
+	if err != nil {
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "invalid JSON: " + err.Error()})
 		return
+	}
+	var says struct {
+		UI struct {
+			Outfit json.RawMessage `json:"outfit"`
+		} `json:"ui"`
+	}
+	if json.Unmarshal(body, &says) == nil && says.UI.Outfit == nil {
+		cfg.UI.Outfit = maps.Clone(current.UI.Outfit)
 	}
 	// The local API is not allowed to move or re-key the server itself.
 	cfg.Server = current.Server
@@ -1499,7 +1519,11 @@ func (s *Server) handlePlaySound(w http.ResponseWriter, r *http.Request) {
 			volume = f
 		}
 	}
-	if err := s.d.PlaySound(name, volume); err != nil {
+	set := "-" // the configured set, unless the preview names one ("" is the original)
+	if r.URL.Query().Has("set") {
+		set = r.URL.Query().Get("set")
+	}
+	if err := s.d.PlaySound(name, set, volume); err != nil {
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}

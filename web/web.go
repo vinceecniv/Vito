@@ -16,7 +16,9 @@ import "embed"
 //     as-is (no token) so the app is installable and offline-capable.
 //   - fonts-*.woff2 — self-hosted so the local-first UI renders identically
 //     offline and without the Google Fonts CDN (blocked by many browsers'
-//     tracking protection). Both are variable fonts, latin subset only.
+//     tracking protection). One file per font and script, each with a
+//     unicode-range in index.html, so a browser fetches only what it shows.
+//     Licences in fonts-licenses.txt.
 //   - flags/<cc>.svg — country flags (lipis/flag-icons, 4x3) for the language
 //     pickers, so the 60-language list renders real flags offline.
 //   - logos/<name>.png — the speech providers' marks for the model cards.
@@ -28,7 +30,7 @@ import "embed"
 //     unused when the daemon serves the page).
 //
 //go:embed index.html manifest.webmanifest sw.js favicon.svg icon-192.png icon-512.png
-//go:embed fonts-baloo2.woff2 fonts-sora.woff2 flags logos i18n achievements standalone
+//go:embed fonts-*.woff2 fonts-licenses.txt flags logos i18n achievements standalone
 var Files embed.FS
 
 // I18n is Files under the name the tray uses for its translations.

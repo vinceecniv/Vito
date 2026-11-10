@@ -95,6 +95,13 @@ func app(args []string) error {
 			return err
 		}
 	}
+	for _, set := range assets.SoundSets {
+		for _, name := range []string{"start", "done", "cancel", "achievement", "command", "warn"} {
+			if err := writeFile(filepath.Join(sa, "sounds", set, name+".wav"), assets.Sound(set, name)); err != nil {
+				return err
+			}
+		}
+	}
 	for _, f := range needleFiles {
 		data, err := fetchPinned(needleBase+f.name, f.sha256)
 		if err != nil {

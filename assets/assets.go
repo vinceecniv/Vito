@@ -6,7 +6,7 @@
 // container wrapped around pure silence, and nothing anywhere reported a fault.
 package assets
 
-import _ "embed"
+import "embed"
 
 //go:embed sounds/start.wav
 var SoundStart []byte
@@ -39,3 +39,37 @@ var SoundAchievement []byte
 //
 //go:embed sounds/warn.wav
 var SoundWarn []byte
+
+// The alternative sets (audio.sound_set), made by scripts/sounds.py: the same
+// six cues in another voice, as sounds/<set>/<cue>.wav.
+//
+//go:embed sounds/soft sounds/glass sounds/retro sounds/tick
+var soundSets embed.FS
+
+// SoundSets are the alternative sets, in the order the settings offer them.
+var SoundSets = []string{"soft", "glass", "retro", "tick"}
+
+// Sound is cue (start, done, cancel, command, achievement, warn) in set; the
+// original for "" or a set or cue it does not know.
+func Sound(set, cue string) []byte {
+	if set != "" {
+		if b, err := soundSets.ReadFile("sounds/" + set + "/" + cue + ".wav"); err == nil {
+			return b
+		}
+	}
+	switch cue {
+	case "start":
+		return SoundStart
+	case "done":
+		return SoundDone
+	case "cancel":
+		return SoundCancel
+	case "command":
+		return SoundCommand
+	case "achievement":
+		return SoundAchievement
+	case "warn":
+		return SoundWarn
+	}
+	return nil
+}

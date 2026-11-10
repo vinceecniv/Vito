@@ -11,6 +11,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
+	"unicode/utf8"
 
 	"vito/internal/apierr"
 	"vito/internal/config"
@@ -28,6 +30,28 @@ type Turn struct {
 	Start   float64 `json:"start"` // seconds
 	End     float64 `json:"end"`
 	Text    string  `json:"text"`
+	// Words: when each word starts, where the service says (Soniox's
+	// tokens, AssemblyAI's words). Empty for turns saved before.
+	Words []WordTime `json:"words,omitempty"`
+}
+
+// WordTime is when a word of a turn starts: Off is where it begins in the
+// turn's Text, counted in runes.
+type WordTime struct {
+	Off int     `json:"o"`
+	At  float64 `json:"t"`
+}
+
+// shiftWords moves word positions by d runes and drops those that fall
+// before the text.
+func shiftWords(ws []WordTime, d int) []WordTime {
+	out := ws[:0:0]
+	for _, w := range ws {
+		if w.Off+d >= 0 {
+			out = append(out, WordTime{Off: w.Off + d, At: w.At})
+		}
+	}
+	return out
 }
 
 // SpeakerProvider is the service that would recognise speakers with this
@@ -82,7 +106,9 @@ func renumber(in []Turn) []Turn {
 	ids := map[string]string{}
 	var out []Turn
 	for _, t := range in {
+		lead := utf8.RuneCountInString(t.Text) - utf8.RuneCountInString(strings.TrimLeftFunc(t.Text, unicode.IsSpace))
 		t.Text = strings.TrimSpace(t.Text)
+		t.Words = shiftWords(t.Words, -lead)
 		if t.Text == "" {
 			continue
 		}
@@ -93,6 +119,7 @@ func renumber(in []Turn) []Turn {
 		}
 		t.Speaker = id
 		if n := len(out); n > 0 && out[n-1].Speaker == id {
+			out[n-1].Words = append(out[n-1].Words, shiftWords(t.Words, utf8.RuneCountInString(out[n-1].Text)+1)...)
 			out[n-1].Text += " " + t.Text
 			out[n-1].End = t.End
 			continue
@@ -160,6 +187,7 @@ func (c *sonioxFileClient) speakers(ctx context.Context, path string) ([]Turn, e
 func sonioxTurns(tokens []sonioxTimedToken) []Turn {
 	var turns []Turn
 	var b strings.Builder
+	runes := 0 // in b
 	cur := Turn{Speaker: "\x00"}
 	flush := func() {
 		if cur.Speaker != "\x00" {
@@ -167,6 +195,7 @@ func sonioxTurns(tokens []sonioxTimedToken) []Turn {
 			turns = append(turns, cur)
 		}
 		b.Reset()
+		runes = 0
 	}
 	for _, tk := range tokens {
 		if strings.HasPrefix(tk.Text, "<") && strings.HasSuffix(tk.Text, ">") {
@@ -180,7 +209,14 @@ func sonioxTurns(tokens []sonioxTimedToken) []Turn {
 			flush()
 			cur = Turn{Speaker: sp, Start: float64(tk.StartMS) / 1000}
 		}
+		// A token that starts a word starts with a space (or the turn);
+		// the others are the rest of a word.
+		body := strings.TrimLeftFunc(tk.Text, unicode.IsSpace)
+		if body != "" && (runes == 0 || body != tk.Text) {
+			cur.Words = append(cur.Words, WordTime{Off: runes + utf8.RuneCountInString(tk.Text) - utf8.RuneCountInString(body), At: float64(tk.StartMS) / 1000})
+		}
 		b.WriteString(tk.Text)
+		runes += utf8.RuneCountInString(tk.Text)
 		cur.End = float64(tk.EndMS) / 1000
 	}
 	flush()
@@ -260,6 +296,10 @@ func (c *AsyncClient) speakers(ctx context.Context, path string) ([]Turn, error)
 				Start   int64  `json:"start"`
 				End     int64  `json:"end"`
 				Text    string `json:"text"`
+				Words   []struct {
+					Text  string `json:"text"`
+					Start int64  `json:"start"`
+				} `json:"words"`
 			} `json:"utterances"`
 		}
 		if err := getJSON(c.http, req, "AssemblyAI", &out); err != nil {
@@ -269,7 +309,18 @@ func (c *AsyncClient) speakers(ctx context.Context, path string) ([]Turn, error)
 		case "completed":
 			turns := make([]Turn, 0, len(out.Utterances))
 			for _, u := range out.Utterances {
-				turns = append(turns, Turn{Speaker: u.Speaker, Start: float64(u.Start) / 1000, End: float64(u.End) / 1000, Text: u.Text})
+				t := Turn{Speaker: u.Speaker, Start: float64(u.Start) / 1000, End: float64(u.End) / 1000, Text: u.Text}
+				// The words make up the text in order: find each after the last.
+				pos := 0 // bytes into u.Text
+				for _, w := range u.Words {
+					i := strings.Index(u.Text[pos:], w.Text)
+					if w.Text == "" || i < 0 {
+						continue
+					}
+					t.Words = append(t.Words, WordTime{Off: utf8.RuneCountInString(u.Text[:pos+i]), At: float64(w.Start) / 1000})
+					pos += i + len(w.Text)
+				}
+				turns = append(turns, t)
 			}
 			return turns, nil
 		case "error":

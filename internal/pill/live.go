@@ -95,7 +95,7 @@ func (t *ticker) draw(f *Frame, s string) {
 		tail = " "
 	}
 	kept := strings.Join(words[t.drop:], " ") + tail
-	full := float64(font.MeasureString(bodyFace, kept).Ceil())
+	full := float64(font.MeasureString(fcs().body, kept).Ceil())
 	room := t.room
 	if room == 0 {
 		room = liveRoom
@@ -103,11 +103,11 @@ func (t *ticker) draw(f *Frame, s string) {
 	for full > 3*room*scale && t.drop < len(words)-1 {
 		t.drop++
 		kept = strings.Join(words[t.drop:], " ") + tail
-		rest := float64(font.MeasureString(bodyFace, kept).Ceil())
+		rest := float64(font.MeasureString(fcs().body, kept).Ceil())
 		f.LiveOff -= full - rest
 		full = rest
 	}
-	f.Live, _ = textMask(bodyFace, kept)
+	f.Live, _ = textMask(fcs().body, kept)
 	t.offTo = max(0, full-room*scale)
 	t.wTo = min(full/scale, room) + 2*livePad
 	if f.LiveW == 0 {
@@ -135,10 +135,10 @@ func (t *ticker) drawBlock(f *Frame, s string) {
 	if t.drop >= len(words) { // a new start
 		t.drop, f.LiveOff, t.offV, f.Live0 = 0, 0, 0, nil
 	}
-	lines := wrapLines(bodyFace, words[t.drop:], fixed.I(int(t.room*scale)))
+	lines := wrapLines(fcs().body, words[t.drop:], fixed.I(int(t.room*scale)))
 	for len(lines) > blockLines {
 		t.drop += len(strings.Fields(lines[0]))
-		f.Live0, _ = textMask(bodyFace, lines[0])
+		f.Live0, _ = textMask(fcs().body, lines[0])
 		f.LiveOff += blockLine * scale
 		lines = lines[1:]
 	}
@@ -150,7 +150,7 @@ func (t *ticker) drawBlock(f *Frame, s string) {
 	}
 	f.Live, f.LiveMore = nil, nil
 	for i, l := range lines {
-		m, _ := textMask(bodyFace, l)
+		m, _ := textMask(fcs().body, l)
 		if i == 0 {
 			f.Live = m
 		} else {

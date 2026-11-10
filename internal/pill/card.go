@@ -12,7 +12,6 @@ import (
 
 	"golang.org/x/image/draw"
 	"golang.org/x/image/font"
-	"golang.org/x/image/font/opentype"
 	"golang.org/x/image/math/fixed"
 
 	"vito/web"
@@ -78,12 +77,6 @@ type card struct {
 }
 
 var (
-	facesOnce            sync.Once
-	labelFace, mainFace  font.Face
-	bodyFace             font.Face // the island's running text
-	wordFace, figureFace font.Face // Baloo: the wordmark, a big figure
-	statFace             font.Face // Baloo: the island's figures for the day
-	facesErr             error
 	medalMu              sync.Mutex
 	medals               = map[string]*image.RGBA{}
 	ellipsis             = "…"
@@ -92,46 +85,6 @@ var (
 	labelBase, mainBaseY = 20.0, 37.0
 	mainLine             = 17.0 // the distance between two main lines
 )
-
-func faces() error {
-	facesOnce.Do(func() {
-		reg, err := opentype.Parse(soraRegular)
-		if err != nil {
-			facesErr = err
-			return
-		}
-		semi, err := opentype.Parse(soraSemiBold)
-		if err != nil {
-			facesErr = err
-			return
-		}
-		opts := func(size float64) *opentype.FaceOptions {
-			return &opentype.FaceOptions{Size: size * scale, DPI: 72, Hinting: font.HintingFull}
-		}
-		if labelFace, facesErr = opentype.NewFace(reg, opts(labelSize)); facesErr != nil {
-			return
-		}
-		if mainFace, facesErr = opentype.NewFace(semi, opts(mainSize)); facesErr != nil {
-			return
-		}
-		if bodyFace, facesErr = opentype.NewFace(reg, opts(12)); facesErr != nil {
-			return
-		}
-		baloo, err := opentype.Parse(balooBold)
-		if err != nil {
-			facesErr = err
-			return
-		}
-		if wordFace, facesErr = opentype.NewFace(baloo, opts(19)); facesErr != nil {
-			return
-		}
-		if figureFace, facesErr = opentype.NewFace(baloo, opts(24)); facesErr != nil {
-			return
-		}
-		statFace, facesErr = opentype.NewFace(baloo, opts(17))
-	})
-	return facesErr
-}
 
 // newCard lays out a card; icon is the achievement's medal id, or "".
 func newCard(kind cardKind, label, main, medal string) (*card, error) {
@@ -144,14 +97,14 @@ func layCard(kind cardKind, label, main, medal string, maxW float64) (*card, err
 		return nil, err
 	}
 	room := fixed.I(int((maxW - textLeft - cardPadRight) * scale))
-	label = fit(labelFace, label, room)
-	first, rest := wrap(mainFace, main, room)
+	label = fit(fcs().label, label, room)
+	first, rest := wrap(fcs().main, main, room)
 	c := &card{kind: kind, height: cardH}
 	var lw, mw, rw fixed.Int26_6
-	c.label, lw = textMask(labelFace, label)
-	c.main, mw = textMask(mainFace, first)
+	c.label, lw = textMask(fcs().label, label)
+	c.main, mw = textMask(fcs().main, first)
 	if rest != "" {
-		c.more, rw = textMask(mainFace, fit(mainFace, rest, room))
+		c.more, rw = textMask(fcs().main, fit(fcs().main, rest, room))
 		c.height = cardH + mainLine
 	}
 	text := float64(max(lw, mw, rw).Ceil()) / scale
@@ -237,8 +190,9 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 	if a <= 0 {
 		return
 	}
-	shadow(buf, w, h, cx, cy+1.5*s, cw, ch, 10*s, th.shadow*a)
-	box(buf, w, h, cx, cy, cw, ch, ch, th.body, 0.96*a)
+	cr := corner(ch, s)
+	shadowR(buf, w, h, cx, cy+1.5*s, cw, ch, cr, 10*s, th.shadow*a)
+	box(buf, w, h, cx, cy, cw, ch, cr, th.body, 0.96*a)
 	if c.kind == cardAchievement {
 		// A celebration: a gradient in the brand's colours and gold runs
 		// round the edge, with a soft glow of the same colours outside it.
@@ -246,7 +200,7 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 		spinRing(buf, w, h, cx, cy, cw, ch, t, th, party*0.28, 3.2*s, 3.2*s)
 		spinRing(buf, w, h, cx, cy, cw, ch, t, th, party, 1.6*s, 0)
 	} else {
-		ring(buf, w, h, cx, cy, cw, ch, th.edge, 0.22*a, 0.5*s)
+		ringR(buf, w, h, cx, cy, cw, ch, cr, th.edge, 0.22*a, 0.5*s)
 	}
 
 	// The content once there is room for it, from the left edge of the card.
@@ -269,7 +223,7 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 	case c.kind == cardKept:
 		r := cardIcon * s / 2
 		box(buf, w, h, ix+r, mid, r*0.86, r*0.86, r*0.86, th.to, in)
-		repasteIcon(buf, w, h, ix+r, mid, r/11, rgb{1, 1, 1}, in)
+		repasteIcon(buf, w, h, ix+r, mid, r/11, th.onAcc, in)
 	default:
 		warning(buf, w, h, ix+cardIcon*s/2, mid, cardIcon*s/2, th, in)
 	}
@@ -282,8 +236,8 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 		muted = th.warn
 	}
 	tx := left + textLeft*s
-	lm := labelFace.Metrics()
-	mm := mainFace.Metrics()
+	lm := fcs().label.Metrics()
+	mm := fcs().main.Metrics()
 	stamp(buf, w, h, c.label, int(tx)-1, int(top+labelBase*s)-lm.Ascent.Ceil()-1, muted, in)
 	stamp(buf, w, h, c.main, int(tx)-1, int(top+mainBaseY*s)-mm.Ascent.Ceil()-1, ink, in)
 	if c.more != nil {
@@ -301,8 +255,9 @@ func spinRing(buf []byte, w, h int, cx, cy, hw, hh, t float64, th theme, a, thic
 	gold := hex(0xFFC94D)
 	stops := [...]rgb{th.from, gold, th.to, th.from}
 	turn := t / spinTurn * 2 * math.Pi
+	r := corner(hh, float64(w)/surfaceW)
 	eachPixel(w, h, cx, cy, hw+out+thick+1, hh+out+thick+1, func(x, y int, px, py float64) {
-		d := roundBox(px-cx, py-cy, hw, hh, hh) - out
+		d := roundBox(px-cx, py-cy, hw, hh, r) - out
 		var cover float64
 		if out > 0 {
 			cover = clamp(1 - math.Abs(d)/thick) // a soft band, strongest on the edge

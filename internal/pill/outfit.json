@@ -1,0 +1,92 @@
+{
+ "glasses": {
+  "slot": "glasses",
+  "space": "face",
+  "svg": "<g fill=\"rgba(255,255,255,.22)\" stroke=\"#2B2440\" stroke-width=\"2.6\"><circle cx=\"45\" cy=\"68\" r=\"13\"/><circle cx=\"75\" cy=\"68\" r=\"13\"/></g> <path d=\"M58 66 Q60 63 62 66M32 65 L23 61M88 65 L97 61\" fill=\"none\" stroke=\"#2B2440\" stroke-width=\"2.6\" stroke-linecap=\"round\"/> <path d=\"M37 61 Q40 58 44 58M67 61 Q70 58 74 58\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linecap=\"round\" opacity=\".8\"/>"
+ },
+ "shades": {
+  "slot": "glasses",
+  "space": "face",
+  "svg": "<path d=\"M29 59 H57 Q59 59 58.6 63 Q57.5 79 44.5 79 Q32 79 30 64 Q29.5 59 29 59Z M91 59 H63 Q61 59 61.4 63 Q62.5 79 75.5 79 Q88 79 90 64 Q90.5 59 91 59Z\" fill=\"#2B2440\" stroke=\"#2B2440\" stroke-width=\"2.4\" stroke-linejoin=\"round\"/> <path d=\"M57 61 H63M29 60 L22 57M91 60 L98 57\" stroke=\"#2B2440\" stroke-width=\"3\" stroke-linecap=\"round\"/> <path d=\"M34 63 L41 63M66 63 L73 63\" stroke=\"#fff\" stroke-width=\"2.2\" stroke-linecap=\"round\" opacity=\".55\"/> <path d=\"M35 69 L46 63M67 70 L78 63\" stroke=\"var(--violet-l)\" stroke-width=\"1.6\" stroke-linecap=\"round\" opacity=\".55\"/>"
+ },
+ "hearts": {
+  "slot": "glasses",
+  "space": "face",
+  "svg": "<g style=\"fill:color-mix(in srgb, var(--coral) 72%, transparent)\" stroke=\"#2B2440\" stroke-width=\"2.4\" stroke-linejoin=\"round\"><path d=\"M45 80.6 C27.5 69.4 31.700000000000003 53.3 45 61.7 C58.3 53.3 62.5 69.4 45 80.6Z\"/><path d=\"M75 80.6 C57.5 69.4 61.7 53.3 75 61.7 C88.3 53.3 92.5 69.4 75 80.6Z\"/></g> <path d=\"M58 65 Q60 62 62 65M31 63 L23 60M89 63 L97 60\" fill=\"none\" stroke=\"#2B2440\" stroke-width=\"2.4\" stroke-linecap=\"round\"/> <path d=\"M37 60 Q39 58 42 59M67 60 Q69 58 72 59\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.8\" stroke-linecap=\"round\" opacity=\".85\"/>"
+ },
+ "monocle": {
+  "slot": "glasses",
+  "space": "face",
+  "svg": "<circle cx=\"75\" cy=\"68\" r=\"13.5\" fill=\"rgba(255,255,255,.25)\" stroke=\"#D89A1E\" stroke-width=\"3\"/> <circle cx=\"75\" cy=\"68\" r=\"13.5\" fill=\"none\" stroke=\"#FFC94D\" stroke-width=\"1.4\"/> <path d=\"M86 77 Q100 92 90 112\" fill=\"none\" stroke=\"#D89A1E\" stroke-width=\"1.6\" stroke-dasharray=\"2.2 1.6\"/> <path d=\"M67 61 Q70 58 74 58\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linecap=\"round\"/>"
+ },
+ "freckles": {
+  "slot": "paint",
+  "space": "face",
+  "svg": "<g fill=\"#C77A55\" opacity=\".75\"><circle cx=\"29\" cy=\"80\" r=\"1.25\"/><circle cx=\"33.5\" cy=\"82.5\" r=\"1.25\"/><circle cx=\"36\" cy=\"78.5\" r=\"1.25\"/><circle cx=\"31\" cy=\"85\" r=\"1.25\"/><circle cx=\"84\" cy=\"78.5\" r=\"1.25\"/><circle cx=\"86.5\" cy=\"82.5\" r=\"1.25\"/><circle cx=\"91\" cy=\"80\" r=\"1.25\"/><circle cx=\"89\" cy=\"85\" r=\"1.25\"/></g>"
+ },
+ "glitter": {
+  "slot": "paint",
+  "space": "face",
+  "svg": "<path d=\"M91 51 Q91.9 55.1 96 56 Q91.9 56.9 91 61 Q90.1 56.9 86 56 Q90.1 55.1 91 51Z\" fill=\"#FFC94D\"/><path d=\"M97 63 Q97.54 65.46 100 66 Q97.54 66.54 97 69 Q96.46 66.54 94 66 Q96.46 65.46 97 63Z\" fill=\"var(--violet-l)\"/><path d=\"M86 77.6 Q86.612 80.388 89.4 81 Q86.612 81.612 86 84.4 Q85.388 81.612 82.6 81 Q85.388 80.388 86 77.6Z\" fill=\"#fff\"/><path d=\"M28.0 77.8 L29.1 80.5 L32.0 80.7 L29.8 82.6 L30.5 85.4 L28.0 83.9 L25.5 85.4 L26.2 82.6 L24.0 80.7 L26.9 80.5Z\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\".8\" stroke-linejoin=\"round\"/><path d=\"M23 54 Q23.54 56.46 26 57 Q23.54 57.54 23 60 Q22.46 57.54 20 57 Q22.46 56.46 23 54Z\" fill=\"#fff\"/>"
+ },
+ "heartcheeks": {
+  "slot": "paint",
+  "space": "face",
+  "svg": "<g fill=\"#FF6F91\" stroke=\"#fff\" stroke-width=\"1\"><path d=\"M33 88.95 C26.125 84.55 27.775 78.225 33 81.525 C38.225 78.225 39.875 84.55 33 88.95Z\"/><path d=\"M87 88.95 C80.125 84.55 81.775 78.225 87 81.525 C92.225 78.225 93.875 84.55 87 88.95Z\"/></g>"
+ },
+ "mustache": {
+  "slot": "paint",
+  "space": "face",
+  "svg": "<path d=\"M60 83.5 C56 79 48 78.5 44.5 83 C42.5 86 44.6 88.6 47 87 C50 84.6 55.5 85.4 60 86.6 C64.5 85.4 70 84.6 73 87 C75.4 88.6 77.5 86 75.5 83 C72 78.5 64 79 60 83.5Z\" fill=\"#4A3426\" stroke=\"#2E2018\" stroke-width=\"1\"/>"
+ },
+ "bow": {
+  "slot": "head",
+  "space": "body",
+  "svg": "<g transform=\"rotate(22 88 40)\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\" style=\"fill:var(--coral)\"> <path d=\"M88 40 L74 31 Q70 40 74 49 Z\"/><path d=\"M88 40 L102 31 Q106 40 102 49 Z\"/> <path d=\"M78 36 L84 39M98 36 L92 39\" stroke=\"rgba(0,0,0,.18)\" stroke-width=\"1.2\" fill=\"none\"/> <rect x=\"84\" y=\"36\" width=\"8\" height=\"8\" rx=\"3\"/></g>"
+ },
+ "party": {
+  "slot": "head",
+  "space": "body",
+  "svg": "<g transform=\"rotate(-14 58 30)\"><path d=\"M43 33 L58 0 L73 33 Q58 39 43 33Z\" style=\"fill:var(--violet)\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <path d=\"M49 21 L67 21M46 28 L70 28M53 11 L63 11\" stroke=\"#FFC94D\" stroke-width=\"2.6\" stroke-linecap=\"round\"/> <circle cx=\"58\" cy=\"0\" r=\"4.6\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\"1.2\"/> <path d=\"M43 33 Q58 39 73 33\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\"/></g>"
+ },
+ "crown": {
+  "slot": "head",
+  "space": "body",
+  "svg": "<path d=\"M37 38 V20 L46 28.5 L53 13 L60 25 L67 13 L74 28.5 L83 20 V38 Q60 42 37 38Z\" fill=\"#FFC94D\" stroke=\"#D89A1E\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/> <path d=\"M37 33 Q60 37 83 33\" fill=\"none\" stroke=\"#D89A1E\" stroke-width=\"1.4\"/> <circle cx=\"60\" cy=\"31.5\" r=\"3.2\" style=\"fill:var(--coral)\" stroke=\"#fff\" stroke-width=\".9\"/><circle cx=\"47.5\" cy=\"31\" r=\"2.3\" style=\"fill:var(--violet-l)\" stroke=\"#fff\" stroke-width=\".8\"/><circle cx=\"72.5\" cy=\"31\" r=\"2.3\" style=\"fill:var(--violet-l)\" stroke=\"#fff\" stroke-width=\".8\"/> <circle cx=\"53\" cy=\"13\" r=\"2\" fill=\"#fff\"/><circle cx=\"67\" cy=\"13\" r=\"2\" fill=\"#fff\"/>"
+ },
+ "nightcap": {
+  "slot": "head",
+  "space": "body",
+  "svg": "<path d=\"M33 40 C34 14 62 4 86 16 C98 22 106 36 108 54 C100 42 92 36 85 35 L86 40 Z\" style=\"fill:var(--violet)\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <g fill=\"#fff\" opacity=\".55\"><circle cx=\"50\" cy=\"22\" r=\"1.8\"/><circle cx=\"66\" cy=\"16\" r=\"1.6\"/><circle cx=\"80\" cy=\"24\" r=\"1.8\"/><circle cx=\"60\" cy=\"31\" r=\"1.5\"/><circle cx=\"95\" cy=\"36\" r=\"1.4\"/></g> <rect x=\"29\" y=\"35\" width=\"61\" height=\"10\" rx=\"5\" fill=\"#fff\" stroke=\"#E6E0F2\" stroke-width=\"1\"/> <circle cx=\"108\" cy=\"56\" r=\"5.5\" fill=\"#fff\" stroke=\"#E6E0F2\" stroke-width=\"1\"/>"
+ },
+ "headphones": {
+  "slot": "head",
+  "space": "body",
+  "svg": "<path d=\"M15 62 Q12 16 60 14 Q108 16 105 62\" fill=\"none\" stroke=\"#2B2440\" stroke-width=\"5.5\" stroke-linecap=\"round\"/> <path d=\"M15 62 Q12 16 60 14 Q108 16 105 62\" fill=\"none\" style=\"stroke:var(--violet-l)\" stroke-width=\"1.6\" stroke-linecap=\"round\" opacity=\".7\"/> <rect x=\"4\" y=\"52\" width=\"15\" height=\"25\" rx=\"7\" style=\"fill:var(--violet)\" stroke=\"#2B2440\" stroke-width=\"2\"/> <rect x=\"101\" y=\"52\" width=\"15\" height=\"25\" rx=\"7\" style=\"fill:var(--violet)\" stroke=\"#2B2440\" stroke-width=\"2\"/> <path d=\"M108 70 Q106 96 82 100\" fill=\"none\" stroke=\"#2B2440\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"81\" cy=\"100\" r=\"3.4\" fill=\"#2B2440\"/>"
+ },
+ "wizard": {
+  "slot": "head",
+  "space": "body",
+  "svg": "<path d=\"M40 36 Q52 20 57 2 Q61 -4 64 4 Q70 22 81 34 Z\" fill=\"#3B2A7A\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <ellipse cx=\"60\" cy=\"37\" rx=\"33\" ry=\"6.5\" fill=\"#3B2A7A\" stroke=\"#fff\" stroke-width=\"1.6\"/> <path d=\"M44 31 Q60 36 77 30\" fill=\"none\" style=\"stroke:var(--coral)\" stroke-width=\"3.4\"/> <path d=\"M61.0 13.4 L62.2 16.3 L65.4 16.6 L63.0 18.6 L63.7 21.7 L61.0 20.1 L58.3 21.7 L59.0 18.6 L56.6 16.6 L59.8 16.3Z\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\".8\" stroke-linejoin=\"round\"/><path d=\"M53 23.4 Q53.468 25.532 55.6 26 Q53.468 26.468 53 28.6 Q52.532 26.468 50.4 26 Q52.532 25.532 53 23.4Z\" fill=\"#FFC94D\"/><path d=\"M70 7.8 Q70.396 9.604 72.2 10 Q70.396 10.396 70 12.2 Q69.604 10.396 67.8 10 Q69.604 9.604 70 7.8Z\" fill=\"#fff\"/>"
+ },
+ "hoops": {
+  "slot": "ears",
+  "space": "body",
+  "svg": "<g fill=\"none\" stroke-width=\"2.2\"><circle cx=\"12\" cy=\"72\" r=\"5.5\" stroke=\"#D89A1E\"/><circle cx=\"108\" cy=\"72\" r=\"5.5\" stroke=\"#D89A1E\"/></g> <g fill=\"none\" stroke-width=\"1\"><circle cx=\"12\" cy=\"72\" r=\"5.5\" stroke=\"#FFC94D\"/><circle cx=\"108\" cy=\"72\" r=\"5.5\" stroke=\"#FFC94D\"/></g> <circle cx=\"14\" cy=\"66.5\" r=\"1.6\" fill=\"#D89A1E\"/><circle cx=\"106\" cy=\"66.5\" r=\"1.6\" fill=\"#D89A1E\"/>"
+ },
+ "stars": {
+  "slot": "ears",
+  "space": "body",
+  "svg": "<path d=\"M14 66 V71M106 66 V71\" stroke=\"#D89A1E\" stroke-width=\"1.2\"/><path d=\"M14.0 70.0 L15.3 73.2 L18.8 73.5 L16.1 75.7 L16.9 79.0 L14.0 77.3 L11.1 79.0 L11.9 75.7 L9.2 73.5 L12.7 73.2Z\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\".8\" stroke-linejoin=\"round\"/><path d=\"M106.0 70.0 L107.3 73.2 L110.8 73.5 L108.1 75.7 L108.9 79.0 L106.0 77.3 L103.1 79.0 L103.9 75.7 L101.2 73.5 L104.7 73.2Z\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\".8\" stroke-linejoin=\"round\"/>"
+ },
+ "pearls": {
+  "slot": "neck",
+  "space": "body",
+  "svg": "<circle cx=\"29.0\" cy=\"88.0\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"28.2\" cy=\"87.1\" r=\".8\" fill=\"#fff\"/><circle cx=\"33.4\" cy=\"91.7\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"32.6\" cy=\"90.8\" r=\".8\" fill=\"#fff\"/><circle cx=\"37.9\" cy=\"94.9\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"37.1\" cy=\"94.0\" r=\".8\" fill=\"#fff\"/><circle cx=\"42.3\" cy=\"97.4\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"41.5\" cy=\"96.5\" r=\".8\" fill=\"#fff\"/><circle cx=\"46.7\" cy=\"99.4\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"45.9\" cy=\"98.5\" r=\".8\" fill=\"#fff\"/><circle cx=\"51.1\" cy=\"100.9\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"50.3\" cy=\"100.0\" r=\".8\" fill=\"#fff\"/><circle cx=\"55.6\" cy=\"101.7\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"54.8\" cy=\"100.8\" r=\".8\" fill=\"#fff\"/><circle cx=\"60.0\" cy=\"102.0\" r=\"3.4\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"59.2\" cy=\"101.1\" r=\".8\" fill=\"#fff\"/><circle cx=\"64.4\" cy=\"101.7\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"63.6\" cy=\"100.8\" r=\".8\" fill=\"#fff\"/><circle cx=\"68.9\" cy=\"100.9\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"68.1\" cy=\"100.0\" r=\".8\" fill=\"#fff\"/><circle cx=\"73.3\" cy=\"99.4\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"72.5\" cy=\"98.5\" r=\".8\" fill=\"#fff\"/><circle cx=\"77.7\" cy=\"97.4\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"76.9\" cy=\"96.5\" r=\".8\" fill=\"#fff\"/><circle cx=\"82.1\" cy=\"94.9\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"81.3\" cy=\"94.0\" r=\".8\" fill=\"#fff\"/><circle cx=\"86.6\" cy=\"91.7\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"85.8\" cy=\"90.8\" r=\".8\" fill=\"#fff\"/><circle cx=\"91.0\" cy=\"88.0\" r=\"2.6\" fill=\"#FFFDF7\" stroke=\"#D9D2C4\" stroke-width=\".8\"/><circle cx=\"90.2\" cy=\"87.1\" r=\".8\" fill=\"#fff\"/>"
+ },
+ "chain": {
+  "slot": "neck",
+  "space": "body",
+  "svg": "<path d=\"M29,88 Q60,116 91,88\" fill=\"none\" stroke=\"#D89A1E\" stroke-width=\"2\" stroke-dasharray=\"2.6 1.4\"/> <circle cx=\"60\" cy=\"106\" r=\"7.5\" fill=\"#FFC94D\" stroke=\"#D89A1E\" stroke-width=\"1.6\"/> <g fill=\"#D89A1E\"><rect x=\"55.4\" y=\"104.8\" width=\"1.2\" height=\"2.4\" rx=\".6\"/><rect x=\"57.4\" y=\"104\" width=\"1.2\" height=\"4\" rx=\".6\"/><rect x=\"59.4\" y=\"103.2\" width=\"1.2\" height=\"5.6\" rx=\".6\"/><rect x=\"61.4\" y=\"104\" width=\"1.2\" height=\"4\" rx=\".6\"/><rect x=\"63.4\" y=\"104.8\" width=\"1.2\" height=\"2.4\" rx=\".6\"/></g>"
+ }
+}
