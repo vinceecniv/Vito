@@ -1815,7 +1815,7 @@
   .privacy-btn:hover[data-tip]::after { opacity:1; transform:none; }
 
   /* sound preview tags + flag badges */
-  .soundtags { display:flex; gap:8px; margin:10px 0 2px; flex-wrap:wrap; }
+  .soundtags { display:flex; gap:8px; margin:0 0 2px; flex-wrap:wrap; }
   .tag { background:var(--input-bg); border:1px solid var(--input-border); color:var(--text2); border-radius:99px;
     padding:5px 12px; font:inherit; font-size:12px; cursor:var(--cur-hand); }
   .tag:hover { border-color:var(--violet); color:var(--accent); }
@@ -2895,7 +2895,8 @@
           <label class="tgl" data-help="sounds"><input type="checkbox" id="s-sounds"><span class="tr"></span> Play feedback sounds</label>
           <label class="fld" data-help="soundset">Sound set</label>
           <div class="accent-sel" id="soundset-sel" role="radiogroup" aria-label="Sound set"></div>
-          <div class="soundtags">
+          <label class="fld">Listen to the sounds</label>
+          <div class="soundtags" role="group" aria-label="Listen to the sounds">
             <button type="button" class="tag" data-sound="start"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Start</button>
             <button type="button" class="tag" data-sound="done"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Done</button>
             <button type="button" class="tag" data-sound="cancel"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Cancel</button>
@@ -4075,7 +4076,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Sounds have their own sets, under Audio":"Geluiden hebben eigen sets, onder Audio","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Listen to the sounds":"Beluister de geluiden","Sounds have their own sets, under Audio":"Geluiden hebben eigen sets, onder Audio","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
