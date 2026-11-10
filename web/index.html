@@ -421,8 +421,13 @@
     -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
   /* The sidebar too, a little more opaque: the background shows through it,
      blurred, while the menu stays easy to read. */
-  :root[data-backdrop] .sidebar { background:color-mix(in srgb, var(--sidebar) 50%, transparent);
-    -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
+  :root[data-backdrop] .sidebar { background:color-mix(in srgb, var(--sidebar) 50%, transparent); }
+  /* Unblurred: only the still background lies under the sidebar, and a blur
+     smudged fine patterns (stripes, grid, dots) into one colour. The narrow
+     layout's top bar does have the page scrolling under it, so it blurs. */
+  @media (max-width:820px){
+    :root[data-backdrop] .sidebar { -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
+  }
   /* smooth fade only while switching theme (not on every hover) */
   html.theming, html.theming *:not(.tseg):not(#meter):not(#mt-meter) {
     transition: background-color .28s ease, color .28s ease, border-color .28s ease, fill .28s ease, box-shadow .28s ease !important;
