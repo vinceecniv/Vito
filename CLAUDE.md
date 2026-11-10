@@ -114,6 +114,13 @@ live on their own settings tab, Appearance (`data-sec="appearance"`).
 so new CSS needs no part in it (`.spinner` and the picker's `.rad-sw` are
 left out). The pill, its cards and the island cap their surfaces the same
 way (`corner()` in `internal/pill/corners.go`); icons keep their shapes.
+`ui.density` ("", `compact`, `spacious`) sets `data-density`, which sets
+`--dn` (.65 / 1.3): the page's margins, the cards' padding and gaps, fields,
+toggles, history rows and the line height are written as
+`calc(Npx * var(--dn, 1))` — do the same for new spacing of that kind.
+`ui.reduce_motion` sets `data-motion="reduce"`, on top of the system's
+setting: animations and transitions end at once; scripts ask
+`reducedMotion()`, never `matchMedia` directly.
 
 ## Typefaces
 

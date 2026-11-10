@@ -228,6 +228,8 @@ type UI struct {
 	// ReduceMotion stills the page's animations, for whoever has not found
 	// the system's own setting (which the page follows anyway).
 	ReduceMotion bool `json:"reduce_motion,omitempty"`
+	// Density is the page's spacing: "" standard, "compact" or "spacious".
+	Density string `json:"density,omitempty"`
 	// PillLive shows the words in the pill while you speak. Nil-safe: unset
 	// counts as on, for new users and for those updating alike (it used to be
 	// a plain bool whose false was never written).

@@ -475,6 +475,13 @@
   :root[data-radius="none"] *:not(.spinner):not(.rad-sw), :root[data-radius="none"] ::before, :root[data-radius="none"] ::after { border-radius:0 !important; }
   .rad-sw { width:18px; height:18px; flex:none; border:2px solid var(--text2); border-right:0; border-bottom:0; margin:6px 0 0 6px; }
   .rad-opt { padding-left:8px; }
+  /* Density (ui.density): one factor, --dn, on the spacing that shapes the
+     page (its margins, the cards' padding and gaps, fields, toggles, the
+     history's rows) and on the line height. */
+  :root[data-density="compact"] { --dn:.65; }
+  :root[data-density="spacious"] { --dn:1.3; }
+  .dn-sw { width:18px; height:18px; flex:none; display:flex; flex-direction:column; justify-content:center; gap:var(--g); }
+  .dn-sw i { display:block; height:2px; border-radius:1px; background:var(--text2); }
   /* Sticky bars over a background: let it show through, softly. */
   :root[data-backdrop] .settabs, :root[data-backdrop] .setsec-sel { background:color-mix(in srgb, var(--bg) 55%, transparent);
     -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
@@ -512,6 +519,7 @@
   body {
     margin:0; background:var(--bg); color:var(--text);
     font:400 14px/1.55 var(--font-body);
+    line-height:calc(1.55 + (var(--dn, 1) - 1) * .35); /* ui.density */
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,.num,.wordmark { font-family:var(--font-head); }
@@ -627,8 +635,8 @@
   /* ---- content ---- */
   /* On a wide screen the column sits in the middle of the space beside the
      sidebar rather than against it. */
-  .content { flex:1; padding:32px 36px; max-width:1000px; margin-inline:auto; }
-  .page-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; gap:16px; position:relative; z-index:5; }
+  .content { flex:1; padding:calc(32px * var(--dn, 1)) calc(36px * var(--dn, 1)); max-width:1000px; margin-inline:auto; }
+  .page-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:calc(20px * var(--dn, 1)); gap:16px; position:relative; z-index:5; }
   /* Explicit line heights: title 32 + gap 2 + subtitle 18 = 52, exactly the
      icon tile beside it. Left to the font's own metrics the block ends up a few
      pixels taller than the tile and the subtitle hangs below it. */
@@ -843,7 +851,7 @@
   /* Dense: a gap left where a two-cell card didn't fit at the end of a row is
      filled by the next card that does, so no layout — the default at any
      width, or your own after a card grew — ends up with holes. */
-  .statgrid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); grid-auto-flow:row dense; }
+  .statgrid { display:grid; gap:calc(20px * var(--dn, 1)); grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); grid-auto-flow:row dense; }
   /* Card sizes in the one status grid (see applyStatusLayout): most are one
      cell, the chart, calendar and word cloud two, the transcript a row. */
   .statgrid > .span2 { grid-column:span 2; }
@@ -950,7 +958,7 @@
   @media (max-width:1100px){ .grid-2 { grid-template-columns:1fr; } }
   @media (max-width:980px){
     .sidebar { width:180px; flex:0 0 180px; }
-    .content { padding:24px 20px; }
+    .content { padding:calc(24px * var(--dn, 1)) calc(20px * var(--dn, 1)); }
   }
   @media (max-width:820px){
     .app { flex-direction:column; }
@@ -965,7 +973,7 @@
     .nav-item { display:none; width:100%; order:3; }
     .side-toggle { display:none; }
     .sidebar.open .nav-item { display:flex; }
-    .content { padding:20px 16px; max-width:100%; }
+    .content { padding:calc(20px * var(--dn, 1)) calc(16px * var(--dn, 1)); max-width:100%; }
     .grid-2 { grid-template-columns:1fr; }
     .page-head h1 { line-height:28px; }
     .ph-left { --ph-icon:48px; } /* 28 + 2 + 18, the h1 drops to 24px here */
@@ -992,7 +1000,7 @@
     .sidebar .brand .tile { width:34px; height:34px; }
     .sidebar .brand .wordmark { font-size:19px; }
     .sidebar .brand .brand-tag { font-size:9.5px; }
-    .content { padding:16px 12px; }
+    .content { padding:calc(16px * var(--dn, 1)) calc(12px * var(--dn, 1)); }
     .page-head h1 { font-size:24px; }
     /* Brand left, the buttons right: the brand takes the slack, so the
        hamburger lands at the edge whether or not the detach button is there. */
@@ -1006,7 +1014,7 @@
     .rowflex > .searchbox { flex:1 1 100%; }
   }
 
-  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:22px; }
+  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:calc(22px * var(--dn, 1)); }
   .card > h2 { font-size:16.5px; font-weight:600; margin:-2px -22px 18px; padding:0 22px 14px; display:flex; align-items:center; justify-content:flex-start; gap:11px; border-bottom:1px solid var(--card-border); }
   .card > h2 svg { width:22px; height:22px; flex:0 0 22px; color:var(--accent); }
   .card .rowflex h2 { font-size:16px; font-weight:600; margin:0; }
@@ -1224,7 +1232,7 @@
     border-bottom:5px solid var(--accent); }
 
   /* forms */
-  label.fld { display:block; margin:20px 0 7px; color:var(--text2); font-size:12.5px; font-weight:600; }
+  label.fld { display:block; margin:calc(20px * var(--dn, 1)) 0 calc(7px * var(--dn, 1)); color:var(--text2); font-size:12.5px; font-weight:600; }
   label.fld:first-child { margin-top:0; }
   .subhead { font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text3); margin:24px 0 2px; }
   .subhead:first-of-type { margin-top:0; }
@@ -1303,7 +1311,7 @@
   .reset-btn svg { width:14px; height:14px; }
 
   /* toggle */
-  .tgl { display:flex; align-items:center; gap:10px; margin:16px 0; font-size:13.5px; color:var(--text); cursor:var(--cur-hand); }
+  .tgl { display:flex; align-items:center; gap:10px; margin:calc(16px * var(--dn, 1)) 0; font-size:13.5px; color:var(--text); cursor:var(--cur-hand); }
   .tgl input { display:none; }
   .tgl .tr { width:40px; height:24px; flex:0 0 40px; border-radius:99px; background:var(--toggle-off); position:relative; transition:background .15s; }
   .tgl .tr::after { content:""; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:left .15s; }
@@ -1701,7 +1709,7 @@
   .hmore { padding:16px 0 4px; text-align:center; }
   .hmore .hspin { width:20px; height:20px; border:2.5px solid var(--card-border); border-top-color:var(--accent); border-radius:50%; display:inline-block; animation:hspin .7s linear infinite; }
   @keyframes hspin { to { transform:rotate(360deg); } }
-  .hentry { border-bottom:1px solid var(--card-border); padding:12px 0; }
+  .hentry { border-bottom:calc(1px * var(--dn, 1)) solid var(--card-border); padding:calc(12px * var(--dn, 1)) 0; }
   .hentry .meta { font-size:11.5px; color:var(--text3); margin-bottom:4px; }
   .hentry .raw { color:var(--text3); font-size:12.5px; margin-top:3px; }
   .htext { white-space:pre-wrap; }
@@ -2111,7 +2119,7 @@
   .card[data-sec="output"] + .card[data-sec="output"],
   .card[data-sec="linux"] + .card[data-sec="linux"],
   .card[data-sec="backup"] + .card[data-sec="backup"],
-  .card[data-sec="about"] + .card[data-sec="about"] { margin-top:24px; }
+  .card[data-sec="about"] + .card[data-sec="about"] { margin-top:calc(24px * var(--dn, 1)); }
   /* About section */
   .about-head { display:flex; align-items:center; gap:14px; }
   .about-logo { width:52px; height:52px; border-radius:14px; background:var(--grad); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
@@ -2802,6 +2810,8 @@
           <div class="accent-sel" id="font-sel" role="radiogroup" aria-label="Font"></div>
           <label class="fld" data-help="radius">Corners</label>
           <div class="accent-sel" id="radius-sel" role="radiogroup" aria-label="Corners"></div>
+          <label class="fld" data-help="density">Spacing</label>
+          <div class="accent-sel" id="density-sel" role="radiogroup" aria-label="Spacing"></div>
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
           <label class="tgl" data-help="motion" style="margin-top:16px;"><input type="checkbox" id="s-motion"><span class="tr"></span> Reduce motion</label>
@@ -4057,7 +4067,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Reduce motion":"Minder beweging","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -4950,7 +4960,7 @@ function applyTheme(){
 // "Reset to default" only works once something differs from Vito's own look.
 function syncLookReset(){
   const b = document.getElementById("s-look-reset"); if (!b) return;
-  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref && !motionPref; }
+  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref && !motionPref && !densityPref; }
   catch {} // during start-up, before all of them exist; the last apply sets it
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
@@ -5031,6 +5041,29 @@ function buildRadiusPicker(){
   applyRadius();
 }
 applyRadius();
+/* ---- density (ui.density): [data-density] on <html>, --dn in the CSS ---- */
+const DENSITIES = [{c:"compact",n:"Compact",g:2},{c:"",n:"Standard",g:4},{c:"spacious",n:"Spacious",g:6}];
+let densityPref = (() => { try { return localStorage.getItem("vito-density") || ""; } catch { return ""; } })();
+function applyDensity(){
+  const root = document.documentElement, on = DENSITIES.some(d => d.c === densityPref) ? densityPref : "";
+  if (on) root.dataset.density = on; else delete root.dataset.density;
+  document.querySelectorAll("#density-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === on ? "true" : "false"));
+  syncLookReset();
+}
+function setDensity(pref, persist){
+  densityPref = pref || "";
+  try { localStorage.setItem("vito-density", densityPref); } catch {}
+  applyDensity();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { density: densityPref });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+function buildDensityPicker(){
+  const box = $("density-sel"); if (!box) return;
+  box.innerHTML = DENSITIES.map(d => `<button type="button" class="acc-opt rad-opt" role="radio" data-code="${d.c}"><span class="dn-sw" style="--g:${d.g}px" aria-hidden="true"><i></i><i></i><i></i></span><span>${t(d.n)}</span></button>`).join("");
+  box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setDensity(b.dataset.code, true));
+  applyDensity();
+}
+applyDensity();
 /* ---- the background (ui.backdrop): .bd[data-bd] rules in the CSS, on
    #backdrop and in the picker's swatches; cached like the font ---- */
 const BACKDROPS = [{c:"",n:"None"},{c:"gradient",n:"Gradient"},{c:"aurora",n:"Aurora"},{c:"sunrise",n:"Sunrise"},{c:"waves",n:"Waves"},{c:"bubbles",n:"Bubbles"},
@@ -5099,10 +5132,10 @@ function setMotion(on, persist){
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
 applyMotion();
-// Theme, colours, font, corners, background and motion back to Vito's own, in one save.
+// Theme, colours, font, corners, spacing, background and motion back to Vito's own, in one save.
 function resetLook(){
-  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setMotion(false, false);
-  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", reduce_motion:false });
+  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setMotion(false, false); setDensity("", false);
+  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", reduce_motion:false, density:"" });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(themePref==="system"){ if(typeof fadeTheme==="function") fadeTheme(); applyTheme(); } });
@@ -6124,6 +6157,7 @@ buildThemeDropdown();
 buildAccentPicker();
 buildFontPicker();
 buildBackdropPicker();
+buildDensityPicker();
 $("s-look-reset").onclick = resetLook;
 $("s-motion").checked = motionPref;
 $("s-motion").addEventListener("change", e => setMotion(e.target.checked, true));
@@ -11028,6 +11062,7 @@ async function fillSettings() {
   if (cfg.ui && (cfg.ui.accent || "") !== accentPref) setAccent(cfg.ui.accent || "", false);
   if (cfg.ui && (cfg.ui.font || "") !== fontPref) setFont(cfg.ui.font || "", false);
   if (cfg.ui && (cfg.ui.backdrop || "") !== backdropPref) setBackdrop(cfg.ui.backdrop || "", false);
+  if (cfg.ui && (cfg.ui.density || "") !== densityPref) setDensity(cfg.ui.density || "", false);
   if (cfg.ui && !!cfg.ui.reduce_motion !== motionPref) setMotion(!!cfg.ui.reduce_motion, false);
   if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
   if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {
@@ -13908,6 +13943,7 @@ const HELP = {
   backdrop:{nl:"Een achtergrond achter de kaarten, in de kleuren van je thema. Noorderlicht, Golven en Bellen bewegen langzaam, behalve als je systeem om minder beweging vraagt.",en:"A background behind the cards, in your colour theme. Aurora, Waves and Bubbles move slowly, unless your system asks for less motion."},
   font:{nl:"Het lettertype van Vito, ook in de pil en het eiland. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill and the island too. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},
   accent:{nl:"De kleuren van Vito: de knoppen, het verloop, de pil en de mascotte. Rood voor fouten en opnemen blijft rood.",en:"Vito's colours: the buttons, the gradient, the pill and the mascot. Red for errors and recording stays red."},
+  density:{nl:"Hoeveel ruimte er tussen en in de kaarten zit, en tussen de regels. Krap past meer op het scherm, ruim leest rustiger.",en:"How much room there is between and inside the cards, and between the lines. Compact fits more on the screen, spacious reads more calmly."},
   motion:{nl:"Zet de animaties in Vito stil: overgangen, bewegende achtergronden en Vito's eigen bewegingen. Je systeem heeft hier ook een instelling voor; staat die aan, dan volgt Vito die al.",en:"Stills Vito's animations: transitions, moving backgrounds and Vito's own movements. Your system has a setting for this too; when that is on, Vito already follows it."},
   cursor:{nl:"De muiswijzer in Vito's kleuren, met het logo in de hand. Uit: de gewone muiswijzer van je systeem.",en:"The mouse pointer in Vito's colours, with the logo in its hand. Off: your system's usual pointer."},
   helptips:{nl:"Ja, dit is er een. Uit: geen uitleg meer als je even boven een instelling blijft hangen — deze ook niet.",en:"Yes, this is one. Off: no more explanations when you linger over a setting — this one included."},
