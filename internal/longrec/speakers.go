@@ -79,7 +79,7 @@ func (s *Store) SaveSpeakers(id, provider string, seconds float64, turns []stt.T
 		sp.Names = old.Names
 	}
 	os.Remove(s.path(id, "speakers_clean.jsonl"))
-	return s.writeSpeakers(id, sp)
+	return s.touchAfter(id, s.writeSpeakers(id, sp))
 }
 
 func (s *Store) writeSpeakers(id string, sp Speakers) error {
@@ -96,12 +96,16 @@ func (s *Store) RemoveSpeakers(id string) error {
 	if err := os.Remove(s.path(id, "speakers.json")); err != nil && !os.IsNotExist(err) {
 		return err
 	}
-	_, err := s.UpdateMeta(id, func(m *Meta) { m.Speakers, m.SpeakersError = "", "" })
+	_, err := s.UpdateMeta(id, func(m *Meta) { m.Speakers, m.SpeakersError, m.Modified = "", "", time.Now() })
 	return err
 }
 
 // NameSpeaker gives a speaker a name ("" goes back to "Speaker n").
 func (s *Store) NameSpeaker(id, speaker, name string) error {
+	return s.touchAfter(id, s.nameSpeaker(id, speaker, name))
+}
+
+func (s *Store) nameSpeaker(id, speaker, name string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	sp := s.Speakers(id)
