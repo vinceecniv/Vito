@@ -974,6 +974,10 @@
   /* The display above beats the browser's own [hidden] rule, so an OS-specific
      tab (Linux) has to be hidden explicitly or it shows up everywhere. */
   .settabs button[hidden] { display:none; }
+  /* Narrower (fitSetTabs): icons, the open tab still named, then icons alone. */
+  .settabs[data-fit="icons1"] button:not(.active) > span:last-child, .settabs[data-fit="icons"] button > span:last-child { display:none; }
+  .settabs[data-fit^="icons"] { gap:2px; }
+  .settabs[data-fit^="icons"] button { padding-inline:11px; }
   .settings-pane { max-width:800px; }
   .settings-pane > .card[hidden] { display:none; }
   /* The tabs may wrap onto a second line; only when they'd need a third does
@@ -1305,6 +1309,16 @@
   .ach-savings .ach-sav-ico { width:54px; height:54px; flex:0 0 54px; border-radius:14px; display:flex; align-items:center; justify-content:center;
     background:linear-gradient(135deg,var(--coral),var(--violet)); color:#fff; }
   .ach-savings .ach-sav-ico svg { width:34px; height:34px; }
+  /* The amount and its line take the room beside the icon, so a narrow
+     window wraps only the button, not the text under the icon. */
+  .ach-savings > div { flex:1 1 220px; min-width:0; }
+  @media (max-width:640px){
+    .ach-savings { gap:10px 14px; padding:14px 16px; }
+    .ach-savings .ach-sav-ico { width:42px; height:42px; flex-basis:42px; border-radius:12px; }
+    .ach-savings .ach-sav-ico svg { width:26px; height:26px; }
+    .ach-savings .ach-sav-amt { font-size:22px; }
+    .ach-sav-kofi { padding:7px 12px; }
+  }
   /* Ko-fi support button, pushed to the right edge of the savings banner. */
   .ach-sav-kofi { margin-left:auto; display:inline-flex; align-items:center; gap:8px; padding:9px 15px; border-radius:12px; white-space:nowrap;
     background:linear-gradient(135deg,var(--coral),#ff9e5e); color:#fff; font-size:13px; font-weight:600; text-decoration:none;
@@ -1319,7 +1333,11 @@
   .wardrobe { background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:8px 18px; margin:0 0 22px; }
   .wardrobe.open { padding-bottom:8px; }
   .wd-head { display:flex; align-items:center; gap:14px; width:100%; padding:2px 0; border:0; background:none; color:inherit; font:inherit; text-align:left; cursor:var(--cur-hand); }
-  .wardrobe.open .wd-head { margin-bottom:6px; }
+  /* Open, the head (Vito as dressed) stays in view while the pieces scroll
+     past, until the wardrobe itself has gone by. */
+  .wardrobe.open .wd-head { margin:-8px -18px 6px; padding:10px 18px 8px; width:calc(100% + 36px);
+    position:sticky; top:var(--sticky-top, 0px); z-index:4; background:var(--card); border-radius:16px 16px 0 0;
+    border-bottom:1px solid var(--card-border); }
   .wd-txt { display:flex; flex-direction:column; flex:1; min-width:0; }
   .wd-chev { width:20px; height:20px; flex:none; color:var(--text3); transition:transform .2s; }
   .wardrobe.open .wd-chev { transform:rotate(180deg); }
@@ -6052,6 +6070,7 @@ function selectSetSection(sec){
   document.querySelectorAll("#settabs button").forEach(b => b.classList.toggle("active", b.dataset.sec === sec));
   document.querySelectorAll(".settings-pane > .card").forEach(c => { c.hidden = c.dataset.sec !== sec; });
   syncSetSecUI();
+  setTimeout(fitSetTabs); // which tab keeps its name changed (after init: SETTABS_MAX_LINES)
   if (sec === "backup" && typeof loadBackups === "function") { renderBackupAutoNote(); loadBackups(); }
   try { localStorage.setItem("vito-set-section", sec); } catch {}
 }
@@ -6098,13 +6117,28 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
 // this platform shows and on the interface zoom. Re-checked whenever the page
 // or the bar changes size, a language switch included.
 const SETTABS_MAX_LINES = 2;
+// Before the dropdown, two narrower steps: icons with only the open tab
+// named, then icons alone, each tried on one line. Icon-only tabs are named
+// by their help tip.
 function fitSetTabs(){
   const sec = $("tab-settings"), bar = $("settabs");
   if (!sec.clientWidth) return; // the settings page isn't showing; it is checked when it does
   // Tabs hidden by CSS (the browser version leaves some out) take no line.
   const btns = [...bar.children].filter(b => !b.hidden && getComputedStyle(b).display !== "none");
-  const lines = new Set(btns.map(b => b.offsetTop)).size;
-  sec.classList.toggle("settabs-narrow", lines > SETTABS_MAX_LINES);
+  const lines = () => new Set(btns.map(b => b.offsetTop)).size;
+  sec.classList.remove("settabs-narrow");
+  let fit = "";
+  for (const step of ["", "icons1", "icons"]) {
+    bar.dataset.fit = fit = step;
+    if (lines() <= (step ? 1 : SETTABS_MAX_LINES)) break;
+    if (step === "icons" && lines() > SETTABS_MAX_LINES) sec.classList.add("settabs-narrow");
+  }
+  btns.forEach(b => {
+    const name = b.lastElementChild ? b.lastElementChild.textContent : "";
+    const named = !fit || (fit === "icons1" && b.classList.contains("active"));
+    if (named) { delete b.dataset.tipText; b.removeAttribute("aria-label"); }
+    else { b.dataset.tipText = name; b.setAttribute("aria-label", name); }
+  });
 }
 if (window.ResizeObserver) {
   const ro = new ResizeObserver(() => fitSetTabs());
