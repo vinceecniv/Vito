@@ -392,8 +392,11 @@
     background-color:var(--bg); border:1px solid var(--input-border); }
   .bd-opt { padding-left:5px; }
   /* Sticky bars over a background: let it show through, softly. */
-  :root[data-backdrop] .settabs, :root[data-backdrop] .setsec-sel { background:color-mix(in srgb, var(--bg) 82%, transparent);
-    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
+  :root[data-backdrop] .settabs, :root[data-backdrop] .setsec-sel { background:color-mix(in srgb, var(--bg) 55%, transparent);
+    -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
+  /* The long recording's player floats over the page's cards: glass too. */
+  :root[data-backdrop] .lr-player { background:color-mix(in srgb, var(--card) 70%, transparent);
+    -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
   /* The sidebar too, a little more opaque: the background shows through it,
      blurred, while the menu stays easy to read. */
   :root[data-backdrop] .sidebar { background:color-mix(in srgb, var(--sidebar) 50%, transparent);
