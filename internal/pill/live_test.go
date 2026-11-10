@@ -85,8 +85,8 @@ func dropped(s string, drop int) float64 {
 	if drop == 0 || drop >= len(words) {
 		return 0
 	}
-	all := font.MeasureString(bodyFace, strings.Join(words, " ")).Ceil()
-	rest := font.MeasureString(bodyFace, strings.Join(words[drop:], " ")).Ceil()
+	all := font.MeasureString(fcs().body, strings.Join(words, " ")).Ceil()
+	rest := font.MeasureString(fcs().body, strings.Join(words[drop:], " ")).Ceil()
 	return float64(all - rest)
 }
 

@@ -99,6 +99,18 @@ changes. Canvases and the cursor images read the colours with `accentHex()` /
 `trGlowColors()`. The pill draws the same palettes from `internal/pill/accent.go`
 — keep the two in step.
 
+## Typefaces
+
+`ui.font` ("" Sora with Baloo 2 for headings; `system`, `inter`, `atkinson`,
+`lexend`, `nunito`, `lora`, `jetbrains-mono`, `iawriter`) sets `data-font` on
+`<html>`, which sets `--font-body` and `--font-head`; use those, never a font
+name. The faces are `web/fonts-*.woff2` (latin subsets from Fontsource, OFL,
+notices in `fonts-licenses.txt`), each fetched only when chosen. The pill
+follows only `system`: `internal/pill/sysfont*.go` finds the desktop's font
+(Segoe UI; SF; on Linux GNOME/Cinnamon/KDE's interface font via `fc-match`)
+and keeps Sora for any weight it cannot read. Its faces are one `faceSet`
+swapped whole (`fcs()`), never package variables.
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.

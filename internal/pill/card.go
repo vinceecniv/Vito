@@ -12,7 +12,6 @@ import (
 
 	"golang.org/x/image/draw"
 	"golang.org/x/image/font"
-	"golang.org/x/image/font/opentype"
 	"golang.org/x/image/math/fixed"
 
 	"vito/web"
@@ -78,12 +77,6 @@ type card struct {
 }
 
 var (
-	facesOnce            sync.Once
-	labelFace, mainFace  font.Face
-	bodyFace             font.Face // the island's running text
-	wordFace, figureFace font.Face // Baloo: the wordmark, a big figure
-	statFace             font.Face // Baloo: the island's figures for the day
-	facesErr             error
 	medalMu              sync.Mutex
 	medals               = map[string]*image.RGBA{}
 	ellipsis             = "…"
@@ -92,46 +85,6 @@ var (
 	labelBase, mainBaseY = 20.0, 37.0
 	mainLine             = 17.0 // the distance between two main lines
 )
-
-func faces() error {
-	facesOnce.Do(func() {
-		reg, err := opentype.Parse(soraRegular)
-		if err != nil {
-			facesErr = err
-			return
-		}
-		semi, err := opentype.Parse(soraSemiBold)
-		if err != nil {
-			facesErr = err
-			return
-		}
-		opts := func(size float64) *opentype.FaceOptions {
-			return &opentype.FaceOptions{Size: size * scale, DPI: 72, Hinting: font.HintingFull}
-		}
-		if labelFace, facesErr = opentype.NewFace(reg, opts(labelSize)); facesErr != nil {
-			return
-		}
-		if mainFace, facesErr = opentype.NewFace(semi, opts(mainSize)); facesErr != nil {
-			return
-		}
-		if bodyFace, facesErr = opentype.NewFace(reg, opts(12)); facesErr != nil {
-			return
-		}
-		baloo, err := opentype.Parse(balooBold)
-		if err != nil {
-			facesErr = err
-			return
-		}
-		if wordFace, facesErr = opentype.NewFace(baloo, opts(19)); facesErr != nil {
-			return
-		}
-		if figureFace, facesErr = opentype.NewFace(baloo, opts(24)); facesErr != nil {
-			return
-		}
-		statFace, facesErr = opentype.NewFace(baloo, opts(17))
-	})
-	return facesErr
-}
 
 // newCard lays out a card; icon is the achievement's medal id, or "".
 func newCard(kind cardKind, label, main, medal string) (*card, error) {
@@ -144,14 +97,14 @@ func layCard(kind cardKind, label, main, medal string, maxW float64) (*card, err
 		return nil, err
 	}
 	room := fixed.I(int((maxW - textLeft - cardPadRight) * scale))
-	label = fit(labelFace, label, room)
-	first, rest := wrap(mainFace, main, room)
+	label = fit(fcs().label, label, room)
+	first, rest := wrap(fcs().main, main, room)
 	c := &card{kind: kind, height: cardH}
 	var lw, mw, rw fixed.Int26_6
-	c.label, lw = textMask(labelFace, label)
-	c.main, mw = textMask(mainFace, first)
+	c.label, lw = textMask(fcs().label, label)
+	c.main, mw = textMask(fcs().main, first)
 	if rest != "" {
-		c.more, rw = textMask(mainFace, fit(mainFace, rest, room))
+		c.more, rw = textMask(fcs().main, fit(fcs().main, rest, room))
 		c.height = cardH + mainLine
 	}
 	text := float64(max(lw, mw, rw).Ceil()) / scale
@@ -282,8 +235,8 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 		muted = th.warn
 	}
 	tx := left + textLeft*s
-	lm := labelFace.Metrics()
-	mm := mainFace.Metrics()
+	lm := fcs().label.Metrics()
+	mm := fcs().main.Metrics()
 	stamp(buf, w, h, c.label, int(tx)-1, int(top+labelBase*s)-lm.Ascent.Ceil()-1, muted, in)
 	stamp(buf, w, h, c.main, int(tx)-1, int(top+mainBaseY*s)-mm.Ascent.Ceil()-1, ink, in)
 	if c.more != nil {

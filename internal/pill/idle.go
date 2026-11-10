@@ -86,7 +86,7 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 	}()
 	var last []uint32
 	dark := p.dark()
-	shown := pal() // the colour theme the pictures are in
+	shown, shownFont := pal(), fcs() // the colour theme and typeface the pictures are in
 	// The character, when it is the style, lives a little between dictations;
 	// wake brings the frames back for its next blink or gesture.
 	style := StyleOf(p.d.Config().UI.PillStyle)
@@ -103,7 +103,7 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 	var clock *image.Alpha
 	drawClock := func() {
 		if lv.on && faces() == nil {
-			clock, _ = textMask(mainFace, longClock(lv.secs))
+			clock, _ = textMask(fcs().main, longClock(lv.secs))
 		}
 	}
 	drawClock()
@@ -312,8 +312,8 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 				close(stop)
 				return <-ended
 			}
-			if now := p.dark(); now != dark || pal() != shown {
-				dark, shown = now, pal()
+			if now := p.dark(); now != dark || pal() != shown || fcs() != shownFont {
+				dark, shown, shownFont = now, pal(), fcs()
 				repaint()
 			}
 			if now := StyleOf(p.d.Config().UI.PillStyle); now != style {

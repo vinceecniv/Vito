@@ -119,7 +119,7 @@ func drawLive(buf []byte, w, h int, f Frame) {
 	shadow(buf, w, h, cx, cy+1*s, hw, hh, 8*s, th.shadow*a)
 	box(buf, w, h, cx, cy, hw, hh, hh, th.body, 0.95*a)
 	ring(buf, w, h, cx, cy, hw, hh, th.edge, 0.22*a, 0.5*s)
-	m := bodyFace.Metrics()
+	m := fcs().body.Metrics()
 	// The words start at the strip's left edge, which follows the strip as it
 	// grows, and once they outgrow it they slide left by LiveOff. Both ease,
 	// so a new letter never moves what is already there by a jump.
@@ -132,7 +132,7 @@ func drawLive(buf []byte, w, h int, f Frame) {
 // drawBlock sets the words as blockLines lines of text in the panel, the top
 // one ending on LiveY, rising as a new line starts.
 func drawBlock(buf []byte, w, h int, f Frame, cx, cy, s, a float64) {
-	m := bodyFace.Metrics()
+	m := fcs().body.Metrics()
 	lh := blockLine * s
 	x := int(math.Round(cx - f.LiveW*s/2))
 	top, bottom := cy-lh-3*s, cy+(blockLines-1)*lh+3*s // what shows: the lines
@@ -417,7 +417,7 @@ func drawClock(buf []byte, w, h int, cx, cy, s float64, f Frame, th theme, alpha
 	b := f.Clock.Bounds()
 	hw, hh := float64(b.Dx())/2+5*s, 8*s
 	box(buf, w, h, cx, cy, hw, hh, hh, th.body, 0.94*a)
-	m := mainFace.Metrics()
+	m := fcs().main.Metrics()
 	baseline := cy + float64((m.Ascent-m.Descent).Ceil())/2
 	x0 := int(math.Round(cx - float64(b.Dx())/2))
 	faded(buf, w, h, f.Clock, x0, int(baseline)-m.Ascent.Ceil()-1, inkFor(f.Dark), a, 0, w, 0, 0)

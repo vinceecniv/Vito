@@ -357,6 +357,7 @@ func (p *pill) settingsChanged() {
 // the tray icon, then the desktop's.
 func (p *pill) dark() bool {
 	setAccent(p.d.Config().UI.Accent) // read with the theme, before every picture
+	setFont(p.d.Config().UI.Font)
 	switch p.d.Config().UI.Theme {
 	case "dark":
 		return true
@@ -585,7 +586,7 @@ func (p *pill) animate(w window, style Style) {
 				if d := time.Since(recSince); d >= clockAfter && faces() == nil {
 					if txt := clockString(d); txt != clockText {
 						clockText = txt
-						f.Clock, _ = textMask(mainFace, txt)
+						f.Clock, _ = textMask(fcs().main, txt)
 					}
 					f.ClockShow = min(1, f.ClockShow+step(openTime))
 				}

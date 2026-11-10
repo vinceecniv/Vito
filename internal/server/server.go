@@ -129,8 +129,11 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /favicon.svg", s.static("favicon.svg", "image/svg+xml", true))
 	mux.HandleFunc("GET /icon-192.png", s.static("icon-192.png", "image/png", true))
 	mux.HandleFunc("GET /icon-512.png", s.static("icon-512.png", "image/png", true))
-	mux.HandleFunc("GET /fonts-baloo2.woff2", s.static("fonts-baloo2.woff2", "font/woff2", true))
-	mux.HandleFunc("GET /fonts-sora.woff2", s.static("fonts-sora.woff2", "font/woff2", true))
+	fonts, _ := fs.Glob(web.Files, "fonts-*.woff2")
+	for _, f := range fonts {
+		mux.HandleFunc("GET /"+f, s.static(f, "font/woff2", true))
+	}
+	mux.HandleFunc("GET /fonts-licenses.txt", s.static("fonts-licenses.txt", "text/plain; charset=utf-8", true))
 	mux.HandleFunc("GET /flags/{name}", s.handleFlag)
 	mux.HandleFunc("GET /logos/{name}", s.handleLogo)
 	mux.HandleFunc("GET /i18n/{name}", s.handleI18n)

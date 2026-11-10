@@ -211,6 +211,10 @@ type UI struct {
 	// kanagawa, everforest, ristretto, solarized, flexoki, dracula). The page
 	// and the pill draw it.
 	Accent string `json:"accent,omitempty"`
+	// Font is the typeface: "" Sora with Baloo 2, "system" the desktop's own
+	// (the pill draws that one too), or inter, atkinson, lexend, nunito, lora,
+	// jetbrains-mono, iawriter (the page only).
+	Font string `json:"font,omitempty"`
 	// PillLive shows the words in the pill while you speak. Nil-safe: unset
 	// counts as on, for new users and for those updating alike (it used to be
 	// a plain bool whose false was never written).

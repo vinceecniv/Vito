@@ -51,7 +51,7 @@ func longInputBox() (x, y, w, h int) {
 
 // DrawLongChip paints the resting pill while a long recording runs: a solid
 // little pill with the dot (or the pause bars) and clock, the time drawn in
-// mainFace. presence and hover as for DrawIdle.
+// fcs().main. presence and hover as for DrawIdle.
 func DrawLongChip(buf []byte, w, h int, dark bool, presence, hover float64, paused bool, clock *image.Alpha) {
 	clear(buf)
 	th := themeFor(dark)
@@ -77,7 +77,7 @@ func DrawLongChip(buf []byte, w, h int, dark bool, presence, hover float64, paus
 	if paused {
 		ink = mutedFor(dark)
 	}
-	m := mainFace.Metrics()
+	m := fcs().main.Metrics()
 	y0 := int(math.Round(cy-float64((m.Ascent+m.Descent).Ceil())/2)) - 1
 	stamp(buf, w, h, clock, int(math.Round(dx+7*s)), y0, ink, a)
 }

@@ -25,6 +25,30 @@
     font-family:'Baloo 2'; font-style:normal; font-weight:600 700;
     font-display:swap; src:url(fonts-baloo2.woff2) format('woff2');
   }
+  /* The other typefaces (ui.font → data-font on <html>), each loaded only
+     when chosen. Latin subsets from Fontsource, OFL (fonts-licenses.txt). */
+  @font-face { font-family:'Inter'; font-weight:100 900; font-display:swap; src:url(fonts-inter.woff2) format('woff2'); }
+  @font-face { font-family:'Atkinson Hyperlegible Next'; font-weight:200 800; font-display:swap; src:url(fonts-atkinson.woff2) format('woff2'); }
+  @font-face { font-family:'Lexend'; font-weight:100 900; font-display:swap; src:url(fonts-lexend.woff2) format('woff2'); size-adjust:94%; }
+  @font-face { font-family:'Nunito'; font-weight:200 1000; font-display:swap; src:url(fonts-nunito.woff2) format('woff2'); }
+  @font-face { font-family:'Lora'; font-weight:400 700; font-display:swap; src:url(fonts-lora.woff2) format('woff2'); }
+  @font-face { font-family:'JetBrains Mono'; font-weight:100 800; font-display:swap; src:url(fonts-jetbrains-mono.woff2) format('woff2'); size-adjust:87%; }
+  @font-face { font-family:'iA Writer Quattro'; font-weight:400; font-display:swap; src:url(fonts-iawriter-400.woff2) format('woff2'); }
+  @font-face { font-family:'iA Writer Quattro'; font-weight:700; font-display:swap; src:url(fonts-iawriter-700.woff2) format('woff2'); }
+  /* Typefaces: --font-body for text, --font-head for headings and figures.
+     Only Vito's own pair has a separate heading face. Keep "system" in step
+     with internal/pill/sysfont*.go, which draws the pill in the same one. */
+  :root, [data-font="sora"] { --font-body:'Sora',system-ui,sans-serif; --font-head:'Baloo 2','Sora',sans-serif; }
+  [data-font="system"] { --font-body:system-ui,-apple-system,'Segoe UI',Cantarell,'Noto Sans',Ubuntu,sans-serif; --font-head:var(--font-body); }
+  [data-font="inter"] { --font-body:'Inter',system-ui,sans-serif; --font-head:var(--font-body); }
+  [data-font="atkinson"] { --font-body:'Atkinson Hyperlegible Next',system-ui,sans-serif; --font-head:var(--font-body); }
+  [data-font="lexend"] { --font-body:'Lexend',system-ui,sans-serif; --font-head:var(--font-body); }
+  [data-font="nunito"] { --font-body:'Nunito',system-ui,sans-serif; --font-head:var(--font-body); }
+  [data-font="lora"] { --font-body:'Lora',Georgia,serif; --font-head:var(--font-body); }
+  [data-font="jetbrains-mono"] { --font-body:'JetBrains Mono',ui-monospace,monospace; --font-head:var(--font-body); }
+  [data-font="iawriter"] { --font-body:'iA Writer Quattro',system-ui,sans-serif; --font-head:var(--font-body); }
+  .font-opt { padding:6px 14px; }
+  .font-opt span { font-family:var(--font-body); }
   /* Colour themes (ui.accent → data-accent on <html>). A theme sets only the
      palette below; every other token is derived from it. "coral" keeps the
      names of the original pair: --coral is the warm end of the gradient,
@@ -291,10 +315,10 @@
   ::selection { background:var(--selection); color:inherit; }
   body {
     margin:0; background:var(--bg); color:var(--text);
-    font:400 14px/1.55 'Sora',system-ui,sans-serif;
+    font:400 14px/1.55 var(--font-body);
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,.num,.wordmark { font-family:'Baloo 2','Sora',sans-serif; }
+  h1,h2,.num,.wordmark { font-family:var(--font-head); }
   /* min-height compensates for the CSS zoom on <html> (vh ignores zoom), so the
      layout still fills the window at zoom levels other than 100%. */
   .app { display:flex; min-height:calc(100vh / var(--zoom, 1)); }
@@ -458,7 +482,7 @@
   .welcome-head { display:flex; align-items:center; gap:14px; position:relative; }
   .welcome-logo { width:48px; height:48px; border-radius:14px; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
   .welcome-logo svg { width:27px; height:27px; }
-  .welcome-title { font-family:'Baloo 2','Sora',sans-serif; font-size:24px; font-weight:700; line-height:1.1; }
+  .welcome-title { font-family:var(--font-head); font-size:24px; font-weight:700; line-height:1.1; }
   .welcome-sub { font-size:13px; opacity:.92; margin-top:2px; }
   .welcome-intro { position:relative; margin:16px 0 10px; font-size:14px; opacity:.96; line-height:1.55; max-width:900px; }
   .welcome-steps { position:relative; margin:0; padding-left:20px; display:flex; flex-direction:column; gap:7px; font-size:13.5px; line-height:1.5; max-width:900px; }
@@ -590,7 +614,7 @@
   .status-hero { display:flex; align-items:center; gap:15px; }
   .status-hero .hero-tile { width:54px; height:54px; flex:0 0 auto; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px var(--accent-soft); }
   .status-hero .hero-tile svg { width:31px; height:31px; }
-  .status-hero .hero-name { font-family:'Baloo 2','Sora',sans-serif; font-size:30px; font-weight:700; line-height:1.05; color:var(--text); }
+  .status-hero .hero-name { font-family:var(--font-head); font-size:30px; font-weight:700; line-height:1.05; color:var(--text); }
   .status-hero .hero-tag { color:var(--text2); font-size:13.5px; margin-top:2px; }
   section { display:none; }
   section.active { display:block; }
@@ -914,7 +938,7 @@
   .hist-empty { display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; padding:34px 16px 30px; }
   .hist-empty.small { padding:22px 16px; }
   .hist-empty .he-logo { width:84px; height:84px; margin-bottom:2px; }
-  .hist-empty .he-title { font-family:'Baloo 2',sans-serif; font-weight:700; font-size:20px; color:var(--text); }
+  .hist-empty .he-title { font-family:var(--font-head); font-weight:700; font-size:20px; color:var(--text); }
   .hist-empty.small .he-title { font-size:16px; }
   .hist-empty .he-sub { color:var(--text2); font-size:13px; line-height:1.55; max-width:440px; }
   .hist-empty .btn { margin-top:10px; }
@@ -1454,7 +1478,7 @@
   #offline-overlay { display:none; position:fixed; inset:0; z-index:300; background:rgba(15,8,25,.6); align-items:center; justify-content:center; padding:20px; }
   .offline-card { background:var(--card); border:1px solid var(--card-border); border-radius:18px; padding:28px 30px; max-width:410px; width:100%; text-align:center; box-shadow:0 30px 70px rgba(20,10,40,.5); }
   .offline-ic { width:54px; height:54px; margin:0 auto 14px; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; }
-  .offline-card h3 { font-family:'Baloo 2','Sora',sans-serif; font-size:19px; margin:0 0 8px; }
+  .offline-card h3 { font-family:var(--font-head); font-size:19px; margin:0 0 8px; }
   .offline-card p { color:var(--text2); font-size:13.5px; line-height:1.55; margin:0; }
   #offline-status { color:var(--text3); font-size:12.5px; display:inline-flex; align-items:center; gap:8px; }
   .spinner { width:14px; height:14px; border:2px solid var(--track); border-top-color:var(--violet); border-radius:50%; animation:spin .7s linear infinite; }
@@ -1549,7 +1573,7 @@
     font-size:12px; line-height:1.7; box-shadow:0 10px 30px rgba(20,10,40,.32); pointer-events:none; opacity:0;
     transform:translateY(-4px); transition:opacity .12s, transform .12s; white-space:nowrap; }
   #chart-tip.show { opacity:1; transform:none; }
-  #chart-tip .ct-day { font-weight:700; margin-bottom:4px; font-family:'Baloo 2','Sora',sans-serif; }
+  #chart-tip .ct-day { font-weight:700; margin-bottom:4px; font-family:var(--font-head); }
   #chart-tip .ct-row { display:flex; justify-content:space-between; gap:16px; }
   #chart-tip .ct-row span:last-child { font-weight:600; }
   .weekcol { cursor:var(--cur-arrow); }
@@ -1755,7 +1779,7 @@
   .keyinfo .ki-guide a { display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-weight:600; text-decoration:none; }
   .keyinfo .ki-guide a:hover { text-decoration:underline; }
   .keyinfo .ki-guide svg { width:14px; height:14px; }
-  .modal h3 { margin:0 0 4px; font-family:'Baloo 2','Sora',sans-serif; font-size:17px; }
+  .modal h3 { margin:0 0 4px; font-family:var(--font-head); font-size:17px; }
   .modal-x { position:absolute; top:12px; right:12px; width:28px; height:28px; border:none; background:var(--input-bg); color:var(--text3); border-radius:8px; cursor:var(--cur-hand); font-size:18px; line-height:1; display:flex; align-items:center; justify-content:center; }
   .modal-x:hover { background:var(--track); color:var(--text); }
   /* Linux tools report card (status page) */
@@ -1789,7 +1813,7 @@
   .about-head { display:flex; align-items:center; gap:14px; }
   .about-logo { width:52px; height:52px; border-radius:14px; background:var(--grad); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
   .about-logo svg { width:30px; height:30px; }
-  .about-name { font-family:'Baloo 2','Sora',sans-serif; font-size:26px; font-weight:700; color:var(--text); line-height:1.1; }
+  .about-name { font-family:var(--font-head); font-size:26px; font-weight:700; color:var(--text); line-height:1.1; }
   .about-tag { font-size:13px; color:var(--text2); margin-top:2px; }
   /* Styled links to the project's site and repo. */
   .about-links { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
@@ -1830,7 +1854,7 @@
   .card > h2 .tux-ico { width:20px; height:20px; }
   .tool-main { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
   .tool-name { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12.5px; font-weight:600; color:var(--text); }
-  .tool-name .req { margin-left:7px; font-family:'Sora',sans-serif; font-size:10.5px; font-weight:600; color:var(--danger-ink); }
+  .tool-name .req { margin-left:7px; font-family:var(--font-body); font-size:10.5px; font-weight:600; color:var(--danger-ink); }
   .tool-purpose { font-size:12px; color:var(--text3); line-height:1.4; margin-top:1px; }
   .tool-badge.no + .tool-main .tool-name, .tool-badge.opt + .tool-main .tool-name { color:var(--text2); }
 
@@ -1874,7 +1898,7 @@
   .moved-screen { display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:64px 20px 40px; }
   .moved-screen[hidden] { display:none; }
   .moved-logo { width:120px; height:120px; }
-  .moved-title { font-family:'Baloo 2',sans-serif; font-weight:700; font-size:26px; color:var(--text); line-height:1.2; }
+  .moved-title { font-family:var(--font-head); font-weight:700; font-size:26px; color:var(--text); line-height:1.2; }
   .moved-text { color:var(--text2); font-size:14.5px; line-height:1.55; max-width:460px; }
   .moved-screen .btn { margin-top:12px; padding:12px 28px; font-size:15px; }
   .moved-status { min-height:20px; color:var(--text3); font-size:13px; }
@@ -1892,7 +1916,7 @@
   .install-banner[hidden] { display:none; }
   .ib-ico { flex:none; width:42px; height:42px; border-radius:12px; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; font-size:22px; }
   .ib-body { flex:1; min-width:0; }
-  .ib-title { font-family:'Baloo 2',sans-serif; font-weight:700; font-size:19px; line-height:1.25; }
+  .ib-title { font-family:var(--font-head); font-weight:700; font-size:19px; line-height:1.25; }
   .ib-text { font-size:13.5px; line-height:1.55; opacity:.95; margin-top:4px; }
   .ib-steps { margin:8px 0 0; padding-left:18px; font-size:13px; line-height:1.55; }
   .ib-actions { display:flex; gap:9px; flex-wrap:wrap; align-items:center; margin-top:12px; }
@@ -2459,6 +2483,8 @@
           </div>
           <label class="fld" data-help="accent">Colours</label>
           <div class="accent-sel" id="accent-sel" role="radiogroup" aria-label="Colours"></div>
+          <label class="fld" data-help="font">Font</label>
+          <div class="accent-sel" id="font-sel" role="radiogroup" aria-label="Font"></div>
           <label class="fld" data-help="zoom" style="max-width:320px;">Zoom level <span class="val" id="s-zoomval">100%</span><button type="button" id="s-zoom-reset" class="reset-btn" hidden title="Terug naar 100%" aria-label="Terug naar 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
           <div class="slider-wrap" style="--frac:0.375;"><input type="range" id="s-zoom" min="0.7" max="1.5" step="0.05"><span class="slider-mark" title="Standaard 100%" aria-hidden="true"></span></div>
           <label class="fld" data-help="uilang">Interface language</label>
@@ -3703,7 +3729,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Ocean":"Oceaan",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Ocean":"Oceaan",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -4623,6 +4649,29 @@ function accentHex(){
   const v = (n, d) => { const x = cs.getPropertyValue(n).trim(); return /^#[0-9a-f]{6}$/i.test(x) ? x : d; };
   return { from: v("--coral", "#FF6B5E"), to: v("--violet", "#7C3AED") };
 }
+/* ---- typeface (ui.font): "" is Sora with Baloo 2, the others are
+   [data-font] rules in the CSS; cached like the colour theme ---- */
+const FONTS = [{c:"",n:"Vito default"},{c:"system",n:"System"},{c:"inter",n:"Inter",b:1},{c:"atkinson",n:"Atkinson Hyperlegible",b:1},{c:"lexend",n:"Lexend",b:1},{c:"nunito",n:"Nunito",b:1},{c:"lora",n:"Lora",b:1},{c:"jetbrains-mono",n:"JetBrains Mono",b:1},{c:"iawriter",n:"iA Writer Quattro",b:1}];
+let fontPref = (() => { try { return localStorage.getItem("vito-font") || ""; } catch { return ""; } })();
+function applyFont(){
+  const root = document.documentElement;
+  if (fontPref && FONTS.some(f => f.c === fontPref)) root.dataset.font = fontPref; else delete root.dataset.font;
+  document.querySelectorAll("#font-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === (root.dataset.font || "") ? "true" : "false"));
+}
+function setFont(pref, persist){
+  fontPref = pref || "";
+  try { localStorage.setItem("vito-font", fontPref); } catch {}
+  applyFont();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { font: fontPref });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+function buildFontPicker(){
+  const box = $("font-sel"); if (!box) return;
+  box.innerHTML = FONTS.map(f => `<button type="button" class="acc-opt font-opt" role="radio" data-code="${f.c}" data-font="${f.c || "sora"}"><span>${f.b ? f.n : t(f.n)}</span></button>`).join("");
+  box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setFont(b.dataset.code, true));
+  applyFont();
+}
+applyFont();
 var cursorStyle; // made once cursorCSS exists
 function applyCursors(){
   if (!cursorStyle) return;
@@ -5663,6 +5712,7 @@ function buildThemeDropdown(){
 }
 buildThemeDropdown();
 buildAccentPicker();
+buildFontPicker();
 setThemeDisplay(themePref); // reflect the theme now the dropdown exists
 
 /* ---- nav ---- */
@@ -10310,6 +10360,7 @@ async function fillSettings() {
   if (!$("d-snippets").contains(document.activeElement)) renderSnippets(cfg.dictionary.snippets || []);
   if (cfg.ui && cfg.ui.theme) setTheme(cfg.ui.theme, false); // config is source of truth
   if (cfg.ui && (cfg.ui.accent || "") !== accentPref) setAccent(cfg.ui.accent || "", false);
+  if (cfg.ui && (cfg.ui.font || "") !== fontPref) setFont(cfg.ui.font || "", false);
   const savedLang = cfg.ui && cfg.ui.lang ? cfg.ui.lang : "";
   $("s-uilang").value = savedLang;
   setUiLang(savedLang, false); // "" = auto-detect from OS
@@ -13179,6 +13230,7 @@ tagReveals();
 
 /* ---- per-option help tooltips (shown after a short delay) ---- */
 const HELP = {
+  font:{nl:"Het lettertype van Vito, ook in de pil als je Systeem kiest. Atkinson Hyperlegible is gemaakt voor slechtzienden, Lexend voor vlot lezen.",en:"Vito's typeface, in the pill too when you choose System. Atkinson Hyperlegible is made for low vision, Lexend for fluent reading."},
   accent:{nl:"De kleuren van Vito: de knoppen, het verloop, de pil en de mascotte. Rood voor fouten en opnemen blijft rood.",en:"Vito's colours: the buttons, the gradient, the pill and the mascot. Red for errors and recording stays red."},
   theme:{nl:"Licht, donker of automatisch — automatisch volgt de licht/donker-stand van je systeem.",en:"Light, dark or automatic — automatic follows your system's light/dark setting."},
   uilang:{nl:"De taal van deze app-interface. 'Automatisch' gebruikt je systeemtaal (anders Engels).",en:"The language of this app interface. 'Automatic' uses your OS language (English otherwise)."},
