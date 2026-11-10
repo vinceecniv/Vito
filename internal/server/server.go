@@ -1519,7 +1519,11 @@ func (s *Server) handlePlaySound(w http.ResponseWriter, r *http.Request) {
 			volume = f
 		}
 	}
-	if err := s.d.PlaySound(name, volume); err != nil {
+	set := "-" // the configured set, unless the preview names one ("" is the original)
+	if r.URL.Query().Has("set") {
+		set = r.URL.Query().Get("set")
+	}
+	if err := s.d.PlaySound(name, set, volume); err != nil {
 		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": err.Error()})
 		return
 	}

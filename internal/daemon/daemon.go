@@ -800,7 +800,7 @@ func (d *Daemon) start() error {
 		}
 		go d.watchAutoStop(s, pause)
 	}
-	d.playSound(cfg, assets.SoundStart)
+	d.playSound(cfg, "start")
 	d.log.Info("recording started", "spool", spool.Path(), "cleanup", d.cleanupEffective(s))
 	return nil
 }
@@ -820,7 +820,7 @@ func (d *Daemon) Stop() error {
 	d.emit(Event{Type: "state", State: StateProcessing})
 	// Play the "done" chime the instant recording stops (on the stop hotkey), not
 	// after the STT/cleanup pipeline finishes — that's the snappier feedback.
-	d.playSound(s.cfg, assets.SoundDone)
+	d.playSound(s.cfg, "done")
 
 	go d.finish(s)
 	return nil
@@ -832,7 +832,7 @@ func (d *Daemon) Cancel() error {
 		return err
 	}
 	kept := d.discard(s, true)
-	d.playSound(s.cfg, assets.SoundCancel)
+	d.playSound(s.cfg, "cancel")
 	d.note("vito: geannuleerd", "")
 	d.log.Info("recording cancelled", "kept", kept)
 	if kept {
@@ -929,7 +929,7 @@ func (d *Daemon) cancelSilent(s *session, timeout time.Duration) {
 	d.mu.Unlock()
 
 	d.discard(s, false)
-	d.playSound(s.cfg, assets.SoundCancel)
+	d.playSound(s.cfg, "cancel")
 	d.note("vito: automatisch gestopt", fmt.Sprintf("geen spraak in %s", timeout))
 	d.log.Info("recording auto-cancelled (silence)", "timeout", timeout)
 }
@@ -972,7 +972,7 @@ func (d *Daemon) autoStopSession(s *session) {
 	d.state = StateProcessing
 	d.mu.Unlock()
 	d.emit(Event{Type: "state", State: StateProcessing})
-	d.playSound(s.cfg, assets.SoundDone)
+	d.playSound(s.cfg, "done")
 	d.log.Info("recording auto-stopped (end of speech)")
 	go d.finish(s)
 }
@@ -1198,7 +1198,7 @@ func (d *Daemon) finish(s *session) {
 		d.setIdle(func(st *Status) { st.LastPreview = "" })
 		d.emit(Event{Type: "state", State: StateIdle})
 		s.spool.Remove()
-		d.playSound(cfg, assets.SoundCancel)
+		d.playSound(cfg, "cancel")
 		d.note("vito: niets gehoord", "")
 		d.log.Info("empty transcript", "duration", duration, "source", source)
 		return
@@ -1216,7 +1216,7 @@ func (d *Daemon) finish(s *session) {
 	clipboardOut := false // a clipboard command returns its result to the clipboard, not the focused field
 	if instr, ok := parseCommand(raw); ok {
 		if !d.cleanupEffective(s) { // the cleanup pass is what runs the command, so it must be on
-			d.playSound(cfg, assets.SoundCancel)
+			d.playSound(cfg, "cancel")
 			d.note("vito: opdracht genegeerd", "AI-opschoning staat uit — zet die aan voor spraakopdrachten")
 			d.setIdle(func(st *Status) { st.LastPreview = "" })
 			d.emit(Event{Type: "state", State: StateIdle})
@@ -1228,14 +1228,14 @@ func (d *Daemon) finish(s *session) {
 			// The command works on the clipboard ("vat de tekst op het klembord
 			// samen"): run it on that text right away — no follow-up dictation.
 			if clip == "" {
-				d.playSound(cfg, assets.SoundCancel)
+				d.playSound(cfg, "cancel")
 				d.note("vito: klembord leeg", "geen tekst op het klembord voor deze opdracht")
 				d.setIdle(func(st *Status) { st.LastPreview = "" })
 				d.emit(Event{Type: "state", State: StateIdle})
 				s.spool.Remove()
 				return
 			}
-			d.playSound(cfg, assets.SoundCommand)
+			d.playSound(cfg, "command")
 			d.note("vito: opdracht op klembord — "+instr, "")
 			d.setStatusCommand(instr)
 			d.emit(Event{Type: "command", Command: instr, CommandReceived: true}) // input is the clipboard → no "speak your text" state
@@ -1245,7 +1245,7 @@ func (d *Daemon) finish(s *session) {
 			// fall through to the cleanup + inject path below
 		} else {
 			d.setPendingCmd(instr)
-			d.playSound(cfg, assets.SoundCommand)
+			d.playSound(cfg, "command")
 			d.note("vito: opdracht — "+instr, "")
 			d.setIdle(func(st *Status) { st.LastPreview = "" })
 			d.emit(Event{Type: "state", State: StateIdle})
@@ -1425,7 +1425,7 @@ func (d *Daemon) finish(s *session) {
 	// toast in a window you are probably not looking at, and unpolished text
 	// reads as Vito having done its job badly rather than not at all.
 	if cleanupFailed {
-		d.playSound(cfg, assets.SoundWarn)
+		d.playSound(cfg, "warn")
 	}
 	switch {
 	case cleanupFailed:
@@ -1468,7 +1468,7 @@ func (d *Daemon) finishWithError(s *session, err error, duration time.Duration) 
 	// keep the spool: the audio is still recoverable by hand
 	d.emit(Event{Type: "error", Error: err.Error(), Credit: provider})
 	d.emit(Event{Type: "state", State: StateIdle})
-	d.playSound(s.cfg, assets.SoundCancel)
+	d.playSound(s.cfg, "cancel")
 	if isCredit {
 		d.noteErr("vito: tegoed op", provider+" — audio bewaard: "+s.spool.Path())
 	} else {
@@ -1490,10 +1490,11 @@ func (d *Daemon) setIdleWithError(err error) {
 	d.setIdle(func(st *Status) { st.LastError = err.Error() })
 }
 
-func (d *Daemon) playSound(cfg config.Config, wav []byte) {
+func (d *Daemon) playSound(cfg config.Config, cue string) {
 	if !cfg.Audio.SoundsEnabled {
 		return
 	}
+	wav := assets.Sound(cfg.Audio.SoundSet, cue)
 	go func() {
 		if err := audio.PlayWAV(d.audioCtx, cfg.Audio.OutputDevice, wav, cfg.Audio.SoundsVolume); err != nil {
 			d.log.Debug("sound playback failed", "err", err)
@@ -1501,29 +1502,21 @@ func (d *Daemon) playSound(cfg config.Config, wav []byte) {
 	}()
 }
 
-// PlaySound plays one named feedback sound (start|done|cancel) on the output
-// device — used by the settings preview buttons. A volume < 0 falls back to the
+// PlaySound plays one named feedback sound (start|done|cancel|achievement|
+// command|warn) on the output device — used by the settings preview buttons.
+// set is the sound set to hear it in; "-" means the configured one, so a
+// preview can play a set before it is saved. A volume < 0 falls back to the
 // configured feedback volume; otherwise the given volume is used so previews
 // reflect the (possibly unsaved) slider. Ignores the sounds-enabled toggle.
-func (d *Daemon) PlaySound(name string, volume float64) error {
-	var wav []byte
-	switch name {
-	case "start":
-		wav = assets.SoundStart
-	case "done":
-		wav = assets.SoundDone
-	case "cancel":
-		wav = assets.SoundCancel
-	case "achievement":
-		wav = assets.SoundAchievement
-	case "command":
-		wav = assets.SoundCommand
-	case "warn":
-		wav = assets.SoundWarn
-	default:
+func (d *Daemon) PlaySound(name, set string, volume float64) error {
+	cfg := d.Config()
+	if set == "-" {
+		set = cfg.Audio.SoundSet
+	}
+	wav := assets.Sound(set, name)
+	if wav == nil {
 		return fmt.Errorf("unknown sound %q", name)
 	}
-	cfg := d.Config()
 	if volume < 0 {
 		volume = cfg.Audio.SoundsVolume
 	}

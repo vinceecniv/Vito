@@ -25,6 +25,15 @@ func TestEmbeddedSoundsParse(t *testing.T) {
 		"achievement": assets.SoundAchievement,
 		"warn":        assets.SoundWarn,
 	}
+	for _, set := range assets.SoundSets {
+		for _, cue := range []string{"start", "done", "cancel", "command", "achievement", "warn"} {
+			wav := assets.Sound(set, cue)
+			if string(wav) == string(assets.Sound("", cue)) {
+				t.Errorf("%s/%s: missing, the original plays instead", set, cue)
+			}
+			sounds[set+"/"+cue] = wav
+		}
+	}
 
 	for name, wav := range sounds {
 		t.Run(name, func(t *testing.T) {

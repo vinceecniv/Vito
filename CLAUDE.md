@@ -153,6 +153,16 @@ achievement's id. The wardrobe sits on the achievements page. The pill's
 a piece (`TestOutfitInStepWithPage` catches a missing one). `outfit.go`
 reads only the SVG the pieces use; a new element or attribute needs it there.
 
+## Feedback sounds
+
+`assets/sounds/*.wav` are the original cues (start, done, cancel, command,
+achievement, warn); `audio.sound_set` picks another voice from
+`assets/sounds/<set>/` (`soft`, `glass`, `retro`, `tick`), made by
+`python scripts/sounds.py`, which matches each clip's loudness to its
+original. `assets.Sound(set, cue)` falls back to the original. The browser
+version fetches the same files (`sounds/<set>/<cue>.wav`, written by
+`packaging/uibundle app`).
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.

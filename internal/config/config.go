@@ -24,8 +24,11 @@ type Audio struct {
 	InputGain     float64 `json:"input_gain"`
 	SoundsEnabled bool    `json:"sounds_enabled"`
 	SoundsVolume  float64 `json:"sounds_volume"` // feedback-sound volume 0..2 (1.0 = system level; >1 amplifies)
-	MediaAction   string  `json:"media_action"`  // what to do with playing media while dictating: duck | pause | off
-	KeepSpool     bool    `json:"keep_spool"`    // keep spool WAVs after success (debugging)
+	// SoundSet is the voice of the feedback sounds: "" the original, or one of
+	// assets.SoundSets (soft, glass, retro, tick).
+	SoundSet    string `json:"sound_set,omitempty"`
+	MediaAction string `json:"media_action"` // what to do with playing media while dictating: duck | pause | off
+	KeepSpool   bool   `json:"keep_spool"`   // keep spool WAVs after success (debugging)
 	// SilenceTimeoutSec auto-cancels a recording after this many seconds without
 	// any transcribed speech, so an accidentally-triggered session can't run
 	// unnoticed. 0 disables it.

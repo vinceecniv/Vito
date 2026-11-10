@@ -2889,6 +2889,8 @@
         <div class="card" data-sec="audio" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg><span>Feedback sounds</span></h2>
           <label class="tgl" data-help="sounds"><input type="checkbox" id="s-sounds"><span class="tr"></span> Play feedback sounds</label>
+          <label class="fld" data-help="soundset">Sound set</label>
+          <div class="accent-sel" id="soundset-sel" role="radiogroup" aria-label="Sound set"></div>
           <div class="soundtags">
             <button type="button" class="tag" data-sound="start"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Start</button>
             <button type="button" class="tag" data-sound="done"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Done</button>
@@ -4069,7 +4071,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -10972,6 +10974,7 @@ async function fillSettings() {
   fill($("s-input"), devs.input, cfg.audio.input_device);
   fill($("s-output"), devs.output, cfg.audio.output_device);
   $("s-sounds").checked = cfg.audio.sounds_enabled;
+  applySoundSet();
   { const sv = cfg.audio.sounds_volume ?? 1; $("s-svol").value = sv; $("s-svolval").textContent = Math.round(sv*100) + "%"; }
   setMediaDisplay(cfg.audio.media_action || "duck");
   $("s-silence").value = cfg.audio.silence_timeout_sec ?? 15;
@@ -11593,8 +11596,29 @@ function putInputLevel(level){ clearTimeout(inputLevelTimer); inputLevelTimer = 
   api("/api/input-level", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ level }) }).catch(e => toast(e.message, "err")), 120); }
 $("s-inputlevel").oninput = () => { const v = parseFloat($("s-inputlevel").value); $("s-inputlevelval").textContent = Math.round(v*100) + "%"; putInputLevel(v); const mt = $("mt-level"); if (mt) { mt.value = v; $("mt-levelval").textContent = Math.round(v*100) + "%"; } };
 $("s-input").addEventListener("change", () => setTimeout(loadInputLevel, 300)); // device changed → its own level
-document.querySelectorAll(".soundtags .tag").forEach(b => b.onclick = () =>
-  api("/api/play-sound?name=" + b.dataset.sound + "&volume=" + $("s-svol").value, { method: "POST" }).catch(e => toast(e.message, "err")));
+function previewSound(name, set){
+  api("/api/play-sound?name=" + name + "&set=" + encodeURIComponent(set) + "&volume=" + $("s-svol").value, { method: "POST" }).catch(e => toast(e.message, "err"));
+}
+document.querySelectorAll(".soundtags .tag").forEach(b => b.onclick = () => previewSound(b.dataset.sound, (cfg && cfg.audio.sound_set) || ""));
+/* ---- the sound set (audio.sound_set): the original, or one made by
+   scripts/sounds.py (assets.SoundSets); picking one plays its "done" ---- */
+const SOUNDSETS = [{c:"",n:"Vito default"},{c:"soft",n:"Soft"},{c:"glass",n:"Glass"},{c:"retro",n:"Retro"},{c:"tick",n:"Tick"}];
+function applySoundSet(){
+  const on = (cfg && cfg.audio.sound_set) || "";
+  document.querySelectorAll("#soundset-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === on ? "true" : "false"));
+}
+function buildSoundSetPicker(){
+  const box = $("soundset-sel"); if (!box) return;
+  const play = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  box.innerHTML = SOUNDSETS.map(o => `<button type="button" class="acc-opt" role="radio" data-code="${o.c}">${play}<span>${t(o.n)}</span></button>`).join("");
+  box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => {
+    previewSound("done", b.dataset.code);
+    if (!cfg || (cfg.audio.sound_set || "") === b.dataset.code) return;
+    cfg.audio.sound_set = b.dataset.code; applySoundSet(); autoSaveSettings();
+  });
+  applySoundSet();
+}
+buildSoundSetPicker();
 let micCountdown = null;
 function openMicTest(){
   const back = document.createElement("div"); back.className = "modal-backdrop"; back.id = "mic-modal";
@@ -13968,6 +13992,7 @@ const HELP = {
   media:{nl:"Wat er met muziek/video gebeurt terwijl je dicteert: het volume dempen (duck), pauzeren, of niets doen.",en:"What happens to music/video while you dictate: duck the volume, pause it, or do nothing."},
   silence:{nl:"Stopt een opname automatisch als er zo lang geen spraak wordt herkend — zo blijft een per ongeluk gestarte sessie niet ongemerkt doorlopen. Zet op 0 om dit uit te schakelen.",en:"Automatically stops a recording after this many seconds without recognised speech, so an accidentally started session can't keep running unnoticed. Set to 0 to disable."},
   autostop:{nl:"Rondt het dictaat vanzelf af en plakt de tekst zodra je zo lang stopt met praten — dan hoef je niet nog een keer op de sneltoets te drukken. Werkt met tik-om-te-starten; bij push-to-talk stopt loslaten zoals altijd.",en:"Finishes the dictation and inserts the text on its own once you pause for this long, so you don't need a second keypress. Works with tap-to-start; with push-to-talk, releasing the key still stops it as usual."},
+  soundset:{nl:"Hoe de geluidjes klinken: Vito's eigen, Zacht (warme klanken), Glas (heldere belletjes), Retro (8-bit) of Tik (kort en droog, het minst opvallend). Klik er een om hem te horen.",en:"How the sounds sound: Vito's own, Soft (warm tones), Glass (bright bells), Retro (8-bit) or Tick (short and dry, the least noticeable). Click one to hear it."},
   sounds:{nl:"Speel een kort geluidje bij het starten, stoppen en annuleren van een opname.",en:"Play a short sound when a recording starts, stops or is cancelled."},
   svol:{nl:"Hoe hard de feedbackgeluidjes klinken, los van je systeemvolume.",en:"How loud the feedback sounds are, independent of your system volume."},
   lang:{nl:"De taal die je inspreekt. 'Automatisch' laat de dienst de taal zelf detecteren.",en:"The language you speak. 'Automatic' lets the service detect the language itself."},
