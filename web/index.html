@@ -1831,6 +1831,7 @@
   .lr-doc.lr-hasaudio .lr-ts { cursor:var(--cur-hand); border-radius:6px; align-self:start; padding:4px 4px 2px; margin:-0px -4px 0; }
   .lr-doc.lr-hasaudio .lr-ts:hover { color:var(--accent); background:var(--accent-soft); }
   .lr-doc.lr-hasaudio .lr-ts:hover::before { content:"▶ "; font-size:9px; }
+  .lr-doc.lr-hasaudio .lr-p span[data-t] { cursor:var(--cur-hand); }
   .lr-doc.lr-playing .lr-p span[data-t], .lr-doc.lr-playing .lr-p mark[data-t] { cursor:var(--cur-hand); }
   .lr-spk { display:block; font-size:12.5px; font-weight:650; color:var(--spk, var(--accent)); margin:0 0 2px; cursor:var(--cur-hand); width:fit-content; }
   .lr-spk:hover { text-decoration:underline; }
@@ -12541,11 +12542,31 @@ $("lr-doc-text").addEventListener("click", e => {
   if (!$("lr-doc-view").classList.contains("lr-hasaudio") || String(getSelection()).trim()) return;
   const ts = e.target.closest(".lr-ts");
   if (ts) { lrPlayAt(+ts.dataset.at); return; }
-  // While listening, a sentence (not a mark, which opens its own card) jumps there.
-  if (lrAudio.paused || LR.audioFor !== LR.docID) return;
+  // A word (not in a mark, which opens its own card) plays from there.
   const s = e.target.closest("span[data-t]");
-  if (s) lrPlayAt(+s.dataset.t);
+  if (s) lrPlayAt(lrWordTime(s, e));
 });
+// lrWordTime estimates when the clicked word is spoken. Only sentences carry
+// a time, so a word is placed by how far into its sentence it sits, between
+// that sentence's start and the next one's — the way the daemon times
+// sentences within a block — and playback starts a moment before it.
+function lrWordTime(span, e){
+  const start = +span.dataset.t, text = span.textContent;
+  const all = [...$("lr-doc-text").querySelectorAll("[data-t]")];
+  const nxt = all[all.indexOf(span) + 1];
+  const end = nxt ? +nxt.dataset.t : (LR.doc?.meta?.seconds || start);
+  let off = 0;
+  if (document.caretPositionFromPoint) {
+    const p = document.caretPositionFromPoint(e.clientX, e.clientY);
+    if (p && span.contains(p.offsetNode)) off = p.offset;
+  } else if (document.caretRangeFromPoint) {
+    const r = document.caretRangeFromPoint(e.clientX, e.clientY);
+    if (r && span.contains(r.startContainer)) off = r.startOffset;
+  }
+  while (off > 0 && !/\s/.test(text[off - 1])) off--; // the word's first letter
+  if (!off || end <= start || !text.length) return start;
+  return Math.max(start, start + (end - start) * off / text.length - 0.4);
+}
 document.addEventListener("keydown", e => {
   if (e.key !== " " || LR.view !== "doc" || $("lr-player").hidden) return;
   if (e.target.closest("input, textarea, select, button, [contenteditable]") || document.querySelector(".modal-backdrop")) return;
