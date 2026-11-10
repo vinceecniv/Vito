@@ -16,6 +16,7 @@ var ErrNiriManual = errors.New("change the niri config by hand")
 // NiriCaps describes Caps Lock in a niri session; State is "" elsewhere.
 type NiriCaps struct {
 	State  string `json:"state"`            // on | off | partial
+	Mode   string `json:"mode,omitempty"`   // "toggle": a niri without press/release binds
 	Path   string `json:"path,omitempty"`   // the config file
 	Manual string `json:"manual,omitempty"` // why Vito cannot change it itself
 }
