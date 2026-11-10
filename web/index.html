@@ -1726,13 +1726,13 @@
     background:transparent; border-color:transparent; box-shadow:none; backdrop-filter:none; }
   /* A fixed height: left to the width, Vito grew with the card (nearly 600px
      tall at three cells). */
-  .mascot-card .vm-acts { position:absolute; top:8px; left:8px; z-index:3; display:flex; flex-direction:column; gap:6px; opacity:0; transition:opacity .15s; }
+  .mascot-card .vm-acts { position:absolute; top:6px; left:6px; z-index:3; display:flex; flex-direction:column; gap:4px; opacity:0; transition:opacity .15s; }
   .mascot-card:hover .vm-acts, .mascot-card .vm-acts:focus-within { opacity:1; }
   @media (hover:none) { .mascot-card .vm-acts { opacity:1; } }
-  .vm-act { display:inline-flex; align-items:center; gap:6px; padding:5px 10px 5px 8px; border-radius:999px; border:1px solid var(--card-border);
-    background:var(--card); color:var(--text2); font:inherit; font-size:12px; font-weight:600; cursor:var(--cur-hand); box-shadow:0 2px 8px rgba(0,0,0,.08); }
+  .vm-act { display:flex; align-items:center; justify-content:center; width:24px; height:24px; padding:0; border-radius:7px; border:1px solid var(--card-border);
+    background:var(--card); color:var(--text2); cursor:var(--cur-hand); }
   .vm-act:hover { color:var(--accent); border-color:var(--accent); }
-  .vm-act svg { width:15px; height:15px; flex:none; }
+  .vm-act svg { width:14px; height:14px; flex:none; }
   .statgrid.dragging .vm-acts { display:none; }
   .vm-full-ov { position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center;
     background:radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--violet-l) 22%, var(--bg)), var(--bg) 70%); animation:vmFullIn .25s ease; }
@@ -7704,8 +7704,8 @@ vmFollow($("mascot-card"), $("mascot-card").querySelector(".vmascot"));
   const ICON_FULL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
   const box = document.createElement("div");
   box.className = "vm-acts";
-  box.innerHTML = `<button type="button" class="vm-act" id="vm-dress">${ICON_HANGER}<span>${t("Dress up")}</span></button>` +
-    `<button type="button" class="vm-act" id="vm-full">${ICON_FULL}<span>${t("Full screen")}</span></button>`;
+  box.innerHTML = `<button type="button" class="vm-act" id="vm-dress" aria-label="${t("Dress up")}" data-tip-text="${t("Dress up")}">${ICON_HANGER}</button>` +
+    `<button type="button" class="vm-act" id="vm-full" aria-label="${t("Full screen")}" data-tip-text="${t("Full screen")}">${ICON_FULL}</button>`;
   card.appendChild(box);
   $("vm-dress").onclick = () => { selectTab("achievements"); setTimeout(() => { const w = $("vm-wardrobe"); if (w) w.scrollIntoView({ behavior:"smooth", block:"start" }); }, 80); };
   $("vm-full").onclick = vmFullscreen;
