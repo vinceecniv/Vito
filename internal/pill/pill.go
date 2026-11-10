@@ -359,6 +359,7 @@ func (p *pill) dark() bool {
 	setAccent(p.d.Config().UI.Accent) // read with the theme, before every picture
 	setFont(p.d.Config().UI.Font)
 	setOutfit(p.d.Config().UI.Outfit)
+	setRadius(p.d.Config().UI.Radius)
 	switch p.d.Config().UI.Theme {
 	case "dark":
 		return true

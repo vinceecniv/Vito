@@ -190,8 +190,9 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 	if a <= 0 {
 		return
 	}
-	shadow(buf, w, h, cx, cy+1.5*s, cw, ch, 10*s, th.shadow*a)
-	box(buf, w, h, cx, cy, cw, ch, ch, th.body, 0.96*a)
+	cr := corner(ch, s)
+	shadowR(buf, w, h, cx, cy+1.5*s, cw, ch, cr, 10*s, th.shadow*a)
+	box(buf, w, h, cx, cy, cw, ch, cr, th.body, 0.96*a)
 	if c.kind == cardAchievement {
 		// A celebration: a gradient in the brand's colours and gold runs
 		// round the edge, with a soft glow of the same colours outside it.
@@ -199,7 +200,7 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 		spinRing(buf, w, h, cx, cy, cw, ch, t, th, party*0.28, 3.2*s, 3.2*s)
 		spinRing(buf, w, h, cx, cy, cw, ch, t, th, party, 1.6*s, 0)
 	} else {
-		ring(buf, w, h, cx, cy, cw, ch, th.edge, 0.22*a, 0.5*s)
+		ringR(buf, w, h, cx, cy, cw, ch, cr, th.edge, 0.22*a, 0.5*s)
 	}
 
 	// The content once there is room for it, from the left edge of the card.
@@ -254,8 +255,9 @@ func spinRing(buf []byte, w, h int, cx, cy, hw, hh, t float64, th theme, a, thic
 	gold := hex(0xFFC94D)
 	stops := [...]rgb{th.from, gold, th.to, th.from}
 	turn := t / spinTurn * 2 * math.Pi
+	r := corner(hh, float64(w)/surfaceW)
 	eachPixel(w, h, cx, cy, hw+out+thick+1, hh+out+thick+1, func(x, y int, px, py float64) {
-		d := roundBox(px-cx, py-cy, hw, hh, hh) - out
+		d := roundBox(px-cx, py-cy, hw, hh, r) - out
 		var cover float64
 		if out > 0 {
 			cover = clamp(1 - math.Abs(d)/thick) // a soft band, strongest on the edge

@@ -335,7 +335,7 @@ func (ip *islandPainter) drawFull(buf []byte, st islandState) {
 	pw, ph := mix(52, panelW, e), mix(20, st.ph, e)
 	bottom := mix(islandMarkY+10, panelFoot, e)
 	pcy := bottom - ph/2
-	r := mix(10, 22, e)
+	r := corner(mix(10, 22, e)*s, s) / s
 	shadowR(buf, w, h, cx, (pcy+2)*s, pw*s/2, ph*s/2, r*s, 14*s, th.shadow*1.3*clamp(st.open*2))
 	box(buf, w, h, cx, pcy*s, pw*s/2, ph*s/2, r*s, th.body, 0.97)
 	ringR(buf, w, h, cx, pcy*s, pw*s/2, ph*s/2, r*s, th.edge, 0.22, 0.5*s)
@@ -913,7 +913,7 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 		c := muted
 		if chosen {
 			fill(buf, w, h, rect{r.x + 2, r.y + 2, r.w - 4, r.h - 4}, 10, th.body, a)
-			ringR(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, (r.w/2-2)*s, (r.h/2-2)*s, 10*s, th.edge, 0.25*a, 0.5*s)
+			ringR(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, (r.w/2-2)*s, (r.h/2-2)*s, corner(10*s, s), th.edge, 0.25*a, 0.5*s)
 			c = th.to
 		} else if st.over == tg {
 			c = ink
@@ -986,9 +986,10 @@ func (ip *islandPainter) mic(buf []byte, w, h int, th theme, st islandState) {
 		if st.over == tMic {
 			lit = 0.12
 		}
-		shadow(buf, w, h, cx, cy+1.5*s, r*s, r*s, 6*s, th.shadow*e)
+		rr := corner(r*s, s)
+		shadowR(buf, w, h, cx, cy+1.5*s, r*s, r*s, rr, 6*s, th.shadow*e)
 		eachPixel(w, h, cx, cy, r*s+1, r*s+1, func(x, y int, px, py float64) {
-			d := math.Hypot(px-cx, py-cy) - r*s
+			d := roundBox(px-cx, py-cy, r*s, r*s, rr)
 			t := clamp((px - (cx - r*s)) / (2 * r * s))
 			c := blend(blend(th.from, th.to, t), rgb{1, 1, 1}, lit)
 			put(buf, w, x, y, c, e*clamp(0.5-d))
@@ -1006,7 +1007,7 @@ func (ip *islandPainter) iconButton(buf []byte, th theme, st islandState, tg tar
 	cx, cy := (r.x+r.w/2)*s, (r.y+r.h/2)*s
 	c := mutedFor(st.dark)
 	if st.over == tg {
-		box(buf, w, h, cx, cy, r.w*s/2, r.h*s/2, r.h*s/2, blend(tint, th.to, 0.08), a)
+		box(buf, w, h, cx, cy, r.w*s/2, r.h*s/2, corner(r.h*s/2, s), blend(tint, th.to, 0.08), a)
 		c = th.to
 	}
 	icon(cx, cy, c, a)
@@ -1184,7 +1185,7 @@ func mutedFor(dark bool) rgb {
 // fill paints a rounded rectangle given in logical pixels.
 func fill(buf []byte, w, h int, r rect, radius float64, c rgb, a float64) {
 	s := float64(scale)
-	box(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, r.w*s/2, r.h*s/2, radius*s, c, a)
+	box(buf, w, h, (r.x+r.w/2)*s, (r.y+r.h/2)*s, r.w*s/2, r.h*s/2, corner(radius*s, s), c, a)
 }
 
 // repasteIcon is a round arrow going back around.
@@ -1209,19 +1210,20 @@ func repasteIcon(buf []byte, w, h int, cx, cy, s float64, c rgb, a float64) {
 func switchIcon(buf []byte, w, h int, cx, cy, s float64, on bool, th theme, dark bool, a float64) {
 	tw, tr := 15*s, 9*s
 	track := blend(th.body, inkFor(dark), 0.18)
+	tc, kc := corner(tr, s), corner(tr-2*s, s)
 	if on {
 		eachPixel(w, h, cx, cy, tw+1, tr+1, func(x, y int, px, py float64) {
 			c := blend(th.from, th.to, clamp((px-(cx-tw))/(2*tw)))
-			put(buf, w, x, y, c, a*clamp(0.5-roundBox(px-cx, py-cy, tw, tr, tr)))
+			put(buf, w, x, y, c, a*clamp(0.5-roundBox(px-cx, py-cy, tw, tr, tc)))
 		})
 	} else {
-		box(buf, w, h, cx, cy, tw, tr, tr, track, a)
+		box(buf, w, h, cx, cy, tw, tr, tc, track, a)
 	}
 	kx := cx - tw + tr
 	if on {
 		kx = cx + tw - tr
 	}
-	box(buf, w, h, kx, cy, tr-2*s, tr-2*s, tr-2*s, rgb{1, 1, 1}, a)
+	box(buf, w, h, kx, cy, tr-2*s, tr-2*s, kc, rgb{1, 1, 1}, a)
 }
 
 // styleIcon is the little picture of a pill style in the segmented control.

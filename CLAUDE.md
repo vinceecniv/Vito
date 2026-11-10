@@ -112,7 +112,8 @@ live on their own settings tab, Appearance (`data-sec="appearance"`).
 `ui.radius` ("", `minimal`, `none`) sets `data-radius` on `<html>`: one
 `!important` override caps every element's corners at 3px or squares them,
 so new CSS needs no part in it (`.spinner` and the picker's `.rad-sw` are
-left out).
+left out). The pill, its cards and the island cap their surfaces the same
+way (`corner()` in `internal/pill/corners.go`); icons keep their shapes.
 
 ## Typefaces
 

@@ -65,9 +65,10 @@ func DrawLongChip(buf []byte, w, h int, dark bool, presence, hover float64, paus
 	}
 	grow := 1 + 0.06*e
 	hw, hh := (tw+30)*s/2*grow, 10*s*grow
-	shadow(buf, w, h, cx, cy+1*s, hw, hh, 6*s, th.shadow*a)
-	box(buf, w, h, cx, cy, hw, hh, hh, th.body, 0.96*a)
-	ring(buf, w, h, cx, cy, hw, hh, th.edge, (0.25+0.3*e)*a, 0.5*s)
+	r := corner(hh, s)
+	shadowR(buf, w, h, cx, cy+1*s, hw, hh, r, 6*s, th.shadow*a)
+	box(buf, w, h, cx, cy, hw, hh, r, th.body, 0.96*a)
+	ringR(buf, w, h, cx, cy, hw, hh, r, th.edge, (0.25+0.3*e)*a, 0.5*s)
 	dx := cx - hw + 11*s
 	recDot(buf, w, h, dx, cy, s, paused, a)
 	if clock == nil {

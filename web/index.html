@@ -464,7 +464,7 @@
   /* ---- corners (ui.radius): the page's own radii, or all of them capped at
      3px ("minimal") or square ("none"). One override for every element, so
      nothing has to know; spinners stay round, the picker's samples show
-     their own. The pill and the island keep theirs. ---- */
+     their own. The pill draws the same (internal/pill/corners.go). ---- */
   :root[data-radius="minimal"] *:not(.spinner):not(.rad-sw), :root[data-radius="minimal"] ::before, :root[data-radius="minimal"] ::after { border-radius:3px !important; }
   :root[data-radius="none"] *:not(.spinner):not(.rad-sw), :root[data-radius="none"] ::before, :root[data-radius="none"] ::after { border-radius:0 !important; }
   .rad-sw { width:18px; height:18px; flex:none; border:2px solid var(--text2); border-right:0; border-bottom:0; margin:6px 0 0 6px; }
