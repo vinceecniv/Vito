@@ -90,11 +90,19 @@
     --bar:#322B42;
     --selection:color-mix(in srgb, var(--violet-l) 34%, transparent);
   }
-  [data-accent="ocean"] { --coral:#05D7C9; --violet:#6462FE; --violet-l:#A5A4FF; --coral-l:#10B4FF; --acc-l:#2B1260; --acc-d:#A5A4FF; --ink-l:#00897F;
+  [data-accent="ocean"] { --coral:#05D7C9; --violet:#6462FE; --violet-l:#A5A4FF; --coral-l:#10B4FF; --acc-l:#2B1260; --acc-d:#A5A4FF; --ink-l:#007A71;
     --grad:linear-gradient(135deg,#05D7C9,#10B4FF 30%,#6462FE 68%,#2B1260); }
   /* The original pair, for its swatch in the picker inside another theme. */
   [data-accent="coral"] { --coral:#FF6B5E; --violet:#7C3AED; }
-  /* Ocean: dark surfaces in its deep purple (#2B1260). */
+  /* Ocean (Vocas): light surfaces tinted with its indigo, text in its deep
+     purple; dark surfaces in that deep purple (#2B1260). */
+  :root:not([data-theme="dark"])[data-accent="ocean"] {
+    --bg:#F2F4FF; --sidebar:#FFFFFF; --sidebar-border:#E0E3F7;
+    --card:#FFFFFF; --card-border:#E0E3F7;
+    --input-bg:#F5F6FF; --input-border:#D6DAF2;
+    --text:#2B1260; --text2:#4B4380; --text3:#5C5590; --placeholder:#A9A6CF;
+    --toggle-off:#CFD3EE; --track:#E3E6F7; --bar:#E3E6F7;
+  }
   :root[data-theme="dark"][data-accent="ocean"] {
     --bg:#0F0B24; --sidebar:#130E2C; --sidebar-border:#261E4A;
     --card:#18123A; --card-border:#2B2257;
