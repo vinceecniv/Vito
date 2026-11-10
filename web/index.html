@@ -623,7 +623,6 @@
   .rs-pop .rs-foot button:hover { text-decoration:underline; }
   /* The dictation state (idle, recording, processing) sits beside the live
      transcript title, where the dictating happens. */
-  #transcript-card h2 #statuspill { margin-left:10px; font-size:11.5px; }
   .pill .dot { width:8px; height:8px; border-radius:99px; background:var(--text3); }
   .pill.recording .dot { background:var(--danger); animation:pulse 1s infinite; }
   .pill.processing .dot { background:var(--violet); animation:pulse 1.6s infinite; }
@@ -2715,7 +2714,7 @@
           <div class="weekwrap" id="weekchart"></div>
         </div>
         <div class="card" id="transcript-card">
-          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 11h12M4 16h8"/></svg><span>Live transcript</span><span class="pill" id="statuspill"><span class="dot"></span><span id="statuslbl">idle</span></span>
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 11h12M4 16h8"/></svg><span>Live transcript</span>
             <span class="h2-btns">
               <button class="h2-btn hover-only" id="btn-play-audio" data-tip-text="Play the recording of this dictation" aria-label="Play recording" hidden></button>
               <button class="h2-btn hover-only" id="btn-upload" data-tip-text="Upload an audio file and have it transcribed" aria-label="Upload audio file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9m0 0 4 4m-4-4-4 4"/><path d="M5 5h14"/></svg></button>
@@ -6368,9 +6367,8 @@ fitSetTabs();
 /* ---- live state ---- */
 function setState(state) {
   if (state === "processing") markCommandReceived();
-  const pill = $("statuspill"), lbl = $("statuslbl");
-  lbl.textContent = t({ idle: "idle", recording: "recording", processing: "processing" }[state] || state);
-  pill.className = "pill " + (state === "recording" || state === "processing" ? state : "");
+  // The state shows in the button, the meter, the mascot and the pill; the
+  // card's own idle/recording label was one too many.
   const bt = $("btn-toggle");
   if (state === "recording") { bt.innerHTML = ICON_STOP + " " + t("Stop"); bt.disabled = false; }
   else if (state === "processing") { bt.textContent = t("Processing…"); bt.disabled = true; }
