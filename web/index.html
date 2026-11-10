@@ -2541,6 +2541,7 @@
             <div class="flagsel-list" id="uilang-list"></div>
           </div>
           <label class="tgl" data-help="helptips"><input type="checkbox" id="s-helptips"><span class="tr"></span> Show help tips on hover</label>
+          <label class="tgl" data-help="cursor"><input type="checkbox" id="s-cursor"><span class="tr"></span> Vito mouse cursor</label>
         </div>
         <div class="card" data-sec="general" id="set-system">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg><span>System</span></h2>
@@ -3762,6 +3763,7 @@ const TR = { nl: {
   "Details":"Details",
   "That dictation is no longer in the history.":"Dat dictaat staat niet meer in de geschiedenis.",
   "Show help tips on hover":"Help-tips tonen bij mouse-over",
+  "Vito mouse cursor":"Vito-muiscursor",
   "All Linux info & tools":"Alle Linux-info & tools",
   "AssemblyAI API key":"AssemblyAI API-key",
   "AI cleanup":"AI-opschoning",
@@ -4720,10 +4722,14 @@ function buildFontPicker(){
 }
 applyFont();
 var cursorStyle; // made once cursorCSS exists
+// The system's own cursors, when the Vito ones are switched off.
+const plainCursorCSS = `:root{--cur-arrow:default;--cur-hand:pointer;--cur-text:text;--cur-grab:grab;--cur-grabbing:grabbing}
+a[href],button:not(:disabled),select,summary,label[for],[role="button"]{cursor:pointer}`;
+let vitoCursor = (() => { try { return localStorage.getItem("vito-cursor") !== "0"; } catch { return true; } })(); // default on
 function applyCursors(){
   if (!cursorStyle) return;
   const c = accentHex();
-  const css = cursorCSS(c.from, c.to);
+  const css = vitoCursor ? cursorCSS(c.from, c.to) : plainCursorCSS;
   if (cursorStyle.textContent !== css) cursorStyle.textContent = css;
 }
 let themingTimer;
@@ -13277,6 +13283,7 @@ tagReveals();
 const HELP = {
   font:{nl:"Het lettertype van Vito, ook in de pil als je Systeem kiest. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill too when you choose System. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},
   accent:{nl:"De kleuren van Vito: de knoppen, het verloop, de pil en de mascotte. Rood voor fouten en opnemen blijft rood.",en:"Vito's colours: the buttons, the gradient, the pill and the mascot. Red for errors and recording stays red."},
+  cursor:{nl:"De muiswijzer in Vito's kleuren, met het logo in de hand. Uit: de gewone muiswijzer van je systeem.",en:"The mouse pointer in Vito's colours, with the logo in its hand. Off: your system's usual pointer."},
   helptips:{nl:"Ja, dit is er een. Uit: geen uitleg meer als je even boven een instelling blijft hangen — deze ook niet.",en:"Yes, this is one. Off: no more explanations when you linger over a setting — this one included."},
   theme:{nl:"Licht, donker of automatisch — automatisch volgt de licht/donker-stand van je systeem.",en:"Light, dark or automatic — automatic follows your system's light/dark setting."},
   uilang:{nl:"De taal van deze app-interface. 'Automatisch' gebruikt je systeemtaal (anders Engels).",en:"The language of this app interface. 'Automatic' uses your OS language (English otherwise)."},
@@ -13421,6 +13428,14 @@ $("s-helptips").addEventListener("change", (e) => {
   localStorage.setItem("vito-help-tips", helpTipsEnabled ? "1" : "0");
   document.documentElement.classList.toggle("no-helptips", !helpTipsEnabled);
   if (!helpTipsEnabled) hideHelp();
+});
+
+// Vito's own mouse cursor (client-side preference, default on).
+$("s-cursor").checked = vitoCursor;
+$("s-cursor").addEventListener("change", (e) => {
+  vitoCursor = e.target.checked;
+  try { localStorage.setItem("vito-cursor", vitoCursor ? "1" : "0"); } catch {}
+  applyCursors();
 });
 
 // Application zoom (client-side preference), adjustable up/down from 100%.
