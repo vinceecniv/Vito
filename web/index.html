@@ -66,22 +66,10 @@
     --bar:#322B42;
     --selection:color-mix(in srgb, var(--violet-l) 34%, transparent);
   }
-  [data-accent="sunset"] { --coral:#F7A21B; --violet:#E11D48; --violet-l:#FDA4AF; --coral-l:#FCC56B; --acc-l:#BE123C; --acc-d:#FDA4AF; --ink-l:#B45309; }
-  [data-accent="forest"] { --coral:#7CB342; --violet:#0F766E; --violet-l:#5EEAD4; --coral-l:#C5E57A; --acc-l:#0F766E; --acc-d:#5EEAD4; --ink-l:#4D7C0F; }
-  [data-accent="plum"] { --coral:#E8B04B; --violet:#6D2E5B; --violet-l:#E7A9CF; --coral-l:#F2CD85; --acc-l:#6D2E5B; --acc-d:#EDB8D8; --ink-l:#8A5A06; }
   [data-accent="ocean"] { --coral:#05D7C9; --violet:#6462FE; --violet-l:#A5A4FF; --coral-l:#10B4FF; --acc-l:#2B1260; --acc-d:#A5A4FF; --ink-l:#00897F;
     --grad:linear-gradient(135deg,#05D7C9,#10B4FF 30%,#6462FE 68%,#2B1260); }
-  [data-accent="graphite"] { --coral:#94A3B8; --violet:#334155; --violet-l:#CBD5E1; --coral-l:#B6C2D2; --acc-l:#334155; --acc-d:#CBD5E1; --ink-l:#475569; }
   /* The original pair, for its swatch in the picker inside another theme. */
   [data-accent="coral"] { --coral:#FF6B5E; --violet:#7C3AED; }
-  /* The dark surfaces lean violet; the cooler themes get neutral ones. */
-  :root[data-theme="dark"]:is([data-accent="forest"],[data-accent="graphite"]) {
-    --bg:#13161B; --sidebar:#171B21; --sidebar-border:#262C35;
-    --card:#1C2129; --card-border:#2B323D;
-    --input-bg:#222833; --input-border:#343C49;
-    --text:#EEF1F5; --text2:#A3ADBB; --text3:#8C96A4; --placeholder:#525B68;
-    --toggle-off:#343C49; --track:#343C49; --bar:#2B323D;
-  }
   /* Ocean: dark surfaces in its deep purple (#2B1260). */
   :root[data-theme="dark"][data-accent="ocean"] {
     --bg:#0F0B24; --sidebar:#130E2C; --sidebar-border:#261E4A;
@@ -190,9 +178,88 @@
     --text:#DCD7BA; --text2:#C8C093; --text3:#A6A69C; --placeholder:#727169;
     --toggle-off:#363646; --track:#2A2A37; --bar:#2A2A37;
   }
-  /* Graphite's and Plum's cool ends are too dark to read as a fill on a dark surface. */
-  :root[data-theme="dark"][data-accent="graphite"] { --violet:#64748B; }
-  :root[data-theme="dark"][data-accent="plum"] { --violet:#A2477F; }
+  /* More community schemes: Ristretto is Monokai Pro Ristretto with Monokai
+     Pro Light, Dracula has Alucard as its light side. */
+  [data-accent="everforest"] { --coral:#A7C080; --violet:#35A77C; --violet-l:#83C092; --coral-l:#DBBC7F; --acc-l:#276E52; --acc-d:#A7C080; --ink-l:#5A6E00;
+    --grad:linear-gradient(135deg,#DBBC7F,#A7C080 40%,#35A77C); }
+  :root:not([data-theme="dark"])[data-accent="everforest"] {
+    --bg:#EFEBD4; --sidebar:#FDF6E3; --sidebar-border:#E0DCC7;
+    --card:#FDF6E3; --card-border:#E0DCC7;
+    --input-bg:#F4F0D9; --input-border:#E0DCC7;
+    --text:#4A555B; --text2:#56636A; --text3:#5A6862; --placeholder:#A6B0A0;
+    --toggle-off:#E0DCC7; --track:#E6E2CC; --bar:#E6E2CC;
+  }
+  :root[data-theme="dark"][data-accent="everforest"] {
+    --bg:#232A2E; --sidebar:#232A2E; --sidebar-border:#343F44;
+    --card:#2D353B; --card-border:#3D484D;
+    --input-bg:#343F44; --input-border:#475258;
+    --text:#D3C6AA; --text2:#C0B8A0; --text3:#A3AFA6; --placeholder:#7A8478;
+    --toggle-off:#475258; --track:#3D484D; --bar:#3D484D;
+  }
+  [data-accent="ristretto"] { --coral:#F38D70; --violet:#D65A73; --violet-l:#FD6883; --coral-l:#F9CC6C; --acc-l:#AE3A52; --acc-d:#F38D70; --ink-l:#A6461C;
+    --grad:linear-gradient(135deg,#F9CC6C,#F38D70 40%,#D65A73); }
+  :root:not([data-theme="dark"])[data-accent="ristretto"] {
+    --bg:#F2EAE6; --sidebar:#FAF4F2; --sidebar-border:#E3D9D5;
+    --card:#FAF4F2; --card-border:#E3D9D5;
+    --input-bg:#F4EDEA; --input-border:#DCD1CC;
+    --text:#2C2525; --text2:#5B5353; --text3:#655B5C; --placeholder:#A89D9E;
+    --toggle-off:#DCD1CC; --track:#EDE4E0; --bar:#EDE4E0;
+  }
+  :root[data-theme="dark"][data-accent="ristretto"] {
+    --bg:#211C1C; --sidebar:#211C1C; --sidebar-border:#403838;
+    --card:#2C2525; --card-border:#403838;
+    --input-bg:#352E2E; --input-border:#4F4646;
+    --text:#FFF1F3; --text2:#C3B7B8; --text3:#ACA0A1; --placeholder:#72696A;
+    --toggle-off:#4F4646; --track:#403838; --bar:#403838;
+  }
+  [data-accent="solarized"] { --coral:#2AA198; --violet:#6C71C4; --violet-l:#9EA2E0; --coral-l:#B58900; --acc-l:#1A6399; --acc-d:#58A9E0; --ink-l:#17736C;
+    --grad:linear-gradient(135deg,#2AA198,#268BD2 50%,#6C71C4); }
+  :root:not([data-theme="dark"])[data-accent="solarized"] {
+    --bg:#EEE8D5; --sidebar:#FDF6E3; --sidebar-border:#E4DCC4;
+    --card:#FDF6E3; --card-border:#E4DCC4;
+    --input-bg:#F5EFDC; --input-border:#DDD5BD;
+    --text:#073642; --text2:#4A5F66; --text3:#4F646B; --placeholder:#93A1A1;
+    --toggle-off:#DDD5BD; --track:#E4DCC4; --bar:#E4DCC4;
+  }
+  :root[data-theme="dark"][data-accent="solarized"] {
+    --bg:#002B36; --sidebar:#00252F; --sidebar-border:#073642;
+    --card:#073642; --card-border:#0E4552;
+    --input-bg:#0A3D4A; --input-border:#155060;
+    --text:#EEE8D5; --text2:#A9B5B5; --text3:#9AA8A8; --placeholder:#586E75;
+    --toggle-off:#155060; --track:#0E4552; --bar:#0E4552;
+  }
+  [data-accent="flexoki"] { --coral:#DA702C; --violet:#205EA6; --violet-l:#4385BE; --coral-l:#D0A215; --acc-l:#205EA6; --acc-d:#5C97CB; --ink-l:#A44610;
+    --grad:linear-gradient(135deg,#DA702C,#CE5D97 45%,#205EA6); }
+  :root:not([data-theme="dark"])[data-accent="flexoki"] {
+    --bg:#F2F0E5; --sidebar:#FFFCF0; --sidebar-border:#E6E4D9;
+    --card:#FFFCF0; --card-border:#E6E4D9;
+    --input-bg:#F2F0E5; --input-border:#DAD8CE;
+    --text:#100F0F; --text2:#403E3C; --text3:#62615C; --placeholder:#B7B5AC;
+    --toggle-off:#CECDC3; --track:#E6E4D9; --bar:#E6E4D9;
+  }
+  :root[data-theme="dark"][data-accent="flexoki"] {
+    --bg:#100F0F; --sidebar:#100F0F; --sidebar-border:#282726;
+    --card:#1C1B1A; --card-border:#282726;
+    --input-bg:#282726; --input-border:#403E3C;
+    --text:#CECDC3; --text2:#B7B5AC; --text3:#9F9D96; --placeholder:#575653;
+    --toggle-off:#403E3C; --track:#282726; --bar:#282726;
+  }
+  [data-accent="dracula"] { --coral:#FF79C6; --violet:#8B6CEF; --violet-l:#BD93F9; --coral-l:#FF92D0; --acc-l:#644AC9; --acc-d:#BD93F9; --ink-l:#A3144D;
+    --grad:linear-gradient(135deg,#FF79C6,#9D79F0 55%,#6272A4); }
+  :root:not([data-theme="dark"])[data-accent="dracula"] {
+    --bg:#F4F0DE; --sidebar:#FFFBEB; --sidebar-border:#E6E1CF;
+    --card:#FFFBEB; --card-border:#E6E1CF;
+    --input-bg:#F7F3E3; --input-border:#DCD7C6;
+    --text:#1F1F1F; --text2:#4A4770; --text3:#5A5490; --placeholder:#A8A4C4;
+    --toggle-off:#CFCFDE; --track:#E6E1CF; --bar:#E6E1CF;
+  }
+  :root[data-theme="dark"][data-accent="dracula"] {
+    --bg:#21222C; --sidebar:#191A21; --sidebar-border:#343746;
+    --card:#282A36; --card-border:#3A3D4E;
+    --input-bg:#343746; --input-border:#44475A;
+    --text:#F8F8F2; --text2:#C9CBDB; --text3:#9AA3C9; --placeholder:#6272A4;
+    --toggle-off:#44475A; --track:#343746; --bar:#343746;
+  }
   * { box-sizing:border-box; }
   /* Form controls don't inherit font-family by default — the browser gives
      button/input/select/textarea a UA font (Arial/Liberation Sans on Linux),
@@ -3636,7 +3703,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Coral & violet":"Koraal & paars","Ocean":"Oceaan","Sunset":"Zonsondergang","Forest":"Bos","Plum":"Pruim","Graphite":"Grafiet",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Vito default":"Vito standaard","Ocean":"Oceaan",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -4527,7 +4594,7 @@ function applyTheme(){
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
    palettes in the CSS (:root[data-accent]); cached like the theme ---- */
-const ACCENTS = [{c:"",n:"Coral & violet"},{c:"ocean",n:"Ocean"},{c:"sunset",n:"Sunset"},{c:"forest",n:"Forest"},{c:"plum",n:"Plum"},{c:"graphite",n:"Graphite"},{c:"catppuccin",n:"Catppuccin",b:1},{c:"tokyo-night",n:"Tokyo Night",b:1},{c:"nord",n:"Nord",b:1},{c:"gruvbox",n:"Gruvbox",b:1},{c:"rose-pine",n:"Rosé Pine",b:1},{c:"kanagawa",n:"Kanagawa",b:1}];
+const ACCENTS = [{c:"",n:"Vito default"},{c:"ocean",n:"Ocean"},{c:"catppuccin",n:"Catppuccin",b:1},{c:"tokyo-night",n:"Tokyo Night",b:1},{c:"nord",n:"Nord",b:1},{c:"gruvbox",n:"Gruvbox",b:1},{c:"rose-pine",n:"Rosé Pine",b:1},{c:"kanagawa",n:"Kanagawa",b:1},{c:"everforest",n:"Everforest",b:1},{c:"ristretto",n:"Ristretto",b:1},{c:"solarized",n:"Solarized",b:1},{c:"flexoki",n:"Flexoki",b:1},{c:"dracula",n:"Dracula",b:1}];
 let accentPref = localStorage.getItem("vito-accent") || "";
 function applyAccent(){
   const root = document.documentElement;
@@ -6761,7 +6828,7 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color])
 textarea,[contenteditable="true"],[contenteditable=""]{cursor:var(--cur-text)}
 a[href],button:not(:disabled),select,summary,label[for],[role="button"]{cursor:var(--cur-hand)}`;
 };
-// Redrawn when the colour theme (or, for Graphite, light/dark) changes.
+// Redrawn when the colour theme or light/dark changes.
 cursorStyle = document.createElement("style"); document.head.appendChild(cursorStyle);
 applyCursors();
 // Command mode: while a spoken command ("Vito, vertaal naar Duits") is armed,
