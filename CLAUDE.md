@@ -102,7 +102,7 @@ changes. Canvases and the cursor images read the colours with `accentHex()` /
 ## Backgrounds
 
 `ui.backdrop` ("" plain; `gradient`, `aurora`, `sunrise`, `waves`, `bubbles`,
-`grid`, `dots`, `stripes`, `ripples`, `confetti`) sets `data-backdrop` on
+`grid`, `dots`, `stripes`, `ripples`, `contours`, `confetti`) sets `data-backdrop` on
 `<html>` and `data-bd` on `#backdrop`, a fixed layer behind the app. The
 `.bd[data-bd]` rules draw it from the palette tokens only (so every colour
 theme works, stronger by `--bd-k` on dark) and also draw the picker's swatches,
