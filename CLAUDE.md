@@ -99,6 +99,17 @@ changes. Canvases and the cursor images read the colours with `accentHex()` /
 `trGlowColors()`. The pill draws the same palettes from `internal/pill/accent.go`
 — keep the two in step.
 
+## Backgrounds
+
+`ui.backdrop` ("" plain; `gradient`, `aurora`, `sunrise`, `waves`, `bars`,
+`grid`, `dots`, `stripes`, `ripples`, `confetti`) sets `data-backdrop` on
+`<html>` and `data-bd` on `#backdrop`, a fixed layer behind the app. The
+`.bd[data-bd]` rules draw it from the palette tokens only (so every colour
+theme works, stronger by `--bd-k` on dark) and also draw the picker's swatches,
+scaled by `--u`. Only transforms animate (aurora, waves, bars), and nothing
+under reduced motion. Theme, colours, font, background and the Vito cursor
+live on their own settings tab, Appearance (`data-sec="appearance"`).
+
 ## Typefaces
 
 `ui.font` ("" Sora with Baloo 2 for headings; `system`, `inter`, `atkinson`,

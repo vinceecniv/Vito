@@ -339,6 +339,61 @@
   .acc-opt:hover { border-color:var(--text3); color:var(--text); }
   .acc-opt[aria-checked="true"] { border-color:var(--accent); color:var(--text); box-shadow:0 0 0 1px var(--accent); }
   .acc-sw { width:20px; height:20px; border-radius:50%; flex:none; background:linear-gradient(135deg,var(--coral),var(--violet)); }
+  /* ---- the app's background (ui.backdrop): #backdrop behind everything,
+     and the same rules in the picker's swatches (.bd-sw, smaller --u). Only
+     the palette tokens are used, so every colour theme brings its own; the
+     dark side is a little stronger (--bd-k) to read on a dark surface. Only
+     transforms move, slowly, and nothing moves under reduced motion. ---- */
+  .bd { --bd-k:1; --u:1px;
+    --b1:color-mix(in srgb, var(--coral) calc(10% * var(--bd-k)), transparent);
+    --b2:color-mix(in srgb, var(--violet) calc(10% * var(--bd-k)), transparent);
+    --s1:color-mix(in srgb, var(--coral) calc(22% * var(--bd-k)), transparent);
+    --s2:color-mix(in srgb, var(--violet) calc(20% * var(--bd-k)), transparent);
+    --s3:color-mix(in srgb, var(--violet-l) calc(26% * var(--bd-k)), transparent);
+    --ln:color-mix(in srgb, var(--violet) calc(13% * var(--bd-k)), transparent);
+    --dot:color-mix(in srgb, var(--violet) calc(24% * var(--bd-k)), transparent);
+    --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 40C100 0 100 0 200 40S300 80 400 40V100H0Z'/%3E%3C/svg%3E"); --bars:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='4' y='90' width='9' height='40' rx='4.5'/%3E%3Crect x='21' y='64' width='9' height='66' rx='4.5'/%3E%3Crect x='38' y='38' width='9' height='92' rx='4.5'/%3E%3Crect x='55' y='8' width='9' height='122' rx='4.5'/%3E%3Crect x='72' y='38' width='9' height='92' rx='4.5'/%3E%3Crect x='89' y='64' width='9' height='66' rx='4.5'/%3E%3Crect x='106' y='90' width='9' height='40' rx='4.5'/%3E%3C/svg%3E"); }
+  :root[data-theme="dark"] .bd { --bd-k:1.45; }
+  #backdrop { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+  .bd::before, .bd::after { content:none; position:absolute; pointer-events:none; }
+  .bd[data-bd="gradient"] { background-image:linear-gradient(155deg, var(--s1), transparent 42%, transparent 58%, var(--s2)); }
+  .bd[data-bd="aurora"] { background-image:radial-gradient(60% 50% at 85% 100%, var(--s3), transparent 70%); }
+  .bd[data-bd="aurora"]::before, .bd[data-bd="aurora"]::after { content:""; width:80%; height:80%; border-radius:50%; }
+  .bd[data-bd="aurora"]::before { left:-20%; top:-25%; background:radial-gradient(closest-side, var(--s1), transparent); animation:bdDrift1 38s ease-in-out infinite alternate; }
+  .bd[data-bd="aurora"]::after { right:-25%; top:10%; background:radial-gradient(closest-side, var(--s2), transparent); animation:bdDrift2 52s ease-in-out infinite alternate; }
+  @keyframes bdDrift1 { to { transform:translate(35%, 30%) scale(1.15); } }
+  @keyframes bdDrift2 { to { transform:translate(-40%, 25%) scale(.9); } }
+  .bd[data-bd="sunrise"] { background-image:radial-gradient(70% 50% at 50% -8%, var(--s1), transparent 70%), radial-gradient(120% 75% at 50% -20%, var(--b2), transparent 75%); }
+  .bd[data-bd="waves"]::before, .bd[data-bd="waves"]::after { content:""; left:0; bottom:0; width:200%;
+    -webkit-mask:var(--wave) repeat-x 0 100% / 25% 100%; mask:var(--wave) repeat-x 0 100% / 25% 100%; animation:bdSlide 80s linear infinite; }
+  .bd[data-bd="waves"]::before { height:calc(var(--u) * 140); background:linear-gradient(90deg, var(--s1), var(--s2) 25%, var(--s1) 50%, var(--s2) 75%, var(--s1)); }
+  .bd[data-bd="waves"]::after { height:calc(var(--u) * 95); background:linear-gradient(90deg, var(--s3), var(--s1) 25%, var(--s3) 50%, var(--s1) 75%, var(--s3));
+    -webkit-mask-position:12.5% 100%; mask-position:12.5% 100%; animation-duration:55s; animation-direction:reverse; }
+  @keyframes bdSlide { to { transform:translateX(-50%); } }
+  .bd[data-bd="bars"]::before { content:""; left:0; right:0; bottom:0; height:calc(var(--u) * 120);
+    background:linear-gradient(to top, var(--s2), var(--s1));
+    -webkit-mask:var(--bars) repeat-x 50% 100% / calc(var(--u) * 120) 100%; mask:var(--bars) repeat-x 50% 100% / calc(var(--u) * 120) 100%;
+    transform-origin:bottom; animation:bdBreathe 7s ease-in-out infinite alternate; }
+  @keyframes bdBreathe { from { transform:scaleY(.8); } to { transform:scaleY(1); } }
+  .bd[data-bd="grid"] { background-image:linear-gradient(var(--ln) 1px, transparent 1px), linear-gradient(90deg, var(--ln) 1px, transparent 1px);
+    background-size:calc(var(--u) * 32) calc(var(--u) * 32);
+    -webkit-mask-image:linear-gradient(#000, transparent 75%); mask-image:linear-gradient(#000, transparent 75%); }
+  .bd[data-bd="dots"] { background-image:radial-gradient(var(--dot) max(.8px, calc(var(--u) * 1.6)), transparent max(1.1px, calc(var(--u) * 2.1)));
+    background-size:calc(var(--u) * 24) calc(var(--u) * 24); }
+  .bd[data-bd="stripes"] { background-image:repeating-linear-gradient(135deg, var(--b1) 0 calc(var(--u) * 16), transparent calc(var(--u) * 16) calc(var(--u) * 32)); }
+  .bd[data-bd="ripples"] { background-image:repeating-radial-gradient(circle at 100% 0, transparent 0 calc(var(--u) * 26), var(--ln) calc(var(--u) * 26) calc(var(--u) * 26 + 1.5px));
+    -webkit-mask-image:radial-gradient(circle at 100% 0, #000, transparent 80%); mask-image:radial-gradient(circle at 100% 0, #000, transparent 80%); }
+  .bd[data-bd="confetti"] { background-image:radial-gradient(circle, var(--s1) 0 calc(var(--u) * 2.6), transparent calc(var(--u) * 3.2)),
+    radial-gradient(circle, var(--s2) 0 calc(var(--u) * 1.9), transparent calc(var(--u) * 2.5)), radial-gradient(circle, var(--s3) 0 calc(var(--u) * 3.2), transparent calc(var(--u) * 3.8));
+    background-size:calc(var(--u) * 90) calc(var(--u) * 90), calc(var(--u) * 70) calc(var(--u) * 70), calc(var(--u) * 130) calc(var(--u) * 130);
+    background-position:0 0, calc(var(--u) * 30) calc(var(--u) * 45), calc(var(--u) * 62) calc(var(--u) * 14); }
+  @media (prefers-reduced-motion: reduce) { .bd::before, .bd::after { animation:none !important; } }
+  .bd-sw { --u:.24px; position:relative; overflow:hidden; width:34px; height:22px; flex:none; border-radius:6px;
+    background-color:var(--bg); border:1px solid var(--input-border); }
+  .bd-opt { padding-left:5px; }
+  /* Sticky bars over a background: let it show through, softly. */
+  :root[data-backdrop] .settabs, :root[data-backdrop] .setsec-sel { background:color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
   /* smooth fade only while switching theme (not on every hover) */
   html.theming, html.theming *:not(.tseg):not(#meter):not(#mt-meter) {
     transition: background-color .28s ease, color .28s ease, border-color .28s ease, fill .28s ease, box-shadow .28s ease !important;
@@ -1899,6 +1954,7 @@
      "card + card" would also fire on a visible card whose predecessor is a
      hidden card from another section, and push it down for no reason. */
   .card[data-sec="general"] + .card[data-sec="general"],
+  .card[data-sec="appearance"] + .card[data-sec="appearance"],
   .card[data-sec="activation"] + .card[data-sec="activation"],
   .card[data-sec="audio"] + .card[data-sec="audio"],
   .card[data-sec="stt"] + .card[data-sec="stt"],
@@ -2358,6 +2414,7 @@
 </style>
 </head>
 <body>
+<div id="backdrop" class="bd" aria-hidden="true"></div>
 <div class="app">
   <!-- Applied before the sidebar is drawn, so a collapsed one doesn't flash open. -->
   <script>try { if (matchMedia("(min-width:821px) and (max-width:1099px)").matches || localStorage.getItem("vito-side") === "collapsed") document.documentElement.classList.add("side-compact"); } catch {}</script>
@@ -2554,6 +2611,7 @@
       </div>
       <div class="settabs" id="settabs">
         <button type="button" data-sec="general"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span>General</span></button>
+        <button type="button" data-sec="appearance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.2" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="7.4" r="1.1" fill="currentColor" stroke="none"/></svg><span>Appearance</span></button>
         <button type="button" data-sec="activation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><span>Activation</span></button>
         <button type="button" data-sec="audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg><span>Audio</span></button>
         <button type="button" data-sec="stt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg><span>Speech recognition</span></button>
@@ -2575,13 +2633,6 @@
         </div>
         <div class="card" data-sec="general" id="set-display">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>Display</span></h2>
-          <label class="fld" data-help="theme">Theme</label>
-          <input type="hidden" id="s-theme">
-          <div class="tri-seg" id="theme-seg" role="radiogroup" aria-label="Theme"></div>
-          <label class="fld" data-help="accent">Colours</label>
-          <div class="accent-sel" id="accent-sel" role="radiogroup" aria-label="Colours"></div>
-          <label class="fld" data-help="font">Font</label>
-          <div class="accent-sel" id="font-sel" role="radiogroup" aria-label="Font"></div>
           <label class="fld" data-help="zoom" style="max-width:320px;">Zoom level <span class="val" id="s-zoomval">100%</span><button type="button" id="s-zoom-reset" class="reset-btn" hidden title="Terug naar 100%" aria-label="Terug naar 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
           <div class="slider-wrap" style="--frac:0.375;"><input type="range" id="s-zoom" min="0.7" max="1.5" step="0.05"><span class="slider-mark" title="Standaard 100%" aria-hidden="true"></span></div>
           <label class="fld" data-help="uilang">Interface language</label>
@@ -2591,7 +2642,23 @@
             <div class="flagsel-list" id="uilang-list"></div>
           </div>
           <label class="tgl" data-help="helptips"><input type="checkbox" id="s-helptips"><span class="tr"></span> Show help tips on hover</label>
+        </div>
+        <div class="card" data-sec="appearance" id="set-look">
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.2" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="7.4" r="1.1" fill="currentColor" stroke="none"/></svg><span>Appearance</span></h2>
+          <label class="fld" data-help="theme">Theme</label>
+          <input type="hidden" id="s-theme">
+          <div class="tri-seg" id="theme-seg" role="radiogroup" aria-label="Theme"></div>
+          <label class="fld" data-help="accent">Colours</label>
+          <div class="accent-sel" id="accent-sel" role="radiogroup" aria-label="Colours"></div>
+          <label class="fld" data-help="font">Font</label>
+          <div class="accent-sel" id="font-sel" role="radiogroup" aria-label="Font"></div>
+          <label class="fld" data-help="backdrop">Background</label>
+          <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
+        </div>
+        <div class="card" data-sec="appearance" id="set-vito">
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5q3.5 3 7 0"/><circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/></svg><span>Vito</span></h2>
           <label class="tgl" data-help="cursor"><input type="checkbox" id="s-cursor"><span class="tr"></span> Vito mouse cursor</label>
+          <button type="button" class="btn ghost small" id="s-dress" style="margin-top:12px;">Dress up Vito</button>
         </div>
         <div class="card" data-sec="general" id="set-system">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg><span>System</span></h2>
@@ -3835,7 +3902,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Ocean":"Oceaan",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Sound bars":"Geluidsbalken","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Confetti":"Confetti","Ocean":"Oceaan",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -4778,6 +4845,31 @@ function buildFontPicker(){
   applyFont();
 }
 applyFont();
+/* ---- the background (ui.backdrop): .bd[data-bd] rules in the CSS, on
+   #backdrop and in the picker's swatches; cached like the font ---- */
+const BACKDROPS = [{c:"",n:"None"},{c:"gradient",n:"Gradient"},{c:"aurora",n:"Aurora"},{c:"sunrise",n:"Sunrise"},{c:"waves",n:"Waves"},{c:"bars",n:"Sound bars"},
+  {c:"grid",n:"Grid"},{c:"dots",n:"Dots"},{c:"stripes",n:"Stripes"},{c:"ripples",n:"Ripples"},{c:"confetti",n:"Confetti"}];
+let backdropPref = (() => { try { return localStorage.getItem("vito-backdrop") || ""; } catch { return ""; } })();
+function applyBackdrop(){
+  const root = document.documentElement, on = backdropPref && BACKDROPS.some(b => b.c === backdropPref) ? backdropPref : "";
+  if (on) root.dataset.backdrop = on; else delete root.dataset.backdrop;
+  const el = document.getElementById("backdrop"); if (el) el.dataset.bd = on;
+  document.querySelectorAll("#backdrop-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === on ? "true" : "false"));
+}
+function setBackdrop(pref, persist){
+  backdropPref = pref || "";
+  try { localStorage.setItem("vito-backdrop", backdropPref); } catch {}
+  applyBackdrop();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { backdrop: backdropPref });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+function buildBackdropPicker(){
+  const box = $("backdrop-sel"); if (!box) return;
+  box.innerHTML = BACKDROPS.map(b => `<button type="button" class="acc-opt bd-opt" role="radio" data-code="${b.c}"><i class="bd-sw bd" data-bd="${b.c}" aria-hidden="true"></i><span>${t(b.n)}</span></button>`).join("");
+  box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setBackdrop(b.dataset.code, true));
+  applyBackdrop();
+}
+applyBackdrop();
 var cursorStyle; // made once cursorCSS exists
 // The system's own cursors, when the Vito ones are switched off.
 const plainCursorCSS = `:root{--cur-arrow:default;--cur-hand:pointer;--cur-text:text;--cur-grab:grab;--cur-grabbing:grabbing}
@@ -5821,6 +5913,8 @@ function buildThemeDropdown(){
 buildThemeDropdown();
 buildAccentPicker();
 buildFontPicker();
+buildBackdropPicker();
+$("s-dress").onclick = vmGoDress;
 setThemeDisplay(themePref); // reflect the theme now the dropdown exists
 
 /* ---- nav ---- */
@@ -5916,7 +6010,7 @@ $("hamburger").onclick = (e) => { e.stopPropagation(); $("sidebar").classList.to
 // One category visible at a time; the choice sticks across reloads so you come
 // back where you left off. Cards stay in the DOM (just hidden) — every settings
 // field is collected on save regardless of which section is showing.
-const SET_SECTIONS = ["general", "activation", "audio", "stt", "cleanup", "assist", "output", "backup", "linux", "about"];
+const SET_SECTIONS = ["general", "appearance", "activation", "audio", "stt", "cleanup", "assist", "output", "backup", "linux", "about"];
 function selectSetSection(sec){
   if (!SET_SECTIONS.includes(sec)) sec = "general";
   // A hidden tab is one that doesn't apply to this OS; a remembered choice
@@ -7447,6 +7541,11 @@ function renderWardrobe(){
   box.querySelectorAll(".wd-opt:not(.locked)").forEach(b => b.onclick = () =>
     setOutfit(b.dataset.slot, b.classList.contains("sel") ? "" : b.dataset.k, true));
 }
+// To the wardrobe on the achievements page, open.
+function vmGoDress(){
+  setWardrobeOpen(true); selectTab("achievements");
+  setTimeout(() => { const w = $("vm-wardrobe"); if (w) w.scrollIntoView({ behavior:"smooth", block:"start" }); }, 80);
+}
 let vmWardOpen = (() => { try { return localStorage.getItem("vito-wardrobe-open") === "1"; } catch { return false; } })();
 function setWardrobeOpen(on){
   vmWardOpen = on;
@@ -7725,7 +7824,7 @@ vmFollow($("mascot-card"), $("mascot-card").querySelector(".vmascot"));
   box.innerHTML = `<button type="button" class="vm-act" id="vm-dress" aria-label="${t("Dress up")}" data-tip-text="${t("Dress up")}">${ICON_HANGER}</button>` +
     `<button type="button" class="vm-act" id="vm-full" aria-label="${t("Full screen")}" data-tip-text="${t("Full screen")}">${ICON_FULL}</button>`;
   card.appendChild(box);
-  $("vm-dress").onclick = () => { setWardrobeOpen(true); selectTab("achievements"); setTimeout(() => { const w = $("vm-wardrobe"); if (w) w.scrollIntoView({ behavior:"smooth", block:"start" }); }, 80); };
+  $("vm-dress").onclick = vmGoDress;
   $("vm-full").onclick = vmFullscreen;
 })();
 function vmFullscreen(){
@@ -10682,6 +10781,7 @@ async function fillSettings() {
   if (cfg.ui && cfg.ui.theme) setTheme(cfg.ui.theme, false); // config is source of truth
   if (cfg.ui && (cfg.ui.accent || "") !== accentPref) setAccent(cfg.ui.accent || "", false);
   if (cfg.ui && (cfg.ui.font || "") !== fontPref) setFont(cfg.ui.font || "", false);
+  if (cfg.ui && (cfg.ui.backdrop || "") !== backdropPref) setBackdrop(cfg.ui.backdrop || "", false);
   if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {
     vmOutfit = Object.assign({}, cfg.ui.outfit);
     try { localStorage.setItem("vito-outfit", JSON.stringify(vmOutfit)); } catch {}
@@ -13556,6 +13656,7 @@ tagReveals();
 
 /* ---- per-option help tooltips (shown after a short delay) ---- */
 const HELP = {
+  backdrop:{nl:"Een achtergrond achter de kaarten, in de kleuren van je thema. Noorderlicht, Golven en Geluidsbalken bewegen langzaam, behalve als je systeem om minder beweging vraagt.",en:"A background behind the cards, in your colour theme. Aurora, Waves and Sound bars move slowly, unless your system asks for less motion."},
   font:{nl:"Het lettertype van Vito, ook in de pil en het eiland. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill and the island too. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},
   accent:{nl:"De kleuren van Vito: de knoppen, het verloop, de pil en de mascotte. Rood voor fouten en opnemen blijft rood.",en:"Vito's colours: the buttons, the gradient, the pill and the mascot. Red for errors and recording stays red."},
   cursor:{nl:"De muiswijzer in Vito's kleuren, met het logo in de hand. Uit: de gewone muiswijzer van je systeem.",en:"The mouse pointer in Vito's colours, with the logo in its hand. Off: your system's usual pointer."},
