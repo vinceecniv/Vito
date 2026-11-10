@@ -85,7 +85,7 @@ first merge).
 
 ## Colour themes
 
-`ui.accent` ("" coral & violet, `ocean`, `sunset`, `forest`, `plum`,
+`ui.accent` ("" coral & violet, `ocean`, `sunset`, `forest`, `plum`, `vocas`,
 `graphite`) sets `data-accent` on `<html>`. Each theme overrides only the
 palette tokens (`--coral`, `--violet`, `--violet-l`, `--coral-l`, `--acc-l`,
 `--acc-d`, `--ink-l`); everything else derives from them. Use those tokens,
