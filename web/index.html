@@ -1592,6 +1592,7 @@
   /* Every button answers the pointer. */
   .btn { transition:background-color .15s, border-color .15s, color .15s, filter .15s, opacity .15s, transform .1s; }
   .btn:active:not(:disabled) { transform:translateY(1px); }
+  #s-look-reset:disabled { opacity:.45; cursor:var(--cur-arrow); }
   .btn.primary:hover:not(:disabled) { filter:brightness(1.1) saturate(1.05); }
   .btn.ghost:hover:not(:disabled) { border-color:var(--accent); color:var(--text); background:var(--accent-soft); }
   .btn.danger:hover:not(:disabled) { border-color:var(--danger); background:color-mix(in srgb, var(--danger) 12%, transparent); }
@@ -4936,6 +4937,13 @@ function applyTheme(){
   document.querySelector('meta[name=theme-color]').content = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || (effectiveDark() ? "#17141F" : "#FAF6EF");
   try { setThemeDisplay(themePref); } catch {} // may run before the theme dropdown is defined
   applyCursors();
+  syncLookReset();
+}
+// "Reset to default" only works once something differs from Vito's own look.
+function syncLookReset(){
+  const b = document.getElementById("s-look-reset"); if (!b) return;
+  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref; }
+  catch {} // during start-up, before all of them exist; the last apply sets it
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
    palettes in the CSS (:root[data-accent]); cached like the theme ---- */
@@ -4976,6 +4984,7 @@ function applyFont(){
   const root = document.documentElement;
   if (fontPref && FONTS.some(f => f.c === fontPref)) root.dataset.font = fontPref; else delete root.dataset.font;
   document.querySelectorAll("#font-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === (root.dataset.font || "") ? "true" : "false"));
+  syncLookReset();
 }
 function setFont(pref, persist){
   fontPref = pref || "";
@@ -4998,6 +5007,7 @@ function applyRadius(){
   const root = document.documentElement, on = RADII.some(r => r.c === radiusPref) ? radiusPref : "";
   if (on) root.dataset.radius = on; else delete root.dataset.radius;
   document.querySelectorAll("#radius-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === on ? "true" : "false"));
+  syncLookReset();
 }
 function setRadius(pref, persist){
   radiusPref = pref || "";
@@ -5023,6 +5033,7 @@ function applyBackdrop(){
   if (on) root.dataset.backdrop = on; else delete root.dataset.backdrop;
   const el = document.getElementById("backdrop"); if (el) el.dataset.bd = on;
   document.querySelectorAll("#backdrop-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === on ? "true" : "false"));
+  syncLookReset();
 }
 function setBackdrop(pref, persist){
   backdropPref = pref || "";
@@ -6089,6 +6100,7 @@ buildAccentPicker();
 buildFontPicker();
 buildBackdropPicker();
 $("s-look-reset").onclick = resetLook;
+syncLookReset();
 buildRadiusPicker();
 $("s-dress").onclick = vmGoDress;
 // After init: mascotSVG's state is declared further down.
