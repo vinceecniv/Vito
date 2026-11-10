@@ -352,7 +352,7 @@
     --s3:color-mix(in srgb, var(--violet-l) calc(26% * var(--bd-k)), transparent);
     --ln:color-mix(in srgb, var(--violet) calc(13% * var(--bd-k)), transparent);
     --dot:color-mix(in srgb, var(--violet) calc(14% * var(--bd-k)), transparent);
-    --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 40C100 0 100 0 200 40S300 80 400 40V100H0Z'/%3E%3C/svg%3E"); --bars:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='4' y='90' width='9' height='40' rx='4.5'/%3E%3Crect x='21' y='64' width='9' height='66' rx='4.5'/%3E%3Crect x='38' y='38' width='9' height='92' rx='4.5'/%3E%3Crect x='55' y='8' width='9' height='122' rx='4.5'/%3E%3Crect x='72' y='38' width='9' height='92' rx='4.5'/%3E%3Crect x='89' y='64' width='9' height='66' rx='4.5'/%3E%3Crect x='106' y='90' width='9' height='40' rx='4.5'/%3E%3C/svg%3E"); }
+    --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 40C100 0 100 0 200 40S300 80 400 40V100H0Z'/%3E%3C/svg%3E"); }
   :root[data-theme="dark"] .bd { --bd-k:1.45; }
   #backdrop { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
   .bd::before, .bd::after { content:none; position:absolute; pointer-events:none; }
@@ -370,11 +370,20 @@
   .bd[data-bd="waves"]::after { height:calc(var(--u) * 95); background:linear-gradient(90deg, var(--s3), var(--s1) 25%, var(--s3) 50%, var(--s1) 75%, var(--s3));
     -webkit-mask-position:12.5% 100%; mask-position:12.5% 100%; animation-duration:55s; animation-direction:reverse; }
   @keyframes bdSlide { to { transform:translateX(-50%); } }
-  .bd[data-bd="bars"]::before { content:""; left:0; right:0; bottom:0; height:calc(var(--u) * 120);
-    background:linear-gradient(to top, var(--s2), var(--s1));
-    -webkit-mask:var(--bars) repeat-x 50% 100% / calc(var(--u) * 120) 100%; mask:var(--bars) repeat-x 50% 100% / calc(var(--u) * 120) 100%;
-    transform-origin:bottom; animation:bdBreathe 7s ease-in-out infinite alternate; }
-  @keyframes bdBreathe { from { transform:scaleY(.8); } to { transform:scaleY(1); } }
+  /* Bubbles: rings rising slowly. Every tile is a divisor of 240u high, so
+     moving the layer up by 240u brings it back to where it started. */
+  .bd[data-bd="bubbles"]::before { content:""; left:0; right:0; top:0; height:calc(100% + var(--u) * 240);
+    background-image:radial-gradient(circle calc(var(--u) * 9) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 6) at 50% 50%, transparent 62%, var(--s3) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 13) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 4.5) at 50% 50%, transparent 62%, var(--s3) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 7) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 5) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%);
+    background-size:calc(var(--u) * 173) calc(var(--u) * 240), calc(var(--u) * 131) calc(var(--u) * 120), calc(var(--u) * 211) calc(var(--u) * 240), calc(var(--u) * 97) calc(var(--u) * 80), calc(var(--u) * 157) calc(var(--u) * 240), calc(var(--u) * 251) calc(var(--u) * 120);
+    background-position:calc(var(--u) * 0) calc(var(--u) * 30), calc(var(--u) * 60) calc(var(--u) * 10), calc(var(--u) * 120) calc(var(--u) * 150), calc(var(--u) * 30) calc(var(--u) * 50), calc(var(--u) * 90) calc(var(--u) * 200), calc(var(--u) * 200) calc(var(--u) * 70);
+    -webkit-mask-image:linear-gradient(transparent, #000 40%); mask-image:linear-gradient(transparent, #000 40%);
+    animation:bdRise 90s linear infinite; }
+  @keyframes bdRise { to { transform:translateY(calc(var(--u) * -240)); } }
   .bd[data-bd="grid"] { background-image:linear-gradient(var(--ln) 1px, transparent 1px), linear-gradient(90deg, var(--ln) 1px, transparent 1px);
     background-size:calc(var(--u) * 32) calc(var(--u) * 32);
     -webkit-mask-image:linear-gradient(#000, transparent 75%); mask-image:linear-gradient(#000, transparent 75%); }
@@ -383,14 +392,23 @@
   .bd[data-bd="stripes"] { background-image:repeating-linear-gradient(135deg, var(--b1) 0 calc(var(--u) * 16), transparent calc(var(--u) * 16) calc(var(--u) * 32)); }
   .bd[data-bd="ripples"] { background-image:repeating-radial-gradient(circle at 100% 0, transparent 0 calc(var(--u) * 26), var(--ln) calc(var(--u) * 26) calc(var(--u) * 26 + 1.5px));
     -webkit-mask-image:radial-gradient(circle at 100% 0, #000, transparent 80%); mask-image:radial-gradient(circle at 100% 0, #000, transparent 80%); }
-  .bd[data-bd="confetti"] { background-image:radial-gradient(circle, var(--s1) 0 calc(var(--u) * 2.6), transparent calc(var(--u) * 3.2)),
-    radial-gradient(circle, var(--s2) 0 calc(var(--u) * 1.9), transparent calc(var(--u) * 2.5)), radial-gradient(circle, var(--s3) 0 calc(var(--u) * 3.2), transparent calc(var(--u) * 3.8));
-    background-size:calc(var(--u) * 90) calc(var(--u) * 90), calc(var(--u) * 70) calc(var(--u) * 70), calc(var(--u) * 130) calc(var(--u) * 130);
-    background-position:0 0, calc(var(--u) * 30) calc(var(--u) * 45), calc(var(--u) * 62) calc(var(--u) * 14); }
+  /* Confetti: dots and dashes in tiles of coprime sizes, so the pattern only
+     repeats far beyond any window and reads as scattered. */
+  .bd[data-bd="confetti"] { background-image:radial-gradient(calc(var(--u) * 2.6) calc(var(--u) * 2.6) at 50% 50%, var(--s1) 70%, transparent),
+    radial-gradient(calc(var(--u) * 1.9) calc(var(--u) * 1.9) at 50% 50%, var(--s2) 70%, transparent),
+    radial-gradient(calc(var(--u) * 3.2) calc(var(--u) * 3.2) at 50% 50%, var(--s3) 70%, transparent),
+    radial-gradient(calc(var(--u) * 3.8) calc(var(--u) * 1.6) at 50% 50%, var(--s1) 70%, transparent),
+    radial-gradient(calc(var(--u) * 1.5) calc(var(--u) * 3.6) at 50% 50%, var(--s2) 70%, transparent),
+    radial-gradient(calc(var(--u) * 1.5) calc(var(--u) * 1.5) at 50% 50%, var(--s3) 70%, transparent),
+    radial-gradient(calc(var(--u) * 2.8) calc(var(--u) * 2.8) at 50% 50%, var(--s2) 70%, transparent),
+    radial-gradient(calc(var(--u) * 1.6) calc(var(--u) * 3.2) at 50% 50%, var(--s1) 70%, transparent);
+    background-size:calc(var(--u) * 97) calc(var(--u) * 113), calc(var(--u) * 131) calc(var(--u) * 89), calc(var(--u) * 173) calc(var(--u) * 151), calc(var(--u) * 211) calc(var(--u) * 167), calc(var(--u) * 157) calc(var(--u) * 199), calc(var(--u) * 71) calc(var(--u) * 83), calc(var(--u) * 241) calc(var(--u) * 223), calc(var(--u) * 293) calc(var(--u) * 181);
+    background-position:calc(var(--u) * 0) calc(var(--u) * 0), calc(var(--u) * 41) calc(var(--u) * 57), calc(var(--u) * 88) calc(var(--u) * 23), calc(var(--u) * 140) calc(var(--u) * 96), calc(var(--u) * 23) calc(var(--u) * 131), calc(var(--u) * 50) calc(var(--u) * 12), calc(var(--u) * 190) calc(var(--u) * 170), calc(var(--u) * 260) calc(var(--u) * 40); }
   @media (prefers-reduced-motion: reduce) { .bd::before, .bd::after { animation:none !important; } }
   .bd-sw { --u:.24px; position:relative; overflow:hidden; width:34px; height:22px; flex:none; border-radius:6px;
     background-color:var(--bg); border:1px solid var(--input-border); }
   .bd-opt { padding-left:5px; }
+  .bd-sw[data-bd="bubbles"] { --u:.5px; } /* smaller, its rings vanish */
   /* Sticky bars over a background: let it show through, softly. */
   :root[data-backdrop] .settabs, :root[data-backdrop] .setsec-sel { background:color-mix(in srgb, var(--bg) 55%, transparent);
     -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
@@ -3916,7 +3934,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Sound bars":"Geluidsbalken","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Confetti":"Confetti","Ocean":"Oceaan",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Confetti":"Confetti","Ocean":"Oceaan",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -4861,7 +4879,7 @@ function buildFontPicker(){
 applyFont();
 /* ---- the background (ui.backdrop): .bd[data-bd] rules in the CSS, on
    #backdrop and in the picker's swatches; cached like the font ---- */
-const BACKDROPS = [{c:"",n:"None"},{c:"gradient",n:"Gradient"},{c:"aurora",n:"Aurora"},{c:"sunrise",n:"Sunrise"},{c:"waves",n:"Waves"},{c:"bars",n:"Sound bars"},
+const BACKDROPS = [{c:"",n:"None"},{c:"gradient",n:"Gradient"},{c:"aurora",n:"Aurora"},{c:"sunrise",n:"Sunrise"},{c:"waves",n:"Waves"},{c:"bubbles",n:"Bubbles"},
   {c:"grid",n:"Grid"},{c:"dots",n:"Dots"},{c:"stripes",n:"Stripes"},{c:"ripples",n:"Ripples"},{c:"confetti",n:"Confetti"}];
 let backdropPref = (() => { try { return localStorage.getItem("vito-backdrop") || ""; } catch { return ""; } })();
 function applyBackdrop(){
@@ -13670,7 +13688,7 @@ tagReveals();
 
 /* ---- per-option help tooltips (shown after a short delay) ---- */
 const HELP = {
-  backdrop:{nl:"Een achtergrond achter de kaarten, in de kleuren van je thema. Noorderlicht, Golven en Geluidsbalken bewegen langzaam, behalve als je systeem om minder beweging vraagt.",en:"A background behind the cards, in your colour theme. Aurora, Waves and Sound bars move slowly, unless your system asks for less motion."},
+  backdrop:{nl:"Een achtergrond achter de kaarten, in de kleuren van je thema. Noorderlicht, Golven en Bellen bewegen langzaam, behalve als je systeem om minder beweging vraagt.",en:"A background behind the cards, in your colour theme. Aurora, Waves and Bubbles move slowly, unless your system asks for less motion."},
   font:{nl:"Het lettertype van Vito, ook in de pil en het eiland. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill and the island too. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},
   accent:{nl:"De kleuren van Vito: de knoppen, het verloop, de pil en de mascotte. Rood voor fouten en opnemen blijft rood.",en:"Vito's colours: the buttons, the gradient, the pill and the mascot. Red for errors and recording stays red."},
   cursor:{nl:"De muiswijzer in Vito's kleuren, met het logo in de hand. Uit: de gewone muiswijzer van je systeem.",en:"The mouse pointer in Vito's colours, with the logo in its hand. Off: your system's usual pointer."},

@@ -216,7 +216,7 @@ type UI struct {
 	// noto-mono. The page and the pill draw it.
 	Font string `json:"font,omitempty"`
 	// Backdrop is the page's background behind the cards: "" plain, or
-	// gradient, aurora, sunrise, waves, bars, grid, dots, stripes, ripples,
+	// gradient, aurora, sunrise, waves, bubbles, grid, dots, stripes, ripples,
 	// confetti (.bd[data-bd] in web/index.html). The page only.
 	Backdrop string `json:"backdrop,omitempty"`
 	// Outfit is what Vito wears, a piece per slot (head, glasses, ears, neck,
