@@ -1427,7 +1427,20 @@
 "Confetti": "کاغذ رنگی",
 "Ocean": "اقیانوس",
 "High contrast": "کنتراست بالا",
-"High contrast black and white": "کنتراست بالا سیاه‌وسفید"
+"High contrast black and white": "کنتراست بالا سیاه‌وسفید",
+"Recordings": "ضبط‌ها",
+"Audio on disk": "صدا روی دیسک",
+"No recordings yet. The tape is still blank.": "هنوز هیچ ضبطی نیست. نوار هنوز خالی است.",
+"Quiet on set — nothing recorded yet.": "سکوت در صحنه — هنوز چیزی ضبط نشده است.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito سراپا گوش است، اما هنوز چیزی ضبط نشده است.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "یک ضبط تا هر وقت که لازم داشته باشید ادامه پیدا می‌کند — یک سخنرانی، یک جلسه یا یک دیکته‌ی طولانی. Vito همزمان با صحبت شما می‌نویسد و می‌توانید لحظه‌ها را علامت بزنید و سرفصل اضافه کنید.",
+"Start your first recording": "اولین ضبط خود را شروع کنید",
+"or turn an audio file into a recording": "یا یک فایل صوتی را به ضبط تبدیل کنید",
+"Paused": "متوقف‌شده",
+"words": "کلمه",
+"Marks": "علامت‌ها",
+"Follows the colours of your desktop": "از رنگ‌های میزکار شما پیروی می‌کند",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "برای شروع دیکته Caps Lock را بزنید و برای توقف دوباره آن را بزنید. نگه داشتن آن برای دیکته به نسخه‌ای از niri جدیدتر از 26.04 نیاز دارد؛ پس از آن دوباره تنظیمش کنید."
 },
 "help": {
 "theme": "روشن، تیره یا خودکار — خودکار از حالت روشن/تیره سیستم شما پیروی می‌کند.",

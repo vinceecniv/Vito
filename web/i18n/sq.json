@@ -1427,7 +1427,20 @@
 "Confetti": "Konfeti",
 "Ocean": "Oqean",
 "High contrast": "Kontrast i lartë",
-"High contrast black and white": "Kontrast i lartë bardh e zi"
+"High contrast black and white": "Kontrast i lartë bardh e zi",
+"Recordings": "Regjistrime",
+"Audio on disk": "Audio në disk",
+"No recordings yet. The tape is still blank.": "Ende asnjë regjistrim. Shiriti është ende bosh.",
+"Quiet on set — nothing recorded yet.": "Qetësi në shesh xhirimi — ende asgjë e regjistruar.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito është gjithë veshë, por ende nuk është regjistruar asgjë.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Një regjistrim vazhdon sa të të duhet — një leksion, një takim ose një diktim i gjatë. Vito shkruan ndërsa flet, dhe ti mund të shënosh momente e të shtosh tituj.",
+"Start your first recording": "Nis regjistrimin tënd të parë",
+"or turn an audio file into a recording": "ose ktheje një skedar audio në regjistrim",
+"Paused": "Në pauzë",
+"words": "fjalë",
+"Marks": "Shënime",
+"Follows the colours of your desktop": "Ndjek ngjyrat e desktopit tënd",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Shtyp Caps Lock për të nisur diktimin dhe shtype sërish për ta ndalur. Për të diktuar duke e mbajtur shtypur duhet një niri më i ri se 26.04; atëherë konfiguroje sërish."
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

@@ -1427,7 +1427,20 @@
 "Confetti": "கான்ஃபெட்டி",
 "Ocean": "கடல்",
 "High contrast": "உயர் மாறுபாடு",
-"High contrast black and white": "உயர் மாறுபாடு கருப்பு-வெள்ளை"
+"High contrast black and white": "உயர் மாறுபாடு கருப்பு-வெள்ளை",
+"Recordings": "பதிவுகள்",
+"Audio on disk": "வட்டில் உள்ள ஒலி",
+"No recordings yet. The tape is still blank.": "இன்னும் பதிவுகள் இல்லை. நாடா இன்னும் வெறுமையாக உள்ளது.",
+"Quiet on set — nothing recorded yet.": "அரங்கில் அமைதி — இன்னும் எதுவும் பதிவு செய்யப்படவில்லை.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito முழுக் கவனத்துடன் கேட்கத் தயாராக உள்ளது, ஆனால் இன்னும் எதுவும் பதிவு செய்யப்படவில்லை.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "ஒரு பதிவு உங்களுக்குத் தேவையான வரை தொடர்ந்து நடக்கும் — ஒரு விரிவுரை, ஒரு கூட்டம் அல்லது நீண்ட சொல்லெழுத்து. நீங்கள் பேசும்போதே Vito எழுதிக்கொண்டே வரும், நீங்கள் தருணங்களைக் குறிக்கவும் தலைப்புகளைச் சேர்க்கவும் முடியும்.",
+"Start your first recording": "உங்கள் முதல் பதிவைத் தொடங்குங்கள்",
+"or turn an audio file into a recording": "அல்லது ஒரு ஒலிக் கோப்பைப் பதிவாக மாற்றுங்கள்",
+"Paused": "இடைநிறுத்தப்பட்டது",
+"words": "சொற்கள்",
+"Marks": "குறிகள்",
+"Follows the colours of your desktop": "உங்கள் டெஸ்க்டாப்பின் வண்ணங்களைப் பின்பற்றுகிறது",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "சொல்லெழுதத் தொடங்க Caps Lock-ஐ அழுத்துங்கள், நிறுத்த மீண்டும் அழுத்துங்கள். அதைப் பிடித்துக்கொண்டு சொல்லெழுத 26.04-ஐ விடப் புதிய niri தேவை; அதன்பின் இதை மீண்டும் அமையுங்கள்."
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

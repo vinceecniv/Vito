@@ -1427,7 +1427,20 @@
 "Confetti": "Konfetti",
 "Ocean": "Ocean",
 "High contrast": "Wysoki kontrast",
-"High contrast black and white": "Wysoki kontrast czarno-biały"
+"High contrast black and white": "Wysoki kontrast czarno-biały",
+"Recordings": "Nagrania",
+"Audio on disk": "Audio na dysku",
+"No recordings yet. The tape is still blank.": "Brak nagrań. Taśma jest jeszcze czysta.",
+"Quiet on set — nothing recorded yet.": "Cisza na planie — nic jeszcze nie nagrano.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito zamienia się w słuch, ale nic jeszcze nie zostało nagrane.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Nagranie trwa tak długo, jak potrzebujesz — wykład, spotkanie czy długie dyktowanie. Vito zapisuje na bieżąco to, co mówisz, a ty możesz zaznaczać ważne momenty i dodawać nagłówki.",
+"Start your first recording": "Rozpocznij swoje pierwsze nagranie",
+"or turn an audio file into a recording": "lub zamień plik audio w nagranie",
+"Paused": "Wstrzymano",
+"words": "słów",
+"Marks": "Znaczniki",
+"Follows the colours of your desktop": "Podąża za kolorami twojego pulpitu",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Naciśnij Caps Lock, aby zacząć dyktować, i naciśnij go ponownie, aby zakończyć. Dyktowanie przez przytrzymanie wymaga niri nowszego niż 26.04; wtedy skonfiguruj to ponownie."
 },
 "help": {
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",

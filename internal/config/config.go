@@ -196,7 +196,7 @@ type UI struct {
 	Theme string `json:"theme"` // system | light | dark (follow OS by default)
 	Lang  string `json:"lang"`  // "" = auto (OS language, fallback English) | en | nl
 	// Desktop notifications: all (every status) | errors (only failures) | off.
-	// "" is treated as "all". Routine notifications are transient (not kept in
+	// "" is treated as "errors", the default. Routine notifications are transient (not kept in
 	// the notification server's history); errors are kept.
 	Notifications string `json:"notifications"`
 	// Pill floats a small indicator on screen while dictating. Nil-safe: an unset
@@ -211,7 +211,8 @@ type UI struct {
 	PillStyle string `json:"pill_style,omitempty"`
 	// Accent is the colour theme: "" Vito's own coral and violet, ocean, or a
 	// community scheme (catppuccin, tokyo-night, nord, gruvbox, rose-pine,
-	// kanagawa, everforest, ristretto, solarized, flexoki, dracula), or high contrast (hc, hc-bw). The page
+	// kanagawa, everforest, ristretto, solarized, flexoki, dracula), high contrast (hc, hc-bw),
+	// or dms: Dux Modular Shell's own palette (internal/desktopcolors). The page
 	// and the pill draw it.
 	Accent string `json:"accent,omitempty"`
 	// Font is the typeface: "" Sora with Baloo 2, "system" the desktop's own
@@ -295,8 +296,11 @@ type Stats struct {
 // Costs holds the provider prices used to estimate spend. Rates are in USD (the
 // providers publish in USD); the UI converts to Currency for display.
 type Costs struct {
-	Currency             string  `json:"currency"` // usd | eur (display)
-	SttPerHourUSD        float64 `json:"stt_per_hour_usd"`
+	Currency      string  `json:"currency"` // usd | eur (display)
+	SttPerHourUSD float64 `json:"stt_per_hour_usd"`
+	// Cleanup token rates. 0 is a real rate — the default cleanup runs on
+	// Groq's free tier — and the settings page fills them from the chosen
+	// model when the provider changes.
 	CleanupInPerMTokUSD  float64 `json:"cleanup_in_per_mtok_usd"`
 	CleanupOutPerMTokUSD float64 `json:"cleanup_out_per_mtok_usd"`
 	// Assist token rates, used to price Vito Assist commands when Assist runs on
@@ -445,9 +449,9 @@ func Default() *Config {
 		HotkeyWindows: defaultHotkey(),
 		History:       History{Enabled: true, MaxEntries: 5000},
 		Tray:          Tray{Enabled: true},
-		UI:            UI{Theme: "system", Notifications: "all"},
+		UI:            UI{Theme: "system", Notifications: "errors"},
 		Stats:         Stats{TypingSpeed: "average"},
-		Costs:         Costs{Currency: "eur", SttPerHourUSD: 0.15, CleanupInPerMTokUSD: 1.0, CleanupOutPerMTokUSD: 5.0},
+		Costs:         Costs{Currency: "eur", SttPerHourUSD: 0.15},
 	}
 }
 

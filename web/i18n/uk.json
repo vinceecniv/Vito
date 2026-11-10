@@ -1425,7 +1425,20 @@
 "Confetti": "Конфеті",
 "Ocean": "Океан",
 "High contrast": "Висока контрастність",
-"High contrast black and white": "Висока контрастність, чорно-біла"
+"High contrast black and white": "Висока контрастність, чорно-біла",
+"Recordings": "Записи",
+"Audio on disk": "Аудіо на диску",
+"No recordings yet. The tape is still blank.": "Записів ще немає. Плівка поки що чиста.",
+"Quiet on set — nothing recorded yet.": "Тиша на майданчику — ще нічого не записано.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito уважно слухає, але ще нічого не записано.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Запис триває стільки, скільки вам потрібно, — лекція, нарада чи довге диктування. Vito записує текст, поки ви говорите, а ви можете позначати моменти й додавати заголовки.",
+"Start your first recording": "Почніть свій перший запис",
+"or turn an audio file into a recording": "або перетворіть аудіофайл на запис",
+"Paused": "Призупинено",
+"words": "слів",
+"Marks": "Позначки",
+"Follows the colours of your desktop": "Використовує кольори вашого робочого середовища",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Натисніть Caps Lock, щоб почати диктування, і натисніть ще раз, щоб зупинити. Щоб диктувати, утримуючи клавішу, потрібен niri, новіший за 26.04; тоді налаштуйте це знову."
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",

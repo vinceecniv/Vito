@@ -528,11 +528,11 @@ func (d *Daemon) startPlaybackTicker() {
 }
 
 // note shows a routine status notification, honoring ui.notifications: it
-// appears only at "all" (or the unset default) and is transient — shown briefly
+// appears only at "all" and is transient — shown briefly
 // but not kept in the notification server's history.
 func (d *Daemon) note(summary, body string) {
 	switch d.Config().UI.Notifications {
-	case "", "all":
+	case "all":
 		notify.Send(summary, body)
 	}
 }

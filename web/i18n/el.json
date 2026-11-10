@@ -1427,7 +1427,20 @@
 "Confetti": "Κονφετί",
 "Ocean": "Ωκεανός",
 "High contrast": "Υψηλή αντίθεση",
-"High contrast black and white": "Υψηλή αντίθεση ασπρόμαυρο"
+"High contrast black and white": "Υψηλή αντίθεση ασπρόμαυρο",
+"Recordings": "Ηχογραφήσεις",
+"Audio on disk": "Ήχος στον δίσκο",
+"No recordings yet. The tape is still blank.": "Δεν υπάρχουν ακόμη ηχογραφήσεις. Η κασέτα είναι ακόμη άγραφη.",
+"Quiet on set — nothing recorded yet.": "Ησυχία στο πλατό — τίποτα δεν έχει ηχογραφηθεί ακόμη.",
+"Vito is all ears, but nothing has been recorded yet.": "Το Vito είναι όλο αυτιά, αλλά τίποτα δεν έχει ηχογραφηθεί ακόμη.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Μια ηχογράφηση συνεχίζεται όσο χρειάζεστε — μια διάλεξη, μια σύσκεψη ή μια μεγάλη υπαγόρευση. Το Vito γράφει καθώς μιλάτε, και μπορείτε να επισημαίνετε στιγμές και να προσθέτετε επικεφαλίδες.",
+"Start your first recording": "Ξεκινήστε την πρώτη σας ηχογράφηση",
+"or turn an audio file into a recording": "ή μετατρέψτε ένα αρχείο ήχου σε ηχογράφηση",
+"Paused": "Σε παύση",
+"words": "λέξεις",
+"Marks": "Επισημάνσεις",
+"Follows the colours of your desktop": "Ακολουθεί τα χρώματα της επιφάνειας εργασίας σας",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Πατήστε το Caps Lock για να ξεκινήσει η υπαγόρευση και πατήστε το ξανά για να σταματήσει. Η υπαγόρευση με κρατημένο το πλήκτρο χρειάζεται niri νεότερο από 26.04· τότε ρυθμίστε το ξανά."
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",

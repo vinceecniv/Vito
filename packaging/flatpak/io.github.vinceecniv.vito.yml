@@ -45,6 +45,13 @@ finish-args:
   # files.go); user-dirs.dirs says where Documents is (it can be localized).
   - --filesystem=xdg-documents/Vito:create
   - --filesystem=xdg-config/user-dirs.dirs:ro
+  # The desktop shells' colour schemes, for the "dms" and "omarchy" colour
+  # themes (internal/desktopcolors). Omarchy's current theme links into its
+  # own themes and the user's.
+  - --filesystem=xdg-cache/DankMaterialShell:ro
+  - --filesystem=~/.local/state/omarchy:ro
+  - --filesystem=xdg-config/omarchy:ro
+  - --filesystem=~/.local/share/omarchy/themes:ro
   # Microphone capture. PipeWire serves this through its PulseAudio compatibility.
   - --socket=pulseaudio
   # Speech-to-text and AI cleanup are network calls to the user's own providers,

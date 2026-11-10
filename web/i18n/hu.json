@@ -1427,7 +1427,20 @@
 "Confetti": "Konfetti",
 "Ocean": "Óceán",
 "High contrast": "Nagy kontraszt",
-"High contrast black and white": "Nagy kontraszt, fekete-fehér"
+"High contrast black and white": "Nagy kontraszt, fekete-fehér",
+"Recordings": "Felvételek",
+"Audio on disk": "Hang a lemezen",
+"No recordings yet. The tape is still blank.": "Még nincs felvétel. A szalag még üres.",
+"Quiet on set — nothing recorded yet.": "Csend a forgatáson — még semmi sincs felvéve.",
+"Vito is all ears, but nothing has been recorded yet.": "A Vito csupa fül, de még semmi sincs felvéve.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Egy felvétel addig tart, ameddig csak szükséged van rá — egy előadás, egy megbeszélés vagy egy hosszú diktálás. A Vito beszéd közben folyamatosan leírja, amit mondasz, te pedig megjelölhetsz pillanatokat és fejléceket adhatsz hozzá.",
+"Start your first recording": "Indítsd el az első felvételedet",
+"or turn an audio file into a recording": "vagy alakíts át egy hangfájlt felvétellé",
+"Paused": "Szüneteltetve",
+"words": "szó",
+"Marks": "Jelölések",
+"Follows the colours of your desktop": "Az asztalod színeit követi",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nyomd meg a Caps Lockot a diktálás elindításához, és nyomd meg újra a leállításához. A lenyomva tartott diktáláshoz 26.04-nél újabb niri kell; utána állítsd be újra."
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

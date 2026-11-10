@@ -23,13 +23,21 @@ import (
 const niriMarker = "// Vito: Caps Lock"
 
 // niriBind goes into the config's binds block (niri allows one per file),
-// between Vito's marker and niriEnd, so it can be taken out again.
+// between Vito's marker and niriEnd, so it can be taken out again. Press and
+// release blocks came after niri 26.04; an older niri refuses them, and then
+// niriToggle binds Menu to start/stop instead (no hold, no double-tap).
 var niriBind = []string{
 	niriMarker + " as the dictation key (hold to dictate, double-tap for hands-free)",
 	`Menu repeat=false hotkey-overlay-title="Vito: dictate" {`,
 	`    press   { spawn "pkill" "-RTMIN+1" "-f" "vito serve"; }`,
 	`    release { spawn "pkill" "-RTMIN+2" "-f" "vito serve"; }`,
 	`}`,
+	niriEnd,
+}
+
+var niriToggle = []string{
+	niriMarker + " as the dictation key (press to start, press again to stop)",
+	`Menu repeat=false hotkey-overlay-title="Vito: dictate" { spawn "pkill" "-USR2" "-f" "vito serve"; }`,
 	niriEnd,
 }
 
@@ -62,6 +70,9 @@ func NiriCapsStatus() NiriCaps {
 		return st
 	}
 	opt, bind := niriHas(string(b))
+	if bind && !strings.Contains(string(b), `"-RTMIN+1"`) {
+		st.Mode = "toggle"
+	}
 	switch {
 	case opt && bind:
 		st.State = "on"
@@ -85,7 +96,8 @@ func niriHas(src string) (option, bind bool) {
 				}
 			}
 		}
-		if strings.Contains(l.code, `"-RTMIN+1"`) && strings.Contains(l.code, "vito serve") {
+		if strings.Contains(l.code, "vito serve") && (strings.Contains(l.code, `"-RTMIN+1"`) ||
+			reMenu.MatchString(l.code) && strings.Contains(l.code, `"-USR2"`)) {
 			bind = true
 		}
 	}
@@ -176,18 +188,33 @@ func SetNiriCaps(on bool) error {
 	if opt, bind := niriHas(src); opt == on && bind == on {
 		return nil
 	}
-	out, err := niriEdit(src, on)
+	out, err := niriEdit(src, on, niriBind)
 	if err != nil {
 		return err
 	}
 	// niri checks it beside the real file, so its includes resolve the same.
 	check := filepath.Join(filepath.Dir(path), ".vito-check-config.kdl")
-	if err := os.WriteFile(check, []byte(out), 0o600); err != nil {
-		return fmt.Errorf("%w: %v", ErrNiriManual, err)
-	}
 	defer os.Remove(check)
-	if msg, err := exec.Command("niri", "validate", "-c", check).CombinedOutput(); err != nil {
-		return fmt.Errorf("%w: niri does not accept the change: %s", ErrNiriManual, lastLine(msg))
+	validate := func(text string) error {
+		if err := os.WriteFile(check, []byte(text), 0o600); err != nil {
+			return fmt.Errorf("%w: %v", ErrNiriManual, err)
+		}
+		if msg, err := exec.Command("niri", "validate", "-c", check).CombinedOutput(); err != nil {
+			return fmt.Errorf("%w: niri does not accept the change: %s", ErrNiriManual, lastLine(msg))
+		}
+		return nil
+	}
+	if err := validate(out); err != nil {
+		if !on {
+			return err
+		}
+		// niri 26.04 and older: no press/release binds. Caps Lock then
+		// starts and stops a dictation instead of being held.
+		alt, aerr := niriEdit(src, on, niriToggle)
+		if aerr != nil || validate(alt) != nil {
+			return err
+		}
+		out = alt
 	}
 	backup := path + ".vito-" + time.Now().Format("20060102-150405") + ".bak"
 	if err := os.WriteFile(backup, b, 0o600); err != nil {
@@ -218,8 +245,9 @@ func lastLine(b []byte) string {
 	return strings.TrimSpace(lines[len(lines)-1])
 }
 
-// niriEdit returns src with Caps Lock set up (on) or taken out.
-func niriEdit(src string, on bool) (string, error) {
+// niriEdit returns src with Caps Lock set up (on, with the given bind lines)
+// or taken out.
+func niriEdit(src string, on bool, bind []string) (string, error) {
 	lines := strings.Split(src, "\n")
 	parsed := niriLines(src)
 
@@ -301,7 +329,7 @@ func niriEdit(src string, on bool) (string, error) {
 
 	if on && bindsLine >= 0 {
 		in := indent(bindsLine) + "    "
-		for _, l := range niriBind {
+		for _, l := range bind {
 			insert[bindsLine] = append(insert[bindsLine], in+l)
 		}
 	}
@@ -318,7 +346,7 @@ func niriEdit(src string, on bool) (string, error) {
 	text = strings.TrimRight(text, "\n") + "\n"
 	if on && bindsLine < 0 {
 		text += "\nbinds {\n"
-		for _, l := range niriBind {
+		for _, l := range bind {
 			text += "    " + l + "\n"
 		}
 		text += "}\n"

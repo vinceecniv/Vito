@@ -1427,7 +1427,20 @@
 "Confetti": "Confeti",
 "Ocean": "Oceà",
 "High contrast": "Contrast alt",
-"High contrast black and white": "Contrast alt blanc i negre"
+"High contrast black and white": "Contrast alt blanc i negre",
+"Recordings": "Gravacions",
+"Audio on disk": "Àudio al disc",
+"No recordings yet. The tape is still blank.": "Encara no hi ha gravacions. La cinta encara és en blanc.",
+"Quiet on set — nothing recorded yet.": "Silenci, es roda — encara no s'ha gravat res.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito és tot orelles, però encara no s'ha gravat res.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Una gravació continua tant de temps com necessitis — una classe, una reunió o un dictat llarg. Vito va escrivint mentre parles, i pots marcar moments i afegir encapçalaments.",
+"Start your first recording": "Comença la teva primera gravació",
+"or turn an audio file into a recording": "o converteix un fitxer d'àudio en una gravació",
+"Paused": "En pausa",
+"words": "paraules",
+"Marks": "Marques",
+"Follows the colours of your desktop": "Segueix els colors del teu escriptori",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Prem Caps Lock per començar a dictar i torna-la a prémer per aturar. Per dictar mantenint-la premuda cal un niri més nou que el 26.04; aleshores torna-la a configurar."
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",

@@ -1,6 +1,12 @@
 package pill
 
-import "sync/atomic"
+import (
+	"strconv"
+	"sync"
+	"sync/atomic"
+
+	"vito/internal/desktopcolors"
+)
 
 // The colour themes (ui.accent) as the pill draws them. Keep in step with the
 // [data-accent] palettes in web/index.html: coral is the warm end of the
@@ -63,6 +69,9 @@ var curPalette atomic.Pointer[palette]
 // original pair. It reports whether that changed anything.
 func setAccent(name string) bool {
 	p := palettes[name]
+	if name == "dms" || name == "omarchy" {
+		p = desktopPalette(name)
+	}
 	if p == nil {
 		p = palettes[""]
 	}
@@ -82,4 +91,37 @@ func (p *palette) violetOn(dark bool) rgb {
 		return p.violetDark
 	}
 	return p.violet
+}
+
+// The desktop themes ("dms", "omarchy"): the shell's palette, as the page
+// maps it — primary, and a deep primary for the cool end. Built again only
+// when the shell's scheme changed, so setAccent sees the same palette from
+// picture to picture.
+var (
+	deskMu  sync.Mutex
+	deskSrc *desktopcolors.Palette
+	deskPal *palette
+)
+
+func desktopPalette(name string) *palette {
+	src := desktopcolors.For(name)
+	if src == nil {
+		return nil
+	}
+	deskMu.Lock()
+	defer deskMu.Unlock()
+	if src != deskSrc {
+		// As the page: primary, and a deep primary for the cool end.
+		lp, dp := hexStr(src.Light["primary"]), hexStr(src.Dark["primary"])
+		deskPal = &palette{coral: hexStr(src.Side()["primary"]), violet: blend(lp, rgb{}, .38),
+			violetL: blend(dp, rgb{1, 1, 1}, .4), violetDark: dp}
+		deskSrc = src
+	}
+	return deskPal
+}
+
+// hexStr reads "#rrggbb"; desktopcolors checked the form.
+func hexStr(s string) rgb {
+	v, _ := strconv.ParseUint(s[1:], 16, 32)
+	return hex(uint32(v))
 }

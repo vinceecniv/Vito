@@ -1428,7 +1428,20 @@
 "Confetti": "Conffeti",
 "Ocean": "Cefnfor",
 "High contrast": "Cyferbyniad uchel",
-"High contrast black and white": "Cyferbyniad uchel du a gwyn"
+"High contrast black and white": "Cyferbyniad uchel du a gwyn",
+"Recordings": "Recordiadau",
+"Audio on disk": "Sain ar y ddisg",
+"No recordings yet. The tape is still blank.": "Dim recordiadau eto. Mae'r tâp yn dal yn wag.",
+"Quiet on set — nothing recorded yet.": "Tawelwch ar y set — dim byd wedi'i recordio eto.",
+"Vito is all ears, but nothing has been recorded yet.": "Mae Vito'n glustiau i gyd, ond does dim byd wedi'i recordio eto.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Mae recordiad yn parhau cyhyd ag y mae ei angen arnat ti — darlith, cyfarfod neu arddywediad hir. Mae Vito'n ysgrifennu wrth i ti siarad, a gelli di farcio eiliadau ac ychwanegu penawdau.",
+"Start your first recording": "Dechreua dy recordiad cyntaf",
+"or turn an audio file into a recording": "neu troi ffeil sain yn recordiad",
+"Paused": "Wedi oedi",
+"words": "geiriau",
+"Marks": "Marciau",
+"Follows the colours of your desktop": "Yn dilyn lliwiau dy fwrdd gwaith",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Pwysa Caps Lock i ddechrau arddweud a phwysa hi eto i stopio. Mae dal hi i lawr i arddweud angen niri mwy newydd na 26.04; yna gosoda hi eto."
 },
 "help": {
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",

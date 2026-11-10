@@ -1427,7 +1427,20 @@
 "Confetti": "קונפטי",
 "Ocean": "אוקיינוס",
 "High contrast": "ניגודיות גבוהה",
-"High contrast black and white": "ניגודיות גבוהה בשחור-לבן"
+"High contrast black and white": "ניגודיות גבוהה בשחור-לבן",
+"Recordings": "הקלטות",
+"Audio on disk": "אודיו בדיסק",
+"No recordings yet. The tape is still blank.": "עדיין אין הקלטות. הקלטת עדיין ריקה.",
+"Quiet on set — nothing recorded yet.": "שקט על הסט — עדיין לא הוקלט דבר.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito כולו אוזניים, אבל עדיין לא הוקלט דבר.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "הקלטה נמשכת כמה זמן שתצטרך — הרצאה, פגישה או הכתבה ארוכה. Vito כותב תוך כדי שאתה מדבר, ואתה יכול לסמן רגעים ולהוסיף כותרות.",
+"Start your first recording": "התחל את ההקלטה הראשונה שלך",
+"or turn an audio file into a recording": "או הפוך קובץ שמע להקלטה",
+"Paused": "מושהה",
+"words": "מילים",
+"Marks": "סימונים",
+"Follows the colours of your desktop": "עוקב אחר הצבעים של שולחן העבודה שלך",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "לחץ על Caps Lock כדי להתחיל להכתיב ולחץ עליו שוב כדי לעצור. החזקת המקש לצורך הכתבה דורשת גרסת niri חדשה מ-26.04; לאחר מכן הגדר אותו מחדש."
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

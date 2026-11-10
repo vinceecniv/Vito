@@ -1427,7 +1427,20 @@
 "Confetti": "કૉન્ફેટી",
 "Ocean": "મહાસાગર",
 "High contrast": "ઉચ્ચ કૉન્ટ્રાસ્ટ",
-"High contrast black and white": "ઉચ્ચ કૉન્ટ્રાસ્ટ કાળું-સફેદ"
+"High contrast black and white": "ઉચ્ચ કૉન્ટ્રાસ્ટ કાળું-સફેદ",
+"Recordings": "રેકોર્ડિંગ્સ",
+"Audio on disk": "ડિસ્ક પરનો ઓડિયો",
+"No recordings yet. The tape is still blank.": "હજુ કોઈ રેકોર્ડિંગ નથી. ટેપ હજુ કોરી છે.",
+"Quiet on set — nothing recorded yet.": "સેટ પર શાંતિ — હજુ કંઈ રેકોર્ડ થયું નથી.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito ધ્યાનથી સાંભળવા તૈયાર છે, પણ હજુ કંઈ રેકોર્ડ થયું નથી.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "રેકોર્ડિંગ તમને જરૂર હોય ત્યાં સુધી ચાલુ રહે છે — વ્યાખ્યાન, મીટિંગ કે લાંબું શ્રુતલેખન. તમે બોલો તેમ Vito સાથે સાથે લખે છે, અને તમે ક્ષણોને ચિહ્નિત કરી શકો છો અને મથાળાં ઉમેરી શકો છો.",
+"Start your first recording": "તમારું પહેલું રેકોર્ડિંગ શરૂ કરો",
+"or turn an audio file into a recording": "અથવા ઓડિયો ફાઇલને રેકોર્ડિંગમાં ફેરવો",
+"Paused": "થોભાવેલું",
+"words": "શબ્દો",
+"Marks": "ચિહ્નો",
+"Follows the colours of your desktop": "તમારા ડેસ્કટોપના રંગોને અનુસરે છે",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "શ્રુતલેખન શરૂ કરવા Caps Lock દબાવો અને બંધ કરવા ફરી દબાવો. દબાવી રાખીને શ્રુતલેખન કરવા માટે 26.04 કરતાં નવું niri જોઈએ; પછી તેને ફરીથી સેટ કરો."
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",

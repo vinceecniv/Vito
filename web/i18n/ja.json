@@ -1425,7 +1425,20 @@
 "Confetti": "紙吹雪",
 "Ocean": "オーシャン",
 "High contrast": "ハイコントラスト",
-"High contrast black and white": "ハイコントラスト（白黒）"
+"High contrast black and white": "ハイコントラスト（白黒）",
+"Recordings": "録音一覧",
+"Audio on disk": "ディスク上の音声",
+"No recordings yet. The tape is still blank.": "まだ録音はありません。テープはまっさらです。",
+"Quiet on set — nothing recorded yet.": "現場は静まり返っています — まだ何も録音されていません。",
+"Vito is all ears, but nothing has been recorded yet.": "Vitoは耳を澄ませていますが、まだ何も録音されていません。",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "録音は必要なだけ続けられます — 講義、会議、長い口述など。話している間にVitoが書き起こしていき、瞬間をマークしたり見出しを追加したりできます。",
+"Start your first recording": "最初の録音を始める",
+"or turn an audio file into a recording": "または音声ファイルを録音に変換",
+"Paused": "一時停止中",
+"words": "語",
+"Marks": "マーク",
+"Follows the colours of your desktop": "デスクトップの配色に従います",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Caps Lockを押すと口述を開始し、もう一度押すと停止します。押し続けて口述するには26.04より新しいniriが必要です。その後、もう一度設定し直してください。"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",
