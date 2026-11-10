@@ -847,6 +847,11 @@
   .card-title { display:flex; align-items:center; gap:10px; min-width:0; }
   .card-title .chip { margin-bottom:0; flex:none; }
   .statgrid > .span-full { grid-column:1 / -1; }
+  /* Never wider than the columns there are (fitStatCols counts them): a card
+     spanning three in a two-column grid made an extra narrow column, which
+     the full-row transcript then stopped short of. */
+  .statgrid[data-cols="2"] > .span3 { grid-column:span 2; }
+  .statgrid[data-cols="1"] > :is(.span2, .span3) { grid-column:span 1; }
   /* Dragging a card, home-screen style: the card's place stays as a dashed
      outline while a lifted copy follows the pointer. */
   /* Positioned, so each card's ⋯ menu button sits in its own corner — the
@@ -8998,6 +9003,14 @@ const cardEl = (k) => LAYOUT_STATIC[k] ? $(LAYOUT_STATIC[k]) : statEls[k];
 // rebuilt, so they keep their state and listeners. A hidden statistic card is
 // taken out; a hidden fixed card waits in the holder. Cards whose data hasn't
 // arrived yet are skipped and placed by the next call.
+// How many 168px columns (gap 20) the status grid has room for, for the
+// span caps above. Re-counted whenever the grid changes width.
+function fitStatCols(){
+  const g = document.querySelector(".statgrid"); if (!g || !g.clientWidth) return;
+  const n = String(Math.max(1, Math.floor((g.clientWidth + 20) / 188)));
+  if (g.dataset.cols !== n) g.dataset.cols = n;
+}
+if (window.ResizeObserver) { const g = document.querySelector(".statgrid"); if (g) new ResizeObserver(fitStatCols).observe(g); }
 function applyStatusLayout(){
   const grid = $("statgrid"), holder = $("card-holder");
   if (!grid) return;
