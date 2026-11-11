@@ -1427,7 +1427,20 @@
 "Confetti": "Konfeti",
 "Ocean": "Vandenynas",
 "High contrast": "Didelis kontrastas",
-"High contrast black and white": "Didelis kontrastas, juoda ir balta"
+"High contrast black and white": "Didelis kontrastas, juoda ir balta",
+"Recordings": "Įrašai",
+"Audio on disk": "Garsas diske",
+"No recordings yet. The tape is still blank.": "Įrašų dar nėra. Juosta vis dar tuščia.",
+"Quiet on set — nothing recorded yet.": "Tyla aikštelėje – dar nieko neįrašyta.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito pasiruošęs klausytis, bet dar nieko neįrašyta.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Įrašas tęsiasi tiek, kiek jums reikia – paskaita, susitikimas ar ilgas diktavimas. Vito rašo kartu, kol kalbate, o jūs galite pažymėti akimirkas ir pridėti antraščių.",
+"Start your first recording": "Pradėkite pirmąjį įrašą",
+"or turn an audio file into a recording": "arba paverskite garso failą įrašu",
+"Paused": "Pristabdyta",
+"words": "žodžiai",
+"Marks": "Žymės",
+"Follows the colours of your desktop": "Atkartoja jūsų darbalaukio spalvas",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Paspauskite Caps Lock, kad pradėtumėte diktuoti, ir paspauskite dar kartą, kad sustabdytumėte. Norint diktuoti laikant nuspaustą, reikia naujesnės nei 26.04 niri versijos; tada nustatykite jį iš naujo."
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

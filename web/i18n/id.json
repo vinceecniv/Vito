@@ -1427,7 +1427,20 @@
 "Confetti": "Konfeti",
 "Ocean": "Samudra",
 "High contrast": "Kontras tinggi",
-"High contrast black and white": "Kontras tinggi hitam putih"
+"High contrast black and white": "Kontras tinggi hitam putih",
+"Recordings": "Rekaman",
+"Audio on disk": "Audio di disk",
+"No recordings yet. The tape is still blank.": "Belum ada rekaman. Pitanya masih kosong.",
+"Quiet on set — nothing recorded yet.": "Hening di lokasi syuting — belum ada yang direkam.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito siap mendengarkan, tetapi belum ada yang direkam.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Rekaman berjalan selama yang Anda perlukan — kuliah, rapat, atau dikte panjang. Vito ikut menulis saat Anda berbicara, dan Anda bisa menandai momen serta menambahkan judul bagian.",
+"Start your first recording": "Mulai rekaman pertama Anda",
+"or turn an audio file into a recording": "atau ubah file audio menjadi rekaman",
+"Paused": "Dijeda",
+"words": "kata",
+"Marks": "Tanda",
+"Follows the colours of your desktop": "Mengikuti warna desktop Anda",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tekan Caps Lock untuk mulai mendikte dan tekan lagi untuk berhenti. Menahannya untuk mendikte memerlukan niri yang lebih baru dari 26.04; setelah itu atur ulang."
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",

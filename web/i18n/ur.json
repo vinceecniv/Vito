@@ -1426,7 +1426,20 @@
 "Confetti": "کنفیٹی",
 "Ocean": "سمندر",
 "High contrast": "زیادہ کنٹراسٹ",
-"High contrast black and white": "زیادہ کنٹراسٹ سیاہ و سفید"
+"High contrast black and white": "زیادہ کنٹراسٹ سیاہ و سفید",
+"Recordings": "ریکارڈنگز",
+"Audio on disk": "ڈسک پر آڈیو",
+"No recordings yet. The tape is still blank.": "ابھی تک کوئی ریکارڈنگ نہیں۔ ٹیپ ابھی خالی ہے۔",
+"Quiet on set — nothing recorded yet.": "سیٹ پر خاموشی — ابھی تک کچھ ریکارڈ نہیں ہوا۔",
+"Vito is all ears, but nothing has been recorded yet.": "Vito ہمہ تن گوش ہے، لیکن ابھی تک کچھ ریکارڈ نہیں ہوا۔",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "ریکارڈنگ جتنی دیر آپ کو ضرورت ہو چلتی رہتی ہے — لیکچر، میٹنگ یا طویل املا۔ آپ کے بولتے ہی Vito ساتھ ساتھ لکھتا ہے، اور آپ لمحات پر نشان لگا سکتے ہیں اور سرخیاں شامل کر سکتے ہیں۔",
+"Start your first recording": "اپنی پہلی ریکارڈنگ شروع کریں",
+"or turn an audio file into a recording": "یا کسی آڈیو فائل کو ریکارڈنگ میں بدلیں",
+"Paused": "رکا ہوا",
+"words": "الفاظ",
+"Marks": "نشانات",
+"Follows the colours of your desktop": "آپ کے ڈیسک ٹاپ کے رنگوں کی پیروی کرتا ہے",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "املا شروع کرنے کے لیے Caps Lock دبائیں اور روکنے کے لیے اسے دوبارہ دبائیں۔ دبائے رکھ کر املا کے لیے 26.04 سے نیا niri درکار ہے؛ پھر اسے دوبارہ سیٹ کریں۔"
 },
 "help": {
 "theme": "روشن، گہرا یا خودکار — خودکار آپ کے سسٹم کی روشن/گہری ترتیب کے مطابق چلتا ہے۔",

@@ -42,6 +42,7 @@ import (
 	"vito/internal/config"
 	"vito/internal/daemon"
 	"vito/internal/demo"
+	"vito/internal/desktopcolors"
 	"vito/internal/history"
 	"vito/internal/hotkey"
 	"vito/internal/inject"
@@ -187,6 +188,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("POST /api/ui/check", s.auth(s.handleUICheck))
 	mux.HandleFunc("GET /api/linux-tools", s.auth(s.handleLinuxTools))
 	mux.HandleFunc("GET /api/autostart", s.auth(s.handleGetAutostart))
+	mux.HandleFunc("GET /api/desktop-colors", s.auth(s.handleDesktopColors))
 	mux.HandleFunc("PUT /api/autostart", s.auth(s.handlePutAutostart))
 	mux.HandleFunc("GET /api/privacy", s.auth(s.handleGetPrivacy))
 	mux.HandleFunc("PUT /api/privacy", s.auth(s.handlePutPrivacy))
@@ -269,6 +271,10 @@ func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 		page = web.Index
 	}
 	page = bytes.ReplaceAll(page, []byte("__VITO_TOKEN__"), []byte(s.token))
+	// The run that served it: a copy the service worker hands out later, while
+	// Vito was down (at login, or the app opened before the daemon), knows it
+	// is older than the run it then reaches, and reloads.
+	page = bytes.ReplaceAll(page, []byte("__VITO_BOOT__"), []byte(bootID))
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Cache-Control", "no-store")
 	_, _ = w.Write(page)
@@ -867,8 +873,8 @@ func (s *Server) costRates() (sttHr, inRate, outRate, fx float64, currency strin
 	default:
 		sttHr = nonZero(sttRateUSD(cfg.STT), nonZero(c.SttPerHourUSD, 0.15))
 	}
-	inRate = nonZero(c.CleanupInPerMTokUSD, 1.0)
-	outRate = nonZero(c.CleanupOutPerMTokUSD, 5.0)
+	// Taken as is: 0 is the default cleanup's real price (Groq's free tier).
+	inRate, outRate = c.CleanupInPerMTokUSD, c.CleanupOutPerMTokUSD
 	currency = c.Currency
 	if currency == "" {
 		currency = "eur"
@@ -1423,6 +1429,13 @@ func (s *Server) handleGetAutostart(w http.ResponseWriter, r *http.Request) {
 		resp["error"] = err.Error()
 	}
 	s.writeJSON(w, http.StatusOK, resp)
+}
+
+// handleDesktopColors gives the colour schemes the desktop shells here
+// publish, by their ui.accent name ("dms", "omarchy"). The page offers only
+// the themes listed.
+func (s *Server) handleDesktopColors(w http.ResponseWriter, r *http.Request) {
+	s.writeJSON(w, http.StatusOK, map[string]any{"schemes": desktopcolors.All()})
 }
 
 // handlePutAutostart enables or disables launching Vito at login.

@@ -1425,7 +1425,20 @@
 "Confetti": "색종이",
 "Ocean": "바다",
 "High contrast": "고대비",
-"High contrast black and white": "고대비 흑백"
+"High contrast black and white": "고대비 흑백",
+"Recordings": "녹음 목록",
+"Audio on disk": "디스크의 오디오",
+"No recordings yet. The tape is still blank.": "아직 녹음이 없어요. 테이프가 아직 비어 있어요.",
+"Quiet on set — nothing recorded yet.": "촬영장 정숙 — 아직 녹음된 것이 없어요.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito는 귀를 기울이고 있지만, 아직 녹음된 것이 없어요.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "녹음은 필요한 만큼 계속돼요 — 강의, 회의, 긴 받아쓰기 모두요. 말하는 동안 Vito가 함께 받아 적고, 중요한 순간을 표시하거나 머리글을 추가할 수 있어요.",
+"Start your first recording": "첫 녹음 시작하기",
+"or turn an audio file into a recording": "또는 오디오 파일을 녹음으로 바꾸기",
+"Paused": "일시정지됨",
+"words": "단어",
+"Marks": "표시",
+"Follows the colours of your desktop": "데스크톱의 색상을 따라요",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Caps Lock을 누르면 받아쓰기가 시작되고, 다시 누르면 멈춰요. 누르고 있는 동안 받아쓰려면 26.04보다 새로운 niri가 필요해요. 그다음 다시 설정하세요."
 },
 "help": {
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",

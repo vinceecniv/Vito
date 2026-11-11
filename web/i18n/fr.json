@@ -1427,7 +1427,20 @@
 "Confetti": "Confettis",
 "Ocean": "Océan",
 "High contrast": "Contraste élevé",
-"High contrast black and white": "Contraste élevé noir et blanc"
+"High contrast black and white": "Contraste élevé noir et blanc",
+"Recordings": "Enregistrements",
+"Audio on disk": "Audio sur le disque",
+"No recordings yet. The tape is still blank.": "Aucun enregistrement pour l'instant. La bande est encore vierge.",
+"Quiet on set — nothing recorded yet.": "Silence sur le plateau — rien n'a encore été enregistré.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito est tout ouïe, mais rien n'a encore été enregistré.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Un enregistrement dure aussi longtemps qu'il le faut — un cours, une réunion ou une longue dictée. Vito écrit au fil de vos paroles, et vous pouvez marquer des moments et ajouter des intertitres.",
+"Start your first recording": "Démarrer votre premier enregistrement",
+"or turn an audio file into a recording": "ou transformer un fichier audio en enregistrement",
+"Paused": "En pause",
+"words": "mots",
+"Marks": "Marques",
+"Follows the colours of your desktop": "Suit les couleurs de votre bureau",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Appuyez sur Caps Lock pour commencer à dicter et appuyez de nouveau pour arrêter. Maintenir la touche pour dicter nécessite une version de niri plus récente que 26.04 ; configurez-la alors de nouveau."
 },
 "help": {
 "theme": "Clair, sombre ou automatique — le mode automatique suit le réglage clair/sombre de votre système.",

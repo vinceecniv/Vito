@@ -1427,7 +1427,20 @@
 "Confetti": "Konfetti",
 "Ocean": "Hav",
 "High contrast": "Høy kontrast",
-"High contrast black and white": "Høy kontrast svart-hvitt"
+"High contrast black and white": "Høy kontrast svart-hvitt",
+"Recordings": "Opptak",
+"Audio on disk": "Lyd på disken",
+"No recordings yet. The tape is still blank.": "Ingen opptak ennå. Båndet er fortsatt blankt.",
+"Quiet on set — nothing recorded yet.": "Stille på settet — ingenting er tatt opp ennå.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito er lutter øre, men ingenting er tatt opp ennå.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Et opptak varer så lenge du trenger — en forelesning, et møte eller en lang diktering. Vito skriver med mens du snakker, og du kan markere øyeblikk og legge til overskrifter.",
+"Start your first recording": "Start ditt første opptak",
+"or turn an audio file into a recording": "eller gjør en lydfil om til et opptak",
+"Paused": "Satt på pause",
+"words": "ord",
+"Marks": "Markeringer",
+"Follows the colours of your desktop": "Følger fargene på skrivebordet ditt",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Trykk på Caps Lock for å begynne å diktere, og trykk igjen for å stoppe. Å holde den inne for å diktere krever en niri nyere enn 26.04; sett den da opp på nytt."
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger systemets lys/mørk-innstilling.",

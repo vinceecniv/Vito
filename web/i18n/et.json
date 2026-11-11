@@ -1427,7 +1427,20 @@
 "Confetti": "Konfetti",
 "Ocean": "Ookean",
 "High contrast": "Kõrge kontrast",
-"High contrast black and white": "Kõrge kontrast must-valge"
+"High contrast black and white": "Kõrge kontrast must-valge",
+"Recordings": "Salvestised",
+"Audio on disk": "Heli kettal",
+"No recordings yet. The tape is still blank.": "Salvestisi veel pole. Lint on alles tühi.",
+"Quiet on set — nothing recorded yet.": "Vaikus võtteplatsil — midagi pole veel salvestatud.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito on täiesti kõrvu kikitanud, aga midagi pole veel salvestatud.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Salvestis kestab nii kaua, kui vaja — loeng, koosolek või pikk dikteering. Vito kirjutab rääkimise ajal kaasa ning sa saad hetki märkida ja pealkirju lisada.",
+"Start your first recording": "Alusta oma esimest salvestist",
+"or turn an audio file into a recording": "või tee helifailist salvestis",
+"Paused": "Peatatud",
+"words": "sõna",
+"Marks": "Märgid",
+"Follows the colours of your desktop": "Järgib su töölaua värve",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Vajuta dikteerimise alustamiseks Caps Lock ja lõpetamiseks vajuta seda uuesti. Allhoidmisega dikteerimiseks on vaja niri versiooni, mis on uuem kui 26.04; seejärel seadista see uuesti."
 },
 "help": {
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",

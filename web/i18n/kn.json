@@ -1425,7 +1425,20 @@
 "Confetti": "ಕಾನ್ಫೆಟ್ಟಿ",
 "Ocean": "ಸಾಗರ",
 "High contrast": "ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್",
-"High contrast black and white": "ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್ ಕಪ್ಪು-ಬಿಳಿ"
+"High contrast black and white": "ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್ ಕಪ್ಪು-ಬಿಳಿ",
+"Recordings": "ರೆಕಾರ್ಡಿಂಗ್‌ಗಳು",
+"Audio on disk": "ಡಿಸ್ಕ್‌ನಲ್ಲಿರುವ ಆಡಿಯೊ",
+"No recordings yet. The tape is still blank.": "ಇನ್ನೂ ಯಾವುದೇ ರೆಕಾರ್ಡಿಂಗ್‌ಗಳಿಲ್ಲ. ಟೇಪ್ ಇನ್ನೂ ಖಾಲಿಯಾಗಿದೆ.",
+"Quiet on set — nothing recorded yet.": "ಸೆಟ್‌ನಲ್ಲಿ ಮೌನ — ಇನ್ನೂ ಏನೂ ರೆಕಾರ್ಡ್ ಆಗಿಲ್ಲ.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito ಕಿವಿಗೊಟ್ಟು ಕೇಳುತ್ತಿದೆ, ಆದರೆ ಇನ್ನೂ ಏನೂ ರೆಕಾರ್ಡ್ ಆಗಿಲ್ಲ.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "ರೆಕಾರ್ಡಿಂಗ್ ನಿಮಗೆ ಬೇಕಾದಷ್ಟು ಹೊತ್ತು ಮುಂದುವರಿಯುತ್ತದೆ — ಒಂದು ಉಪನ್ಯಾಸ, ಸಭೆ ಅಥವಾ ದೀರ್ಘ ಡಿಕ್ಟೇಶನ್. ನೀವು ಮಾತನಾಡುತ್ತಿದ್ದಂತೆ Vito ಜೊತೆಜೊತೆಗೇ ಬರೆಯುತ್ತದೆ, ಮತ್ತು ನೀವು ಕ್ಷಣಗಳನ್ನು ಗುರುತಿಸಬಹುದು ಹಾಗೂ ಶೀರ್ಷಿಕೆಗಳನ್ನು ಸೇರಿಸಬಹುದು.",
+"Start your first recording": "ನಿಮ್ಮ ಮೊದಲ ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ",
+"or turn an audio file into a recording": "ಅಥವಾ ಆಡಿಯೊ ಫೈಲ್ ಅನ್ನು ರೆಕಾರ್ಡಿಂಗ್ ಆಗಿ ಪರಿವರ್ತಿಸಿ",
+"Paused": "ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ",
+"words": "ಪದಗಳು",
+"Marks": "ಗುರುತುಗಳು",
+"Follows the colours of your desktop": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನ ಬಣ್ಣಗಳನ್ನು ಅನುಸರಿಸುತ್ತದೆ",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "ಡಿಕ್ಟೇಟ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಲು Caps Lock ಒತ್ತಿ ಮತ್ತು ನಿಲ್ಲಿಸಲು ಅದನ್ನು ಮತ್ತೆ ಒತ್ತಿ. ಅದನ್ನು ಹಿಡಿದುಕೊಂಡು ಡಿಕ್ಟೇಟ್ ಮಾಡಲು 26.04 ಕ್ಕಿಂತ ಹೊಸ niri ಬೇಕು; ಆಗ ಅದನ್ನು ಮತ್ತೆ ಹೊಂದಿಸಿ."
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

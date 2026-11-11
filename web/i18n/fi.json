@@ -1,5 +1,18 @@
 {
 "strings": {
+"Recordings": "Nauhoitukset",
+"Audio on disk": "Ääni levyllä",
+"No recordings yet. The tape is still blank.": "Ei vielä nauhoituksia. Nauha on vielä tyhjä.",
+"Quiet on set — nothing recorded yet.": "Hiljaisuus kuvauspaikalla — mitään ei ole vielä nauhoitettu.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito on pelkkänä korvana, mutta mitään ei ole vielä nauhoitettu.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Nauhoitus jatkuu niin kauan kuin tarvitset — luento, kokous tai pitkä sanelu. Vito kirjoittaa mukana puhuessasi, ja voit merkitä hetkiä ja lisätä otsikoita.",
+"Start your first recording": "Aloita ensimmäinen nauhoituksesi",
+"or turn an audio file into a recording": "tai muuta äänitiedosto nauhoitukseksi",
+"Paused": "Keskeytetty",
+"words": "sanaa",
+"Marks": "Merkinnät",
+"Follows the colours of your desktop": "Seuraa työpöytäsi värejä",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Paina Caps Lockia aloittaaksesi sanelun ja paina sitä uudelleen lopettaaksesi. Pohjassa pitäen saneleminen vaatii nirin, joka on uudempi kuin 26.04; ota se sitten uudelleen käyttöön.",
 "recordings": "nauhoitukset",
 "Lectures, meetings and long sessions — nothing is lost, and the text gets structure.": "Luennot, kokoukset ja pitkät istunnot — mitään ei katoa, ja teksti saa rakenteen.",
 "New recording": "Uusi nauhoitus",

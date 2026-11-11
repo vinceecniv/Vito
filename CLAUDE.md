@@ -98,6 +98,16 @@ never a brand hex. Errors and recording use `--danger*`, which no theme
 changes. Canvases and the cursor images read the colours with `accentHex()` /
 `trGlowColors()`. The pill draws the same palettes from `internal/pill/accent.go`
 — keep the two in step.
+The desktop themes follow the shell's own colours: `dms` Dux Modular Shell, formerly DankMaterialShell
+(`~/.cache/dms/dms-colors.json`, `~/.cache/DankMaterialShell/` before 2.2, Material roles per side, only
+while a `dms-<pid>.pid` in `$XDG_RUNTIME_DIR` is alive) and `omarchy` the
+active Omarchy theme (`current/theme/colors.toml` under `~/.local/state/omarchy`
+or, before Omarchy 3, `~/.config/omarchy`; one side, mapped onto the same
+roles, the other side gets the accents only). `internal/desktopcolors` reads
+them, `GET /api/desktop-colors` lists what is available, and the page maps the
+roles onto the tokens in a generated `<style id="desk-accent">`
+(`writeDeskStyle`), offering a theme only where its shell runs, right after
+Vito's own; the pill builds its palette from the same roles.
 
 ## Backgrounds
 
@@ -355,6 +365,10 @@ double-tap for hands-free, and a lone tap dropped with a hint. That is how Caps
 Lock works on niri. A bind on `Caps_Lock` itself is not enough, because niri
 updates its XKB state before it looks for binds, so capitals lock anyway. Use
 `caps:menu` in the xkb options and bind `Menu` (measured in a nested niri).
+Press/release binds came after niri 26.04 (measured in a nested niri-git); 26.04
+rejects them ("only one action is allowed per keybind"), so `SetNiriCaps` then
+writes a plain `Menu` bind sending `-USR2` (start/stop, no hold) and
+`NiriCapsStatus` reports `mode: "toggle"`.
 Settings → Activation can write both into the user's `config.kdl` after
 asking (`internal/hotkey/niri_caps_linux.go`): into the existing `binds`
 block (niri allows one per file) between `// Vito: Caps Lock` and

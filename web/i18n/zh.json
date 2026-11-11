@@ -1425,7 +1425,20 @@
 "Confetti": "彩纸",
 "Ocean": "海洋",
 "High contrast": "高对比度",
-"High contrast black and white": "高对比度黑白"
+"High contrast black and white": "高对比度黑白",
+"Recordings": "录音",
+"Audio on disk": "磁盘上的音频",
+"No recordings yet. The tape is still blank.": "还没有录音。磁带还是空白的。",
+"Quiet on set — nothing recorded yet.": "片场安静 — 还没有录下任何内容。",
+"Vito is all ears, but nothing has been recorded yet.": "Vito 正洗耳恭听，但还没有录下任何内容。",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "录音可以按你的需要一直进行下去 — 一堂讲座、一场会议或一段长口述。Vito 会在你说话时同步记录文字，你还可以标记时刻并添加标题。",
+"Start your first recording": "开始你的第一段录音",
+"or turn an audio file into a recording": "或将音频文件转为录音",
+"Paused": "已暂停",
+"words": "字",
+"Marks": "标记",
+"Follows the colours of your desktop": "跟随你桌面的配色",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "按下 Caps Lock 开始口述，再按一次停止。按住口述需要高于 26.04 的 niri 版本；升级后请重新设置一次。"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

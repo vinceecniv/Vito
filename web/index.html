@@ -388,6 +388,11 @@
   .acc-opt:hover { border-color:var(--text3); color:var(--text); }
   .acc-opt[aria-checked="true"] { border-color:var(--accent); color:var(--text); box-shadow:0 0 0 1px var(--accent); }
   .acc-sw { width:20px; height:20px; border-radius:50%; flex:none; background:linear-gradient(135deg,var(--coral),var(--violet)); }
+  /* The desktop themes (Dux Modular Shell, Omarchy): the shell's mark in the
+     swatch and an accent edge, so following the desktop stands out. */
+  .acc-desk { border-color:color-mix(in srgb, var(--accent) 50%, var(--input-border)); }
+  .acc-desk .acc-sw { display:grid; place-items:center; width:22px; height:22px; color:#fff; }
+  .acc-desk .acc-sw svg { width:15px; height:15px; }
   /* ---- the app's background (ui.backdrop): #backdrop behind everything,
      and the same rules in the picker's swatches (.bd-sw, smaller --u). Only
      the palette tokens are used, so every colour theme brings its own; the
@@ -467,6 +472,8 @@
   .s-vito-prev .vmascot { display:block; width:100%; height:100%; }
   .s-vito-prev svg { width:100%; height:100%; overflow:visible; }
   .bd-sw[data-bd="bubbles"], .bd-sw[data-bd="confetti"], .bd-sw[data-bd="contours"] { --u:.5px; } /* smaller, its rings vanish */
+  /* The swatches show the pattern; only the page's own background moves. */
+  .bd-sw::before, .bd-sw::after { animation:none !important; }
   /* ---- corners (ui.radius): the page's own radii, or all of them capped at
      3px ("minimal") or square ("none"). One override for every element, so
      nothing has to know; spinners stay round, the picker's samples show
@@ -1179,6 +1186,16 @@
   .vito-talk rect:nth-of-type(3), .vito-talk rect:nth-of-type(5) { animation-delay:.45s; animation-duration:.7s; }
   .vito-talk rect:nth-of-type(4) { animation-delay:0s; animation-duration:.95s; }
   @keyframes vBar { 0%,100% { transform:scaleY(1); } 50% { transform:scaleY(.45); } }
+  /* The recordings' empty state: a microphone that sways on its stand, sound
+     rings leaving it, and a blinking record light. Still, the rings stay. */
+  .lre-mic .lre-body { transform-box:view-box; transform-origin:50px 76px; animation:lreSway 3.4s ease-in-out infinite; }
+  .lre-mic .lre-wave { transform-box:view-box; transform-origin:50px 24px; opacity:.55; animation:lreWave 2s ease-out infinite; }
+  .lre-mic .lre-wave.w2 { animation-delay:.5s; }
+  .lre-mic .lre-rec { animation:lreRec 1.6s ease-in-out infinite; }
+  @keyframes lreSway { 0%,100% { transform:rotate(-5deg); } 50% { transform:rotate(5deg); } }
+  @keyframes lreWave { 0% { opacity:0; transform:scale(.75); } 30% { opacity:1; } 100% { opacity:0; transform:scale(1.2); } }
+  @keyframes lreRec { 0%,100% { opacity:1; } 50% { opacity:.2; } }
+  @media (prefers-reduced-motion:reduce) { .lre-mic .lre-body, .lre-mic .lre-wave, .lre-mic .lre-rec { animation:none; } }
   .quiet-line { font-size:13.5px; line-height:1.45; color:var(--text2); }
   .quiet-line b { color:var(--text); font-weight:600; white-space:nowrap; }
   .rhythm-head { display:flex; align-items:center; gap:10px; }
@@ -1599,7 +1616,7 @@
   /* Every button answers the pointer. */
   .btn { transition:background-color .15s, border-color .15s, color .15s, filter .15s, opacity .15s, transform .1s; }
   .btn:active:not(:disabled) { transform:translateY(1px); }
-  .look-sounds { display:flex; align-items:center; gap:7px; margin-top:4px; }
+  .look-sounds { display:flex; align-items:center; gap:7px; margin:14px 0 6px; }
   .look-sounds svg { width:16px; height:16px; flex:none; }
   #s-look-reset:disabled { opacity:.45; cursor:var(--cur-arrow); }
   /* Reduce motion (ui.reduce_motion), for whoever has not found the system's
@@ -2110,20 +2127,11 @@
   .tux-slot { display:inline-flex; align-items:center; }
   /* the Linux section stacks two cards — space them like separate sections */
   /* Two cards in one settings section need the gap spelled out: only one section
-     is shown at a time, so the rule has to stay inside a section — a plain
-     "card + card" would also fire on a visible card whose predecessor is a
-     hidden card from another section, and push it down for no reason. */
-  .card[data-sec="general"] + .card[data-sec="general"],
-  .card[data-sec="appearance"] + .card[data-sec="appearance"],
-  .card[data-sec="activation"] + .card[data-sec="activation"],
-  .card[data-sec="audio"] + .card[data-sec="audio"],
-  .card[data-sec="stt"] + .card[data-sec="stt"],
-  .card[data-sec="cleanup"] + .card[data-sec="cleanup"],
-  .card[data-sec="assist"] + .card[data-sec="assist"],
-  .card[data-sec="output"] + .card[data-sec="output"],
-  .card[data-sec="linux"] + .card[data-sec="linux"],
-  .card[data-sec="backup"] + .card[data-sec="backup"],
-  .card[data-sec="about"] + .card[data-sec="about"] { margin-top:calc(24px * var(--dn, 1)); }
+     is shown at a time (the others carry hidden), so the gap goes to every
+     shown card after another shown one. Not "card + card": a section's cards
+     need not be neighbours in the page (General's Display and System have
+     Appearance's cards between them). */
+  .settings-pane > .card:not([hidden]) ~ .card:not([hidden]) { margin-top:calc(24px * var(--dn, 1)); }
   /* About section */
   .about-head { display:flex; align-items:center; gap:14px; }
   .about-logo { width:52px; height:52px; border-radius:14px; background:var(--grad); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
@@ -2818,17 +2826,15 @@
           <div class="accent-sel" id="density-sel" role="radiogroup" aria-label="Spacing"></div>
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
-          <label class="tgl" data-help="motion" style="margin-top:16px;"><input type="checkbox" id="s-motion"><span class="tr"></span> Reduce motion</label>
-          <button type="button" class="linkbtn look-sounds" id="s-goto-sounds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Sounds have their own sets, under Audio</span></button>
-          <button type="button" class="btn ghost small" id="s-look-reset" style="margin-top:16px;">Reset to default</button>
-        </div>
-        <div class="card" data-sec="appearance" id="set-vito">
-          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5q3.5 3 7 0"/><circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/></svg><span>Vito</span></h2>
+          <div class="subhead" style="margin-top:20px;">Other</div>
+          <label class="tgl" data-help="motion"><input type="checkbox" id="s-motion"><span class="tr"></span> Reduce motion</label>
           <label class="tgl" data-help="cursor"><input type="checkbox" id="s-cursor"><span class="tr"></span> Vito mouse cursor</label>
           <div class="s-vito-row">
             <span class="s-vito-prev"><span class="vmascot" data-state="happy" id="s-vito-prev"></span></span>
             <button type="button" class="btn ghost small" id="s-dress">Dress up Vito</button>
           </div>
+          <button type="button" class="linkbtn look-sounds" id="s-goto-sounds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Sounds have their own sets, under Audio</span></button>
+          <button type="button" class="btn ghost small" id="s-look-reset" style="margin-top:16px;">Reset to default</button>
         </div>
         <div class="card" data-sec="general" id="set-system">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg><span>System</span></h2>
@@ -3323,6 +3329,7 @@
           <button class="btn ghost small" id="d-import">Import</button>
           <input type="file" id="d-importfile" accept=".json,.txt,.csv" style="display:none">
         </div>
+        <div class="snip-ideas" id="d-corr-ideas"></div>
       </div>
       <div class="card" style="margin-bottom:24px;">
         <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Text snippets</span></h2>
@@ -3590,6 +3597,12 @@ const TR = { nl: {
   "Throw away":"Weggooien",
   "Restoring the recording…":"Opname wordt hersteld…",
   "No recordings yet. Start one for a lecture, a meeting or a long dictation.":"Nog geen opnames. Start er een voor een college, een vergadering of een lang dictaat.",
+  "No recordings yet. The tape is still blank.":"Nog geen opnames. Het bandje is nog leeg.",
+  "Quiet on set — nothing recorded yet.":"Stilte op de set — er is nog niets opgenomen.",
+  "Vito is all ears, but nothing has been recorded yet.":"Vito is een en al oor, maar er is nog niets opgenomen.",
+  "A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.":"Een opname loopt zo lang als je nodig hebt — een college, een vergadering of een lang dictaat. Vito schrijft mee terwijl je praat, en je kunt momenten markeren en kopjes toevoegen.",
+  "Start your first recording":"Start je eerste opname",
+  "or turn an audio file into a recording":"of maak een opname van een audiobestand",
   "Paused":"Gepauzeerd",
   "From a file":"Uit bestand",
   "Made from an audio file you chose, not recorded in Vito":"Gemaakt van een audiobestand dat je koos, niet opgenomen in Vito",
@@ -4014,6 +4027,7 @@ const TR = { nl: {
   "Cleanup rules":"Opschoonregels",
   "A Vito Assist command (“Vito, …”) doesn't use these rules: carrying out an instruction replaces them rather than extending them. The dictionary corrections and the language are sent separately, so you don't need to repeat them here.":"Een Vito Assist-opdracht (“Vito, …”) gebruikt deze regels niet: het uitvoeren van een opdracht vervangt ze in plaats van ze aan te vullen. De woordenboekcorrecties en de taal worden apart meegestuurd, dus die hoef je hier niet te herhalen.",
   "Vito default":"Vito standaard",
+  "Follows the colours of your desktop":"Volgt de kleuren van je bureaublad",
   "Balanced tidy-up: punctuation, spelling and fillers fixed, your wording left alone.":"Evenwichtig opschonen: interpunctie, spelling en stopwoorden opgelost, je formulering blijft van jou.",
   "Verbatim":"Letterlijk",
   "Touches as little as possible — punctuation only, every spoken word kept.":"Raakt zo min mogelijk aan — alleen interpunctie, elk gesproken woord blijft staan.",
@@ -4308,6 +4322,7 @@ const TR = { nl: {
   "Your own keys":"Eigen toetsen",
   "Not set by Vito":"Niet door Vito ingesteld",
   "It is set up in your niri config.":"Dit staat in je niri-configuratie.",
+  "Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.":"Druk op Caps Lock om te beginnen met dicteren en nog een keer om te stoppen. Vasthouden om te dicteren vraagt een niri nieuwer dan 26.04; stel het daarna opnieuw in.",
   "Remove it from the niri config":"Uit de niri-configuratie halen",
   "Your niri config has part of it; Vito can complete it.":"Je niri-configuratie heeft er een deel van; Vito kan het afmaken.",
   "Vito adds a few lines to your niri config for this, after asking, and keeps a copy of the file.":"Vito zet hiervoor, na je akkoord, een paar regels in je niri-configuratie en bewaart een kopie van het bestand.",
@@ -4920,6 +4935,8 @@ async function setUiLang(choice, persist){
   if (typeof buildThemeDropdown === "function") { buildThemeDropdown(); setThemeDisplay(themePref); }
   if (typeof buildIconSelects === "function") buildIconSelects(); // re-translate the icon dropdowns
   if (typeof buildPeriodDropdown === "function") buildPeriodDropdown();
+  // The appearance pickers are built with t(); their labels skip applyI18n.
+  [buildAccentPicker, buildFontPicker, buildRadiusPicker, buildDensityPicker, buildBackdropPicker, buildSoundSetPicker].forEach(f => f());
   if (typeof loadAbout === "function") loadAbout(); // its rows are built with t(), re-render them
   if (typeof syncSetSecUI === "function") syncSetSecUI(); // re-clone the now-translated tab labels
   if (typeof renderPwaTip === "function") renderPwaTip(); // built with t() too
@@ -4973,7 +4990,7 @@ function syncLookReset(){
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
    palettes in the CSS (:root[data-accent]); cached like the theme ---- */
-const ACCENTS = [{c:"",n:"Vito default"},{c:"ocean",n:"Ocean"},{c:"catppuccin",n:"Catppuccin",b:1},{c:"tokyo-night",n:"Tokyo Night",b:1},{c:"nord",n:"Nord",b:1},{c:"gruvbox",n:"Gruvbox",b:1},{c:"rose-pine",n:"Rosé Pine",b:1},{c:"kanagawa",n:"Kanagawa",b:1},{c:"everforest",n:"Everforest",b:1},{c:"ristretto",n:"Ristretto",b:1},{c:"solarized",n:"Solarized",b:1},{c:"flexoki",n:"Flexoki",b:1},{c:"dracula",n:"Dracula",b:1},{c:"hc",n:"High contrast"},{c:"hc-bw",n:"High contrast black and white"}];
+const ACCENTS = [{c:"",n:"Vito default"},{c:"dms",n:"Dux Modular Shell",b:1,desk:1},{c:"omarchy",n:"Omarchy",b:1,desk:1},{c:"ocean",n:"Ocean"},{c:"catppuccin",n:"Catppuccin",b:1},{c:"tokyo-night",n:"Tokyo Night",b:1},{c:"nord",n:"Nord",b:1},{c:"gruvbox",n:"Gruvbox",b:1},{c:"rose-pine",n:"Rosé Pine",b:1},{c:"kanagawa",n:"Kanagawa",b:1},{c:"everforest",n:"Everforest",b:1},{c:"ristretto",n:"Ristretto",b:1},{c:"solarized",n:"Solarized",b:1},{c:"flexoki",n:"Flexoki",b:1},{c:"dracula",n:"Dracula",b:1},{c:"hc",n:"High contrast"},{c:"hc-bw",n:"High contrast black and white"}];
 let accentPref = localStorage.getItem("vito-accent") || "";
 function applyAccent(){
   const root = document.documentElement;
@@ -4989,9 +5006,81 @@ function setAccent(pref, persist){
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { accent: accentPref });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
+// The desktop themes follow the shell's own colours: "dms" Dux Modular Shell
+// (formerly DankMaterialShell)
+// (a Material palette per side), "omarchy" the active Omarchy theme (one side;
+// the other gets its accents only). The daemon reads them
+// (/api/desktop-colors, internal/desktopcolors) and the roles become Vito's
+// tokens in a style sheet of their own. Offered only where that shell runs,
+// and fetched again every 30 s and on returning to the page, since the shells
+// change them with the wallpaper or the theme.
+let deskPals = {};
+// The shells' marks (Dux Modular Shell's, and the O of Omarchy's logo), drawn
+// in the swatch.
+const DESK_LOGOS = {
+  dms: '<svg viewBox="0 0 506.5093 569.94629" fill="currentColor"><g transform="translate(-86.583657,-506.40649)"><path transform="matrix(1.3333333,0,0,-1.3333333,510.56802,652.36811)" d="M 0,0 C -1.56,1.56 -3.16,3.09 -4.78,4.61 -5.94,3.96 -7.18,3.35 -8.52,2.76 -9.65,2.27 -10.81,1.82 -11.98,1.4 c 1.88,-1.68 3.74,-3.42 5.55,-5.20 0.44,-0.42 0.88,-0.86 1.32,-1.30 2.22,-2.22 4.38,-4.49 6.47,-6.84 27.63,-30.78 44.45,-71.45 44.45,-116.08 0,-29.34 -7.25,-56.97 -20.09,-81.21 -2.19,-4.13 -4.54,-8.17 -7.05,-12.10 -6.83,-10.74 -14.82,-20.66 -23.78,-29.63 -5.94,-5.94 -12.31,-11.45 -19.07,-16.49 -0.56,-0.42 -1.12,-0.83 -1.68,-1.23 -28.67,-20.89 -63.97,-33.20 -102.18,-33.20 -48.01,0 -91.46,19.45 -122.94,50.93 -0.73,0.73 -1.46,1.47 -2.17,2.22 -0.55,0.56 -1.10,1.14 -1.63,1.72 -15.54,16.55 -27.88,36.14 -36.01,57.77 -3.09,8.21 -5.58,16.71 -7.40,25.46 -2.41,11.53 -3.68,23.49 -3.68,35.75 0.01,42.32 15.11,81.09 40.24,111.24 -2.07,1.27 -3.97,2.80 -5.53,4.63 -26.17,-31.39 -41.93,-71.82 -41.93,-115.88 0,-18.18 2.67,-35.74 7.67,-52.31 3.35,-11.14 7.75,-21.83 13.09,-31.95 8.52,-16.20 19.44,-30.96 32.27,-43.80 1.25,-1.25 2.52,-2.49 3.81,-3.68 0.66,-0.64 1.33,-1.26 2.00,-1.87 10.86,-9.93 22.94,-18.57 36,-25.66 25.63,-13.91 55.01,-21.81 86.22,-21.81 2.45,0 4.90,0.04 7.33,0.14 36.05,1.44 69.42,13.42 97.05,32.97 0.56,0.39 1.14,0.79 1.69,1.20 7.82,5.65 15.16,11.92 21.96,18.71 7.90,7.90 15.07,16.52 21.40,25.77 2.55,3.72 4.97,7.55 7.25,11.47 15.49,26.69 24.38,57.72 24.38,90.81 C 53.03,-78.05 32.76,-32.76 0,0"/><path transform="matrix(1.3333333,0,0,-1.3333333,593.09295,823.09144)" d="m 0,0 c 0,-37.61 -10.93,-72.68 -29.80,-102.17 -33.74,-52.77 -92.85,-87.76 -160.14,-87.77 -6.55,0 -13.03,0.33 -19.41,0.98 h -0.00 c -16.24,1.66 -31.88,5.35 -46.65,10.84 -45.94,17.04 -83.50,51.36 -104.78,95.07 -12.22,25.09 -19.07,53.27 -19.07,83.04 0,47.85 17.69,91.56 46.89,124.95 0,-0.04 0,-0.09 0.00,-0.14 0.18,-1.67 0.60,-3.20 1.19,-4.6 C -359.28,87.79 -375.86,45.84 -375.86,0 c 0,-24.66 4.80,-48.21 13.53,-69.75 9.42,-23.29 23.44,-44.23 40.92,-61.72 33.64,-33.64 80.11,-54.44 131.46,-54.45 51.35,0.00 97.81,20.80 131.47,54.45 10.32,10.33 19.45,21.87 27.12,34.40 17.33,28.25 27.33,61.49 27.33,97.07 0,51.34 -20.80,97.81 -54.45,131.46 -1.31,1.31 -2.65,2.61 -4.00,3.88 1.13,0.84 2.15,1.72 3.06,2.62 C -22.82,103.36 0,54.34 0,0"/><path transform="matrix(1.3333333,0,0,-1.3333333,233.80828,653.24891)" d="M 0,0 -0.16,-0.29 C 1.43,-0.2 3.09,-0.10 4.79,0 Z"/><path transform="matrix(1.3333333,0,0,-1.3333333,539.10895,959.47611)" d="m 0,0 c -6.33,-9.24 -13.50,-17.86 -21.40,-25.77 -6.80,-6.79 -14.14,-13.06 -21.96,-18.71 -0.55,-0.41 -1.12,-0.81 -1.69,-1.20 -27.62,-19.54 -60.99,-31.53 -97.05,-32.97 -33.24,1.12 -64.85,8.76 -93.56,21.67 -13.05,7.08 -25.13,15.72 -36,25.66 -0.67,0.61 -1.34,1.23 -2.00,1.87 -1.28,1.19 -2.56,2.43 -3.81,3.68 -12.83,12.84 -23.74,27.59 -32.27,43.80 -1.09,7.65 -1.94,15.37 -2.44,23.03 -0.10,1.50 -0.18,3.00 -0.26,4.49 0,0 -2.86,29.79 23.94,36.63 26.82,6.84 65.65,19.74 87.72,50.30 0,0 0.32,-8.38 5.50,-15.77 8.03,-11.42 46.67,-100.46 46.67,-100.46 l 6.12,51.13 -13.97,15.07 -4.55,-1.98 15.22,16.54 c 0,0 8.94,4.21 16.55,-0.65 7.60,-4.89 14.14,-16.15 14.14,-16.15 l -5.87,3.89 -4.22,-12.36 c -0.75,-2.18 -0.83,-4.53 -0.23,-6.78 l 16.79,-62.68 c 0,0 -0.24,87.41 -2.78,111.68 0,0 14.22,-10.36 21.62,-14.45 7.38,-4.07 47.21,-20.40 53.73,-22.39 6.50,-1.98 13.22,-5.84 15.88,-11.91 1.02,-2.35 8.59,-26.93 17.48,-56.22 C -1.82,6.02 -0.91,3.02 0,0"/><path transform="matrix(1.3333333,0,0,-1.3333333,222.65402,747.39184)" d="m 0,0 c 0,0 -3.08,-67.22 -8.64,-90.61 -5.55,-23.39 30.31,0 30.31,0 l 20.9,68.62 z"/><path transform="matrix(1.3333333,0,0,-1.3333333,233.80828,653.24891)" d="M 0,0 -0.16,-0.29 C 1.43,-0.2 3.09,-0.10 4.79,0 Z"/><path transform="matrix(1.3333333,0,0,-1.3333333,431.42522,739.46864)" d="m 0,0 c 0,0 12.17,7.60 15.02,18.35 0,0 36.91,-9.24 52.90,-26.71 C 66.88,-8.09 29.64,2.03 0,0 m -36.15,-5.64 c -26.79,0.40 -31.78,16.05 -34.08,29.52 -0.51,2.95 -3.14,5.07 -6.13,4.88 l -46.27,-4.76 14.92,7.14 c 3.50,1.68 7.16,3.07 10.89,4.17 3.74,1.09 7.55,1.90 11.42,2.37 4.05,0.49 8.54,1.01 13.46,1.50 0,0 6.19,2.45 7.41,-4.47 1.25,-6.92 0.49,-31.86 28.28,-31.10 27.77,0.76 32.61,19.41 32.61,19.41 0,0 3.45,14.47 9.23,14.25 5.26,-0.20 7.27,-6.14 7.85,-10.47 0.14,-1.04 -0.06,-3.54 0.58,-4.32 -0.93,1.15 -2.16,2.03 -3.56,2.55 C 7.60,26.11 3.06,26.94 2.47,21.65 1.61,13.87 -9.59,-6.05 -36.15,-5.64 m 13.30,48.35 9.52,-2.37 c 0,0 -2.38,-17.5 -11.22,-21.97 -0.25,-0.13 4.19,14.28 1.69,24.35 m 59.02,3.04 3.79,-1.68 c 0,0 2.19,-14.20 -3.79,-20.57 0,0 2.17,12.47 0,22.26 m -187.45,35.63 c 12.22,2.06 24.45,4.22 36.66,6.33 l 36.66,6.39 73.30,12.74 c 2.95,0.52 5.77,-1.46 6.28,-4.40 0.52,-2.94 -1.46,-5.76 -4.42,-6.28 -0.11,-0.02 -0.26,-0.03 -0.38,-0.04 H -3.18 L -114.24,85.02 c -12.34,-1.22 -24.67,-2.49 -37.03,-3.64 M 43.97,16.93 c 3.54,4.69 5.21,23.09 5.21,23.09 l 1.49,2.51 v 8.74 C 29.38,61.32 11.86,50.68 11.86,50.68 l -16.49,0.74 c -3.11,0.14 -7.44,2.63 -10.64,3.43 -4.42,1.09 -8.80,2.06 -13.34,2.56 -16.40,1.73 -32.93,0 -49.09,-2.93 -7.02,-1.27 -13.97,-2.85 -20.95,-4.32 -6.70,-1.42 -12.87,-3.90 -19.15,-6.60 -4.31,-1.84 -8.64,-3.65 -12.64,-6.11 -2.43,-1.49 -4.74,-3.24 -6.73,-5.31 -2.12,-2.21 -3.65,-4.85 -5.47,-7.31 -1.54,-2.09 -4.90,-0.46 -4.14,2.03 0.02,0.05 0.04,0.11 0.06,0.15 0.86,2.04 2.22,4.64 3.65,6.34 3.58,4.24 8.95,8.29 13.68,11.12 10.03,6.07 21.48,9.76 32.76,12.98 24.77,7.05 51.44,8.13 77.00,10.55 14.11,1.33 28.43,2.09 42.47,4.01 12.78,1.73 37.93,4.85 36.17,22.88 -1.71,18.12 -59.35,18.71 -59.35,18.71 0,0 -21.94,45.02 -27.37,50.46 -5.41,5.41 -16.50,18.47 -74.25,4.38 -57.73,-14.07 -55.32,-42.25 -55.32,-42.25 l -2.41,-39.62 c 0,0 -43.19,-11.17 -41.83,-23.32 1.39,-12.14 39.17,-12.81 39.17,-12.81 0,0 8.57,0.43 20.69,1.15 l -5.38,-9.68 c -6.74,-12.13 -6.38,-25.25 -8.85,-38.90 -4.27,-23.63 11.96,-52.70 33.97,-62.14 21.1,-9.05 53.94,-13.78 99.01,6.36 11.08,4.95 20.32,13.28 26.66,23.61 l 0.49,0.79 c 22.72,26.12 80.57,9.38 80.57,9.38 C 81.77,1.69 43.97,16.93 43.97,16.93"/></g></svg>',
+  omarchy: '<svg viewBox="-8 7 151 256" fill="currentColor"><path fill-rule="evenodd" d="m105 30.002h15v14.997h15v180.001h-15v15h-15v15.002h-75v-15.002h-15v-15h-15v-180.001h15v-14.997h15v-15.002h75zm-60 194.998h45v-179.998h-45z"/></svg>',
+};
+async function loadDesktopColors(){
+  if (STANDALONE) return;
+  let got;
+  try { got = (await api("/api/desktop-colors")).schemes || {}; } catch { return; }
+  const ok = c => typeof c === "string" && /^#[0-9a-f]{6}$/i.test(c);
+  const next = {};
+  for (const [k, p] of Object.entries(got))
+    if (DESK_LOGOS[k] && p && [p.dark, p.light].every(side => side && ok(side.primary) && ok(side.secondary) && Object.values(side).every(ok))) next[k] = p;
+  if (JSON.stringify(next) === JSON.stringify(deskPals)) return;
+  deskPals = next;
+  writeDeskStyle();
+  buildAccentPicker();
+  if (DESK_LOGOS[accentPref]) applyTheme(); // the title bar colour follows --bg
+}
+// hexMix goes the fraction t from colour a towards b, both #rrggbb.
+function hexMix(a, b, t){
+  const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const x = p(a), y = p(b);
+  return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join("");
+}
+function writeDeskStyle(){
+  let el = document.getElementById("desk-accent");
+  if (!Object.keys(deskPals).length) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement("style"); el.id = "desk-accent"; document.head.appendChild(el); }
+  const css = [];
+  for (const [code, pal] of Object.entries(deskPals)) {
+    const D = pal.dark, L = pal.light;
+    // Like the shells' own interfaces, everything is primary: the cool end is
+    // a deep primary (Material's primary container, in spirit), and the
+    // switches are primary itself.
+    // Mixed here rather than with color-mix(): the cursor, the transcript's
+    // glow and the title bar read these tokens and take only #rrggbb.
+    const deep = c => hexMix(c.primary, "#000000", .38);
+    const side = (c, dark) => `--coral:${c.primary}; --violet:${deep(c)};
+      --coral-l:${hexMix(c.primary, "#ffffff", .4)}; --violet-l:${hexMix(c.primary, "#ffffff", .4)};
+      --acc-l:${L.primary}; --acc-d:${D.primary}; --ink-l:${L.primary}; --toggle-on:${c.primary};
+      --grad:linear-gradient(135deg, ${c.primary}, ${deep(c)});` + (!c.surface ? "" : `
+      --bg:${dark ? hexMix(c.surface, "#000000", .2) : c.surface_container};
+      --sidebar:${dark ? hexMix(c.surface, "#000000", .35) : c.surface}; --sidebar-border:${c.surface_container_high};
+      --card:${c.surface}; --card-border:${c.surface_container_high};
+      --input-bg:${hexMix(c.surface, c.surface_container_high, .45)}; --input-border:${c.surface_container_highest};
+      --text:${c.on_surface}; --text2:${hexMix(c.on_surface, c.on_surface_variant, .5)}; --text3:${c.on_surface_variant};
+      --placeholder:${c.outline}; --toggle-off:${c.surface_container_highest}; --track:${c.surface_container_high}; --bar:${c.surface_container_high};`);
+    css.push(`:root:not([data-theme="dark"])[data-accent="${code}"] { ${side(L, false)} }`,
+      `:root[data-theme="dark"][data-accent="${code}"] { ${side(D, true)} }`,
+      `.acc-opt[data-accent="${code}"] { --coral:${L.primary}; --violet:${deep(L)}; }`,
+      `:root[data-theme="dark"] .acc-opt[data-accent="${code}"] { --coral:${D.primary}; --violet:${deep(D)}; }`,
+      // The mark sits on primary, so it takes the colour made for that.
+      `.acc-opt[data-accent="${code}"] .acc-sw { color:${L.on_primary || "#fff"}; }`,
+      `:root[data-theme="dark"] .acc-opt[data-accent="${code}"] .acc-sw { color:${D.on_primary || "#fff"}; }`);
+  }
+  el.textContent = css.join("\n");
+}
+setInterval(() => { if (!document.hidden) loadDesktopColors(); }, 30000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) loadDesktopColors(); });
 function buildAccentPicker(){
   const box = $("accent-sel"); if (!box) return;
-  box.innerHTML = ACCENTS.map(a => `<button type="button" class="acc-opt" role="radio" data-code="${a.c}" data-accent="${a.c || "coral"}"><i class="acc-sw" aria-hidden="true"></i><span>${a.b ? a.n : t(a.n)}</span></button>`).join("");
+  box.innerHTML = ACCENTS.filter(a => !a.desk || deskPals[a.c] || accentPref === a.c).map(a => a.desk
+    ? `<button type="button" class="acc-opt acc-desk" role="radio" data-code="${a.c}" data-accent="${a.c}" data-tip-text="${t("Follows the colours of your desktop").replace(/"/g, "&quot;")}"><i class="acc-sw" aria-hidden="true">${DESK_LOGOS[a.c]}</i><span data-noi18n>${a.n}</span></button>`
+    : `<button type="button" class="acc-opt" role="radio" data-code="${a.c}" data-accent="${a.c || "coral"}"><i class="acc-sw" aria-hidden="true"></i><span data-noi18n>${a.b ? a.n : t(a.n)}</span></button>`).join("");
   box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setAccent(b.dataset.code, true));
   applyAccent();
 }
@@ -5021,7 +5110,7 @@ function setFont(pref, persist){
 }
 function buildFontPicker(){
   const box = $("font-sel"); if (!box) return;
-  box.innerHTML = FONTS.map(f => `<button type="button" class="acc-opt font-opt" role="radio" data-code="${f.c}" data-font="${f.c || "sora"}"><span>${f.b ? f.n : t(f.n)}</span></button>`).join("");
+  box.innerHTML = FONTS.map(f => `<button type="button" class="acc-opt font-opt" role="radio" data-code="${f.c}" data-font="${f.c || "sora"}"><span data-noi18n>${f.b ? f.n : t(f.n)}</span></button>`).join("");
   box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setFont(b.dataset.code, true));
   applyFont();
 }
@@ -5044,7 +5133,7 @@ function setRadius(pref, persist){
 }
 function buildRadiusPicker(){
   const box = $("radius-sel"); if (!box) return;
-  box.innerHTML = RADII.map(r => `<button type="button" class="acc-opt rad-opt" role="radio" data-code="${r.c}"><i class="rad-sw" style="border-radius:${r.r}" aria-hidden="true"></i><span>${t(r.n)}</span></button>`).join("");
+  box.innerHTML = RADII.map(r => `<button type="button" class="acc-opt rad-opt" role="radio" data-code="${r.c}"><i class="rad-sw" style="border-radius:${r.r}" aria-hidden="true"></i><span data-noi18n>${t(r.n)}</span></button>`).join("");
   box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setRadius(b.dataset.code, true));
   applyRadius();
 }
@@ -5067,7 +5156,7 @@ function setDensity(pref, persist){
 }
 function buildDensityPicker(){
   const box = $("density-sel"); if (!box) return;
-  box.innerHTML = DENSITIES.map(d => `<button type="button" class="acc-opt rad-opt" role="radio" data-code="${d.c}"><span class="dn-sw" style="--g:${d.g}px" aria-hidden="true"><i></i><i></i><i></i></span><span>${t(d.n)}</span></button>`).join("");
+  box.innerHTML = DENSITIES.map(d => `<button type="button" class="acc-opt rad-opt" role="radio" data-code="${d.c}"><span class="dn-sw" style="--g:${d.g}px" aria-hidden="true"><i></i><i></i><i></i></span><span data-noi18n>${t(d.n)}</span></button>`).join("");
   box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setDensity(b.dataset.code, true));
   applyDensity();
 }
@@ -5093,7 +5182,7 @@ function setBackdrop(pref, persist){
 }
 function buildBackdropPicker(){
   const box = $("backdrop-sel"); if (!box) return;
-  box.innerHTML = BACKDROPS.map(b => `<button type="button" class="acc-opt bd-opt" role="radio" data-code="${b.c}"><i class="bd-sw bd" data-bd="${b.c}" aria-hidden="true"></i><span>${t(b.n)}</span></button>`).join("");
+  box.innerHTML = BACKDROPS.map(b => `<button type="button" class="acc-opt bd-opt" role="radio" data-code="${b.c}"><i class="bd-sw bd" data-bd="${b.c}" aria-hidden="true"></i><span data-noi18n>${t(b.n)}</span></button>`).join("");
   box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setBackdrop(b.dataset.code, true));
   applyBackdrop();
 }
@@ -5291,7 +5380,12 @@ function setDaemonUp(up){
 // restarted (a new run may also have a new token); the same daemon after a
 // dropped connection — a laptop waking up, a frozen tab — just has its state
 // fetched again, and the open section, scroll position and transcript stay.
-let bootId = null;
+// The daemon writes its run into the page; a page the service worker served
+// from its cache (Vito was not running yet) carries the run before — often
+// the version before an update — and so reloads once Vito answers.
+// A daemon older than this leaves the placeholder: then the first status sets it.
+const PAGE_BOOT = "__VITO_BOOT__";
+let bootId = PAGE_BOOT.indexOf("__VITO" + "_BOOT__") === 0 ? null : PAGE_BOOT;
 async function daemonCameBack(){
   let s;
   // Unreachable again: the offline screen is back and will retry. Any other
@@ -5805,7 +5899,7 @@ function buildSegPick(key, opts, onPick){
 }
 let setTypespeedDisplay, setNotifyDisplay, setPillStyleDisplay, setMediaDisplay, setInjectDisplay, setRetentionDisplay, setCleanupProviderDisplay, setCleanupPresetDisplay, setAssistProviderDisplay, setAssistPresetDisplay;
 function buildIconSelects(){
-  const ts = $("s-typespeed").value || "average", nf = $("s-notify").value || "all";
+  const ts = $("s-typespeed").value || "average", nf = $("s-notify").value || "errors";
   setTypespeedDisplay = buildIconSelect("typespeed", TYPESPEED_OPTS);
   setNotifyDisplay = buildIconSelect("notify", NOTIFY_OPTS);
   const ps = $("s-pillstyle").value || "";
@@ -6174,6 +6268,7 @@ $("s-goto-sounds").onclick = () => {
     el.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "center" });
     el.classList.add("flash-hl"); setTimeout(() => el.classList.remove("flash-hl"), 1600); }, 60);
 };
+loadDesktopColors();
 $("s-motion").checked = motionPref;
 $("s-motion").addEventListener("change", e => setMotion(e.target.checked, true));
 syncLookReset();
@@ -10503,8 +10598,9 @@ function showCostInfo(){
   const prov = (cfg && cfg.stt && cfg.stt.provider) || "";
   const endpoint = prov === "openai" || prov === "local" || prov === "whistle";
   const stt = endpoint ? (c.stt_per_hour_usd || 0) : (c.stt_per_hour_usd || rates.stt_per_hour_usd || 0.15);
-  const cin = c.cleanup_in_per_mtok_usd || rates.cleanup_in_per_mtok_usd || 1.0;
-  const cout = c.cleanup_out_per_mtok_usd || rates.cleanup_out_per_mtok_usd || 5.0;
+  // 0 is a real rate here too: the default cleanup runs on Groq's free tier.
+  const cin = c.cleanup_in_per_mtok_usd ?? rates.cleanup_in_per_mtok_usd ?? 0;
+  const cout = c.cleanup_out_per_mtok_usd ?? rates.cleanup_out_per_mtok_usd ?? 0;
   const model = SPEECH_MODELS.find(m => m.id === ((cfg && cfg.stt && cfg.stt.model) || ""));
   const modelLabel = !model ? "" : prov === "local" ? t("Vito local") : endpoint ? sttEndpointName() : model.name;
   const fx = c.fx_rate && cur === "eur"
@@ -11058,7 +11154,7 @@ async function fillSettings() {
   $("s-pill-live").checked = !(cfg.ui && cfg.ui.pill_live === false); // unset is on
   syncPillLive();
   setTypespeedDisplay((cfg.stats && cfg.stats.typing_speed) || "average");
-  setNotifyDisplay((cfg.ui && cfg.ui.notifications) || "all");
+  setNotifyDisplay((cfg.ui && cfg.ui.notifications) || "errors");
   setPillStyleDisplay(((cfg.ui && cfg.ui.pill_style) || "").replace(/^glow$/, "")); // "glow" was its name before it became the default
   $("s-demo").checked = !!cfg.demo;
   $("s-updatecheck").checked = !(cfg.update && cfg.update.check === false);
@@ -11443,7 +11539,9 @@ function dictKeyHTML(info){
     <div class="dk-head"><span class="dk-title">${t("Your dictation key")}</span>
       <span class="dk-key${key ? "" : " none"}">${key ? ahEsc(key) : t("Not set by Vito")}</span></div>
     <p class="act-note" style="margin:6px 0 0;">${text}</p>
-    ${kind ? dkHowtoHTML(kind === "mac") : ""}
+    ${kind === "niri" && capsOn && niri.mode === "toggle"
+      ? `<p class="act-note" style="margin:8px 0 0;">${t("Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.")}</p>`
+      : kind ? dkHowtoHTML(kind === "mac") : ""}
     ${btn ? `<div class="rowflex" style="margin-top:12px;">${btn}</div>` : ""}
     <p class="act-note" id="dk-msg" style="margin:8px 0 0;" hidden></p>
     <p class="act-note dk-other" style="margin:8px 0 0;">${t("You can always use another key or combination instead; see below.")}</p>
@@ -11537,7 +11635,10 @@ function linuxActivationHTML(info){
   // that plainly instead of leaving the user to wonder about a dialog they saw.
   const state = (info && info.portal) || "";
   const note = (text, btn) => `<div class="hk-portal"><p class="act-note" style="margin:0;">${text}</p>${btn ? `<div class="hk-portal-row" style="margin-top:8px;">${btn}</div>` : ""}</div>`;
-  const status = spec ? ""
+  // Caps Lock set up in niri's own config is the binding; what the portal
+  // did (niri has no backend for it) is then beside the point.
+  const niriBound = info && info.niri_caps && info.niri_caps.state === "on";
+  const status = spec || niriBound ? ""
     : state === "pending" ? note(t("Waiting for your desktop — confirm the shortcut in its dialog."))
     : state === "cancelled" ? note(t("You closed your desktop's shortcut dialog, so no shortcut is bound yet."), ask(t("Register shortcut")))
     : state === "failed" ? note(t("Your desktop didn't bind the shortcut."), ask(t("Try again")))
@@ -11620,7 +11721,7 @@ function applySoundSet(){
 function buildSoundSetPicker(){
   const box = $("soundset-sel"); if (!box) return;
   const play = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
-  box.innerHTML = SOUNDSETS.map(o => `<button type="button" class="acc-opt" role="radio" data-code="${o.c}">${play}<span>${t(o.n)}</span></button>`).join("");
+  box.innerHTML = SOUNDSETS.map(o => `<button type="button" class="acc-opt" role="radio" data-code="${o.c}">${play}<span data-noi18n>${t(o.n)}</span></button>`).join("");
   box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => {
     previewSound("done", b.dataset.code);
     if (!cfg || (cfg.audio.sound_set || "") === b.dataset.code) return;
@@ -12093,6 +12194,7 @@ function renderCorrections(list) {
   const tbody = $("d-corrections").querySelector("tbody");
   tbody.innerHTML = "";
   list.forEach((c) => addCorrectionRow(c.wrong, c.right));
+  renderCorrectionIdeas();
 }
 function addCorrectionRow(wrong = "", right = "") {
   const tbody = $("d-corrections").querySelector("tbody");
@@ -12101,7 +12203,7 @@ function addCorrectionRow(wrong = "", right = "") {
   tr.appendChild(mk(wrong)); tr.appendChild(mk(right));
   tr.querySelectorAll("input").forEach(inp => inp.addEventListener("input", autoSaveDict));
   const tdDel = document.createElement("td");
-  const del = document.createElement("button"); del.className = "btn danger small"; del.textContent = "×"; del.onclick = () => { tr.remove(); autoSaveDict(); };
+  const del = document.createElement("button"); del.className = "btn danger small"; del.textContent = "×"; del.onclick = () => { tr.remove(); autoSaveDict(); renderCorrectionIdeas(); };
   tdDel.appendChild(del); tr.appendChild(tdDel);
   tbody.appendChild(tr);
 }
@@ -12148,37 +12250,63 @@ const SNIPPET_IDEAS = [
   { trigger: "my meeting link", text: "https://cal.com/your-name" },
 ];
 // Ideas put away with their ×, remembered in this browser (by the English
-// trigger, so a language switch doesn't bring them back).
-function snipIdeasHidden() { try { return JSON.parse(localStorage.getItem("vito-snip-ideas-hidden") || "[]"); } catch { return []; } }
-function renderSnippetIdeas() {
-  const box = $("d-snip-ideas"); if (!box) return;
-  const have = new Set([...$("d-snippets").querySelectorAll("tbody tr input")].map(i => i.value.trim().toLowerCase()));
-  const gone = snipIdeasHidden();
-  const ideas = SNIPPET_IDEAS.filter(x => !have.has(t(x.trigger).toLowerCase()) && !gone.includes(x.trigger));
-  box.hidden = !ideas.length;
-  box.innerHTML = !ideas.length ? "" : `<div class="snip-ideas-h">${t("Ideas to start with")}</div>` +
-    ideas.map((x, i) => `<button type="button" class="snip-idea" data-i="${SNIPPET_IDEAS.indexOf(x)}">
-      <span class="si-say">“${ahEsc(t(x.trigger))}”</span><span class="si-arrow">→</span>
-      <span class="si-text">${ahEsc(t(x.text)).replace(/\n/g, " ⏎ ")}</span><span class="si-add">${t("Add")}</span>
-      <span class="si-x" role="button" tabindex="0" data-x="${SNIPPET_IDEAS.indexOf(x)}" title="${t("Hide this idea")}" aria-label="${t("Hide this idea")}">×</span></button>`).join("");
+// key, so a language switch doesn't bring them back).
+function ideasHidden(store) { try { return JSON.parse(localStorage.getItem(store) || "[]"); } catch { return []; } }
+// renderIdeas draws a row of ready-made examples under a dictionary table:
+// from, to — what each side shows; have — the first column's current values;
+// take — adds the idea as a row. An idea already in the table is not offered.
+function renderIdeas({ box, ideas, store, key, from, to, have, take, rerender }) {
+  if (!box) return;
+  const gone = ideasHidden(store);
+  const left = ideas.filter(x => !have.has(from(x).toLowerCase()) && !gone.includes(key(x)));
+  box.hidden = !left.length;
+  box.innerHTML = !left.length ? "" : `<div class="snip-ideas-h">${t("Ideas to start with")}</div>` +
+    left.map(x => `<button type="button" class="snip-idea" data-i="${ideas.indexOf(x)}">
+      <span class="si-say">“${ahEsc(from(x))}”</span><span class="si-arrow">→</span>
+      <span class="si-text">${ahEsc(to(x)).replace(/\n/g, " ⏎ ")}</span><span class="si-add">${t("Add")}</span>
+      <span class="si-x" role="button" tabindex="0" data-x="${ideas.indexOf(x)}" title="${t("Hide this idea")}" aria-label="${t("Hide this idea")}">×</span></button>`).join("");
   box.querySelectorAll(".si-x").forEach(x => {
     const hide = (e) => {
       e.stopPropagation();
-      const list = snipIdeasHidden(); list.push(SNIPPET_IDEAS[+x.dataset.x].trigger);
-      try { localStorage.setItem("vito-snip-ideas-hidden", JSON.stringify(list)); } catch {}
-      renderSnippetIdeas();
+      const list = ideasHidden(store); list.push(key(ideas[+x.dataset.x]));
+      try { localStorage.setItem(store, JSON.stringify(list)); } catch {}
+      rerender();
     };
     x.onclick = hide;
     x.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); hide(e); } };
   });
   box.querySelectorAll(".snip-idea").forEach(b => b.onclick = () => {
-    const x = SNIPPET_IDEAS[+b.dataset.i];
-    addSnippetRow(t(x.trigger), t(x.text));
+    take(ideas[+b.dataset.i]);
     autoSaveDict();
-    renderSnippetIdeas();
-    const ta = [...$("d-snippets").querySelectorAll("tbody tr")].pop().querySelector("textarea");
-    ta.focus(); ta.select();
+    rerender();
   });
+}
+const firstCol = table => new Set([...$(table).querySelectorAll("tbody tr td:first-child input")].map(i => i.value.trim().toLowerCase()));
+function renderSnippetIdeas() {
+  renderIdeas({ box: $("d-snip-ideas"), ideas: SNIPPET_IDEAS, store: "vito-snip-ideas-hidden",
+    key: x => x.trigger, from: x => t(x.trigger), to: x => t(x.text), have: firstCol("d-snippets"),
+    rerender: renderSnippetIdeas,
+    take: x => {
+      addSnippetRow(t(x.trigger), t(x.text));
+      const ta = [...$("d-snippets").querySelectorAll("tbody tr")].pop().querySelector("textarea");
+      ta.focus(); ta.select();
+    } });
+}
+// Corrections: names speech recognition splits or spells its own way. Brand
+// names read the same in every language, so they are not translated.
+const CORRECTION_IDEAS = [
+  { wrong: "chat gpt", right: "ChatGPT" },
+  { wrong: "git hub", right: "GitHub" },
+  { wrong: "linked in", right: "LinkedIn" },
+];
+function renderCorrectionIdeas() {
+  renderIdeas({ box: $("d-corr-ideas"), ideas: CORRECTION_IDEAS, store: "vito-corr-ideas-hidden",
+    key: x => x.wrong, from: x => x.wrong, to: x => x.right, have: firstCol("d-corrections"),
+    rerender: renderCorrectionIdeas,
+    take: x => {
+      addCorrectionRow(x.wrong, x.right);
+      [...$("d-corrections").querySelectorAll("tbody tr")].pop().querySelector("input").focus();
+    } });
 }
 function addSnippetRow(trigger = "", text = "") {
   const tbody = $("d-snippets").querySelector("tbody");
@@ -12834,6 +12962,34 @@ function lrSortFn(){
     return (desc ? -c : c) || (Date.parse(b.started) || 0) - (Date.parse(a.started) || 0);
   };
 }
+// The overview with nothing in it yet, in the style of the history's empty
+// state: a playful line, what the tab is for, and a way to start.
+const LR_EMPTY_LINES = [
+  "No recordings yet. The tape is still blank.",
+  "Quiet on set — nothing recorded yet.",
+  "Vito is all ears, but nothing has been recorded yet.",
+];
+function lrEmptyHTML(){
+  const line = LR_EMPTY_LINES[Math.floor(Math.random() * LR_EMPTY_LINES.length)];
+  const file = $("lr-import") ? `<button type="button" class="linkbtn helper-only" id="lre-file">${t("or turn an audio file into a recording")}</button>` : "";
+  return `<div class="hist-empty">
+    <svg viewBox="0 0 100 100" class="lre-mic he-logo" aria-hidden="true"><defs><linearGradient id="lreGrad" gradientUnits="userSpaceOnUse" x1="20" y1="8" x2="80" y2="80"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs>
+      <g class="lre-body">
+        <g fill="none" stroke="url(#lreGrad)" stroke-width="4.5" stroke-linecap="round">
+          <path class="lre-wave" d="M32.7 14A20 20 0 0 0 32.7 34M67.3 14A20 20 0 0 1 67.3 34"/>
+          <path class="lre-wave w2" d="M22.3 8A32 32 0 0 0 22.3 40M77.7 8A32 32 0 0 1 77.7 40"/>
+        </g>
+        <rect x="40" y="10" width="20" height="34" rx="10" fill="url(#lreGrad)"/>
+        <path d="M45 20h10M45 26h10M45 32h10" stroke="var(--card)" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
+        <path d="M30 40a20 20 0 0 0 40 0M50 60v13M40 76h20" fill="none" stroke="url(#lreGrad)" stroke-width="6" stroke-linecap="round"/>
+      </g>
+      <circle class="lre-rec" cx="77" cy="70" r="5.5" fill="var(--danger)"/></svg>
+    <div class="he-title">${t(line)}</div>
+    <div class="he-sub">${t("A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.")}</div>
+    <button type="button" class="btn primary lr-new" id="lre-start"><span class="lr-dot"></span>${t("Start your first recording")}</button>
+    ${file ? `<div class="he-key">${file}</div>` : ""}
+  </div>`;
+}
 function lrRenderList(){
   lrRenderOverall();
   const rows = LR.sessions.filter(s => s.state !== "interrupted" && !(LR.running && s.id === LR.running.id));
@@ -12841,7 +12997,9 @@ function lrRenderList(){
   rows.sort(lrSortFn());
   const all = live.concat(rows);
   if (!all.length) {
-    $("lr-list").innerHTML = `<div class="lr-empty">${escapeHtml(t("No recordings yet. Start one for a lecture, a meeting or a long dictation."))}</div>`;
+    $("lr-list").innerHTML = lrEmptyHTML();
+    const s = $("lre-start"); if (s) s.onclick = () => $("lr-new").click();
+    const f = $("lre-file"); if (f) f.onclick = () => $("lr-import").click();
     return;
   }
   const chip = s => {
@@ -14081,8 +14239,16 @@ function uiZoom(){
 }
 // Same tooltip, but with the text carried on the element — for tips that are
 // generated with their content (the stat cards) rather than keyed in HELP.
+// A sidebar button whose own label is on screen (the sidebar expanded, the
+// current page in the top bar) needs no tip naming it again.
+function sideLabelShown(el){
+  if (!el.closest(".sidebar")) return false;
+  const lbl = el.matches(".nav-item") ? el : el.querySelector(".lr-navrec-l, .side-toggle > span");
+  return !!lbl && lbl.offsetWidth > 0 && parseFloat(getComputedStyle(lbl).fontSize) > 0;
+}
 function showTipText(target){
   if ((!helpTipsEnabled && !target.dataset.tipLabel) || !target.dataset.tipText) return;
+  if (sideLabelShown(target)) return;
   placeTip(helpTip(), target.dataset.tipText, target);
 }
 document.querySelectorAll("[data-help]").forEach(el => {
@@ -14163,7 +14329,7 @@ $("s-zoom-reset").addEventListener("click", () => { applyZoom(1); try { localSto
 /* ---- init ---- */
 applyI18n(); // translate static UI for first paint (config refines it after load)
 applyStatusLayout();
-api("/api/status").then(s => { bootId = s.boot || null; setState(s.state); setLastRecording(s.last_recording_id); creditState = Array.isArray(s.credit) ? s.credit : []; setActiveCommand(s.command || ""); applyStatusLayout(); }).catch(() => setState("idle"));
+api("/api/status").then(s => { if (s.boot && bootId && s.boot !== bootId) { location.reload(); return; } bootId = s.boot || null; setState(s.state); setLastRecording(s.last_recording_id); creditState = Array.isArray(s.credit) ? s.credit : []; setActiveCommand(s.command || ""); applyStatusLayout(); }).catch(() => setState("idle"));
 loadSettings().catch(err => toast(t("Loading settings failed: ") + err.message, "err"));
 loadStats();
 loadPrivacy();

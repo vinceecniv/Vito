@@ -1427,7 +1427,20 @@
 "Confetti": "Konfetia",
 "Ocean": "Ozeanoa",
 "High contrast": "Kontraste handia",
-"High contrast black and white": "Kontraste handia zuri-beltzean"
+"High contrast black and white": "Kontraste handia zuri-beltzean",
+"Recordings": "Grabaketak",
+"Audio on disk": "Audioa diskoan",
+"No recordings yet. The tape is still blank.": "Oraindik ez dago grabaketarik. Zinta hutsik dago oraindik.",
+"Quiet on set — nothing recorded yet.": "Isiltasuna platoan — oraindik ez da ezer grabatu.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito belarri-erne dago, baina oraindik ez da ezer grabatu.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Grabaketak behar duzun bitartean irauten du — hitzaldi bat, bilera bat edo diktaketa luze bat. Vitok hitz egin ahala idazten du, eta uneak markatu eta goiburuak gehi ditzakezu.",
+"Start your first recording": "Hasi zure lehen grabaketa",
+"or turn an audio file into a recording": "edo bihurtu audio-fitxategi bat grabaketa",
+"Paused": "Pausatuta",
+"words": "hitz",
+"Marks": "Markak",
+"Follows the colours of your desktop": "Zure mahaigaineko koloreei jarraitzen die",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Sakatu Caps Lock diktatzen hasteko eta sakatu berriro gelditzeko. Eutsita diktatzeko 26.04 baino niri berriagoa behar da; orduan ezarri berriro."
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",

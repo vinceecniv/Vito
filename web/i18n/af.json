@@ -1427,7 +1427,20 @@
 "Confetti": "Konfetti",
 "Ocean": "Oseaan",
 "High contrast": "Hoë kontras",
-"High contrast black and white": "Hoë kontras swart-wit"
+"High contrast black and white": "Hoë kontras swart-wit",
+"Recordings": "Opnames",
+"Audio on disk": "Klank op skyf",
+"No recordings yet. The tape is still blank.": "Nog geen opnames nie. Die band is nog leeg.",
+"Quiet on set — nothing recorded yet.": "Stilte op die stel — nog niks opgeneem nie.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito is een en al oor, maar nog niks is opgeneem nie.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "'n Opname loop so lank as wat jy nodig het — 'n lesing, 'n vergadering of 'n lang diktaat. Vito skryf saam terwyl jy praat, en jy kan oomblikke merk en opskrifte byvoeg.",
+"Start your first recording": "Begin jou eerste opname",
+"or turn an audio file into a recording": "of maak van 'n klanklêer 'n opname",
+"Paused": "Onderbreek",
+"words": "woorde",
+"Marks": "Merke",
+"Follows the colours of your desktop": "Volg die kleure van jou werkskerm",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Druk Caps Lock om te begin dikteer en druk dit weer om te stop. Om dit in te hou om te dikteer, vereis 'n niri nuwer as 26.04; stel dit dan weer op."
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",

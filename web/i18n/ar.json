@@ -1426,7 +1426,20 @@
 "Confetti": "قصاصات ملونة",
 "Ocean": "المحيط",
 "High contrast": "تباين عالٍ",
-"High contrast black and white": "تباين عالٍ بالأبيض والأسود"
+"High contrast black and white": "تباين عالٍ بالأبيض والأسود",
+"Recordings": "التسجيلات",
+"Audio on disk": "الصوت على القرص",
+"No recordings yet. The tape is still blank.": "لا توجد تسجيلات بعد. الشريط لا يزال فارغًا.",
+"Quiet on set — nothing recorded yet.": "هدوء في موقع التصوير — لم يُسجَّل شيء بعد.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito كلّه آذان صاغية، لكن لم يُسجَّل شيء بعد.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "يستمر التسجيل طالما احتجت إليه — محاضرة أو اجتماع أو إملاء طويل. يكتب Vito ما تقوله أثناء حديثك، ويمكنك تعليم اللحظات وإضافة عناوين.",
+"Start your first recording": "ابدأ تسجيلك الأول",
+"or turn an audio file into a recording": "أو حوِّل ملفًا صوتيًا إلى تسجيل",
+"Paused": "متوقّف مؤقتًا",
+"words": "كلمات",
+"Marks": "العلامات",
+"Follows the colours of your desktop": "يتبع ألوان سطح المكتب لديك",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "اضغط على Caps Lock لبدء الإملاء واضغط عليه مرة أخرى لإيقافه. يتطلب الإملاء بالضغط المطوّل إصدارًا من niri أحدث من 26.04؛ ثم اضبطه من جديد."
 },
 "help": {
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",

@@ -1427,7 +1427,20 @@
 "Confetti": "Confetti",
 "Ocean": "Ocean",
 "High contrast": "Contrast ridicat",
-"High contrast black and white": "Contrast ridicat alb-negru"
+"High contrast black and white": "Contrast ridicat alb-negru",
+"Recordings": "Înregistrări",
+"Audio on disk": "Audio pe disc",
+"No recordings yet. The tape is still blank.": "Încă nicio înregistrare. Banda e încă goală.",
+"Quiet on set — nothing recorded yet.": "Liniște pe platou — nimic înregistrat încă.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito e numai urechi, dar încă nu s-a înregistrat nimic.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "O înregistrare continuă cât timp ai nevoie — un curs, o ședință sau o dictare lungă. Vito scrie pe măsură ce vorbești, iar tu poți marca momente și adăuga titluri.",
+"Start your first recording": "Începe prima ta înregistrare",
+"or turn an audio file into a recording": "sau transformă un fișier audio într-o înregistrare",
+"Paused": "În pauză",
+"words": "cuvinte",
+"Marks": "Marcaje",
+"Follows the colours of your desktop": "Urmează culorile desktopului tău",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Apasă Caps Lock ca să începi dictarea și apasă din nou ca să te oprești. Pentru a dicta ținând tasta apăsată ai nevoie de un niri mai nou decât 26.04; apoi configureaz-o din nou."
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",

@@ -1425,7 +1425,20 @@
 "Confetti": "Конфетти",
 "Ocean": "Мұхит",
 "High contrast": "Жоғары контраст",
-"High contrast black and white": "Жоғары контраст, ақ-қара"
+"High contrast black and white": "Жоғары контраст, ақ-қара",
+"Recordings": "Жазбалар",
+"Audio on disk": "Дискідегі аудио",
+"No recordings yet. The tape is still blank.": "Әзірге жазба жоқ. Таспа әлі бос.",
+"Quiet on set — nothing recorded yet.": "Алаңда тыныштық — әлі ештеңе жазылған жоқ.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito құлақ түріп тұр, бірақ әлі ештеңе жазылған жоқ.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "Жазба сізге қанша керек болса, сонша жалғаса береді — дәріс, жиналыс немесе ұзақ диктовка. Сіз сөйлеген кезде Vito қоса жазып отырады, ал сіз сәттерді белгілеп, тақырыптар қоса аласыз.",
+"Start your first recording": "Алғашқы жазбаңызды бастаңыз",
+"or turn an audio file into a recording": "немесе аудиофайлды жазбаға айналдырыңыз",
+"Paused": "Кідіртілді",
+"words": "сөз",
+"Marks": "Белгілер",
+"Follows the colours of your desktop": "Жұмыс үстеліңіздің түстеріне сәйкес келеді",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Диктовканы бастау үшін Caps Lock басыңыз, тоқтату үшін оны қайта басыңыз. Басып тұрып диктовка жасау үшін 26.04-тен жаңа niri қажет; содан кейін оны қайта баптаңыз."
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",

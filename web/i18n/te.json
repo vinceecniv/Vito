@@ -1427,7 +1427,20 @@
 "Confetti": "కన్ఫెట్టి",
 "Ocean": "సముద్రం",
 "High contrast": "అధిక కాంట్రాస్ట్",
-"High contrast black and white": "అధిక కాంట్రాస్ట్ నలుపు-తెలుపు"
+"High contrast black and white": "అధిక కాంట్రాస్ట్ నలుపు-తెలుపు",
+"Recordings": "రికార్డింగ్‌లు",
+"Audio on disk": "డిస్క్‌లో ఆడియో",
+"No recordings yet. The tape is still blank.": "ఇంకా రికార్డింగ్‌లు లేవు. టేప్ ఇంకా ఖాళీగానే ఉంది.",
+"Quiet on set — nothing recorded yet.": "సెట్‌లో నిశ్శబ్దం — ఇంకా ఏదీ రికార్డ్ కాలేదు.",
+"Vito is all ears, but nothing has been recorded yet.": "Vito శ్రద్ధగా వింటోంది, కానీ ఇంకా ఏదీ రికార్డ్ కాలేదు.",
+"A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.": "రికార్డింగ్ మీకు అవసరమైనంత సేపు కొనసాగుతుంది — ఒక ఉపన్యాసం, ఒక సమావేశం లేదా పొడవైన డిక్టేషన్. మీరు మాట్లాడుతుండగానే Vito రాస్తూ ఉంటుంది, మీరు క్షణాలను గుర్తించవచ్చు మరియు శీర్షికలు జోడించవచ్చు.",
+"Start your first recording": "మీ మొదటి రికార్డింగ్ ప్రారంభించండి",
+"or turn an audio file into a recording": "లేదా ఒక ఆడియో ఫైల్‌ను రికార్డింగ్‌గా మార్చండి",
+"Paused": "పాజ్ చేయబడింది",
+"words": "పదాలు",
+"Marks": "గుర్తులు",
+"Follows the colours of your desktop": "మీ డెస్క్‌టాప్ రంగులను అనుసరిస్తుంది",
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "డిక్టేట్ చేయడం ప్రారంభించడానికి Caps Lock నొక్కండి, ఆపడానికి మళ్ళీ నొక్కండి. దాన్ని నొక్కి పట్టుకుని డిక్టేట్ చేయడానికి 26.04 కంటే కొత్త niri అవసరం; అప్పుడు దీన్ని మళ్ళీ సెటప్ చేయండి."
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",
