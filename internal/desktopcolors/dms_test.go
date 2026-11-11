@@ -3,6 +3,7 @@ package desktopcolors
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -78,6 +79,9 @@ func TestReadOmarchy(t *testing.T) {
 
 // dms 2.2 moved its cache to ~/.cache/dms; older versions used DankMaterialShell.
 func TestDMSPaths(t *testing.T) {
+	if runtime.GOOS != "linux" {
+		t.Skip("the shell runs on Linux; os.UserCacheDir is elsewhere on other systems")
+	}
 	home := t.TempDir()
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CACHE_HOME", filepath.Join(home, ".cache"))
