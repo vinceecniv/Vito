@@ -5007,7 +5007,7 @@ function setAccent(pref, persist){
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
 // The desktop themes follow the shell's own colours: "dms" Dux Modular Shell
-// (formerly DankMaterialShell, whose name its files still carry)
+// (formerly DankMaterialShell)
 // (a Material palette per side), "omarchy" the active Omarchy theme (one side;
 // the other gets its accents only). The daemon reads them
 // (/api/desktop-colors, internal/desktopcolors) and the roles become Vito's

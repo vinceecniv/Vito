@@ -75,3 +75,19 @@ func TestReadOmarchy(t *testing.T) {
 		t.Error(mixHex("#000000", "#ffffff", .5))
 	}
 }
+
+// dms 2.2 moved its cache to ~/.cache/dms; older versions used DankMaterialShell.
+func TestDMSPaths(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("XDG_CACHE_HOME", filepath.Join(home, ".cache"))
+	t.Setenv("FLATPAK_ID", "")
+	got := dmsPaths()
+	want := []string{
+		filepath.Join(home, ".cache", "dms", "dms-colors.json"),
+		filepath.Join(home, ".cache", "DankMaterialShell", "dms-colors.json"),
+	}
+	if len(got) != len(want) || got[0] != want[0] || got[1] != want[1] {
+		t.Fatalf("dmsPaths() = %v, want %v", got, want)
+	}
+}

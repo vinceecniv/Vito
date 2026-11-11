@@ -99,7 +99,7 @@ changes. Canvases and the cursor images read the colours with `accentHex()` /
 `trGlowColors()`. The pill draws the same palettes from `internal/pill/accent.go`
 — keep the two in step.
 The desktop themes follow the shell's own colours: `dms` Dux Modular Shell, formerly DankMaterialShell
-(`~/.cache/DankMaterialShell/dms-colors.json`, Material roles per side, only
+(`~/.cache/dms/dms-colors.json`, `~/.cache/DankMaterialShell/` before 2.2, Material roles per side, only
 while a `dms-<pid>.pid` in `$XDG_RUNTIME_DIR` is alive) and `omarchy` the
 active Omarchy theme (`current/theme/colors.toml` under `~/.local/state/omarchy`
 or, before Omarchy 3, `~/.config/omarchy`; one side, mapped onto the same
