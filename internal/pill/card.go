@@ -271,8 +271,14 @@ func spinRing(buf []byte, w, h int, cx, cy, hw, hh, t float64, th theme, a, thic
 		// The angle round the centre, the shape squashed to a circle so the
 		// colours travel evenly along the long sides too.
 		ang := math.Atan2((py-cy)/hh, (px-cx)/hw) - turn
-		f := math.Mod(ang/(2*math.Pi)+10, 1) * 3
+		// turn grows without bound, so wrap with Floor (Mod keeps the sign
+		// and went negative after ~22 s on screen: index -1, a crash).
+		u := ang / (2 * math.Pi)
+		f := (u - math.Floor(u)) * 3
 		i := int(f)
+		if i < 0 || i > 2 || f != f {
+			i, f = 0, 0
+		}
 		k := smooth(f - float64(i))
 		c := rgb{mix(stops[i].r, stops[i+1].r, k), mix(stops[i].g, stops[i+1].g, k), mix(stops[i].b, stops[i+1].b, k)}
 		put(buf, w, x, y, c, a*cover)

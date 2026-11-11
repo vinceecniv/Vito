@@ -5007,7 +5007,7 @@ function setAccent(pref, persist){
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
 // The desktop themes follow the shell's own colours: "dms" Dux Modular Shell
-// (formerly DankMaterialShell, whose name its files still carry)
+// (formerly DankMaterialShell)
 // (a Material palette per side), "omarchy" the active Omarchy theme (one side;
 // the other gets its accents only). The daemon reads them
 // (/api/desktop-colors, internal/desktopcolors) and the roles become Vito's
@@ -5380,7 +5380,12 @@ function setDaemonUp(up){
 // restarted (a new run may also have a new token); the same daemon after a
 // dropped connection — a laptop waking up, a frozen tab — just has its state
 // fetched again, and the open section, scroll position and transcript stay.
-let bootId = null;
+// The daemon writes its run into the page; a page the service worker served
+// from its cache (Vito was not running yet) carries the run before — often
+// the version before an update — and so reloads once Vito answers.
+// A daemon older than this leaves the placeholder: then the first status sets it.
+const PAGE_BOOT = "__VITO_BOOT__";
+let bootId = PAGE_BOOT.indexOf("__VITO" + "_BOOT__") === 0 ? null : PAGE_BOOT;
 async function daemonCameBack(){
   let s;
   // Unreachable again: the offline screen is back and will retry. Any other
@@ -14324,7 +14329,7 @@ $("s-zoom-reset").addEventListener("click", () => { applyZoom(1); try { localSto
 /* ---- init ---- */
 applyI18n(); // translate static UI for first paint (config refines it after load)
 applyStatusLayout();
-api("/api/status").then(s => { bootId = s.boot || null; setState(s.state); setLastRecording(s.last_recording_id); creditState = Array.isArray(s.credit) ? s.credit : []; setActiveCommand(s.command || ""); applyStatusLayout(); }).catch(() => setState("idle"));
+api("/api/status").then(s => { if (s.boot && bootId && s.boot !== bootId) { location.reload(); return; } bootId = s.boot || null; setState(s.state); setLastRecording(s.last_recording_id); creditState = Array.isArray(s.credit) ? s.credit : []; setActiveCommand(s.command || ""); applyStatusLayout(); }).catch(() => setState("idle"));
 loadSettings().catch(err => toast(t("Loading settings failed: ") + err.message, "err"));
 loadStats();
 loadPrivacy();

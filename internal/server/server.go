@@ -271,6 +271,10 @@ func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 		page = web.Index
 	}
 	page = bytes.ReplaceAll(page, []byte("__VITO_TOKEN__"), []byte(s.token))
+	// The run that served it: a copy the service worker hands out later, while
+	// Vito was down (at login, or the app opened before the daemon), knows it
+	// is older than the run it then reaches, and reloads.
+	page = bytes.ReplaceAll(page, []byte("__VITO_BOOT__"), []byte(bootID))
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Cache-Control", "no-store")
 	_, _ = w.Write(page)

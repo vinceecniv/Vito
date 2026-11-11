@@ -1,10 +1,10 @@
 // Package desktopcolors reads the colour scheme a desktop shell publishes, so
 // Vito can wear it (ui.accent "dms" or "omarchy").
 //
-// Dux Modular Shell (formerly DankMaterialShell, the name its files and
-// folders still carry) writes its Material palette — generated from the
-// wallpaper by matugen, or one of its registry themes — to
-// ~/.cache/DankMaterialShell/dms-colors.json, a light and a dark set of
+// Dux Modular Shell (formerly DankMaterialShell) writes its Material
+// palette — generated from the wallpaper by matugen, or one of its registry
+// themes — to ~/.cache/dms/dms-colors.json (~/.cache/DankMaterialShell/ in
+// versions before 2.2), a light and a dark set of
 // Material roles each, and rewrites it whenever the scheme changes.
 // Omarchy keeps the active theme's colors.toml in its current/theme folder
 // (omarchy.go): one side, light or dark, in names of its own, which are
@@ -149,13 +149,25 @@ var dms = &source{running: dmsRunning, paths: dmsPaths, read: readDMS}
 // DMS returns Dux Modular Shell's current palette.
 func DMS() (*Palette, error) { return dms.get() }
 
+// dmsPaths: the file in its current folder first, then where versions
+// before 2.2 kept it.
 func dmsPaths() []string {
 	var out []string
-	if d, err := os.UserCacheDir(); err == nil && !inFlatpak() {
-		out = append(out, filepath.Join(d, "DankMaterialShell", "dms-colors.json"))
+	add := func(p string) {
+		for _, q := range out {
+			if q == p {
+				return
+			}
+		}
+		if p != "" {
+			out = append(out, p)
+		}
 	}
-	if p := homeFile(".cache", "DankMaterialShell", "dms-colors.json"); p != "" && (len(out) == 0 || out[0] != p) {
-		out = append(out, p)
+	for _, dir := range []string{"dms", "DankMaterialShell"} {
+		if d, err := os.UserCacheDir(); err == nil && !inFlatpak() {
+			add(filepath.Join(d, dir, "dms-colors.json"))
+		}
+		add(homeFile(".cache", dir, "dms-colors.json"))
 	}
 	return out
 }

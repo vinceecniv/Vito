@@ -48,6 +48,7 @@ finish-args:
   # The desktop shells' colour schemes, for the "dms" and "omarchy" colour
   # themes (internal/desktopcolors). Omarchy's current theme links into its
   # own themes and the user's.
+  - --filesystem=xdg-cache/dms:ro
   - --filesystem=xdg-cache/DankMaterialShell:ro
   - --filesystem=~/.local/state/omarchy:ro
   - --filesystem=xdg-config/omarchy:ro
