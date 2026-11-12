@@ -471,6 +471,14 @@
   .bd-opt { padding-left:5px; }
   /* Settings → Appearance → Vito: Vito as dressed now, beside the way to the wardrobe. */
   .s-vito-row { display:flex; align-items:center; gap:14px; margin-top:12px; }
+  /* "Surprise me" at the top of Appearance: a tinted strip, so it reads as an
+     invitation rather than one more setting. */
+  .look-surprise { display:flex; align-items:center; gap:calc(14px * var(--dn, 1)); flex-wrap:wrap;
+    margin:calc(4px * var(--dn, 1)) 0 calc(14px * var(--dn, 1)); padding:calc(12px * var(--dn, 1)) calc(14px * var(--dn, 1));
+    border-radius:12px; background:linear-gradient(135deg, var(--coral-soft), var(--accent-soft)); border:1px solid var(--card-border); }
+  .look-surprise .ls-text { flex:1 1 240px; color:var(--text2); font-size:13px; line-height:1.45; }
+  .look-surprise .ls-text b { color:var(--text); }
+  .look-surprise .btn { flex:none; }
   .s-vito-prev { width:56px; height:60px; flex:none; cursor:var(--cur-hand); }
   .s-vito-prev .vmascot { display:block; width:100%; height:100%; }
   .s-vito-prev svg { width:100%; height:100%; overflow:visible; }
@@ -2823,6 +2831,10 @@
         </div>
         <div class="card" data-sec="appearance" id="set-look">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.2" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="7.4" r="1.1" fill="currentColor" stroke="none"/></svg><span>Appearance</span></h2>
+          <div class="look-surprise">
+            <span class="ls-text"><b>Not sure what you like?</b> Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.</span>
+            <button type="button" class="btn primary small" id="s-surprise"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h3l9 10h6M3 17h3l3-3.4M15 7h6M18 4l3 3-3 3M18 14l3 3-3 3"/></svg> Surprise me</button>
+          </div>
           <label class="fld" data-help="theme">Theme</label>
           <input type="hidden" id="s-theme">
           <div class="tri-seg" id="theme-seg" role="radiogroup" aria-label="Theme"></div>
@@ -4151,6 +4163,9 @@ const TR = { nl: {
   "Show or hide cards, and drag them into the order you want.":"Toon of verberg kaarten, en sleep ze in de volgorde die je wilt.",
   "Statistics":"Statistieken","Cards":"Kaarten","Show":"Tonen","Hide":"Verbergen",
   "Reset to default":"Terug naar standaard",
+  "Not sure what you like?":"Weet je niet wat je mooi vindt?",
+  "Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.":"Laat Vito een look voor je kiezen: kleuren, lettertype, hoeken, achtergrond en iets om aan te trekken. Niet mooi? Gewoon nog een keer.",
+  "Surprise me":"Verras me",
   "Play recording":"Opname afspelen","Play the recording of this dictation":"De opname van dit dictaat afspelen",
   "Playback failed.":"Afspelen mislukt.",
   "Upload an audio file and have it transcribed":"Audiobestand uploaden en laten transcriberen",
@@ -5251,6 +5266,27 @@ function setMotion(on, persist){
 }
 applyMotion();
 // Theme, colours, font, corners, spacing, background and motion back to Vito's own, in one save.
+// surpriseLook: a random look, as the site's "Surprise me" — another colour
+// theme (not the desktop or high-contrast ones), a font, corners, a background,
+// and from the unlocked pieces a hat, glasses and paint, each three times in
+// four. Light or dark, spacing and motion stay the user's.
+function surpriseLook(){
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const accent = pick(ACCENTS.filter(a => !a.desk && a.c !== accentPref && a.c !== "hc" && a.c !== "hc-bw").map(a => a.c));
+  const font = pick(FONTS.filter(f => f.c !== fontPref).map(f => f.c));
+  const radius = pick(["", "", "minimal", "none"]);
+  const backdrop = pick(BACKDROPS.slice(1).map(b => b.c));
+  setAccent(accent, false); setFont(font, false); setRadius(radius, false); setBackdrop(backdrop, false);
+  const outfit = {};
+  ["head", "glasses", "paint"].forEach(slot => {
+    const open = Object.keys(VM_ACC).filter(k => VM_ACC[k].slot === slot && vmUnlocked(k) === true);
+    if (open.length && Math.random() < .75) outfit[slot] = pick(open);
+  });
+  ["head", "glasses", "paint"].forEach(slot => setOutfit(slot, outfit[slot] || "", false));
+  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { accent, font, radius, backdrop, outfit: Object.assign({}, vmOutfit) });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+  vmFlash("happy", 1800);
+}
 function resetLook(){
   setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setMotion(false, false); setDensity("", false);
   if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", reduce_motion:false, density:"" });
@@ -6297,6 +6333,7 @@ buildFontPicker();
 buildBackdropPicker();
 buildDensityPicker();
 $("s-look-reset").onclick = resetLook;
+$("s-surprise").onclick = surpriseLook;
 // Appearance → the sound sets under Audio, scrolled to and lit for a moment.
 $("s-goto-sounds").onclick = () => {
   selectSetSection("audio");
