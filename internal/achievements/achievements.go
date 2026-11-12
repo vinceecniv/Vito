@@ -216,11 +216,14 @@ var List = []Def{
 
 	// What you've saved by bringing your own key instead of paying a subscription.
 	// {n} is a money amount; the description leaves the baseline to the UI.
-	{ID: "money-25", Group: GroupMoney, Icon: "💰", Name: "Pocket Change", Desc: "Saved {n} versus a paid subscription", Threshold: 25},
-	{ID: "money-100", Group: GroupMoney, Icon: "🪙", Name: "Nice Little Sum", Desc: "Saved {n} versus a paid subscription", Threshold: 100},
-	{ID: "money-250", Group: GroupMoney, Icon: "💵", Name: "Serious Savings", Desc: "Saved {n} versus a paid subscription", Threshold: 250},
-	{ID: "money-500", Group: GroupMoney, Icon: "🏦", Name: "The Frugal One", Desc: "Saved {n} versus a paid subscription", Threshold: 500},
-	{ID: "money-1k", Group: GroupMoney, Icon: "🤑", Name: "Subscription Slayer", Desc: "Saved {n} versus a paid subscription", Threshold: 1000},
+	// The saving grows with the calendar (subMonthly a month, minus API fees), so
+	// the steps are about a month, a quarter, half a year, a year and two years.
+	// The ids keep their first thresholds: earned badges and images hang on them.
+	{ID: "money-25", Group: GroupMoney, Icon: "💰", Name: "Pocket Change", Desc: "Saved {n} versus a paid subscription", Threshold: 15},
+	{ID: "money-100", Group: GroupMoney, Icon: "🪙", Name: "Nice Little Sum", Desc: "Saved {n} versus a paid subscription", Threshold: 45},
+	{ID: "money-250", Group: GroupMoney, Icon: "💵", Name: "Serious Savings", Desc: "Saved {n} versus a paid subscription", Threshold: 90},
+	{ID: "money-500", Group: GroupMoney, Icon: "🏦", Name: "The Frugal One", Desc: "Saved {n} versus a paid subscription", Threshold: 180},
+	{ID: "money-1k", Group: GroupMoney, Icon: "🤑", Name: "Subscription Slayer", Desc: "Saved {n} versus a paid subscription", Threshold: 360},
 
 	// Long recordings: lectures, meetings, long sessions.
 	{ID: "rec-first", Group: GroupRecordings, Icon: "🎬", Name: "First Take", Desc: "Finished your first long recording", Flag: "count", Threshold: 1},
