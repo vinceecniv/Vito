@@ -99,8 +99,8 @@ tool supports it, a fixed seed per batch for extra consistency, then export to
 | `streak-3` | Habit Forming | a small green seedling sprouting from soil |
 | `streak-7` | On a Roll | a rolling flame streak with a lightning accent |
 | `streak-30` | Unstoppable | a single bold confident flame |
+| `streak-365` | Two Months Strong (60 days; the id is from when it was a year) | a ring-shaped calendar wreath with a small flame at its center |
 | `streak-100` | Centurion | a roman-style shield with a laurel accent |
-| `streak-365` | Year of the Voice | a ring-shaped calendar wreath with a small flame at its center |
 
 ### Best day
 | id | name | emblem |

@@ -157,7 +157,7 @@ func (d Def) Earned(s Stats) bool {
 // List is every achievement, in display order. Names are deliberately silly.
 //
 // Each ladder starts within the first days and climbs by about ×4 to ×10 a
-// step. The tops are meant for a year or more of daily use (about 750 words,
+// step. The tops (streaks apart) are meant for a year or more of daily use (about 750 words,
 // 20 dictations and 6 minutes of speaking a day, measured on a heavy user),
 // a word million longer still. An id keeps its first threshold where that
 // changed: earned badges, their images and the wardrobe hang on the id.
@@ -191,12 +191,15 @@ var List = []Def{
 	{ID: "saved-50h", Group: GroupSaved, Icon: "🛌", Name: "A Weekend Back", Desc: "Saved {n} of typing", Threshold: 3000},
 	{ID: "saved-200h", Group: GroupSaved, Icon: "⏰", Name: "Time Lord", Desc: "Saved {n} of typing", Threshold: 12000},
 
-	// Consecutive days used — the one that keeps pulling.
+	// Consecutive days used — the one that keeps pulling. A week away (a holiday,
+	// a flu) breaks a streak, so the top is what fits between two holidays: 100
+	// days. streak-365 holds the 60-day step; it was a year, which hardly anyone
+	// gets through without a week off.
 	{ID: "streak-3", Group: GroupStreak, Icon: "🌱", Name: "Habit Forming", Desc: "Kept a {n}-day streak", Threshold: 3},
 	{ID: "streak-7", Group: GroupStreak, Icon: "⚡", Name: "On a Roll", Desc: "Kept a {n}-day streak", Threshold: 7},
 	{ID: "streak-30", Group: GroupStreak, Icon: "🔥", Name: "Unstoppable", Desc: "Kept a {n}-day streak", Threshold: 30},
+	{ID: "streak-365", Group: GroupStreak, Icon: "📅", Name: "Two Months Strong", Desc: "Kept a {n}-day streak", Threshold: 60},
 	{ID: "streak-100", Group: GroupStreak, Icon: "🛡️", Name: "Centurion", Desc: "Kept a {n}-day streak", Threshold: 100},
-	{ID: "streak-365", Group: GroupStreak, Icon: "📅", Name: "Year of the Voice", Desc: "Kept a {n}-day streak", Threshold: 365},
 
 	// Your best single day.
 	{ID: "day-500", Group: GroupDay, Icon: "☀️", Name: "Productive Day", Desc: "Dictated {n} words in a day", Threshold: 500},
