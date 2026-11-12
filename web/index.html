@@ -12082,6 +12082,9 @@ function previewSound(name, set){
   api("/api/play-sound?name=" + name + "&set=" + encodeURIComponent(set) + "&volume=" + $("s-svol").value, { method: "POST" }).catch(e => toast(e.message, "err"));
 }
 document.querySelectorAll(".soundtags .tag").forEach(b => b.onclick = () => previewSound(b.dataset.sound, (cfg && cfg.audio.sound_set) || ""));
+// Each volume change plays the start sound at the new level: on release (or a
+// key step), not on every pixel of a drag.
+$("s-svol").addEventListener("change", () => previewSound("start", (cfg && cfg.audio.sound_set) || ""));
 /* ---- the sound set (audio.sound_set): the original, or one made by
    scripts/sounds.py (assets.SoundSets); picking one plays its "done" ---- */
 const SOUNDSETS = [{c:"",n:"Vito default"},{c:"soft",n:"Soft"},{c:"glass",n:"Glass"},{c:"retro",n:"Retro"},{c:"tick",n:"Tick"}];
