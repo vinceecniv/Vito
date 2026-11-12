@@ -1226,6 +1226,9 @@
      chart only every third hour is labelled, and an empty label would let those
      bars sit a line lower than their neighbours. */
   .weekcol .d { white-space:nowrap; line-height:14px; min-height:14px; }
+  /* In a narrow card the period goes under the title rather than squeezing it
+     onto two lines beside it. */
+  .chart-head { flex-wrap:wrap; column-gap:12px; row-gap:2px; }
   .weekcol .bar { width:100%; max-width:52px; border-radius:8px 8px 4px 4px; background:linear-gradient(180deg,var(--violet-l),var(--violet)); min-height:4px;
     transition:height .4s ease, transform .16s ease, filter .16s ease; transform-origin:bottom center; }
   /* A bar you point at lifts towards you a little, so the chart answers the mouse. */
@@ -2718,7 +2721,7 @@
           <div class="lbl"><span>Costs</span> · <span>this month so far</span></div>
         </div>
         <div class="card chart-card" id="chart-card">
-          <div class="rowflex" style="justify-content:space-between;"><div class="card-title"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></div><h2 style="margin:0;" id="chart-title">Words per day</h2></div><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
+          <div class="rowflex chart-head" style="justify-content:space-between;"><div class="card-title"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></div><h2 style="margin:0;" id="chart-title">Words per day</h2></div><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;white-space:nowrap;">this week</span></div>
           <div class="weekwrap" id="weekchart"></div>
         </div>
         <div class="card" id="transcript-card">
@@ -10912,29 +10915,26 @@ async function loadStatsNow(){
   lastChartKey = chartKey;
   const heights = [];
   // A long period has many bars — four weeks of days, a year of weeks. The gap
-  // narrows with the count so the bars keep some width, and only every few
-  // labels are shown so they don't run into each other; each bar still names
-  // its own range in the tooltip.
-  const n = st.week.length, dense = unit !== "hour" && n > 14;
-  const step = dense ? Math.ceil(n / 9) : 1;
+  // narrows with the count so the bars keep some width. Every bar carries its
+  // label in data-l; fitBarLabels shows as many as fit the card's width, and
+  // each bar still names its own range in the tooltip.
+  const n = st.week.length;
   const wrap = $("weekchart");
   // Thin bars, hours included, get the smaller radius; the gap and widths
   // come from pinBarWidths.
   wrap.classList.toggle("dense", n > 14);
   wrap.innerHTML = st.week.map((d,i)=>{
-    const shown = i % step === 0;
     if (isPh(d)) {
       const h = 16 + (hashStr(d.date) % 46); // stable pseudo-random 16..61%
       heights.push(h);
-      return `<div class="weekcol placeholder"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d">${shown ? t(d.label) : ""}</div></div>`;
+      return `<div class="weekcol placeholder"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d" data-l="${escapeHtml(t(d.label))}"></div></div>`;
     }
     const h = d.words>0 ? Math.max(6, Math.round(d.words/max*100)) : 4;
     heights.push(h);
     const marker = unit === "hour" ? (d.hour === nowHour) : (d.date === todayStr);
     const cls = (i===st.week_peak_index ? "peak" : (d.words===0 ? "empty" : "")) + (marker ? " today" : "");
-    // 24 hourly labels don't fit; every third keeps the axis readable.
-    const label = unit === "hour" ? (d.hour % 3 === 0 ? d.hour : "") : (shown ? t(d.label) : "");
-    return `<div class="weekcol ${cls}"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d">${label}</div></div>`;
+    const label = unit === "hour" ? String(d.hour) : t(d.label);
+    return `<div class="weekcol ${cls}"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d" data-l="${escapeHtml(label)}"></div></div>`;
   }).join("");
   const cols = $("weekchart").querySelectorAll(".weekcol");
   if (grow) growBars(cols, heights.map(h => h + "%"));
@@ -10966,6 +10966,29 @@ function pinBarWidths(){
   wrap.style.gap = g / k + "px";
   wrap.style.paddingLeft = left / k + "px";
   cols.forEach(c => { c.style.flex = "none"; c.style.width = b / k + "px"; const bar = c.querySelector(".bar"); if (bar) bar.style.width = ""; });
+  fitBarLabels(cols, (b + g) / k);
+}
+// fitBarLabels shows every step-th label, the step chosen so the widest label
+// plus some air fits the distance from one bar to the next. Counted back from
+// the last bar, so the current day, week or month keeps its name; hours keep
+// to multiples of three (0, 3, 6 …), whatever the step.
+let labelCanvas = null;
+function fitBarLabels(cols, pitch){
+  const ds = cols.map(c => c.querySelector(".d"));
+  if (!ds.length || !ds[0]) return;
+  const cs = getComputedStyle(ds[0]);
+  labelCanvas = labelCanvas || document.createElement("canvas");
+  const ctx = labelCanvas.getContext("2d");
+  ctx.font = `600 ${cs.fontSize} ${cs.fontFamily}`; // the bold of peak and today, the widest a label gets
+  const widest = Math.max(...ds.map(d => ctx.measureText(d.dataset.l || "").width));
+  const step = Math.max(1, Math.ceil((widest + 8) / pitch));
+  const n = ds.length;
+  ds.forEach((d, i) => {
+    let shown;
+    if (chartUnit === "hour") { const s3 = Math.ceil(step / 3) * 3; shown = Number(d.dataset.l) % s3 === 0; }
+    else shown = (n - 1 - i) % step === 0;
+    d.textContent = shown ? d.dataset.l : "";
+  });
 }
 if (window.ResizeObserver) new ResizeObserver(() => pinBarWidths()).observe($("weekchart"));
 // lastChartKey identifies which set of bars is on screen; when it changes the
