@@ -78,17 +78,17 @@ const externalLinksJS = `(function(){
     e.preventDefault();
   });
   // The window's title bar follows Vito's theme, not only the system's, and
-  // its icon Vito's colour theme.
+  // its icon Vito's colour theme and corners.
   // This runs before the page exists (no <html> yet), so it watches the
   // document as a whole.
   let last = null;
   const theme = () => {
     const el = document.documentElement; if (!el || !window.vitoTheme) return;
-    const dark = el.dataset.theme === "dark", accent = el.dataset.accent || "";
-    const now = dark + "/" + accent;
-    if (now !== last) { last = now; window.vitoTheme(dark, accent); }
+    const dark = el.dataset.theme === "dark", accent = el.dataset.accent || "", radius = el.dataset.radius || "";
+    const now = dark + "/" + accent + "/" + radius;
+    if (now !== last) { last = now; window.vitoTheme(dark, accent, radius); }
   };
-  new MutationObserver(theme).observe(document, { subtree: true, attributes: true, attributeFilter: ["data-theme", "data-accent"] });
+  new MutationObserver(theme).observe(document, { subtree: true, attributes: true, attributeFilter: ["data-theme", "data-accent", "data-radius"] });
   document.addEventListener("DOMContentLoaded", theme);
   const open = window.open;
   window.open = function(u, ...rest) {

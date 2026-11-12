@@ -291,7 +291,7 @@ func runWindow(cfg *config.Config, target string) error {
 	if w.hwnd == 0 {
 		return errNoEngine
 	}
-	setWindowIcon(w.hwnd, cfg.UI.Accent)
+	setWindowIcon(w.hwnd, cfg.UI.Accent, cfg.UI.Radius)
 	hideCaptionIcon(w.hwnd)
 	setRelaunch(w.hwnd)
 	setDarkTitleBar(w.hwnd, wantDarkTitle(cfg.UI.Theme))
@@ -359,7 +359,7 @@ func runWindow(cfg *config.Config, target string) error {
 const windowBridgeJS = `(function(){
   const post = (o) => { try { window.chrome.webview.postMessage(JSON.stringify(o)); } catch (e) {} };
   window.vitoOpenExternal = (u) => post({ t: "open", url: String(u) });
-  window.vitoTheme = (dark, accent) => post({ t: "theme", dark: !!dark, accent: accent || "" });
+  window.vitoTheme = (dark, accent, radius) => post({ t: "theme", dark: !!dark, accent: accent || "", radius: radius || "" });
 })();`
 
 // windowDebugJS (VITO_DEBUG) sends the page's errors to the window's log,
@@ -377,6 +377,7 @@ func (w *vwin) onMessage(raw string) {
 		URL  string `json:"url"`
 		Dark bool   `json:"dark"`
 		Acc  string `json:"accent"`
+		Rad  string `json:"radius"`
 		Msg  string `json:"msg"`
 	}
 	if json.Unmarshal([]byte(raw), &m) != nil {
@@ -391,7 +392,7 @@ func (w *vwin) onMessage(raw string) {
 		_ = exec.Command("rundll32", "url.dll,FileProtocolHandler", u.String()).Start()
 	case "theme":
 		setDarkTitleBar(w.hwnd, m.Dark)
-		setWindowIcon(w.hwnd, m.Acc)
+		setWindowIcon(w.hwnd, m.Acc, m.Rad)
 	case "log":
 		if dir, err := os.UserCacheDir(); err == nil {
 			if f, err := os.OpenFile(filepath.Join(dir, "vito", "window.log"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644); err == nil {
@@ -641,10 +642,12 @@ func sendNavigate(h uintptr, u string) {
 }
 
 // setWindowIcon gives the window the app icon in the colour theme's gradient
-// (ui.accent), drawn as the tray draws it: the taskbar and Alt+Tab show it.
-// The icons it replaces are destroyed; one accent is drawn only once.
-func setWindowIcon(hwnd uintptr, accent string) {
-	if iconAccent.set && iconAccent.name == accent {
+// (ui.accent) and corners (ui.radius), drawn as the tray draws it: the taskbar
+// and Alt+Tab show it. The icons it replaces are destroyed; one look is drawn
+// only once.
+func setWindowIcon(hwnd uintptr, accent, radius string) {
+	look := accent + "/" + radius
+	if iconAccent.set && iconAccent.name == look {
 		return
 	}
 	dpi, _, _ := procGetDpiForWindow.Call(hwnd)
@@ -652,7 +655,7 @@ func setWindowIcon(hwnd uintptr, accent string) {
 		dpi = 96
 	}
 	draw := func(px int) uintptr {
-		b := tray.BrandPNG(accent, px)
+		b := tray.BrandPNG(accent, radius, px)
 		h, _, _ := procCreateIconFromResEx.Call(uintptr(unsafe.Pointer(&b[0])), uintptr(len(b)),
 			1, 0x00030000, uintptr(px), uintptr(px), 0)
 		return h
@@ -667,7 +670,7 @@ func setWindowIcon(hwnd uintptr, accent string) {
 		procDestroyIcon.Call(oldL)
 		procDestroyIcon.Call(oldS)
 	}
-	iconAccent.set, iconAccent.name = true, accent
+	iconAccent.set, iconAccent.name = true, look
 }
 
 var iconAccent struct {
@@ -675,10 +678,12 @@ var iconAccent struct {
 	name string
 }
 
-// hideCaptionIcon leaves the icon out of the title bar, where it sat over the
-// page's own logo; the taskbar and Alt+Tab keep it.
+// hideCaptionIcon leaves the icon and the title out of the title bar, where
+// they repeated the page's own logo and name (the icon's place stayed empty
+// without the title). The window keeps both: the taskbar, Alt+Tab and screen
+// readers still show "Vito" with its icon.
 func hideCaptionIcon(hwnd uintptr) {
-	opts := struct{ flags, mask uint32 }{0x2, 0x2}                                            // WTNCA_NODRAWICON
+	opts := struct{ flags, mask uint32 }{0x3, 0x3}                                            // WTNCA_NODRAWCAPTION | WTNCA_NODRAWICON
 	procSetWindowThemeAttr.Call(hwnd, 1, uintptr(unsafe.Pointer(&opts)), unsafe.Sizeof(opts)) // WTA_NONCLIENT
 }
 

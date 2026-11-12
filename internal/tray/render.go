@@ -35,22 +35,35 @@ var (
 // brand is the colour theme's gradient (ui.accent), as pill.BrandColors gives
 // it: coral at the top left, violet at the bottom right, violetL the end of the
 // dark variant's mark.
-type brand struct{ coral, violet, violetL [3]uint8 }
-
-func brandFor(accent string) brand {
-	c, v, l := pill.BrandColors(accent)
-	return brand{c, v, l}
+type brand struct {
+	coral, violet, violetL [3]uint8
+	round                  float64 // corner radius as a share of the size
 }
 
-// BrandPNG is the app icon in the colour theme's gradient, size pixels square:
-// what Vito's own window shows on the taskbar.
-func BrandPNG(accent string, size int) []byte {
-	return encodePNG(renderBrand(false, brandFor(accent), size))
+// brandFor is the icon for the colour theme (ui.accent) and the corners
+// (ui.radius): its own rounding, "minimal" (3px of a 32px icon, as the page's
+// cap) or "none".
+func brandFor(accent, radius string) brand {
+	c, v, l := pill.BrandColors(accent)
+	b := brand{c, v, l, 0.24}
+	switch radius {
+	case "minimal":
+		b.round = 3.0 / 32
+	case "none":
+		b.round = 0
+	}
+	return b
+}
+
+// BrandPNG is the app icon in the colour theme's gradient and corners, size
+// pixels square: what Vito's own window shows on the taskbar.
+func BrandPNG(accent, radius string, size int) []byte {
+	return encodePNG(renderBrand(false, brandFor(accent, radius), size))
 }
 
 // buildIcons renders one static icon per state: the brand mark alone for idle,
 // and the mark with a coral or violet status dot for recording / processing.
-func buildIcons(dark bool, accent string) map[daemon.State][]byte {
+func buildIcons(dark bool, accent, radius string) map[daemon.State][]byte {
 	win := runtime.GOOS == "windows"
 	enc := func(img *image.NRGBA) []byte {
 		p := encodePNG(img)
@@ -59,7 +72,7 @@ func buildIcons(dark bool, accent string) map[daemon.State][]byte {
 		}
 		return p
 	}
-	b := brandFor(accent)
+	b := brandFor(accent, radius)
 	base := renderBrand(dark, b, iconSize)
 	dotViol := color.NRGBA{b.violet[0], b.violet[1], b.violet[2], 0xFF}
 	withDot := func(col color.NRGBA) []byte {
@@ -81,7 +94,7 @@ func renderBrand(dark bool, br brand, size int) *image.NRGBA {
 	gradA, gradB, markB2 := br.coral, br.violet, br.violetL
 	s := float64(size)
 	img := image.NewNRGBA(image.Rect(0, 0, size, size))
-	radius := s * 0.24
+	radius := s * br.round
 	scale := s * 0.72 / 100
 	offX := (s - 100*scale) / 2
 	offY := (s - 100*scale) / 2
