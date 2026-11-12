@@ -427,20 +427,29 @@
   .bd[data-bd="waves"]::after { height:calc(var(--u) * 95); background:linear-gradient(90deg, var(--s3), var(--s1) 25%, var(--s3) 50%, var(--s1) 75%, var(--s3));
     -webkit-mask-position:12.5% 100%; mask-position:12.5% 100%; animation-duration:55s; animation-direction:reverse; }
   @keyframes bdSlide { to { transform:translateX(-50%); } }
-  /* Bubbles: rings rising slowly. Every tile is a divisor of 240u high, so
-     moving the layer up by 240u brings it back to where it started. */
-  .bd[data-bd="bubbles"]::before { content:""; left:0; right:0; top:0; height:calc(100% + var(--u) * 240);
+  /* Bubbles: rings rising slowly, in two layers turned against each other
+     (-8° and 13°) at different speeds, so no row or column lines up. Every
+     tile is a divisor of 240u high, so moving a layer up by 240u along its
+     own turned axis brings it back to where it started. The layers are
+     oversized so their turned edges stay off screen. */
+  .bd[data-bd="bubbles"]::before, .bd[data-bd="bubbles"]::after { content:""; left:-30%; right:-30%; top:-30%; height:calc(160% + var(--u) * 240);
+    transform:rotate(var(--rot)); animation:bdRise 90s linear infinite;
+    -webkit-mask-image:linear-gradient(transparent 22%, #000 50%); mask-image:linear-gradient(transparent 22%, #000 50%); }
+  .bd[data-bd="bubbles"]::before { --rot:-8deg;
     background-image:radial-gradient(circle calc(var(--u) * 9) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%),
-    radial-gradient(circle calc(var(--u) * 6) at 50% 50%, transparent 62%, var(--s3) 72%, transparent 88%),
     radial-gradient(circle calc(var(--u) * 13) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%),
     radial-gradient(circle calc(var(--u) * 4.5) at 50% 50%, transparent 62%, var(--s3) 72%, transparent 88%),
-    radial-gradient(circle calc(var(--u) * 7) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%),
-    radial-gradient(circle calc(var(--u) * 5) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%);
-    background-size:calc(var(--u) * 173) calc(var(--u) * 240), calc(var(--u) * 131) calc(var(--u) * 120), calc(var(--u) * 211) calc(var(--u) * 240), calc(var(--u) * 97) calc(var(--u) * 80), calc(var(--u) * 157) calc(var(--u) * 240), calc(var(--u) * 251) calc(var(--u) * 120);
-    background-position:calc(var(--u) * 0) calc(var(--u) * 30), calc(var(--u) * 60) calc(var(--u) * 10), calc(var(--u) * 120) calc(var(--u) * 150), calc(var(--u) * 30) calc(var(--u) * 50), calc(var(--u) * 90) calc(var(--u) * 200), calc(var(--u) * 200) calc(var(--u) * 70);
-    -webkit-mask-image:linear-gradient(transparent, #000 40%); mask-image:linear-gradient(transparent, #000 40%);
-    animation:bdRise 90s linear infinite; }
-  @keyframes bdRise { to { transform:translateY(calc(var(--u) * -240)); } }
+    radial-gradient(circle calc(var(--u) * 7) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%);
+    background-size:calc(var(--u) * 173) calc(var(--u) * 240), calc(var(--u) * 211) calc(var(--u) * 240), calc(var(--u) * 97) calc(var(--u) * 80), calc(var(--u) * 157) calc(var(--u) * 240);
+    background-position:0 calc(var(--u) * 30), calc(var(--u) * 120) calc(var(--u) * 150), calc(var(--u) * 30) calc(var(--u) * 50), calc(var(--u) * 90) calc(var(--u) * 200); }
+  .bd[data-bd="bubbles"]::after { --rot:13deg; animation-duration:131s;
+    background-image:radial-gradient(circle calc(var(--u) * 6) at 50% 50%, transparent 62%, var(--s3) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 5) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 11) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 3.5) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%);
+    background-size:calc(var(--u) * 131) calc(var(--u) * 120), calc(var(--u) * 251) calc(var(--u) * 120), calc(var(--u) * 263) calc(var(--u) * 240), calc(var(--u) * 113) calc(var(--u) * 60);
+    background-position:calc(var(--u) * 60) calc(var(--u) * 10), calc(var(--u) * 200) calc(var(--u) * 70), calc(var(--u) * 17) calc(var(--u) * 190), calc(var(--u) * 77) calc(var(--u) * 33); }
+  @keyframes bdRise { from { transform:rotate(var(--rot)); } to { transform:rotate(var(--rot)) translateY(calc(var(--u) * -240)); } }
   .bd[data-bd="grid"] { background-image:linear-gradient(var(--ln) 1px, transparent 1px), linear-gradient(90deg, var(--ln) 1px, transparent 1px);
     background-size:calc(var(--u) * 32) calc(var(--u) * 32);
     -webkit-mask-image:linear-gradient(#000, transparent 75%); mask-image:linear-gradient(#000, transparent 75%); }
