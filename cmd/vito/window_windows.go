@@ -36,11 +36,12 @@ const (
 	windowTitle = "Vito"
 	windowClass = "webview" // the class webview registers its windows under
 
-	wmSetIcon   = 0x0080
-	wmCopyData  = 0x004A
-	gwlpWndProc = ^uintptr(3) // -4
-	swRestore   = 9
-	copyDataNav = 0x56495430 // "VIT0": marks our WM_COPYDATA
+	wmSetIcon    = 0x0080
+	wmCopyData   = 0x004A
+	wmNCActivate = 0x0086
+	gwlpWndProc  = ^uintptr(3) // -4
+	swRestore    = 9
+	copyDataNav  = 0x56495430 // "VIT0": marks our WM_COPYDATA
 )
 
 var (
@@ -52,6 +53,8 @@ var (
 	procSendMessageW          = user32.NewProc("SendMessageW")
 	procSetWindowLongPtrW     = user32.NewProc("SetWindowLongPtrW")
 	procCallWindowProcW       = user32.NewProc("CallWindowProcW")
+	procSetWindowPos          = user32.NewProc("SetWindowPos")
+	procGetForegroundWindow   = user32.NewProc("GetForegroundWindow")
 	procAllowSetForegroundWnd = user32.NewProc("AllowSetForegroundWindow")
 	shell32                   = windows.NewLazySystemDLL("shell32.dll")
 	procExtractIconExW        = shell32.NewProc("ExtractIconExW")
@@ -155,39 +158,13 @@ func openWindow(args []string) error {
 		}
 		return exec.Command("rundll32", "url.dll,FileProtocolHandler", u.String()).Start()
 	})
+	_ = w.Bind("vitoTheme", func(dark bool) {
+		w.Dispatch(func() { setDarkTitleBar(hwnd, dark) })
+	})
 	w.Init(externalLinksJS)
 	w.Navigate(target)
 	w.Run()
 	return nil
-}
-
-// externalLinksJS sends every link to another site, and window.open of one,
-// to vitoOpenExternal.
-const externalLinksJS = `(function(){
-  const ext = (u) => { try { const x = new URL(u, location.href);
-    return (x.protocol === "http:" || x.protocol === "https:" || x.protocol === "mailto:") && x.origin !== location.origin; } catch (e) { return false; } };
-  document.addEventListener("click", (e) => {
-    const a = e.target && e.target.closest && e.target.closest("a[href]");
-    if (a && ext(a.href)) { e.preventDefault(); e.stopPropagation(); window.vitoOpenExternal(a.href); }
-  }, true);
-  const open = window.open;
-  window.open = function(u, ...rest) {
-    if (u && ext(u)) { window.vitoOpenExternal(new URL(u, location.href).href); return null; }
-    return open.call(window, u, ...rest);
-  };
-})();`
-
-// ownPage accepts only Vito's own page on this port, so a window can never be
-// pointed elsewhere.
-func ownPage(raw string, port int) (string, error) {
-	u, err := url.Parse(raw)
-	if err != nil || u.Scheme != "http" || u.Host != fmt.Sprintf("127.0.0.1:%d", port) {
-		return "", fmt.Errorf("vito window opens only http://127.0.0.1:%d/", port)
-	}
-	if u.Path == "" {
-		u.Path = "/"
-	}
-	return u.String(), nil
 }
 
 func findVitoWindow() uintptr {
@@ -256,6 +233,14 @@ func setDarkTitleBar(hwnd uintptr, dark bool) {
 		v = 1
 	}
 	procDwmSetWindowAttribute.Call(hwnd, 20, uintptr(unsafe.Pointer(&v)), 4)
+	// DWM repaints the caption only when the frame changes or the window is
+	// (de)activated; without this a theme switch shows at the next focus change.
+	const swpFlags = 0x0001 | 0x0002 | 0x0004 | 0x0010 | 0x0020 // NOSIZE NOMOVE NOZORDER NOACTIVATE FRAMECHANGED
+	procSetWindowPos.Call(hwnd, 0, 0, 0, 0, 0, swpFlags)
+	if fg, _, _ := procGetForegroundWindow.Call(); fg == hwnd {
+		procSendMessageW.Call(hwnd, wmNCActivate, 0, 0)
+		procSendMessageW.Call(hwnd, wmNCActivate, 1, 0)
+	}
 }
 
 func wantDarkTitle(theme string) bool {
