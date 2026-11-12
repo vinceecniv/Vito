@@ -32,11 +32,15 @@ type DayWords struct {
 // Stats is a usage summary over the requested period plus the current week's
 // per-day words for the chart.
 type Stats struct {
-	PeriodDays        int        `json:"period_days"` // effective window length in days
-	Words             int        `json:"words"`
-	Sentences         int        `json:"sentences"`
-	Activations       int        `json:"activations"`
-	Commands          int        `json:"commands"` // Vito Assist commands in the period
+	PeriodDays  int `json:"period_days"` // effective window length in days
+	Words       int `json:"words"`
+	Sentences   int `json:"sentences"`
+	Activations int `json:"activations"`
+	Commands    int `json:"commands"` // Vito Assist commands in the period
+	// Long recordings finished in the period (started in it), and their audio
+	// length. The server fills these in from the recordings store.
+	Recordings        int        `json:"recordings"`
+	RecordedSeconds   int        `json:"recorded_seconds"`
 	ActivationsPerDay float64    `json:"activations_per_day"`
 	SavedMinutes      int        `json:"saved_minutes"`
 	SavedSeconds      int        `json:"saved_seconds"`  // the same, finer: the island shows seconds under a minute
