@@ -1134,7 +1134,7 @@
   .settabs[data-fit="icons1"] button:not(.active) > span:last-child, .settabs[data-fit="icons"] button > span:last-child { display:none; }
   .settabs[data-fit^="icons"] { gap:2px; }
   .settabs[data-fit^="icons"] button { padding-inline:11px; }
-  .settings-pane { max-width:800px; }
+  .settings-pane { max-width:none; } /* one column, as wide as the page */
   .settings-pane > .card[hidden] { display:none; }
   /* The tabs may wrap onto a second line; only when they'd need a third does
      a dropdown take over, reusing the .flagsel pattern from the theme/language
@@ -1142,7 +1142,7 @@
      labels' width differs per language, and a fixed cut-off switched far too
      early. The hidden bar stays laid out at the same width, so it can be
      counted again. */
-  .setsec-sel { display:none; margin-bottom:20px; max-width:800px; box-shadow:0 -10px 0 var(--bg); }
+  .setsec-sel { display:none; margin-bottom:20px; max-width:none; box-shadow:0 -10px 0 var(--bg); }
   .setsec-sel .flagsel-btn svg, .setsec-sel .flagsel-opt svg { width:16px; height:16px; flex:0 0 16px; color:var(--text3); }
   .setsec-sel .flagsel-opt.sel svg { color:var(--accent); }
   #tab-settings { position:relative; }
