@@ -1146,10 +1146,11 @@
   :root[data-theme="dark"] .spark { opacity:.5; }
   /* Languages: the top one as the figure, all of them as shares of one bar. */
   /* Vito Assist and long recordings: two figures of equal weight. */
-  .duo { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:calc(14px * var(--dn, 1)); }
-  .duo-c { min-width:0; }
-  .duo-c .lbl { overflow:hidden; text-overflow:ellipsis; }
-  .duo-c .delta { margin-top:4px; }
+  .duo { position:relative; z-index:1; display:grid; grid-template-columns:auto minmax(0,1fr); row-gap:calc(4px * var(--dn, 1)); }
+  .duo-c { grid-column:1 / -1; display:grid; grid-template-columns:subgrid; column-gap:10px; align-items:baseline; }
+  .duo-c .num { text-align:right; }
+  .duo-c .lbl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .duo-sub { font-size:11.5px; font-weight:600; color:var(--text3); }
   .lang-card .lang-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-bar { display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
   .lang-bar i { display:block; height:100%; }
@@ -10039,11 +10040,11 @@ const LANG_COLORS = ["var(--violet)", "var(--coral)", "var(--violet-l)", "var(--
 // The most used language as the figure, and every language as a share of one
 // bar: the top four in colour, the rest together in grey.
 // The card of the two side features: Vito Assist commands and long recordings,
-// side by side as equals, each with its own explanation.
+// a row each with a figure of the same size and its own explanation.
 function duoCardHTML(st, nf){
   const icon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>';
   const cell = (n, lbl, sub, tip) => `<div class="duo-c" data-tip-text="${ahEsc(tip)}"><div class="num">${nf(n)}</div>` +
-    `<div class="lbl">${lbl}</div>${sub ? `<div class="delta flat">${sub}</div>` : ""}</div>`;
+    `<div class="lbl">${lbl}${sub ? ` <span class="duo-sub">${sub}</span>` : ""}</div></div>`;
   return `<div class="chip coral">${icon}</div><div class="duo">` +
     cell(st.commands || 0, t("Assist"), "",
       t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.")) +
