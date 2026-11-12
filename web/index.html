@@ -6589,6 +6589,22 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
   document.addEventListener("contextmenu", (ev) => {
     if (onStrip(ev)) { ev.preventDefault(); vitoWin("menu"); }
   }, true);
+  // The page's empty background moves the window too: what lies between and
+  // around the cards, never a card, a control or text. Only once the pointer
+  // has moved a little, so a click there still closes a menu.
+  const isBg = (el) => el && el.nodeType === 1 &&
+    !el.closest(".card, .modal, .modal-backdrop, .card-menu, .rs-pop, .lr-pop, .correction-pop, button, a, input, textarea, select, label, [contenteditable], canvas, svg, img, [draggable=true], .settabs, .setsec-sel") &&
+    ![...el.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim());
+  let press = null;
+  document.addEventListener("mousedown", (ev) => {
+    press = ev.button === 0 && !onStrip(ev) && isBg(ev.target) ? { x: ev.screenX, y: ev.screenY } : null;
+  }, true);
+  document.addEventListener("mousemove", (ev) => {
+    if (!press) return;
+    if (!(ev.buttons & 1)) { press = null; return; }
+    if (Math.hypot(ev.screenX - press.x, ev.screenY - press.y) > 4) { press = null; vitoWin("drag"); }
+  }, true);
+  document.addEventListener("mouseup", () => { press = null; }, true);
   vitoWin("hello");
 })();
 // Tabs on up to two lines; the dropdown only once they'd need a third. The
