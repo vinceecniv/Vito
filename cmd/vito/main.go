@@ -46,6 +46,9 @@ func main() {
 	if len(os.Args) > 1 && !isLaunchArg(os.Args[1]) {
 		cmd = os.Args[1]
 	}
+	if cmd != "window" {
+		undoEdgeInit()
+	}
 	var err error
 	switch cmd {
 	case "serve":
