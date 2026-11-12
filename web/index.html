@@ -138,6 +138,9 @@
     --toggle-off:#CFD3EE; --track:#E3E6F7; --bar:#E3E6F7;
   }
   :root[data-theme="dark"][data-accent="ocean"] {
+    /* The gradient's deep purple end is these surfaces' own colour, so on
+       dark it stops at an indigo that still stands out from the card. */
+    --grad:linear-gradient(135deg,#05D7C9,#10B4FF 30%,#6462FE 70%,#4A30C8);
     --bg:#0F0B24; --sidebar:#130E2C; --sidebar-border:#261E4A;
     --card:#18123A; --card-border:#2B2257;
     --input-bg:#1E1745; --input-border:#362C66;
