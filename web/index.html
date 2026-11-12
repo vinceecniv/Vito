@@ -545,6 +545,48 @@
      layout still fills the window at zoom levels other than 100%. */
   .app { display:flex; min-height:calc(100vh / var(--zoom, 1)); }
 
+  /* ---- the title bar, drawn by the page ----
+     Vito's own window (html.own-frame) has no title bar of Windows': the page
+     runs to the top edge and draws the caption buttons. The installed web app
+     does the same with Window Controls Overlay (html.wco), where the browser
+     draws the buttons. --frame-h is the strip's height; under it the page only
+     has its padding, a veil blurs what scrolls under it, and sticky bars stop
+     below it (--sticky-top). Dragging works on the strip wherever there is no
+     control (winFrame). */
+  html { --side-w:216px; }
+  @media (max-width:980px){ html { --side-w:180px; } }
+  @media (min-width:821px){ html.side-compact { --side-w:68px; } }
+  html.own-frame { --frame-h:32px; }
+  html.wco { --frame-h:env(titlebar-area-height, 32px); }
+  .winbar { display:none; }
+  html.own-frame .winbar, html.wco .winbar { display:block; }
+  .win-zone { position:fixed; top:0; left:0; right:0; height:var(--frame-h); pointer-events:none; z-index:-1; }
+  html.wco .win-zone { app-region:drag; -webkit-app-region:drag; }
+  html.wco .brand, html.wco .sidebar button { app-region:no-drag; -webkit-app-region:no-drag; }
+  .win-veil { position:fixed; top:0; left:var(--side-w); right:0; height:var(--frame-h); z-index:30; pointer-events:none;
+    transition:background-color .2s; }
+  html.win-scrolled .win-veil { background:color-mix(in srgb, var(--bg) 74%, transparent);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
+  .win-btns { position:fixed; top:0; right:0; height:var(--frame-h); display:flex; z-index:9500; }
+  .win-btn { width:46px; height:100%; display:flex; align-items:center; justify-content:center; padding:0; margin:0;
+    border:none; border-radius:0; background:transparent; color:var(--text); cursor:default; }
+  .win-btn svg { width:10px; height:10px; fill:none; stroke:currentColor; stroke-width:1; overflow:visible; }
+  .win-btn:hover { background:color-mix(in srgb, var(--text) 9%, transparent); }
+  .win-btn:active { background:color-mix(in srgb, var(--text) 5%, transparent); }
+  .win-btn.close:hover { background:#C42B1C; color:#fff; }
+  .win-btn.close:active { background:#C83C31; color:#fff; }
+  html.win-inactive .win-btn:not(:hover) svg { opacity:.45; }
+  .win-btn .i-rest, html.win-max .win-btn .i-max { display:none; }
+  html.win-max .win-btn .i-rest { display:block; }
+  .win-edge { position:fixed; top:0; left:0; right:0; height:5px; z-index:9600; cursor:ns-resize; }
+  .win-edge.l, .win-edge.r { width:12px; cursor:nwse-resize; }
+  .win-edge.l { right:auto; } .win-edge.r { left:auto; cursor:nesw-resize; }
+  html.win-max .win-edge, html.wco .win-btns, html.wco .win-edge { display:none; }
+  @media (max-width:820px){
+    html.own-frame .sidebar, html.wco .sidebar { padding-top:calc(var(--frame-h) + 4px); }
+    .win-veil { display:none; }
+  }
+
   /* ---- sidebar ---- */
   .sidebar {
     width:216px; flex:0 0 216px; background:var(--sidebar);
@@ -2601,6 +2643,16 @@
 </head>
 <body>
 <div id="backdrop" class="bd" aria-hidden="true"></div>
+<div class="winbar" id="winbar">
+  <div class="win-zone" id="win-zone"></div>
+  <div class="win-veil"></div>
+  <div class="win-edge" data-edge="top"></div><div class="win-edge l" data-edge="topleft"></div><div class="win-edge r" data-edge="topright"></div>
+  <div class="win-btns">
+    <button type="button" class="win-btn" id="win-min" title="Minimize" aria-label="Minimize"><svg viewBox="0 0 10 10"><path d="M0 5h10"/></svg></button>
+    <button type="button" class="win-btn" id="win-max" title="Maximize" aria-label="Maximize"><svg class="i-max" viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9" rx="1"/></svg><svg class="i-rest" viewBox="0 0 10 10"><path d="M2.5 2.5V1.5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1"/><rect x=".5" y="2.5" width="7" height="7" rx="1"/></svg></button>
+    <button type="button" class="win-btn close" id="win-close" title="Close" aria-label="Close"><svg viewBox="0 0 10 10"><path d="M.5.5l9 9M9.5.5l-9 9"/></svg></button>
+  </div>
+</div>
 <div class="app">
   <!-- Applied before the sidebar is drawn, so a collapsed one doesn't flash open. -->
   <script>try { if (matchMedia("(min-width:821px) and (max-width:1099px)").matches || localStorage.getItem("vito-side") === "collapsed") document.documentElement.classList.add("side-compact"); } catch {}</script>
@@ -3945,6 +3997,9 @@ const TR = { nl: {
   "This replaces all your current settings, history, statistics and achievements with the backup from {d}. This can't be undone.":"Dit vervangt al je huidige instellingen, geschiedenis, statistieken en prestaties door de back-up van {d}. Dit kan niet ongedaan worden gemaakt.",
   "this file":"dit bestand",
   "Restore":"Herstellen",
+  "Minimize":"Minimaliseren",
+  "Maximize":"Maximaliseren",
+  "Restore down":"Vorige grootte",
   "Backup restored — reloading…":"Back-up hersteld — opnieuw laden…",
   "Restore failed.":"Herstellen mislukt.",
   "That doesn't look like a Vito backup.":"Dit lijkt geen Vito-back-up te zijn.",
@@ -6491,10 +6546,56 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
 (function stickyTop(){
   const bar = document.querySelector(".sidebar"), narrow = matchMedia("(max-width:820px)");
   if (!bar) return;
-  const set = () => document.documentElement.style.setProperty("--sticky-top", (narrow.matches ? bar.offsetHeight : 0) + "px");
+  const set = () => document.documentElement.style.setProperty("--sticky-top", narrow.matches ? bar.offsetHeight + "px" : "var(--frame-h, 0px)");
   new ResizeObserver(set).observe(bar);
   narrow.addEventListener("change", set);
   set();
+})();
+// The title bar the page draws (see .winbar): in Vito's own window the
+// buttons, the top edge, dragging, the double click and the system menu go to
+// the window (vitoWin); it answers with its state (vitoFrameState). The web
+// app with Window Controls Overlay needs only the classes: the browser drags.
+(function winFrame(){
+  const root = document.documentElement, wco = navigator.windowControlsOverlay;
+  const scrolled = () => root.classList.toggle("win-scrolled", scrollY > 2);
+  addEventListener("scroll", scrolled, { passive:true });
+  scrolled();
+  if (wco) {
+    const upd = () => root.classList.toggle("wco", !!wco.visible && !window.__VITO_FRAME__);
+    wco.addEventListener("geometrychange", upd);
+    upd();
+  }
+  if (!window.__VITO_FRAME__ || !window.vitoWin) return;
+  root.classList.add("own-frame");
+  const max = $("win-max");
+  window.vitoFrameState = (s) => {
+    root.classList.toggle("win-max", !!s.max);
+    root.classList.toggle("win-inactive", !s.active);
+    const k = s.max ? "Restore down" : "Maximize";
+    max.dataset.i18nTitle = max.dataset.i18nAriaLabel = k;
+    max.title = t(k); max.setAttribute("aria-label", t(k));
+  };
+  $("win-min").onclick = () => vitoWin("min");
+  max.onclick = () => vitoWin("max");
+  $("win-close").onclick = () => vitoWin("close");
+  document.querySelectorAll(".win-edge").forEach(e => e.addEventListener("mousedown", (ev) => {
+    if (ev.button === 0) { ev.preventDefault(); vitoWin("resize", e.dataset.edge); }
+  }));
+  const zone = $("win-zone");
+  const onStrip = (ev) => ev.clientY <= zone.getBoundingClientRect().bottom &&
+    !(ev.target.closest && ev.target.closest("button, a, input, textarea, select, label, [role=button], [contenteditable], .brand, .card-menu"));
+  let last = null; // the previous press on the strip: a second one soon after is a double click
+  document.addEventListener("mousedown", (ev) => {
+    if (ev.button !== 0 || !onStrip(ev)) return;
+    ev.preventDefault();
+    const dbl = last && ev.timeStamp - last.t < 500 && Math.abs(ev.screenX - last.x) < 5 && Math.abs(ev.screenY - last.y) < 5;
+    last = dbl ? null : { t: ev.timeStamp, x: ev.screenX, y: ev.screenY };
+    vitoWin(dbl ? "max" : "drag");
+  }, true);
+  document.addEventListener("contextmenu", (ev) => {
+    if (onStrip(ev)) { ev.preventDefault(); vitoWin("menu"); }
+  }, true);
+  vitoWin("hello");
 })();
 // Tabs on up to two lines; the dropdown only once they'd need a third. The
 // lines are counted from where the tabs actually land, rather than widths

@@ -59,6 +59,9 @@ const (
 	wmGetMinMaxInfo = 0x0024
 	wmSetIcon       = 0x0080
 	wmNCActivate    = 0x0086
+	wmNCCalcSize    = 0x0083
+	wmNCLButtonDown = 0x00A1
+	wmSysCommand    = 0x0112
 	wmCopyData      = 0x004A
 	wmDpiChanged    = 0x02E0
 	wmApp           = 0x8000
@@ -99,6 +102,13 @@ var (
 	procGetKeyState           = user32.NewProc("GetKeyState")
 	procSetProcessDpiAwareCtx = user32.NewProc("SetProcessDpiAwarenessContext")
 	procSystemParametersInfo  = user32.NewProc("SystemParametersInfoW")
+	procIsZoomed              = user32.NewProc("IsZoomed")
+	procReleaseCapture        = user32.NewProc("ReleaseCapture")
+	procGetCursorPos          = user32.NewProc("GetCursorPos")
+	procGetSystemMenu         = user32.NewProc("GetSystemMenu")
+	procTrackPopupMenu        = user32.NewProc("TrackPopupMenu")
+	procEnableMenuItem        = user32.NewProc("EnableMenuItem")
+	procGetSysMetricsForDpi   = user32.NewProc("GetSystemMetricsForDpi")
 	shell32                   = windows.NewLazySystemDLL("shell32.dll")
 	procCreateIconFromResEx   = user32.NewProc("CreateIconFromResourceEx")
 	procDestroyIcon           = user32.NewProc("DestroyIcon")
@@ -165,6 +175,7 @@ type vwin struct {
 	mu     sync.Mutex
 	queue  []func()
 	placeF string
+	active bool
 }
 
 var theWindow *vwin
@@ -329,6 +340,7 @@ func runWindow(cfg *config.Config, target string) error {
 		web.Init(windowDebugJS)
 	}
 	web.Init(windowBridgeJS)
+	web.Init(windowFrameJS)
 	web.Init(externalLinksJS)
 	web.Navigate(target)
 	web.Focus()
@@ -379,6 +391,8 @@ func (w *vwin) onMessage(raw string) {
 		Acc  string `json:"accent"`
 		Rad  string `json:"radius"`
 		Msg  string `json:"msg"`
+		A    string `json:"a"`
+		Edge string `json:"edge"`
 	}
 	if json.Unmarshal([]byte(raw), &m) != nil {
 		return
@@ -393,6 +407,8 @@ func (w *vwin) onMessage(raw string) {
 	case "theme":
 		setDarkTitleBar(w.hwnd, m.Dark)
 		setWindowIcon(w.hwnd, m.Acc, m.Rad)
+	case "win":
+		w.frameAction(m.A, m.Edge)
 	case "log":
 		if dir, err := os.UserCacheDir(); err == nil {
 			if f, err := os.OpenFile(filepath.Join(dir, "vito", "window.log"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644); err == nil {
@@ -517,17 +533,26 @@ func windowProc(hwnd, message, wparam, lparam uintptr) uintptr {
 	ready := w.ready
 	w.mu.Unlock()
 	switch message {
+	case wmNCCalcSize:
+		if wparam != 0 {
+			return ncCalcSize(hwnd, message, wparam, lparam)
+		}
 	case wmSize:
 		if ready {
 			w.web.Resize()
+			w.pushFrame()
 		}
 	case wmMove:
 		if ready {
 			_ = w.web.NotifyParentWindowPositionChanged()
 		}
 	case wmActivate:
-		if ready && wparam&0xFFFF != 0 {
-			w.web.Focus()
+		if ready {
+			w.active = wparam&0xFFFF != 0
+			if w.active {
+				w.web.Focus()
+			}
+			w.pushFrame()
 		}
 	case wmGetMinMaxInfo:
 		mmi := *(**minMaxInfo)(unsafe.Pointer(&lparam))
@@ -760,3 +785,111 @@ func launchWindow(u string) error {
 
 // windowSupported: this system can show Vito's own window.
 func windowSupported() bool { return webView2Available() }
+
+// The window draws no title bar of its own: the page runs up to the top edge,
+// so its background shows there too, and draws the caption buttons itself
+// (#winbar in web/index.html). Windows keeps the frame on the other three
+// sides, with their resize borders, the shadow and the rounded corners.
+//
+// The top edge, dragging, the double click and the system menu come from the
+// page as messages: the WebView sits over the whole client area and takes the
+// mouse there, so the window never sees the hit test it would answer itself.
+// Snap layouts on hovering the maximise button need that hit test and are not
+// offered; dragging to the screen's top edge and Win+Z still snap.
+
+// windowFrameJS tells the page it draws the title bar (html.own-frame) and
+// gives it vitoWin(action) to call.
+const windowFrameJS = `(function(){
+  window.__VITO_FRAME__ = true;
+  window.vitoWin = (a, edge) => { try { window.chrome.webview.postMessage(JSON.stringify({ t: "win", a: String(a), edge: edge || "" })); } catch (e) {} };
+})();`
+
+// ncCalcSize makes the whole window client area but for the left, right and
+// bottom borders. Maximised, Windows places the window its border's width
+// beyond the screen, so the top is moved in by as much.
+func ncCalcSize(hwnd, message, wparam, lparam uintptr) uintptr {
+	r := *(**rect)(unsafe.Pointer(&lparam)) // NCCALCSIZE_PARAMS.rgrc[0]
+	top := r.top
+	procDefWindowProcW.Call(hwnd, message, wparam, lparam)
+	r.top = top
+	if z, _, _ := procIsZoomed.Call(hwnd); z != 0 {
+		dpi, _, _ := procGetDpiForWindow.Call(hwnd)
+		f, _, _ := procGetSysMetricsForDpi.Call(33, dpi) // SM_CYFRAME
+		p, _, _ := procGetSysMetricsForDpi.Call(92, dpi) // SM_CXPADDEDBORDER
+		r.top += int32(f + p)
+	}
+	return 0
+}
+
+// frameAction does what the page's title bar asks.
+func (w *vwin) frameAction(a, edge string) {
+	h := w.hwnd
+	cursor := func() uintptr {
+		var p point
+		procGetCursorPos.Call(uintptr(unsafe.Pointer(&p)))
+		return uintptr(uint16(p.x)) | uintptr(uint16(p.y))<<16
+	}
+	zoomed := func() bool { z, _, _ := procIsZoomed.Call(h); return z != 0 }
+	switch a {
+	case "hello":
+		fg, _, _ := procGetForegroundWindow.Call()
+		w.active = fg == h
+		w.pushFrame()
+	case "min":
+		procShowWindow.Call(h, 6) // SW_MINIMIZE
+	case "max":
+		if zoomed() {
+			procShowWindow.Call(h, swRestore)
+		} else {
+			procShowWindow.Call(h, swShowMax)
+		}
+	case "close":
+		procPostMessageW.Call(h, wmClose, 0, 0)
+	case "drag":
+		procReleaseCapture.Call()
+		procPostMessageW.Call(h, wmNCLButtonDown, 2, cursor()) // HTCAPTION
+	case "resize":
+		ht := map[string]uintptr{"top": 12, "topleft": 13, "topright": 14}[edge]
+		if ht == 0 || zoomed() {
+			return
+		}
+		procReleaseCapture.Call()
+		procPostMessageW.Call(h, wmNCLButtonDown, ht, cursor())
+	case "menu":
+		var p point
+		procGetCursorPos.Call(uintptr(unsafe.Pointer(&p)))
+		m, _, _ := procGetSystemMenu.Call(h, 0)
+		if m == 0 {
+			return
+		}
+		// Windows readies this menu for a title bar it draws itself; this
+		// window draws none, so the items follow the window's state here.
+		z := zoomed()
+		for _, it := range []struct {
+			cmd uintptr
+			on  bool
+		}{{0xF120, z}, {0xF010, !z}, {0xF000, !z}, {0xF030, !z}} { // SC_RESTORE MOVE SIZE MAXIMIZE
+			flag := uintptr(0x1) // MF_GRAYED
+			if it.on {
+				flag = 0
+			}
+			procEnableMenuItem.Call(m, it.cmd, flag) // MF_BYCOMMAND
+		}
+		const tpmReturnCmd, tpmRightButton = 0x0100, 0x0002
+		cmd, _, _ := procTrackPopupMenu.Call(m, tpmReturnCmd|tpmRightButton,
+			uintptr(p.x), uintptr(p.y), 0, h, 0)
+		if cmd != 0 {
+			procPostMessageW.Call(h, wmSysCommand, cmd, 0)
+		}
+	}
+}
+
+// pushFrame tells the page whether the window is maximised (the restore
+// button, no top edge to resize) and active (dimmed buttons when not).
+func (w *vwin) pushFrame() {
+	if w.web == nil {
+		return
+	}
+	z, _, _ := procIsZoomed.Call(w.hwnd)
+	w.web.Eval(fmt.Sprintf("window.vitoFrameState&&vitoFrameState({max:%t,active:%t})", z != 0, w.active))
+}

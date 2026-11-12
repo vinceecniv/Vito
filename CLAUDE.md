@@ -247,6 +247,14 @@ installer's shortcut, so toasts say "Vito") and a relaunch command `vito open`.
 When the daemon goes away under it (restart, `vito quit` from an update) the
 window writes `<UserConfigDir>/vito/window-reopen` and the next daemon reopens
 it within 5 minutes; the tray's Quit closes the window first, so it stays shut.
+The window has no title bar of Windows' (`ncCalcSize`): the page runs to the
+top edge and draws the caption buttons (`.winbar`, `winFrame` in
+`web/index.html`, under `html.own-frame`); dragging, the top edge, the double
+click and the system menu come back as `vitoWin` messages (`frameAction`),
+because the WebView takes every mouse event in its area. No snap layouts on
+hovering maximise (that needs the window's own hit test). The installed web app
+does the same through Window Controls Overlay (`html.wco`, `display_override`
+in the manifest). Sticky bars stop under the strip via `--sticky-top`/`--frame-h`.
 
 ## Vito updates itself
 
