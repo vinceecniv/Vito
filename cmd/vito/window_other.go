@@ -18,6 +18,8 @@ func openWindow([]string) error {
 
 func launchWindow(string) error { return fmt.Errorf("no window on this system") }
 
+func closeWindow() {}
+
 func windowSupported() bool { return false }
 
 // startDaemon starts `vito serve` from this same binary, in a session of its

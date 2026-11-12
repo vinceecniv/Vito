@@ -231,6 +231,23 @@ on CPU, 0.25 s on Vulkan; Whisper large-v3-turbo ≈ 4–9 s on CPU, 0.4 s on CU
 Whisper is the better engine for Dutch with English jargon; Parakeet for CPU.
 Benchmark only on an idle machine — a background encode inflated numbers 2×.
 
+## Vito's own window
+
+`vito window` shows the page in its own window: WebView2 through go-webview2 on
+Windows (`cmd/vito/window_windows.go`, no cgo), webview_go/WebKitGTK on Linux
+behind `-tags webview` (trial). `vito open` is what the tray, the island's logo,
+the installer's "Vito" shortcut and a pinned taskbar button run: the window
+unless `ui.window` is false (nil = on) or WebView2 is missing, else the web app
+or a browser tab (`webapp.Native`/`ErrNoNative`). One window per user (mutex
+`Local\VitoWindow`, URL handed over by WM_COPYDATA). go-webview2's `init()`
+puts the main thread in a COM STA in every process; `undoEdgeInit` reverses it
+for everything but `window` — without that the hotkey's recording never ended.
+The window carries Vito's AppUserModelID (`notify.AppUserModelID`, also on the
+installer's shortcut, so toasts say "Vito") and a relaunch command `vito open`.
+When the daemon goes away under it (restart, `vito quit` from an update) the
+window writes `<UserConfigDir>/vito/window-reopen` and the next daemon reopens
+it within 5 minutes; the tray's Quit closes the window first, so it stays shut.
+
 ## Vito updates itself
 
 `internal/update.Auto` (setting `update.auto`, nil = on, only while the check is

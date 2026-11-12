@@ -83,3 +83,6 @@ func startDaemon() error {
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	return cmd.Start()
 }
+
+// closeWindow: the Linux window leaves with its own process; nothing to close.
+func closeWindow() {}

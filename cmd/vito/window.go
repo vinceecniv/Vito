@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/url"
+	"os"
+	"path/filepath"
 	"time"
 
 	"vito/internal/config"
@@ -104,4 +106,43 @@ func ownPage(raw string, port int) (string, error) {
 		u.Path = "/"
 	}
 	return u.String(), nil
+}
+
+// reopenFile marks that Vito's window was open when its daemon went away
+// without closing it (a restart, an update). The daemon that starts next
+// opens the window again if the mark is fresh.
+func reopenFile() string {
+	dir, err := os.UserConfigDir()
+	if err != nil {
+		return ""
+	}
+	return filepath.Join(dir, "vito", "window-reopen")
+}
+
+func markReopen() {
+	if f := reopenFile(); f != "" {
+		_ = os.WriteFile(f, []byte(time.Now().Format(time.RFC3339)), 0o600)
+	}
+}
+
+// reopenWindow opens the window again after a restart or update that closed
+// it, once the server answers. A mark older than a few minutes is ignored:
+// the user may have started Vito again much later, on purpose without it.
+func reopenWindow(port int, on func() bool) {
+	f := reopenFile()
+	if f == "" {
+		return
+	}
+	st, err := os.Stat(f)
+	if err != nil {
+		return
+	}
+	_ = os.Remove(f)
+	if time.Since(st.ModTime()) > 5*time.Minute || !on() {
+		return
+	}
+	for i := 0; i < 100 && !daemonRunning(port); i++ {
+		time.Sleep(100 * time.Millisecond)
+	}
+	_ = launchWindow(fmt.Sprintf("http://127.0.0.1:%d/", port))
 }

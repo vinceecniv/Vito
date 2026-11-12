@@ -25,8 +25,7 @@
 
 #define AppName "Vito"
 ; The shortcut that launches the background daemon/tray is named separately, so
-; it is clearly distinct from the "Open the Vito interface" shortcut and the
-; installed-as-app PWA — all three would otherwise read simply "Vito".
+; it is clearly distinct from the "Vito" shortcut that opens Vito's window.
 #define AppTrayName "Vito Tray"
 #define AppPublisher "Vincent Blok"
 #define AppURL "https://github.com/vinceecniv/vito"
@@ -171,9 +170,16 @@ Name: "autostart";   Description: "{cm:TaskAutostart}"
 Source: "..\dist\{#AppExe}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "vito.ico";          DestDir: "{app}"; Flags: ignoreversion
 
+[InstallDelete]
+; Until 2026.12 the shortcut that opens Vito was named "{cm:OpenUI}".
+Type: files; Name: "{group}\{cm:OpenUI}.lnk"
+
 [Icons]
 Name: "{group}\{#AppTrayName}";                Filename: "{app}\{#AppExe}"; Parameters: "serve"; IconFilename: "{app}\vito.ico"; Comment: "{cm:AppTagline}"
-Name: "{group}\{cm:OpenUI}";                   Filename: "{app}\{#AppExe}"; Parameters: "open"; IconFilename: "{app}\vito.ico"
+; Opens Vito (its window). Named after the app and carrying its AppUserModelID
+; (notify.AppUserModelID): the window pins to the taskbar as this shortcut and
+; toasts are sent as "Vito".
+Name: "{group}\{#AppName}";                    Filename: "{app}\{#AppExe}"; Parameters: "open"; IconFilename: "{app}\vito.ico"; AppUserModelID: "io.github.vinceecniv.vito"
 Name: "{autodesktop}\{#AppTrayName}";          Filename: "{app}\{#AppExe}"; Parameters: "serve"; IconFilename: "{app}\vito.ico"; Tasks: desktopicon
 
 [Run]

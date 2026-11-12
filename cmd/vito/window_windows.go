@@ -23,6 +23,7 @@ import (
 	"golang.org/x/sys/windows/registry"
 
 	"vito/internal/config"
+	"vito/internal/notify"
 	"vito/internal/selfexe"
 	"vito/internal/webapp"
 )
@@ -98,6 +99,8 @@ var (
 	procSetProcessDpiAwareCtx = user32.NewProc("SetProcessDpiAwarenessContext")
 	shell32                   = windows.NewLazySystemDLL("shell32.dll")
 	procExtractIconExW        = shell32.NewProc("ExtractIconExW")
+	procSetAppIDForProcess    = shell32.NewProc("SetCurrentProcessExplicitAppUserModelID")
+	procSHGetPropertyStoreWnd = shell32.NewProc("SHGetPropertyStoreForWindow")
 	dwmapi                    = windows.NewLazySystemDLL("dwmapi.dll")
 	procDwmSetWindowAttribute = dwmapi.NewProc("DwmSetWindowAttribute")
 )
@@ -235,6 +238,9 @@ func runWindow(cfg *config.Config, target string) error {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 	procSetProcessDpiAwareCtx.Call(^uintptr(3)) // PER_MONITOR_AWARE_V2 (-4)
+	if id, err := windows.UTF16PtrFromString(notify.AppUserModelID); err == nil {
+		procSetAppIDForProcess.Call(uintptr(unsafe.Pointer(id)))
+	}
 
 	w := &vwin{}
 	theWindow = w
@@ -270,6 +276,7 @@ func runWindow(cfg *config.Config, target string) error {
 		return errNoEngine
 	}
 	setWindowIcon(w.hwnd)
+	setRelaunch(w.hwnd)
 	setDarkTitleBar(w.hwnd, wantDarkTitle(cfg.UI.Theme))
 	show := uintptr(swShow)
 	if p, ok := w.loadPlacement(); ok {
@@ -416,9 +423,67 @@ func (w *vwin) watchDaemon(port int) {
 			continue
 		}
 		if misses++; misses >= 2 {
+			// Gone without closing the window first (a restart, an update):
+			// the daemon that starts next opens it again.
+			markReopen()
 			procPostMessageW.Call(w.hwnd, wmClose, 0, 0)
 			return
 		}
+	}
+}
+
+// setRelaunch gives the window Vito's AppUserModelID and says how to start it
+// again, so a window pinned to the taskbar runs `vito open` (not the bare exe,
+// which prints its usage) and groups with the Start menu's Vito shortcut.
+func setRelaunch(hwnd uintptr) {
+	exe, err := os.Executable()
+	if err != nil {
+		return
+	}
+	iid := windows.GUID{Data1: 0x886D8EEB, Data2: 0x8CF2, Data3: 0x4446,
+		Data4: [8]byte{0x8D, 0x02, 0xCD, 0xBA, 0x1D, 0xBD, 0xCF, 0x99}} // IID_IPropertyStore
+	var ps *struct{ vtbl *[8]uintptr }
+	if hr, _, _ := procSHGetPropertyStoreWnd.Call(hwnd, uintptr(unsafe.Pointer(&iid)),
+		uintptr(unsafe.Pointer(&ps))); hr != 0 || ps == nil {
+		return
+	}
+	defer syscall.SyscallN(ps.vtbl[2], uintptr(unsafe.Pointer(ps))) // Release
+	type propKey struct {
+		fmtid windows.GUID
+		pid   uint32
+	}
+	type propVariant struct {
+		vt  uint16
+		_   [3]uint16
+		val *uint16
+		_   uintptr
+	}
+	appModel := windows.GUID{Data1: 0x9F4C2855, Data2: 0x9F79, Data3: 0x4B39,
+		Data4: [8]byte{0xA8, 0xD0, 0xE1, 0xD4, 0x2D, 0xE1, 0xD5, 0xF3}} // PKEY_AppUserModel_*
+	set := func(pid uint32, s string) {
+		v, err := windows.UTF16PtrFromString(s)
+		if err != nil {
+			return
+		}
+		k := propKey{appModel, pid}
+		pv := propVariant{vt: 31, val: v} // VT_LPWSTR
+		syscall.SyscallN(ps.vtbl[6], uintptr(unsafe.Pointer(ps)),
+			uintptr(unsafe.Pointer(&k)), uintptr(unsafe.Pointer(&pv))) // SetValue
+		runtime.KeepAlive(v)
+	}
+	set(2, `"`+exe+`" open`)                                  // RelaunchCommand
+	set(3, exe+",0")                                          // RelaunchIconResource
+	set(4, "Vito")                                            // RelaunchDisplayNameResource
+	set(5, notify.AppUserModelID)                             // ID, last
+	syscall.SyscallN(ps.vtbl[7], uintptr(unsafe.Pointer(ps))) // Commit
+}
+
+// closeWindow closes Vito's window, if one is open, before the daemon quits on
+// the user's word, so the next daemon does not open it again (markReopen).
+func closeWindow() {
+	cls, _ := windows.UTF16PtrFromString(windowClass)
+	if h, _, _ := procFindWindowW.Call(uintptr(unsafe.Pointer(cls)), 0); h != 0 {
+		procPostMessageW.Call(h, wmClose, 0, 0)
 	}
 }
 

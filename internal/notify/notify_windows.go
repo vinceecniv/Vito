@@ -30,6 +30,11 @@ import (
 	"time"
 )
 
+// AppUserModelID is Vito's own identity on Windows: the installer puts it on
+// the Start menu's "Vito" shortcut and Vito's window carries it, so the window
+// pins to the taskbar as that shortcut and toasts are sent as "Vito".
+const AppUserModelID = "io.github.vinceecniv.vito"
+
 // powershellAUMID is the shell:appsfolder id of Windows PowerShell, used only as
 // a fallback. CreateToastNotifier needs an AUMID that exists in the Start Menu;
 // this one always does.
@@ -45,10 +50,10 @@ var (
 	aumid    string
 )
 
-// appAUMID returns the identity toasts are shown under. Installing Vito as a PWA
-// registers it in the Start Menu with its own AppUserModelID, and borrowing that
-// makes Windows label the toast "Vito" with the app's icon. Without the PWA there
-// is nothing to borrow and toasts fall back to PowerShell's identity.
+// appAUMID returns the identity toasts are shown under: Vito's own
+// (AppUserModelID) when the installer's Start menu shortcut carries it, else
+// an installed PWA's, which Windows also labels "Vito" with the app's icon.
+// Without either, toasts fall back to PowerShell's identity.
 //
 // Resolved once per run: the id embeds a hash of the origin, so it differs per
 // install and can't be hardcoded.
@@ -58,7 +63,9 @@ func appAUMID() string {
 		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 		defer cancel()
 		cmd := exec.CommandContext(ctx, powershell(), "-NoProfile", "-NonInteractive", "-Command",
-			`(Get-StartApps | Where-Object { $_.Name -like 'Vito*' } | Select-Object -First 1).AppID`)
+			`$a = Get-StartApps | Where-Object { $_.Name -like 'Vito*' }; `+
+				`$own = $a | Where-Object { $_.AppID -eq '`+AppUserModelID+`' } | Select-Object -First 1; `+
+				`if ($own) { $own.AppID } else { ($a | Where-Object { $_.AppID -notlike '*\*' } | Select-Object -First 1).AppID }`)
 		cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 		out, err := cmd.Output()
 		if err != nil {

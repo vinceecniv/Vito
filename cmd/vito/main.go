@@ -256,12 +256,14 @@ func serve() error {
 	if firstRun {
 		firstRunSetup(cfg, log)
 	}
+	go reopenWindow(cfg.Server.Port, webapp.NativeOn)
 
 	if cfg.Tray.Enabled {
 		url := fmt.Sprintf("http://127.0.0.1:%d", cfg.Server.Port)
 		if tray.Run(d, url, version, log) {
 			log.Info("shutting down (tray quit)")
-			d.Shutdown() // restore any ducked/paused media before exiting
+			closeWindow() // the user's quit: the next start does not reopen it
+			d.Shutdown()  // restore any ducked/paused media before exiting
 			os.Exit(0)
 		}
 		// The tray loop ended without the user asking to quit: there is no tray
