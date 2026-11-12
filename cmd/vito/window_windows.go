@@ -562,7 +562,7 @@ func windowProc(hwnd, message, wparam, lparam uintptr) uintptr {
 		if dpi == 0 {
 			dpi = 96
 		}
-		mmi.minTrackSize = point{int32(760 * dpi / 96), int32(560 * dpi / 96)}
+		mmi.minTrackSize = point{int32(420 * dpi / 96), int32(480 * dpi / 96)} // the page's phone layout fits
 		return 0
 	case wmDpiChanged:
 		// Windows suggests the rectangle for the new DPI; take it.

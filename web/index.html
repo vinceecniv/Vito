@@ -515,7 +515,7 @@
      strong blur smudged fine patterns (stripes, grid, dots) into one colour;
      2px only softens them. The narrow layout's top bar has the page scrolling
      under it, so it blurs properly. */
-  @media (max-width:820px){
+  @media (max-width:600px){
     :root[data-backdrop] .sidebar { -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
   }
   /* smooth fade only while switching theme (not on every hover) */
@@ -581,7 +581,7 @@
   .win-edge.l, .win-edge.r { width:12px; cursor:nwse-resize; }
   .win-edge.l { right:auto; } .win-edge.r { left:auto; cursor:nesw-resize; }
   html.win-max .win-edge, html.wco .win-btns, html.wco .win-edge { display:none; }
-  @media (max-width:820px){
+  @media (max-width:600px){
     html.own-frame .sidebar, html.wco .sidebar { padding-top:calc(var(--frame-h) + 4px); }
   }
 
@@ -632,11 +632,19 @@
      1099px and the top-bar layout compact by default — a narrowing window
      goes compact first, then to the top bar. No width animation — the content
      column would reflow, charts and all, every frame. */
+  /* Named only while folding: a named element is a backdrop root, which would
+     keep the page's blurs from seeing the background. */
+  html.vt-fold .sidebar { view-transition-name:vt-side; }
+  html.vt-fold .content { view-transition-name:vt-main; }
+  ::view-transition-group(vt-side), ::view-transition-group(vt-main) { animation-duration:.28s; animation-timing-function:cubic-bezier(.2,.7,.2,1); }
+  ::view-transition-old(vt-side), ::view-transition-new(vt-side),
+  ::view-transition-old(vt-main), ::view-transition-new(vt-main) { height:100%; width:auto; object-fit:none; object-position:left top; animation-duration:.28s; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation:none; }
   .side-toggle { display:flex; align-items:center; gap:11px; width:100%; margin-top:auto; padding:9px 12px; border-radius:10px;
     border:none; background:none; color:var(--text3); font-family:inherit; font-size:13px; text-align:left; cursor:var(--cur-hand); }
   .side-toggle svg { width:17px; height:17px; flex:0 0 17px; }
   .side-toggle:hover { color:var(--text); background:color-mix(in srgb, var(--nav-active-bg) 50%, transparent); }
-  @media (min-width:821px){
+  @media (min-width:601px){
     html.side-compact .sidebar { width:68px; flex:0 0 68px; }
     html.side-compact .brand { justify-content:center; padding:4px 0 18px; }
     html.side-compact .brand-text { display:none; }
@@ -928,6 +936,7 @@
   /* Positioned, so each card's ⋯ menu button sits in its own corner — the
      chart and transcript are not .stat cards and would otherwise put it
      somewhere up the page. */
+  .statgrid { position:relative; } /* the cards' offsets are taken within it (glideCards) */
   .statgrid > .card { position:relative; -webkit-touch-callout:none; }
   .statgrid.holding, .statgrid.holding * { cursor:var(--cur-grab) !important; }
   .statgrid.dragging, .statgrid.dragging * { user-select:none; -webkit-user-select:none; cursor:var(--cur-grabbing) !important; }
@@ -1017,7 +1026,7 @@
     .sidebar { width:180px; flex:0 0 180px; }
     .content { padding:calc(24px * var(--dn, 1)) calc(20px * var(--dn, 1)); }
   }
-  @media (max-width:820px){
+  @media (max-width:600px){
     .app { flex-direction:column; }
     .sidebar { width:100%; flex:none; height:auto; position:sticky; top:0; z-index:20;
       flex-direction:row; flex-wrap:wrap; align-items:center; gap:6px; padding:10px 14px;
@@ -1039,7 +1048,7 @@
      pages as tabs, so the hamburger (fiddly to use) only remains on a phone:
      the current page with its name, the others as icons named on hover. All
      five names don't fit in most languages, Dutch included. */
-  @media (max-width:820px) and (min-width:461px){
+  @media (max-width:600px) and (min-width:461px){
     .hamburger { display:none; }
     .nav-item, .sidebar.open .nav-item { display:flex; width:auto; order:1; flex:none; padding:8px 10px; gap:0; font-size:0; }
     .nav-item.active { gap:7px; font-size:13px; }
@@ -1137,7 +1146,7 @@
   /* .flagsel (further down) makes every picker position:relative, which would
      turn this one's sticky top into a plain shift down: a gap under the title. */
   #tab-settings.settabs-narrow .setsec-sel { display:block; position:sticky; }
-  @media (max-width:820px){
+  @media (max-width:600px){
     .setsec-sel, .settings-pane { max-width:100%; }
   }
   .card.stat { padding:18px 20px; }
@@ -1356,7 +1365,7 @@
      ("4w", "3–9 Sep") beside the calendar icon: the full name costs too much
      of the header's width, but an icon alone hid which period you were on. */
   .period-sel .flagsel-btn > .pl-short { display:none; }
-  @media (max-width:820px){
+  @media (max-width:600px){
     .period-sel { max-width:none; }
     .period-sel .flagsel-btn { width:auto; padding:0 12px; gap:6px; justify-content:center; }
     .period-sel .flagsel-btn > .pl-full { display:none; }
@@ -2152,7 +2161,7 @@
   /* Dialogs centre over the content column, not the whole window: beside the
      sidebar, which the padding keeps them clear of (see the breakpoints). */
   .modal-backdrop, #offline-overlay { --side:216px; }
-  @media (min-width:821px){ .modal-backdrop, #offline-overlay { padding-left:var(--side); } }
+  @media (min-width:601px){ .modal-backdrop, #offline-overlay { padding-left:var(--side); } }
   @media (max-width:980px){ .modal-backdrop, #offline-overlay { --side:180px; } }
   html.side-compact .modal-backdrop, html.side-compact #offline-overlay { --side:68px; }
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
@@ -2636,7 +2645,7 @@
   .lr-mk .lr-mx { background:none; border:none; color:var(--text3); margin-left:auto; cursor:var(--cur-hand); font-size:16px; }
   .lr-flash { animation:lrFlash 1.6s ease-out; }
   @keyframes lrFlash { 0% { background:color-mix(in srgb, var(--amber-ink) 45%, transparent); } 100% { background:transparent; } }
-  @media (max-width:820px) { .lr-row { grid-template-columns:minmax(0,1fr) auto; } .lr-row > :nth-child(2), .lr-row > :nth-child(3), .lr-row > :nth-child(5) { display:none; } .lr-p { display:block; } .lr-ts { display:none; } }
+  @media (max-width:600px) { .lr-row { grid-template-columns:minmax(0,1fr) auto; } .lr-row > :nth-child(2), .lr-row > :nth-child(3), .lr-row > :nth-child(5) { display:none; } .lr-p { display:block; } .lr-ts { display:none; } }
 </style>
 </head>
 <body>
@@ -2652,7 +2661,7 @@
 </div>
 <div class="app">
   <!-- Applied before the sidebar is drawn, so a collapsed one doesn't flash open. -->
-  <script>try { if (matchMedia("(min-width:821px) and (max-width:1099px)").matches || localStorage.getItem("vito-side") === "collapsed") document.documentElement.classList.add("side-compact"); } catch {}</script>
+  <script>try { if (matchMedia("(min-width:601px) and (max-width:1099px)").matches || localStorage.getItem("vito-side") === "collapsed") document.documentElement.classList.add("side-compact"); } catch {}</script>
   <aside class="sidebar" id="sidebar">
     <div class="brand" id="brand">
       <span class="tile" id="brand-mark"></span>
@@ -6459,14 +6468,14 @@ window.addEventListener("pagehide", rememberTab);
 document.querySelectorAll(".nav-item").forEach(btn => btn.onclick = () => selectTab(btn.dataset.tab));
 // Sidebar compact (icons) or expanded (names), by width:
 //   ≥1100px     the user's choice, remembered per browser (default expanded);
-//   821–1099px  compact, so a narrowing window first gives up the names and
+//   601–1099px  compact, so a narrowing window first gives up the names and
 //               only then switches to the top bar; the button expands it
 //               here for the moment only, not as a new default;
-//   ≤820px      the top bar, which this doesn't touch.
+//   ≤600px      the top bar, which this doesn't touch.
 // Crossing a boundary drops a momentary expand, so widening the window brings
 // back the user's own choice. The inline script in .app applies the same rule
 // before first paint.
-const SIDE_MID = matchMedia("(min-width:821px) and (max-width:1099px)");
+const SIDE_MID = matchMedia("(min-width:601px) and (max-width:1099px)");
 let sidePeek = false;
 function sidePref(){ try { return localStorage.getItem("vito-side") === "collapsed"; } catch { return false; } }
 function applySide(){
@@ -6484,7 +6493,13 @@ applySide();
 $("side-toggle").onclick = () => {
   if (SIDE_MID.matches) sidePeek = !sidePeek;
   else { const collapse = !sidePref(); try { localStorage.setItem("vito-side", collapse ? "collapsed" : "expanded"); } catch {} }
-  applySide();
+  // Folding and unfolding glides: a view transition between the two layouts
+  // (the sidebar and the page each morph; see ::view-transition below),
+  // rather than animating the width, which would reflow the charts per frame.
+  if (!document.startViewTransition || reducedMotion()) { applySide(); return; }
+  const root = document.documentElement;
+  root.classList.add("vt-fold");
+  document.startViewTransition(applySide).finished.finally(() => root.classList.remove("vt-fold"));
 };
 $("brand").onclick = () => selectTab("status");
 // Restore the tab that was open before a reload (defaults to status). Deferred to
@@ -6541,7 +6556,7 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
 // On the narrow layout the top bar is sticky, so whatever else sticks (the
 // settings tabs) has to sit below it: publish its height as --sticky-top.
 (function stickyTop(){
-  const bar = document.querySelector(".sidebar"), narrow = matchMedia("(max-width:820px)");
+  const bar = document.querySelector(".sidebar"), narrow = matchMedia("(max-width:600px)");
   if (!bar) return;
   const set = () => document.documentElement.style.setProperty("--sticky-top", narrow.matches ? bar.offsetHeight + "px" : "var(--frame-h, 0px)");
   new ResizeObserver(set).observe(bar);
@@ -9412,6 +9427,33 @@ function fitStatCols(){
   if (g.dataset.cols !== n) g.dataset.cols = n;
 }
 if (window.ResizeObserver) { const g = document.querySelector(".statgrid"); if (g) new ResizeObserver(fitStatCols).observe(g); }
+// Cards glide to their new place when the grid reflows (the window crosses a
+// column count, the sidebar folds) instead of jumping there. Only big moves:
+// following the window's edge while it is dragged, or a card above growing a
+// line, stays immediate. Positions are offsets within the grid, which a
+// running glide's transform leaves alone.
+(function glideCards(){
+  const g = $("statgrid"); if (!g || !window.ResizeObserver) return;
+  const last = new Map();
+  const glide = () => {
+    if (!g.offsetParent || g.classList.contains("dragging")) { last.clear(); return; }
+    const motion = !reducedMotion();
+    for (const c of g.children) {
+      const now = { x: c.offsetLeft, y: c.offsetTop }, was = last.get(c);
+      last.set(c, now);
+      if (!was || !motion || !c.offsetParent) continue;
+      const m = new DOMMatrix(getComputedStyle(c).transform); // where a glide still running has it
+      const dx = was.x + m.m41 - now.x, dy = was.y + m.m42 - now.y;
+      if (Math.hypot(dx, dy) < 40) continue;
+      c.getAnimations().forEach(a => a.id === "glide" && a.cancel());
+      const a = c.animate([{ transform: `translate(${dx}px,${dy}px)` }, { transform: "none" }],
+        { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" });
+      a.id = "glide";
+    }
+  };
+  new ResizeObserver(glide).observe(g);
+  new MutationObserver(() => requestAnimationFrame(glide)).observe(g, { childList: true });
+})();
 function applyStatusLayout(){
   const grid = $("statgrid"), holder = $("card-holder");
   if (!grid) return;
