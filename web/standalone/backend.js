@@ -882,7 +882,7 @@ registerProcessor("vito-pcm",P)`;
     span = Math.max(1, span);
     const saved = Math.max(0, tot.words / wpm - tot.dur / 60000);
     const st = { period_days: span, words: tot.words, sentences: tot.sentences, activations: tot.activations, commands: tot.commands,
-      activations_per_day: tot.activations / divisor, saved_minutes: Math.round(saved), spoken_seconds: Math.floor(tot.dur / 1000),
+      activations_per_day: tot.activations / divisor, saved_minutes: Math.round(saved), saved_seconds: Math.round(saved * 60), spoken_seconds: Math.floor(tot.dur / 1000),
       typing_wpm: wpm, first_day: firstDataDay(), week: [], week_peak_index: -1, series_unit: "", currency: "eur",
       spoken_wpm: tot.dur > 0 ? Math.round(tot.words / (tot.dur / 60000)) : 0, avg_words: tot.activations ? tot.words / tot.activations : 0,
       insights: insights(from, anchor), calendar: calendar(now) };

@@ -10003,7 +10003,9 @@ function fmtShortSec(sec){
   if (m > 0) return `${m}${t("m")} ${s}${t("s")}`;
   return `${s}${t("s")}`;
 }
-const fmtShortMin = (min) => fmtShortSec(min * 60);
+// savedSec is the saved typing time in seconds, as the pill shows it; a daemon
+// from before saved_seconds only has the minutes.
+const savedSec = (st) => st.saved_seconds != null ? st.saved_seconds : (st.saved_minutes || 0) * 60;
 // First paint builds the row and lets it ride the page's staggered reveal. Every
 // later refresh — a finished dictation, a changed period — keeps the cards where
 // they are and counts the numbers up to their new value: replaying the stagger
@@ -10699,7 +10701,7 @@ function volumeCard(st, series, I, nf, nfCompact){
       lbl:t("spoken time") + (st.spoken_wpm ? ` · ${nf(st.spoken_wpm)} wpm` : ""),
       tip:t("How long the microphone was recording, from start to stop. Pauses and silences within a dictation count too — this is also the time your speech recognition bills for.") +
         (st.spoken_wpm ? " " + t("How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.").replace("{n}", st.typing_wpm) : "") },
-    saved: { cls:"violet", icon:I.time, value:st.saved_minutes, format:fmtShortMin, lbl:t("saved typing time"), spark:series(d => d.saved_minutes),
+    saved: { cls:"violet", icon:I.time, value:savedSec(st), format:fmtShortSec, lbl:t("saved typing time"), spark:series(d => d.saved_minutes),
       tip:t("based on {n} wpm").replace("{n}", st.typing_wpm) + " — " +
           t("What you save compared with typing it yourself: your words divided by your typing speed, minus the time you spent speaking. Set your typing speed under Settings → General.") },
   };
@@ -10750,7 +10752,7 @@ async function compareWithPrevious(st){
   const nf = (n) => Math.round(n).toLocaleString(numLoc());
   const pick = {
     words: [s => s.words, nf], sentences: [s => s.sentences, nf], activations: [s => s.activations, nf],
-    spoken: [s => s.spoken_seconds, fmtShortSec], saved: [s => s.saved_minutes, fmtShortMin],
+    spoken: [s => s.spoken_seconds, fmtShortSec], saved: [savedSec, fmtShortSec],
   };
   const main = volumeMain();
   const rows = [
