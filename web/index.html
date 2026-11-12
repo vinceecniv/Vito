@@ -601,6 +601,15 @@
   .win-edge.l, .win-edge.r { width:12px; cursor:nwse-resize; }
   .win-edge.l { right:auto; } .win-edge.r { left:auto; cursor:nesw-resize; }
   html.win-max .win-edge, html.wco .win-btns, html.wco .win-edge { display:none; }
+  /* Linux (GTK): the buttons the desktop's layout names, on its side, round
+     as GNOME and most GTK themes draw them; closing is not red there. */
+  html.frame-gtk .win-btns { gap:6px; padding:0 7px; align-items:center; }
+  html.frame-gtk .win-btn { width:24px; height:24px; border-radius:50%;
+    background:color-mix(in srgb, var(--text) 8%, transparent); }
+  html.frame-gtk .win-btn:hover, html.frame-gtk .win-btn.close:hover { background:color-mix(in srgb, var(--text) 15%, transparent); color:var(--text); }
+  html.frame-gtk .win-btn:active, html.frame-gtk .win-btn.close:active { background:color-mix(in srgb, var(--text) 22%, transparent); color:var(--text); }
+  html.frame-gtk .win-btn svg { width:8px; height:8px; stroke-width:1.5; }
+  html.frame-gtk.win-left .win-btns { right:auto; left:0; border-radius:0 0 10px 0; }
   /* Room under the strip: the page head keeps clear of the caption buttons
      at every width, and the sidebar's logo lines up with it. */
   html.own-frame .content, html.wco .content { padding-top:calc(var(--frame-h) + 10px * var(--dn, 1)); }
@@ -6659,6 +6668,20 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
   new MutationObserver(queueTitle).observe(document.querySelector("main"), { subtree:true, attributes:true, attributeFilter:["class"] });
   if (!window.__VITO_FRAME__ || !window.vitoWin) return;
   root.classList.add("own-frame");
+  // Linux: GTK's decoration layout ("appmenu:close", "close,minimize:") says
+  // which buttons the desktop shows, in what order and on which side.
+  if (typeof window.__VITO_FRAME_GTK__ === "string") {
+    root.classList.add("frame-gtk");
+    const ids = { minimize:"win-min", maximize:"win-max", close:"win-close" };
+    const names = (s) => (s || "").split(",").map(x => x.trim()).filter(n => ids[n]);
+    const [l, r] = window.__VITO_FRAME_GTK__.split(":");
+    let side = names(r);
+    if (!side.length && names(l).length) { side = names(l); root.classList.add("win-left"); }
+    if (!side.length) side = ["minimize", "maximize", "close"];
+    const box = document.querySelector(".win-btns");
+    Object.entries(ids).forEach(([n, id]) => { $(id).style.display = side.includes(n) ? "" : "none"; });
+    side.forEach(n => box.appendChild($(ids[n])));
+  }
   const max = $("win-max");
   window.vitoFrameState = (s) => {
     root.classList.toggle("win-max", !!s.max);
@@ -6677,13 +6700,28 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
   const onStrip = (ev) => ev.clientY <= zone.getBoundingClientRect().bottom &&
     !(ev.target.closest && ev.target.closest("button, a, input, textarea, select, label, [role=button], [contenteditable], .brand, .card-menu"));
   let last = null; // the previous press on the strip: a second one soon after is a double click
+  // GTK hands the pointer to the desktop as soon as a move begins, so the
+  // second click of a double click never reached the page: there the move
+  // waits for the pointer to travel, as on the page's background below.
+  const gtk = root.classList.contains("frame-gtk");
+  let stripPress = null;
   document.addEventListener("mousedown", (ev) => {
     if (ev.button !== 0 || !onStrip(ev)) return;
     ev.preventDefault();
     const dbl = last && ev.timeStamp - last.t < 500 && Math.abs(ev.screenX - last.x) < 5 && Math.abs(ev.screenY - last.y) < 5;
     last = dbl ? null : { t: ev.timeStamp, x: ev.screenX, y: ev.screenY };
-    vitoWin(dbl ? "max" : "drag");
+    if (dbl) { stripPress = null; vitoWin("max"); }
+    else if (gtk) stripPress = { x: ev.screenX, y: ev.screenY };
+    else vitoWin("drag");
   }, true);
+  if (gtk) {
+    document.addEventListener("mousemove", (ev) => {
+      if (!stripPress) return;
+      if (!(ev.buttons & 1)) { stripPress = null; return; }
+      if (Math.hypot(ev.screenX - stripPress.x, ev.screenY - stripPress.y) > 4) { stripPress = null; last = null; vitoWin("drag"); }
+    }, true);
+    document.addEventListener("mouseup", () => { stripPress = null; }, true);
+  }
   document.addEventListener("contextmenu", (ev) => {
     if (onStrip(ev)) { ev.preventDefault(); vitoWin("menu"); }
   }, true);
@@ -7691,7 +7729,12 @@ const COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 // each falls back to the system cursor should the image not load. Text fields
 // get an I-beam in the same style (var(--cur-text)).
 const cursorCSS = (from, to) => {
-  const svg = (inner) => `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">` +
+  // Vito's window on Linux with GTK before 4.16 shows the pointer at the size
+  // WebKit draws it, the device scale: at 2× it came out twice as large.
+  // There the image is made 32/scale, hot spots likewise (internal/gtkwin).
+  const k = window.__VITO_SHRINK_CURSORS__ ? 1 / (window.devicePixelRatio || 1) : 1, px = 32 * k;
+  const hs = (x, y) => Math.round(x * k) + " " + Math.round(y * k);
+  const svg = (inner) => `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 32 32">` +
     `<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="3" y1="2" x2="25" y2="28"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient>` +
     `<filter id="s" x="-30%" y="-30%" width="170%" height="170%"><feDropShadow dx=".6" dy="1.2" stdDeviation="1.1" flood-color="#1B1530" flood-opacity=".4"/></filter></defs>` +
     inner + `</svg>`;
@@ -7750,8 +7793,8 @@ const cursorCSS = (from, to) => {
   const grab = svg(edged(open, 3.6) + parting("M12.5 7.5v10M16.9 6.5v11M21.3 8v9.5") + palmBars);
   const grabbing = svg(edged(fist, 3.6) + parting("M12.5 11.6v5.6M16.9 11.4v5.8M21.3 12v5.4") + palmBars);
   const url = (x) => `url("data:image/svg+xml,${encodeURIComponent(x)}")`;
-  return `:root{--cur-arrow:${url(arrow)} 4 4, default;--cur-hand:${url(hand)} 12 2, pointer;--cur-text:${url(text)} 16 16, text;` +
-    `--cur-grab:${url(grab)} 16 16, grab;--cur-grabbing:${url(grabbing)} 16 16, grabbing}
+  return `:root{--cur-arrow:${url(arrow)} ${hs(4, 4)}, default;--cur-hand:${url(hand)} ${hs(12, 2)}, pointer;--cur-text:${url(text)} ${hs(16, 16)}, text;` +
+    `--cur-grab:${url(grab)} ${hs(16, 16)}, grab;--cur-grabbing:${url(grabbing)} ${hs(16, 16)}, grabbing}
 html{cursor:var(--cur-arrow)}
 input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=button]):not([type=submit]),
 textarea,[contenteditable="true"],[contenteditable=""]{cursor:var(--cur-text)}
@@ -7760,6 +7803,11 @@ a[href],button:not(:disabled),select,summary,label[for],[role="button"]{cursor:v
 // Redrawn when the colour theme or light/dark changes.
 cursorStyle = document.createElement("style"); document.head.appendChild(cursorStyle);
 applyCursors();
+// Where the page shrinks its pointers, their size follows the screen's scale: drawn
+// again when the window moves to a screen with another one.
+if (window.__VITO_SHRINK_CURSORS__) (function watchScale(){
+  matchMedia(`(resolution: ${window.devicePixelRatio || 1}dppx)`).addEventListener("change", () => { applyCursors(); watchScale(); }, { once: true });
+})();
 // Command mode: while a spoken command ("Vito, vertaal naar Duits") is armed,
 // show it prominently in the live transcript, so it's clear the next
 // dictation gets transformed.
@@ -11517,8 +11565,9 @@ async function fillSettings() {
   setRetentionDisplay(String(cfg.history.retention_days ?? 0));
   syncStoreAudioUI();
   $("s-tray").checked = cfg.tray ? cfg.tray.enabled !== false : true;
-  // Vito's own window (WebView2) is Windows-only; unset is on.
-  $("s-window-opt").hidden = STANDALONE || !/Windows/.test(navigator.userAgent);
+  // Vito's own window: WebView2 on Windows, WebKitGTK on Linux where it is
+  // installed (ownWindowLinux); unset is on.
+  applyOwnWindowOpt();
   $("s-window").checked = !(cfg.ui && cfg.ui.window === false);
   $("s-pill").checked = !cfg.ui || cfg.ui.pill !== false; // default on
   $("s-pill-idle").checked = !(cfg.ui && cfg.ui.pill_idle === false); // unset is on
@@ -14427,6 +14476,21 @@ function longEvent(e){
 let deferredPrompt = null;
 // Vito's own window counts as the app too: no "install as app" in there.
 const isStandalone = () => !!window.__VITO_WINDOW__ || matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+// Linux has Vito's own window only where WebKitGTK is installed: the daemon
+// says so (/api/linux-tools "window").
+var ownWindowLinux = false; // var: renderPwaTip may run before this line
+function applyOwnWindowOpt(){
+  const opt = $("s-window-opt");
+  opt.hidden = STANDALONE || !(/Windows/.test(navigator.userAgent) || ownWindowLinux);
+  opt.dataset.help = ownWindowLinux ? "ownwindowlinux" : "ownwindow";
+}
+if (!STANDALONE && /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent)) {
+  api("/api/linux-tools").then(i => {
+    ownWindowLinux = !!(i && i.window);
+    applyOwnWindowOpt();
+    renderPwaTip();
+  }).catch(() => {});
+}
 function renderPwaTip(){
   const el = $("pwa-tip");
   // On a phone or tablet the honest tip is a different one: Vito is made for
@@ -14449,7 +14513,7 @@ function renderPwaTip(){
   // On Windows Vito has its own window (Settings > System); installing this
   // page as an app is no longer the way to give it one.
   let ownWindow = true; try { ownWindow = !(cfg && cfg.ui && cfg.ui.window === false); } catch {} // cfg may not exist yet
-  if (!STANDALONE && /Windows/.test(navigator.userAgent) && ownWindow) { el.innerHTML = ""; return; }
+  if (!STANDALONE && (/Windows/.test(navigator.userAgent) || ownWindowLinux) && ownWindow) { el.innerHTML = ""; return; }
   if (deferredPrompt) {
     el.innerHTML = `<div class="banner tip pwa-explain">
       <div class="pwa-head">
@@ -14527,6 +14591,7 @@ const HELP = {
   appendspace:{nl:"Voegt een spatie toe achter de geplakte tekst, zodat opeenvolgende dictaten netjes van elkaar gescheiden blijven.",en:"Appends a space after the pasted text so back-to-back dictations stay neatly separated."},
   notifications:{nl:"Bureaubladmeldingen bij dictaat. 'Alles' toont elke status (kort, niet bewaard in je meldingsgeschiedenis), 'Alleen fouten' toont enkel problemen, 'Uit' toont niets.",en:"Desktop notifications for dictation. 'Show all' shows every status (briefly, not kept in your notification history), 'Errors only' shows just problems, 'Off' shows nothing."},
   autostart:{nl:"Start Vito automatisch zodra je inlogt, zodat je sneltoets altijd klaarstaat.",en:"Launch Vito automatically at login so your hotkey is always ready."},
+  ownwindowlinux:{nl:"Opent Vito in een eigen venster (WebKitGTK), zonder browser. Uit: in de geïnstalleerde browser-app of een browsertabblad.",en:"Opens Vito in a window of its own (WebKitGTK), without a browser. Off: in the installed browser app or a browser tab."},
   ownwindow:{nl:"Opent Vito in een eigen venster (Microsoft Edge WebView2), zonder browser. Uit: in de geïnstalleerde browser-app of een browsertabblad.",en:"Opens Vito in a window of its own (Microsoft Edge WebView2), without a browser. Off: in the installed browser app or a browser tab."},
   tray:{nl:"Toon het Vito-icoon in het systeemvak voor snelle toegang. Werkt na een herstart van Vito.",en:"Show the Vito icon in the system tray for quick access. Takes effect after restarting Vito."},
   pill:{nl:"Toont onderaan het scherm een kleine balk die meebeweegt met je stem, zolang je dicteert. Hij pakt nooit de focus. Wijs hem aan voor twee knoppen: ✕ breekt af, een klik op de rest stopt en plakt. Werkt op desktops met layer-shell, zoals niri; op GNOME nog niet.",en:"Shows a small bar at the bottom of the screen that moves with your voice while you dictate. It never takes the focus. Point at it for two buttons: ✕ cancels, a click anywhere else stops and pastes. Works on desktops with layer-shell, such as niri; not on GNOME yet."},

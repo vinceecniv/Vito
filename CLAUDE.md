@@ -234,8 +234,8 @@ Benchmark only on an idle machine — a background encode inflated numbers 2×.
 ## Vito's own window
 
 `vito window` shows the page in its own window: WebView2 through go-webview2 on
-Windows (`cmd/vito/window_windows.go`, no cgo), webview_go/WebKitGTK on Linux
-behind `-tags webview` (trial). `vito open` is what the tray, the island's logo,
+Windows (`cmd/vito/window_windows.go`, no cgo), GTK 4 + WebKitGTK 6.0 on Linux
+(`cmd/vito/window_linux.go`, `internal/gtkwin`). `vito open` is what the tray, the island's logo,
 the installer's "Vito" shortcut and a pinned taskbar button run: the window
 unless `ui.window` is false (nil = on) or WebView2 is missing, else the web app
 or a browser tab (`webapp.Native`/`ErrNoNative`). One window per user (mutex
@@ -255,6 +255,49 @@ because the WebView takes every mouse event in its area. No snap layouts on
 hovering maximise (that needs the window's own hit test). The installed web app
 does the same through Window Controls Overlay (`html.wco`, `display_override`
 in the manifest). Sticky bars stop under the strip via `--sticky-top`/`--frame-h`.
+
+On Linux `internal/gtkwin` **dlopens** GTK 4, JavaScriptCore and WebKitGTK 6.0
+and looks every function up by name (`gtkwin.c`, no headers, the enums written
+out and checked against the libraries' GTypes), so the binary still links
+against libc alone — keep it that way; linking WebKitGTK would break the
+AppImage's compatibility contract. Where the libraries are missing (an older
+distribution, the Flatpak's freedesktop runtime) `vito window --probe` fails,
+`windowSupported` is false and everything opens the web app or a tab, as on
+Windows without WebView2. The daemon asks the probe in a child, once, and never
+loads GTK itself; `/api/linux-tools` reports it as `window`, which shows the
+`ui.window` toggle. GTK and JSC install signal handlers without `SA_ONSTACK`,
+which Go needs: `vw_fix_signals` adds it (as Wails does) — after GTK starts,
+after the WebView exists and at the first message.
+One window per user and port: a Unix socket `$XDG_RUNTIME_DIR/vito-window-<port>.sock`
+takes `nav` (URL plus the launch's XDG activation token) and `close`; a flock
+beside it keeps two starting windows from both opening. Without a token
+Wayland keeps the focus where it is, so niri and Hyprland are asked over IPC
+(`focusOwnWindow`, by pid). The window never has GTK's title bar (an empty
+titlebar widget; GTK keeps the frame and resize borders): on a tiling desktop
+(`tilingDesktop`: niri, Hyprland, sway, …) none at all, as other windows there;
+elsewhere the page draws it (`html.frame-gtk`), with the buttons, order and side
+of GTK's `gtk-decoration-layout` (GNOME's default `appmenu:close` shows only
+close). `VITO_WINDOW_FRAME=own|bare` overrides for trying. Dragging, resizing
+and the window menu start from the last button press, kept by a capture-phase
+event controller. Wayland gives no say in placement, so only the size and
+maximised state are kept (`window-gtk.json`). Downloads go to the Downloads
+folder, with a notification. On niri with `prefer-no-csd` every window is
+"tiled", so GTK draws no corners or shadow there (niri's own
+`geometry-corner-radius` applies). Page pointers (Vito's cursor) come from
+WebKit drawn at the widget's integer scale (2 on a 1.5× screen) and GTK shows a
+texture cursor at its size in logical pixels — twice too large; `on_cursor`
+swaps each for a callback cursor (GTK 4.16) that names the logical size, which
+keeps it sharp too. Before 4.16 the page draws them 32/scale instead
+(`__VITO_SHRINK_CURSORS__`, right size but soft). The launcher's icon follows `ui.accent`/`ui.radius`
+(`cmd/vito/launchericon_linux.go`): the daemon draws it with `tray.BrandPNG`,
+names it after its picture's hash and writes that file's **full path** into
+`vito.desktop`'s `Icon=` (a new theme name left GNOME Shell showing a generic
+icon until it rescanned). Measured in the VMs: KDE's taskbar follows at once;
+GNOME's dock keeps a running app's icon and shows the new one from the window's
+next start. On GNOME (`appmenu:close`) the strip shows only close; on KDE
+minimise, maximise and close. Without WebKitGTK (the KDE VM before
+`dnf install webkitgtk6.0`) `vito open` falls back to the browser. The PostToolUse hook restarts only the
+`serve` process; the window closes with it and the new daemon reopens it.
 
 ## Vito updates itself
 

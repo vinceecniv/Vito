@@ -1,4 +1,4 @@
-//go:build !windows && !(linux && webview)
+//go:build !windows && !linux
 
 package main
 
@@ -10,7 +10,7 @@ import (
 	"vito/internal/selfexe"
 )
 
-// openWindow needs WebView2 (Windows) or a build with -tags webview (Linux);
+// openWindow needs WebView2 (Windows) or WebKitGTK (Linux);
 // elsewhere the page opens in the installed web app or the browser.
 func openWindow([]string) error {
 	return fmt.Errorf("vito window is not available in this build")
