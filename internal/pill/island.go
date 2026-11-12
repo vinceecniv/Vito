@@ -991,11 +991,11 @@ func (ip *islandPainter) mic(buf []byte, w, h int, th theme, st islandState) {
 		eachPixel(w, h, cx, cy, r*s+1, r*s+1, func(x, y int, px, py float64) {
 			d := roundBox(px-cx, py-cy, r*s, r*s, rr)
 			t := clamp((px - (cx - r*s)) / (2 * r * s))
-			c := blend(blend(th.from, th.to, t), rgb{1, 1, 1}, lit)
+			c := blend(blend(th.from, th.fill, t), rgb{1, 1, 1}, lit)
 			put(buf, w, x, y, c, e*clamp(0.5-d))
 		})
 	}
-	micCol := blend(blend(th.from, th.to, 0.5), th.onAcc, e)
+	micCol := blend(blend(th.from, th.fill, 0.5), th.onAcc, e)
 	microphone(buf, w, h, cx, cy, s*mix(1, 1.35, e), micCol, 1-gone)
 }
 
@@ -1213,7 +1213,7 @@ func switchIcon(buf []byte, w, h int, cx, cy, s float64, on bool, th theme, dark
 	tc, kc := corner(tr, s), corner(tr-2*s, s)
 	if on {
 		eachPixel(w, h, cx, cy, tw+1, tr+1, func(x, y int, px, py float64) {
-			c := blend(th.from, th.to, clamp((px-(cx-tw))/(2*tw)))
+			c := blend(th.from, th.fill, clamp((px-(cx-tw))/(2*tw)))
 			put(buf, w, x, y, c, a*clamp(0.5-roundBox(px-cx, py-cy, tw, tr, tc)))
 		})
 	} else {

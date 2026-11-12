@@ -271,9 +271,13 @@ type rgb struct{ r, g, b float64 }
 type theme struct {
 	body, edge rgb
 	from, to   rgb
-	onAcc      rgb     // a mark on a fill in from or to: white, black on white
-	warn       rgb     // never the coral: that is the brand here, not a warning
-	shadow     float64 // strength under the open pill
+	// fill is the cool end of a filled gradient (a button, a switch): to is
+	// the light tint on dark, right for marks and text but too pale for a
+	// fill, which the page draws from --coral to --violet on either side.
+	fill   rgb
+	onAcc  rgb     // a mark on a fill in from or to: white, black on white
+	warn   rgb     // never the coral: that is the brand here, not a warning
+	shadow float64 // strength under the open pill
 
 	// The resting pill is see-through, so in the theme's own colour it would
 	// vanish against the windows of that theme. It takes the opposite tone
@@ -306,8 +310,10 @@ func themeFor(dark bool) theme {
 	if dark {
 		th := darkTheme
 		th.edge, th.from, th.to, th.onAcc = c.violetL, c.coral, c.violetL, rgb{1, 1, 1}
+		th.fill = c.violetDark
 		if c.mono {
 			th.edge, th.from, th.to, th.onAcc = rgb{1, 1, 1}, rgb{1, 1, 1}, rgb{1, 1, 1}, rgb{}
+			th.fill = th.to
 		}
 		return th
 	}
@@ -316,6 +322,7 @@ func themeFor(dark bool) theme {
 	if c.mono {
 		th.edge, th.from, th.to = rgb{}, rgb{}, rgb{}
 	}
+	th.fill = th.to
 	return th
 }
 
@@ -585,7 +592,7 @@ func drawButtons(buf []byte, w, h int, f Frame) {
 		}
 		fill, mark := th.body, ink
 		if f.Over == b {
-			fill, mark = th.to, th.onAcc
+			fill, mark = th.fill, th.onAcc
 			if b == ButtonCancel {
 				fill = th.from
 			}
