@@ -7018,7 +7018,8 @@ function handleEvent(e) {
       // Leaving a recording that produced nothing (cancelled, or only ever the
       // placeholder): put the idle hint back, so a stray "Luisteren…" can't
       // sit there until the next dictation.
-      else if (e.state === "idle" && !curRaw && !curCleaned) showTranscriptHint(t(IDLE_HINT));
+      // The last dictation then takes its place, as on the island.
+      else if (e.state === "idle" && !curRaw && !curCleaned) { showTranscriptHint(t(IDLE_HINT)); showLastDictation(); }
     } else if (e.type === "partial") {
       // An empty partial means "nothing new yet", not "forget what you heard" —
       // overwriting the sentence with a placeholder is how three dots ended up
@@ -7032,25 +7033,7 @@ function handleEvent(e) {
       // The result is not typed out: the raw text was already typed live as
       // partials, and the cleaned version is a finished answer — it just fades
       // in as a whole.
-      const tr = $("transcript"); tr.textContent = "";
-      // Only show raw + cleaned side by side when the cleanup actually changed
-      // something; otherwise just the end result (avoids a pointless duplicate).
-      const changed = e.cleaned && e.cleaned !== (e.raw || "");
-      // The finished text gets clickable words, the same as in the history:
-      // a misheard name is easiest to correct the moment you notice it.
-      if (changed) {
-        const raw = document.createElement("div"); raw.className = "fadein"; raw.textContent = e.raw || ""; tr.appendChild(raw);
-        const c = document.createElement("div"); c.className = "cleaned fadein"; c.innerHTML = SPARK_SVG;
-        const w = document.createElement("span"); renderWords(w, " " + e.cleaned); c.appendChild(w); tr.appendChild(c);
-      } else {
-        const only = document.createElement("div"); only.className = (e.cleaned ? "cleaned " : "") + "fadein";
-        if (e.cleaned) only.innerHTML = SPARK_SVG;
-        const w = document.createElement("span");
-        renderWords(w, (e.cleaned ? " " : "") + (e.cleaned || e.raw || ""));
-        only.appendChild(w); tr.appendChild(only);
-      }
-      curRaw = e.raw || ""; curCleaned = e.cleaned || "";
-      lastFinalText = e.cleaned || e.raw || "";
+      renderFinal(e.raw, e.cleaned);
       if (e.cleanup_failed) {
         const msg = e.cleanup_credit
           ? t("{p} account is out of credit — cleanup skipped, raw text pasted.").replace("{p}", e.cleanup_credit)
@@ -7144,6 +7127,7 @@ function handleEvent(e) {
     }
 }
 connectWS();
+showLastDictation(); // before any dictation: the last one, as on the island
 
 $("btn-toggle").onclick = () => { webGesture(window); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); };
 $("btn-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
@@ -7162,6 +7146,40 @@ function showTranscriptHint(text){
   // Mark it as already-typed so a following empty partial doesn't make typeInto
   // append the same hint again (which showed a duplicate "Luisteren…").
   tr.firstChild.dataset.typed = text;
+}
+
+// renderFinal shows a finished dictation in the transcript card.
+function renderFinal(raw, cleaned){
+  raw = raw || ""; cleaned = cleaned || "";
+  const tr = $("transcript"); tr.textContent = "";
+  // Only show raw + cleaned side by side when the cleanup actually changed
+  // something; otherwise just the end result (avoids a pointless duplicate).
+  const changed = cleaned && cleaned !== raw;
+  // The finished text gets clickable words, the same as in the history:
+  // a misheard name is easiest to correct the moment you notice it.
+  if (changed) {
+    const r = document.createElement("div"); r.className = "fadein"; r.textContent = raw; tr.appendChild(r);
+    const c = document.createElement("div"); c.className = "cleaned fadein"; c.innerHTML = SPARK_SVG;
+    const w = document.createElement("span"); renderWords(w, " " + cleaned); c.appendChild(w); tr.appendChild(c);
+  } else {
+    const only = document.createElement("div"); only.className = (cleaned ? "cleaned " : "") + "fadein";
+    if (cleaned) only.innerHTML = SPARK_SVG;
+    const w = document.createElement("span");
+    renderWords(w, (cleaned ? " " : "") + (cleaned || raw));
+    only.appendChild(w); tr.appendChild(only);
+  }
+  curRaw = raw; curCleaned = cleaned;
+  lastFinalText = cleaned || raw;
+}
+// showLastDictation fills an empty transcript card with the last dictation
+// from the history, so the card says the same as the island between
+// dictations (after a reload, or a cancelled recording). With nothing kept
+// (history off, privacy mode) the hint stays.
+async function showLastDictation(){
+  let x;
+  try { x = (((await api("/api/history?limit=1")) || {}).items || [])[0]; } catch { return; }
+  if (!x || uiState !== "idle" || curRaw || curCleaned) return;
+  renderFinal(x.raw, x.cleanup_used ? x.cleaned : "");
 }
 
 /* ---- typewriter rendering for the live transcript ---- */
