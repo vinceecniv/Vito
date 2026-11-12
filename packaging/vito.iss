@@ -173,7 +173,7 @@ Source: "vito.ico";          DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#AppTrayName}";                Filename: "{app}\{#AppExe}"; Parameters: "serve"; IconFilename: "{app}\vito.ico"; Comment: "{cm:AppTagline}"
-Name: "{group}\{cm:OpenUI}";                   Filename: "http://127.0.0.1:4573/"; IconFilename: "{app}\vito.ico"
+Name: "{group}\{cm:OpenUI}";                   Filename: "{app}\{#AppExe}"; Parameters: "open"; IconFilename: "{app}\vito.ico"
 Name: "{autodesktop}\{#AppTrayName}";          Filename: "{app}\{#AppExe}"; Parameters: "serve"; IconFilename: "{app}\vito.ico"; Tasks: desktopicon
 
 [Run]
@@ -185,7 +185,7 @@ Name: "{autodesktop}\{#AppTrayName}";          Filename: "{app}\{#AppExe}"; Para
 Filename: "{app}\{#AppExe}"; Parameters: "autostart on"; Flags: runhidden; Tasks: autostart
 ; No skipifsilent here: an unattended update must bring Vito back up by itself.
 Filename: "{app}\{#AppExe}"; Parameters: "serve"; Description: "{cm:RunVito}"; Flags: nowait postinstall
-Filename: "http://127.0.0.1:4573/"; Description: "{cm:OpenUI}"; Flags: shellexec nowait postinstall skipifsilent
+Filename: "{app}\{#AppExe}"; Parameters: "open"; Description: "{cm:OpenUI}"; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
 ; Stop the daemon before its files disappear underneath it.
@@ -225,7 +225,11 @@ begin
     WaitedMs := WaitedMs + 250;
   end;
   if VitoRunning() then
-    Result := CustomMessage('QuitFailed');
+    Result := CustomMessage('QuitFailed')
+  else
+    // Vito's own window (vito window) closes itself within a second of the
+    // daemon going away; it holds vito.exe open until then.
+    Sleep(1500);
 end;
 
 // On uninstall, ask before removing anything of the user's own. Silent

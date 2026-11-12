@@ -15,6 +15,9 @@ var Native func(url string) error
 // ErrNoNative says Native is not in use.
 var ErrNoNative = errors.New("no native window")
 
+// HasInstalled says whether the user installed Vito's page as a web app.
+func HasInstalled(url string) bool { return installed(url) != nil }
+
 // Open opens url (Vito's own page, http://127.0.0.1:<port>) in the web app
 // the user installed from it, and in an ordinary browser tab when there is
 // none — where the browser and Vito itself can offer to install it.

@@ -2848,6 +2848,7 @@
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg><span>System</span></h2>
           <label class="tgl" data-help="autostart"><input type="checkbox" id="s-autostart"><span class="tr"></span> Start with the system</label>
           <label class="tgl" data-help="tray"><input type="checkbox" id="s-tray"><span class="tr"></span> Show system-tray icon</label>
+          <label class="tgl" data-help="ownwindow" id="s-window-opt" hidden><input type="checkbox" id="s-window"><span class="tr"></span> Open Vito in its own window</label>
           <label class="fld" data-help="notifications" style="margin-top:16px;">Notifications</label>
           <input type="hidden" id="s-notify">
           <div class="flagsel" id="notify-sel">
@@ -4755,6 +4756,7 @@ const TR = { nl: {
   "You can close this window. Start Vito again whenever you need it.":"Je kunt dit venster sluiten. Start Vito opnieuw wanneer je het weer nodig hebt.",
   "Vito's background process is unreachable. Dictation and settings don't work without it.":"Vito's achtergrondproces is niet bereikbaar. Zonder dit proces werken dicteren en de instellingen niet.",
   "Show system-tray icon":"Systeemvak-icoon tonen",
+  "Open Vito in its own window":"Vito openen in een eigen venster",
   "Speech glow in the live transcript":"Spraakgloed in het live transcript",
   "Show a pill on screen while dictating":"Pil op het scherm tonen tijdens dicteren",
   "Pill style":"Stijl van de pil",
@@ -11217,6 +11219,10 @@ async function fillSettings() {
   setRetentionDisplay(String(cfg.history.retention_days ?? 0));
   syncStoreAudioUI();
   $("s-tray").checked = cfg.tray ? cfg.tray.enabled !== false : true;
+  // Vito's own window (WebView2) is Windows-only. Unset means the window,
+  // unless the web app is installed — then this page is that app.
+  $("s-window-opt").hidden = STANDALONE || !/Windows/.test(navigator.userAgent);
+  $("s-window").checked = cfg.ui && typeof cfg.ui.window === "boolean" ? cfg.ui.window : !!window.__VITO_WINDOW__ || !matchMedia("(display-mode: standalone)").matches;
   $("s-pill").checked = !cfg.ui || cfg.ui.pill !== false; // default on
   $("s-pill-idle").checked = !(cfg.ui && cfg.ui.pill_idle === false); // unset is on
   $("s-pill-live").checked = !(cfg.ui && cfg.ui.pill_live === false); // unset is on
@@ -12196,6 +12202,8 @@ $("demo-off").onclick = () => {
 buildPeriodDropdown(); // choosing a period saves it and reloads the stats
 // Disabling the tray icon warns first (it's the easy way back to settings).
 $("s-pill").onchange = $("s-pill-idle").onchange = $("s-pill-live").onchange = () => autoSaveSettings();
+// Written only once chosen here, so an unset choice keeps following the default.
+$("s-window").onchange = () => { cfg.ui = Object.assign(cfg.ui || {}, { window: $("s-window").checked }); autoSaveSettings(); };
 $("s-tray").onchange = () => {
   if ($("s-tray").checked) { autoSaveSettings(); return; }
   modal(t("Turn off the system-tray icon?"),
@@ -14118,7 +14126,8 @@ function longEvent(e){
 
 /* ---- PWA ---- */
 let deferredPrompt = null;
-const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+// Vito's own window counts as the app too: no "install as app" in there.
+const isStandalone = () => !!window.__VITO_WINDOW__ || matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 function renderPwaTip(){
   const el = $("pwa-tip");
   // On a phone or tablet the honest tip is a different one: Vito is made for
@@ -14215,6 +14224,7 @@ const HELP = {
   appendspace:{nl:"Voegt een spatie toe achter de geplakte tekst, zodat opeenvolgende dictaten netjes van elkaar gescheiden blijven.",en:"Appends a space after the pasted text so back-to-back dictations stay neatly separated."},
   notifications:{nl:"Bureaubladmeldingen bij dictaat. 'Alles' toont elke status (kort, niet bewaard in je meldingsgeschiedenis), 'Alleen fouten' toont enkel problemen, 'Uit' toont niets.",en:"Desktop notifications for dictation. 'Show all' shows every status (briefly, not kept in your notification history), 'Errors only' shows just problems, 'Off' shows nothing."},
   autostart:{nl:"Start Vito automatisch zodra je inlogt, zodat je sneltoets altijd klaarstaat.",en:"Launch Vito automatically at login so your hotkey is always ready."},
+  ownwindow:{nl:"Opent Vito in een eigen venster (Microsoft Edge WebView2), zonder browser. Uit: in de geïnstalleerde browser-app of een browsertabblad.",en:"Opens Vito in a window of its own (Microsoft Edge WebView2), without a browser. Off: in the installed browser app or a browser tab."},
   tray:{nl:"Toon het Vito-icoon in het systeemvak voor snelle toegang. Werkt na een herstart van Vito.",en:"Show the Vito icon in the system tray for quick access. Takes effect after restarting Vito."},
   pill:{nl:"Toont onderaan het scherm een kleine balk die meebeweegt met je stem, zolang je dicteert. Hij pakt nooit de focus. Wijs hem aan voor twee knoppen: ✕ breekt af, een klik op de rest stopt en plakt. Werkt op desktops met layer-shell, zoals niri; op GNOME nog niet.",en:"Shows a small bar at the bottom of the screen that moves with your voice while you dictate. It never takes the focus. Point at it for two buttons: ✕ cancels, a click anywhere else stops and pastes. Works on desktops with layer-shell, such as niri; not on GNOME yet."},
   pillstyle:{nl:"Hoe de pil je stem laat zien: een golvende gloed vanaf de onderkant (standaard), balkjes, of het Vito-figuurtje dat meepraat. Het figuurtje laat zijn haar meebewegen en zijn mond opengaan met je stem.",en:"How the pill shows your voice: a rolling glow rising from its floor (the default), bars, or the Vito character talking along. The character's hair moves and its mouth opens with your voice."},

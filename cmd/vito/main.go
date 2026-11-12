@@ -56,6 +56,8 @@ func main() {
 		err = installPWA()
 	case "window":
 		err = openWindow(os.Args[2:])
+	case "open":
+		err = openPage(os.Args[2:])
 	case "autostart":
 		// vito autostart on|off — write the login-startup entry through the same
 		// code the settings toggle uses, so the installer and the app can never
@@ -98,7 +100,8 @@ Usage:
   vito cancel    discard the current recording (bind to second hotkey)
   vito quit      shut the daemon down
   vito pwa       install the web interface as an app (Windows)
-  vito window    open the interface in a window of its own (Windows, trial)
+  vito open      open the interface: Vito's own window, the web app or a tab
+  vito window    open the interface in Vito's own window (Windows)
   vito status    show daemon state
   vito version
 
@@ -187,14 +190,9 @@ func serve() error {
 	defer hist.Close()
 
 	d := daemon.New(cfg, log, audioCtx, hist)
-	// ui.window (a trial, no switch on the page yet): the tray, the island and
-	// the pill's cards open Vito's own window instead of the PWA.
-	webapp.Native = func(u string) error {
-		if !d.Config().UI.Window {
-			return webapp.ErrNoNative
-		}
-		return launchWindow(u)
-	}
+	// The tray, the island and the pill's cards open Vito's own window where
+	// there is one (ui.window), the installed web app or a tab otherwise.
+	webapp.Native = func(u string) error { return openNative(d.Config().UI.Window, u) }
 	hk := hotkey.New(d, log)
 	server.Version = version
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)

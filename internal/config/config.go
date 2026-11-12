@@ -241,9 +241,11 @@ type UI struct {
 	// IslandPin keeps the island open as a window of its own, where it was
 	// dragged; the pill then shows in it instead of on the screens.
 	IslandPin *IslandPin `json:"island_pin,omitempty"`
-	// Window opens Vito's page in its own window (`vito window`, WebView2)
-	// instead of the installed web app. Windows only; a trial for now.
-	Window bool `json:"window,omitempty"`
+	// Window opens Vito's page in its own window (`vito window`, WebView2 on
+	// Windows) instead of the installed web app or a browser tab. Nil-safe:
+	// unset means the window, unless the web app is installed — someone who
+	// installed it keeps it until they choose otherwise.
+	Window *bool `json:"window,omitempty"`
 	// IslandStats shows today's figures in the island. Nil-safe: unset is on.
 	IslandStats *bool `json:"island_stats,omitempty"`
 	// WelcomeDone records that the onboarding welcome card was dismissed. It lives

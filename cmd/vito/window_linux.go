@@ -32,13 +32,7 @@ func openWindow(args []string) error {
 		}
 	}
 	if !daemonRunning(port) {
-		exe, err := selfexe.Path()
-		if err != nil {
-			return err
-		}
-		cmd := exec.Command(exe, "serve")
-		cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
-		if err := cmd.Start(); err != nil {
+		if err := startDaemon(); err != nil {
 			return err
 		}
 		for i := 0; i < 150 && !daemonRunning(port); i++ {
@@ -72,6 +66,20 @@ func launchWindow(u string) error {
 		return err
 	}
 	cmd := exec.Command(exe, "window", u)
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
+	return cmd.Start()
+}
+
+func windowSupported() bool { return true }
+
+// startDaemon starts `vito serve` from this same binary, in a session of its
+// own so it outlives the window.
+func startDaemon() error {
+	exe, err := selfexe.Path()
+	if err != nil {
+		return err
+	}
+	cmd := exec.Command(exe, "serve")
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	return cmd.Start()
 }

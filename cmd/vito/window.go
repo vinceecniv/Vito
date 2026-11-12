@@ -3,12 +3,67 @@ package main
 import (
 	"fmt"
 	"net/url"
+	"time"
+
+	"vito/internal/config"
+	"vito/internal/webapp"
 )
+
+// openNative decides how the daemon opens its page: Vito's own window when
+// ui.window is on, or unset and no web app is installed; ErrNoNative otherwise
+// (and where there is no window to be had), so webapp.Open carries on with the
+// web app or a browser tab. Existing users who installed the web app keep it.
+func openNative(pref *bool, u string) error {
+	if !windowSupported() || (pref != nil && !*pref) {
+		return webapp.ErrNoNative
+	}
+	if pref == nil && webapp.HasInstalled(u) {
+		return webapp.ErrNoNative
+	}
+	return launchWindow(u)
+}
+
+// openPage is `vito open [url]`: what the Start menu shortcut and the
+// installer use. It starts the daemon when needed and opens the page the way
+// the daemon would.
+func openPage(args []string) error {
+	cfg, err := config.Load()
+	if err != nil {
+		return err
+	}
+	port := cfg.Server.Port
+	target := fmt.Sprintf("http://127.0.0.1:%d/", port)
+	if len(args) > 0 {
+		if target, err = ownPage(args[0], port); err != nil {
+			return err
+		}
+	}
+	// Right after an install the daemon is still starting: give it a moment
+	// before starting one ourselves.
+	for i := 0; i < 30 && !daemonRunning(port); i++ {
+		time.Sleep(100 * time.Millisecond)
+	}
+	if !daemonRunning(port) {
+		if err := startDaemon(); err != nil {
+			return err
+		}
+		for i := 0; i < 150 && !daemonRunning(port); i++ {
+			time.Sleep(100 * time.Millisecond)
+		}
+	}
+	if err := openNative(cfg.UI.Window, target); err == nil {
+		return nil
+	}
+	return webapp.Open(target)
+}
 
 // externalLinksJS sends every link to another site, and window.open of one,
 // to vitoOpenExternal; it also drops the browser's context menu and tells the
 // window when Vito's theme changes (vitoTheme, where the window binds it).
 const externalLinksJS = `(function(){
+  // The page asks this to tell its own window from a browser tab (no "install
+  // as app" there).
+  window.__VITO_WINDOW__ = true;
   const ext = (u) => { try { const x = new URL(u, location.href);
     return (x.protocol === "http:" || x.protocol === "https:" || x.protocol === "mailto:") && x.origin !== location.origin; } catch (e) { return false; } };
   document.addEventListener("click", (e) => {
