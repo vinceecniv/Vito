@@ -704,7 +704,7 @@
   /* ---- content ---- */
   /* On a wide screen the column sits in the middle of the space beside the
      sidebar rather than against it. */
-  .content { flex:1; padding:calc(32px * var(--dn, 1)) calc(36px * var(--dn, 1)); max-width:1000px; margin-inline:auto; }
+  .content { flex:1; padding:calc(32px * var(--dn, 1)) calc(36px * var(--dn, 1)); max-width:1480px; margin-inline:auto; } /* one width for every page */
   .page-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:calc(20px * var(--dn, 1)); gap:16px; position:relative; z-index:5; }
   /* Explicit line heights: title 32 + gap 2 + subtitle 18 = 52, exactly the
      icon tile beside it. Left to the font's own metrics the block ends up a few
@@ -2560,7 +2560,6 @@
   @media (prefers-reduced-motion:reduce) { .lr-tool.lr-hit, .lr-new-mark { animation:none; } }
   .lr-tool svg { width:18px; height:18px; }
   .lr-tool kbd { font:inherit; font-size:11px; color:var(--text3); }
-  .content:has(#tab-long.active) { max-width:1480px; }
   .lr-stopbtn { position:relative; overflow:hidden; background:var(--text); color:var(--card); }
   .lr-stopbtn.lr-arm { background:var(--danger); color:#fff; }
   .lr-stopbtn.lr-arm .lr-sq { background:#fff; }
