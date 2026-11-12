@@ -577,6 +577,17 @@
   html.win-inactive .win-btn:not(:hover) svg { opacity:.45; }
   .win-btn .i-rest, html.win-max .win-btn .i-max { display:none; }
   html.win-max .win-btn .i-rest { display:block; }
+  /* The page's name, small in the strip once its own heading has scrolled
+     under it (winFrame); on the same blurred backing as the buttons. */
+  .win-title { position:fixed; top:0; left:0; height:var(--frame-h); display:flex; align-items:center; padding:0 14px;
+    z-index:9400; pointer-events:none; max-width:40vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    font-family:var(--font-head); font-size:13px; font-weight:600; color:var(--text2);
+    border-radius:0 0 10px 10px; background:color-mix(in srgb, var(--bg) 78%, transparent);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    opacity:0; transform:translateY(-6px); transition:opacity .2s, transform .2s; }
+  html.win-titled .win-title { opacity:1; transform:none; }
+  :root[data-radius="minimal"] .win-title { border-radius:0 0 3px 3px !important; }
+  @media (max-width:600px){ .win-title { display:none; } }
   .win-edge { position:fixed; top:0; left:0; right:0; height:5px; z-index:9600; cursor:ns-resize; }
   .win-edge.l, .win-edge.r { width:12px; cursor:nwse-resize; }
   .win-edge.l { right:auto; } .win-edge.r { left:auto; cursor:nesw-resize; }
@@ -2257,6 +2268,12 @@
 
   /* search box */
   .searchbox { position:relative; flex:1; }
+  /* History's search and filters stay in reach while the list scrolls: they
+     stick under the title strip (--sticky-top), on the card's own colour,
+     reaching to its edges. */
+  .h-bar { position:sticky; top:var(--sticky-top, 0px); z-index:6; background:var(--card);
+    margin:calc(-22px * var(--dn, 1)) calc(-22px * var(--dn, 1)) calc(18px * var(--dn, 1));
+    padding:calc(22px * var(--dn, 1)) calc(22px * var(--dn, 1)) calc(12px * var(--dn, 1)); border-radius:16px 16px 0 0; }
   .searchbox input { padding-left:36px; padding-right:34px; }
   .searchbox .s-ic { position:absolute; left:11px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--text3); pointer-events:none; }
   .searchbox .s-x { position:absolute; right:7px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text3); cursor:var(--cur-hand); font-size:17px; line-height:1; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
@@ -2658,6 +2675,7 @@
 <div id="backdrop" class="bd" aria-hidden="true"></div>
 <div class="winbar" id="winbar">
   <div class="win-zone" id="win-zone"></div>
+  <div class="win-title" id="win-title" aria-hidden="true"></div>
     <div class="win-edge" data-edge="top"></div><div class="win-edge l" data-edge="topleft"></div><div class="win-edge r" data-edge="topright"></div>
   <div class="win-btns">
     <button type="button" class="win-btn" id="win-min" title="Minimize" aria-label="Minimize"><svg viewBox="0 0 10 10"><path d="M0 5h10"/></svg></button>
@@ -3435,7 +3453,7 @@
     <section id="tab-history">
       <div class="page-head"><div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span><h1>History</h1></div><div class="sub">Previous dictations<span class="hcount" id="h-count"></span></div></div></div>
       <div class="card">
-        <div class="rowflex" style="margin-bottom:18px;">
+        <div class="rowflex h-bar" id="h-bar">
           <div class="searchbox">
             <svg class="s-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
             <input type="text" id="h-search" placeholder="Search…">
@@ -6583,6 +6601,25 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
     wco.addEventListener("geometrychange", upd);
     upd();
   }
+  // The open page's name in the strip once its heading has scrolled under it,
+  // lined up with where the heading starts.
+  const titleEl = $("win-title"), zoneEl = $("win-zone");
+  let titleQueued = false;
+  const updTitle = () => {
+    titleQueued = false;
+    if (!root.classList.contains("own-frame") && !root.classList.contains("wco")) return;
+    const sec = document.querySelector("main section.active"), h = sec && sec.querySelector(".page-head h1");
+    const show = !!h && h.getBoundingClientRect().bottom < zoneEl.getBoundingClientRect().bottom;
+    if (show) {
+      titleEl.textContent = h.textContent;
+      titleEl.style.left = Math.max(0, sec.querySelector(".page-head").getBoundingClientRect().left - 14) + "px";
+    }
+    root.classList.toggle("win-titled", show);
+  };
+  const queueTitle = () => { if (!titleQueued) { titleQueued = true; requestAnimationFrame(updTitle); } };
+  addEventListener("scroll", queueTitle, { passive:true });
+  addEventListener("resize", queueTitle);
+  new MutationObserver(queueTitle).observe(document.querySelector("main"), { subtree:true, attributes:true, attributeFilter:["class"] });
   if (!window.__VITO_FRAME__ || !window.vitoWin) return;
   root.classList.add("own-frame");
   const max = $("win-max");
