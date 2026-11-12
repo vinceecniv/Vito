@@ -1145,6 +1145,11 @@
   .spark svg { display:block; width:100%; height:100%; }
   :root[data-theme="dark"] .spark { opacity:.5; }
   /* Languages: the top one as the figure, all of them as shares of one bar. */
+  /* Vito Assist and long recordings: two figures of equal weight. */
+  .duo { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:calc(14px * var(--dn, 1)); }
+  .duo-c { min-width:0; }
+  .duo-c .lbl { overflow:hidden; text-overflow:ellipsis; }
+  .duo-c .delta { margin-top:4px; }
   .lang-card .lang-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-bar { display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
   .lang-bar i { display:block; height:100%; }
@@ -4271,10 +4276,8 @@ const TR = { nl: {
   "A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.":"Er ontbreekt een helper die de actieve afleverroute nodig heeft — plakken werkt nog niet. Zie de README voor de installatie.",
   "Vito Assist commands":"Vito Assist-opdrachten",
   "Vito Assist and recordings":"Vito Assist en opnames",
-  "long recordings":"lange opnames",
-  "1 long recording":"1 lange opname",
-  "{n} long recordings":"{n} lange opnames",
-  "Below them, the long recordings finished in this period and how long they last together.":"Daaronder de lange opnames die in deze periode zijn afgerond, en hoe lang ze samen duren.",
+  "Assist":"Assist",
+  "The long recordings finished in this period, and how long they last together.":"De lange opnames die in deze periode zijn afgerond, en hoe lang ze samen duren.",
   "Examples":"Voorbeelden",
   "Say “Vito, …” and a short instruction. It isn't typed out — it's applied to your next dictation, or to the text already on your clipboard.":"Zeg “Vito, …” en een korte opdracht. Die wordt niet uitgetypt — hij wordt toegepast op je volgende dictaat, of op de tekst die al op je klembord staat.",
   "How it works":"Hoe het werkt",
@@ -10035,6 +10038,18 @@ function setCardTip(el, tip){
 const LANG_COLORS = ["var(--violet)", "var(--coral)", "var(--violet-l)", "var(--coral-l)"];
 // The most used language as the figure, and every language as a share of one
 // bar: the top four in colour, the rest together in grey.
+// The card of the two side features: Vito Assist commands and long recordings,
+// side by side as equals, each with its own explanation.
+function duoCardHTML(st, nf){
+  const icon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>';
+  const cell = (n, lbl, sub, tip) => `<div class="duo-c" data-tip-text="${ahEsc(tip)}"><div class="num">${nf(n)}</div>` +
+    `<div class="lbl">${lbl}</div>${sub ? `<div class="delta flat">${sub}</div>` : ""}</div>`;
+  return `<div class="chip coral">${icon}</div><div class="duo">` +
+    cell(st.commands || 0, t("Assist"), "",
+      t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.")) +
+    cell(st.recordings || 0, t("Recordings"), st.recorded_seconds ? fmtShortSec(st.recorded_seconds) : "",
+      t("The long recordings finished in this period, and how long they last together.")) + `</div>`;
+}
 function langCardHTML(ins){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9s1.3-6.4 3.8-9z"/></svg>';
   const langs = ins.languages || [];
@@ -10766,7 +10781,6 @@ async function compareWithPrevious(st){
   const main = volumeMain();
   const rows = [
     ["words", ...pick[main], false],
-    ["commands", s => s.commands, nf, false],
   ];
   const span = rangeLabel(p.from, p.to);
   // The wait after stopping has no card; its trend goes into the transcript
@@ -10850,11 +10864,6 @@ async function loadStatsNow(){
   // the genuinely extra sub-lines (per-day, wpm) stay.
   statCommands = st.commands || 0;
   statRecordings = st.recordings || 0;
-  // Assist leads; with recordings but no commands, the recordings take the
-  // figure instead of a lone 0.
-  const recLine = (n, sec) => (n === 1 ? t("1 long recording") : t("{n} long recordings").replace("{n}", nf(n))) +
-    (sec > 0 ? " · " + fmtShortSec(sec) : "");
-  const cmdMain = statCommands > 0 || statRecordings === 0;
   const flame = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1-3.8 2.2-5 .3 1.6 1.1 2.6 2.3 3C11 8.6 11 5.8 12 3z"/></svg>';
   latencyInfo = { med: ins.latency_median_ms || 0, p95: ins.latency_p95_ms || 0, stt: ins.stt_median_ms || 0, cln: ins.cleanup_median_ms || 0, trend: "" };
   updateLatencyTip();
@@ -10872,11 +10881,8 @@ async function loadStatsNow(){
     { key:"streak", cls:"coral", icon:flame, value:st.current_streak || 0, format:nf, lbl:t("days in a row"),
       sub: streakSub(st, nf),
       tip:t("The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.") },
-    { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:cmdMain ? statCommands : statRecordings, format:nf,
-      lbl:cmdMain ? t("Vito Assist commands") : t("long recordings"),
-      sub:cmdMain ? (statRecordings ? recLine(statRecordings, st.recorded_seconds || 0) : "") : (st.recorded_seconds ? fmtShortSec(st.recorded_seconds) : ""),
-      tip:t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.") +
-        " " + t("Below them, the long recordings finished in this period and how long they last together.") },
+    // Two side features, each with its own figure of the same size.
+    { key:"commands", custom:true, cardClass:"duo-card", html:() => duoCardHTML(st, nf), wire:() => {} },
     // The insights below come from the dictations still in the history.
     { key:"cleanupfx", cls:"violet", icon:I.sent, value: ins.cleanup_runs ? Math.round(ins.cleanup_changed / ins.cleanup_runs * 100) : 0,
       format:n => ins.cleanup_runs ? n + "%" : "–", lbl:t("changed by AI cleanup"),
