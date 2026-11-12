@@ -46,6 +46,9 @@ DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 DisableDirPage=auto
+; Both tasks start ticked on every run, an update included: Inno would
+; otherwise repeat the last choice. Unticking removes nothing that is there.
+UsePreviousTasks=no
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=..\dist
@@ -163,7 +166,7 @@ ja.QuitFailed=Vito が実行中で、自動的に終了できませんでした�
 ja.RemoveDataDesc=Vito は設定・辞書・履歴・録音をユーザープロファイルに保存しています。%n%nこれらも削除しますか？
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:TaskDesktop}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "desktopicon"; Description: "{cm:TaskDesktop}"; GroupDescription: "{cm:AdditionalIcons}"
 Name: "autostart";   Description: "{cm:TaskAutostart}"
 
 [Files]
@@ -171,8 +174,10 @@ Source: "..\dist\{#AppExe}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "vito.ico";          DestDir: "{app}"; Flags: ignoreversion
 
 [InstallDelete]
-; Until 2026.12 the shortcut that opens Vito was named "{cm:OpenUI}".
-Type: files; Name: "{group}\{cm:OpenUI}.lnk"
+; Until 2026.11.5 the Start menu opened the interface through an internet
+; shortcut, "{cm:OpenUI}.url", named in whichever language that setup ran in.
+; It is the only .url Vito ever put in its group; "Vito" replaces it.
+Type: files; Name: "{group}\*.url"
 
 [Icons]
 Name: "{group}\{#AppTrayName}";                Filename: "{app}\{#AppExe}"; Parameters: "serve"; IconFilename: "{app}\vito.ico"; Comment: "{cm:AppTagline}"
@@ -180,7 +185,7 @@ Name: "{group}\{#AppTrayName}";                Filename: "{app}\{#AppExe}"; Para
 ; (notify.AppUserModelID): the window pins to the taskbar as this shortcut and
 ; toasts are sent as "Vito".
 Name: "{group}\{#AppName}";                    Filename: "{app}\{#AppExe}"; Parameters: "open"; IconFilename: "{app}\vito.ico"; AppUserModelID: "io.github.vinceecniv.vito"
-Name: "{autodesktop}\{#AppTrayName}";          Filename: "{app}\{#AppExe}"; Parameters: "serve"; IconFilename: "{app}\vito.ico"; Tasks: desktopicon
+Name: "{autodesktop}\{#AppName}";              Filename: "{app}\{#AppExe}"; Parameters: "open"; IconFilename: "{app}\vito.ico"; AppUserModelID: "io.github.vinceecniv.vito"; Tasks: desktopicon
 
 [Run]
 ; Autostart is the app's own business — it rewrites the login-startup entry at
