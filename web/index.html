@@ -581,6 +581,10 @@
   .win-edge.l, .win-edge.r { width:12px; cursor:nwse-resize; }
   .win-edge.l { right:auto; } .win-edge.r { left:auto; cursor:nesw-resize; }
   html.win-max .win-edge, html.wco .win-btns, html.wco .win-edge { display:none; }
+  /* Room under the strip: the page head keeps clear of the caption buttons
+     at every width, and the sidebar's logo lines up with it. */
+  html.own-frame .content, html.wco .content { padding-top:calc(var(--frame-h) + 10px * var(--dn, 1)); }
+  @media (min-width:601px){ html.own-frame .sidebar, html.wco .sidebar { padding-top:calc(var(--frame-h) + 6px * var(--dn, 1)); } }
   @media (max-width:600px){
     html.own-frame .sidebar, html.wco .sidebar { padding-top:calc(var(--frame-h) + 4px); }
   }
