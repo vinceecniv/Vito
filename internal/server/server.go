@@ -1087,6 +1087,7 @@ func (s *Server) evaluateAchievements() (st achievements.Stats, earned map[strin
 				st.RecWords += int64(m.Words)
 				if m.Source != "upload" { // "in one go" is recorded, not handed over
 					st.RecLongest = max(st.RecLongest, int64(m.Seconds))
+					st.UsedLongRecording = true
 				}
 			}
 		}
@@ -1603,6 +1604,9 @@ func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
 	} else if cur, best, prev, err := s.hist.Streaks(time.Now()); err == nil {
 		st.CurrentStreak, st.LongestStreak, st.PreviousStreak = cur, best, prev
 	}
+	if !s.demo() {
+		s.countRecordings(&st, days, from, to, isRange)
+	}
 	sttHr, inRate, outRate, fx, currency := s.costRates()
 	aInRate, aOutRate := s.assistTokenRates(inRate, outRate)
 	st.Currency = currency
@@ -1615,6 +1619,41 @@ func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
 			float64(d.CommandOutTokens)/1e6*aOutRate) * fx
 	}
 	s.writeJSON(w, http.StatusOK, st)
+}
+
+// countRecordings adds the long recordings started in the period that are
+// finished, imported audio files included, and their length: the same days
+// the rest of the statistics cover (today, yesterday, the last n days, all
+// time or a range).
+func (s *Server) countRecordings(st *history.Stats, days int, from, to time.Time, isRange bool) {
+	store, err := s.d.LongStore()
+	if err != nil {
+		return
+	}
+	list, err := store.List()
+	if err != nil {
+		return
+	}
+	now := time.Now()
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	var start, end time.Time // end is exclusive; a zero start is all time
+	switch {
+	case isRange:
+		start, end = from, to.AddDate(0, 0, 1)
+	case days == -1:
+		start, end = today.AddDate(0, 0, -1), today
+	case days > 0:
+		start, end = today.AddDate(0, 0, -(days-1)), today.AddDate(0, 0, 1)
+	default:
+		end = today.AddDate(0, 0, 1)
+	}
+	for _, m := range list {
+		if m.State != longrec.StateDone || m.Started.Before(start) || !m.Started.Before(end) {
+			continue
+		}
+		st.Recordings++
+		st.RecordedSeconds += int(m.Seconds + 0.5)
+	}
 }
 
 func (s *Server) handleHistory(w http.ResponseWriter, r *http.Request) {

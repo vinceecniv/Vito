@@ -291,7 +291,8 @@ func TestInsights(t *testing.T) {
 	if in.LatencyMedianMS != 900 || in.LatencyP95MS != 3000 || in.SttMedianMS != 250 || in.CleanupMedianMS != 400 {
 		t.Fatalf("timings: median %d p95 %d stt %d cleanup %d", in.LatencyMedianMS, in.LatencyP95MS, in.SttMedianMS, in.CleanupMedianMS)
 	}
-	if len(in.Languages) != 2 || in.Languages[0] != (LangCount{"nl", 2}) {
+	// One English dictation is below LangMin: a stray detection, left out.
+	if len(in.Languages) != 1 || in.Languages[0] != (LangCount{"nl", 2}) {
 		t.Fatalf("languages: %+v", in.Languages)
 	}
 	// The day after holds nothing.

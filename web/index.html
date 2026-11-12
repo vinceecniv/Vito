@@ -138,6 +138,9 @@
     --toggle-off:#CFD3EE; --track:#E3E6F7; --bar:#E3E6F7;
   }
   :root[data-theme="dark"][data-accent="ocean"] {
+    /* The gradient's deep purple end is these surfaces' own colour, so on
+       dark it stops at an indigo that still stands out from the card. */
+    --grad:linear-gradient(135deg,#05D7C9,#10B4FF 30%,#6462FE 70%,#4A30C8);
     --bg:#0F0B24; --sidebar:#130E2C; --sidebar-border:#261E4A;
     --card:#18123A; --card-border:#2B2257;
     --input-bg:#1E1745; --input-border:#362C66;
@@ -424,20 +427,29 @@
   .bd[data-bd="waves"]::after { height:calc(var(--u) * 95); background:linear-gradient(90deg, var(--s3), var(--s1) 25%, var(--s3) 50%, var(--s1) 75%, var(--s3));
     -webkit-mask-position:12.5% 100%; mask-position:12.5% 100%; animation-duration:55s; animation-direction:reverse; }
   @keyframes bdSlide { to { transform:translateX(-50%); } }
-  /* Bubbles: rings rising slowly. Every tile is a divisor of 240u high, so
-     moving the layer up by 240u brings it back to where it started. */
-  .bd[data-bd="bubbles"]::before { content:""; left:0; right:0; top:0; height:calc(100% + var(--u) * 240);
+  /* Bubbles: rings rising slowly, in two layers turned against each other
+     (-8° and 13°) at different speeds, so no row or column lines up. Every
+     tile is a divisor of 240u high, so moving a layer up by 240u along its
+     own turned axis brings it back to where it started. The layers are
+     oversized so their turned edges stay off screen. */
+  .bd[data-bd="bubbles"]::before, .bd[data-bd="bubbles"]::after { content:""; left:-30%; right:-30%; top:-30%; height:calc(160% + var(--u) * 240);
+    transform:rotate(var(--rot)); animation:bdRise 90s linear infinite;
+    -webkit-mask-image:linear-gradient(transparent 22%, #000 50%); mask-image:linear-gradient(transparent 22%, #000 50%); }
+  .bd[data-bd="bubbles"]::before { --rot:-8deg;
     background-image:radial-gradient(circle calc(var(--u) * 9) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%),
-    radial-gradient(circle calc(var(--u) * 6) at 50% 50%, transparent 62%, var(--s3) 72%, transparent 88%),
     radial-gradient(circle calc(var(--u) * 13) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%),
     radial-gradient(circle calc(var(--u) * 4.5) at 50% 50%, transparent 62%, var(--s3) 72%, transparent 88%),
-    radial-gradient(circle calc(var(--u) * 7) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%),
-    radial-gradient(circle calc(var(--u) * 5) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%);
-    background-size:calc(var(--u) * 173) calc(var(--u) * 240), calc(var(--u) * 131) calc(var(--u) * 120), calc(var(--u) * 211) calc(var(--u) * 240), calc(var(--u) * 97) calc(var(--u) * 80), calc(var(--u) * 157) calc(var(--u) * 240), calc(var(--u) * 251) calc(var(--u) * 120);
-    background-position:calc(var(--u) * 0) calc(var(--u) * 30), calc(var(--u) * 60) calc(var(--u) * 10), calc(var(--u) * 120) calc(var(--u) * 150), calc(var(--u) * 30) calc(var(--u) * 50), calc(var(--u) * 90) calc(var(--u) * 200), calc(var(--u) * 200) calc(var(--u) * 70);
-    -webkit-mask-image:linear-gradient(transparent, #000 40%); mask-image:linear-gradient(transparent, #000 40%);
-    animation:bdRise 90s linear infinite; }
-  @keyframes bdRise { to { transform:translateY(calc(var(--u) * -240)); } }
+    radial-gradient(circle calc(var(--u) * 7) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%);
+    background-size:calc(var(--u) * 173) calc(var(--u) * 240), calc(var(--u) * 211) calc(var(--u) * 240), calc(var(--u) * 97) calc(var(--u) * 80), calc(var(--u) * 157) calc(var(--u) * 240);
+    background-position:0 calc(var(--u) * 30), calc(var(--u) * 120) calc(var(--u) * 150), calc(var(--u) * 30) calc(var(--u) * 50), calc(var(--u) * 90) calc(var(--u) * 200); }
+  .bd[data-bd="bubbles"]::after { --rot:13deg; animation-duration:131s;
+    background-image:radial-gradient(circle calc(var(--u) * 6) at 50% 50%, transparent 62%, var(--s3) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 5) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 11) at 50% 50%, transparent 62%, var(--s1) 72%, transparent 88%),
+    radial-gradient(circle calc(var(--u) * 3.5) at 50% 50%, transparent 62%, var(--s2) 72%, transparent 88%);
+    background-size:calc(var(--u) * 131) calc(var(--u) * 120), calc(var(--u) * 251) calc(var(--u) * 120), calc(var(--u) * 263) calc(var(--u) * 240), calc(var(--u) * 113) calc(var(--u) * 60);
+    background-position:calc(var(--u) * 60) calc(var(--u) * 10), calc(var(--u) * 200) calc(var(--u) * 70), calc(var(--u) * 17) calc(var(--u) * 190), calc(var(--u) * 77) calc(var(--u) * 33); }
+  @keyframes bdRise { from { transform:rotate(var(--rot)); } to { transform:rotate(var(--rot)) translateY(calc(var(--u) * -240)); } }
   .bd[data-bd="grid"] { background-image:linear-gradient(var(--ln) 1px, transparent 1px), linear-gradient(90deg, var(--ln) 1px, transparent 1px);
     background-size:calc(var(--u) * 32) calc(var(--u) * 32);
     -webkit-mask-image:linear-gradient(#000, transparent 75%); mask-image:linear-gradient(#000, transparent 75%); }
@@ -468,6 +480,14 @@
   .bd-opt { padding-left:5px; }
   /* Settings → Appearance → Vito: Vito as dressed now, beside the way to the wardrobe. */
   .s-vito-row { display:flex; align-items:center; gap:14px; margin-top:12px; }
+  /* "Surprise me" at the top of Appearance: a tinted strip, so it reads as an
+     invitation rather than one more setting. */
+  .look-surprise { display:flex; align-items:center; gap:calc(14px * var(--dn, 1)); flex-wrap:wrap;
+    margin:calc(4px * var(--dn, 1)) 0 calc(14px * var(--dn, 1)); padding:calc(12px * var(--dn, 1)) calc(14px * var(--dn, 1));
+    border-radius:12px; background:linear-gradient(135deg, var(--coral-soft), var(--accent-soft)); border:1px solid var(--card-border); }
+  .look-surprise .ls-text { flex:1 1 240px; color:var(--text2); font-size:13px; line-height:1.45; }
+  .look-surprise .ls-text b { color:var(--text); }
+  .look-surprise .btn { flex:none; }
   .s-vito-prev { width:56px; height:60px; flex:none; cursor:var(--cur-hand); }
   .s-vito-prev .vmascot { display:block; width:100%; height:100%; }
   .s-vito-prev svg { width:100%; height:100%; overflow:visible; }
@@ -504,7 +524,7 @@
      strong blur smudged fine patterns (stripes, grid, dots) into one colour;
      2px only softens them. The narrow layout's top bar has the page scrolling
      under it, so it blurs properly. */
-  @media (max-width:820px){
+  @media (max-width:600px){
     :root[data-backdrop] .sidebar { -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
   }
   /* smooth fade only while switching theme (not on every hover) */
@@ -533,6 +553,61 @@
   /* min-height compensates for the CSS zoom on <html> (vh ignores zoom), so the
      layout still fills the window at zoom levels other than 100%. */
   .app { display:flex; min-height:calc(100vh / var(--zoom, 1)); }
+
+  /* ---- the title bar, drawn by the page ----
+     Vito's own window (html.own-frame) has no title bar of Windows': the page
+     runs to the top edge and draws the caption buttons. The installed web app
+     does the same with Window Controls Overlay (html.wco), where the browser
+     draws the buttons. --frame-h is the strip's height; under it the page only
+     has its padding, the buttons get a blurred backing once the page scrolls, and sticky bars stop
+     below it (--sticky-top). Dragging works on the strip wherever there is no
+     control (winFrame). */
+  html.own-frame { --frame-h:32px; }
+  html.wco { --frame-h:env(titlebar-area-height, 32px); }
+  .winbar { display:none; }
+  html.own-frame .winbar, html.wco .winbar { display:block; }
+  .win-zone { position:fixed; top:0; left:0; right:0; height:var(--frame-h); pointer-events:none; z-index:-1; }
+  html.wco .win-zone { app-region:drag; -webkit-app-region:drag; }
+  html.wco .brand, html.wco .sidebar button { app-region:no-drag; -webkit-app-region:no-drag; }
+  .win-btns { position:fixed; top:0; right:0; height:var(--frame-h); display:flex; z-index:9500;
+    border-bottom-left-radius:10px; overflow:hidden; transition:background-color .2s; }
+  /* Only the corner away from the screen's edges rounds, with ui.radius. */
+  :root[data-radius="minimal"] .win-btns { border-radius:0 0 0 3px !important; }
+  :root[data-radius] .win-btn { border-radius:0 !important; }
+  html.win-scrolled .win-btns { background:color-mix(in srgb, var(--bg) 78%, transparent);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
+  .win-btn { width:46px; height:100%; display:flex; align-items:center; justify-content:center; padding:0; margin:0;
+    border:none; border-radius:0; background:transparent; color:var(--text); cursor:default; }
+  .win-btn svg { width:10px; height:10px; fill:none; stroke:currentColor; stroke-width:1; overflow:visible; }
+  .win-btn:hover { background:color-mix(in srgb, var(--text) 9%, transparent); }
+  .win-btn:active { background:color-mix(in srgb, var(--text) 5%, transparent); }
+  .win-btn.close:hover { background:#C42B1C; color:#fff; }
+  .win-btn.close:active { background:#C83C31; color:#fff; }
+  html.win-inactive .win-btn:not(:hover) svg { opacity:.45; }
+  .win-btn .i-rest, html.win-max .win-btn .i-max { display:none; }
+  html.win-max .win-btn .i-rest { display:block; }
+  /* The page's name, small in the strip once its own heading has scrolled
+     under it (winFrame); on the same blurred backing as the buttons. */
+  .win-title { position:fixed; top:0; left:0; height:var(--frame-h); display:flex; align-items:center; padding:0 14px;
+    z-index:9400; pointer-events:none; max-width:40vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    font-family:var(--font-head); font-size:13px; font-weight:600; color:var(--text2);
+    border-radius:0 0 10px 10px; background:color-mix(in srgb, var(--bg) 78%, transparent);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    opacity:0; transform:translateY(-6px); transition:opacity .2s, transform .2s; }
+  html.win-titled .win-title { opacity:1; transform:none; }
+  :root[data-radius="minimal"] .win-title { border-radius:0 0 3px 3px !important; }
+  @media (max-width:600px){ .win-title { display:none; } }
+  .win-edge { position:fixed; top:0; left:0; right:0; height:5px; z-index:9600; cursor:ns-resize; }
+  .win-edge.l, .win-edge.r { width:12px; cursor:nwse-resize; }
+  .win-edge.l { right:auto; } .win-edge.r { left:auto; cursor:nesw-resize; }
+  html.win-max .win-edge, html.wco .win-btns, html.wco .win-edge { display:none; }
+  /* Room under the strip: the page head keeps clear of the caption buttons
+     at every width, and the sidebar's logo lines up with it. */
+  html.own-frame .content, html.wco .content { padding-top:calc(var(--frame-h) + 10px * var(--dn, 1)); }
+  @media (min-width:601px){ html.own-frame .sidebar, html.wco .sidebar { padding-top:calc(var(--frame-h) + 6px * var(--dn, 1)); } }
+  @media (max-width:600px){
+    html.own-frame .sidebar, html.wco .sidebar { padding-top:calc(var(--frame-h) + 4px); }
+  }
 
   /* ---- sidebar ---- */
   .sidebar {
@@ -581,11 +656,19 @@
      1099px and the top-bar layout compact by default — a narrowing window
      goes compact first, then to the top bar. No width animation — the content
      column would reflow, charts and all, every frame. */
+  /* Named only while folding: a named element is a backdrop root, which would
+     keep the page's blurs from seeing the background. */
+  html.vt-fold .sidebar { view-transition-name:vt-side; }
+  html.vt-fold .content { view-transition-name:vt-main; }
+  ::view-transition-group(vt-side), ::view-transition-group(vt-main) { animation-duration:.28s; animation-timing-function:cubic-bezier(.2,.7,.2,1); }
+  ::view-transition-old(vt-side), ::view-transition-new(vt-side),
+  ::view-transition-old(vt-main), ::view-transition-new(vt-main) { height:100%; width:auto; object-fit:none; object-position:left top; animation-duration:.28s; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation:none; }
   .side-toggle { display:flex; align-items:center; gap:11px; width:100%; margin-top:auto; padding:9px 12px; border-radius:10px;
     border:none; background:none; color:var(--text3); font-family:inherit; font-size:13px; text-align:left; cursor:var(--cur-hand); }
   .side-toggle svg { width:17px; height:17px; flex:0 0 17px; }
   .side-toggle:hover { color:var(--text); background:color-mix(in srgb, var(--nav-active-bg) 50%, transparent); }
-  @media (min-width:821px){
+  @media (min-width:601px){
     html.side-compact .sidebar { width:68px; flex:0 0 68px; }
     html.side-compact .brand { justify-content:center; padding:4px 0 18px; }
     html.side-compact .brand-text { display:none; }
@@ -641,7 +724,7 @@
   /* ---- content ---- */
   /* On a wide screen the column sits in the middle of the space beside the
      sidebar rather than against it. */
-  .content { flex:1; padding:calc(32px * var(--dn, 1)) calc(36px * var(--dn, 1)); max-width:1000px; margin-inline:auto; }
+  .content { flex:1; padding:calc(32px * var(--dn, 1)) calc(36px * var(--dn, 1)); max-width:1480px; margin-inline:auto; } /* one width for every page */
   .page-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:calc(20px * var(--dn, 1)); gap:16px; position:relative; z-index:5; }
   /* Explicit line heights: title 32 + gap 2 + subtitle 18 = 52, exactly the
      icon tile beside it. Left to the font's own metrics the block ends up a few
@@ -877,6 +960,7 @@
   /* Positioned, so each card's ⋯ menu button sits in its own corner — the
      chart and transcript are not .stat cards and would otherwise put it
      somewhere up the page. */
+  .statgrid { position:relative; } /* the cards' offsets are taken within it (glideCards) */
   .statgrid > .card { position:relative; -webkit-touch-callout:none; }
   .statgrid.holding, .statgrid.holding * { cursor:var(--cur-grab) !important; }
   .statgrid.dragging, .statgrid.dragging * { user-select:none; -webkit-user-select:none; cursor:var(--cur-grabbing) !important; }
@@ -966,7 +1050,7 @@
     .sidebar { width:180px; flex:0 0 180px; }
     .content { padding:calc(24px * var(--dn, 1)) calc(20px * var(--dn, 1)); }
   }
-  @media (max-width:820px){
+  @media (max-width:600px){
     .app { flex-direction:column; }
     .sidebar { width:100%; flex:none; height:auto; position:sticky; top:0; z-index:20;
       flex-direction:row; flex-wrap:wrap; align-items:center; gap:6px; padding:10px 14px;
@@ -988,7 +1072,7 @@
      pages as tabs, so the hamburger (fiddly to use) only remains on a phone:
      the current page with its name, the others as icons named on hover. All
      five names don't fit in most languages, Dutch included. */
-  @media (max-width:820px) and (min-width:461px){
+  @media (max-width:600px) and (min-width:461px){
     .hamburger { display:none; }
     .nav-item, .sidebar.open .nav-item { display:flex; width:auto; order:1; flex:none; padding:8px 10px; gap:0; font-size:0; }
     .nav-item.active { gap:7px; font-size:13px; }
@@ -1048,7 +1132,7 @@
      instead of running off across empty space. 800px fits all six tabs in both
      languages without scrolling on desktop. */
   /* No wider than the cards below them: past that the tabs wrap. */
-  .settabs { display:flex; flex-wrap:wrap; gap:2px 6px; width:fit-content; min-width:min(800px,100%); max-width:min(800px,100%);
+  .settabs { display:flex; flex-wrap:wrap; gap:2px 6px; width:auto; max-width:100%;
     margin-bottom:24px; border-bottom:1px solid var(--card-border); }
   .settabs::-webkit-scrollbar { display:none; }
   /* The tab bar (or the dropdown that replaces it) stays in view while a long
@@ -1070,7 +1154,7 @@
   .settabs[data-fit="icons1"] button:not(.active) > span:last-child, .settabs[data-fit="icons"] button > span:last-child { display:none; }
   .settabs[data-fit^="icons"] { gap:2px; }
   .settabs[data-fit^="icons"] button { padding-inline:11px; }
-  .settings-pane { max-width:800px; }
+  .settings-pane { max-width:none; } /* one column, as wide as the page */
   .settings-pane > .card[hidden] { display:none; }
   /* The tabs may wrap onto a second line; only when they'd need a third does
      a dropdown take over, reusing the .flagsel pattern from the theme/language
@@ -1078,7 +1162,7 @@
      labels' width differs per language, and a fixed cut-off switched far too
      early. The hidden bar stays laid out at the same width, so it can be
      counted again. */
-  .setsec-sel { display:none; margin-bottom:20px; max-width:800px; box-shadow:0 -10px 0 var(--bg); }
+  .setsec-sel { display:none; margin-bottom:20px; max-width:none; box-shadow:0 -10px 0 var(--bg); }
   .setsec-sel .flagsel-btn svg, .setsec-sel .flagsel-opt svg { width:16px; height:16px; flex:0 0 16px; color:var(--text3); }
   .setsec-sel .flagsel-opt.sel svg { color:var(--accent); }
   #tab-settings { position:relative; }
@@ -1086,7 +1170,7 @@
   /* .flagsel (further down) makes every picker position:relative, which would
      turn this one's sticky top into a plain shift down: a gap under the title. */
   #tab-settings.settabs-narrow .setsec-sel { display:block; position:sticky; }
-  @media (max-width:820px){
+  @media (max-width:600px){
     .setsec-sel, .settings-pane { max-width:100%; }
   }
   .card.stat { padding:18px 20px; }
@@ -1145,6 +1229,11 @@
   .spark svg { display:block; width:100%; height:100%; }
   :root[data-theme="dark"] .spark { opacity:.5; }
   /* Languages: the top one as the figure, all of them as shares of one bar. */
+  /* Vito Assist and long recordings: two figures of equal weight. */
+  .duo { position:relative; z-index:1; display:grid; grid-template-columns:auto minmax(0,1fr); row-gap:calc(4px * var(--dn, 1)); }
+  .duo-c { grid-column:1 / -1; display:grid; grid-template-columns:subgrid; column-gap:10px; align-items:baseline; }
+  .duo-c .num { text-align:right; }
+  .duo-c .lbl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-card .lang-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-bar { display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
   .lang-bar i { display:block; height:100%; }
@@ -1181,10 +1270,9 @@
   .quiet-icon { flex:none; width:64px; height:64px; display:inline-flex; align-items:center; justify-content:center; }
   .quiet-icon svg { width:64px; height:64px; }
   .vito-talk rect { transform-box:fill-box; transform-origin:center; animation:vBar .9s ease-in-out infinite; }
-  .vito-talk rect:nth-of-type(1), .vito-talk rect:nth-of-type(7) { animation-delay:.3s; animation-duration:.8s; }
-  .vito-talk rect:nth-of-type(2), .vito-talk rect:nth-of-type(6) { animation-delay:.15s; animation-duration:1.05s; }
-  .vito-talk rect:nth-of-type(3), .vito-talk rect:nth-of-type(5) { animation-delay:.45s; animation-duration:.7s; }
-  .vito-talk rect:nth-of-type(4) { animation-delay:0s; animation-duration:.95s; }
+  .vito-talk rect:nth-of-type(1), .vito-talk rect:nth-of-type(5) { animation-delay:.3s; animation-duration:.8s; }
+  .vito-talk rect:nth-of-type(2), .vito-talk rect:nth-of-type(4) { animation-delay:.15s; animation-duration:1.05s; }
+  .vito-talk rect:nth-of-type(3) { animation-delay:0s; animation-duration:.95s; }
   @keyframes vBar { 0%,100% { transform:scaleY(1); } 50% { transform:scaleY(.45); } }
   /* The recordings' empty state: a microphone that sways on its stand, sound
      rings leaving it, and a blinking record light. Still, the rings stay. */
@@ -1226,6 +1314,9 @@
      chart only every third hour is labelled, and an empty label would let those
      bars sit a line lower than their neighbours. */
   .weekcol .d { white-space:nowrap; line-height:14px; min-height:14px; }
+  /* In a narrow card the period goes under the title rather than squeezing it
+     onto two lines beside it. */
+  .chart-head { flex-wrap:wrap; column-gap:12px; row-gap:2px; }
   .weekcol .bar { width:100%; max-width:52px; border-radius:8px 8px 4px 4px; background:linear-gradient(180deg,var(--violet-l),var(--violet)); min-height:4px;
     transition:height .4s ease, transform .16s ease, filter .16s ease; transform-origin:bottom center; }
   /* A bar you point at lifts towards you a little, so the chart answers the mouse. */
@@ -1298,7 +1389,7 @@
      ("4w", "3–9 Sep") beside the calendar icon: the full name costs too much
      of the header's width, but an icon alone hid which period you were on. */
   .period-sel .flagsel-btn > .pl-short { display:none; }
-  @media (max-width:820px){
+  @media (max-width:600px){
     .period-sel { max-width:none; }
     .period-sel .flagsel-btn { width:auto; padding:0 12px; gap:6px; justify-content:center; }
     .period-sel .flagsel-btn > .pl-full { display:none; }
@@ -1843,7 +1934,10 @@
      The speech-recognition language picker matches that width. */
   .card[data-sec="general"] .flagsel, #lang-sel, #mediaaction-sel, #inject-sel, #retention-sel { max-width:320px; }
   /* device selects get a decorative leading icon */
-  .isel { position:relative; }
+  /* The device pickers: as wide as their longest device name, at least as
+     wide as the other pickers (320px), never wider than the card. */
+  .isel { position:relative; width:fit-content; min-width:min(320px, 100%); max-width:100%; }
+  .isel > select { width:auto; min-width:100%; max-width:100%; }
   .isel > svg { position:absolute; left:11px; top:50%; transform:translateY(-50%); width:17px; height:17px; color:var(--text3); pointer-events:none; }
   .isel > select { padding-left:36px; }
   /* the microphone and feedback volume sliders match the zoom slider's width */
@@ -2094,7 +2188,7 @@
   /* Dialogs centre over the content column, not the whole window: beside the
      sidebar, which the padding keeps them clear of (see the breakpoints). */
   .modal-backdrop, #offline-overlay { --side:216px; }
-  @media (min-width:821px){ .modal-backdrop, #offline-overlay { padding-left:var(--side); } }
+  @media (min-width:601px){ .modal-backdrop, #offline-overlay { padding-left:var(--side); } }
   @media (max-width:980px){ .modal-backdrop, #offline-overlay { --side:180px; } }
   html.side-compact .modal-backdrop, html.side-compact #offline-overlay { --side:68px; }
   .modal-backdrop { position:fixed; inset:0; background:rgba(10,6,20,.45); z-index:240; display:flex; align-items:center; justify-content:center; animation:fadeUp .2s; }
@@ -2183,6 +2277,12 @@
 
   /* search box */
   .searchbox { position:relative; flex:1; }
+  /* History's search and filters stay in reach while the list scrolls: they
+     stick under the title strip (--sticky-top), on the card's own colour,
+     reaching to its edges. */
+  .h-bar { position:sticky; top:var(--sticky-top, 0px); z-index:6; background:var(--card);
+    margin:calc(-22px * var(--dn, 1)) calc(-22px * var(--dn, 1)) calc(18px * var(--dn, 1));
+    padding:calc(22px * var(--dn, 1)) calc(22px * var(--dn, 1)) calc(12px * var(--dn, 1)); border-radius:16px 16px 0 0; }
   .searchbox input { padding-left:36px; padding-right:34px; }
   .searchbox .s-ic { position:absolute; left:11px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--text3); pointer-events:none; }
   .searchbox .s-x { position:absolute; right:7px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text3); cursor:var(--cur-hand); font-size:17px; line-height:1; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
@@ -2489,7 +2589,6 @@
   @media (prefers-reduced-motion:reduce) { .lr-tool.lr-hit, .lr-new-mark { animation:none; } }
   .lr-tool svg { width:18px; height:18px; }
   .lr-tool kbd { font:inherit; font-size:11px; color:var(--text3); }
-  .content:has(#tab-long.active) { max-width:1480px; }
   .lr-stopbtn { position:relative; overflow:hidden; background:var(--text); color:var(--card); }
   .lr-stopbtn.lr-arm { background:var(--danger); color:#fff; }
   .lr-stopbtn.lr-arm .lr-sq { background:#fff; }
@@ -2578,14 +2677,24 @@
   .lr-mk .lr-mx { background:none; border:none; color:var(--text3); margin-left:auto; cursor:var(--cur-hand); font-size:16px; }
   .lr-flash { animation:lrFlash 1.6s ease-out; }
   @keyframes lrFlash { 0% { background:color-mix(in srgb, var(--amber-ink) 45%, transparent); } 100% { background:transparent; } }
-  @media (max-width:820px) { .lr-row { grid-template-columns:minmax(0,1fr) auto; } .lr-row > :nth-child(2), .lr-row > :nth-child(3), .lr-row > :nth-child(5) { display:none; } .lr-p { display:block; } .lr-ts { display:none; } }
+  @media (max-width:600px) { .lr-row { grid-template-columns:minmax(0,1fr) auto; } .lr-row > :nth-child(2), .lr-row > :nth-child(3), .lr-row > :nth-child(5) { display:none; } .lr-p { display:block; } .lr-ts { display:none; } }
 </style>
 </head>
 <body>
 <div id="backdrop" class="bd" aria-hidden="true"></div>
+<div class="winbar" id="winbar">
+  <div class="win-zone" id="win-zone"></div>
+  <div class="win-title" id="win-title" aria-hidden="true"></div>
+    <div class="win-edge" data-edge="top"></div><div class="win-edge l" data-edge="topleft"></div><div class="win-edge r" data-edge="topright"></div>
+  <div class="win-btns">
+    <button type="button" class="win-btn" id="win-min" title="Minimize" aria-label="Minimize"><svg viewBox="0 0 10 10"><path d="M0 5h10"/></svg></button>
+    <button type="button" class="win-btn" id="win-max" title="Maximize" aria-label="Maximize"><svg class="i-max" viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9" rx="1"/></svg><svg class="i-rest" viewBox="0 0 10 10"><path d="M2.5 2.5V1.5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1"/><rect x=".5" y="2.5" width="7" height="7" rx="1"/></svg></button>
+    <button type="button" class="win-btn close" id="win-close" title="Close" aria-label="Close"><svg viewBox="0 0 10 10"><path d="M.5.5l9 9M9.5.5l-9 9"/></svg></button>
+  </div>
+</div>
 <div class="app">
   <!-- Applied before the sidebar is drawn, so a collapsed one doesn't flash open. -->
-  <script>try { if (matchMedia("(min-width:821px) and (max-width:1099px)").matches || localStorage.getItem("vito-side") === "collapsed") document.documentElement.classList.add("side-compact"); } catch {}</script>
+  <script>try { if (matchMedia("(min-width:601px) and (max-width:1099px)").matches || localStorage.getItem("vito-side") === "collapsed") document.documentElement.classList.add("side-compact"); } catch {}</script>
   <aside class="sidebar" id="sidebar">
     <div class="brand" id="brand">
       <span class="tile" id="brand-mark"></span>
@@ -2621,7 +2730,7 @@
     <!-- Demo banner: outside the sections so it shows on every tab. -->
     <!-- Browser version, after moving to the app: this page only opens it (renderMoved). -->
     <div class="moved-screen" id="moved-screen" hidden>
-      <svg viewBox="0 0 100 100" fill="url(#movedGrad)" class="vito-talk moved-logo" aria-hidden="true"><defs><linearGradient id="movedGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs><rect x="10" y="24" width="8" height="16" rx="4"/><rect x="22" y="24" width="8" height="28" rx="4"/><rect x="34" y="24" width="8" height="40" rx="4"/><rect x="46" y="24" width="8" height="54" rx="4"/><rect x="58" y="24" width="8" height="40" rx="4"/><rect x="70" y="24" width="8" height="28" rx="4"/><rect x="82" y="24" width="8" height="16" rx="4"/></svg>
+      <svg viewBox="0 0 100 100" fill="url(#movedGrad)" class="vito-talk moved-logo" aria-hidden="true"><defs><linearGradient id="movedGrad" gradientUnits="userSpaceOnUse" x1="4" y1="22" x2="96" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>
       <div class="moved-title">Vito now runs as an app on this computer</div>
       <div class="moved-text">Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.</div>
       <button type="button" class="btn primary" id="moved-open">Open Vito</button>
@@ -2718,7 +2827,7 @@
           <div class="lbl"><span>Costs</span> · <span>this month so far</span></div>
         </div>
         <div class="card chart-card" id="chart-card">
-          <div class="rowflex" style="justify-content:space-between;"><div class="card-title"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></div><h2 style="margin:0;" id="chart-title">Words per day</h2></div><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;">this week</span></div>
+          <div class="rowflex chart-head" style="justify-content:space-between;"><div class="card-title"><div class="chip violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></div><h2 style="margin:0;" id="chart-title">Words per day</h2></div><span class="sub" id="chart-sub" style="color:var(--text3);font-size:12px;white-space:nowrap;">this week</span></div>
           <div class="weekwrap" id="weekchart"></div>
         </div>
         <div class="card" id="transcript-card">
@@ -2801,8 +2910,8 @@
         </div>
         <div class="card" data-sec="general" id="set-display">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>Display</span></h2>
-          <label class="fld" data-help="zoom" style="max-width:320px;">Zoom level <span class="val" id="s-zoomval">100%</span><button type="button" id="s-zoom-reset" class="reset-btn" hidden title="Terug naar 100%" aria-label="Terug naar 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
-          <div class="slider-wrap" style="--frac:0.375;"><input type="range" id="s-zoom" min="0.7" max="1.5" step="0.05"><span class="slider-mark" title="Standaard 100%" aria-hidden="true"></span></div>
+          <label class="fld" data-help="zoom" style="max-width:320px;">Zoom level <span class="val" id="s-zoomval">100%</span><button type="button" id="s-zoom-reset" class="reset-btn" hidden title="Back to 100%" aria-label="Back to 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
+          <div class="slider-wrap" style="--frac:0.375;"><input type="range" id="s-zoom" min="0.7" max="1.5" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
           <label class="fld" data-help="uilang">Interface language</label>
           <input type="hidden" id="s-uilang">
           <div class="flagsel" id="uilang-sel">
@@ -2813,6 +2922,10 @@
         </div>
         <div class="card" data-sec="appearance" id="set-look">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.2" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="7.4" r="1.1" fill="currentColor" stroke="none"/></svg><span>Appearance</span></h2>
+          <div class="look-surprise">
+            <span class="ls-text"><b>Not sure what you like?</b> Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.</span>
+            <button type="button" class="btn primary small" id="s-surprise"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h3l9 10h6M3 17h3l3-3.4M15 7h6M18 4l3 3-3 3M18 14l3 3-3 3"/></svg> Surprise me</button>
+          </div>
           <label class="fld" data-help="theme">Theme</label>
           <input type="hidden" id="s-theme">
           <div class="tri-seg" id="theme-seg" role="radiogroup" aria-label="Theme"></div>
@@ -2840,6 +2953,7 @@
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg><span>System</span></h2>
           <label class="tgl" data-help="autostart"><input type="checkbox" id="s-autostart"><span class="tr"></span> Start with the system</label>
           <label class="tgl" data-help="tray"><input type="checkbox" id="s-tray"><span class="tr"></span> Show system-tray icon</label>
+          <label class="tgl" data-help="ownwindow" id="s-window-opt" hidden><input type="checkbox" id="s-window"><span class="tr"></span> Open Vito in its own window</label>
           <label class="fld" data-help="notifications" style="margin-top:16px;">Notifications</label>
           <input type="hidden" id="s-notify">
           <div class="flagsel" id="notify-sel">
@@ -2909,7 +3023,7 @@
             <button type="button" class="tag" data-sound="warn"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Cleanup failed</button>
           </div>
           <label class="fld" data-help="svol">Feedback sound volume <span class="val" id="s-svolval">100%</span></label>
-          <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-svol" min="0" max="2" step="0.05"><span class="slider-mark" title="Standaard 100%" aria-hidden="true"></span></div>
+          <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-svol" min="0" max="2" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
           <label class="fld" data-help="output">Output device (sounds)</label>
           <div class="isel"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 0 1 0 7M18.5 6a7 7 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><select id="s-output"></select></div>
         </div>
@@ -2936,6 +3050,7 @@
             <button type="button" class="flagsel-btn" id="lang-btn">Dutch</button>
             <div class="flagsel-list" id="lang-list"></div>
           </div>
+          <p class="act-note" id="lang-note" hidden></p>
         </div>
         <div class="card" data-sec="stt" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg><span>Speech model</span></h2>
@@ -2948,7 +3063,7 @@
           <div id="prov-holder" hidden>
           <div class="prov-settings" id="prov-soniox" hidden>
           <div class="key-row">
-            <div class="fld-row"><label class="fld" data-help="sonioxkey">Soniox API-key</label><button type="button" class="info-btn" id="info-sonioxkey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+            <div class="fld-row"><label class="fld" data-help="sonioxkey">Soniox API key</label><button type="button" class="info-btn" id="info-sonioxkey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
             <div class="key-input">
               <input type="password" id="s-sonioxkey" autocomplete="off" placeholder="…">
               <button type="button" class="eye-btn" data-eye="s-sonioxkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -2959,7 +3074,7 @@
           <div class="prov-settings" id="prov-assemblyai" hidden>
           <label class="tgl" data-help="eu"><input type="checkbox" id="s-eu"><span class="tr"></span> EU endpoints</label>
           <div class="key-row">
-            <div class="fld-row"><label class="fld" data-help="sttkey">AssemblyAI API key</label><button type="button" class="info-btn" id="info-sttkey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+            <div class="fld-row"><label class="fld" data-help="sttkey">AssemblyAI API key</label><button type="button" class="info-btn" id="info-sttkey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
             <div class="key-input">
               <input type="password" id="s-sttkey" autocomplete="off" placeholder="…">
               <button type="button" class="eye-btn" data-eye="s-sttkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -2978,7 +3093,7 @@
           <label class="fld" data-help="sttbaseurl">Endpoint (base URL)</label>
           <input type="text" id="s-sttbaseurl" placeholder="http://127.0.0.1:8080/v1">
           <div class="key-row">
-            <div class="fld-row"><label class="fld" data-help="sttopenaikey">API key</label><button type="button" class="info-btn" id="info-sttopenaikey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+            <div class="fld-row"><label class="fld" data-help="sttopenaikey">API key</label><button type="button" class="info-btn" id="info-sttopenaikey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
             <div class="key-input">
               <input type="password" id="s-sttopenaikey" autocomplete="off" placeholder="(often none for a local server)">
               <button type="button" class="eye-btn" data-eye="s-sttopenaikey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -3025,7 +3140,7 @@
 
           <div id="cleanup-anthropic">
             <div class="key-row">
-              <div class="fld-row"><label class="fld" data-help="anthropickey">Anthropic API key</label><button type="button" class="info-btn" id="info-anthropickey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+              <div class="fld-row"><label class="fld" data-help="anthropickey">Anthropic API key</label><button type="button" class="info-btn" id="info-anthropickey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
               <div class="key-input">
                 <input type="password" id="s-cleanupkey" autocomplete="off" placeholder="sk-ant-…">
                 <button type="button" class="eye-btn" data-eye="s-cleanupkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -3046,7 +3161,7 @@
             <label class="fld" data-help="openaibaseurl">Endpoint (base URL)</label>
             <input type="text" id="s-openaibaseurl" placeholder="https://api.groq.com/openai/v1">
             <div class="key-row">
-              <div class="fld-row"><label class="fld" data-help="openaikey">API key</label><button type="button" class="info-btn" id="info-openaikey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+              <div class="fld-row"><label class="fld" data-help="openaikey">API key</label><button type="button" class="info-btn" id="info-openaikey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
               <div class="key-input">
                 <input type="password" id="s-openaikey" autocomplete="off" placeholder="gsk_…">
                 <button type="button" class="eye-btn" data-eye="s-openaikey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -3347,7 +3462,7 @@
     <section id="tab-history">
       <div class="page-head"><div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span><h1>History</h1></div><div class="sub">Previous dictations<span class="hcount" id="h-count"></span></div></div></div>
       <div class="card">
-        <div class="rowflex" style="margin-bottom:18px;">
+        <div class="rowflex h-bar" id="h-bar">
           <div class="searchbox">
             <svg class="s-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
             <input type="text" id="h-search" placeholder="Search…">
@@ -3859,6 +3974,9 @@ const TR = { nl: {
   "Languages":"Talen",
   "{p}% of dictations":"{p}% van de dictaten",
   "Languages you dictated in this period, by number of dictations.":"De talen waarin je in deze periode dicteerde, naar aantal dictaten.",
+  "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.":"Je keuze is een voorkeur, geen grens: Soniox herkent ook andere talen, zelfs als je midden in een zin wisselt.",
+  "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.":"Parakeet herkent de taal zelf: je kunt in elk van zijn 25 talen dicteren, wat je hier ook kiest.",
+  "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.":"Dit model houdt zich aan de taal die je hier kiest. Wissel je tijdens het dicteren van taal? Kies dan Automatisch.",
   "words per dictation":"woorden per dictaat",
   "Most used words":"Meest gebruikte woorden",
   "Chart in background":"Grafiek op achtergrond",
@@ -3895,6 +4013,7 @@ const TR = { nl: {
   "Came back after 30 quiet days":"Teruggekomen na 30 stille dagen",
   "Transcribed an audio file":"Een audiobestand getranscribeerd",
   "Dictated in three languages":"In drie talen gedicteerd",
+  "Dictated, gave Vito Assist a command and made a long recording":"Gedicteerd, Vito Assist een opdracht gegeven en een lange opname gemaakt",
   // Backup & restore
   "Backup":"Back-up",
   "Backup & restore":"Back-up & herstel",
@@ -3917,6 +4036,9 @@ const TR = { nl: {
   "This replaces all your current settings, history, statistics and achievements with the backup from {d}. This can't be undone.":"Dit vervangt al je huidige instellingen, geschiedenis, statistieken en prestaties door de back-up van {d}. Dit kan niet ongedaan worden gemaakt.",
   "this file":"dit bestand",
   "Restore":"Herstellen",
+  "Minimize":"Minimaliseren",
+  "Maximize":"Maximaliseren",
+  "Restore down":"Vorige grootte",
   "Backup restored — reloading…":"Back-up hersteld — opnieuw laden…",
   "Restore failed.":"Herstellen mislukt.",
   "That doesn't look like a Vito backup.":"Dit lijkt geen Vito-back-up te zijn.",
@@ -4135,6 +4257,9 @@ const TR = { nl: {
   "Show or hide cards, and drag them into the order you want.":"Toon of verberg kaarten, en sleep ze in de volgorde die je wilt.",
   "Statistics":"Statistieken","Cards":"Kaarten","Show":"Tonen","Hide":"Verbergen",
   "Reset to default":"Terug naar standaard",
+  "Not sure what you like?":"Weet je niet wat je mooi vindt?",
+  "Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.":"Laat Vito een look voor je kiezen: kleuren, lettertype, hoeken, achtergrond en iets om aan te trekken. Niet mooi? Gewoon nog een keer.",
+  "Surprise me":"Verras me",
   "Play recording":"Opname afspelen","Play the recording of this dictation":"De opname van dit dictaat afspelen",
   "Playback failed.":"Afspelen mislukt.",
   "Upload an audio file and have it transcribed":"Audiobestand uploaden en laten transcriberen",
@@ -4266,6 +4391,10 @@ const TR = { nl: {
   "Vito uses the first delivery route your desktop supports, so helpers the other routes would need are optional here.":"Vito gebruikt de eerste afleverroute die je bureaublad ondersteunt; helpers die de andere routes nodig zouden hebben, zijn hier optioneel.",
   "A helper the active delivery route needs is missing — pasting won't work yet. See the README for installation.":"Er ontbreekt een helper die de actieve afleverroute nodig heeft — plakken werkt nog niet. Zie de README voor de installatie.",
   "Vito Assist commands":"Vito Assist-opdrachten",
+  "Vito Assist and recordings":"Vito Assist en opnames",
+  "Assist":"Assist",
+  "The long recordings finished in this period.":"De lange opnames die in deze periode zijn afgerond.",
+  "{time} recorded in total.":"{time} opgenomen in totaal.",
   "Examples":"Voorbeelden",
   "Say “Vito, …” and a short instruction. It isn't typed out — it's applied to your next dictation, or to the text already on your clipboard.":"Zeg “Vito, …” en een korte opdracht. Die wordt niet uitgetypt — hij wordt toegepast op je volgende dictaat, of op de tekst die al op je klembord staat.",
   "How it works":"Hoe het werkt",
@@ -4738,6 +4867,17 @@ const TR = { nl: {
   "You can close this window. Start Vito again whenever you need it.":"Je kunt dit venster sluiten. Start Vito opnieuw wanneer je het weer nodig hebt.",
   "Vito's background process is unreachable. Dictation and settings don't work without it.":"Vito's achtergrondproces is niet bereikbaar. Zonder dit proces werken dicteren en de instellingen niet.",
   "Show system-tray icon":"Systeemvak-icoon tonen",
+  "Open Vito in its own window":"Vito openen in een eigen venster",
+  "Back to 100%":"Terug naar 100%",
+  "Default 100%":"Standaard 100%",
+  "How do I get a key?":"Hoe kom ik aan een key?",
+  "Soniox API key":"Soniox API-key",
+  "Achievement sound":"Geluid bij prestaties",
+  "Menu":"Menu",
+  "Made by":"Gemaakt door",
+  "Copyright":"Copyright",
+  "Ran your first Vito Assist command":"Je eerste Vito Assist-opdracht uitgevoerd",
+  "Ran {n} Vito Assist commands":"{n} Vito Assist-opdrachten uitgevoerd",
   "Speech glow in the live transcript":"Spraakgloed in het live transcript",
   "Show a pill on screen while dictating":"Pil op het scherm tonen tijdens dicteren",
   "Pill style":"Stijl van de pil",
@@ -4897,20 +5037,34 @@ async function loadTranslations(lang){
   } catch {}
 }
 const _orig = new WeakMap();
+// Text a script rendered with t() before the chosen language had loaded is in
+// the language of the first paint (the system's, often Dutch) and no longer an
+// English key, so applyI18n could never translate it again. Map such text back
+// to its English source through every table loaded so far.
+const _rev = new Map(); const _revDone = new Set();
+function enKey(s){
+  if (TR.nl[s] !== undefined) return s;
+  for (const l of Object.keys(TR)) {
+    if (_revDone.has(l) || l === "en") continue;
+    _revDone.add(l);
+    for (const [k, v] of Object.entries(TR[l])) if (typeof v === "string" && !_rev.has(v)) _rev.set(v, k);
+  }
+  return _rev.get(s) || s;
+}
 function applyI18n(root = document.body){
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const nodes = []; while (w.nextNode()) { const p = w.currentNode.parentNode; if (p && (p.tagName === "SCRIPT" || p.tagName === "STYLE" || (p.closest && p.closest("[data-noi18n]")))) continue; nodes.push(w.currentNode); }
   nodes.forEach(n => {
     if (!_orig.has(n)) _orig.set(n, n.nodeValue);
     const raw = _orig.get(n), key = raw.trim();
-    if (key) n.nodeValue = raw.replace(key, t(key));
+    if (key) n.nodeValue = raw.replace(key, t(enKey(key)));
   });
   // In the narrow top bar the pages other than the current one are icons only;
   // their (translated) name shows on hover.
   document.querySelectorAll(".nav-item").forEach(b => { b.title = b.textContent.trim(); });
   root.querySelectorAll("[placeholder]").forEach(el => {
     if (el.dataset.phOrig === undefined) el.dataset.phOrig = el.getAttribute("placeholder");
-    el.setAttribute("placeholder", t(el.dataset.phOrig));
+    el.setAttribute("placeholder", t(enKey(el.dataset.phOrig)));
   });
   // Attributes need translating too — a title or aria-label written in the HTML
   // would otherwise stay Dutch whatever the interface language.
@@ -4918,7 +5072,7 @@ function applyI18n(root = document.body){
     root.querySelectorAll("[" + attr + "]").forEach(el => {
       const memo = "i18n" + attr.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
       if (el.dataset[memo] === undefined) el.dataset[memo] = el.getAttribute(attr);
-      el.setAttribute(attr, t(el.dataset[memo]));
+      el.setAttribute(attr, t(enKey(el.dataset[memo])));
     });
   });
   document.documentElement.lang = uiLang;
@@ -4941,6 +5095,10 @@ async function setUiLang(choice, persist){
   if (typeof syncSetSecUI === "function") syncSetSecUI(); // re-clone the now-translated tab labels
   if (typeof renderPwaTip === "function") renderPwaTip(); // built with t() too
   if (typeof renderWelcomeWeb === "function") renderWelcomeWeb();
+  if (typeof renderSync === "function") try { renderSync(); } catch {}
+  if (typeof lrFolderLoad === "function") lrFolderLoad();
+  if (typeof renderWardrobe === "function") try { renderWardrobe(); } catch {}
+  if (typeof syncAssistMode === "function") try { syncAssistMode(); } catch {}
   if ($("tab-status").classList.contains("active")) loadStats();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { lang: choice });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
@@ -5230,6 +5388,27 @@ function setMotion(on, persist){
 }
 applyMotion();
 // Theme, colours, font, corners, spacing, background and motion back to Vito's own, in one save.
+// surpriseLook: a random look, as the site's "Surprise me" — another colour
+// theme (not the desktop or high-contrast ones), a font, corners, a background,
+// and from the unlocked pieces a hat, glasses and paint, each three times in
+// four. Light or dark, spacing and motion stay the user's.
+function surpriseLook(){
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const accent = pick(ACCENTS.filter(a => !a.desk && a.c !== accentPref && a.c !== "hc" && a.c !== "hc-bw").map(a => a.c));
+  const font = pick(FONTS.filter(f => f.c !== fontPref).map(f => f.c));
+  const radius = pick(["", "", "minimal", "none"]);
+  const backdrop = pick(BACKDROPS.slice(1).map(b => b.c));
+  setAccent(accent, false); setFont(font, false); setRadius(radius, false); setBackdrop(backdrop, false);
+  const outfit = {};
+  ["head", "glasses", "paint"].forEach(slot => {
+    const open = Object.keys(VM_ACC).filter(k => VM_ACC[k].slot === slot && vmUnlocked(k) === true);
+    if (open.length && Math.random() < .75) outfit[slot] = pick(open);
+  });
+  ["head", "glasses", "paint"].forEach(slot => setOutfit(slot, outfit[slot] || "", false));
+  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { accent, font, radius, backdrop, outfit: Object.assign({}, vmOutfit) });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+  vmFlash("happy", 1800);
+}
 function resetLook(){
   setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setMotion(false, false); setDensity("", false);
   if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", reduce_motion:false, density:"" });
@@ -5588,8 +5767,22 @@ function langName(code){
 function langIcon(code){
   return flag(code.split("_")[0]) || `<span class="lang-badge">${code.toUpperCase().replace("_","-")}</span>`;
 }
+// Whether the chosen language is a limit depends on the engine: Soniox takes it
+// as a hint and follows a switch mid-sentence, Parakeet detects the language
+// itself, the others (AssemblyAI with a language set, Whisper, Whistle) keep to it.
+function updateLangNote(){
+  const el = $("lang-note"); if (!el) return;
+  const m = SPEECH_MODELS.find(x => x.id === (($("s-model") && $("s-model").value) || ""));
+  const prov = m ? m.provider : "", lang = $("s-lang").value || "auto";
+  let txt = "";
+  if (prov === "soniox") txt = t("Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.");
+  else if (prov === "local") txt = t("Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.");
+  else if (prov && lang !== "auto") txt = t("This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.");
+  el.textContent = txt; el.hidden = !txt;
+}
 function setLang(code){
   $("s-lang").value = code;
+  updateLangNote();
   $("lang-btn").innerHTML = langIcon(code) + "<span>" + langName(code) + "</span>";
   [...$("lang-list").querySelectorAll(".flagsel-opt")].forEach(o => o.classList.toggle("sel", o.dataset.code===code));
 }
@@ -5697,6 +5890,7 @@ function askDownload(p){
 }
 function buildModelCards(){
   const box = $("model-cards"), cur = $("s-model").value || "";
+  updateLangNote();
   // Re-rendering moves the settings blocks, and a moved input loses focus — so
   // while the selection and language stand, only the volatile bits are updated.
   const sig = cur + "|" + (document.documentElement.lang || "") + "|" +
@@ -6261,6 +6455,7 @@ buildFontPicker();
 buildBackdropPicker();
 buildDensityPicker();
 $("s-look-reset").onclick = resetLook;
+$("s-surprise").onclick = surpriseLook;
 // Appearance → the sound sets under Audio, scrolled to and lit for a moment.
 $("s-goto-sounds").onclick = () => {
   selectSetSection("audio");
@@ -6334,14 +6529,14 @@ window.addEventListener("pagehide", rememberTab);
 document.querySelectorAll(".nav-item").forEach(btn => btn.onclick = () => selectTab(btn.dataset.tab));
 // Sidebar compact (icons) or expanded (names), by width:
 //   ≥1100px     the user's choice, remembered per browser (default expanded);
-//   821–1099px  compact, so a narrowing window first gives up the names and
+//   601–1099px  compact, so a narrowing window first gives up the names and
 //               only then switches to the top bar; the button expands it
 //               here for the moment only, not as a new default;
-//   ≤820px      the top bar, which this doesn't touch.
+//   ≤600px      the top bar, which this doesn't touch.
 // Crossing a boundary drops a momentary expand, so widening the window brings
 // back the user's own choice. The inline script in .app applies the same rule
 // before first paint.
-const SIDE_MID = matchMedia("(min-width:821px) and (max-width:1099px)");
+const SIDE_MID = matchMedia("(min-width:601px) and (max-width:1099px)");
 let sidePeek = false;
 function sidePref(){ try { return localStorage.getItem("vito-side") === "collapsed"; } catch { return false; } }
 function applySide(){
@@ -6359,7 +6554,13 @@ applySide();
 $("side-toggle").onclick = () => {
   if (SIDE_MID.matches) sidePeek = !sidePeek;
   else { const collapse = !sidePref(); try { localStorage.setItem("vito-side", collapse ? "collapsed" : "expanded"); } catch {} }
-  applySide();
+  // Folding and unfolding glides: a view transition between the two layouts
+  // (the sidebar and the page each morph; see ::view-transition below),
+  // rather than animating the width, which would reflow the charts per frame.
+  if (!document.startViewTransition || reducedMotion()) { applySide(); return; }
+  const root = document.documentElement;
+  root.classList.add("vt-fold");
+  document.startViewTransition(applySide).finished.finally(() => root.classList.remove("vt-fold"));
 };
 $("brand").onclick = () => selectTab("status");
 // Restore the tab that was open before a reload (defaults to status). Deferred to
@@ -6416,12 +6617,93 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
 // On the narrow layout the top bar is sticky, so whatever else sticks (the
 // settings tabs) has to sit below it: publish its height as --sticky-top.
 (function stickyTop(){
-  const bar = document.querySelector(".sidebar"), narrow = matchMedia("(max-width:820px)");
+  const bar = document.querySelector(".sidebar"), narrow = matchMedia("(max-width:600px)");
   if (!bar) return;
-  const set = () => document.documentElement.style.setProperty("--sticky-top", (narrow.matches ? bar.offsetHeight : 0) + "px");
+  const set = () => document.documentElement.style.setProperty("--sticky-top", narrow.matches ? bar.offsetHeight + "px" : "var(--frame-h, 0px)");
   new ResizeObserver(set).observe(bar);
   narrow.addEventListener("change", set);
   set();
+})();
+// The title bar the page draws (see .winbar): in Vito's own window the
+// buttons, the top edge, dragging, the double click and the system menu go to
+// the window (vitoWin); it answers with its state (vitoFrameState). The web
+// app with Window Controls Overlay needs only the classes: the browser drags.
+(function winFrame(){
+  const root = document.documentElement, wco = navigator.windowControlsOverlay;
+  const scrolled = () => root.classList.toggle("win-scrolled", scrollY > 2);
+  addEventListener("scroll", scrolled, { passive:true });
+  scrolled();
+  if (wco) {
+    const upd = () => root.classList.toggle("wco", !!wco.visible && !window.__VITO_FRAME__);
+    wco.addEventListener("geometrychange", upd);
+    upd();
+  }
+  // The open page's name in the strip once its heading has scrolled under it,
+  // lined up with where the heading starts.
+  const titleEl = $("win-title"), zoneEl = $("win-zone");
+  let titleQueued = false;
+  const updTitle = () => {
+    titleQueued = false;
+    if (!root.classList.contains("own-frame") && !root.classList.contains("wco")) return;
+    const sec = document.querySelector("main section.active"), h = sec && sec.querySelector(".page-head h1");
+    const show = !!h && h.getBoundingClientRect().bottom < zoneEl.getBoundingClientRect().bottom;
+    if (show) {
+      titleEl.textContent = h.textContent;
+      titleEl.style.left = Math.max(0, sec.querySelector(".page-head").getBoundingClientRect().left - 14) + "px";
+    }
+    root.classList.toggle("win-titled", show);
+  };
+  const queueTitle = () => { if (!titleQueued) { titleQueued = true; requestAnimationFrame(updTitle); } };
+  addEventListener("scroll", queueTitle, { passive:true });
+  addEventListener("resize", queueTitle);
+  new MutationObserver(queueTitle).observe(document.querySelector("main"), { subtree:true, attributes:true, attributeFilter:["class"] });
+  if (!window.__VITO_FRAME__ || !window.vitoWin) return;
+  root.classList.add("own-frame");
+  const max = $("win-max");
+  window.vitoFrameState = (s) => {
+    root.classList.toggle("win-max", !!s.max);
+    root.classList.toggle("win-inactive", !s.active);
+    const k = s.max ? "Restore down" : "Maximize";
+    max.dataset.i18nTitle = max.dataset.i18nAriaLabel = k;
+    max.title = t(k); max.setAttribute("aria-label", t(k));
+  };
+  $("win-min").onclick = () => vitoWin("min");
+  max.onclick = () => vitoWin("max");
+  $("win-close").onclick = () => vitoWin("close");
+  document.querySelectorAll(".win-edge").forEach(e => e.addEventListener("mousedown", (ev) => {
+    if (ev.button === 0) { ev.preventDefault(); vitoWin("resize", e.dataset.edge); }
+  }));
+  const zone = $("win-zone");
+  const onStrip = (ev) => ev.clientY <= zone.getBoundingClientRect().bottom &&
+    !(ev.target.closest && ev.target.closest("button, a, input, textarea, select, label, [role=button], [contenteditable], .brand, .card-menu"));
+  let last = null; // the previous press on the strip: a second one soon after is a double click
+  document.addEventListener("mousedown", (ev) => {
+    if (ev.button !== 0 || !onStrip(ev)) return;
+    ev.preventDefault();
+    const dbl = last && ev.timeStamp - last.t < 500 && Math.abs(ev.screenX - last.x) < 5 && Math.abs(ev.screenY - last.y) < 5;
+    last = dbl ? null : { t: ev.timeStamp, x: ev.screenX, y: ev.screenY };
+    vitoWin(dbl ? "max" : "drag");
+  }, true);
+  document.addEventListener("contextmenu", (ev) => {
+    if (onStrip(ev)) { ev.preventDefault(); vitoWin("menu"); }
+  }, true);
+  // The page's empty background moves the window too: what lies between and
+  // around the cards, never a card, a control or text. Only once the pointer
+  // has moved a little, so a click there still closes a menu.
+  const isBg = (el) => el && el.nodeType === 1 &&
+    !el.closest(".card, .modal, .modal-backdrop, .card-menu, .rs-pop, .lr-pop, .correction-pop, button, a, input, textarea, select, label, [contenteditable], canvas, svg, img, [draggable=true], .settabs, .setsec-sel") &&
+    ![...el.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim());
+  let press = null;
+  document.addEventListener("mousedown", (ev) => {
+    press = ev.button === 0 && !onStrip(ev) && isBg(ev.target) ? { x: ev.screenX, y: ev.screenY } : null;
+  }, true);
+  document.addEventListener("mousemove", (ev) => {
+    if (!press) return;
+    if (!(ev.buttons & 1)) { press = null; return; }
+    if (Math.hypot(ev.screenX - press.x, ev.screenY - press.y) > 4) { press = null; vitoWin("drag"); }
+  }, true);
+  document.addEventListener("mouseup", () => { press = null; }, true);
+  vitoWin("hello");
 })();
 // Tabs on up to two lines; the dropdown only once they'd need a third. The
 // lines are counted from where the tabs actually land, rather than widths
@@ -6984,7 +7266,8 @@ function handleEvent(e) {
       // Leaving a recording that produced nothing (cancelled, or only ever the
       // placeholder): put the idle hint back, so a stray "Luisteren…" can't
       // sit there until the next dictation.
-      else if (e.state === "idle" && !curRaw && !curCleaned) showTranscriptHint(t(IDLE_HINT));
+      // The last dictation then takes its place, as on the island.
+      else if (e.state === "idle" && !curRaw && !curCleaned) { showTranscriptHint(t(IDLE_HINT)); showLastDictation(); }
     } else if (e.type === "partial") {
       // An empty partial means "nothing new yet", not "forget what you heard" —
       // overwriting the sentence with a placeholder is how three dots ended up
@@ -6998,25 +7281,7 @@ function handleEvent(e) {
       // The result is not typed out: the raw text was already typed live as
       // partials, and the cleaned version is a finished answer — it just fades
       // in as a whole.
-      const tr = $("transcript"); tr.textContent = "";
-      // Only show raw + cleaned side by side when the cleanup actually changed
-      // something; otherwise just the end result (avoids a pointless duplicate).
-      const changed = e.cleaned && e.cleaned !== (e.raw || "");
-      // The finished text gets clickable words, the same as in the history:
-      // a misheard name is easiest to correct the moment you notice it.
-      if (changed) {
-        const raw = document.createElement("div"); raw.className = "fadein"; raw.textContent = e.raw || ""; tr.appendChild(raw);
-        const c = document.createElement("div"); c.className = "cleaned fadein"; c.innerHTML = SPARK_SVG;
-        const w = document.createElement("span"); renderWords(w, " " + e.cleaned); c.appendChild(w); tr.appendChild(c);
-      } else {
-        const only = document.createElement("div"); only.className = (e.cleaned ? "cleaned " : "") + "fadein";
-        if (e.cleaned) only.innerHTML = SPARK_SVG;
-        const w = document.createElement("span");
-        renderWords(w, (e.cleaned ? " " : "") + (e.cleaned || e.raw || ""));
-        only.appendChild(w); tr.appendChild(only);
-      }
-      curRaw = e.raw || ""; curCleaned = e.cleaned || "";
-      lastFinalText = e.cleaned || e.raw || "";
+      renderFinal(e.raw, e.cleaned);
       if (e.cleanup_failed) {
         const msg = e.cleanup_credit
           ? t("{p} account is out of credit — cleanup skipped, raw text pasted.").replace("{p}", e.cleanup_credit)
@@ -7110,6 +7375,7 @@ function handleEvent(e) {
     }
 }
 connectWS();
+showLastDictation(); // before any dictation: the last one, as on the island
 
 $("btn-toggle").onclick = () => { webGesture(window); api("/api/toggle", { method: "POST" }).catch(e => toast(e.message, "err")); };
 $("btn-cancel").onclick = () => api("/api/cancel", { method: "POST" }).catch(() => {});
@@ -7128,6 +7394,40 @@ function showTranscriptHint(text){
   // Mark it as already-typed so a following empty partial doesn't make typeInto
   // append the same hint again (which showed a duplicate "Luisteren…").
   tr.firstChild.dataset.typed = text;
+}
+
+// renderFinal shows a finished dictation in the transcript card.
+function renderFinal(raw, cleaned){
+  raw = raw || ""; cleaned = cleaned || "";
+  const tr = $("transcript"); tr.textContent = "";
+  // Only show raw + cleaned side by side when the cleanup actually changed
+  // something; otherwise just the end result (avoids a pointless duplicate).
+  const changed = cleaned && cleaned !== raw;
+  // The finished text gets clickable words, the same as in the history:
+  // a misheard name is easiest to correct the moment you notice it.
+  if (changed) {
+    const r = document.createElement("div"); r.className = "fadein"; r.textContent = raw; tr.appendChild(r);
+    const c = document.createElement("div"); c.className = "cleaned fadein"; c.innerHTML = SPARK_SVG;
+    const w = document.createElement("span"); renderWords(w, " " + cleaned); c.appendChild(w); tr.appendChild(c);
+  } else {
+    const only = document.createElement("div"); only.className = (cleaned ? "cleaned " : "") + "fadein";
+    if (cleaned) only.innerHTML = SPARK_SVG;
+    const w = document.createElement("span");
+    renderWords(w, (cleaned ? " " : "") + (cleaned || raw));
+    only.appendChild(w); tr.appendChild(only);
+  }
+  curRaw = raw; curCleaned = cleaned;
+  lastFinalText = cleaned || raw;
+}
+// showLastDictation fills an empty transcript card with the last dictation
+// from the history, so the card says the same as the island between
+// dictations (after a reload, or a cancelled recording). With nothing kept
+// (history off, privacy mode) the hint stays.
+async function showLastDictation(){
+  let x;
+  try { x = (((await api("/api/history?limit=1")) || {}).items || [])[0]; } catch { return; }
+  if (!x || uiState !== "idle" || curRaw || curCleaned) return;
+  renderFinal(x.raw, x.cleanup_used ? x.cleaned : "");
 }
 
 /* ---- typewriter rendering for the live transcript ---- */
@@ -8986,8 +9286,12 @@ async function loadAbout(){
   if (a.version === "dev" && vmDev && !document.querySelector("#mascot-card .vm-dev")) $("mascot-card").appendChild(mascotDevPanel());
   // The browser version has no build of its own to describe: it is whatever
   // vito.talk serves, always the newest.
+  // Who made it, and the copyright the MIT licence carries (LICENSE).
+  const yr = new Date().getFullYear();
+  const credit = row(t("Made by"), "Vincent Blok") +
+    row(t("Copyright"), `© 2026${yr > 2026 ? "–" + yr : ""} Vincent Blok`);
   if (STANDALONE) {
-    box.innerHTML = row(t("Version"), t("Vito in your browser — always the newest")) + row(t("License"), a.license || "MIT");
+    box.innerHTML = row(t("Version"), t("Vito in your browser — always the newest")) + credit + row(t("License"), a.license || "MIT");
     return;
   }
   box.innerHTML =
@@ -8998,6 +9302,7 @@ async function loadAbout(){
     row(t("Interface"), a.ui && a.ui.source === "bundle"
       ? `<code>${escapeHtml(a.ui.version)}</code> <span style="color:var(--text3); font-weight:400;">(${t("downloaded")})</span>`
       : t("built in")) +
+    credit +
     row(t("License"), a.license || "—");
   renderAboutVersion();
 }
@@ -9047,7 +9352,7 @@ const STAT_KEYS = ["credit","words","streak","commands",
 const LAYOUT_GROUPS = [
   { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript","quicksettings","mascot"] },
 ];
-const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", commands:"Vito Assist commands", achievements:"Achievements", update:"Version",
+const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", commands:"Vito Assist and recordings", achievements:"Achievements", update:"Version",
   streak:"days in a row", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
   cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings", mascot:"Vito" };
 // The fixed cards are written in the page; the statistic cards are built from
@@ -9188,10 +9493,10 @@ function updateCardWanted(){
 }
 // The credit card only appears when a provider is actually out of credit.
 function creditCardWanted(){ return (creditState || []).length > 0; }
-// The Vito Assist card only appears once there were commands in the period:
-// for anyone not using Assist it would only ever say 0.
-let statCommands = 0;
-function commandsCardWanted(){ return statCommands > 0; }
+// The card of the two side features, Vito Assist and long recordings, only
+// appears once either was used in the period: otherwise it would only say 0.
+let statCommands = 0, statRecordings = 0;
+function commandsCardWanted(){ return statCommands > 0 || statRecordings > 0; }
 // The statistic cards' elements, by key, once built (renderStatCards).
 const statEls = {};
 const cardEl = (k) => LAYOUT_STATIC[k] ? $(LAYOUT_STATIC[k]) : statEls[k];
@@ -9207,6 +9512,33 @@ function fitStatCols(){
   if (g.dataset.cols !== n) g.dataset.cols = n;
 }
 if (window.ResizeObserver) { const g = document.querySelector(".statgrid"); if (g) new ResizeObserver(fitStatCols).observe(g); }
+// Cards glide to their new place when the grid reflows (the window crosses a
+// column count, the sidebar folds) instead of jumping there. Only big moves:
+// following the window's edge while it is dragged, or a card above growing a
+// line, stays immediate. Positions are offsets within the grid, which a
+// running glide's transform leaves alone.
+(function glideCards(){
+  const g = $("statgrid"); if (!g || !window.ResizeObserver) return;
+  const last = new Map();
+  const glide = () => {
+    if (!g.offsetParent || g.classList.contains("dragging")) { last.clear(); return; }
+    const motion = !reducedMotion();
+    for (const c of g.children) {
+      const now = { x: c.offsetLeft, y: c.offsetTop }, was = last.get(c);
+      last.set(c, now);
+      if (!was || !motion || !c.offsetParent) continue;
+      const m = new DOMMatrix(getComputedStyle(c).transform); // where a glide still running has it
+      const dx = was.x + m.m41 - now.x, dy = was.y + m.m42 - now.y;
+      if (Math.hypot(dx, dy) < 40) continue;
+      c.getAnimations().forEach(a => a.id === "glide" && a.cancel());
+      const a = c.animate([{ transform: `translate(${dx}px,${dy}px)` }, { transform: "none" }],
+        { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" });
+      a.id = "glide";
+    }
+  };
+  new ResizeObserver(glide).observe(g);
+  new MutationObserver(() => requestAnimationFrame(glide)).observe(g, { childList: true });
+})();
 function applyStatusLayout(){
   const grid = $("statgrid"), holder = $("card-holder");
   if (!grid) return;
@@ -10003,7 +10335,9 @@ function fmtShortSec(sec){
   if (m > 0) return `${m}${t("m")} ${s}${t("s")}`;
   return `${s}${t("s")}`;
 }
-const fmtShortMin = (min) => fmtShortSec(min * 60);
+// savedSec is the saved typing time in seconds, as the pill shows it; a daemon
+// from before saved_seconds only has the minutes.
+const savedSec = (st) => st.saved_seconds != null ? st.saved_seconds : (st.saved_minutes || 0) * 60;
 // First paint builds the row and lets it ride the page's staggered reveal. Every
 // later refresh — a finished dictation, a changed period — keeps the cards where
 // they are and counts the numbers up to their new value: replaying the stagger
@@ -10024,6 +10358,20 @@ function setCardTip(el, tip){
 const LANG_COLORS = ["var(--violet)", "var(--coral)", "var(--violet-l)", "var(--coral-l)"];
 // The most used language as the figure, and every language as a share of one
 // bar: the top four in colour, the rest together in grey.
+// The card of the two side features: Vito Assist commands and long recordings,
+// a row each with a figure of the same size and its own explanation (the
+// recorded length is in the recordings' tooltip).
+function duoCardHTML(st, nf){
+  const icon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>';
+  const cell = (n, lbl, tip) => `<div class="duo-c" data-tip-text="${ahEsc(tip)}"><div class="num">${nf(n)}</div>` +
+    `<div class="lbl">${lbl}</div></div>`;
+  return `<div class="chip coral">${icon}</div><div class="duo">` +
+    cell(st.commands || 0, t("Assist"),
+      t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.")) +
+    cell(st.recordings || 0, t("Recordings"),
+      t("The long recordings finished in this period.") +
+      (st.recorded_seconds ? " " + t("{time} recorded in total.").replace("{time}", fmtShortSec(st.recorded_seconds)) : "")) + `</div>`;
+}
 function langCardHTML(ins){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9s1.3-6.4 3.8-9z"/></svg>';
   const langs = ins.languages || [];
@@ -10102,9 +10450,9 @@ function historyEmptyHTML(){
   if (hFavOnly) return `<div class="hist-empty small"><div class="he-title">${t("No favorites yet.")}</div><div class="he-sub">${t("Give a dictation a star and it waits for you here — and is never cleaned up automatically.")}</div></div>`;
   const k = STANDALONE ? fmtHotkey(webHotkey()) : hotkeyHint();
   const line = HIST_EMPTY_LINES[Math.floor(Math.random() * HIST_EMPTY_LINES.length)];
-  const bars = [[10,16],[22,28],[34,40],[46,54],[58,40],[70,28],[82,16]].map(([x, h]) => `<rect x="${x}" y="24" width="8" height="${h}" rx="4"/>`).join("");
+  const bars = [[4,20],[24,36],[44,56],[64,36],[84,20]].map(([x, h]) => `<rect x="${x}" y="22" width="12" height="${h}" rx="6"/>`).join("");
   return `<div class="hist-empty">
-    <svg viewBox="0 0 100 100" fill="url(#heGrad)" class="vito-talk he-logo" aria-hidden="true"><defs><linearGradient id="heGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs>${bars}</svg>
+    <svg viewBox="0 0 100 100" fill="url(#heGrad)" class="vito-talk he-logo" aria-hidden="true"><defs><linearGradient id="heGrad" gradientUnits="userSpaceOnUse" x1="4" y1="22" x2="96" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs>${bars}</svg>
     <div class="he-title">${t(line)}</div>
     <div class="he-sub">${t("Everything you dictate lands here: searchable, with a star for the keepers. Say something — anything — and your first sentence shows up within seconds.")}</div>
     <button type="button" class="btn primary" id="he-start">${t("Start your first dictation")}</button>
@@ -10124,9 +10472,9 @@ function quietTodayHTML(){
   const k = hotkeyHint();
   let lines = QUIET_LINES.filter(l => k || !l.includes("{k}"));
   const line = t(lines[day % lines.length]).replace("{k}", k ? `<b>${ahEsc(k)}</b>` : "");
-  const bars = [[10,16],[22,28],[34,40],[46,54],[58,40],[70,28],[82,16]].map(([x, h]) => `<rect x="${x}" y="24" width="8" height="${h}" rx="4"/>`).join("");
+  const bars = [[4,20],[24,36],[44,56],[64,36],[84,20]].map(([x, h]) => `<rect x="${x}" y="22" width="12" height="${h}" rx="6"/>`).join("");
   return `<div class="quiet-today"><span class="quiet-icon"><svg viewBox="0 0 100 100" fill="url(#quietGrad)" class="vito-talk" aria-hidden="true">` +
-    `<defs><linearGradient id="quietGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs>${bars}</svg></span>` +
+    `<defs><linearGradient id="quietGrad" gradientUnits="userSpaceOnUse" x1="4" y1="22" x2="96" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs>${bars}</svg></span>` +
     `<div class="quiet-line">${line}</div></div>`;
 }
 function cloudCardHTML(ins){
@@ -10699,7 +11047,7 @@ function volumeCard(st, series, I, nf, nfCompact){
       lbl:t("spoken time") + (st.spoken_wpm ? ` · ${nf(st.spoken_wpm)} wpm` : ""),
       tip:t("How long the microphone was recording, from start to stop. Pauses and silences within a dictation count too — this is also the time your speech recognition bills for.") +
         (st.spoken_wpm ? " " + t("How fast you speak while dictating: your words divided by the recording time. Your typing speed is set at {n} wpm.").replace("{n}", st.typing_wpm) : "") },
-    saved: { cls:"violet", icon:I.time, value:st.saved_minutes, format:fmtShortMin, lbl:t("saved typing time"), spark:series(d => d.saved_minutes),
+    saved: { cls:"violet", icon:I.time, value:savedSec(st), format:fmtShortSec, lbl:t("saved typing time"), spark:series(d => d.saved_minutes),
       tip:t("based on {n} wpm").replace("{n}", st.typing_wpm) + " — " +
           t("What you save compared with typing it yourself: your words divided by your typing speed, minus the time you spent speaking. Set your typing speed under Settings → General.") },
   };
@@ -10750,12 +11098,11 @@ async function compareWithPrevious(st){
   const nf = (n) => Math.round(n).toLocaleString(numLoc());
   const pick = {
     words: [s => s.words, nf], sentences: [s => s.sentences, nf], activations: [s => s.activations, nf],
-    spoken: [s => s.spoken_seconds, fmtShortSec], saved: [s => s.saved_minutes, fmtShortMin],
+    spoken: [s => s.spoken_seconds, fmtShortSec], saved: [savedSec, fmtShortSec],
   };
   const main = volumeMain();
   const rows = [
     ["words", ...pick[main], false],
-    ["commands", s => s.commands, nf, false],
   ];
   const span = rangeLabel(p.from, p.to);
   // The wait after stopping has no card; its trend goes into the transcript
@@ -10838,6 +11185,7 @@ async function loadStatsNow(){
   // The period is already shown by the dropdown, so cards don't repeat it; only
   // the genuinely extra sub-lines (per-day, wpm) stay.
   statCommands = st.commands || 0;
+  statRecordings = st.recordings || 0;
   const flame = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1-3.8 2.2-5 .3 1.6 1.1 2.6 2.3 3C11 8.6 11 5.8 12 3z"/></svg>';
   latencyInfo = { med: ins.latency_median_ms || 0, p95: ins.latency_p95_ms || 0, stt: ins.stt_median_ms || 0, cln: ins.cleanup_median_ms || 0, trend: "" };
   updateLatencyTip();
@@ -10855,8 +11203,8 @@ async function loadStatsNow(){
     { key:"streak", cls:"coral", icon:flame, value:st.current_streak || 0, format:nf, lbl:t("days in a row"),
       sub: streakSub(st, nf),
       tip:t("The days in a row you dictated. Up to two days off in any seven keep it going, so a weekend doesn't break it.") },
-    { key:"commands", cls:"coral", icon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg>', value:st.commands, format:nf, lbl:t("Vito Assist commands"),
-      tip:t("How many Vito Assist voice commands you ran in this period — the 'Vito, …' instructions that translate, summarise, answer or reshape your dictation.") },
+    // Two side features, each with its own figure of the same size.
+    { key:"commands", custom:true, cardClass:"duo-card", html:() => duoCardHTML(st, nf), wire:() => {} },
     // The insights below come from the dictations still in the history.
     { key:"cleanupfx", cls:"violet", icon:I.sent, value: ins.cleanup_runs ? Math.round(ins.cleanup_changed / ins.cleanup_runs * 100) : 0,
       format:n => ins.cleanup_runs ? n + "%" : "–", lbl:t("changed by AI cleanup"),
@@ -10909,29 +11257,26 @@ async function loadStatsNow(){
   lastChartKey = chartKey;
   const heights = [];
   // A long period has many bars — four weeks of days, a year of weeks. The gap
-  // narrows with the count so the bars keep some width, and only every few
-  // labels are shown so they don't run into each other; each bar still names
-  // its own range in the tooltip.
-  const n = st.week.length, dense = unit !== "hour" && n > 14;
-  const step = dense ? Math.ceil(n / 9) : 1;
+  // narrows with the count so the bars keep some width. Every bar carries its
+  // label in data-l; fitBarLabels shows as many as fit the card's width, and
+  // each bar still names its own range in the tooltip.
+  const n = st.week.length;
   const wrap = $("weekchart");
   // Thin bars, hours included, get the smaller radius; the gap and widths
   // come from pinBarWidths.
   wrap.classList.toggle("dense", n > 14);
   wrap.innerHTML = st.week.map((d,i)=>{
-    const shown = i % step === 0;
     if (isPh(d)) {
       const h = 16 + (hashStr(d.date) % 46); // stable pseudo-random 16..61%
       heights.push(h);
-      return `<div class="weekcol placeholder"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d">${shown ? t(d.label) : ""}</div></div>`;
+      return `<div class="weekcol placeholder"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d" data-l="${escapeHtml(t(d.label))}"></div></div>`;
     }
     const h = d.words>0 ? Math.max(6, Math.round(d.words/max*100)) : 4;
     heights.push(h);
     const marker = unit === "hour" ? (d.hour === nowHour) : (d.date === todayStr);
     const cls = (i===st.week_peak_index ? "peak" : (d.words===0 ? "empty" : "")) + (marker ? " today" : "");
-    // 24 hourly labels don't fit; every third keeps the axis readable.
-    const label = unit === "hour" ? (d.hour % 3 === 0 ? d.hour : "") : (shown ? t(d.label) : "");
-    return `<div class="weekcol ${cls}"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d">${label}</div></div>`;
+    const label = unit === "hour" ? String(d.hour) : t(d.label);
+    return `<div class="weekcol ${cls}"><div class="bar" style="height:${grow ? 0 : h}%"></div><div class="d" data-l="${escapeHtml(label)}"></div></div>`;
   }).join("");
   const cols = $("weekchart").querySelectorAll(".weekcol");
   if (grow) growBars(cols, heights.map(h => h + "%"));
@@ -10963,6 +11308,29 @@ function pinBarWidths(){
   wrap.style.gap = g / k + "px";
   wrap.style.paddingLeft = left / k + "px";
   cols.forEach(c => { c.style.flex = "none"; c.style.width = b / k + "px"; const bar = c.querySelector(".bar"); if (bar) bar.style.width = ""; });
+  fitBarLabels(cols, (b + g) / k);
+}
+// fitBarLabels shows every step-th label, the step chosen so the widest label
+// plus some air fits the distance from one bar to the next. Counted back from
+// the last bar, so the current day, week or month keeps its name; hours keep
+// to multiples of three (0, 3, 6 …), whatever the step.
+let labelCanvas = null;
+function fitBarLabels(cols, pitch){
+  const ds = cols.map(c => c.querySelector(".d"));
+  if (!ds.length || !ds[0]) return;
+  const cs = getComputedStyle(ds[0]);
+  labelCanvas = labelCanvas || document.createElement("canvas");
+  const ctx = labelCanvas.getContext("2d");
+  ctx.font = `600 ${cs.fontSize} ${cs.fontFamily}`; // the bold of peak and today, the widest a label gets
+  const widest = Math.max(...ds.map(d => ctx.measureText(d.dataset.l || "").width));
+  const step = Math.max(1, Math.ceil((widest + 8) / pitch));
+  const n = ds.length;
+  ds.forEach((d, i) => {
+    let shown;
+    if (chartUnit === "hour") { const s3 = Math.ceil(step / 3) * 3; shown = Number(d.dataset.l) % s3 === 0; }
+    else shown = (n - 1 - i) % step === 0;
+    d.textContent = shown ? d.dataset.l : "";
+  });
 }
 if (window.ResizeObserver) new ResizeObserver(() => pinBarWidths()).observe($("weekchart"));
 // lastChartKey identifies which set of bars is on screen; when it changes the
@@ -11149,6 +11517,9 @@ async function fillSettings() {
   setRetentionDisplay(String(cfg.history.retention_days ?? 0));
   syncStoreAudioUI();
   $("s-tray").checked = cfg.tray ? cfg.tray.enabled !== false : true;
+  // Vito's own window (WebView2) is Windows-only; unset is on.
+  $("s-window-opt").hidden = STANDALONE || !/Windows/.test(navigator.userAgent);
+  $("s-window").checked = !(cfg.ui && cfg.ui.window === false);
   $("s-pill").checked = !cfg.ui || cfg.ui.pill !== false; // default on
   $("s-pill-idle").checked = !(cfg.ui && cfg.ui.pill_idle === false); // unset is on
   $("s-pill-live").checked = !(cfg.ui && cfg.ui.pill_live === false); // unset is on
@@ -12128,6 +12499,7 @@ $("demo-off").onclick = () => {
 buildPeriodDropdown(); // choosing a period saves it and reloads the stats
 // Disabling the tray icon warns first (it's the easy way back to settings).
 $("s-pill").onchange = $("s-pill-idle").onchange = $("s-pill-live").onchange = () => autoSaveSettings();
+$("s-window").onchange = () => { cfg.ui = Object.assign(cfg.ui || {}, { window: $("s-window").checked }); autoSaveSettings(); };
 $("s-tray").onchange = () => {
   if ($("s-tray").checked) { autoSaveSettings(); return; }
   modal(t("Turn off the system-tray icon?"),
@@ -14050,7 +14422,8 @@ function longEvent(e){
 
 /* ---- PWA ---- */
 let deferredPrompt = null;
-const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+// Vito's own window counts as the app too: no "install as app" in there.
+const isStandalone = () => !!window.__VITO_WINDOW__ || matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 function renderPwaTip(){
   const el = $("pwa-tip");
   // On a phone or tablet the honest tip is a different one: Vito is made for
@@ -14070,6 +14443,10 @@ function renderPwaTip(){
     return;
   }
   if (isStandalone() || localStorage.getItem("vito-pwa-dismissed")) { el.innerHTML = ""; return; }
+  // On Windows Vito has its own window (Settings > System); installing this
+  // page as an app is no longer the way to give it one.
+  let ownWindow = true; try { ownWindow = !(cfg && cfg.ui && cfg.ui.window === false); } catch {} // cfg may not exist yet
+  if (!STANDALONE && /Windows/.test(navigator.userAgent) && ownWindow) { el.innerHTML = ""; return; }
   if (deferredPrompt) {
     el.innerHTML = `<div class="banner tip pwa-explain">
       <div class="pwa-head">
@@ -14147,6 +14524,7 @@ const HELP = {
   appendspace:{nl:"Voegt een spatie toe achter de geplakte tekst, zodat opeenvolgende dictaten netjes van elkaar gescheiden blijven.",en:"Appends a space after the pasted text so back-to-back dictations stay neatly separated."},
   notifications:{nl:"Bureaubladmeldingen bij dictaat. 'Alles' toont elke status (kort, niet bewaard in je meldingsgeschiedenis), 'Alleen fouten' toont enkel problemen, 'Uit' toont niets.",en:"Desktop notifications for dictation. 'Show all' shows every status (briefly, not kept in your notification history), 'Errors only' shows just problems, 'Off' shows nothing."},
   autostart:{nl:"Start Vito automatisch zodra je inlogt, zodat je sneltoets altijd klaarstaat.",en:"Launch Vito automatically at login so your hotkey is always ready."},
+  ownwindow:{nl:"Opent Vito in een eigen venster (Microsoft Edge WebView2), zonder browser. Uit: in de geïnstalleerde browser-app of een browsertabblad.",en:"Opens Vito in a window of its own (Microsoft Edge WebView2), without a browser. Off: in the installed browser app or a browser tab."},
   tray:{nl:"Toon het Vito-icoon in het systeemvak voor snelle toegang. Werkt na een herstart van Vito.",en:"Show the Vito icon in the system tray for quick access. Takes effect after restarting Vito."},
   pill:{nl:"Toont onderaan het scherm een kleine balk die meebeweegt met je stem, zolang je dicteert. Hij pakt nooit de focus. Wijs hem aan voor twee knoppen: ✕ breekt af, een klik op de rest stopt en plakt. Werkt op desktops met layer-shell, zoals niri; op GNOME nog niet.",en:"Shows a small bar at the bottom of the screen that moves with your voice while you dictate. It never takes the focus. Point at it for two buttons: ✕ cancels, a click anywhere else stops and pastes. Works on desktops with layer-shell, such as niri; not on GNOME yet."},
   pillstyle:{nl:"Hoe de pil je stem laat zien: een golvende gloed vanaf de onderkant (standaard), balkjes, of het Vito-figuurtje dat meepraat. Het figuurtje laat zijn haar meebewegen en zijn mond opengaan met je stem.",en:"How the pill shows your voice: a rolling glow rising from its floor (the default), bars, or the Vito character talking along. The character's hair moves and its mouth opens with your voice."},

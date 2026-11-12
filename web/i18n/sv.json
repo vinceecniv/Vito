@@ -277,8 +277,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Att skaffa, hantera och skydda dessa nycklar — och alla kostnader som deras användning medför hos leverantörerna — är helt ditt eget ansvar.",
 "Privacy & data": "Integritet & data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito samlar inte in någon användardata för att skicka vidare, och det finns ingen form av spårning eller analys inbyggd i appen. Dina inställningar, din ordbok och din historik stannar lokalt på din egen dator.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "De enda data appen skickar externt är ditt tal och texterna som går till BYOK-modellens externa leverantörer (taligenkänning och AI-rensning). För dessa data gäller de externa leverantörernas integritetspolicyer.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Webbläsarversionen på vito.talk räknar anonymt hur ofta den öppnas och om en webbläsare når sin 1:a och 10:e diktering — utan cookies, och inte alls med Do Not Track påslaget. Inget av det du säger eller ställer in skickas. Den installerade appen räknar ingenting.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "De enda data appen skickar externt är ditt tal och texterna som går till BYOK-modellens externa leverantörer (taligenkänning och AI-rensning). För dessa data gäller de externa leverantörernas integritetspolicyer.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Webbläsarversionen på vito.talk räknar anonymt hur ofta den öppnas och om en webbläsare når sin 1:a och 10:e diktering — utan cookies, och inte alls med Do Not Track påslaget. Inget av det du säger eller ställer in skickas. Den installerade appen räknar ingenting.",
 "Show all": "Visa allt",
 "Errors only": "Endast fel",
 "Off": "Av",
@@ -1440,7 +1440,32 @@
 "words": "ord",
 "Marks": "Markeringar",
 "Follows the colours of your desktop": "Följer färgerna på ditt skrivbord",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tryck på Caps Lock för att börja diktera och tryck igen för att sluta. Att hålla ned den för att diktera kräver en niri nyare än 26.04; ställ sedan in den igen."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tryck på Caps Lock för att börja diktera och tryck igen för att sluta. Att hålla ned den för att diktera kräver en niri nyare än 26.04; ställ sedan in den igen.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Ditt val är en preferens, inte en gräns: Soniox känner även igen andra språk, även när du byter mitt i en mening.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet känner själv igen språket: du kan diktera på vilket som helst av dess 25 språk, oavsett vad du väljer här.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Den här modellen håller sig till språket du väljer här. Byter du språk medan du dikterar? Välj Automatiskt.",
+"Dictated, gave Vito Assist a command and made a long recording": "Dikterade, gav Vito Assist ett kommando och gjorde en lång inspelning",
+"Minimize": "Minimera",
+"Maximize": "Maximera",
+"Restore down": "Återställ nedåt",
+"Not sure what you like?": "Osäker på vad du gillar?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Låt Vito välja ett utseende åt dig — färger, typsnitt, hörn, bakgrund och något att ha på sig. Gillar du det inte? Försök bara igen.",
+"Surprise me": "Överraska mig",
+"Vito Assist and recordings": "Vito Assist och inspelningar",
+"Assist": "Assist",
+"The long recordings finished in this period.": "De långa inspelningarna som avslutades under den här perioden.",
+"{time} recorded in total.": "{time} inspelat totalt.",
+"Open Vito in its own window": "Öppna Vito i ett eget fönster",
+"Back to 100%": "Tillbaka till 100 %",
+"Default 100%": "Standard 100 %",
+"How do I get a key?": "Hur får jag en nyckel?",
+"Soniox API key": "API-nyckel för Soniox",
+"Achievement sound": "Ljud för prestationer",
+"Menu": "Meny",
+"Ran your first Vito Assist command": "Körde ditt första Vito Assist-kommando",
+"Ran {n} Vito Assist commands": "Körde {n} Vito Assist-kommandon",
+"Made by": "Skapad av",
+"Copyright": "Upphovsrätt"
 },
 "help": {
 "theme": "Ljust, mörkt eller automatiskt — automatiskt följer systemets ljus/mörk-inställning.",
@@ -1505,6 +1530,7 @@
 "motion": "Stoppar Vitos animationer: övergångar, rörliga bakgrunder och Vitos egna rörelser. Ditt system har också en inställning för detta; när den är på följer Vito den redan.",
 "cursor": "Muspekaren i Vitos färger, med logotypen i handen. Av: ditt systems vanliga pekare.",
 "helptips": "Ja, det här är en. Av: inga fler förklaringar när du dröjer kvar över en inställning — inte heller den här.",
-"soundset": "Hur ljuden låter: Vitos egna, Mjuk (varma toner), Glas (klara klockor), Retro (8-bit) eller Tick (kort och torr, minst märkbar). Klicka på en för att höra den."
+"soundset": "Hur ljuden låter: Vitos egna, Mjuk (varma toner), Glas (klara klockor), Retro (8-bit) eller Tick (kort och torr, minst märkbar). Klicka på en för att höra den.",
+"ownwindow": "Öppnar Vito i ett eget fönster (Microsoft Edge WebView2), utan webbläsare. Av: i den installerade webbläsarappen eller i en webbläsarflik."
 }
 }

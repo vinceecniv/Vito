@@ -29,6 +29,7 @@ import (
 	"vito/internal/pill"
 	"vito/internal/server"
 	"vito/internal/tray"
+	"vito/internal/webapp"
 )
 
 // version is stamped at build time by packaging/build-installer.ps1 with
@@ -45,6 +46,9 @@ func main() {
 	if len(os.Args) > 1 && !isLaunchArg(os.Args[1]) {
 		cmd = os.Args[1]
 	}
+	if cmd != "window" {
+		undoEdgeInit()
+	}
 	var err error
 	switch cmd {
 	case "serve":
@@ -53,6 +57,10 @@ func main() {
 		err = request(http.MethodPost, "/api/"+cmd)
 	case "pwa":
 		err = installPWA()
+	case "window":
+		err = openWindow(os.Args[2:])
+	case "open":
+		err = openPage(os.Args[2:])
 	case "autostart":
 		// vito autostart on|off — write the login-startup entry through the same
 		// code the settings toggle uses, so the installer and the app can never
@@ -95,6 +103,8 @@ Usage:
   vito cancel    discard the current recording (bind to second hotkey)
   vito quit      shut the daemon down
   vito pwa       install the web interface as an app (Windows)
+  vito open      open the interface: Vito's own window, the web app or a tab
+  vito window    open the interface in Vito's own window (Windows)
   vito status    show daemon state
   vito version
 
@@ -183,6 +193,13 @@ func serve() error {
 	defer hist.Close()
 
 	d := daemon.New(cfg, log, audioCtx, hist)
+	// The tray, the island and the pill's cards open Vito's own window where
+	// there is one (ui.window), the installed web app or a tab otherwise.
+	webapp.Native = func(u string) error { return openNative(d.Config().UI.Window, u) }
+	webapp.NativeOn = func() bool {
+		w := d.Config().UI.Window
+		return windowSupported() && (w == nil || *w)
+	}
 	hk := hotkey.New(d, log)
 	server.Version = version
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)
@@ -239,12 +256,14 @@ func serve() error {
 	if firstRun {
 		firstRunSetup(cfg, log)
 	}
+	go reopenWindow(cfg.Server.Port, webapp.NativeOn)
 
 	if cfg.Tray.Enabled {
 		url := fmt.Sprintf("http://127.0.0.1:%d", cfg.Server.Port)
 		if tray.Run(d, url, version, log) {
 			log.Info("shutting down (tray quit)")
-			d.Shutdown() // restore any ducked/paused media before exiting
+			closeWindow() // the user's quit: the next start does not reopen it
+			d.Shutdown()  // restore any ducked/paused media before exiting
 			os.Exit(0)
 		}
 		// The tray loop ended without the user asking to quit: there is no tray

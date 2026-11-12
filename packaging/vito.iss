@@ -25,8 +25,7 @@
 
 #define AppName "Vito"
 ; The shortcut that launches the background daemon/tray is named separately, so
-; it is clearly distinct from the "Open the Vito interface" shortcut and the
-; installed-as-app PWA — all three would otherwise read simply "Vito".
+; it is clearly distinct from the "Vito" shortcut that opens Vito's window.
 #define AppTrayName "Vito Tray"
 #define AppPublisher "Vincent Blok"
 #define AppURL "https://github.com/vinceecniv/vito"
@@ -47,6 +46,9 @@ DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 DisableDirPage=auto
+; Both tasks start ticked on every run, an update included: Inno would
+; otherwise repeat the last choice. Unticking removes nothing that is there.
+UsePreviousTasks=no
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=..\dist
@@ -164,17 +166,26 @@ ja.QuitFailed=Vito が実行中で、自動的に終了できませんでした�
 ja.RemoveDataDesc=Vito は設定・辞書・履歴・録音をユーザープロファイルに保存しています。%n%nこれらも削除しますか？
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:TaskDesktop}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "desktopicon"; Description: "{cm:TaskDesktop}"; GroupDescription: "{cm:AdditionalIcons}"
 Name: "autostart";   Description: "{cm:TaskAutostart}"
 
 [Files]
 Source: "..\dist\{#AppExe}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "vito.ico";          DestDir: "{app}"; Flags: ignoreversion
 
+[InstallDelete]
+; Until 2026.11.5 the Start menu opened the interface through an internet
+; shortcut, "{cm:OpenUI}.url", named in whichever language that setup ran in.
+; It is the only .url Vito ever put in its group; "Vito" replaces it.
+Type: files; Name: "{group}\*.url"
+
 [Icons]
 Name: "{group}\{#AppTrayName}";                Filename: "{app}\{#AppExe}"; Parameters: "serve"; IconFilename: "{app}\vito.ico"; Comment: "{cm:AppTagline}"
-Name: "{group}\{cm:OpenUI}";                   Filename: "http://127.0.0.1:4573/"; IconFilename: "{app}\vito.ico"
-Name: "{autodesktop}\{#AppTrayName}";          Filename: "{app}\{#AppExe}"; Parameters: "serve"; IconFilename: "{app}\vito.ico"; Tasks: desktopicon
+; Opens Vito (its window). Named after the app and carrying its AppUserModelID
+; (notify.AppUserModelID): the window pins to the taskbar as this shortcut and
+; toasts are sent as "Vito".
+Name: "{group}\{#AppName}";                    Filename: "{app}\{#AppExe}"; Parameters: "open"; IconFilename: "{app}\vito.ico"; AppUserModelID: "io.github.vinceecniv.vito"
+Name: "{autodesktop}\{#AppName}";              Filename: "{app}\{#AppExe}"; Parameters: "open"; IconFilename: "{app}\vito.ico"; AppUserModelID: "io.github.vinceecniv.vito"; Tasks: desktopicon
 
 [Run]
 ; Autostart is the app's own business — it rewrites the login-startup entry at
@@ -185,7 +196,7 @@ Name: "{autodesktop}\{#AppTrayName}";          Filename: "{app}\{#AppExe}"; Para
 Filename: "{app}\{#AppExe}"; Parameters: "autostart on"; Flags: runhidden; Tasks: autostart
 ; No skipifsilent here: an unattended update must bring Vito back up by itself.
 Filename: "{app}\{#AppExe}"; Parameters: "serve"; Description: "{cm:RunVito}"; Flags: nowait postinstall
-Filename: "http://127.0.0.1:4573/"; Description: "{cm:OpenUI}"; Flags: shellexec nowait postinstall skipifsilent
+Filename: "{app}\{#AppExe}"; Parameters: "open"; Description: "{cm:OpenUI}"; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
 ; Stop the daemon before its files disappear underneath it.
@@ -225,7 +236,11 @@ begin
     WaitedMs := WaitedMs + 250;
   end;
   if VitoRunning() then
-    Result := CustomMessage('QuitFailed');
+    Result := CustomMessage('QuitFailed')
+  else
+    // Vito's own window (vito window) closes itself within a second of the
+    // daemon going away; it holds vito.exe open until then.
+    Sleep(1500);
 end;
 
 // On uninstall, ask before removing anything of the user's own. Silent

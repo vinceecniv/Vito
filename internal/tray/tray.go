@@ -13,7 +13,6 @@ import (
 	"runtime"
 	"sync"
 	"sync/atomic"
-	"time"
 	"vito/internal/uitext"
 
 	"fyne.io/systray"
@@ -25,27 +24,32 @@ import (
 )
 
 // animator holds one static tray icon per state and swaps it on state change —
-// nothing animates. It also rebuilds the set when the OS taskbar theme flips.
+// nothing animates. It also rebuilds the set when the colour theme or corners change.
 type animator struct {
 	icons map[daemon.State][]byte
 	mu    sync.Mutex
 	state daemon.State
-	dark  bool
+	look  string // ui.accent and ui.radius, as last drawn
 }
 
-func newAnimator(dark bool) *animator {
-	return &animator{icons: buildIcons(dark), state: daemon.StateIdle, dark: dark}
+func newAnimator(d *daemon.Daemon) *animator {
+	a := &animator{state: daemon.StateIdle}
+	a.setLook(d)
+	return a
 }
 
-// setDark rebuilds the icon set when the OS taskbar theme changes.
-func (a *animator) setDark(dark bool) {
+// setLook rebuilds the icon set when the taskbar's theme, Vito's colour theme
+// (ui.accent) or its corners (ui.radius) change.
+func (a *animator) setLook(d *daemon.Daemon) {
+	ui := d.Config().UI
+	look := ui.Accent + "/" + ui.Radius
 	a.mu.Lock()
-	if dark == a.dark {
+	if a.icons != nil && look == a.look {
 		a.mu.Unlock()
 		return
 	}
-	a.dark = dark
-	a.icons = buildIcons(dark)
+	a.look = look
+	a.icons = buildIcons(ui.Accent, ui.Radius)
 	ic := a.icons[a.state]
 	a.mu.Unlock()
 	if len(ic) > 0 {
@@ -85,14 +89,8 @@ func Run(d *daemon.Daemon, url, version string, log *slog.Logger) (userQuit bool
 }
 
 func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
-	anim := newAnimator(wantDark(d))
+	anim := newAnimator(d)
 	anim.setState(daemon.StateIdle)
-	go func() { // follow OS taskbar theme changes when Vito's theme is "system"
-		for {
-			time.Sleep(3 * time.Second)
-			anim.setDark(wantDark(d))
-		}
-	}()
 	// macOS renders the title as text beside the menu-bar icon, which doubles
 	// the width of the status item to repeat what the icon already says. Other
 	// hosts use it as a label where the icon may not be shown at all, so it is
@@ -263,7 +261,7 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 		case "config", "privacy":
 			relabel()
 			refresh()
-			anim.setDark(wantDark(d)) // theme may have changed in the web UI
+			anim.setLook(d) // colours or corners may have changed in the web UI
 		}
 	})
 
@@ -333,19 +331,6 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 	}()
 
 	log.Info("system tray ready", "settings", url)
-}
-
-// wantDark decides the tray-icon variant: Vito's explicit light/dark theme wins;
-// "system" (or unset) follows the OS taskbar theme.
-func wantDark(d *daemon.Daemon) bool {
-	switch d.Config().UI.Theme {
-	case "dark":
-		return true
-	case "light":
-		return false
-	default:
-		return darkTaskbar()
-	}
 }
 
 // statusText gives the status line and the tooltip suffix for s. The tooltip

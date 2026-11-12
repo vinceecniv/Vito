@@ -283,8 +283,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Menyediakan, mengelola, dan mengamankan kunci-kunci itu — serta semua biaya yang timbul dari pemakaiannya di penyedia — sepenuhnya menjadi tanggung jawab Anda.",
 "Privacy & data": "Privasi & data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito sama sekali tidak mengumpulkan data pengguna untuk diteruskan, dan tidak ada bentuk pelacakan atau analitik apa pun di dalam aplikasi. Pengaturan, kamus, dan riwayat Anda tetap lokal di komputer Anda sendiri.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Satu-satunya data yang dikirim aplikasi ke luar adalah suara dan teks Anda yang menuju penyedia eksternal model BYOK (pengenalan suara dan pembersihan AI). Data itu tunduk pada kebijakan privasi penyedia eksternal tersebut.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Versi browser di vito.talk menghitung secara anonim seberapa sering ia dibuka dan apakah sebuah browser mencapai dikte ke-1 dan ke-10 — tanpa cookie, dan sama sekali tidak saat Do Not Track aktif. Tidak ada yang Anda ucapkan atau atur yang dikirim. Aplikasi yang terpasang tidak menghitung apa pun.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Satu-satunya data yang dikirim aplikasi ke luar adalah suara dan teks Anda yang menuju penyedia eksternal model BYOK (pengenalan suara dan pembersihan AI). Data itu tunduk pada kebijakan privasi penyedia eksternal tersebut.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Versi browser di vito.talk menghitung secara anonim seberapa sering ia dibuka dan apakah sebuah browser mencapai dikte ke-1 dan ke-10 — tanpa cookie, dan sama sekali tidak saat Do Not Track aktif. Tidak ada yang Anda ucapkan atau atur yang dikirim. Aplikasi yang terpasang tidak menghitung apa pun.",
 "Show all": "Tampilkan semua",
 "Errors only": "Hanya kesalahan",
 "Off": "Nonaktif",
@@ -1440,7 +1440,32 @@
 "words": "kata",
 "Marks": "Tanda",
 "Follows the colours of your desktop": "Mengikuti warna desktop Anda",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tekan Caps Lock untuk mulai mendikte dan tekan lagi untuk berhenti. Menahannya untuk mendikte memerlukan niri yang lebih baru dari 26.04; setelah itu atur ulang."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tekan Caps Lock untuk mulai mendikte dan tekan lagi untuk berhenti. Menahannya untuk mendikte memerlukan niri yang lebih baru dari 26.04; setelah itu atur ulang.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Pilihanmu adalah preferensi, bukan batasan: Soniox juga mengenali bahasa lain, bahkan saat kamu berganti bahasa di tengah kalimat.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet mengenali bahasa dengan sendirinya: kamu bisa mendikte dalam salah satu dari 25 bahasanya, apa pun yang kamu pilih di sini.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Model ini tetap memakai bahasa yang kamu pilih di sini. Berganti bahasa saat mendikte? Pilih Otomatis.",
+"Dictated, gave Vito Assist a command and made a long recording": "Mendikte, memberi perintah ke Vito Assist, dan membuat rekaman panjang",
+"Minimize": "Minimalkan",
+"Maximize": "Maksimalkan",
+"Restore down": "Kembalikan ke Bawah",
+"Not sure what you like?": "Tidak yakin apa yang kamu suka?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Biarkan Vito memilihkan tampilan untukmu — warna, font, sudut, latar belakang, dan sesuatu untuk dikenakan. Tidak suka? Coba saja lagi.",
+"Surprise me": "Kejutkan aku",
+"Vito Assist and recordings": "Vito Assist dan rekaman",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Rekaman panjang yang selesai dalam periode ini.",
+"{time} recorded in total.": "Total {time} direkam.",
+"Open Vito in its own window": "Buka Vito di jendelanya sendiri",
+"Back to 100%": "Kembali ke 100%",
+"Default 100%": "Bawaan 100%",
+"How do I get a key?": "Bagaimana cara mendapatkan kunci?",
+"Soniox API key": "Kunci API Soniox",
+"Achievement sound": "Suara pencapaian",
+"Menu": "Menu",
+"Ran your first Vito Assist command": "Menjalankan perintah Vito Assist pertama Anda",
+"Ran {n} Vito Assist commands": "Menjalankan {n} perintah Vito Assist",
+"Made by": "Dibuat oleh",
+"Copyright": "Hak cipta"
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",
@@ -1505,6 +1530,7 @@
 "motion": "Menghentikan animasi Vito: transisi, latar belakang bergerak, dan gerakan Vito sendiri. Sistem Anda juga punya pengaturan untuk ini; jika aktif, Vito sudah mengikutinya.",
 "cursor": "Penunjuk tetikus dalam warna Vito, dengan logo di tangannya. Nonaktif: penunjuk biasa sistem Anda.",
 "helptips": "Ya, ini salah satunya. Nonaktif: tidak ada penjelasan lagi saat Anda berhenti sejenak di atas pengaturan — termasuk yang ini.",
-"soundset": "Bagaimana suaranya terdengar: milik Vito sendiri, Lembut (nada hangat), Kaca (lonceng jernih), Retro (8-bit), atau Detak (pendek dan kering, paling tidak mencolok). Klik salah satu untuk mendengarnya."
+"soundset": "Bagaimana suaranya terdengar: milik Vito sendiri, Lembut (nada hangat), Kaca (lonceng jernih), Retro (8-bit), atau Detak (pendek dan kering, paling tidak mencolok). Klik salah satu untuk mendengarnya.",
+"ownwindow": "Membuka Vito di jendelanya sendiri (Microsoft Edge WebView2), tanpa browser. Nonaktif: di aplikasi browser yang terpasang atau di tab browser."
 }
 }

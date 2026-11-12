@@ -287,8 +287,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "ఆ కీలను అందించడం, నిర్వహించడం, భద్రపరచడం — మరియు ప్రొవైడర్‌ల వద్ద వాటి వాడకంతో అయ్యే ఖర్చులన్నీ — పూర్తిగా మీ స్వంత బాధ్యత.",
 "Privacy & data": "గోప్యత & డేటా",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito పంపడానికి ఎలాంటి వినియోగదారు డేటాను సేకరించదు, మరియు యాప్‌లో ఏ రకమైన ట్రాకింగ్ లేదా అనలిటిక్స్ నిర్మించబడలేదు. మీ సెట్టింగ్‌లు, నిఘంటువు మరియు చరిత్ర మీ స్వంత కంప్యూటర్‌లో స్థానికంగానే ఉంటాయి.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "యాప్ బాహ్యంగా పంపే ఏకైక డేటా మీ స్వరం మరియు BYOK మోడల్ బాహ్య ప్రొవైడర్‌లకు వెళ్ళే టెక్స్ట్‌లు (స్పీచ్ రికగ్నిషన్ మరియు AI శుద్ధీకరణ). ఆ డేటాకు ఆయా బాహ్య ప్రొవైడర్‌ల గోప్యతా విధానాలు వర్తిస్తాయి.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk లోని బ్రౌజర్ వెర్షన్ అది ఎన్నిసార్లు తెరవబడిందో మరియు ఒక బ్రౌజర్ తన 1వ మరియు 10వ డిక్టేషన్‌కు చేరుకుందో లేదో అనామకంగా లెక్కిస్తుంది — కుకీలు లేకుండా, Do Not Track ఆన్‌లో ఉంటే అస్సలు లేదు. మీరు చెప్పేది లేదా సెట్ చేసేది ఏదీ పంపబడదు. ఇన్‌స్టాల్ చేసిన యాప్ ఏమీ లెక్కించదు.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "యాప్ బాహ్యంగా పంపే ఏకైక డేటా మీ స్వరం మరియు BYOK మోడల్ బాహ్య ప్రొవైడర్‌లకు వెళ్ళే టెక్స్ట్‌లు (స్పీచ్ రికగ్నిషన్ మరియు AI శుద్ధీకరణ). ఆ డేటాకు ఆయా బాహ్య ప్రొవైడర్‌ల గోప్యతా విధానాలు వర్తిస్తాయి.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk లోని బ్రౌజర్ వెర్షన్ అది ఎన్నిసార్లు తెరవబడిందో మరియు ఒక బ్రౌజర్ తన 1వ మరియు 10వ డిక్టేషన్‌కు చేరుకుందో లేదో అనామకంగా లెక్కిస్తుంది — కుకీలు లేకుండా, Do Not Track ఆన్‌లో ఉంటే అస్సలు లేదు. మీరు చెప్పేది లేదా సెట్ చేసేది ఏదీ పంపబడదు. ఇన్‌స్టాల్ చేసిన యాప్ ఏమీ లెక్కించదు.",
 "Show all": "అన్నీ చూపు",
 "Errors only": "లోపాలు మాత్రమే",
 "Off": "ఆఫ్",
@@ -1440,7 +1440,32 @@
 "words": "పదాలు",
 "Marks": "గుర్తులు",
 "Follows the colours of your desktop": "మీ డెస్క్‌టాప్ రంగులను అనుసరిస్తుంది",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "డిక్టేట్ చేయడం ప్రారంభించడానికి Caps Lock నొక్కండి, ఆపడానికి మళ్ళీ నొక్కండి. దాన్ని నొక్కి పట్టుకుని డిక్టేట్ చేయడానికి 26.04 కంటే కొత్త niri అవసరం; అప్పుడు దీన్ని మళ్ళీ సెటప్ చేయండి."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "డిక్టేట్ చేయడం ప్రారంభించడానికి Caps Lock నొక్కండి, ఆపడానికి మళ్ళీ నొక్కండి. దాన్ని నొక్కి పట్టుకుని డిక్టేట్ చేయడానికి 26.04 కంటే కొత్త niri అవసరం; అప్పుడు దీన్ని మళ్ళీ సెటప్ చేయండి.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "మీ ఎంపిక ఒక ప్రాధాన్యత మాత్రమే, పరిమితి కాదు: వాక్యం మధ్యలో భాష మార్చినా Soniox ఇతర భాషలను కూడా గుర్తిస్తుంది.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet భాషను తానే గుర్తిస్తుంది: మీరు ఇక్కడ ఏది ఎంచుకున్నా, దాని 25 భాషల్లో దేనిలోనైనా చెప్పవచ్చు.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "ఈ మోడల్ మీరు ఇక్కడ ఎంచుకున్న భాషకే కట్టుబడి ఉంటుంది. చెప్పేటప్పుడు భాషలు మారుస్తారా? స్వయంచాలకం ఎంచుకోండి.",
+"Dictated, gave Vito Assist a command and made a long recording": "చెప్పారు, Vito Assist‌కు ఒక కమాండ్ ఇచ్చారు, ఒక సుదీర్ఘ రికార్డింగ్ కూడా చేశారు",
+"Minimize": "కనిష్ఠీకరించు",
+"Maximize": "గరిష్ఠీకరించు",
+"Restore down": "క్రిందికి పునరుద్ధరించు",
+"Not sure what you like?": "మీకు ఏది నచ్చుతుందో తెలియదా?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito మీ కోసం ఒక రూపాన్ని ఎంచుకోనివ్వండి — రంగులు, ఫాంట్, మూలలు, నేపథ్యం మరియు ధరించడానికి ఏదైనా. నచ్చలేదా? మళ్ళీ ప్రయత్నించండి.",
+"Surprise me": "ఆశ్చర్యపరచు",
+"Vito Assist and recordings": "Vito Assist మరియు రికార్డింగ్‌లు",
+"Assist": "Assist",
+"The long recordings finished in this period.": "ఈ వ్యవధిలో పూర్తయిన సుదీర్ఘ రికార్డింగ్‌లు.",
+"{time} recorded in total.": "మొత్తం {time} రికార్డ్ చేయబడింది.",
+"Open Vito in its own window": "Vitoని దాని స్వంత విండోలో తెరువు",
+"Back to 100%": "100%కి తిరిగి వెళ్లు",
+"Default 100%": "డిఫాల్ట్ 100%",
+"How do I get a key?": "కీని ఎలా పొందాలి?",
+"Soniox API key": "Soniox API కీ",
+"Achievement sound": "విజయ ధ్వని",
+"Menu": "మెనూ",
+"Ran your first Vito Assist command": "మీ మొదటి Vito Assist ఆదేశాన్ని అమలు చేశారు",
+"Ran {n} Vito Assist commands": "{n} Vito Assist ఆదేశాలను అమలు చేశారు",
+"Made by": "రూపొందించినవారు",
+"Copyright": "కాపీరైట్"
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",
@@ -1505,6 +1530,7 @@
 "motion": "Vito యానిమేషన్‌లను ఆపుతుంది: మార్పులు, కదిలే నేపథ్యాలు మరియు Vito సొంత కదలికలు. మీ సిస్టమ్‌లో కూడా దీనికి ఒక సెట్టింగ్ ఉంది; అది ఆన్‌లో ఉంటే, Vito ఇప్పటికే దాన్ని అనుసరిస్తుంది.",
 "cursor": "Vito రంగులలో మౌస్ పాయింటర్, చేతిలో లోగోతో. ఆఫ్: మీ సిస్టమ్ సాధారణ పాయింటర్.",
 "helptips": "అవును, ఇది అలాంటిదే. ఆఫ్: ఒక సెట్టింగ్‌పై కొంతసేపు ఆగినప్పుడు ఇక వివరణలు ఉండవు — ఇది కూడా.",
-"soundset": "శబ్దాలు ఎలా వినిపిస్తాయి: Vito సొంతవి, మృదువు (వెచ్చని స్వరాలు), గాజు (స్పష్టమైన గంటలు), రెట్రో (8-బిట్) లేదా టిక్ (చిన్నగా, పొడిగా, అతి తక్కువగా గమనించబడేది). వినడానికి ఒకదాన్ని క్లిక్ చేయండి."
+"soundset": "శబ్దాలు ఎలా వినిపిస్తాయి: Vito సొంతవి, మృదువు (వెచ్చని స్వరాలు), గాజు (స్పష్టమైన గంటలు), రెట్రో (8-బిట్) లేదా టిక్ (చిన్నగా, పొడిగా, అతి తక్కువగా గమనించబడేది). వినడానికి ఒకదాన్ని క్లిక్ చేయండి.",
+"ownwindow": "బ్రౌజర్ లేకుండా, Vitoను దాని స్వంత విండోలో (Microsoft Edge WebView2) తెరుస్తుంది. ఆఫ్: ఇన్‌స్టాల్ చేసిన బ్రౌజర్ యాప్‌లో లేదా బ్రౌజర్ ట్యాబ్‌లో."
 }
 }

@@ -311,8 +311,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "それらのキーの提供、管理、保護、そしてプロバイダーでの使用に伴うすべての費用は、完全にご自身の責任となります。",
 "Privacy & data": "プライバシーとデータ",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vitoは送信目的でユーザーデータを一切収集せず、アプリにはいかなる形式のトラッキングや分析も組み込まれていません。設定、辞書、履歴はご自身のコンピュータ内にローカルで保持されます。",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "アプリが外部に送信する唯一のデータは、BYOKモデルの外部プロバイダー（音声認識とAIクリーンアップ）に送られる音声とテキストです。そのデータには、これらの外部プロバイダーのプライバシーポリシーが適用されます。",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk のブラウザー版は、開かれた回数と、ブラウザーが 1 回目と 10 回目の音声入力に到達したかどうかを匿名でカウントします — Cookie は使わず、Do Not Track が有効なら一切カウントしません。話した内容や設定は一切送信されません。インストール版アプリは何もカウントしません。",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "アプリが外部に送信する唯一のデータは、BYOKモデルの外部プロバイダー（音声認識とAIクリーンアップ）に送られる音声とテキストです。そのデータには、これらの外部プロバイダーのプライバシーポリシーが適用されます。",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk のブラウザー版は、開かれた回数と、ブラウザーが 1 回目と 10 回目の音声入力に到達したかどうかを匿名でカウントします — Cookie は使わず、Do Not Track が有効なら一切カウントしません。話した内容や設定は一切送信されません。インストール版アプリは何もカウントしません。",
 "Show all": "すべて表示",
 "Errors only": "エラーのみ",
 "Off": "オフ",
@@ -1438,7 +1438,32 @@
 "words": "語",
 "Marks": "マーク",
 "Follows the colours of your desktop": "デスクトップの配色に従います",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Caps Lockを押すと口述を開始し、もう一度押すと停止します。押し続けて口述するには26.04より新しいniriが必要です。その後、もう一度設定し直してください。"
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Caps Lockを押すと口述を開始し、もう一度押すと停止します。押し続けて口述するには26.04より新しいniriが必要です。その後、もう一度設定し直してください。",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "ここでの選択は優先設定であって制限ではありません。Soniox は他の言語も認識し、文の途中で言語を切り替えても対応します。",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet は言語を自動で認識します。ここで何を選んでも、対応する 25 言語のどれでも音声入力できます。",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "このモデルはここで選んだ言語を使い続けます。音声入力中に言語を切り替えたいなら「自動」を選んでください。",
+"Dictated, gave Vito Assist a command and made a long recording": "音声入力し、Vito Assist にコマンドを出し、長時間録音を行った",
+"Minimize": "最小化",
+"Maximize": "最大化",
+"Restore down": "元に戻す (縮小)",
+"Not sure what you like?": "どれが好みかわからない？",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito に見た目を選んでもらいましょう — 色、フォント、角、背景、そして身につけるもの。気に入らなければ、もう一度試すだけです。",
+"Surprise me": "おまかせ",
+"Vito Assist and recordings": "Vito Assist と録音",
+"Assist": "Assist",
+"The long recordings finished in this period.": "この期間に終了した長時間録音。",
+"{time} recorded in total.": "合計 {time} 録音しました。",
+"Open Vito in its own window": "Vito を専用のウィンドウで開く",
+"Back to 100%": "100% に戻す",
+"Default 100%": "既定 100%",
+"How do I get a key?": "キーの入手方法は？",
+"Soniox API key": "Soniox API キー",
+"Achievement sound": "実績のサウンド",
+"Menu": "メニュー",
+"Ran your first Vito Assist command": "初めての Vito Assist コマンドを実行",
+"Ran {n} Vito Assist commands": "Vito Assist コマンドを {n} 回実行",
+"Made by": "作成者",
+"Copyright": "著作権"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",
@@ -1503,6 +1528,7 @@
 "motion": "Vitoのアニメーションを止めます：切り替え効果、動く背景、Vito自身の動き。システムにも同様の設定があり、それがオンならVitoはすでに従っています。",
 "cursor": "Vitoの色をしたマウスポインター。手にロゴを持っています。オフ：システムの通常のポインター。",
 "helptips": "はい、これがその説明です。オフにすると、設定の上にしばらくカーソルを置いても説明は表示されなくなります — これも含めて。",
-"soundset": "サウンドの音色：Vito独自、ソフト（温かい音）、ガラス（澄んだベル）、レトロ（8ビット）、ティック（短く乾いた音、最も控えめ）。クリックすると試聴できます。"
+"soundset": "サウンドの音色：Vito独自、ソフト（温かい音）、ガラス（澄んだベル）、レトロ（8ビット）、ティック（短く乾いた音、最も控えめ）。クリックすると試聴できます。",
+"ownwindow": "ブラウザーを使わず、Vito を専用のウィンドウ（Microsoft Edge WebView2）で開きます。オフ：インストール済みのブラウザーアプリまたはブラウザーのタブで開きます。"
 }
 }

@@ -275,8 +275,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "E kulcsok biztosítása, kezelése és védelme — valamint minden, a szolgáltatóknál a használatukból eredő költség — teljes mértékben a te felelősséged.",
 "Privacy & data": "Adatvédelem és adatok",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "A Vito semmilyen módon nem gyűjt felhasználói adatokat továbbítás céljából, és semmilyen nyomkövetés vagy analitika nincs beépítve az alkalmazásba. A beállításaid, szótárad és előzményeid helyben, a saját számítógépeden maradnak.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Az egyetlen adat, amit az alkalmazás kifelé küld, a beszéded és a BYOK-modell külső szolgáltatóihoz kerülő szövegek (beszédfelismerés és AI-tisztítás). Ezekre az adatokra e külső szolgáltatók adatvédelmi nyilatkozatai vonatkoznak.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "A vito.talk böngészős változata névtelenül számolja, milyen gyakran nyitják meg, és hogy egy böngésző eljut-e az 1. és a 10. diktálásáig — sütik nélkül, bekapcsolt Do Not Track mellett pedig egyáltalán nem. Semmi sem kerül elküldésre abból, amit mondasz vagy beállítasz. A telepített alkalmazás semmit sem számol.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Az egyetlen adat, amit az alkalmazás kifelé küld, a beszéded és a BYOK-modell külső szolgáltatóihoz kerülő szövegek (beszédfelismerés és AI-tisztítás). Ezekre az adatokra e külső szolgáltatók adatvédelmi nyilatkozatai vonatkoznak.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "A vito.talk böngészős változata névtelenül számolja, milyen gyakran nyitják meg, és hogy egy böngésző eljut-e az 1. és a 10. diktálásáig — sütik nélkül, bekapcsolt Do Not Track mellett pedig egyáltalán nem. Semmi sem kerül elküldésre abból, amit mondasz vagy beállítasz. A telepített alkalmazás semmit sem számol.",
 "Show all": "Összes megjelenítése",
 "Errors only": "Csak hibák",
 "Off": "Ki",
@@ -1440,7 +1440,32 @@
 "words": "szó",
 "Marks": "Jelölések",
 "Follows the colours of your desktop": "Az asztalod színeit követi",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nyomd meg a Caps Lockot a diktálás elindításához, és nyomd meg újra a leállításához. A lenyomva tartott diktáláshoz 26.04-nél újabb niri kell; utána állítsd be újra."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nyomd meg a Caps Lockot a diktálás elindításához, és nyomd meg újra a leállításához. A lenyomva tartott diktáláshoz 26.04-nél újabb niri kell; utána állítsd be újra.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "A választásod előnyben részesítés, nem korlát: a Soniox más nyelveket is felismer, még akkor is, ha mondat közben váltasz.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "A Parakeet magától felismeri a nyelvet: bármelyik 25 nyelvén diktálhatsz, akármit is választasz itt.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Ez a modell az itt választott nyelvnél marad. Diktálás közben nyelvet váltanál? Válaszd az Automatikus lehetőséget.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktáltál, parancsot adtál a Vito Assistnak és készítettél egy hosszú felvételt",
+"Minimize": "Kis méret",
+"Maximize": "Teljes méret",
+"Restore down": "Előző méret",
+"Not sure what you like?": "Nem tudod, mi tetszik?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Hadd válasszon Vito egy megjelenést neked — színeket, betűtípust, sarkokat, hátteret és valamit, amit felvehet. Nem tetszik? Csak próbáld újra.",
+"Surprise me": "Lepj meg",
+"Vito Assist and recordings": "Vito Assist és felvételek",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Az ebben az időszakban befejezett hosszú felvételek.",
+"{time} recorded in total.": "Összesen {time} felvétel.",
+"Open Vito in its own window": "Vito megnyitása saját ablakban",
+"Back to 100%": "Vissza 100%-ra",
+"Default 100%": "Alapértelmezett: 100%",
+"How do I get a key?": "Hogyan szerezhetek kulcsot?",
+"Soniox API key": "Soniox API-kulcs",
+"Achievement sound": "Kitüntetés hangja",
+"Menu": "Menü",
+"Ran your first Vito Assist command": "Lefuttattad az első Vito Assist-parancsodat",
+"Ran {n} Vito Assist commands": "{n} Vito Assist-parancs lefuttatva",
+"Made by": "Készítette",
+"Copyright": "Szerzői jog"
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",
@@ -1505,6 +1530,7 @@
 "motion": "Leállítja a Vito animációit: az átmeneteket, a mozgó háttereket és Vito saját mozdulatait. A rendszerednek is van ilyen beállítása; ha az be van kapcsolva, a Vito már követi.",
 "cursor": "Egérmutató a Vito színeiben, kezében a logóval. Ki: a rendszered megszokott mutatója.",
 "helptips": "Igen, ez is egy ilyen. Ki: nincs több magyarázat, ha egy beállítás fölött időzöl — ennél sem.",
-"soundset": "Hogyan szólnak a hangok: a Vito sajátjai, Lágy (meleg hangok), Üveg (fényes csengők), Retró (8 bites) vagy Tikk (rövid és száraz, a legkevésbé feltűnő). Kattints egyre, hogy meghalld."
+"soundset": "Hogyan szólnak a hangok: a Vito sajátjai, Lágy (meleg hangok), Üveg (fényes csengők), Retró (8 bites) vagy Tikk (rövid és száraz, a legkevésbé feltűnő). Kattints egyre, hogy meghalld.",
+"ownwindow": "Saját ablakban nyitja meg a Vitót (Microsoft Edge WebView2), böngésző nélkül. Ki: a telepített böngészőalkalmazásban vagy egy böngészőlapon."
 }
 }

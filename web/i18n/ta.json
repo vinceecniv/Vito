@@ -297,8 +297,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "அந்த விசைகளை வழங்குதல், நிர்வகித்தல் மற்றும் பாதுகாத்தல் — மற்றும் வழங்குநர்களிடம் அவற்றின் பயன்பாட்டால் ஏற்படும் அனைத்து செலவுகளும் — முழுவதும் உங்கள் சொந்தப் பொறுப்பு.",
 "Privacy & data": "தனியுரிமை & தரவு",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito எந்த வகையிலும் அனுப்புவதற்காக பயனர் தரவைச் சேகரிக்காது, பயன்பாட்டில் எந்த வகையான கண்காணிப்பும் அல்லது பகுப்பாய்வும் உள்ளமைக்கப்படவில்லை. உங்கள் அமைப்புகள், அகராதி மற்றும் வரலாறு உங்கள் சொந்தக் கணினியில் உள்ளூரிலேயே இருக்கும்.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "பயன்பாடு வெளிப்புறமாக அனுப்பும் ஒரே தரவு உங்கள் பேச்சு மற்றும் BYOK மாதிரியின் வெளிப்புற வழங்குநர்களுக்குச் செல்லும் உரைகள் (பேச்சு அறிதல் மற்றும் AI சுத்தம்). அந்த தரவுக்கு அந்த வெளிப்புற வழங்குநர்களின் தனியுரிமைக் கொள்கைகள் பொருந்தும்.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk இல் உள்ள உலாவி பதிப்பு அது எத்தனை முறை திறக்கப்படுகிறது என்பதையும், ஒரு உலாவி தனது 1வது மற்றும் 10வது டிக்டேஷனை அடைகிறதா என்பதையும் அநாமதேயமாக எண்ணுகிறது — குக்கீகள் இல்லாமல், Do Not Track இயக்கத்தில் இருந்தால் எதுவுமே இல்லை. நீங்கள் சொல்வதோ அமைப்பதோ எதுவும் அனுப்பப்படாது. நிறுவப்பட்ட ஆப் எதையும் எண்ணாது.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "பயன்பாடு வெளிப்புறமாக அனுப்பும் ஒரே தரவு உங்கள் பேச்சு மற்றும் BYOK மாதிரியின் வெளிப்புற வழங்குநர்களுக்குச் செல்லும் உரைகள் (பேச்சு அறிதல் மற்றும் AI சுத்தம்). அந்த தரவுக்கு அந்த வெளிப்புற வழங்குநர்களின் தனியுரிமைக் கொள்கைகள் பொருந்தும்.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk இல் உள்ள உலாவி பதிப்பு அது எத்தனை முறை திறக்கப்படுகிறது என்பதையும், ஒரு உலாவி தனது 1வது மற்றும் 10வது டிக்டேஷனை அடைகிறதா என்பதையும் அநாமதேயமாக எண்ணுகிறது — குக்கீகள் இல்லாமல், Do Not Track இயக்கத்தில் இருந்தால் எதுவுமே இல்லை. நீங்கள் சொல்வதோ அமைப்பதோ எதுவும் அனுப்பப்படாது. நிறுவப்பட்ட ஆப் எதையும் எண்ணாது.",
 "Show all": "அனைத்தையும் காட்டு",
 "Errors only": "பிழைகள் மட்டும்",
 "Off": "அணை",
@@ -1440,7 +1440,32 @@
 "words": "சொற்கள்",
 "Marks": "குறிகள்",
 "Follows the colours of your desktop": "உங்கள் டெஸ்க்டாப்பின் வண்ணங்களைப் பின்பற்றுகிறது",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "சொல்லெழுதத் தொடங்க Caps Lock-ஐ அழுத்துங்கள், நிறுத்த மீண்டும் அழுத்துங்கள். அதைப் பிடித்துக்கொண்டு சொல்லெழுத 26.04-ஐ விடப் புதிய niri தேவை; அதன்பின் இதை மீண்டும் அமையுங்கள்."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "சொல்லெழுதத் தொடங்க Caps Lock-ஐ அழுத்துங்கள், நிறுத்த மீண்டும் அழுத்துங்கள். அதைப் பிடித்துக்கொண்டு சொல்லெழுத 26.04-ஐ விடப் புதிய niri தேவை; அதன்பின் இதை மீண்டும் அமையுங்கள்.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "உங்கள் தேர்வு ஒரு விருப்பம் மட்டுமே, வரம்பு அல்ல: வாக்கியத்தின் நடுவில் மொழியை மாற்றினாலும் Soniox மற்ற மொழிகளையும் அறியும்.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet மொழியைத் தானே அறியும்: இங்கே நீங்கள் எதைத் தேர்ந்தெடுத்தாலும், அதன் 25 மொழிகளில் எதிலும் சொல்லலாம்.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "இந்த மாதிரி நீங்கள் இங்கே தேர்ந்தெடுக்கும் மொழியிலேயே இருக்கும். சொல்லும்போது மொழியை மாற்றுகிறீர்களா? தானியங்கி என்பதைத் தேர்ந்தெடுங்கள்.",
+"Dictated, gave Vito Assist a command and made a long recording": "சொன்னீர்கள், Vito Assist-க்கு ஒரு கட்டளை கொடுத்தீர்கள், ஒரு நீண்ட பதிவும் செய்தீர்கள்",
+"Minimize": "சிறிதாக்கு",
+"Maximize": "பெரிதாக்கு",
+"Restore down": "கீழே மீட்டமை",
+"Not sure what you like?": "எது பிடிக்கும் என்று தெரியவில்லையா?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito உங்களுக்காக ஒரு தோற்றத்தைத் தேர்ந்தெடுக்கட்டும் — நிறங்கள், எழுத்துரு, மூலைகள், பின்னணி மற்றும் அணிய ஏதாவது. பிடிக்கவில்லையா? மீண்டும் முயலுங்கள்.",
+"Surprise me": "ஆச்சரியப்படுத்து",
+"Vito Assist and recordings": "Vito Assist மற்றும் பதிவுகள்",
+"Assist": "Assist",
+"The long recordings finished in this period.": "இந்தக் காலகட்டத்தில் முடிந்த நீண்ட பதிவுகள்.",
+"{time} recorded in total.": "மொத்தம் {time} பதிவு செய்யப்பட்டது.",
+"Open Vito in its own window": "Vito-வை அதன் சொந்த சாளரத்தில் திற",
+"Back to 100%": "100%-க்குத் திரும்பு",
+"Default 100%": "இயல்புநிலை 100%",
+"How do I get a key?": "விசையை எப்படிப் பெறுவது?",
+"Soniox API key": "Soniox API விசை",
+"Achievement sound": "சாதனை ஒலி",
+"Menu": "மெனு",
+"Ran your first Vito Assist command": "உங்கள் முதல் Vito Assist கட்டளையை இயக்கினீர்கள்",
+"Ran {n} Vito Assist commands": "{n} Vito Assist கட்டளைகளை இயக்கினீர்கள்",
+"Made by": "உருவாக்கியவர்",
+"Copyright": "பதிப்புரிமை"
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",
@@ -1505,6 +1530,7 @@
 "motion": "Vito-வின் அசைவூட்டங்களை நிறுத்துகிறது: மாற்றங்கள், அசையும் பின்னணிகள் மற்றும் Vito-வின் சொந்த அசைவுகள். உங்கள் கணினியிலும் இதற்கான அமைப்பு உள்ளது; அது இயக்கத்தில் இருந்தால், Vito ஏற்கனவே அதைப் பின்பற்றுகிறது.",
 "cursor": "Vito-வின் வண்ணங்களில் சுட்டி, கையில் லோகோவுடன். அணை: உங்கள் கணினியின் வழக்கமான சுட்டி.",
 "helptips": "ஆம், இதுவும் அவற்றில் ஒன்று. அணை: ஒரு அமைப்பின் மேல் சிறிது நேரம் நின்றால் இனி விளக்கம் வராது — இதுவும் சேர்த்து.",
-"soundset": "ஒலிகள் எப்படி ஒலிக்கும்: Vito-வின் சொந்தம், மென்மை (இதமான தொனிகள்), பளிங்கு (தெளிவான மணிகள்), ரெட்ரோ (8-பிட்) அல்லது டிக் (குறுகிய, வறண்ட, மிகக் குறைவாகக் கவனிக்கப்படுவது). கேட்க ஒன்றைக் கிளிக் செய்யுங்கள்."
+"soundset": "ஒலிகள் எப்படி ஒலிக்கும்: Vito-வின் சொந்தம், மென்மை (இதமான தொனிகள்), பளிங்கு (தெளிவான மணிகள்), ரெட்ரோ (8-பிட்) அல்லது டிக் (குறுகிய, வறண்ட, மிகக் குறைவாகக் கவனிக்கப்படுவது). கேட்க ஒன்றைக் கிளிக் செய்யுங்கள்.",
+"ownwindow": "உலாவி இல்லாமல், Vito-வை அதன் சொந்தச் சாளரத்தில் (Microsoft Edge WebView2) திறக்கும். முடக்கினால்: நிறுவப்பட்ட உலாவி ஆப்பில் அல்லது உலாவித் தாவலில்."
 }
 }

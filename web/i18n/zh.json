@@ -283,8 +283,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "提供、管理和保护这些密钥 — 以及在提供商处使用它们产生的所有费用 — 完全由你自行负责。",
 "Privacy & data": "隐私与数据",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito 不会以任何方式收集用户数据用于转发，应用中也没有内置任何形式的跟踪或分析。你的设置、词典和历史记录都保留在你自己的电脑本地。",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "应用向外部发送的唯一数据，是你的语音以及发送给 BYOK 模式外部提供商（语音识别和 AI 清理）的文本。这些数据适用于这些外部提供商的隐私声明。",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk 上的浏览器版本会匿名统计其被打开的次数，以及浏览器是否达到第 1 次和第 10 次听写 — 不使用 Cookie，开启 Do Not Track 时则完全不统计。你说的内容或设置都不会被发送。已安装的应用不统计任何内容。",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "应用向外部发送的唯一数据，是你的语音以及发送给 BYOK 模式外部提供商（语音识别和 AI 清理）的文本。这些数据适用于这些外部提供商的隐私声明。",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk 上的浏览器版本会匿名统计其被打开的次数，以及浏览器是否达到第 1 次和第 10 次听写 — 不使用 Cookie，开启 Do Not Track 时则完全不统计。你说的内容或设置都不会被发送。已安装的应用不统计任何内容。",
 "Show all": "全部显示",
 "Errors only": "仅错误",
 "Off": "关闭",
@@ -1438,7 +1438,32 @@
 "words": "字",
 "Marks": "标记",
 "Follows the colours of your desktop": "跟随你桌面的配色",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "按下 Caps Lock 开始口述，再按一次停止。按住口述需要高于 26.04 的 niri 版本；升级后请重新设置一次。"
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "按下 Caps Lock 开始口述，再按一次停止。按住口述需要高于 26.04 的 niri 版本；升级后请重新设置一次。",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "你的选择只是偏好，而非限制：Soniox 也能识别其他语言，即使你在句子中途切换。",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet 会自行识别语言：无论你在这里选择什么，都可以用它支持的 25 种语言中的任意一种口述。",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "此模型会固定使用你在这里选择的语言。口述时会切换语言？请选择“自动”。",
+"Dictated, gave Vito Assist a command and made a long recording": "已口述、向 Vito Assist 下达过命令并完成了一次长录音",
+"Minimize": "最小化",
+"Maximize": "最大化",
+"Restore down": "向下还原",
+"Not sure what you like?": "不知道自己喜欢什么？",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "让 Vito 为你挑选外观——颜色、字体、圆角、背景，还有一件穿戴的小物。不喜欢？再试一次就好。",
+"Surprise me": "给我惊喜",
+"Vito Assist and recordings": "Vito Assist 和录音",
+"Assist": "Assist",
+"The long recordings finished in this period.": "此期间完成的长录音。",
+"{time} recorded in total.": "共录音 {time}。",
+"Open Vito in its own window": "在独立窗口中打开 Vito",
+"Back to 100%": "恢复到 100%",
+"Default 100%": "默认 100%",
+"How do I get a key?": "如何获取密钥？",
+"Soniox API key": "Soniox API 密钥",
+"Achievement sound": "成就音效",
+"Menu": "菜单",
+"Ran your first Vito Assist command": "运行了第一条 Vito Assist 命令",
+"Ran {n} Vito Assist commands": "运行了 {n} 条 Vito Assist 命令",
+"Made by": "制作者",
+"Copyright": "版权"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",
@@ -1503,6 +1528,7 @@
 "motion": "停止 Vito 的动画：过渡效果、动态背景以及 Vito 自己的动作。你的系统也有相应设置；开启时 Vito 已会遵循。",
 "cursor": "Vito 配色的鼠标指针，手里拿着标志。关闭：使用系统的普通指针。",
 "helptips": "没错，这就是其中之一。关闭：在设置上停留时不再显示说明 — 包括这一条。",
-"soundset": "音效的声音：Vito 原版、柔和（温暖的音色）、玻璃（清脆的铃声）、复古（8 位）或滴答（短促干脆，最不显眼）。点击即可试听。"
+"soundset": "音效的声音：Vito 原版、柔和（温暖的音色）、玻璃（清脆的铃声）、复古（8 位）或滴答（短促干脆，最不显眼）。点击即可试听。",
+"ownwindow": "在独立窗口（Microsoft Edge WebView2）中打开 Vito，无需浏览器。关闭：在已安装的浏览器应用或浏览器标签页中打开。"
 }
 }

@@ -76,10 +76,11 @@ type Stats struct {
 	Early      bool // dictated between 5am and 7am
 	Comeback   bool // resumed after a gap of 30+ days
 	// Mode-usage flags for the hidden "Vito Wizard" badge: ever dictated plainly,
-	// ever ran a spoken Assist command, and ever ran a clipboard Assist command.
-	UsedDictation       bool
-	UsedAssist          bool
-	UsedClipboardAssist bool
+	// ever ran a Vito Assist command (spoken or on the clipboard), and ever
+	// finished a long recording made in Vito (an imported file doesn't count).
+	UsedDictation     bool
+	UsedAssist        bool
+	UsedLongRecording bool
 }
 
 // Value is the current progress figure for a group (used for progress bars).
@@ -146,7 +147,7 @@ func (d Def) Earned(s Stats) bool {
 		case "polyglot":
 			return s.Languages >= 3
 		case "wizard":
-			return s.UsedDictation && s.UsedAssist && s.UsedClipboardAssist
+			return s.UsedDictation && s.UsedAssist && s.UsedLongRecording
 		}
 		return false
 	}
@@ -154,6 +155,12 @@ func (d Def) Earned(s Stats) bool {
 }
 
 // List is every achievement, in display order. Names are deliberately silly.
+//
+// Each ladder starts within the first days and climbs by about ×4 to ×10 a
+// step. The tops (streaks apart) are meant for a year or more of daily use (about 750 words,
+// 20 dictations and 6 minutes of speaking a day, measured on a heavy user),
+// a word million longer still. An id keeps its first threshold where that
+// changed: earned badges, their images and the wardrobe hang on the id.
 var List = []Def{
 	// Support badges — ticked by hand, on your honour. Kept apart from the earned
 	// milestones and shown with a little extra sparkle when unlocked.
@@ -163,63 +170,70 @@ var List = []Def{
 	{ID: "tell-friend", Group: GroupSupport, Icon: "🤝", Name: "Word of Mouth", Desc: "Told a friend about Vito", Manual: true},
 
 	// Words dictated, over your whole time with Vito.
-	{ID: "words-100", Group: GroupWords, Icon: "🎙️", Name: "Warming Up", Desc: "Dictated {n} words", Threshold: 100},
+	{ID: "words-100", Group: GroupWords, Icon: "🌡️", Name: "Warming Up", Desc: "Dictated {n} words", Threshold: 100},
 	{ID: "words-1k", Group: GroupWords, Icon: "🗣️", Name: "Finding Your Voice", Desc: "Dictated {n} words", Threshold: 1000},
 	{ID: "words-10k", Group: GroupWords, Icon: "🏆", Name: "Sir Speak-a-Lot", Desc: "Dictated {n} words", Threshold: 10000},
 	{ID: "words-50k", Group: GroupWords, Icon: "📣", Name: "Voice Carries", Desc: "Dictated {n} words", Threshold: 50000},
-	{ID: "words-250k", Group: GroupWords, Icon: "🎩", Name: "The Orator", Desc: "Dictated {n} words", Threshold: 250000},
+	{ID: "words-250k", Group: GroupWords, Icon: "🎭", Name: "The Orator", Desc: "Dictated {n} words", Threshold: 250000},
 	{ID: "words-1m", Group: GroupWords, Icon: "💬", Name: "Word Millionaire", Desc: "Dictated {n} words", Threshold: 1000000},
 
-	// Time spent speaking.
-	{ID: "spoken-10m", Group: GroupSpoken, Icon: "⏱️", Name: "Ten Minutes In", Desc: "Spoke for {n}", Threshold: 600},
+	// Time spent speaking: 10 minutes, an hour, 5, 25 and 100 hours.
+	{ID: "spoken-10m", Group: GroupSpoken, Icon: "🐣", Name: "Ten Minutes In", Desc: "Spoke for {n}", Threshold: 600},
 	{ID: "spoken-1h", Group: GroupSpoken, Icon: "🔋", Name: "Hour of Power", Desc: "Spoke for {n}", Threshold: 3600},
-	{ID: "spoken-10h", Group: GroupSpoken, Icon: "🎧", Name: "The Regular", Desc: "Spoke for {n}", Threshold: 36000},
-	{ID: "spoken-50h", Group: GroupSpoken, Icon: "🗯️", Name: "Chatterbox", Desc: "Spoke for {n}", Threshold: 180000},
-	{ID: "spoken-100h", Group: GroupSpoken, Icon: "🎤", Name: "The Voice", Desc: "Spoke for {n}", Threshold: 360000},
+	{ID: "spoken-10h", Group: GroupSpoken, Icon: "🎶", Name: "The Regular", Desc: "Spoke for {n}", Threshold: 18000},
+	{ID: "spoken-50h", Group: GroupSpoken, Icon: "🗯️", Name: "Chatterbox", Desc: "Spoke for {n}", Threshold: 90000},
+	{ID: "spoken-100h", Group: GroupSpoken, Icon: "🌟", Name: "The Voice", Desc: "Spoke for {n}", Threshold: 360000},
 
 	// Typing time saved (vs typing it yourself).
 	{ID: "saved-10m", Group: GroupSaved, Icon: "✋", Name: "Finger Saver", Desc: "Saved {n} of typing", Threshold: 10},
 	{ID: "saved-1h", Group: GroupSaved, Icon: "🐢", Name: "The Tortoise", Desc: "Saved {n} of typing", Threshold: 60},
 	{ID: "saved-10h", Group: GroupSaved, Icon: "⏳", Name: "Time Bender", Desc: "Saved {n} of typing", Threshold: 600},
-	{ID: "saved-50h", Group: GroupSaved, Icon: "🛌", Name: "A Weekend Back", Desc: "Saved {n} of typing", Threshold: 3000},
+	{ID: "saved-50h", Group: GroupSaved, Icon: "🍹", Name: "A Weekend Back", Desc: "Saved {n} of typing", Threshold: 3000},
 	{ID: "saved-200h", Group: GroupSaved, Icon: "⏰", Name: "Time Lord", Desc: "Saved {n} of typing", Threshold: 12000},
 
-	// Consecutive days used — the one that keeps pulling.
+	// Consecutive days used — the one that keeps pulling. A week away (a holiday,
+	// a flu) breaks a streak, so the top is what fits between two holidays: 100
+	// days. streak-365 holds the 60-day step; it was a year, which hardly anyone
+	// gets through without a week off.
 	{ID: "streak-3", Group: GroupStreak, Icon: "🌱", Name: "Habit Forming", Desc: "Kept a {n}-day streak", Threshold: 3},
 	{ID: "streak-7", Group: GroupStreak, Icon: "⚡", Name: "On a Roll", Desc: "Kept a {n}-day streak", Threshold: 7},
 	{ID: "streak-30", Group: GroupStreak, Icon: "🔥", Name: "Unstoppable", Desc: "Kept a {n}-day streak", Threshold: 30},
-	{ID: "streak-100", Group: GroupStreak, Icon: "🛡️", Name: "Centurion", Desc: "Kept a {n}-day streak", Threshold: 100},
-	{ID: "streak-365", Group: GroupStreak, Icon: "📅", Name: "Year of the Voice", Desc: "Kept a {n}-day streak", Threshold: 365},
+	{ID: "streak-365", Group: GroupStreak, Icon: "💪", Name: "Two Months Strong", Desc: "Kept a {n}-day streak", Threshold: 60},
+	{ID: "streak-100", Group: GroupStreak, Icon: "❤️‍🔥", Name: "Centurion", Desc: "Kept a {n}-day streak", Threshold: 100},
 
 	// Your best single day.
-	{ID: "day-500", Group: GroupDay, Icon: "☀️", Name: "Productive Day", Desc: "Dictated {n} words in a day", Threshold: 500},
+	{ID: "day-500", Group: GroupDay, Icon: "🌞", Name: "Productive Day", Desc: "Dictated {n} words in a day", Threshold: 500},
 	{ID: "day-2k", Group: GroupDay, Icon: "🎯", Name: "In the Zone", Desc: "Dictated {n} words in a day", Threshold: 2000},
 	{ID: "day-10k", Group: GroupDay, Icon: "🚀", Name: "Big Day", Desc: "Dictated {n} words in a day", Threshold: 10000},
 
-	// Your best week.
+	// Your best week. The top is about a working week of a heavy user's best day.
 	{ID: "week-2k", Group: GroupWeek, Icon: "📈", Name: "Busy Week", Desc: "Dictated {n} words in a week", Threshold: 2000},
 	{ID: "week-10k", Group: GroupWeek, Icon: "📚", Name: "Prolific", Desc: "Dictated {n} words in a week", Threshold: 10000},
-	{ID: "week-40k", Group: GroupWeek, Icon: "🏭", Name: "Word Factory", Desc: "Dictated {n} words in a week", Threshold: 40000},
+	{ID: "week-40k", Group: GroupWeek, Icon: "⚙️", Name: "Word Factory", Desc: "Dictated {n} words in a week", Threshold: 25000},
 
 	// Times you reached for the hotkey.
-	{ID: "act-10", Group: GroupActivations, Icon: "🎛️", Name: "Getting the Hang of It", Desc: "Started {n} dictations", Threshold: 10},
-	{ID: "act-100", Group: GroupActivations, Icon: "🔘", Name: "Trigger Happy", Desc: "Started {n} dictations", Threshold: 100},
+	{ID: "act-10", Group: GroupActivations, Icon: "👌", Name: "Getting the Hang of It", Desc: "Started {n} dictations", Threshold: 10},
+	{ID: "act-100", Group: GroupActivations, Icon: "💥", Name: "Trigger Happy", Desc: "Started {n} dictations", Threshold: 100},
 	{ID: "act-1k", Group: GroupActivations, Icon: "🤖", Name: "Reflex", Desc: "Started {n} dictations", Threshold: 1000},
-	{ID: "act-10k", Group: GroupActivations, Icon: "⌨️", Name: "One with the Hotkey", Desc: "Started {n} dictations", Threshold: 10000},
+	{ID: "act-10k", Group: GroupActivations, Icon: "☯️", Name: "One with the Hotkey", Desc: "Started {n} dictations", Threshold: 10000},
 
+	// Vito Assist commands, which are used now and then rather than all day.
 	{ID: "cmd-1", Group: GroupCommands, Icon: "🛎️", Name: "At Your Service", Desc: "Ran your first Vito Assist command", Threshold: 1},
 	{ID: "cmd-10", Group: GroupCommands, Icon: "🪄", Name: "Getting Assisted", Desc: "Ran {n} Vito Assist commands", Threshold: 10},
 	{ID: "cmd-50", Group: GroupCommands, Icon: "🧠", Name: "Second Brain", Desc: "Ran {n} Vito Assist commands", Threshold: 50},
-	{ID: "cmd-250", Group: GroupCommands, Icon: "🦾", Name: "Power User", Desc: "Ran {n} Vito Assist commands", Threshold: 250},
-	{ID: "cmd-1k", Group: GroupCommands, Icon: "🚀", Name: "Assist Machine", Desc: "Ran {n} Vito Assist commands", Threshold: 1000},
+	{ID: "cmd-250", Group: GroupCommands, Icon: "🦾", Name: "Power User", Desc: "Ran {n} Vito Assist commands", Threshold: 150},
+	{ID: "cmd-1k", Group: GroupCommands, Icon: "👑", Name: "Assist Machine", Desc: "Ran {n} Vito Assist commands", Threshold: 500},
 
 	// What you've saved by bringing your own key instead of paying a subscription.
 	// {n} is a money amount; the description leaves the baseline to the UI.
-	{ID: "money-25", Group: GroupMoney, Icon: "💰", Name: "Pocket Change", Desc: "Saved {n} versus a paid subscription", Threshold: 25},
-	{ID: "money-100", Group: GroupMoney, Icon: "🪙", Name: "Nice Little Sum", Desc: "Saved {n} versus a paid subscription", Threshold: 100},
-	{ID: "money-250", Group: GroupMoney, Icon: "💵", Name: "Serious Savings", Desc: "Saved {n} versus a paid subscription", Threshold: 250},
-	{ID: "money-500", Group: GroupMoney, Icon: "🏦", Name: "The Frugal One", Desc: "Saved {n} versus a paid subscription", Threshold: 500},
-	{ID: "money-1k", Group: GroupMoney, Icon: "🤑", Name: "Subscription Slayer", Desc: "Saved {n} versus a paid subscription", Threshold: 1000},
+	// The saving grows with the calendar (subMonthly a month, minus API fees), so
+	// the steps are about a month, a quarter, half a year, a year and two years.
+	// The ids keep their first thresholds: earned badges and images hang on them.
+	{ID: "money-25", Group: GroupMoney, Icon: "💸", Name: "Pocket Change", Desc: "Saved {n} versus a paid subscription", Threshold: 15},
+	{ID: "money-100", Group: GroupMoney, Icon: "🪙", Name: "Nice Little Sum", Desc: "Saved {n} versus a paid subscription", Threshold: 45},
+	{ID: "money-250", Group: GroupMoney, Icon: "💎", Name: "Serious Savings", Desc: "Saved {n} versus a paid subscription", Threshold: 90},
+	{ID: "money-500", Group: GroupMoney, Icon: "🐿️", Name: "The Frugal One", Desc: "Saved {n} versus a paid subscription", Threshold: 180},
+	{ID: "money-1k", Group: GroupMoney, Icon: "🤑", Name: "Subscription Slayer", Desc: "Saved {n} versus a paid subscription", Threshold: 360},
 
 	// Long recordings: lectures, meetings, long sessions.
 	{ID: "rec-first", Group: GroupRecordings, Icon: "🎬", Name: "First Take", Desc: "Finished your first long recording", Flag: "count", Threshold: 1},
@@ -230,12 +244,12 @@ var List = []Def{
 
 	// One-offs. The first is a welcome; the rest stay hidden until you stumble on them.
 	{ID: "first", Group: GroupSpecial, Icon: "👋", Name: "Hello, Vito", Desc: "Your first dictation", Flag: "first"},
-	{ID: "night", Group: GroupSpecial, Icon: "🌙", Name: "Night Owl", Desc: "Dictated after midnight", Flag: "night", Secret: true},
+	{ID: "night", Group: GroupSpecial, Icon: "🦉", Name: "Night Owl", Desc: "Dictated after midnight", Flag: "night", Secret: true},
 	{ID: "early", Group: GroupSpecial, Icon: "🐦", Name: "Early Bird", Desc: "Dictated before 7 in the morning", Flag: "early", Secret: true},
-	{ID: "comeback", Group: GroupSpecial, Icon: "🎗️", Name: "Welcome Back", Desc: "Came back after 30 quiet days", Flag: "comeback", Secret: true},
-	{ID: "upload", Group: GroupSpecial, Icon: "📎", Name: "Bring Your Own Audio", Desc: "Transcribed an audio file", Flag: "upload", Secret: true},
+	{ID: "comeback", Group: GroupSpecial, Icon: "🪃", Name: "Welcome Back", Desc: "Came back after 30 quiet days", Flag: "comeback", Secret: true},
+	{ID: "upload", Group: GroupSpecial, Icon: "💿", Name: "Bring Your Own Audio", Desc: "Transcribed an audio file", Flag: "upload", Secret: true},
 	{ID: "polyglot", Group: GroupSpecial, Icon: "🌍", Name: "Polyglot", Desc: "Dictated in three languages", Flag: "polyglot", Secret: true},
-	{ID: "vito-wizard", Group: GroupSpecial, Icon: "🧙", Name: "Vito Wizard", Desc: "Used plain dictation, a spoken Vito Assist command, and a clipboard command", Flag: "wizard", Secret: true},
+	{ID: "vito-wizard", Group: GroupSpecial, Icon: "🔮", Name: "Vito Wizard", Desc: "Dictated, gave Vito Assist a command and made a long recording", Flag: "wizard", Secret: true},
 }
 
 // Evaluate returns the ids currently earned.

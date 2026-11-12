@@ -304,8 +304,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "การจัดหา จัดการ และรักษาความปลอดภัยของคีย์เหล่านั้น — และค่าใช้จ่ายทั้งหมดที่เกิดจากการใช้งานกับผู้ให้บริการ — เป็นความรับผิดชอบของคุณเองทั้งหมด",
 "Privacy & data": "ความเป็นส่วนตัวและข้อมูล",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito ไม่เก็บข้อมูลผู้ใช้เพื่อส่งต่อไม่ว่าด้วยวิธีใด และไม่มีการติดตามหรือวิเคราะห์ใด ๆ ในแอป การตั้งค่า พจนานุกรม และประวัติของคุณยังคงอยู่ในเครื่องของคุณเอง",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "ข้อมูลเดียวที่แอปส่งออกภายนอกคือเสียงและข้อความที่ส่งไปยังผู้ให้บริการภายนอกของโมเดล BYOK (การรู้จำเสียงพูดและการปรับข้อความด้วย AI) ข้อมูลเหล่านั้นอยู่ภายใต้นโยบายความเป็นส่วนตัวของผู้ให้บริการภายนอกเหล่านั้น",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "เวอร์ชันเบราว์เซอร์บน vito.talk นับแบบไม่ระบุตัวตนว่าเปิดใช้งานบ่อยแค่ไหน และเบราว์เซอร์ใช้การพูดเป็นข้อความถึงครั้งที่ 1 และครั้งที่ 10 หรือไม่ — โดยไม่ใช้คุกกี้ และไม่นับเลยเมื่อเปิด Do Not Track ไม่มีสิ่งที่คุณพูดหรือตั้งค่าใดถูกส่งออกไป แอปที่ติดตั้งไม่นับอะไรเลย",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "ข้อมูลเดียวที่แอปส่งออกภายนอกคือเสียงและข้อความที่ส่งไปยังผู้ให้บริการภายนอกของโมเดล BYOK (การรู้จำเสียงพูดและการปรับข้อความด้วย AI) ข้อมูลเหล่านั้นอยู่ภายใต้นโยบายความเป็นส่วนตัวของผู้ให้บริการภายนอกเหล่านั้น",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "เวอร์ชันเบราว์เซอร์บน vito.talk นับแบบไม่ระบุตัวตนว่าเปิดใช้งานบ่อยแค่ไหน และเบราว์เซอร์ใช้การพูดเป็นข้อความถึงครั้งที่ 1 และครั้งที่ 10 หรือไม่ — โดยไม่ใช้คุกกี้ และไม่นับเลยเมื่อเปิด Do Not Track ไม่มีสิ่งที่คุณพูดหรือตั้งค่าใดถูกส่งออกไป แอปที่ติดตั้งไม่นับอะไรเลย",
 "Show all": "แสดงทั้งหมด",
 "Errors only": "เฉพาะข้อผิดพลาด",
 "Off": "ปิด",
@@ -1438,7 +1438,32 @@
 "words": "คำ",
 "Marks": "เครื่องหมาย",
 "Follows the colours of your desktop": "ใช้สีตามเดสก์ท็อปของคุณ",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "กด Caps Lock เพื่อเริ่มบอกให้พิมพ์ และกดอีกครั้งเพื่อหยุด การกดค้างไว้เพื่อบอกให้พิมพ์ต้องใช้ niri ที่ใหม่กว่า 26.04 จากนั้นให้ตั้งค่าใหม่อีกครั้ง"
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "กด Caps Lock เพื่อเริ่มบอกให้พิมพ์ และกดอีกครั้งเพื่อหยุด การกดค้างไว้เพื่อบอกให้พิมพ์ต้องใช้ niri ที่ใหม่กว่า 26.04 จากนั้นให้ตั้งค่าใหม่อีกครั้ง",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "ตัวเลือกของคุณเป็นเพียงความต้องการ ไม่ใช่ข้อจำกัด: Soniox รู้จักภาษาอื่นด้วย แม้คุณจะสลับภาษากลางประโยค",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet ตรวจจับภาษาได้เอง: คุณพิมพ์ด้วยเสียงได้ทุกภาษาใน 25 ภาษาที่รองรับ ไม่ว่าคุณจะเลือกอะไรตรงนี้",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "โมเดลนี้ยึดตามภาษาที่คุณเลือกตรงนี้ จะสลับภาษาระหว่างพิมพ์ด้วยเสียงไหม? เลือกอัตโนมัติ",
+"Dictated, gave Vito Assist a command and made a long recording": "พิมพ์ด้วยเสียง สั่ง Vito Assist และบันทึกเสียงยาว",
+"Minimize": "ย่อเล็กสุด",
+"Maximize": "ขยายใหญ่สุด",
+"Restore down": "คืนค่าลง",
+"Not sure what you like?": "ไม่แน่ใจว่าชอบแบบไหน?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "ให้ Vito เลือกรูปลักษณ์ให้คุณ — สี แบบอักษร มุม พื้นหลัง และของให้สวมใส่ ไม่ชอบเหรอ? ลองใหม่ได้เลย",
+"Surprise me": "เซอร์ไพรส์ฉัน",
+"Vito Assist and recordings": "Vito Assist และการบันทึกเสียง",
+"Assist": "Assist",
+"The long recordings finished in this period.": "การบันทึกยาวที่เสร็จสิ้นในช่วงเวลานี้",
+"{time} recorded in total.": "บันทึกเสียงทั้งหมด {time}",
+"Open Vito in its own window": "เปิด Vito ในหน้าต่างของตัวเอง",
+"Back to 100%": "กลับไปที่ 100%",
+"Default 100%": "ค่าเริ่มต้น 100%",
+"How do I get a key?": "จะรับคีย์ได้อย่างไร?",
+"Soniox API key": "คีย์ API ของ Soniox",
+"Achievement sound": "เสียงความสำเร็จ",
+"Menu": "เมนู",
+"Ran your first Vito Assist command": "ใช้คำสั่ง Vito Assist ครั้งแรก",
+"Ran {n} Vito Assist commands": "ใช้คำสั่ง Vito Assist {n} ครั้ง",
+"Made by": "สร้างโดย",
+"Copyright": "ลิขสิทธิ์"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",
@@ -1503,6 +1528,7 @@
 "motion": "หยุดภาพเคลื่อนไหวของ Vito: การเปลี่ยนฉาก พื้นหลังที่เคลื่อนไหว และการเคลื่อนไหวของ Vito เอง ระบบของคุณก็มีการตั้งค่านี้เช่นกัน เมื่อเปิดอยู่ Vito จะทำตามอยู่แล้ว",
 "cursor": "ตัวชี้เมาส์ในสีของ Vito ที่ถือโลโก้ไว้ในมือ ปิด: ตัวชี้ปกติของระบบ",
 "helptips": "ใช่ นี่คือหนึ่งในนั้น ปิด: จะไม่มีคำอธิบายอีกเมื่อคุณวางเมาส์ค้างไว้บนการตั้งค่า — รวมถึงอันนี้ด้วย",
-"soundset": "เสียงจะออกมาแบบไหน: แบบของ Vito เอง นุ่มนวล (โทนอบอุ่น) แก้ว (กระดิ่งใส) เรโทร (8 บิต) หรือ ติ๊ก (สั้นและแห้ง สังเกตน้อยที่สุด) คลิกที่ชุดใดชุดหนึ่งเพื่อฟัง"
+"soundset": "เสียงจะออกมาแบบไหน: แบบของ Vito เอง นุ่มนวล (โทนอบอุ่น) แก้ว (กระดิ่งใส) เรโทร (8 บิต) หรือ ติ๊ก (สั้นและแห้ง สังเกตน้อยที่สุด) คลิกที่ชุดใดชุดหนึ่งเพื่อฟัง",
+"ownwindow": "เปิด Vito ในหน้าต่างของตัวเอง (Microsoft Edge WebView2) โดยไม่ต้องใช้เบราว์เซอร์ ปิด: เปิดในแอปเบราว์เซอร์ที่ติดตั้งไว้หรือในแท็บเบราว์เซอร์"
 }
 }

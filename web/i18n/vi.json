@@ -330,8 +330,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Việc cung cấp, quản lý và bảo mật những khóa đó — cùng mọi chi phí phát sinh khi sử dụng chúng tại các nhà cung cấp — hoàn toàn là trách nhiệm của riêng bạn.",
 "Privacy & data": "Riêng tư & dữ liệu",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito không thu thập dữ liệu người dùng theo bất kỳ cách nào để gửi đi, và không có bất kỳ hình thức theo dõi hay phân tích nào được tích hợp trong ứng dụng. Cài đặt, từ điển và lịch sử của bạn vẫn nằm cục bộ trên máy tính của bạn.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Dữ liệu duy nhất mà ứng dụng gửi ra ngoài là giọng nói và văn bản đi đến các nhà cung cấp bên ngoài của mô hình BYOK (nhận dạng giọng nói và dọn dẹp bằng AI). Dữ liệu đó chịu sự điều chỉnh của chính sách riêng tư của các nhà cung cấp bên ngoài đó.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Phiên bản trình duyệt trên vito.talk đếm ẩn danh số lần được mở và liệu một trình duyệt có đạt tới lần đọc chính tả thứ 1 và thứ 10 hay không — không dùng cookie, và hoàn toàn không đếm khi bật Do Not Track. Không có gì bạn nói hoặc cài đặt được gửi đi. Ứng dụng đã cài đặt không đếm gì cả.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Dữ liệu duy nhất mà ứng dụng gửi ra ngoài là giọng nói và văn bản đi đến các nhà cung cấp bên ngoài của mô hình BYOK (nhận dạng giọng nói và dọn dẹp bằng AI). Dữ liệu đó chịu sự điều chỉnh của chính sách riêng tư của các nhà cung cấp bên ngoài đó.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Phiên bản trình duyệt trên vito.talk đếm ẩn danh số lần được mở và liệu một trình duyệt có đạt tới lần đọc chính tả thứ 1 và thứ 10 hay không — không dùng cookie, và hoàn toàn không đếm khi bật Do Not Track. Không có gì bạn nói hoặc cài đặt được gửi đi. Ứng dụng đã cài đặt không đếm gì cả.",
 "Show all": "Hiện tất cả",
 "Errors only": "Chỉ lỗi",
 "Off": "Tắt",
@@ -1438,7 +1438,32 @@
 "words": "từ",
 "Marks": "Dấu mốc",
 "Follows the colours of your desktop": "Theo màu sắc của màn hình desktop của bạn",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nhấn Caps Lock để bắt đầu đọc chính tả và nhấn lại để dừng. Muốn giữ phím để đọc thì cần niri mới hơn 26.04; khi đó hãy thiết lập lại."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nhấn Caps Lock để bắt đầu đọc chính tả và nhấn lại để dừng. Muốn giữ phím để đọc thì cần niri mới hơn 26.04; khi đó hãy thiết lập lại.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Lựa chọn của bạn là một ưu tiên, không phải giới hạn: Soniox vẫn nhận ra các ngôn ngữ khác, kể cả khi bạn đổi ngôn ngữ giữa câu.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet tự nhận biết ngôn ngữ: bạn có thể đọc bằng bất kỳ ngôn ngữ nào trong 25 ngôn ngữ của nó, dù chọn gì ở đây.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Mô hình này giữ đúng ngôn ngữ bạn chọn ở đây. Bạn đổi ngôn ngữ khi đang đọc? Hãy chọn Tự động.",
+"Dictated, gave Vito Assist a command and made a long recording": "Đã đọc chính tả, ra lệnh cho Vito Assist và ghi một bản ghi dài",
+"Minimize": "Thu nhỏ",
+"Maximize": "Phóng to",
+"Restore down": "Khôi phục xuống",
+"Not sure what you like?": "Không chắc mình thích gì?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Để Vito chọn giao diện cho bạn — màu sắc, phông chữ, góc bo, nền và một món đồ để mặc. Không thích? Cứ thử lại.",
+"Surprise me": "Gây bất ngờ cho tôi",
+"Vito Assist and recordings": "Vito Assist và bản ghi",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Các bản ghi dài đã hoàn tất trong khoảng thời gian này.",
+"{time} recorded in total.": "Tổng cộng đã ghi {time}.",
+"Open Vito in its own window": "Mở Vito trong cửa sổ riêng",
+"Back to 100%": "Về lại 100%",
+"Default 100%": "Mặc định 100%",
+"How do I get a key?": "Làm sao để lấy khóa?",
+"Soniox API key": "Khóa API Soniox",
+"Achievement sound": "Âm thanh thành tích",
+"Menu": "Menu",
+"Ran your first Vito Assist command": "Đã chạy lệnh Vito Assist đầu tiên",
+"Ran {n} Vito Assist commands": "Đã chạy {n} lệnh Vito Assist",
+"Made by": "Tạo bởi",
+"Copyright": "Bản quyền"
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",
@@ -1503,6 +1528,7 @@
 "motion": "Dừng các hiệu ứng động của Vito: chuyển cảnh, hình nền chuyển động và cử động của chính Vito. Hệ thống của bạn cũng có cài đặt này; khi nó bật, Vito đã tuân theo rồi.",
 "cursor": "Con trỏ chuột mang màu của Vito, tay cầm logo. Tắt: con trỏ thông thường của hệ thống.",
 "helptips": "Đúng vậy, đây chính là một lời giải thích như thế. Tắt: không còn giải thích khi bạn dừng chuột trên một cài đặt — kể cả cái này.",
-"soundset": "Âm thanh nghe như thế nào: của riêng Vito, Êm dịu (âm ấm), Thủy tinh (chuông trong trẻo), Retro (8-bit) hoặc Tích (ngắn và khô, ít gây chú ý nhất). Nhấp vào một bộ để nghe thử."
+"soundset": "Âm thanh nghe như thế nào: của riêng Vito, Êm dịu (âm ấm), Thủy tinh (chuông trong trẻo), Retro (8-bit) hoặc Tích (ngắn và khô, ít gây chú ý nhất). Nhấp vào một bộ để nghe thử.",
+"ownwindow": "Mở Vito trong cửa sổ riêng (Microsoft Edge WebView2), không cần trình duyệt. Tắt: trong ứng dụng trình duyệt đã cài hoặc trong một thẻ trình duyệt."
 }
 }

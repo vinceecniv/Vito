@@ -1,5 +1,20 @@
 {
 "strings": {
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Seçiminiz məhdudiyyət deyil, üstünlükdür: Soniox cümlənin ortasında dil dəyişdikdə belə digər dilləri də tanıyır.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet dili özü tanıyır: burada nə seçməyinizdən asılı olmayaraq, onun 25 dilindən istənilənində diktə edə bilərsiniz.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Bu model burada seçdiyiniz dilə sadiq qalır. Diktə edərkən dil dəyişirsiniz? Avtomatik seçin.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktə etdi, Vito Assist-ə əmr verdi və uzun səsyazma etdi",
+"Minimize": "Minimallaşdır",
+"Maximize": "Maksimallaşdır",
+"Restore down": "Aşağı bərpa et",
+"Not sure what you like?": "Nəyi bəyəndiyinizdən əmin deyilsiniz?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Qoy Vito sizin üçün görünüş seçsin — rənglər, şrift, künclər, fon və geyinmək üçün bir şey. Bəyənmədiniz? Sadəcə yenidən cəhd edin.",
+"Surprise me": "Məni təəccübləndir",
+"Vito Assist and recordings": "Vito Assist və səsyazmalar",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Bu dövrdə başa çatmış uzun səsyazmalar.",
+"{time} recorded in total.": "Cəmi {time} yazılıb.",
+"Open Vito in its own window": "Vito-nu öz pəncərəsində aç",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Niderland, ingilis, alman, fransız, ispan, italyan, portuqal, polyak, çex, slovak, macar, rumın, bolqar, xorvat, sloven, yunan, isveç, danimarka, fin, eston, latış, litva, malta, rus və ukrayna dilləri — avtomatik tanınır. Digər dillər üçün uyğun deyil.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "İngilis, niderland, alman, fransız, ispan, italyan, polyak dilləri.",
 "Type (keystrokes)": "Yazma (düymə basışları)",
@@ -293,8 +308,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Həmin açarların təmin edilməsi, idarə olunması və qorunması — və onların provayderlərdə istifadəsindən yaranan bütün xərclər — tamamilə sizin öz məsuliyyətinizdədir.",
 "Privacy & data": "Məxfilik və məlumatlar",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito heç bir şəkildə göndərmək üçün istifadəçi məlumatı toplamır və tətbiqə heç bir izləmə və ya analitika daxil edilməyib. Parametrləriniz, lüğətiniz və tarixçəniz öz kompüterinizdə lokal olaraq qalır.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Tətbiqin xaricə göndərdiyi yeganə məlumat BYOK modelinin xarici provayderlərinə gedən səsiniz və mətnlərdir (nitq tanıma və AI təmizləmə). Həmin məlumatlara bu xarici provayderlərin məxfilik siyasətləri şamil olunur.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk saytındakı brauzer versiyası anonim olaraq neçə dəfə açıldığını və brauzerin 1-ci və 10-cu diktəsinə çatıb-çatmadığını sayır — kukisiz, Do Not Track aktiv olduqda isə heç nə saymır. Dediyiniz və ya ayarladığınız heç nə göndərilmir. Quraşdırılmış tətbiq heç nə saymır.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Tətbiqin xaricə göndərdiyi yeganə məlumat BYOK modelinin xarici provayderlərinə gedən səsiniz və mətnlərdir (nitq tanıma və AI təmizləmə). Həmin məlumatlara bu xarici provayderlərin məxfilik siyasətləri şamil olunur.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk saytındakı brauzer versiyası anonim olaraq neçə dəfə açıldığını və brauzerin 1-ci və 10-cu diktəsinə çatıb-çatmadığını sayır — kukisiz, Do Not Track aktiv olduqda isə heç nə saymır. Dediyiniz və ya ayarladığınız heç nə göndərilmir. Quraşdırılmış tətbiq heç nə saymır.",
 "Show all": "Hamısını göstər",
 "Errors only": "Yalnız xətalar",
 "Off": "Sönülü",
@@ -1440,7 +1455,17 @@
 "words": "söz",
 "Marks": "İşarələr",
 "Follows the colours of your desktop": "İş masanızın rənglərinə uyğunlaşır",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Diktəyə başlamaq üçün Caps Lock düyməsini basın, dayandırmaq üçün yenidən basın. Basılı saxlayaraq diktə etmək üçün 26.04-dən daha yeni niri lazımdır; sonra bunu yenidən quraşdırın."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Diktəyə başlamaq üçün Caps Lock düyməsini basın, dayandırmaq üçün yenidən basın. Basılı saxlayaraq diktə etmək üçün 26.04-dən daha yeni niri lazımdır; sonra bunu yenidən quraşdırın.",
+"Back to 100%": "100%-ə qayıt",
+"Default 100%": "Standart 100%",
+"How do I get a key?": "Açarı necə əldə edim?",
+"Soniox API key": "Soniox API açarı",
+"Achievement sound": "Nailiyyət səsi",
+"Menu": "Menyu",
+"Ran your first Vito Assist command": "İlk Vito Assist əmri icra edildi",
+"Ran {n} Vito Assist commands": "{n} Vito Assist əmri icra edildi",
+"Made by": "Hazırlayan",
+"Copyright": "Müəllif hüquqları"
 },
 "help": {
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",
@@ -1505,6 +1530,7 @@
 "motion": "Vito-nun animasiyalarını dayandırır: keçidləri, hərəkətli fonları və Vito-nun öz hərəkətlərini. Sisteminizdə də bunun üçün parametr var; o aktivdirsə, Vito artıq ona əməl edir.",
 "cursor": "Vito-nun rənglərində, əlində loqo olan siçan göstəricisi. Sönülü: sisteminizin adi göstəricisi.",
 "helptips": "Bəli, bu da onlardan biridir. Sönülü: parametrin üzərində dayandıqda artıq izah yoxdur — bu da daxil olmaqla.",
-"soundset": "Səslər necə səslənir: Vito-nun öz səsləri, Yumşaq (isti tonlar), Şüşə (parlaq zınqırovlar), Retro (8-bit) və ya Tıq (qısa və quru, ən az nəzərə çarpan). Eşitmək üçün birinə klikləyin."
+"soundset": "Səslər necə səslənir: Vito-nun öz səsləri, Yumşaq (isti tonlar), Şüşə (parlaq zınqırovlar), Retro (8-bit) və ya Tıq (qısa və quru, ən az nəzərə çarpan). Eşitmək üçün birinə klikləyin.",
+"ownwindow": "Vito-nu brauzer olmadan öz pəncərəsində açır (Microsoft Edge WebView2). Söndürülüb: quraşdırılmış brauzer tətbiqində və ya brauzer tabında."
 }
 }

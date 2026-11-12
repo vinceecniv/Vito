@@ -257,8 +257,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Šo atslēgu nodrošināšana, pārvaldība un aizsardzība — un visas izmaksas, ko to lietošana rada pie pakalpojumu sniedzējiem — ir pilnībā tava paša atbildība.",
 "Privacy & data": "Privātums un dati",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito nekādā veidā nevāc lietotāju datus, lai tos pārsūtītu, un lietotnē nav iebūvēta nekāda veida izsekošana vai analītika. Tavi iestatījumi, vārdnīca un vēsture paliek lokāli tavā datorā.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Vienīgie dati, ko lietotne sūta ārpusē, ir tava runa un teksti, kas nonāk pie BYOK modeļa ārējiem pakalpojumu sniedzējiem (runas atpazīšana un MI attīrīšana). Uz šiem datiem attiecas šo ārējo pakalpojumu sniedzēju privātuma politikas.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Pārlūka versija vietnē vito.talk anonīmi skaita, cik bieži tā tiek atvērta un vai pārlūks sasniedz savu 1. un 10. diktātu — bez sīkdatnēm, un ar ieslēgtu Do Not Track nemaz. Nekas no tā, ko jūs sakāt vai iestatāt, netiek nosūtīts. Instalētā lietotne neko neskaita.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Vienīgie dati, ko lietotne sūta ārpusē, ir tava runa un teksti, kas nonāk pie BYOK modeļa ārējiem pakalpojumu sniedzējiem (runas atpazīšana un MI attīrīšana). Uz šiem datiem attiecas šo ārējo pakalpojumu sniedzēju privātuma politikas.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Pārlūka versija vietnē vito.talk anonīmi skaita, cik bieži tā tiek atvērta un vai pārlūks sasniedz savu 1. un 10. diktātu — bez sīkdatnēm, un ar ieslēgtu Do Not Track nemaz. Nekas no tā, ko jūs sakāt vai iestatāt, netiek nosūtīts. Instalētā lietotne neko neskaita.",
 "Show all": "Rādīt visu",
 "Errors only": "Tikai kļūdas",
 "Off": "Izslēgts",
@@ -1440,7 +1440,32 @@
 "words": "vārdi",
 "Marks": "Atzīmes",
 "Follows the colours of your desktop": "Seko tavas darbvirsmas krāsām",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nospied Caps Lock, lai sāktu diktēt, un nospied vēlreiz, lai apturētu. Lai diktētu, turot to nospiestu, vajag niri versiju, kas jaunāka par 26.04; tad iestati to no jauna."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nospied Caps Lock, lai sāktu diktēt, un nospied vēlreiz, lai apturētu. Lai diktētu, turot to nospiestu, vajag niri versiju, kas jaunāka par 26.04; tad iestati to no jauna.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Jūsu izvēle ir priekšroka, nevis ierobežojums: Soniox atpazīst arī citas valodas, pat ja maināt valodu teikuma vidū.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet pats atpazīst valodu: varat diktēt jebkurā no tā 25 valodām neatkarīgi no tā, ko izvēlaties šeit.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Šis modelis turas pie šeit izvēlētās valodas. Diktējot maināt valodas? Izvēlieties Automātiski.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktēts, dota komanda Vito Assist un veikts garš ieraksts",
+"Minimize": "Minimizēt",
+"Maximize": "Maksimizēt",
+"Restore down": "Atjaunot",
+"Not sure what you like?": "Neesat pārliecināts, kas jums patīk?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Ļaujiet Vito izvēlēties jums izskatu — krāsas, fontu, stūrus, fonu un kaut ko, ko uzvilkt. Nepatīk? Vienkārši mēģiniet vēlreiz.",
+"Surprise me": "Pārsteidz mani",
+"Vito Assist and recordings": "Vito Assist un ieraksti",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Šajā periodā pabeigtie garie ieraksti.",
+"{time} recorded in total.": "Kopā ierakstīts {time}.",
+"Open Vito in its own window": "Atvērt Vito atsevišķā logā",
+"Back to 100%": "Atpakaļ uz 100%",
+"Default 100%": "Noklusējums 100%",
+"How do I get a key?": "Kā iegūt atslēgu?",
+"Soniox API key": "Soniox API atslēga",
+"Achievement sound": "Sasnieguma skaņa",
+"Menu": "Izvēlne",
+"Ran your first Vito Assist command": "Izpildīta pirmā Vito Assist komanda",
+"Ran {n} Vito Assist commands": "Izpildītas {n} Vito Assist komandas",
+"Made by": "Izveidoja",
+"Copyright": "Autortiesības"
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",
@@ -1505,6 +1530,7 @@
 "motion": "Aptur Vito animācijas: pārejas, kustīgos fonus un paša Vito kustības. Arī tavai sistēmai ir šāds iestatījums; ja tas ir ieslēgts, Vito tam jau seko.",
 "cursor": "Peles rādītājs Vito krāsās, ar logotipu rokā. Izslēgts: tavas sistēmas parastais rādītājs.",
 "helptips": "Jā, šis ir viens no tiem. Izslēgts: vairs nekādu paskaidrojumu, kad uzkavējies virs iestatījuma — arī šī ne.",
-"soundset": "Kā skan skaņas: Vito paša, Maigs (silti toņi), Stikls (gaiši zvaniņi), Retro (8 bitu) vai Tikšķis (īss un sauss, vismazāk pamanāms). Noklikšķini uz kāda, lai to dzirdētu."
+"soundset": "Kā skan skaņas: Vito paša, Maigs (silti toņi), Stikls (gaiši zvaniņi), Retro (8 bitu) vai Tikšķis (īss un sauss, vismazāk pamanāms). Noklikšķini uz kāda, lai to dzirdētu.",
+"ownwindow": "Atver Vito atsevišķā logā (Microsoft Edge WebView2), bez pārlūka. Izslēgts: instalētajā pārlūka lietotnē vai pārlūka cilnē."
 }
 }

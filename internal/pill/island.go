@@ -677,8 +677,9 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		return
 	}
 	if st.last != "" {
-		// The text itself copies it; the button pastes it again.
-		ip.targets[tCopy] = rect{lastBox.x, lastBox.y, lastBox.w - 46, lastBox.h}
+		// The text itself copies it; the button over it, shown under the
+		// pointer, pastes it again (the smaller target wins, see hit).
+		ip.targets[tCopy] = lastBox
 	}
 	if st.onBox {
 		fill(buf, w, h, lastBox, 12, boxTint, a)
@@ -692,7 +693,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	case last == "":
 		last, c = ip.t("Nothing dictated yet"), muted
 	}
-	room := fixed.I(int((lastBox.w - 12 - 46) * s))
+	room := fixed.I(int((lastBox.w - 24) * s)) // the whole box: the button only shows under the pointer
 	var lines []string
 	for rest := last; rest != "" && len(lines) < 3; {
 		var line string
@@ -709,8 +710,17 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		ip.line(buf, fcs().body, l, lastBox.x+12, y+float64(i)*lastLine, c, a)
 	}
 	ip.browse(buf, th, st, lastBox, muted, a)
-	if st.last != "" {
+	if st.last != "" && st.onBox && !st.copied {
 		btn := rect{lastBox.x + lastBox.w - 40, lastBox.y + lastBox.h/2 - 14, 28, 28}
+		// Laid over the text on a disc of the box's own colour, a little
+		// wider than the button and fading at its rim, so the icon stands
+		// free of the words beneath.
+		cx, cy := (btn.x+btn.w/2)*s, (btn.y+btn.h/2)*s
+		halo := 21 * s
+		eachPixel(w, h, cx, cy, halo+1, halo+1, func(x, y int, px, py float64) {
+			d := math.Hypot(px-cx, py-cy)
+			put(buf, w, x, y, boxTint, a*clamp((halo-d)/(5*s)))
+		})
 		// Its hover lights up against the box as the header's do against the
 		// panel.
 		ip.iconButton(buf, th, st, tRepaste, btn, blend(boxTint, th.to, 0.08), a, func(cx, cy float64, c rgb, al float64) {
@@ -991,11 +1001,11 @@ func (ip *islandPainter) mic(buf []byte, w, h int, th theme, st islandState) {
 		eachPixel(w, h, cx, cy, r*s+1, r*s+1, func(x, y int, px, py float64) {
 			d := roundBox(px-cx, py-cy, r*s, r*s, rr)
 			t := clamp((px - (cx - r*s)) / (2 * r * s))
-			c := blend(blend(th.from, th.to, t), rgb{1, 1, 1}, lit)
+			c := blend(blend(th.from, th.fill, t), rgb{1, 1, 1}, lit)
 			put(buf, w, x, y, c, e*clamp(0.5-d))
 		})
 	}
-	micCol := blend(blend(th.from, th.to, 0.5), th.onAcc, e)
+	micCol := blend(blend(th.from, th.fill, 0.5), th.onAcc, e)
 	microphone(buf, w, h, cx, cy, s*mix(1, 1.35, e), micCol, 1-gone)
 }
 
@@ -1028,13 +1038,16 @@ func tipped(tg target) bool {
 // is dragged by them like by its free space.
 func clickable(tg target) bool { return tg != tWords && tg != tSaved }
 
+// hit is the target under the point; where targets overlap (a button laid
+// over a box) the smallest wins.
 func (ip *islandPainter) hit(x, y float64) target {
+	best, area := tNone, math.Inf(1)
 	for tg, r := range ip.targets {
-		if r.has(x, y) {
-			return tg
+		if r.has(x, y) && r.w*r.h < area {
+			best, area = tg, r.w*r.h
 		}
 	}
-	return tNone
+	return best
 }
 
 // brandTile is Vito's mark as in the app: a rounded square in the coral to
@@ -1213,7 +1226,7 @@ func switchIcon(buf []byte, w, h int, cx, cy, s float64, on bool, th theme, dark
 	tc, kc := corner(tr, s), corner(tr-2*s, s)
 	if on {
 		eachPixel(w, h, cx, cy, tw+1, tr+1, func(x, y int, px, py float64) {
-			c := blend(th.from, th.to, clamp((px-(cx-tw))/(2*tw)))
+			c := blend(th.from, th.fill, clamp((px-(cx-tw))/(2*tw)))
 			put(buf, w, x, y, c, a*clamp(0.5-roundBox(px-cx, py-cy, tw, tr, tc)))
 		})
 	} else {
@@ -1559,9 +1572,19 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			case tg == tMic:
 				closing = !st.pinned
 				p.clickIdle(output)
+			case tg == tOpenVito && webapp.NativeOn != nil && webapp.NativeOn():
+				// Vito's own window shows at once: no spinner, the island
+				// just closes (unless pinned).
+				closing = !st.pinned
+				url := fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)
+				go func() {
+					if err := webapp.Open(url); err != nil {
+						p.log.Warn("island: open Vito failed", "err", err)
+					}
+				}()
 			case tg == tOpenVito:
 				// The island stays a moment with a spinner by the name, then
-				// closes (unless pinned): the page takes a while to show.
+				// closes (unless pinned): the web app takes a while to show.
 				if openingAt.IsZero() {
 					openingAt = time.Now()
 					url := fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)

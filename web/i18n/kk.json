@@ -307,8 +307,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Ол кілттерді ұсыну, басқару және қорғау — және оларды провайдерлерде қолданудан туындайтын барлық шығындар — толығымен өзіңіздің жауапкершілігіңізде.",
 "Privacy & data": "Құпиялылық және деректер",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito пайдаланушы деректерін жіберу үшін ешбір жолмен жинамайды, әрі қолданбаға ешқандай бақылау немесе аналитика орнатылмаған. Баптауларыңыз, сөздігіңіз және тарихыңыз өз компьютеріңізде жергілікті сақталады.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Қолданба сыртқа жіберетін жалғыз деректер — сіздің дауысыңыз және BYOK моделінің сыртқы провайдерлеріне баратын мәтіндер (сөзді тану және AI тазалауы). Ол деректерге сол сыртқы провайдерлердің құпиялылық саясаттары қолданылады.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk сайтындағы браузер нұсқасы оның қаншалықты жиі ашылатынын және браузердің 1-ші және 10-шы диктантына жеткенін анонимді түрде санайды — cookie-сіз, ал Do Not Track қосулы болса, мүлде санамайды. Сіз айтқан немесе баптаған ештеңе жіберілмейді. Орнатылған қолданба ештеңе санамайды.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Қолданба сыртқа жіберетін жалғыз деректер — сіздің дауысыңыз және BYOK моделінің сыртқы провайдерлеріне баратын мәтіндер (сөзді тану және AI тазалауы). Ол деректерге сол сыртқы провайдерлердің құпиялылық саясаттары қолданылады.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk сайтындағы браузер нұсқасы оның қаншалықты жиі ашылатынын және браузердің 1-ші және 10-шы диктантына жеткенін анонимді түрде санайды — cookie-сіз, ал Do Not Track қосулы болса, мүлде санамайды. Сіз айтқан немесе баптаған ештеңе жіберілмейді. Орнатылған қолданба ештеңе санамайды.",
 "Show all": "Барлығын көрсету",
 "Errors only": "Тек қателер",
 "Off": "Өшірулі",
@@ -1438,7 +1438,32 @@
 "words": "сөз",
 "Marks": "Белгілер",
 "Follows the colours of your desktop": "Жұмыс үстеліңіздің түстеріне сәйкес келеді",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Диктовканы бастау үшін Caps Lock басыңыз, тоқтату үшін оны қайта басыңыз. Басып тұрып диктовка жасау үшін 26.04-тен жаңа niri қажет; содан кейін оны қайта баптаңыз."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Диктовканы бастау үшін Caps Lock басыңыз, тоқтату үшін оны қайта басыңыз. Басып тұрып диктовка жасау үшін 26.04-тен жаңа niri қажет; содан кейін оны қайта баптаңыз.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Сіздің таңдауыңыз шектеу емес, басымдық қана: Soniox басқа тілдерді де таниды, тіпті сөйлем ортасында тіл ауыстырсаңыз да.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet тілді өзі анықтайды: мұнда не таңдасаңыз да, оның 25 тілінің кез келгенінде айта аласыз.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Бұл модель мұнда таңдаған тілден таймайды. Айтып отырып тіл ауыстырасыз ба? Автоматты дегенді таңдаңыз.",
+"Dictated, gave Vito Assist a command and made a long recording": "Айтып жаздыңыз, Vito Assist-ке пәрмен бердіңіз және ұзақ жазба жасадыңыз",
+"Minimize": "Жию",
+"Maximize": "Үлкейту",
+"Restore down": "Бұрынғы өлшемге қайтару",
+"Not sure what you like?": "Не ұнайтынын білмейсіз бе?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Сыртқы түрді Vito таңдап берсін — түстер, қаріп, бұрыштар, фон және киетін бір нәрсе. Ұнамады ма? Қайта көріңіз.",
+"Surprise me": "Таң қалдыр",
+"Vito Assist and recordings": "Vito Assist және жазбалар",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Осы кезеңде аяқталған ұзақ жазбалар.",
+"{time} recorded in total.": "Барлығы {time} жазылды.",
+"Open Vito in its own window": "Vito-ны өз терезесінде ашу",
+"Back to 100%": "100%-ға қайтару",
+"Default 100%": "Әдепкі 100%",
+"How do I get a key?": "Кілтті қалай алуға болады?",
+"Soniox API key": "Soniox API кілті",
+"Achievement sound": "Жетістік дыбысы",
+"Menu": "Мәзір",
+"Ran your first Vito Assist command": "Алғашқы Vito Assist пәрменін орындадыңыз",
+"Ran {n} Vito Assist commands": "{n} Vito Assist пәрменін орындадыңыз",
+"Made by": "Жасаған",
+"Copyright": "Авторлық құқық"
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",
@@ -1503,6 +1528,7 @@
 "motion": "Vito анимацияларын тоқтатады: ауысуларды, қозғалатын фондарды және Vito-ның өз қимылдарын. Жүйеңізде де бұл үшін баптау бар; ол қосулы болса, Vito оны қазірдің өзінде ұстанады.",
 "cursor": "Vito түстеріндегі тінтуір меңзері, қолында логотипі бар. Өшірулі: жүйеңіздің әдеттегі меңзері.",
 "helptips": "Иә, бұл солардың бірі. Өшірулі: баптаудың үстінде кідіргенде енді түсініктеме жоқ — осы баптауда да.",
-"soundset": "Дыбыстар қалай естіледі: Vito-ның өз дыбыстары, Жұмсақ (жылы үндер), Шыны (жарқын қоңыраулар), Ретро (8-бит) немесе Тық (қысқа әрі құрғақ, ең аз байқалатын). Тыңдау үшін біреуін басыңыз."
+"soundset": "Дыбыстар қалай естіледі: Vito-ның өз дыбыстары, Жұмсақ (жылы үндер), Шыны (жарқын қоңыраулар), Ретро (8-бит) немесе Тық (қысқа әрі құрғақ, ең аз байқалатын). Тыңдау үшін біреуін басыңыз.",
+"ownwindow": "Vito-ны браузерсіз, өз терезесінде (Microsoft Edge WebView2) ашады. Өшірулі: орнатылған браузер қолданбасында немесе браузер қойындысында."
 }
 }

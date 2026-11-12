@@ -1,5 +1,20 @@
 {
 "strings": {
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Tvoj izbor je prednost, a ne ograničenje: Soniox prepoznaje i druge jezike, čak i kad promijeniš jezik usred rečenice.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet sam prepoznaje jezik: možeš diktirati na bilo kojem od njegovih 25 jezika, šta god ovdje izabrao.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Ovaj model se drži jezika koji ovdje izabereš. Mijenjaš jezike dok diktiraš? Izaberi Automatski.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktirao, dao Vito Assistu naredbu i napravio dugo snimanje",
+"Minimize": "Minimiziraj",
+"Maximize": "Maksimiziraj",
+"Restore down": "Vrati na prethodnu veličinu",
+"Not sure what you like?": "Nisi siguran šta ti se sviđa?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Pusti Vita da ti izabere izgled — boje, font, uglove, pozadinu i nešto za obući. Ne sviđa ti se? Samo pokušaj ponovo.",
+"Surprise me": "Iznenadi me",
+"Vito Assist and recordings": "Vito Assist i snimci",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Duga snimanja završena u ovom periodu.",
+"{time} recorded in total.": "Ukupno snimljeno: {time}.",
+"Open Vito in its own window": "Otvori Vito u vlastitom prozoru",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Holandski, engleski, njemački, francuski, španski, italijanski, portugalski, poljski, češki, slovački, mađarski, rumunski, bugarski, hrvatski, slovenski, grčki, švedski, danski, finski, estonski, latvijski, litvanski, malteški, ruski i ukrajinski — prepoznaju se automatski. Nije prikladno za druge jezike.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Engleski, holandski, njemački, francuski, španski, italijanski, poljski.",
 "Type (keystrokes)": "Kucanje (pritisci tipki)",
@@ -280,8 +295,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Nabavka, upravljanje i osiguranje tih ključeva — i svi troškovi koje njihovo korištenje kod providera donosi — u potpunosti su vaša odgovornost.",
 "Privacy & data": "Privatnost i podaci",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito ni na koji način ne prikuplja korisničke podatke da bi ih proslijedio, i nikakav oblik praćenja ili analitike nije ugrađen u aplikaciju. Vaše postavke, rječnik i historija ostaju lokalno na vašem računaru.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Jedini podaci koje aplikacija šalje eksterno jesu vaš govor i tekstovi koji idu eksternim providerima BYOK modela (prepoznavanje govora i AI čišćenje). Na te podatke primjenjuju se izjave o privatnosti tih eksternih providera.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Verzija u pregledniku na vito.talk anonimno broji koliko se često otvara i da li preglednik dođe do svog 1. i 10. diktata — bez kolačića, a uz uključen Do Not Track nimalo. Ništa od onoga što kažete ili podesite ne šalje se. Instalirana aplikacija ne broji ništa.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Jedini podaci koje aplikacija šalje eksterno jesu vaš govor i tekstovi koji idu eksternim providerima BYOK modela (prepoznavanje govora i AI čišćenje). Na te podatke primjenjuju se izjave o privatnosti tih eksternih providera.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Verzija u pregledniku na vito.talk anonimno broji koliko se često otvara i da li preglednik dođe do svog 1. i 10. diktata — bez kolačića, a uz uključen Do Not Track nimalo. Ništa od onoga što kažete ili podesite ne šalje se. Instalirana aplikacija ne broji ništa.",
 "Show all": "Prikaži sve",
 "Errors only": "Samo greške",
 "Off": "Isključeno",
@@ -1441,7 +1456,17 @@
 "words": "riječi",
 "Marks": "Oznake",
 "Follows the colours of your desktop": "Prati boje vaše radne površine",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Pritisnite Caps Lock da započnete diktiranje i pritisnite ga ponovo da zaustavite. Za diktiranje dok ga držite treba niri noviji od 26.04; tada ga ponovo podesite."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Pritisnite Caps Lock da započnete diktiranje i pritisnite ga ponovo da zaustavite. Za diktiranje dok ga držite treba niri noviji od 26.04; tada ga ponovo podesite.",
+"Back to 100%": "Nazad na 100%",
+"Default 100%": "Zadano 100%",
+"How do I get a key?": "Kako da dobijem ključ?",
+"Soniox API key": "Soniox API ključ",
+"Achievement sound": "Zvuk postignuća",
+"Menu": "Meni",
+"Ran your first Vito Assist command": "Izvršena prva Vito Assist naredba",
+"Ran {n} Vito Assist commands": "Izvršeno {n} Vito Assist naredbi",
+"Made by": "Napravio",
+"Copyright": "Autorska prava"
 },
 "help": {
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetli/tamni način vašeg sistema.",
@@ -1506,6 +1531,7 @@
 "motion": "Zaustavlja animacije aplikacije Vito: prelaze, pokretne pozadine i Vitove vlastite pokrete. I vaš sistem ima tu postavku; kada je uključena, Vito je već prati.",
 "cursor": "Pokazivač miša u bojama aplikacije Vito, s logotipom u ruci. Isključeno: uobičajeni pokazivač vašeg sistema.",
 "helptips": "Da, ovo je jedno od njih. Isključeno: nema više objašnjenja kada se zadržite iznad postavke — ni ovog.",
-"soundset": "Kako zvukovi zvuče: Vitovi vlastiti, Meko (topli tonovi), Staklo (jasna zvonca), Retro (8-bitni) ili Tik (kratki i suhi, najmanje upadljivi). Kliknite na set da ga čujete."
+"soundset": "Kako zvukovi zvuče: Vitovi vlastiti, Meko (topli tonovi), Staklo (jasna zvonca), Retro (8-bitni) ili Tik (kratki i suhi, najmanje upadljivi). Kliknite na set da ga čujete.",
+"ownwindow": "Otvara Vito u vlastitom prozoru (Microsoft Edge WebView2), bez preglednika. Isključeno: u instaliranoj aplikaciji preglednika ili u kartici preglednika."
 }
 }

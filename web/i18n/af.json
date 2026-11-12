@@ -1,5 +1,20 @@
 {
 "strings": {
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Jou keuse is 'n voorkeur, nie 'n beperking nie: Soniox herken ook ander tale, selfs as jy in die middel van 'n sin oorslaan.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet herken self die taal: jy kan in enige van sy 25 tale dikteer, wat jy ook al hier kies.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Hierdie model hou by die taal wat jy hier kies. Wissel jy van taal terwyl jy dikteer? Kies Outomaties.",
+"Dictated, gave Vito Assist a command and made a long recording": "Gedikteer, Vito Assist 'n opdrag gegee en 'n lang opname gemaak",
+"Minimize": "Minimeer",
+"Maximize": "Maksimeer",
+"Restore down": "Herstel af",
+"Not sure what you like?": "Nie seker wat jy mooi vind nie?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Laat Vito 'n voorkoms vir jou kies — kleure, lettertipe, hoeke, agtergrond en iets om aan te trek. Hou jy nie daarvan nie? Probeer net weer.",
+"Surprise me": "Verras my",
+"Vito Assist and recordings": "Vito Assist en opnames",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Die lang opnames wat in hierdie tydperk voltooi is.",
+"{time} recorded in total.": "{time} altesaam opgeneem.",
+"Open Vito in its own window": "Maak Vito in sy eie venster oop",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nederlands, Engels, Duits, Frans, Spaans, Italiaans, Portugees, Pools, Tsjeggies, Slowaaks, Hongaars, Roemeens, Bulgaars, Kroaties, Sloweens, Grieks, Sweeds, Deens, Fins, Estnies, Letties, Litaus, Maltees, Russies en Oekraïens — outomaties herken. Nie geskik vir ander tale nie.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Engels, Nederlands, Duits, Frans, Spaans, Italiaans, Pools.",
 "Type (keystrokes)": "Tik (toetsaanslae)",
@@ -292,8 +307,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Die verskaffing, bestuur en beveiliging van daardie sleutels — en alle koste wat die gebruik daarvan by die verskaffers meebring — is heeltemal jou eie verantwoordelikheid.",
 "Privacy & data": "Privaatheid en data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito versamel op geen manier gebruikersdata om aan te stuur nie, en daar is geen enkele vorm van naspeuring of analise in die toepassing ingebou nie. Jou instellings, woordeboek en geskiedenis bly plaaslik op jou eie rekenaar.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Die enigste data wat die toepassing ekstern stuur, is jou spraak en die tekste wat na die eksterne verskaffers van die BYOK-model gaan (spraakherkenning en KI-skoonmaak). Op daardie data is die privaatheidsverklarings van daardie eksterne verskaffers van toepassing.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Die blaaierweergawe op vito.talk tel anoniem hoe dikwels dit oopgemaak word en of 'n blaaier sy 1ste en 10de diktaat bereik — sonder koekies, en glad nie as Do Not Track aan is nie. Niks wat jy sê of instel, word gestuur nie. Die geïnstalleerde app tel niks nie.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Die enigste data wat die toepassing ekstern stuur, is jou spraak en die tekste wat na die eksterne verskaffers van die BYOK-model gaan (spraakherkenning en KI-skoonmaak). Op daardie data is die privaatheidsverklarings van daardie eksterne verskaffers van toepassing.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Die blaaierweergawe op vito.talk tel anoniem hoe dikwels dit oopgemaak word en of 'n blaaier sy 1ste en 10de diktaat bereik — sonder koekies, en glad nie as Do Not Track aan is nie. Niks wat jy sê of instel, word gestuur nie. Die geïnstalleerde app tel niks nie.",
 "Show all": "Wys alles",
 "Errors only": "Slegs foute",
 "Off": "Af",
@@ -1440,7 +1455,17 @@
 "words": "woorde",
 "Marks": "Merke",
 "Follows the colours of your desktop": "Volg die kleure van jou werkskerm",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Druk Caps Lock om te begin dikteer en druk dit weer om te stop. Om dit in te hou om te dikteer, vereis 'n niri nuwer as 26.04; stel dit dan weer op."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Druk Caps Lock om te begin dikteer en druk dit weer om te stop. Om dit in te hou om te dikteer, vereis 'n niri nuwer as 26.04; stel dit dan weer op.",
+"Back to 100%": "Terug na 100%",
+"Default 100%": "Standaard 100%",
+"How do I get a key?": "Hoe kry ek 'n sleutel?",
+"Soniox API key": "Soniox API-sleutel",
+"Achievement sound": "Prestasieklank",
+"Menu": "Kieslys",
+"Ran your first Vito Assist command": "Jou eerste Vito Assist-opdrag uitgevoer",
+"Ran {n} Vito Assist commands": "{n} Vito Assist-opdragte uitgevoer",
+"Made by": "Gemaak deur",
+"Copyright": "Kopiereg"
 },
 "help": {
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",
@@ -1505,6 +1530,7 @@
 "motion": "Stop Vito se animasies: oorgange, bewegende agtergronde en Vito se eie bewegings. Jou stelsel het ook 'n instelling hiervoor; as dit aan is, volg Vito dit reeds.",
 "cursor": "Die muiswyser in Vito se kleure, met die logo in sy hand. Af: jou stelsel se gewone wyser.",
 "helptips": "Ja, hierdie is een. Af: geen verduidelikings meer as jy oor 'n instelling talm nie — hierdie een ook nie.",
-"soundset": "Hoe die klanke klink: Vito se eie, Sag (warm klanke), Glas (helder klokkies), Retro (8-bis) of Tik (kort en droog, die minste opvallend). Klik op een om dit te hoor."
+"soundset": "Hoe die klanke klink: Vito se eie, Sag (warm klanke), Glas (helder klokkies), Retro (8-bis) of Tik (kort en droog, die minste opvallend). Klik op een om dit te hoor.",
+"ownwindow": "Maak Vito in sy eie venster oop (Microsoft Edge WebView2), sonder 'n blaaier. Af: in die geïnstalleerde blaaier-app of 'n blaaieroortjie."
 }
 }

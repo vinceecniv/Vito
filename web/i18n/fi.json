@@ -1,5 +1,20 @@
 {
 "strings": {
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Valintasi on toive, ei rajoitus: Soniox tunnistaa myös muita kieliä, vaikka vaihtaisit kieltä kesken lauseen.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet tunnistaa kielen itse: voit sanella millä tahansa sen 25 kielestä, valitsitpa tässä mitä tahansa.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Tämä malli pysyy tässä valitsemassasi kielessä. Vaihdatko kieltä sanellessasi? Valitse Automaattinen.",
+"Dictated, gave Vito Assist a command and made a long recording": "Saneltu, annettu Vito Assistille komento ja tehty pitkä nauhoitus",
+"Minimize": "Pienennä",
+"Maximize": "Suurenna",
+"Restore down": "Palauta alas",
+"Not sure what you like?": "Etkö tiedä, mistä pidät?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Anna Viton valita sinulle ulkoasu — värit, fontti, kulmat, tausta ja jotain päälle puettavaa. Etkö pidä siitä? Kokeile vain uudelleen.",
+"Surprise me": "Yllätä minut",
+"Vito Assist and recordings": "Vito Assist ja nauhoitukset",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Tällä jaksolla valmistuneet pitkät nauhoitukset.",
+"{time} recorded in total.": "Nauhoitettu yhteensä {time}.",
+"Open Vito in its own window": "Avaa Vito omassa ikkunassaan",
 "Recordings": "Nauhoitukset",
 "Audio on disk": "Ääni levyllä",
 "No recordings yet. The tape is still blank.": "Ei vielä nauhoituksia. Nauha on vielä tyhjä.",
@@ -485,8 +500,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Näiden avainten hankkiminen, hallinta ja suojaaminen — sekä kaikki niiden käytöstä palveluntarjoajilla koituvat kustannukset — ovat kokonaan omalla vastuullasi.",
 "Privacy & data": "Yksityisyys ja tiedot",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito ei kerää millään tavalla käyttäjätietoja lähetettäväksi eteenpäin, eikä sovellukseen ole rakennettu minkäänlaista seurantaa tai analytiikkaa. Asetuksesi, sanakirjasi ja historiasi pysyvät paikallisesti omalla tietokoneellasi.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Ainoat tiedot, jotka sovellus lähettää ulos, ovat puheesi ja tekstit, jotka menevät BYOK-mallin ulkoisille palveluntarjoajille (puheentunnistus ja tekoälysiistintä). Näihin tietoihin sovelletaan kyseisten ulkoisten palveluntarjoajien tietosuojaselosteita.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Selainversio osoitteessa vito.talk laskee nimettömästi, kuinka usein se avataan ja saavuttaako selain 1. ja 10. sanelunsa — ilman evästeitä, eikä lainkaan, kun Do Not Track on päällä. Mitään sanomaasi tai asettamaasi ei lähetetä. Asennettu sovellus ei laske mitään.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Ainoat tiedot, jotka sovellus lähettää ulos, ovat puheesi ja tekstit, jotka menevät BYOK-mallin ulkoisille palveluntarjoajille (puheentunnistus ja tekoälysiistintä). Näihin tietoihin sovelletaan kyseisten ulkoisten palveluntarjoajien tietosuojaselosteita.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Selainversio osoitteessa vito.talk laskee nimettömästi, kuinka usein se avataan ja saavuttaako selain 1. ja 10. sanelunsa — ilman evästeitä, eikä lainkaan, kun Do Not Track on päällä. Mitään sanomaasi tai asettamaasi ei lähetetä. Asennettu sovellus ei laske mitään.",
 "Show all": "Näytä kaikki",
 "Errors only": "Vain virheet",
 "Off": "Pois",
@@ -1440,7 +1455,17 @@
 "Confetti": "Konfetti",
 "Ocean": "Meri",
 "High contrast": "Suuri kontrasti",
-"High contrast black and white": "Suuri kontrasti mustavalkoinen"
+"High contrast black and white": "Suuri kontrasti mustavalkoinen",
+"Back to 100%": "Takaisin 100 %:iin",
+"Default 100%": "Oletus 100 %",
+"How do I get a key?": "Miten saan avaimen?",
+"Soniox API key": "Soniox-API-avain",
+"Achievement sound": "Saavutuksen ääni",
+"Menu": "Valikko",
+"Ran your first Vito Assist command": "Suoritettu ensimmäinen Vito Assist -komento",
+"Ran {n} Vito Assist commands": "Suoritettu {n} Vito Assist -komentoa",
+"Made by": "Tekijä",
+"Copyright": "Tekijänoikeus"
 },
 "help": {
 "theme": "Vaalea, tumma tai automaattinen — automaattinen seuraa järjestelmäsi vaalea/tumma-asetusta.",
@@ -1505,6 +1530,7 @@
 "motion": "Pysäyttää Viton animaatiot: siirtymät, liikkuvat taustat ja Viton omat liikkeet. Järjestelmässäsi on tähän myös asetus; kun se on päällä, Vito noudattaa sitä jo.",
 "cursor": "Hiiren osoitin Viton väreissä, logo kädessään. Pois: järjestelmäsi tavallinen osoitin.",
 "helptips": "Kyllä, tämä on yksi niistä. Pois: ei enää selityksiä, kun viivyt asetuksen kohdalla — ei tätäkään.",
-"soundset": "Miltä äänet kuulostavat: Viton omat, Pehmeä (lämpimät sävyt), Lasi (kirkkaat kellot), Retro (8-bit) tai Tikitys (lyhyt ja kuiva, huomaamattomin). Napsauta yhtä kuullaksesi sen."
+"soundset": "Miltä äänet kuulostavat: Viton omat, Pehmeä (lämpimät sävyt), Lasi (kirkkaat kellot), Retro (8-bit) tai Tikitys (lyhyt ja kuiva, huomaamattomin). Napsauta yhtä kuullaksesi sen.",
+"ownwindow": "Avaa Viton omaan ikkunaansa (Microsoft Edge WebView2) ilman selainta. Pois: asennetussa selainsovelluksessa tai selaimen välilehdellä."
 }
 }

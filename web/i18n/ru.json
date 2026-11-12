@@ -424,8 +424,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Предоставление, управление и защита этих ключей — а также все расходы за их использование у провайдеров — полностью ваша ответственность.",
 "Privacy & data": "Конфиденциальность и данные",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito никак не собирает пользовательские данные для отправки, и в приложение не встроено никаких форм отслеживания или аналитики. Ваши настройки, словарь и история остаются локально на вашем компьютере.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Единственные данные, которые приложение отправляет вовне, — это ваша речь и тексты, идущие внешним провайдерам модели BYOK (распознавание речи и очистка ИИ). На эти данные распространяются политики конфиденциальности этих внешних провайдеров.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Браузерная версия на vito.talk анонимно считает, как часто её открывают и доходит ли браузер до 1-й и 10-й диктовки — без cookie, а при включённом Do Not Track вообще ничего. Ничего из того, что вы говорите или настраиваете, не отправляется. Установленное приложение ничего не считает.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Единственные данные, которые приложение отправляет вовне, — это ваша речь и тексты, идущие внешним провайдерам модели BYOK (распознавание речи и очистка ИИ). На эти данные распространяются политики конфиденциальности этих внешних провайдеров.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Браузерная версия на vito.talk анонимно считает, как часто её открывают и доходит ли браузер до 1-й и 10-й диктовки — без cookie, а при включённом Do Not Track вообще ничего. Ничего из того, что вы говорите или настраиваете, не отправляется. Установленное приложение ничего не считает.",
 "Show all": "Показывать всё",
 "Errors only": "Только ошибки",
 "Off": "Выкл.",
@@ -1440,7 +1440,32 @@
 "words": "слов",
 "Marks": "Отметки",
 "Follows the colours of your desktop": "Следует цветам вашего рабочего стола",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Нажмите Caps Lock, чтобы начать диктовку, и нажмите ещё раз, чтобы остановить. Для диктовки с удержанием нужен niri новее 26.04; после обновления настройте его заново."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Нажмите Caps Lock, чтобы начать диктовку, и нажмите ещё раз, чтобы остановить. Для диктовки с удержанием нужен niri новее 26.04; после обновления настройте его заново.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Ваш выбор — это предпочтение, а не ограничение: Soniox распознаёт и другие языки, даже если вы переключаетесь посреди предложения.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet сам определяет язык: вы можете диктовать на любом из его 25 языков, что бы вы ни выбрали здесь.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Эта модель придерживается языка, выбранного здесь. Переключаете языки во время диктовки? Выберите «Автоматически».",
+"Dictated, gave Vito Assist a command and made a long recording": "Диктовали, дали команду Vito Assist и сделали длинную запись",
+"Minimize": "Свернуть",
+"Maximize": "Развернуть",
+"Restore down": "Свернуть в окно",
+"Not sure what you like?": "Не знаете, что вам нравится?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Пусть Vito подберёт для вас оформление — цвета, шрифт, углы, фон и что-нибудь из одежды. Не нравится? Просто попробуйте ещё раз.",
+"Surprise me": "Удиви меня",
+"Vito Assist and recordings": "Vito Assist и записи",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Длинные записи, завершённые за этот период.",
+"{time} recorded in total.": "Всего записано: {time}.",
+"Open Vito in its own window": "Открыть Vito в отдельном окне",
+"Back to 100%": "Вернуть 100%",
+"Default 100%": "По умолчанию 100%",
+"How do I get a key?": "Как получить ключ?",
+"Soniox API key": "API-ключ Soniox",
+"Achievement sound": "Звук достижений",
+"Menu": "Меню",
+"Ran your first Vito Assist command": "Выполнена первая команда Vito Assist",
+"Ran {n} Vito Assist commands": "Выполнено команд Vito Assist: {n}",
+"Made by": "Автор",
+"Copyright": "Авторские права"
 },
 "help": {
 "theme": "Светлая, тёмная или автоматическая — автоматическая следует за светлым/тёмным режимом вашей системы.",
@@ -1505,6 +1530,7 @@
 "motion": "Останавливает анимации Vito: переходы, движущиеся фоны и собственные движения Vito. В вашей системе тоже есть такая настройка; если она включена, Vito уже следует ей.",
 "cursor": "Указатель мыши в цветах Vito, с логотипом в руке. Выкл.: обычный указатель вашей системы.",
 "helptips": "Да, это одна из них. Выкл.: больше никаких пояснений, когда вы задерживаете курсор над настройкой, — включая эту.",
-"soundset": "Как звучат звуки: собственные Vito, Мягкий (тёплые тона), Стекло (звонкие колокольчики), Ретро (8-бит) или Тик (коротко и сухо, менее всего заметно). Нажмите на набор, чтобы его услышать."
+"soundset": "Как звучат звуки: собственные Vito, Мягкий (тёплые тона), Стекло (звонкие колокольчики), Ретро (8-бит) или Тик (коротко и сухо, менее всего заметно). Нажмите на набор, чтобы его услышать.",
+"ownwindow": "Открывает Vito в собственном окне (Microsoft Edge WebView2), без браузера. Выкл.: в установленном браузерном приложении или во вкладке браузера."
 }
 }

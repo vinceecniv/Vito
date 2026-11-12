@@ -1,5 +1,20 @@
 {
 "strings": {
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Η επιλογή σας είναι προτίμηση, όχι περιορισμός: το Soniox αναγνωρίζει και άλλες γλώσσες, ακόμη κι όταν αλλάζετε στη μέση της πρότασης.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Το Parakeet αναγνωρίζει μόνο του τη γλώσσα: μπορείτε να υπαγορεύετε σε οποιαδήποτε από τις 25 γλώσσες του, ό,τι κι αν επιλέξετε εδώ.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Αυτό το μοντέλο μένει στη γλώσσα που επιλέγετε εδώ. Αλλάζετε γλώσσα ενώ υπαγορεύετε; Επιλέξτε Αυτόματα.",
+"Dictated, gave Vito Assist a command and made a long recording": "Υπαγορεύσατε, δώσατε μια εντολή στο Vito Assist και κάνατε μια μεγάλη ηχογράφηση",
+"Minimize": "Ελαχιστοποίηση",
+"Maximize": "Μεγιστοποίηση",
+"Restore down": "Επαναφορά κάτω",
+"Not sure what you like?": "Δεν ξέρετε τι σας αρέσει;",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Αφήστε το Vito να διαλέξει μια εμφάνιση για εσάς — χρώματα, γραμματοσειρά, γωνίες, φόντο και κάτι να φορέσει. Δεν σας αρέσει; Απλώς δοκιμάστε ξανά.",
+"Surprise me": "Εκπλήξτε με",
+"Vito Assist and recordings": "Vito Assist και ηχογραφήσεις",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Οι μεγάλες ηχογραφήσεις που ολοκληρώθηκαν σε αυτή την περίοδο.",
+"{time} recorded in total.": "{time} ηχογραφημένα συνολικά.",
+"Open Vito in its own window": "Άνοιγμα του Vito σε δικό του παράθυρο",
 "Main figure": "Κύριο μέγεθος",
 "days in a row": "ημέρες στη σειρά",
 "New record!": "Νέο ρεκόρ!",
@@ -293,8 +308,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Η παροχή, διαχείριση και ασφάλεια αυτών των κλειδιών — και κάθε κόστος που συνεπάγεται η χρήση τους στους παρόχους — είναι εξ ολοκλήρου δική σας ευθύνη.",
 "Privacy & data": "Απόρρητο & δεδομένα",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Το Vito δεν συλλέγει με κανέναν τρόπο δεδομένα χρηστών για να τα προωθήσει, και δεν υπάρχει κανενός είδους παρακολούθηση ή analytics ενσωματωμένα στην εφαρμογή. Οι ρυθμίσεις, το λεξικό και το ιστορικό σας παραμένουν τοπικά στον δικό σας υπολογιστή.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Τα μόνα δεδομένα που στέλνει η εφαρμογή εξωτερικά είναι η ομιλία σας και τα κείμενα που πηγαίνουν στους εξωτερικούς παρόχους του μοντέλου BYOK (αναγνώριση ομιλίας και καθαρισμός AI). Σε αυτά τα δεδομένα ισχύουν οι δηλώσεις απορρήτου αυτών των εξωτερικών παρόχων.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Η έκδοση για πρόγραμμα περιήγησης στο vito.talk μετρά ανώνυμα πόσο συχνά ανοίγει και αν ένα πρόγραμμα περιήγησης φτάνει στην 1η και 10η υπαγόρευσή του — χωρίς cookies, και καθόλου όταν είναι ενεργό το Do Not Track. Τίποτα από όσα λέτε ή ρυθμίζετε δεν αποστέλλεται. Η εγκατεστημένη εφαρμογή δεν μετρά τίποτα.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Τα μόνα δεδομένα που στέλνει η εφαρμογή εξωτερικά είναι η ομιλία σας και τα κείμενα που πηγαίνουν στους εξωτερικούς παρόχους του μοντέλου BYOK (αναγνώριση ομιλίας και καθαρισμός AI). Σε αυτά τα δεδομένα ισχύουν οι δηλώσεις απορρήτου αυτών των εξωτερικών παρόχων.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Η έκδοση για πρόγραμμα περιήγησης στο vito.talk μετρά ανώνυμα πόσο συχνά ανοίγει και αν ένα πρόγραμμα περιήγησης φτάνει στην 1η και 10η υπαγόρευσή του — χωρίς cookies, και καθόλου όταν είναι ενεργό το Do Not Track. Τίποτα από όσα λέτε ή ρυθμίζετε δεν αποστέλλεται. Η εγκατεστημένη εφαρμογή δεν μετρά τίποτα.",
 "Show all": "Εμφάνιση όλων",
 "Errors only": "Μόνο σφάλματα",
 "Off": "Ανενεργό",
@@ -1440,7 +1455,17 @@
 "words": "λέξεις",
 "Marks": "Επισημάνσεις",
 "Follows the colours of your desktop": "Ακολουθεί τα χρώματα της επιφάνειας εργασίας σας",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Πατήστε το Caps Lock για να ξεκινήσει η υπαγόρευση και πατήστε το ξανά για να σταματήσει. Η υπαγόρευση με κρατημένο το πλήκτρο χρειάζεται niri νεότερο από 26.04· τότε ρυθμίστε το ξανά."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Πατήστε το Caps Lock για να ξεκινήσει η υπαγόρευση και πατήστε το ξανά για να σταματήσει. Η υπαγόρευση με κρατημένο το πλήκτρο χρειάζεται niri νεότερο από 26.04· τότε ρυθμίστε το ξανά.",
+"Back to 100%": "Επιστροφή στο 100%",
+"Default 100%": "Προεπιλογή 100%",
+"How do I get a key?": "Πώς αποκτώ κλειδί;",
+"Soniox API key": "Κλειδί API Soniox",
+"Achievement sound": "Ήχος επιτεύγματος",
+"Menu": "Μενού",
+"Ran your first Vito Assist command": "Εκτελέσατε την πρώτη σας εντολή Vito Assist",
+"Ran {n} Vito Assist commands": "Εκτελέσατε {n} εντολές Vito Assist",
+"Made by": "Δημιουργός",
+"Copyright": "Πνευματικά δικαιώματα"
 },
 "help": {
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",
@@ -1505,6 +1530,7 @@
 "motion": "Σταματά τα κινούμενα εφέ του Vito: μεταβάσεις, κινούμενα φόντα και τις κινήσεις του ίδιου του Vito. Το σύστημά σας έχει κι αυτό μια ρύθμιση γι' αυτό· όταν είναι ενεργή, ο Vito την ακολουθεί ήδη.",
 "cursor": "Ο δείκτης του ποντικιού στα χρώματα του Vito, με το λογότυπο στο χέρι. Ανενεργό: ο συνηθισμένος δείκτης του συστήματός σας.",
 "helptips": "Ναι, αυτή είναι μία. Ανενεργό: καμία εξήγηση όταν σταματάτε πάνω από μια ρύθμιση — ούτε σε αυτήν.",
-"soundset": "Πώς ακούγονται οι ήχοι: οι δικοί του Vito, Απαλό (ζεστοί τόνοι), Γυαλί (φωτεινά καμπανάκια), Ρετρό (8-bit) ή Τικ (σύντομο και ξερό, το λιγότερο αισθητό). Κάντε κλικ σε ένα για να το ακούσετε."
+"soundset": "Πώς ακούγονται οι ήχοι: οι δικοί του Vito, Απαλό (ζεστοί τόνοι), Γυαλί (φωτεινά καμπανάκια), Ρετρό (8-bit) ή Τικ (σύντομο και ξερό, το λιγότερο αισθητό). Κάντε κλικ σε ένα για να το ακούσετε.",
+"ownwindow": "Ανοίγει το Vito σε δικό του παράθυρο (Microsoft Edge WebView2), χωρίς πρόγραμμα περιήγησης. Απενεργοποιημένο: στην εγκατεστημένη εφαρμογή του προγράμματος περιήγησης ή σε μια καρτέλα."
 }
 }

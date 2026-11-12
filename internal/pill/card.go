@@ -222,7 +222,7 @@ func drawCard(buf []byte, w, h int, c *card, show float64, dark bool, hw, hh, al
 		clipboardIcon(buf, w, h, ix+cardIcon*s/2, mid, cardIcon*s/2, th, in)
 	case c.kind == cardKept:
 		r := cardIcon * s / 2
-		box(buf, w, h, ix+r, mid, r*0.86, r*0.86, r*0.86, th.to, in)
+		box(buf, w, h, ix+r, mid, r*0.86, r*0.86, r*0.86, th.fill, in)
 		repasteIcon(buf, w, h, ix+r, mid, r/11, th.onAcc, in)
 	default:
 		warning(buf, w, h, ix+cardIcon*s/2, mid, cardIcon*s/2, th, in)

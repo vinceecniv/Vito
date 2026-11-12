@@ -1,5 +1,20 @@
 {
 "strings": {
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Deine Wahl ist eine Vorliebe, keine Grenze: Soniox erkennt auch andere Sprachen, selbst wenn du mitten im Satz wechselst.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet erkennt die Sprache selbst: Du kannst in jeder seiner 25 Sprachen diktieren, egal was du hier wählst.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Dieses Modell bleibt bei der Sprache, die du hier wählst. Du wechselst beim Diktieren die Sprache? Wähle Automatisch.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktiert, Vito Assist einen Befehl gegeben und eine lange Aufnahme gemacht",
+"Minimize": "Minimieren",
+"Maximize": "Maximieren",
+"Restore down": "Verkleinern",
+"Not sure what you like?": "Du weißt nicht, was dir gefällt?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Lass Vito ein Aussehen für dich aussuchen – Farben, Schrift, Ecken, Hintergrund und etwas zum Anziehen. Gefällt es dir nicht? Versuch es einfach noch mal.",
+"Surprise me": "Überrasch mich",
+"Vito Assist and recordings": "Vito Assist und Aufnahmen",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Die langen Aufnahmen, die in diesem Zeitraum abgeschlossen wurden.",
+"{time} recorded in total.": "Insgesamt {time} aufgenommen.",
+"Open Vito in its own window": "Vito in einem eigenen Fenster öffnen",
 "Main figure": "Hauptzahl",
 "days in a row": "Tage in Folge",
 "New record!": "Neuer Rekord!",
@@ -289,8 +304,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Die Bereitstellung, Verwaltung und Sicherung dieser Keys — sowie alle Kosten, die ihre Nutzung bei den Providern verursacht — liegen vollständig in deiner eigenen Verantwortung.",
 "Privacy & data": "Privatsphäre & Daten",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito sammelt in keiner Weise Nutzerdaten, um sie weiterzuleiten, und es ist keinerlei Tracking oder Analyse in die App eingebaut. Deine Einstellungen, dein Wörterbuch und dein Verlauf bleiben lokal auf deinem eigenen Computer.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Die einzigen Daten, die die App nach außen sendet, sind deine Sprache und die Texte, die an die externen Provider des BYOK-Modells gehen (Spracherkennung und KI-Bereinigung). Für diese Daten gelten die Datenschutzerklärungen dieser externen Provider.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Die Browserversion auf vito.talk zählt anonym, wie oft sie geöffnet wird und ob ein Browser sein 1. und 10. Diktat erreicht — ohne Cookies und bei aktiviertem Do Not Track überhaupt nicht. Nichts von dem, was du sagst oder einstellst, wird gesendet. Die installierte App zählt nichts.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Die einzigen Daten, die die App nach außen sendet, sind deine Sprache und die Texte, die an die externen Provider des BYOK-Modells gehen (Spracherkennung und KI-Bereinigung). Für diese Daten gelten die Datenschutzerklärungen dieser externen Provider.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Die Browserversion auf vito.talk zählt anonym, wie oft sie geöffnet wird und ob ein Browser sein 1. und 10. Diktat erreicht — ohne Cookies und bei aktiviertem Do Not Track überhaupt nicht. Nichts von dem, was du sagst oder einstellst, wird gesendet. Die installierte App zählt nichts.",
 "Show all": "Alle anzeigen",
 "Errors only": "Nur Fehler",
 "Off": "Aus",
@@ -1440,7 +1455,17 @@
 "words": "Wörter",
 "Marks": "Markierungen",
 "Follows the colours of your desktop": "Übernimmt die Farben deines Desktops",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Drück Caps Lock, um das Diktieren zu starten, und drück es noch einmal, um es zu beenden. Gedrückt halten zum Diktieren braucht ein niri neuer als 26.04; richte es danach erneut ein."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Drück Caps Lock, um das Diktieren zu starten, und drück es noch einmal, um es zu beenden. Gedrückt halten zum Diktieren braucht ein niri neuer als 26.04; richte es danach erneut ein.",
+"Back to 100%": "Zurück auf 100 %",
+"Default 100%": "Standard 100 %",
+"How do I get a key?": "Wie bekomme ich einen Key?",
+"Soniox API key": "Soniox-API-Key",
+"Achievement sound": "Erfolgston",
+"Menu": "Menü",
+"Ran your first Vito Assist command": "Deinen ersten Vito-Assist-Befehl ausgeführt",
+"Ran {n} Vito Assist commands": "{n} Vito-Assist-Befehle ausgeführt",
+"Made by": "Erstellt von",
+"Copyright": "Copyright"
 },
 "help": {
 "theme": "Hell, dunkel oder automatisch — automatisch folgt der Hell/Dunkel-Einstellung deines Systems.",
@@ -1505,6 +1530,7 @@
 "motion": "Hält Vitos Animationen an: Übergänge, bewegte Hintergründe und Vitos eigene Bewegungen. Dein System hat dafür auch eine Einstellung; ist sie an, folgt Vito ihr bereits.",
 "cursor": "Der Mauszeiger in Vitos Farben, mit dem Logo in der Hand. Aus: der übliche Mauszeiger deines Systems.",
 "helptips": "Ja, das ist einer. Aus: keine Erklärungen mehr, wenn du kurz über einer Einstellung verweilst – auch diese nicht.",
-"soundset": "Wie die Töne klingen: Vitos eigene, Weich (warme Klänge), Glas (helle Glöckchen), Retro (8-Bit) oder Tick (kurz und trocken, am unauffälligsten). Klicke einen an, um ihn zu hören."
+"soundset": "Wie die Töne klingen: Vitos eigene, Weich (warme Klänge), Glas (helle Glöckchen), Retro (8-Bit) oder Tick (kurz und trocken, am unauffälligsten). Klicke einen an, um ihn zu hören.",
+"ownwindow": "Öffnet Vito in einem eigenen Fenster (Microsoft Edge WebView2), ohne Browser. Aus: in der installierten Browser-App oder einem Browser-Tab."
 }
 }

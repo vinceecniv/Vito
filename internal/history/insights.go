@@ -44,6 +44,12 @@ type WordCount struct {
 // topWordsMax is how many words the cloud gets.
 const topWordsMax = 40
 
+// LangMin is how many dictations a language needs before it counts, on the
+// language card and for Polyglot. A recognizer now and then labels a short or
+// mumbled dictation with a language nobody spoke (one Swedish, one Indonesian
+// among a thousand Dutch); two such slips in one language are rare.
+const LangMin = 3
+
 // LangCount is how many dictations were in one language.
 type LangCount struct {
 	Code  string `json:"code"`
@@ -127,6 +133,14 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 		}
 		return in.Languages[i].Code < in.Languages[j].Code
 	})
+	// Drop the stray detections, but keep the most used language so a quiet
+	// period still shows one.
+	for i := 1; i < len(in.Languages); i++ {
+		if in.Languages[i].Count < LangMin {
+			in.Languages = in.Languages[:i]
+			break
+		}
+	}
 	in.TopWords = topWords(words, topWordsMax)
 	return in, nil
 }

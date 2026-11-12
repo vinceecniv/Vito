@@ -22,18 +22,17 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 	row := s.db.QueryRow(`SELECT
 		COALESCE(SUM(words),0), COALESCE(SUM(sentences),0), COALESCE(SUM(activations),0),
 		COALESCE(SUM(duration_ms),0), COALESCE(SUM(uploads),0), COALESCE(MAX(words),0),
-		COALESCE(SUM(commands),0), COALESCE(SUM(clipboard_commands),0)
+		COALESCE(SUM(commands),0)
 		FROM day_stats`)
-	var durationMS, clipCommands int64
-	if err := row.Scan(&st.Words, &st.Sentences, &st.Activations, &durationMS, &st.Uploads, &st.BestDayWords, &st.Commands, &clipCommands); err != nil {
+	var durationMS int64
+	if err := row.Scan(&st.Words, &st.Sentences, &st.Activations, &durationMS, &st.Uploads, &st.BestDayWords, &st.Commands); err != nil {
 		return st, err
 	}
-	// Which of the three modes you've used, for the hidden "Vito Wizard" badge:
-	// a plain dictation (an activation that wasn't a command), a spoken Assist
-	// command (a command that wasn't on the clipboard), and a clipboard command.
+	// Two of the three modes the hidden "Vito Wizard" badge asks for: a plain
+	// dictation (an activation that wasn't a command) and a Vito Assist command.
+	// The third, a long recording, the server fills in.
 	st.UsedDictation = st.Activations > st.Commands
-	st.UsedAssist = st.Commands > clipCommands
-	st.UsedClipboardAssist = clipCommands > 0
+	st.UsedAssist = st.Commands > 0
 	st.SpokenSeconds = durationMS / 1000
 	if wpm <= 0 {
 		wpm = 40
@@ -101,8 +100,9 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 	// entry rows. Those are capped, so this is best-effort — but an achievement
 	// is only recorded once, so catching it while the entry is still around is
 	// enough. Privacy-mode dictations leave no entry and can't set these.
-	langRow := s.db.QueryRow(`SELECT COUNT(DISTINCT language) FROM history
-		WHERE source != 'upload' AND language != '' AND language != 'auto'`)
+	langRow := s.db.QueryRow(`SELECT COUNT(*) FROM (SELECT language FROM history
+		WHERE source != 'upload' AND language != '' AND language != 'auto'
+		GROUP BY language HAVING COUNT(*) >= ?)`, LangMin)
 	_ = langRow.Scan(&st.Languages)
 
 	hourRows, err := s.db.Query(`SELECT ts FROM history WHERE source != 'upload'`)

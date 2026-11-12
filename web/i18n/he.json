@@ -268,8 +268,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "אספקת המפתחות הללו, ניהולם ואבטחתם — וכל העלויות שהשימוש בהם גורר אצל הספקים — הם באחריותך המלאה.",
 "Privacy & data": "פרטיות ונתונים",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito אינו אוסף בשום צורה נתוני משתמש כדי להעבירם הלאה, ואין כל צורה של מעקב או ניתוח נתונים מובנית באפליקציה. ההגדרות, המילון וההיסטוריה שלך נשארים מקומית במחשב שלך.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "הנתונים היחידים שהאפליקציה שולחת החוצה הם הדיבור שלך והטקסטים שנשלחים לספקים החיצוניים של מודל BYOK (זיהוי דיבור וניקוי AI). על נתונים אלה חלות מדיניויות הפרטיות של אותם ספקים חיצוניים.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "גרסת הדפדפן ב-vito.talk סופרת באופן אנונימי כמה פעמים היא נפתחת והאם דפדפן מגיע להכתבה הראשונה והעשירית שלו — ללא עוגיות, וכלל לא כאשר Do Not Track מופעל. שום דבר ממה שאתם אומרים או מגדירים לא נשלח. האפליקציה המותקנת אינה סופרת דבר.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "הנתונים היחידים שהאפליקציה שולחת החוצה הם הדיבור שלך והטקסטים שנשלחים לספקים החיצוניים של מודל BYOK (זיהוי דיבור וניקוי AI). על נתונים אלה חלות מדיניויות הפרטיות של אותם ספקים חיצוניים.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "גרסת הדפדפן ב-vito.talk סופרת באופן אנונימי כמה פעמים היא נפתחת והאם דפדפן מגיע להכתבה הראשונה והעשירית שלו — ללא עוגיות, וכלל לא כאשר Do Not Track מופעל. שום דבר ממה שאתם אומרים או מגדירים לא נשלח. האפליקציה המותקנת אינה סופרת דבר.",
 "Show all": "הצג הכל",
 "Errors only": "שגיאות בלבד",
 "Off": "כבוי",
@@ -1440,7 +1440,32 @@
 "words": "מילים",
 "Marks": "סימונים",
 "Follows the colours of your desktop": "עוקב אחר הצבעים של שולחן העבודה שלך",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "לחץ על Caps Lock כדי להתחיל להכתיב ולחץ עליו שוב כדי לעצור. החזקת המקש לצורך הכתבה דורשת גרסת niri חדשה מ-26.04; לאחר מכן הגדר אותו מחדש."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "לחץ על Caps Lock כדי להתחיל להכתיב ולחץ עליו שוב כדי לעצור. החזקת המקש לצורך הכתבה דורשת גרסת niri חדשה מ-26.04; לאחר מכן הגדר אותו מחדש.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "הבחירה שלך היא העדפה, לא הגבלה: Soniox מזהה גם שפות אחרות, אפילו כשאתה מחליף שפה באמצע משפט.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet מזהה את השפה בעצמו: אפשר להכתיב בכל אחת מ-25 השפות שלו, לא משנה מה תבחר כאן.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "המודל הזה נצמד לשפה שתבחר כאן. מחליף שפות תוך כדי הכתבה? בחר אוטומטי.",
+"Dictated, gave Vito Assist a command and made a long recording": "הכתבה, פקודה ל-Vito Assist והקלטה ארוכה",
+"Minimize": "מזער",
+"Maximize": "הגדל",
+"Restore down": "שחזר למטה",
+"Not sure what you like?": "לא בטוח מה מתאים לך?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "תן ל-Vito לבחור לך מראה — צבעים, גופן, פינות, רקע ומשהו ללבוש. לא אהבת? פשוט נסה שוב.",
+"Surprise me": "הפתע אותי",
+"Vito Assist and recordings": "Vito Assist והקלטות",
+"Assist": "Assist",
+"The long recordings finished in this period.": "ההקלטות הארוכות שהסתיימו בתקופה זו.",
+"{time} recorded in total.": "{time} הוקלטו בסך הכול.",
+"Open Vito in its own window": "פתח את Vito בחלון משלו",
+"Back to 100%": "חזרה ל-100%",
+"Default 100%": "ברירת מחדל 100%",
+"How do I get a key?": "איך משיגים מפתח?",
+"Soniox API key": "מפתח API של Soniox",
+"Achievement sound": "צליל הישג",
+"Menu": "תפריט",
+"Ran your first Vito Assist command": "הורצה פקודת Vito Assist הראשונה שלך",
+"Ran {n} Vito Assist commands": "הורצו {n} פקודות Vito Assist",
+"Made by": "נוצר על ידי",
+"Copyright": "זכויות יוצרים"
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",
@@ -1505,6 +1530,7 @@
 "motion": "עוצר את האנימציות של Vito: מעברים, רקעים נעים והתנועות של Vito עצמו. גם במערכת שלך יש הגדרה לכך; כשהיא מופעלת, Vito כבר פועל לפיה.",
 "cursor": "סמן העכבר בצבעים של Vito, עם הלוגו בידו. כבוי: הסמן הרגיל של המערכת שלך.",
 "helptips": "כן, זה אחד מהם. כבוי: אין יותר הסברים כשמשתהים מעל הגדרה — כולל זה.",
-"soundset": "איך הצלילים נשמעים: של Vito עצמו, רך (צלילים חמים), זכוכית (פעמונים בהירים), רטרו (8-bit) או תקתוק (קצר ויבש, הכי פחות בולט). לחץ על אחד כדי לשמוע אותו."
+"soundset": "איך הצלילים נשמעים: של Vito עצמו, רך (צלילים חמים), זכוכית (פעמונים בהירים), רטרו (8-bit) או תקתוק (קצר ויבש, הכי פחות בולט). לחץ על אחד כדי לשמוע אותו.",
+"ownwindow": "פותח את Vito בחלון משלו (Microsoft Edge WebView2), בלי דפדפן. כבוי: באפליקציית הדפדפן המותקנת או בכרטיסיית דפדפן."
 }
 }

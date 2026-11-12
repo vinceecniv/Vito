@@ -8,7 +8,10 @@ require (
 	github.com/coder/websocket v1.8.15
 	github.com/gen2brain/malgo v0.11.27
 	github.com/godbus/dbus/v5 v5.2.4
+	github.com/hajimehoshi/go-mp3 v0.3.4
+	github.com/jchv/go-webview2 v0.0.0-20260205173254-56598839c808
 	github.com/jezek/xgb v1.3.1
+	github.com/webview/webview_go v0.0.0-20240831120633-6173450d4dd6
 	golang.org/x/image v0.47.0
 	golang.org/x/sys v0.49.0
 	modernc.org/sqlite v1.61.1
@@ -21,8 +24,8 @@ require (
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/hajimehoshi/go-mp3 v0.3.4 // indirect
 	github.com/invopop/jsonschema v0.14.0 // indirect
+	github.com/jchv/go-winloader v0.0.0-20250406163304-c1995be93bd1 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/ncruces/go-strftime v1.1.0 // indirect
 	github.com/pb33f/ordered-map/v2 v2.3.1 // indirect
