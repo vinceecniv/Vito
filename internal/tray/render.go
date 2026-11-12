@@ -10,6 +10,7 @@ import (
 	"runtime"
 
 	"vito/internal/daemon"
+	"vito/internal/pill"
 )
 
 // Tray icons are rendered in-process (no embedded frame files). The base is the
@@ -27,17 +28,29 @@ var bars = [7][4]float64{
 }
 
 var (
-	gradA    = [3]uint8{0xFF, 0x6B, 0x5E} // coral (top-left)
-	gradB    = [3]uint8{0x7C, 0x3A, 0xED} // violet (bottom-right)
 	inkBG    = [3]uint8{0x2B, 0x24, 0x40} // dark-mode squircle background
-	markB2   = [3]uint8{0xA7, 0x8B, 0xFA} // violet-light: dark-mode mark gradient end
 	dotCoral = color.NRGBA{0xFF, 0x6B, 0x5E, 0xFF}
-	dotViol  = color.NRGBA{0x8B, 0x5C, 0xF6, 0xFF}
 )
+
+// brand is the colour theme's gradient (ui.accent), as pill.BrandColors gives
+// it: coral at the top left, violet at the bottom right, violetL the end of the
+// dark variant's mark.
+type brand struct{ coral, violet, violetL [3]uint8 }
+
+func brandFor(accent string) brand {
+	c, v, l := pill.BrandColors(accent)
+	return brand{c, v, l}
+}
+
+// BrandPNG is the app icon in the colour theme's gradient, size pixels square:
+// what Vito's own window shows on the taskbar.
+func BrandPNG(accent string, size int) []byte {
+	return encodePNG(renderBrand(false, brandFor(accent), size))
+}
 
 // buildIcons renders one static icon per state: the brand mark alone for idle,
 // and the mark with a coral or violet status dot for recording / processing.
-func buildIcons(dark bool) map[daemon.State][]byte {
+func buildIcons(dark bool, accent string) map[daemon.State][]byte {
 	win := runtime.GOOS == "windows"
 	enc := func(img *image.NRGBA) []byte {
 		p := encodePNG(img)
@@ -46,7 +59,9 @@ func buildIcons(dark bool) map[daemon.State][]byte {
 		}
 		return p
 	}
-	base := renderBrand(dark)
+	b := brandFor(accent)
+	base := renderBrand(dark, b, iconSize)
+	dotViol := color.NRGBA{b.violet[0], b.violet[1], b.violet[2], 0xFF}
 	withDot := func(col color.NRGBA) []byte {
 		img := cloneImg(base)
 		addDot(img, col, 1.0, 1.0)
@@ -62,15 +77,16 @@ func buildIcons(dark bool) map[daemon.State][]byte {
 // renderBrand draws the Vito squircle. Light variant: coral→violet gradient
 // background with a white Waveform-V. Dark variant (for dark taskbars): dark
 // ink background with a coral→violet-light gradient mark.
-func renderBrand(dark bool) *image.NRGBA {
-	s := float64(iconSize)
-	img := image.NewNRGBA(image.Rect(0, 0, iconSize, iconSize))
+func renderBrand(dark bool, br brand, size int) *image.NRGBA {
+	gradA, gradB, markB2 := br.coral, br.violet, br.violetL
+	s := float64(size)
+	img := image.NewNRGBA(image.Rect(0, 0, size, size))
 	radius := s * 0.24
 	scale := s * 0.72 / 100
 	offX := (s - 100*scale) / 2
 	offY := (s - 100*scale) / 2
-	for y := 0; y < iconSize; y++ {
-		for x := 0; x < iconSize; x++ {
+	for y := 0; y < size; y++ {
+		for x := 0; x < size; x++ {
 			fx, fy := float64(x)+0.5, float64(y)+0.5
 			bgA := aa(roundRectDist(fx, fy, 0.5, 0.5, s-0.5, s-0.5, radius))
 			if bgA <= 0 {

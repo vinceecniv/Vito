@@ -25,6 +25,7 @@ import (
 	"vito/internal/config"
 	"vito/internal/notify"
 	"vito/internal/selfexe"
+	"vito/internal/tray"
 	"vito/internal/webapp"
 )
 
@@ -99,7 +100,10 @@ var (
 	procSetProcessDpiAwareCtx = user32.NewProc("SetProcessDpiAwarenessContext")
 	procSystemParametersInfo  = user32.NewProc("SystemParametersInfoW")
 	shell32                   = windows.NewLazySystemDLL("shell32.dll")
-	procExtractIconExW        = shell32.NewProc("ExtractIconExW")
+	procCreateIconFromResEx   = user32.NewProc("CreateIconFromResourceEx")
+	procDestroyIcon           = user32.NewProc("DestroyIcon")
+	uxtheme                   = windows.NewLazySystemDLL("uxtheme.dll")
+	procSetWindowThemeAttr    = uxtheme.NewProc("SetWindowThemeAttribute")
 	procSetAppIDForProcess    = shell32.NewProc("SetCurrentProcessExplicitAppUserModelID")
 	procSHGetPropertyStoreWnd = shell32.NewProc("SHGetPropertyStoreForWindow")
 	dwmapi                    = windows.NewLazySystemDLL("dwmapi.dll")
@@ -287,7 +291,8 @@ func runWindow(cfg *config.Config, target string) error {
 	if w.hwnd == 0 {
 		return errNoEngine
 	}
-	setWindowIcon(w.hwnd)
+	setWindowIcon(w.hwnd, cfg.UI.Accent)
+	hideCaptionIcon(w.hwnd)
 	setRelaunch(w.hwnd)
 	setDarkTitleBar(w.hwnd, wantDarkTitle(cfg.UI.Theme))
 	show := uintptr(swShow)
@@ -354,7 +359,7 @@ func runWindow(cfg *config.Config, target string) error {
 const windowBridgeJS = `(function(){
   const post = (o) => { try { window.chrome.webview.postMessage(JSON.stringify(o)); } catch (e) {} };
   window.vitoOpenExternal = (u) => post({ t: "open", url: String(u) });
-  window.vitoTheme = (dark) => post({ t: "theme", dark: !!dark });
+  window.vitoTheme = (dark, accent) => post({ t: "theme", dark: !!dark, accent: accent || "" });
 })();`
 
 // windowDebugJS (VITO_DEBUG) sends the page's errors to the window's log,
@@ -371,6 +376,7 @@ func (w *vwin) onMessage(raw string) {
 		T    string `json:"t"`
 		URL  string `json:"url"`
 		Dark bool   `json:"dark"`
+		Acc  string `json:"accent"`
 		Msg  string `json:"msg"`
 	}
 	if json.Unmarshal([]byte(raw), &m) != nil {
@@ -385,6 +391,7 @@ func (w *vwin) onMessage(raw string) {
 		_ = exec.Command("rundll32", "url.dll,FileProtocolHandler", u.String()).Start()
 	case "theme":
 		setDarkTitleBar(w.hwnd, m.Dark)
+		setWindowIcon(w.hwnd, m.Acc)
 	case "log":
 		if dir, err := os.UserCacheDir(); err == nil {
 			if f, err := os.OpenFile(filepath.Join(dir, "vito", "window.log"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644); err == nil {
@@ -633,24 +640,46 @@ func sendNavigate(h uintptr, u string) {
 	procSendMessageW.Call(h, wmCopyData, 0, uintptr(unsafe.Pointer(&cds)))
 }
 
-// setWindowIcon gives the window the exe's own icon (rsrc_windows.syso).
-func setWindowIcon(hwnd uintptr) {
-	exe, err := os.Executable()
-	if err != nil {
+// setWindowIcon gives the window the app icon in the colour theme's gradient
+// (ui.accent), drawn as the tray draws it: the taskbar and Alt+Tab show it.
+// The icons it replaces are destroyed; one accent is drawn only once.
+func setWindowIcon(hwnd uintptr, accent string) {
+	if iconAccent.set && iconAccent.name == accent {
 		return
 	}
-	p, _ := windows.UTF16PtrFromString(exe)
-	var large, small uintptr
-	if n, _, _ := procExtractIconExW.Call(uintptr(unsafe.Pointer(p)), 0,
-		uintptr(unsafe.Pointer(&large)), uintptr(unsafe.Pointer(&small)), 1); n == 0 {
+	dpi, _, _ := procGetDpiForWindow.Call(hwnd)
+	if dpi == 0 {
+		dpi = 96
+	}
+	draw := func(px int) uintptr {
+		b := tray.BrandPNG(accent, px)
+		h, _, _ := procCreateIconFromResEx.Call(uintptr(unsafe.Pointer(&b[0])), uintptr(len(b)),
+			1, 0x00030000, uintptr(px), uintptr(px), 0)
+		return h
+	}
+	large, small := draw(32*int(dpi)/96), draw(16*int(dpi)/96)
+	if large == 0 || small == 0 {
 		return
 	}
-	if large != 0 {
-		procSendMessageW.Call(hwnd, wmSetIcon, 1, large)
+	oldL, _, _ := procSendMessageW.Call(hwnd, wmSetIcon, 1, large)
+	oldS, _, _ := procSendMessageW.Call(hwnd, wmSetIcon, 0, small)
+	if iconAccent.set { // ours from before; the first ones are the class's (none)
+		procDestroyIcon.Call(oldL)
+		procDestroyIcon.Call(oldS)
 	}
-	if small != 0 {
-		procSendMessageW.Call(hwnd, wmSetIcon, 0, small)
-	}
+	iconAccent.set, iconAccent.name = true, accent
+}
+
+var iconAccent struct {
+	set  bool
+	name string
+}
+
+// hideCaptionIcon leaves the icon out of the title bar, where it sat over the
+// page's own logo; the taskbar and Alt+Tab keep it.
+func hideCaptionIcon(hwnd uintptr) {
+	opts := struct{ flags, mask uint32 }{0x2, 0x2}                                            // WTNCA_NODRAWICON
+	procSetWindowThemeAttr.Call(hwnd, 1, uintptr(unsafe.Pointer(&opts)), unsafe.Sizeof(opts)) // WTA_NONCLIENT
 }
 
 // setDarkTitleBar asks DWM for the dark caption (attribute 20,

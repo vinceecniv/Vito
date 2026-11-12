@@ -27,25 +27,27 @@ import (
 // animator holds one static tray icon per state and swaps it on state change —
 // nothing animates. It also rebuilds the set when the OS taskbar theme flips.
 type animator struct {
-	icons map[daemon.State][]byte
-	mu    sync.Mutex
-	state daemon.State
-	dark  bool
+	icons  map[daemon.State][]byte
+	mu     sync.Mutex
+	state  daemon.State
+	dark   bool
+	accent string
 }
 
-func newAnimator(dark bool) *animator {
-	return &animator{icons: buildIcons(dark), state: daemon.StateIdle, dark: dark}
+func newAnimator(dark bool, accent string) *animator {
+	return &animator{icons: buildIcons(dark, accent), state: daemon.StateIdle, dark: dark, accent: accent}
 }
 
-// setDark rebuilds the icon set when the OS taskbar theme changes.
-func (a *animator) setDark(dark bool) {
+// setLook rebuilds the icon set when the taskbar's theme or Vito's colour
+// theme (ui.accent) changes.
+func (a *animator) setLook(dark bool, accent string) {
 	a.mu.Lock()
-	if dark == a.dark {
+	if dark == a.dark && accent == a.accent {
 		a.mu.Unlock()
 		return
 	}
-	a.dark = dark
-	a.icons = buildIcons(dark)
+	a.dark, a.accent = dark, accent
+	a.icons = buildIcons(dark, accent)
 	ic := a.icons[a.state]
 	a.mu.Unlock()
 	if len(ic) > 0 {
@@ -85,12 +87,12 @@ func Run(d *daemon.Daemon, url, version string, log *slog.Logger) (userQuit bool
 }
 
 func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
-	anim := newAnimator(wantDark(d))
+	anim := newAnimator(wantDark(d), d.Config().UI.Accent)
 	anim.setState(daemon.StateIdle)
 	go func() { // follow OS taskbar theme changes when Vito's theme is "system"
 		for {
 			time.Sleep(3 * time.Second)
-			anim.setDark(wantDark(d))
+			anim.setLook(wantDark(d), d.Config().UI.Accent)
 		}
 	}()
 	// macOS renders the title as text beside the menu-bar icon, which doubles
@@ -263,7 +265,7 @@ func onReady(d *daemon.Daemon, url, version string, log *slog.Logger) {
 		case "config", "privacy":
 			relabel()
 			refresh()
-			anim.setDark(wantDark(d)) // theme may have changed in the web UI
+			anim.setLook(wantDark(d), d.Config().UI.Accent) // theme or colours may have changed in the web UI
 		}
 	})
 

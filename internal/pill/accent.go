@@ -125,3 +125,20 @@ func hexStr(s string) rgb {
 	v, _ := strconv.ParseUint(s[1:], 16, 32)
 	return hex(uint32(v))
 }
+
+// BrandColors is the colour theme's gradient as the app icon draws it, for the
+// tray and the window's icon: the warm end, the cool end, and the cool end's
+// light tint. An unknown name is the original pair.
+func BrandColors(accent string) (coral, violet, violetL [3]uint8) {
+	p := palettes[accent]
+	if accent == "dms" || accent == "omarchy" {
+		p = desktopPalette(accent)
+	}
+	if p == nil {
+		p = palettes[""]
+	}
+	b := func(c rgb) [3]uint8 {
+		return [3]uint8{uint8(clamp(c.r)*255 + 0.5), uint8(clamp(c.g)*255 + 0.5), uint8(clamp(c.b)*255 + 0.5)}
+	}
+	return b(p.coral), b(p.violet), b(p.violetL)
+}
