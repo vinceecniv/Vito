@@ -29,6 +29,7 @@ import (
 	"vito/internal/pill"
 	"vito/internal/server"
 	"vito/internal/tray"
+	"vito/internal/webapp"
 )
 
 // version is stamped at build time by packaging/build-installer.ps1 with
@@ -53,6 +54,8 @@ func main() {
 		err = request(http.MethodPost, "/api/"+cmd)
 	case "pwa":
 		err = installPWA()
+	case "window":
+		err = openWindow(os.Args[2:])
 	case "autostart":
 		// vito autostart on|off — write the login-startup entry through the same
 		// code the settings toggle uses, so the installer and the app can never
@@ -95,6 +98,7 @@ Usage:
   vito cancel    discard the current recording (bind to second hotkey)
   vito quit      shut the daemon down
   vito pwa       install the web interface as an app (Windows)
+  vito window    open the interface in a window of its own (Windows, trial)
   vito status    show daemon state
   vito version
 
@@ -183,6 +187,14 @@ func serve() error {
 	defer hist.Close()
 
 	d := daemon.New(cfg, log, audioCtx, hist)
+	// ui.window (a trial, no switch on the page yet): the tray, the island and
+	// the pill's cards open Vito's own window instead of the PWA.
+	webapp.Native = func(u string) error {
+		if !d.Config().UI.Window {
+			return webapp.ErrNoNative
+		}
+		return launchWindow(u)
+	}
 	hk := hotkey.New(d, log)
 	server.Version = version
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)
