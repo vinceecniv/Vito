@@ -28,24 +28,22 @@ var bars = [7][4]float64{
 }
 
 var (
-	inkBG    = [3]uint8{0x2B, 0x24, 0x40} // dark-mode squircle background
 	dotCoral = color.NRGBA{0xFF, 0x6B, 0x5E, 0xFF}
 )
 
 // brand is the colour theme's gradient (ui.accent), as pill.BrandColors gives
-// it: coral at the top left, violet at the bottom right, violetL the end of the
-// dark variant's mark.
+// it: coral at the top left, violet at the bottom right.
 type brand struct {
-	coral, violet, violetL [3]uint8
-	round                  float64 // corner radius as a share of the size
+	coral, violet [3]uint8
+	round         float64 // corner radius as a share of the size
 }
 
 // brandFor is the icon for the colour theme (ui.accent) and the corners
 // (ui.radius): its own rounding, "minimal" (3px of a 32px icon, as the page's
 // cap) or "none".
 func brandFor(accent, radius string) brand {
-	c, v, l := pill.BrandColors(accent)
-	b := brand{c, v, l, 0.24}
+	c, v, _ := pill.BrandColors(accent)
+	b := brand{c, v, 0.24}
 	switch radius {
 	case "minimal":
 		b.round = 3.0 / 32
@@ -58,12 +56,12 @@ func brandFor(accent, radius string) brand {
 // BrandPNG is the app icon in the colour theme's gradient and corners, size
 // pixels square: what Vito's own window shows on the taskbar.
 func BrandPNG(accent, radius string, size int) []byte {
-	return encodePNG(renderBrand(false, brandFor(accent, radius), size))
+	return encodePNG(renderBrand(brandFor(accent, radius), size))
 }
 
 // buildIcons renders one static icon per state: the brand mark alone for idle,
 // and the mark with a coral or violet status dot for recording / processing.
-func buildIcons(dark bool, accent, radius string) map[daemon.State][]byte {
+func buildIcons(accent, radius string) map[daemon.State][]byte {
 	win := runtime.GOOS == "windows"
 	enc := func(img *image.NRGBA) []byte {
 		p := encodePNG(img)
@@ -73,7 +71,7 @@ func buildIcons(dark bool, accent, radius string) map[daemon.State][]byte {
 		return p
 	}
 	b := brandFor(accent, radius)
-	base := renderBrand(dark, b, iconSize)
+	base := renderBrand(b, iconSize)
 	dotViol := color.NRGBA{b.violet[0], b.violet[1], b.violet[2], 0xFF}
 	withDot := func(col color.NRGBA) []byte {
 		img := cloneImg(base)
@@ -87,11 +85,10 @@ func buildIcons(dark bool, accent, radius string) map[daemon.State][]byte {
 	}
 }
 
-// renderBrand draws the Vito squircle. Light variant: coral→violet gradient
-// background with a white Waveform-V. Dark variant (for dark taskbars): dark
-// ink background with a coral→violet-light gradient mark.
-func renderBrand(dark bool, br brand, size int) *image.NRGBA {
-	gradA, gradB, markB2 := br.coral, br.violet, br.violetL
+// renderBrand draws the app icon: the colour theme's gradient behind a white
+// Waveform-V, in the corners of ui.radius. The tray shows the same icon as the
+// taskbar on either side of the theme.
+func renderBrand(br brand, size int) *image.NRGBA {
 	s := float64(size)
 	img := image.NewNRGBA(image.Rect(0, 0, size, size))
 	radius := s * br.round
@@ -106,12 +103,8 @@ func renderBrand(dark bool, br brand, size int) *image.NRGBA {
 				continue
 			}
 			t := (fx + fy) / (2 * s) // 135deg gradient
-			var px color.NRGBA
-			if dark {
-				px = color.NRGBA{inkBG[0], inkBG[1], inkBG[2], uint8(bgA * 255)}
-			} else {
-				px = color.NRGBA{lerp(gradA[0], gradB[0], t), lerp(gradA[1], gradB[1], t), lerp(gradA[2], gradB[2], t), uint8(bgA * 255)}
-			}
+			a, b := br.coral, br.violet
+			px := color.NRGBA{lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t), uint8(bgA * 255)}
 			cx, cy := (fx-offX)/scale, (fy-offY)/scale
 			var wa float64
 			for _, b := range bars {
@@ -120,13 +113,7 @@ func renderBrand(dark bool, br brand, size int) *image.NRGBA {
 				}
 			}
 			if wa *= bgA; wa > 0 {
-				var mr, mg, mb uint8
-				if dark { // gradient mark: coral → violet-light
-					mr, mg, mb = lerp(gradA[0], markB2[0], t), lerp(gradA[1], markB2[1], t), lerp(gradA[2], markB2[2], t)
-				} else {
-					mr, mg, mb = 0xFF, 0xFF, 0xFF // white mark
-				}
-				px = color.NRGBA{lerp(px.R, mr, wa), lerp(px.G, mg, wa), lerp(px.B, mb, wa), px.A}
+				px = color.NRGBA{lerp(px.R, 0xFF, wa), lerp(px.G, 0xFF, wa), lerp(px.B, 0xFF, wa), px.A}
 			}
 			img.SetNRGBA(x, y, px)
 		}
@@ -185,10 +172,13 @@ func aa(d float64) float64 {
 	}
 }
 
+// roundRectDist is the signed distance from px, py to the rounded rectangle:
+// negative inside, also where r is 0 (square corners).
 func roundRectDist(px, py, x0, y0, x1, y1, r float64) float64 {
-	cx := math.Min(math.Max(px, x0+r), x1-r)
-	cy := math.Min(math.Max(py, y0+r), y1-r)
-	return math.Hypot(px-cx, py-cy) - r
+	hx, hy := (x1-x0)/2, (y1-y0)/2
+	qx := math.Abs(px-(x0+hx)) - hx + r
+	qy := math.Abs(py-(y0+hy)) - hy + r
+	return math.Hypot(math.Max(qx, 0), math.Max(qy, 0)) + math.Min(math.Max(qx, qy), 0) - r
 }
 
 func encodePNG(img *image.NRGBA) []byte {
