@@ -1440,7 +1440,22 @@
 "words": "cuvinte",
 "Marks": "Marcaje",
 "Follows the colours of your desktop": "Urmează culorile desktopului tău",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Apasă Caps Lock ca să începi dictarea și apasă din nou ca să te oprești. Pentru a dicta ținând tasta apăsată ai nevoie de un niri mai nou decât 26.04; apoi configureaz-o din nou."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Apasă Caps Lock ca să începi dictarea și apasă din nou ca să te oprești. Pentru a dicta ținând tasta apăsată ai nevoie de un niri mai nou decât 26.04; apoi configureaz-o din nou.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Alegerea ta este o preferință, nu o limită: Soniox recunoaște și alte limbi, chiar și când schimbi limba în mijlocul propoziției.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet recunoaște singur limba: poți dicta în oricare dintre cele 25 de limbi ale sale, indiferent ce alegi aici.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Acest model rămâne la limba pe care o alegi aici. Schimbi limba în timp ce dictezi? Alege Automat.",
+"Dictated, gave Vito Assist a command and made a long recording": "Ai dictat, i-ai dat o comandă lui Vito Assist și ai făcut o înregistrare lungă",
+"Minimize": "Minimizare",
+"Maximize": "Maximizare",
+"Restore down": "Restabilire jos",
+"Not sure what you like?": "Nu știi sigur ce îți place?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Lasă-l pe Vito să-ți aleagă un aspect — culori, font, colțuri, fundal și ceva de purtat. Nu-ți place? Încearcă din nou.",
+"Surprise me": "Surprinde-mă",
+"Vito Assist and recordings": "Vito Assist și înregistrări",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Înregistrările lungi încheiate în această perioadă.",
+"{time} recorded in total.": "{time} înregistrate în total.",
+"Open Vito in its own window": "Deschide Vito în propria fereastră"
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",

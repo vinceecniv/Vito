@@ -1440,7 +1440,22 @@
 "words": "fjalë",
 "Marks": "Shënime",
 "Follows the colours of your desktop": "Ndjek ngjyrat e desktopit tënd",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Shtyp Caps Lock për të nisur diktimin dhe shtype sërish për ta ndalur. Për të diktuar duke e mbajtur shtypur duhet një niri më i ri se 26.04; atëherë konfiguroje sërish."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Shtyp Caps Lock për të nisur diktimin dhe shtype sërish për ta ndalur. Për të diktuar duke e mbajtur shtypur duhet një niri më i ri se 26.04; atëherë konfiguroje sërish.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Zgjedhja jote është një preferencë, jo një kufizim: Soniox njeh edhe gjuhë të tjera, edhe kur ndërron gjuhën në mes të fjalisë.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet e njeh vetë gjuhën: mund të diktosh në cilëndo nga 25 gjuhët e tij, çfarëdo që të zgjedhësh këtu.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Ky model qëndron te gjuha që zgjedh këtu. Ndërron gjuhë ndërsa dikton? Zgjidh Automatik.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktove, i dhe një komandë Vito Assist dhe bëre një regjistrim të gjatë",
+"Minimize": "Minimizo",
+"Maximize": "Maksimizo",
+"Restore down": "Rikthe poshtë",
+"Not sure what you like?": "Nuk je i sigurt se çfarë të pëlqen?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Lëre Vito-n të zgjedhë një pamje për ty — ngjyra, font, qoshe, sfond dhe diçka për të veshur. Nuk të pëlqen? Thjesht provo përsëri.",
+"Surprise me": "Më surprizo",
+"Vito Assist and recordings": "Vito Assist dhe regjistrimet",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Regjistrimet e gjata të përfunduara në këtë periudhë.",
+"{time} recorded in total.": "{time} të regjistruara gjithsej.",
+"Open Vito in its own window": "Hape Vito-n në dritaren e vet"
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",

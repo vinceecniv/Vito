@@ -1440,7 +1440,22 @@
 "words": "maneno",
 "Marks": "Alama",
 "Follows the colours of your desktop": "Inafuata rangi za eneo-kazi lako",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Bonyeza Caps Lock ili kuanza kuandika kwa sauti na ubonyeze tena ili kusimamisha. Kuishikilia ili kuandika kwa sauti kunahitaji niri mpya zaidi ya 26.04; kisha iweke tena."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Bonyeza Caps Lock ili kuanza kuandika kwa sauti na ubonyeze tena ili kusimamisha. Kuishikilia ili kuandika kwa sauti kunahitaji niri mpya zaidi ya 26.04; kisha iweke tena.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Chaguo lako ni pendeleo, si kikomo: Soniox hutambua pia lugha nyingine, hata unapobadilisha lugha katikati ya sentensi.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet hutambua lugha yenyewe: unaweza kuandika kwa sauti katika lugha yoyote kati ya lugha zake 25, bila kujali unachochagua hapa.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Modeli hii hushikilia lugha unayochagua hapa. Unabadilisha lugha unapoandika kwa sauti? Chagua Kiotomatiki.",
+"Dictated, gave Vito Assist a command and made a long recording": "Umeandika kwa sauti, umempa Vito Assist amri na umefanya rekodi ndefu",
+"Minimize": "Punguza",
+"Maximize": "Ongeza",
+"Restore down": "Rejesha chini",
+"Not sure what you like?": "Huna uhakika unapenda nini?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Mwache Vito akuchagulie mwonekano — rangi, fonti, pembe, mandharinyuma na kitu cha kuvaa. Hukupenda? Jaribu tena tu.",
+"Surprise me": "Nishangaze",
+"Vito Assist and recordings": "Vito Assist na rekodi",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Rekodi ndefu zilizokamilika katika kipindi hiki.",
+"{time} recorded in total.": "{time} zimerekodiwa kwa jumla.",
+"Open Vito in its own window": "Fungua Vito katika dirisha lake"
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",

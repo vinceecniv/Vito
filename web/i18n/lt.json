@@ -1440,7 +1440,22 @@
 "words": "žodžiai",
 "Marks": "Žymės",
 "Follows the colours of your desktop": "Atkartoja jūsų darbalaukio spalvas",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Paspauskite Caps Lock, kad pradėtumėte diktuoti, ir paspauskite dar kartą, kad sustabdytumėte. Norint diktuoti laikant nuspaustą, reikia naujesnės nei 26.04 niri versijos; tada nustatykite jį iš naujo."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Paspauskite Caps Lock, kad pradėtumėte diktuoti, ir paspauskite dar kartą, kad sustabdytumėte. Norint diktuoti laikant nuspaustą, reikia naujesnės nei 26.04 niri versijos; tada nustatykite jį iš naujo.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Jūsų pasirinkimas yra pageidavimas, o ne apribojimas: Soniox atpažįsta ir kitas kalbas, net jei kalbą pakeičiate sakinio viduryje.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet pats atpažįsta kalbą: galite diktuoti bet kuria iš jo 25 kalbų, nesvarbu, ką čia pasirinksite.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Šis modelis laikosi čia pasirinktos kalbos. Diktuodami keičiate kalbas? Pasirinkite Automatiškai.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktuota, duota komanda Vito Assist ir padarytas ilgas įrašas",
+"Minimize": "Sumažinti",
+"Maximize": "Padidinti",
+"Restore down": "Atkurti",
+"Not sure what you like?": "Nežinote, kas jums patinka?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Leiskite Vito parinkti jums išvaizdą — spalvas, šriftą, kampus, foną ir ką apsirengti. Nepatinka? Tiesiog bandykite dar kartą.",
+"Surprise me": "Nustebink mane",
+"Vito Assist and recordings": "Vito Assist ir įrašai",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Šiuo laikotarpiu baigti ilgi įrašai.",
+"{time} recorded in total.": "Iš viso įrašyta {time}.",
+"Open Vito in its own window": "Atidaryti Vito atskirame lange"
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",

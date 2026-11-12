@@ -1438,7 +1438,22 @@
 "words": "字",
 "Marks": "标记",
 "Follows the colours of your desktop": "跟随你桌面的配色",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "按下 Caps Lock 开始口述，再按一次停止。按住口述需要高于 26.04 的 niri 版本；升级后请重新设置一次。"
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "按下 Caps Lock 开始口述，再按一次停止。按住口述需要高于 26.04 的 niri 版本；升级后请重新设置一次。",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "你的选择只是偏好，而非限制：Soniox 也能识别其他语言，即使你在句子中途切换。",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet 会自行识别语言：无论你在这里选择什么，都可以用它支持的 25 种语言中的任意一种口述。",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "此模型会固定使用你在这里选择的语言。口述时会切换语言？请选择“自动”。",
+"Dictated, gave Vito Assist a command and made a long recording": "已口述、向 Vito Assist 下达过命令并完成了一次长录音",
+"Minimize": "最小化",
+"Maximize": "最大化",
+"Restore down": "向下还原",
+"Not sure what you like?": "不知道自己喜欢什么？",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "让 Vito 为你挑选外观——颜色、字体、圆角、背景，还有一件穿戴的小物。不喜欢？再试一次就好。",
+"Surprise me": "给我惊喜",
+"Vito Assist and recordings": "Vito Assist 和录音",
+"Assist": "Assist",
+"The long recordings finished in this period.": "此期间完成的长录音。",
+"{time} recorded in total.": "共录音 {time}。",
+"Open Vito in its own window": "在独立窗口中打开 Vito"
 },
 "help": {
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",

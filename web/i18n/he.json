@@ -1440,7 +1440,22 @@
 "words": "מילים",
 "Marks": "סימונים",
 "Follows the colours of your desktop": "עוקב אחר הצבעים של שולחן העבודה שלך",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "לחץ על Caps Lock כדי להתחיל להכתיב ולחץ עליו שוב כדי לעצור. החזקת המקש לצורך הכתבה דורשת גרסת niri חדשה מ-26.04; לאחר מכן הגדר אותו מחדש."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "לחץ על Caps Lock כדי להתחיל להכתיב ולחץ עליו שוב כדי לעצור. החזקת המקש לצורך הכתבה דורשת גרסת niri חדשה מ-26.04; לאחר מכן הגדר אותו מחדש.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "הבחירה שלך היא העדפה, לא הגבלה: Soniox מזהה גם שפות אחרות, אפילו כשאתה מחליף שפה באמצע משפט.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet מזהה את השפה בעצמו: אפשר להכתיב בכל אחת מ-25 השפות שלו, לא משנה מה תבחר כאן.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "המודל הזה נצמד לשפה שתבחר כאן. מחליף שפות תוך כדי הכתבה? בחר אוטומטי.",
+"Dictated, gave Vito Assist a command and made a long recording": "הכתבה, פקודה ל-Vito Assist והקלטה ארוכה",
+"Minimize": "מזער",
+"Maximize": "הגדל",
+"Restore down": "שחזר למטה",
+"Not sure what you like?": "לא בטוח מה מתאים לך?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "תן ל-Vito לבחור לך מראה — צבעים, גופן, פינות, רקע ומשהו ללבוש. לא אהבת? פשוט נסה שוב.",
+"Surprise me": "הפתע אותי",
+"Vito Assist and recordings": "Vito Assist והקלטות",
+"Assist": "Assist",
+"The long recordings finished in this period.": "ההקלטות הארוכות שהסתיימו בתקופה זו.",
+"{time} recorded in total.": "{time} הוקלטו בסך הכול.",
+"Open Vito in its own window": "פתח את Vito בחלון משלו"
 },
 "help": {
 "theme": "בהיר, כהה או אוטומטי — אוטומטי עוקב אחר מצב הבהיר/כהה של המערכת שלך.",

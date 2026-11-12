@@ -1440,7 +1440,22 @@
 "words": "పదాలు",
 "Marks": "గుర్తులు",
 "Follows the colours of your desktop": "మీ డెస్క్‌టాప్ రంగులను అనుసరిస్తుంది",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "డిక్టేట్ చేయడం ప్రారంభించడానికి Caps Lock నొక్కండి, ఆపడానికి మళ్ళీ నొక్కండి. దాన్ని నొక్కి పట్టుకుని డిక్టేట్ చేయడానికి 26.04 కంటే కొత్త niri అవసరం; అప్పుడు దీన్ని మళ్ళీ సెటప్ చేయండి."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "డిక్టేట్ చేయడం ప్రారంభించడానికి Caps Lock నొక్కండి, ఆపడానికి మళ్ళీ నొక్కండి. దాన్ని నొక్కి పట్టుకుని డిక్టేట్ చేయడానికి 26.04 కంటే కొత్త niri అవసరం; అప్పుడు దీన్ని మళ్ళీ సెటప్ చేయండి.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "మీ ఎంపిక ఒక ప్రాధాన్యత మాత్రమే, పరిమితి కాదు: వాక్యం మధ్యలో భాష మార్చినా Soniox ఇతర భాషలను కూడా గుర్తిస్తుంది.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet భాషను తానే గుర్తిస్తుంది: మీరు ఇక్కడ ఏది ఎంచుకున్నా, దాని 25 భాషల్లో దేనిలోనైనా చెప్పవచ్చు.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "ఈ మోడల్ మీరు ఇక్కడ ఎంచుకున్న భాషకే కట్టుబడి ఉంటుంది. చెప్పేటప్పుడు భాషలు మారుస్తారా? స్వయంచాలకం ఎంచుకోండి.",
+"Dictated, gave Vito Assist a command and made a long recording": "చెప్పారు, Vito Assist‌కు ఒక కమాండ్ ఇచ్చారు, ఒక సుదీర్ఘ రికార్డింగ్ కూడా చేశారు",
+"Minimize": "కనిష్ఠీకరించు",
+"Maximize": "గరిష్ఠీకరించు",
+"Restore down": "క్రిందికి పునరుద్ధరించు",
+"Not sure what you like?": "మీకు ఏది నచ్చుతుందో తెలియదా?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito మీ కోసం ఒక రూపాన్ని ఎంచుకోనివ్వండి — రంగులు, ఫాంట్, మూలలు, నేపథ్యం మరియు ధరించడానికి ఏదైనా. నచ్చలేదా? మళ్ళీ ప్రయత్నించండి.",
+"Surprise me": "ఆశ్చర్యపరచు",
+"Vito Assist and recordings": "Vito Assist మరియు రికార్డింగ్‌లు",
+"Assist": "Assist",
+"The long recordings finished in this period.": "ఈ వ్యవధిలో పూర్తయిన సుదీర్ఘ రికార్డింగ్‌లు.",
+"{time} recorded in total.": "మొత్తం {time} రికార్డ్ చేయబడింది.",
+"Open Vito in its own window": "Vitoని దాని స్వంత విండోలో తెరువు"
 },
 "help": {
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",

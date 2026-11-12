@@ -1438,7 +1438,22 @@
 "words": "kelime",
 "Marks": "İşaretler",
 "Follows the colours of your desktop": "Masaüstünüzün renklerini izler",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Dikte etmeye başlamak için Caps Lock'a basın, durdurmak için yeniden basın. Basılı tutarak dikte etmek için 26.04'ten yeni bir niri gerekir; ardından yeniden ayarlayın."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Dikte etmeye başlamak için Caps Lock'a basın, durdurmak için yeniden basın. Basılı tutarak dikte etmek için 26.04'ten yeni bir niri gerekir; ardından yeniden ayarlayın.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Seçiminiz bir tercih, sınır değil: Soniox, cümlenin ortasında dil değiştirseniz bile başka dilleri de tanır.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet dili kendisi tanır: burada ne seçerseniz seçin, 25 dilinin herhangi birinde dikte edebilirsiniz.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Bu model burada seçtiğiniz dile bağlı kalır. Dikte ederken dil mi değiştiriyorsunuz? Otomatik'i seçin.",
+"Dictated, gave Vito Assist a command and made a long recording": "Dikte edildi, Vito Assist'e komut verildi ve uzun bir kayıt yapıldı",
+"Minimize": "Simge durumuna küçült",
+"Maximize": "Ekranı kapla",
+"Restore down": "Aşağı geri getir",
+"Not sure what you like?": "Neyi sevdiğinizden emin değil misiniz?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito sizin için bir görünüm seçsin — renkler, yazı tipi, köşeler, arka plan ve giyilecek bir şey. Beğenmediniz mi? Yeniden deneyin.",
+"Surprise me": "Beni şaşırt",
+"Vito Assist and recordings": "Vito Assist ve kayıtlar",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Bu dönemde tamamlanan uzun kayıtlar.",
+"{time} recorded in total.": "Toplam {time} kaydedildi.",
+"Open Vito in its own window": "Vito'yu kendi penceresinde aç"
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",

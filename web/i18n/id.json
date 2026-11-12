@@ -1440,7 +1440,22 @@
 "words": "kata",
 "Marks": "Tanda",
 "Follows the colours of your desktop": "Mengikuti warna desktop Anda",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tekan Caps Lock untuk mulai mendikte dan tekan lagi untuk berhenti. Menahannya untuk mendikte memerlukan niri yang lebih baru dari 26.04; setelah itu atur ulang."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tekan Caps Lock untuk mulai mendikte dan tekan lagi untuk berhenti. Menahannya untuk mendikte memerlukan niri yang lebih baru dari 26.04; setelah itu atur ulang.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Pilihanmu adalah preferensi, bukan batasan: Soniox juga mengenali bahasa lain, bahkan saat kamu berganti bahasa di tengah kalimat.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet mengenali bahasa dengan sendirinya: kamu bisa mendikte dalam salah satu dari 25 bahasanya, apa pun yang kamu pilih di sini.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Model ini tetap memakai bahasa yang kamu pilih di sini. Berganti bahasa saat mendikte? Pilih Otomatis.",
+"Dictated, gave Vito Assist a command and made a long recording": "Mendikte, memberi perintah ke Vito Assist, dan membuat rekaman panjang",
+"Minimize": "Minimalkan",
+"Maximize": "Maksimalkan",
+"Restore down": "Kembalikan ke Bawah",
+"Not sure what you like?": "Tidak yakin apa yang kamu suka?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Biarkan Vito memilihkan tampilan untukmu — warna, font, sudut, latar belakang, dan sesuatu untuk dikenakan. Tidak suka? Coba saja lagi.",
+"Surprise me": "Kejutkan aku",
+"Vito Assist and recordings": "Vito Assist dan rekaman",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Rekaman panjang yang selesai dalam periode ini.",
+"{time} recorded in total.": "Total {time} direkam.",
+"Open Vito in its own window": "Buka Vito di jendelanya sendiri"
 },
 "help": {
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",

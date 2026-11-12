@@ -1439,7 +1439,22 @@
 "words": "الفاظ",
 "Marks": "نشانات",
 "Follows the colours of your desktop": "آپ کے ڈیسک ٹاپ کے رنگوں کی پیروی کرتا ہے",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "املا شروع کرنے کے لیے Caps Lock دبائیں اور روکنے کے لیے اسے دوبارہ دبائیں۔ دبائے رکھ کر املا کے لیے 26.04 سے نیا niri درکار ہے؛ پھر اسے دوبارہ سیٹ کریں۔"
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "املا شروع کرنے کے لیے Caps Lock دبائیں اور روکنے کے لیے اسے دوبارہ دبائیں۔ دبائے رکھ کر املا کے لیے 26.04 سے نیا niri درکار ہے؛ پھر اسے دوبارہ سیٹ کریں۔",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "آپ کا انتخاب ایک ترجیح ہے، پابندی نہیں: Soniox دوسری زبانیں بھی پہچانتا ہے، چاہے آپ جملے کے بیچ میں زبان بدل دیں۔",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet زبان خود پہچانتا ہے: آپ یہاں جو بھی منتخب کریں، اس کی 25 زبانوں میں سے کسی میں بھی بول کر لکھوا سکتے ہیں۔",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "یہ ماڈل اسی زبان پر قائم رہتا ہے جو آپ یہاں منتخب کرتے ہیں۔ بولتے ہوئے زبان بدلتے ہیں؟ خودکار منتخب کریں۔",
+"Dictated, gave Vito Assist a command and made a long recording": "بولا، Vito Assist کو ایک کمانڈ دی اور ایک طویل ریکارڈنگ کی",
+"Minimize": "کم سے کم کریں",
+"Maximize": "زیادہ سے زیادہ کریں",
+"Restore down": "نیچے بحال کریں",
+"Not sure what you like?": "یقین نہیں کہ آپ کو کیا پسند ہے؟",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito کو آپ کے لیے ایک انداز چننے دیں — رنگ، فونٹ، کونے، پس منظر اور پہننے کے لیے کچھ۔ پسند نہیں آیا؟ بس دوبارہ آزمائیں۔",
+"Surprise me": "مجھے حیران کریں",
+"Vito Assist and recordings": "Vito Assist اور ریکارڈنگز",
+"Assist": "Assist",
+"The long recordings finished in this period.": "اس مدت میں مکمل ہونے والی طویل ریکارڈنگز۔",
+"{time} recorded in total.": "کل {time} ریکارڈ کیا گیا۔",
+"Open Vito in its own window": "Vito کو اس کی اپنی ونڈو میں کھولیں"
 },
 "help": {
 "theme": "روشن، گہرا یا خودکار — خودکار آپ کے سسٹم کی روشن/گہری ترتیب کے مطابق چلتا ہے۔",

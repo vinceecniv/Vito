@@ -1440,7 +1440,22 @@
 "words": "വാക്കുകൾ",
 "Marks": "അടയാളങ്ങൾ",
 "Follows the colours of your desktop": "നിങ്ങളുടെ ഡെസ്ക്ടോപ്പിന്റെ നിറങ്ങൾ പിന്തുടരുന്നു",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "ഡിക്ടേഷൻ ആരംഭിക്കാൻ Caps Lock അമർത്തുക, നിർത്താൻ വീണ്ടും അമർത്തുക. അമർത്തിപ്പിടിച്ച് ഡിക്ടേറ്റ് ചെയ്യാൻ 26.04-നേക്കാൾ പുതിയ niri വേണം; അതിനുശേഷം ഇത് വീണ്ടും സജ്ജമാക്കുക."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "ഡിക്ടേഷൻ ആരംഭിക്കാൻ Caps Lock അമർത്തുക, നിർത്താൻ വീണ്ടും അമർത്തുക. അമർത്തിപ്പിടിച്ച് ഡിക്ടേറ്റ് ചെയ്യാൻ 26.04-നേക്കാൾ പുതിയ niri വേണം; അതിനുശേഷം ഇത് വീണ്ടും സജ്ജമാക്കുക.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "നിങ്ങളുടെ തിരഞ്ഞെടുപ്പ് ഒരു മുൻഗണന മാത്രമാണ്, പരിധിയല്ല: വാക്യത്തിനിടയിൽ ഭാഷ മാറ്റിയാലും Soniox മറ്റ് ഭാഷകളും തിരിച്ചറിയും.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet ഭാഷ സ്വയം തിരിച്ചറിയുന്നു: ഇവിടെ എന്ത് തിരഞ്ഞെടുത്താലും അതിന്റെ 25 ഭാഷകളിൽ ഏതിലും നിങ്ങൾക്ക് ഡിക്റ്റേറ്റ് ചെയ്യാം.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "ഈ മോഡൽ ഇവിടെ നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന ഭാഷ പിന്തുടരുന്നു. ഡിക്റ്റേറ്റ് ചെയ്യുമ്പോൾ ഭാഷ മാറ്റാറുണ്ടോ? സ്വയമേവ തിരഞ്ഞെടുക്കുക.",
+"Dictated, gave Vito Assist a command and made a long recording": "ഡിക്റ്റേറ്റ് ചെയ്തു, Vito Assist-ന് ഒരു കമാൻഡ് നൽകി, ഒരു നീണ്ട റെക്കോർഡിംഗ് നടത്തി",
+"Minimize": "ചെറുതാക്കുക",
+"Maximize": "വലുതാക്കുക",
+"Restore down": "പഴയ വലുപ്പത്തിലേക്ക് മാറ്റുക",
+"Not sure what you like?": "എന്താണ് ഇഷ്ടമെന്ന് ഉറപ്പില്ലേ?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito നിങ്ങൾക്കായി ഒരു രൂപം തിരഞ്ഞെടുക്കട്ടെ — നിറങ്ങൾ, ഫോണ്ട്, മൂലകൾ, പശ്ചാത്തലം, ധരിക്കാൻ എന്തെങ്കിലും. ഇഷ്ടപ്പെട്ടില്ലേ? വീണ്ടും ശ്രമിച്ചാൽ മതി.",
+"Surprise me": "എന്നെ അത്ഭുതപ്പെടുത്തൂ",
+"Vito Assist and recordings": "Vito Assist-ഉം റെക്കോർഡിംഗുകളും",
+"Assist": "Assist",
+"The long recordings finished in this period.": "ഈ കാലയളവിൽ പൂർത്തിയായ നീണ്ട റെക്കോർഡിംഗുകൾ.",
+"{time} recorded in total.": "ആകെ {time} റെക്കോർഡ് ചെയ്തു.",
+"Open Vito in its own window": "Vito സ്വന്തം വിൻഡോയിൽ തുറക്കുക"
 },
 "help": {
 "theme": "വെളിച്ചം, ഇരുണ്ടത് അല്ലെങ്കിൽ സ്വയമേവ — സ്വയമേവ നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ വെളിച്ചം/ഇരുണ്ട ക്രമീകരണം പിന്തുടരുന്നു.",

@@ -1440,7 +1440,22 @@
 "words": "slov",
 "Marks": "Značky",
 "Follows the colours of your desktop": "Riadi sa farbami vášho pracovného prostredia",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Stlačením klávesu Caps Lock spustíte diktovanie a ďalším stlačením ho zastavíte. Diktovanie podržaním vyžaduje niri novšie ako 26.04; potom ho nastavte znova."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Stlačením klávesu Caps Lock spustíte diktovanie a ďalším stlačením ho zastavíte. Diktovanie podržaním vyžaduje niri novšie ako 26.04; potom ho nastavte znova.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Vaša voľba je preferencia, nie obmedzenie: Soniox rozpozná aj iné jazyky, dokonca aj keď ich prepnete uprostred vety.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet rozpozná jazyk sám: môžete diktovať v ktoromkoľvek z jeho 25 jazykov, nech tu zvolíte čokoľvek.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Tento model sa drží jazyka, ktorý tu zvolíte. Striedate jazyky počas diktovania? Zvoľte Automaticky.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktovali ste, dali ste príkaz Vito Assist a urobili ste dlhú nahrávku",
+"Minimize": "Minimalizovať",
+"Maximize": "Maximalizovať",
+"Restore down": "Obnoviť nadol",
+"Not sure what you like?": "Neviete, čo sa vám páči?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Nechajte Vita vybrať vám vzhľad — farby, písmo, rohy, pozadie a niečo na oblečenie. Nepáči sa vám? Jednoducho to skúste znova.",
+"Surprise me": "Prekvap ma",
+"Vito Assist and recordings": "Vito Assist a nahrávky",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Dlhé nahrávky dokončené v tomto období.",
+"{time} recorded in total.": "Celkovo nahraté: {time}.",
+"Open Vito in its own window": "Otvoriť Vito vo vlastnom okne"
 },
 "help": {
 "theme": "Svetlá, tmavá alebo automatická — automatická sleduje svetlý/tmavý režim vášho systému.",

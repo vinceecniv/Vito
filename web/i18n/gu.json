@@ -1440,7 +1440,22 @@
 "words": "શબ્દો",
 "Marks": "ચિહ્નો",
 "Follows the colours of your desktop": "તમારા ડેસ્કટોપના રંગોને અનુસરે છે",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "શ્રુતલેખન શરૂ કરવા Caps Lock દબાવો અને બંધ કરવા ફરી દબાવો. દબાવી રાખીને શ્રુતલેખન કરવા માટે 26.04 કરતાં નવું niri જોઈએ; પછી તેને ફરીથી સેટ કરો."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "શ્રુતલેખન શરૂ કરવા Caps Lock દબાવો અને બંધ કરવા ફરી દબાવો. દબાવી રાખીને શ્રુતલેખન કરવા માટે 26.04 કરતાં નવું niri જોઈએ; પછી તેને ફરીથી સેટ કરો.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "તમારી પસંદગી એક પ્રાથમિકતા છે, મર્યાદા નહીં: Soniox બીજી ભાષાઓ પણ ઓળખે છે, ભલે તમે વાક્યની વચ્ચે ભાષા બદલો.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet ભાષા જાતે ઓળખે છે: તમે અહીં ગમે તે પસંદ કરો, તેની 25 ભાષાઓમાંથી કોઈપણમાં બોલી શકો છો.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "આ મૉડલ તમે અહીં પસંદ કરેલી ભાષાને જ વળગી રહે છે. બોલતી વખતે ભાષા બદલો છો? આપમેળે પસંદ કરો.",
+"Dictated, gave Vito Assist a command and made a long recording": "બોલીને લખ્યું, Vito Assist ને આદેશ આપ્યો અને લાંબું રેકોર્ડિંગ કર્યું",
+"Minimize": "ન્યૂનતમ કરો",
+"Maximize": "મહત્તમ કરો",
+"Restore down": "નીચે પુનઃસ્થાપિત કરો",
+"Not sure what you like?": "ખાતરી નથી કે તમને શું ગમે છે?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito ને તમારા માટે દેખાવ પસંદ કરવા દો — રંગો, ફૉન્ટ, ખૂણા, પૃષ્ઠભૂમિ અને પહેરવા માટે કંઈક. ન ગમ્યું? બસ ફરી પ્રયાસ કરો.",
+"Surprise me": "મને ચોંકાવો",
+"Vito Assist and recordings": "Vito Assist અને રેકોર્ડિંગ",
+"Assist": "Assist",
+"The long recordings finished in this period.": "આ સમયગાળામાં પૂરાં થયેલાં લાંબાં રેકોર્ડિંગ.",
+"{time} recorded in total.": "કુલ {time} રેકોર્ડ કર્યું.",
+"Open Vito in its own window": "Vito ને તેની પોતાની વિન્ડોમાં ખોલો"
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",

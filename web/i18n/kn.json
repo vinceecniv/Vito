@@ -1438,7 +1438,22 @@
 "words": "ಪದಗಳು",
 "Marks": "ಗುರುತುಗಳು",
 "Follows the colours of your desktop": "ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್‌ನ ಬಣ್ಣಗಳನ್ನು ಅನುಸರಿಸುತ್ತದೆ",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "ಡಿಕ್ಟೇಟ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಲು Caps Lock ಒತ್ತಿ ಮತ್ತು ನಿಲ್ಲಿಸಲು ಅದನ್ನು ಮತ್ತೆ ಒತ್ತಿ. ಅದನ್ನು ಹಿಡಿದುಕೊಂಡು ಡಿಕ್ಟೇಟ್ ಮಾಡಲು 26.04 ಕ್ಕಿಂತ ಹೊಸ niri ಬೇಕು; ಆಗ ಅದನ್ನು ಮತ್ತೆ ಹೊಂದಿಸಿ."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "ಡಿಕ್ಟೇಟ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಲು Caps Lock ಒತ್ತಿ ಮತ್ತು ನಿಲ್ಲಿಸಲು ಅದನ್ನು ಮತ್ತೆ ಒತ್ತಿ. ಅದನ್ನು ಹಿಡಿದುಕೊಂಡು ಡಿಕ್ಟೇಟ್ ಮಾಡಲು 26.04 ಕ್ಕಿಂತ ಹೊಸ niri ಬೇಕು; ಆಗ ಅದನ್ನು ಮತ್ತೆ ಹೊಂದಿಸಿ.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "ನಿಮ್ಮ ಆಯ್ಕೆ ಒಂದು ಆದ್ಯತೆ, ಮಿತಿಯಲ್ಲ: ವಾಕ್ಯದ ಮಧ್ಯದಲ್ಲಿ ನೀವು ಭಾಷೆ ಬದಲಾಯಿಸಿದರೂ Soniox ಇತರ ಭಾಷೆಗಳನ್ನೂ ಗುರುತಿಸುತ್ತದೆ.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet ಭಾಷೆಯನ್ನು ತಾನೇ ಗುರುತಿಸುತ್ತದೆ: ನೀವು ಇಲ್ಲಿ ಏನೇ ಆಯ್ಕೆಮಾಡಿದರೂ, ಅದರ 25 ಭಾಷೆಗಳಲ್ಲಿ ಯಾವುದರಲ್ಲಾದರೂ ಹೇಳಬಹುದು.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "ಈ ಮಾದರಿ ನೀವು ಇಲ್ಲಿ ಆಯ್ಕೆಮಾಡಿದ ಭಾಷೆಗೇ ಅಂಟಿಕೊಳ್ಳುತ್ತದೆ. ಹೇಳುವಾಗ ಭಾಷೆ ಬದಲಾಯಿಸುತ್ತೀರಾ? ಸ್ವಯಂಚಾಲಿತ ಆಯ್ಕೆಮಾಡಿ.",
+"Dictated, gave Vito Assist a command and made a long recording": "ಹೇಳಿ ಬರೆಸಿದ್ದೀರಿ, Vito Assist ಗೆ ಆಜ್ಞೆ ನೀಡಿದ್ದೀರಿ ಮತ್ತು ದೀರ್ಘ ರೆಕಾರ್ಡಿಂಗ್ ಮಾಡಿದ್ದೀರಿ",
+"Minimize": "ಕನಿಷ್ಠಗೊಳಿಸು",
+"Maximize": "ಗರಿಷ್ಠಗೊಳಿಸು",
+"Restore down": "ಕೆಳಗೆ ಮರುಸ್ಥಾಪಿಸು",
+"Not sure what you like?": "ನಿಮಗೆ ಏನು ಇಷ್ಟ ಎಂದು ಖಚಿತವಿಲ್ಲವೇ?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito ನಿಮಗಾಗಿ ಒಂದು ನೋಟವನ್ನು ಆಯ್ಕೆಮಾಡಲಿ — ಬಣ್ಣಗಳು, ಫಾಂಟ್, ಮೂಲೆಗಳು, ಹಿನ್ನೆಲೆ ಮತ್ತು ಧರಿಸಲು ಏನಾದರೂ. ಇಷ್ಟವಾಗಲಿಲ್ಲವೇ? ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+"Surprise me": "ನನ್ನನ್ನು ಅಚ್ಚರಿಗೊಳಿಸು",
+"Vito Assist and recordings": "Vito Assist ಮತ್ತು ರೆಕಾರ್ಡಿಂಗ್‌ಗಳು",
+"Assist": "Assist",
+"The long recordings finished in this period.": "ಈ ಅವಧಿಯಲ್ಲಿ ಮುಗಿದ ದೀರ್ಘ ರೆಕಾರ್ಡಿಂಗ್‌ಗಳು.",
+"{time} recorded in total.": "ಒಟ್ಟು {time} ರೆಕಾರ್ಡ್ ಮಾಡಲಾಗಿದೆ.",
+"Open Vito in its own window": "Vito ಅನ್ನು ಅದರದೇ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ"
 },
 "help": {
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",

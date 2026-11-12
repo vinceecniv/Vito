@@ -1438,7 +1438,22 @@
 "words": "từ",
 "Marks": "Dấu mốc",
 "Follows the colours of your desktop": "Theo màu sắc của màn hình desktop của bạn",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nhấn Caps Lock để bắt đầu đọc chính tả và nhấn lại để dừng. Muốn giữ phím để đọc thì cần niri mới hơn 26.04; khi đó hãy thiết lập lại."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nhấn Caps Lock để bắt đầu đọc chính tả và nhấn lại để dừng. Muốn giữ phím để đọc thì cần niri mới hơn 26.04; khi đó hãy thiết lập lại.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Lựa chọn của bạn là một ưu tiên, không phải giới hạn: Soniox vẫn nhận ra các ngôn ngữ khác, kể cả khi bạn đổi ngôn ngữ giữa câu.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet tự nhận biết ngôn ngữ: bạn có thể đọc bằng bất kỳ ngôn ngữ nào trong 25 ngôn ngữ của nó, dù chọn gì ở đây.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Mô hình này giữ đúng ngôn ngữ bạn chọn ở đây. Bạn đổi ngôn ngữ khi đang đọc? Hãy chọn Tự động.",
+"Dictated, gave Vito Assist a command and made a long recording": "Đã đọc chính tả, ra lệnh cho Vito Assist và ghi một bản ghi dài",
+"Minimize": "Thu nhỏ",
+"Maximize": "Phóng to",
+"Restore down": "Khôi phục xuống",
+"Not sure what you like?": "Không chắc mình thích gì?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Để Vito chọn giao diện cho bạn — màu sắc, phông chữ, góc bo, nền và một món đồ để mặc. Không thích? Cứ thử lại.",
+"Surprise me": "Gây bất ngờ cho tôi",
+"Vito Assist and recordings": "Vito Assist và bản ghi",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Các bản ghi dài đã hoàn tất trong khoảng thời gian này.",
+"{time} recorded in total.": "Tổng cộng đã ghi {time}.",
+"Open Vito in its own window": "Mở Vito trong cửa sổ riêng"
 },
 "help": {
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",

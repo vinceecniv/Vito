@@ -1438,7 +1438,22 @@
 "words": "คำ",
 "Marks": "เครื่องหมาย",
 "Follows the colours of your desktop": "ใช้สีตามเดสก์ท็อปของคุณ",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "กด Caps Lock เพื่อเริ่มบอกให้พิมพ์ และกดอีกครั้งเพื่อหยุด การกดค้างไว้เพื่อบอกให้พิมพ์ต้องใช้ niri ที่ใหม่กว่า 26.04 จากนั้นให้ตั้งค่าใหม่อีกครั้ง"
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "กด Caps Lock เพื่อเริ่มบอกให้พิมพ์ และกดอีกครั้งเพื่อหยุด การกดค้างไว้เพื่อบอกให้พิมพ์ต้องใช้ niri ที่ใหม่กว่า 26.04 จากนั้นให้ตั้งค่าใหม่อีกครั้ง",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "ตัวเลือกของคุณเป็นเพียงความต้องการ ไม่ใช่ข้อจำกัด: Soniox รู้จักภาษาอื่นด้วย แม้คุณจะสลับภาษากลางประโยค",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet ตรวจจับภาษาได้เอง: คุณพิมพ์ด้วยเสียงได้ทุกภาษาใน 25 ภาษาที่รองรับ ไม่ว่าคุณจะเลือกอะไรตรงนี้",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "โมเดลนี้ยึดตามภาษาที่คุณเลือกตรงนี้ จะสลับภาษาระหว่างพิมพ์ด้วยเสียงไหม? เลือกอัตโนมัติ",
+"Dictated, gave Vito Assist a command and made a long recording": "พิมพ์ด้วยเสียง สั่ง Vito Assist และบันทึกเสียงยาว",
+"Minimize": "ย่อเล็กสุด",
+"Maximize": "ขยายใหญ่สุด",
+"Restore down": "คืนค่าลง",
+"Not sure what you like?": "ไม่แน่ใจว่าชอบแบบไหน?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "ให้ Vito เลือกรูปลักษณ์ให้คุณ — สี แบบอักษร มุม พื้นหลัง และของให้สวมใส่ ไม่ชอบเหรอ? ลองใหม่ได้เลย",
+"Surprise me": "เซอร์ไพรส์ฉัน",
+"Vito Assist and recordings": "Vito Assist และการบันทึกเสียง",
+"Assist": "Assist",
+"The long recordings finished in this period.": "การบันทึกยาวที่เสร็จสิ้นในช่วงเวลานี้",
+"{time} recorded in total.": "บันทึกเสียงทั้งหมด {time}",
+"Open Vito in its own window": "เปิด Vito ในหน้าต่างของตัวเอง"
 },
 "help": {
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",

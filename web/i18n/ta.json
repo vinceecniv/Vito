@@ -1440,7 +1440,22 @@
 "words": "சொற்கள்",
 "Marks": "குறிகள்",
 "Follows the colours of your desktop": "உங்கள் டெஸ்க்டாப்பின் வண்ணங்களைப் பின்பற்றுகிறது",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "சொல்லெழுதத் தொடங்க Caps Lock-ஐ அழுத்துங்கள், நிறுத்த மீண்டும் அழுத்துங்கள். அதைப் பிடித்துக்கொண்டு சொல்லெழுத 26.04-ஐ விடப் புதிய niri தேவை; அதன்பின் இதை மீண்டும் அமையுங்கள்."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "சொல்லெழுதத் தொடங்க Caps Lock-ஐ அழுத்துங்கள், நிறுத்த மீண்டும் அழுத்துங்கள். அதைப் பிடித்துக்கொண்டு சொல்லெழுத 26.04-ஐ விடப் புதிய niri தேவை; அதன்பின் இதை மீண்டும் அமையுங்கள்.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "உங்கள் தேர்வு ஒரு விருப்பம் மட்டுமே, வரம்பு அல்ல: வாக்கியத்தின் நடுவில் மொழியை மாற்றினாலும் Soniox மற்ற மொழிகளையும் அறியும்.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet மொழியைத் தானே அறியும்: இங்கே நீங்கள் எதைத் தேர்ந்தெடுத்தாலும், அதன் 25 மொழிகளில் எதிலும் சொல்லலாம்.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "இந்த மாதிரி நீங்கள் இங்கே தேர்ந்தெடுக்கும் மொழியிலேயே இருக்கும். சொல்லும்போது மொழியை மாற்றுகிறீர்களா? தானியங்கி என்பதைத் தேர்ந்தெடுங்கள்.",
+"Dictated, gave Vito Assist a command and made a long recording": "சொன்னீர்கள், Vito Assist-க்கு ஒரு கட்டளை கொடுத்தீர்கள், ஒரு நீண்ட பதிவும் செய்தீர்கள்",
+"Minimize": "சிறிதாக்கு",
+"Maximize": "பெரிதாக்கு",
+"Restore down": "கீழே மீட்டமை",
+"Not sure what you like?": "எது பிடிக்கும் என்று தெரியவில்லையா?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito உங்களுக்காக ஒரு தோற்றத்தைத் தேர்ந்தெடுக்கட்டும் — நிறங்கள், எழுத்துரு, மூலைகள், பின்னணி மற்றும் அணிய ஏதாவது. பிடிக்கவில்லையா? மீண்டும் முயலுங்கள்.",
+"Surprise me": "ஆச்சரியப்படுத்து",
+"Vito Assist and recordings": "Vito Assist மற்றும் பதிவுகள்",
+"Assist": "Assist",
+"The long recordings finished in this period.": "இந்தக் காலகட்டத்தில் முடிந்த நீண்ட பதிவுகள்.",
+"{time} recorded in total.": "மொத்தம் {time} பதிவு செய்யப்பட்டது.",
+"Open Vito in its own window": "Vito-வை அதன் சொந்த சாளரத்தில் திற"
 },
 "help": {
 "theme": "ஒளி, இருள் அல்லது தானியங்கி — தானியங்கி உங்கள் கணினியின் ஒளி/இருள் அமைப்பைப் பின்பற்றும்.",

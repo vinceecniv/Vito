@@ -1438,7 +1438,22 @@
 "words": "語",
 "Marks": "マーク",
 "Follows the colours of your desktop": "デスクトップの配色に従います",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Caps Lockを押すと口述を開始し、もう一度押すと停止します。押し続けて口述するには26.04より新しいniriが必要です。その後、もう一度設定し直してください。"
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Caps Lockを押すと口述を開始し、もう一度押すと停止します。押し続けて口述するには26.04より新しいniriが必要です。その後、もう一度設定し直してください。",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "ここでの選択は優先設定であって制限ではありません。Soniox は他の言語も認識し、文の途中で言語を切り替えても対応します。",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet は言語を自動で認識します。ここで何を選んでも、対応する 25 言語のどれでも音声入力できます。",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "このモデルはここで選んだ言語を使い続けます。音声入力中に言語を切り替えたいなら「自動」を選んでください。",
+"Dictated, gave Vito Assist a command and made a long recording": "音声入力し、Vito Assist にコマンドを出し、長時間録音を行った",
+"Minimize": "最小化",
+"Maximize": "最大化",
+"Restore down": "元に戻す (縮小)",
+"Not sure what you like?": "どれが好みかわからない？",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito に見た目を選んでもらいましょう — 色、フォント、角、背景、そして身につけるもの。気に入らなければ、もう一度試すだけです。",
+"Surprise me": "おまかせ",
+"Vito Assist and recordings": "Vito Assist と録音",
+"Assist": "Assist",
+"The long recordings finished in this period.": "この期間に終了した長時間録音。",
+"{time} recorded in total.": "合計 {time} 録音しました。",
+"Open Vito in its own window": "Vito を専用のウィンドウで開く"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",

@@ -1440,7 +1440,22 @@
 "words": "vārdi",
 "Marks": "Atzīmes",
 "Follows the colours of your desktop": "Seko tavas darbvirsmas krāsām",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nospied Caps Lock, lai sāktu diktēt, un nospied vēlreiz, lai apturētu. Lai diktētu, turot to nospiestu, vajag niri versiju, kas jaunāka par 26.04; tad iestati to no jauna."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nospied Caps Lock, lai sāktu diktēt, un nospied vēlreiz, lai apturētu. Lai diktētu, turot to nospiestu, vajag niri versiju, kas jaunāka par 26.04; tad iestati to no jauna.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Jūsu izvēle ir priekšroka, nevis ierobežojums: Soniox atpazīst arī citas valodas, pat ja maināt valodu teikuma vidū.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet pats atpazīst valodu: varat diktēt jebkurā no tā 25 valodām neatkarīgi no tā, ko izvēlaties šeit.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Šis modelis turas pie šeit izvēlētās valodas. Diktējot maināt valodas? Izvēlieties Automātiski.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktēts, dota komanda Vito Assist un veikts garš ieraksts",
+"Minimize": "Minimizēt",
+"Maximize": "Maksimizēt",
+"Restore down": "Atjaunot",
+"Not sure what you like?": "Neesat pārliecināts, kas jums patīk?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Ļaujiet Vito izvēlēties jums izskatu — krāsas, fontu, stūrus, fonu un kaut ko, ko uzvilkt. Nepatīk? Vienkārši mēģiniet vēlreiz.",
+"Surprise me": "Pārsteidz mani",
+"Vito Assist and recordings": "Vito Assist un ieraksti",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Šajā periodā pabeigtie garie ieraksti.",
+"{time} recorded in total.": "Kopā ierakstīts {time}.",
+"Open Vito in its own window": "Atvērt Vito atsevišķā logā"
 },
 "help": {
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",

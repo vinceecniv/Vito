@@ -1438,7 +1438,22 @@
 "words": "parole",
 "Marks": "Marcatori",
 "Follows the colours of your desktop": "Segue i colori del tuo desktop",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Premi Caps Lock per iniziare a dettare e premilo di nuovo per fermarti. Per dettare tenendolo premuto serve una versione di niri successiva alla 26.04; poi configuralo di nuovo."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Premi Caps Lock per iniziare a dettare e premilo di nuovo per fermarti. Per dettare tenendolo premuto serve una versione di niri successiva alla 26.04; poi configuralo di nuovo.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "La tua scelta è una preferenza, non un limite: Soniox riconosce anche altre lingue, persino quando cambi lingua a metà frase.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet riconosce la lingua da solo: puoi dettare in una qualsiasi delle sue 25 lingue, qualunque cosa tu scelga qui.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Questo modello si attiene alla lingua che scegli qui. Cambi lingua mentre detti? Scegli Automatico.",
+"Dictated, gave Vito Assist a command and made a long recording": "Hai dettato, dato un comando a Vito Assist e fatto una registrazione lunga",
+"Minimize": "Riduci a icona",
+"Maximize": "Ingrandisci",
+"Restore down": "Ripristina giù",
+"Not sure what you like?": "Non sai cosa ti piace?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Lascia che Vito scelga un look per te — colori, font, angoli, sfondo e qualcosa da indossare. Non ti piace? Riprova e basta.",
+"Surprise me": "Sorprendimi",
+"Vito Assist and recordings": "Vito Assist e registrazioni",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Le registrazioni lunghe terminate in questo periodo.",
+"{time} recorded in total.": "{time} di registrazione in totale.",
+"Open Vito in its own window": "Apri Vito in una finestra tutta sua"
 },
 "help": {
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",

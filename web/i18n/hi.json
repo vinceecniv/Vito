@@ -1440,7 +1440,22 @@
 "words": "शब्द",
 "Marks": "चिह्न",
 "Follows the colours of your desktop": "आपके डेस्कटॉप के रंगों का पालन करता है",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "डिक्टेशन शुरू करने के लिए Caps Lock दबाएँ और रोकने के लिए उसे फिर से दबाएँ। उसे दबाए रखकर डिक्टेट करने के लिए 26.04 से नया niri चाहिए; उसके बाद इसे फिर से सेट करें।"
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "डिक्टेशन शुरू करने के लिए Caps Lock दबाएँ और रोकने के लिए उसे फिर से दबाएँ। उसे दबाए रखकर डिक्टेट करने के लिए 26.04 से नया niri चाहिए; उसके बाद इसे फिर से सेट करें।",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "आपकी पसंद एक प्राथमिकता है, सीमा नहीं: Soniox दूसरी भाषाएँ भी पहचानता है, तब भी जब आप वाक्य के बीच में भाषा बदलते हैं।",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet भाषा खुद पहचानता है: आप उसकी 25 भाषाओं में से किसी में भी बोल सकते हैं, चाहे आप यहाँ कुछ भी चुनें।",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "यह मॉडल यहाँ चुनी गई भाषा पर ही टिका रहता है। बोलते समय भाषा बदलते हैं? स्वचालित चुनें।",
+"Dictated, gave Vito Assist a command and made a long recording": "बोलकर लिखा, Vito Assist को कमांड दी और लंबी रिकॉर्डिंग की",
+"Minimize": "छोटा करें",
+"Maximize": "बड़ा करें",
+"Restore down": "नीचे पुनर्स्थापित करें",
+"Not sure what you like?": "पक्का नहीं कि आपको क्या पसंद है?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Vito को आपके लिए एक लुक चुनने दें — रंग, फ़ॉन्ट, कोने, पृष्ठभूमि और पहनने के लिए कुछ। पसंद नहीं आया? बस फिर से आज़माएँ।",
+"Surprise me": "मुझे चौंकाओ",
+"Vito Assist and recordings": "Vito Assist और रिकॉर्डिंग",
+"Assist": "Assist",
+"The long recordings finished in this period.": "इस अवधि में पूरी हुई लंबी रिकॉर्डिंग।",
+"{time} recorded in total.": "कुल {time} रिकॉर्ड किया गया।",
+"Open Vito in its own window": "Vito को उसकी अपनी विंडो में खोलें"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",

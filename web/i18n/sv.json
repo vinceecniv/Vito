@@ -1440,7 +1440,22 @@
 "words": "ord",
 "Marks": "Markeringar",
 "Follows the colours of your desktop": "Följer färgerna på ditt skrivbord",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tryck på Caps Lock för att börja diktera och tryck igen för att sluta. Att hålla ned den för att diktera kräver en niri nyare än 26.04; ställ sedan in den igen."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tryck på Caps Lock för att börja diktera och tryck igen för att sluta. Att hålla ned den för att diktera kräver en niri nyare än 26.04; ställ sedan in den igen.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Ditt val är en preferens, inte en gräns: Soniox känner även igen andra språk, även när du byter mitt i en mening.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet känner själv igen språket: du kan diktera på vilket som helst av dess 25 språk, oavsett vad du väljer här.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Den här modellen håller sig till språket du väljer här. Byter du språk medan du dikterar? Välj Automatiskt.",
+"Dictated, gave Vito Assist a command and made a long recording": "Dikterade, gav Vito Assist ett kommando och gjorde en lång inspelning",
+"Minimize": "Minimera",
+"Maximize": "Maximera",
+"Restore down": "Återställ nedåt",
+"Not sure what you like?": "Osäker på vad du gillar?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Låt Vito välja ett utseende åt dig — färger, typsnitt, hörn, bakgrund och något att ha på sig. Gillar du det inte? Försök bara igen.",
+"Surprise me": "Överraska mig",
+"Vito Assist and recordings": "Vito Assist och inspelningar",
+"Assist": "Assist",
+"The long recordings finished in this period.": "De långa inspelningarna som avslutades under den här perioden.",
+"{time} recorded in total.": "{time} inspelat totalt.",
+"Open Vito in its own window": "Öppna Vito i ett eget fönster"
 },
 "help": {
 "theme": "Ljust, mörkt eller automatiskt — automatiskt följer systemets ljus/mörk-inställning.",

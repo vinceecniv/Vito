@@ -1440,7 +1440,22 @@
 "words": "szó",
 "Marks": "Jelölések",
 "Follows the colours of your desktop": "Az asztalod színeit követi",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nyomd meg a Caps Lockot a diktálás elindításához, és nyomd meg újra a leállításához. A lenyomva tartott diktáláshoz 26.04-nél újabb niri kell; utána állítsd be újra."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Nyomd meg a Caps Lockot a diktálás elindításához, és nyomd meg újra a leállításához. A lenyomva tartott diktáláshoz 26.04-nél újabb niri kell; utána állítsd be újra.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "A választásod előnyben részesítés, nem korlát: a Soniox más nyelveket is felismer, még akkor is, ha mondat közben váltasz.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "A Parakeet magától felismeri a nyelvet: bármelyik 25 nyelvén diktálhatsz, akármit is választasz itt.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Ez a modell az itt választott nyelvnél marad. Diktálás közben nyelvet váltanál? Válaszd az Automatikus lehetőséget.",
+"Dictated, gave Vito Assist a command and made a long recording": "Diktáltál, parancsot adtál a Vito Assistnak és készítettél egy hosszú felvételt",
+"Minimize": "Kis méret",
+"Maximize": "Teljes méret",
+"Restore down": "Előző méret",
+"Not sure what you like?": "Nem tudod, mi tetszik?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Hadd válasszon Vito egy megjelenést neked — színeket, betűtípust, sarkokat, hátteret és valamit, amit felvehet. Nem tetszik? Csak próbáld újra.",
+"Surprise me": "Lepj meg",
+"Vito Assist and recordings": "Vito Assist és felvételek",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Az ebben az időszakban befejezett hosszú felvételek.",
+"{time} recorded in total.": "Összesen {time} felvétel.",
+"Open Vito in its own window": "Vito megnyitása saját ablakban"
 },
 "help": {
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",

@@ -1438,7 +1438,22 @@
 "words": "сөз",
 "Marks": "Белгілер",
 "Follows the colours of your desktop": "Жұмыс үстеліңіздің түстеріне сәйкес келеді",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Диктовканы бастау үшін Caps Lock басыңыз, тоқтату үшін оны қайта басыңыз. Басып тұрып диктовка жасау үшін 26.04-тен жаңа niri қажет; содан кейін оны қайта баптаңыз."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Диктовканы бастау үшін Caps Lock басыңыз, тоқтату үшін оны қайта басыңыз. Басып тұрып диктовка жасау үшін 26.04-тен жаңа niri қажет; содан кейін оны қайта баптаңыз.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Сіздің таңдауыңыз шектеу емес, басымдық қана: Soniox басқа тілдерді де таниды, тіпті сөйлем ортасында тіл ауыстырсаңыз да.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet тілді өзі анықтайды: мұнда не таңдасаңыз да, оның 25 тілінің кез келгенінде айта аласыз.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Бұл модель мұнда таңдаған тілден таймайды. Айтып отырып тіл ауыстырасыз ба? Автоматты дегенді таңдаңыз.",
+"Dictated, gave Vito Assist a command and made a long recording": "Айтып жаздыңыз, Vito Assist-ке пәрмен бердіңіз және ұзақ жазба жасадыңыз",
+"Minimize": "Жию",
+"Maximize": "Үлкейту",
+"Restore down": "Бұрынғы өлшемге қайтару",
+"Not sure what you like?": "Не ұнайтынын білмейсіз бе?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Сыртқы түрді Vito таңдап берсін — түстер, қаріп, бұрыштар, фон және киетін бір нәрсе. Ұнамады ма? Қайта көріңіз.",
+"Surprise me": "Таң қалдыр",
+"Vito Assist and recordings": "Vito Assist және жазбалар",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Осы кезеңде аяқталған ұзақ жазбалар.",
+"{time} recorded in total.": "Барлығы {time} жазылды.",
+"Open Vito in its own window": "Vito-ны өз терезесінде ашу"
 },
 "help": {
 "theme": "Ашық, қараңғы немесе автоматты — автоматты жүйеңіздің ашық/қараңғы режиміне сәйкес келеді.",

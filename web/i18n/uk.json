@@ -1438,7 +1438,22 @@
 "words": "слів",
 "Marks": "Позначки",
 "Follows the colours of your desktop": "Використовує кольори вашого робочого середовища",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Натисніть Caps Lock, щоб почати диктування, і натисніть ще раз, щоб зупинити. Щоб диктувати, утримуючи клавішу, потрібен niri, новіший за 26.04; тоді налаштуйте це знову."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Натисніть Caps Lock, щоб почати диктування, і натисніть ще раз, щоб зупинити. Щоб диктувати, утримуючи клавішу, потрібен niri, новіший за 26.04; тоді налаштуйте це знову.",
+"Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Ваш вибір — це перевага, а не обмеження: Soniox розпізнає й інші мови, навіть коли ви перемикаєтеся посеред речення.",
+"Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet сам розпізнає мову: ви можете диктувати будь-якою з його 25 мов, хоч би що ви тут вибрали.",
+"This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Ця модель тримається мови, яку ви тут виберете. Перемикаєте мови під час диктування? Виберіть «Автоматично».",
+"Dictated, gave Vito Assist a command and made a long recording": "Диктування, команда для Vito Assist і довгий запис",
+"Minimize": "Згорнути",
+"Maximize": "Розгорнути",
+"Restore down": "Відновити",
+"Not sure what you like?": "Не знаєте, що вам до вподоби?",
+"Let Vito pick a look for you — colours, font, corners, background and something to wear. Don't like it? Just try again.": "Дозвольте Vito підібрати вам вигляд — кольори, шрифт, кути, тло й щось із вбрання. Не сподобалося? Просто спробуйте ще раз.",
+"Surprise me": "Здивуй мене",
+"Vito Assist and recordings": "Vito Assist і записи",
+"Assist": "Assist",
+"The long recordings finished in this period.": "Довгі записи, завершені за цей період.",
+"{time} recorded in total.": "Усього записано {time}.",
+"Open Vito in its own window": "Відкрити Vito в окремому вікні"
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",
