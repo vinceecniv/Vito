@@ -19,6 +19,7 @@
   const LS_CONFIG = "vito-web-config", LS_HISTORY = "vito-web-history", LS_DAYS = "vito-web-days",
         LS_UNLOCKED = "vito-web-achievements";
   const MAX_HISTORY = 2000; // localStorage holds ~5 MB; this keeps text well under it
+  const LANG_MIN = 3; // dictations before a language counts (internal/history LangMin)
   const RATE = 16000;
 
   // ---- storage ----
@@ -790,6 +791,9 @@ registerProcessor("vito-pcm",P)`;
     out.latency_median_ms = percentile(lat, 50); out.latency_p95_ms = percentile(lat, 95); out.stt_median_ms = percentile(stt, 50);
     out.languages = Object.entries(langs).map(([code, count]) => ({ code, count }))
       .sort((a, b) => b.count - a.count || (a.code < b.code ? -1 : 1));
+    // Stray detections (fewer than LANG_MIN dictations) are left out, as in
+    // internal/history; the most used language always stays.
+    out.languages = out.languages.filter((l, i) => i === 0 || l.count >= LANG_MIN);
     out.top_words = Object.entries(counts).filter(([, c]) => c > 1).map(([word, count]) => ({ word, count }))
       .sort((a, b) => b.count - a.count || (a.word < b.word ? -1 : 1)).slice(0, 40);
     return out;
@@ -936,13 +940,13 @@ registerProcessor("vito-pcm",P)`;
       prev = d;
     }
     st.streak = longestStreak(active.map(parseDay));
-    const langs = new Set();
+    const langs = {};
     for (const e of history) {
-      if (e.language && e.language !== "auto") langs.add(e.language);
+      if (e.language && e.language !== "auto") langs[e.language] = (langs[e.language] || 0) + 1;
       const h = new Date(e.timestamp).getHours();
       if (h < 5) st.night = true; else if (h < 7) st.early = true;
     }
-    st.languages = langs.size;
+    st.languages = Object.values(langs).filter((n) => n >= LANG_MIN).length;
     let cmds = 0;
     for (const v of Object.values(days)) cmds += v.commands || 0;
     st.commands = cmds;

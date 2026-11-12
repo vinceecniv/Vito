@@ -100,8 +100,9 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 	// entry rows. Those are capped, so this is best-effort — but an achievement
 	// is only recorded once, so catching it while the entry is still around is
 	// enough. Privacy-mode dictations leave no entry and can't set these.
-	langRow := s.db.QueryRow(`SELECT COUNT(DISTINCT language) FROM history
-		WHERE source != 'upload' AND language != '' AND language != 'auto'`)
+	langRow := s.db.QueryRow(`SELECT COUNT(*) FROM (SELECT language FROM history
+		WHERE source != 'upload' AND language != '' AND language != 'auto'
+		GROUP BY language HAVING COUNT(*) >= ?)`, LangMin)
 	_ = langRow.Scan(&st.Languages)
 
 	hourRows, err := s.db.Query(`SELECT ts FROM history WHERE source != 'upload'`)
