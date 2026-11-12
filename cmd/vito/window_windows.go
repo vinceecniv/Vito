@@ -97,6 +97,7 @@ var (
 	procGetDpiForSystem       = user32.NewProc("GetDpiForSystem")
 	procGetKeyState           = user32.NewProc("GetKeyState")
 	procSetProcessDpiAwareCtx = user32.NewProc("SetProcessDpiAwarenessContext")
+	procSystemParametersInfo  = user32.NewProc("SystemParametersInfoW")
 	shell32                   = windows.NewLazySystemDLL("shell32.dll")
 	procExtractIconExW        = shell32.NewProc("ExtractIconExW")
 	procSetAppIDForProcess    = shell32.NewProc("SetCurrentProcessExplicitAppUserModelID")
@@ -140,7 +141,6 @@ type windowPlacement struct {
 	ptMinPosition point
 	ptMaxPosition point
 	rcNormal      rect
-	rcDevice      rect
 }
 
 type msg struct {
@@ -266,11 +266,23 @@ func runWindow(cfg *config.Config, target string) error {
 	}
 	width, height := 1280*int(dpi)/96, 880*int(dpi)/96
 	const cwUseDefault = 0x80000000
+	x, y := uintptr(cwUseDefault), uintptr(cwUseDefault)
+	kept, haveKept := w.loadPlacement()
+	if haveKept {
+		// Made where it was, on that screen and at its scale: placed after
+		// creation it would first be made on the main screen, and the change
+		// of scale on the way over resized it.
+		r := kept.rcNormal
+		var wa rect                                                               // rcNormal is in workspace coordinates: the main screen's work area
+		procSystemParametersInfo.Call(0x0030, 0, uintptr(unsafe.Pointer(&wa)), 0) // SPI_GETWORKAREA
+		x, y = uintptr(int(r.left+wa.left)), uintptr(int(r.top+wa.top))
+		width, height = int(r.right-r.left), int(r.bottom-r.top)
+	}
 	title, _ := windows.UTF16PtrFromString(windowTitle)
 	w.hwnd, _, _ = procCreateWindowExW.Call(0,
 		uintptr(unsafe.Pointer(cls)), uintptr(unsafe.Pointer(title)),
 		0x00CF0000, // WS_OVERLAPPEDWINDOW
-		cwUseDefault, cwUseDefault, uintptr(width), uintptr(height),
+		x, y, uintptr(width), uintptr(height),
 		0, 0, uintptr(hinst), 0)
 	if w.hwnd == 0 {
 		return errNoEngine
@@ -279,7 +291,7 @@ func runWindow(cfg *config.Config, target string) error {
 	setRelaunch(w.hwnd)
 	setDarkTitleBar(w.hwnd, wantDarkTitle(cfg.UI.Theme))
 	show := uintptr(swShow)
-	if p, ok := w.loadPlacement(); ok {
+	if p := kept; haveKept {
 		if p.showCmd == swShowMax {
 			show = swShowMax
 		}
