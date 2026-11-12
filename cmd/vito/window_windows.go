@@ -303,6 +303,7 @@ func runWindow(cfg *config.Config, target string) error {
 		return errNoEngine
 	}
 	setWindowIcon(w.hwnd, cfg.UI.Accent, cfg.UI.Radius)
+	setWindowCorners(w.hwnd, cfg.UI.Radius)
 	hideCaptionIcon(w.hwnd)
 	setRelaunch(w.hwnd)
 	setDarkTitleBar(w.hwnd, wantDarkTitle(cfg.UI.Theme))
@@ -407,6 +408,7 @@ func (w *vwin) onMessage(raw string) {
 	case "theme":
 		setDarkTitleBar(w.hwnd, m.Dark)
 		setWindowIcon(w.hwnd, m.Acc, m.Rad)
+		setWindowCorners(w.hwnd, m.Rad)
 	case "win":
 		w.frameAction(m.A, m.Edge)
 	case "log":
@@ -728,6 +730,19 @@ func setDarkTitleBar(hwnd uintptr, dark bool) {
 		procSendMessageW.Call(hwnd, wmNCActivate, 0, 0)
 		procSendMessageW.Call(hwnd, wmNCActivate, 1, 0)
 	}
+}
+
+// setWindowCorners rounds the window's corners as ui.radius rounds the page's
+// (DWMWA_WINDOW_CORNER_PREFERENCE, Windows 11; Windows 10 has square ones).
+func setWindowCorners(hwnd uintptr, radius string) {
+	v := int32(2) // DWMWCP_ROUND
+	switch radius {
+	case "minimal":
+		v = 3 // DWMWCP_ROUNDSMALL
+	case "none":
+		v = 1 // DWMWCP_DONOTROUND
+	}
+	procDwmSetWindowAttribute.Call(hwnd, 33, uintptr(unsafe.Pointer(&v)), 4)
 }
 
 func wantDarkTitle(theme string) bool {

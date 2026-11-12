@@ -562,6 +562,9 @@
   html.wco .brand, html.wco .sidebar button { app-region:no-drag; -webkit-app-region:no-drag; }
   .win-btns { position:fixed; top:0; right:0; height:var(--frame-h); display:flex; z-index:9500;
     border-bottom-left-radius:10px; overflow:hidden; transition:background-color .2s; }
+  /* Only the corner away from the screen's edges rounds, with ui.radius. */
+  :root[data-radius="minimal"] .win-btns { border-radius:0 0 0 3px !important; }
+  :root[data-radius] .win-btn { border-radius:0 !important; }
   html.win-scrolled .win-btns { background:color-mix(in srgb, var(--bg) 78%, transparent);
     -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
   .win-btn { width:46px; height:100%; display:flex; align-items:center; justify-content:center; padding:0; margin:0;
