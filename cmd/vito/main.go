@@ -196,6 +196,10 @@ func serve() error {
 	// The tray, the island and the pill's cards open Vito's own window where
 	// there is one (ui.window), the installed web app or a tab otherwise.
 	webapp.Native = func(u string) error { return openNative(d.Config().UI.Window, u) }
+	webapp.NativeOn = func() bool {
+		w := d.Config().UI.Window
+		return windowSupported() && (w == nil || *w)
+	}
 	hk := hotkey.New(d, log)
 	server.Version = version
 	srv := server.New(d, log, audioCtx, hist, hk, cfg.Server.Token, cfg.Server.Port)

@@ -1559,9 +1559,19 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			case tg == tMic:
 				closing = !st.pinned
 				p.clickIdle(output)
+			case tg == tOpenVito && webapp.NativeOn != nil && webapp.NativeOn():
+				// Vito's own window shows at once: no spinner, the island
+				// just closes (unless pinned).
+				closing = !st.pinned
+				url := fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)
+				go func() {
+					if err := webapp.Open(url); err != nil {
+						p.log.Warn("island: open Vito failed", "err", err)
+					}
+				}()
 			case tg == tOpenVito:
 				// The island stays a moment with a spinner by the name, then
-				// closes (unless pinned): the page takes a while to show.
+				// closes (unless pinned): the web app takes a while to show.
 				if openingAt.IsZero() {
 					openingAt = time.Now()
 					url := fmt.Sprintf("http://127.0.0.1:%d", p.d.Config().Server.Port)

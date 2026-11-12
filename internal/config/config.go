@@ -243,8 +243,7 @@ type UI struct {
 	IslandPin *IslandPin `json:"island_pin,omitempty"`
 	// Window opens Vito's page in its own window (`vito window`, WebView2 on
 	// Windows) instead of the installed web app or a browser tab. Nil-safe:
-	// unset means the window, unless the web app is installed — someone who
-	// installed it keeps it until they choose otherwise.
+	// unset is on, for new users and for those updating from the web app alike.
 	Window *bool `json:"window,omitempty"`
 	// IslandStats shows today's figures in the island. Nil-safe: unset is on.
 	IslandStats *bool `json:"island_stats,omitempty"`

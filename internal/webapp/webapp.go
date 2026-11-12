@@ -12,11 +12,12 @@ import (
 // ErrNoNative when that is switched off, and Open carries on as before.
 var Native func(url string) error
 
+// NativeOn, when set, says whether Open will use Native: Vito's own window
+// shows at once, so callers can skip their "opening…" feedback.
+var NativeOn func() bool
+
 // ErrNoNative says Native is not in use.
 var ErrNoNative = errors.New("no native window")
-
-// HasInstalled says whether the user installed Vito's page as a web app.
-func HasInstalled(url string) bool { return installed(url) != nil }
 
 // Open opens url (Vito's own page, http://127.0.0.1:<port>) in the web app
 // the user installed from it, and in an ordinary browser tab when there is

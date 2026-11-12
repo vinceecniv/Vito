@@ -11219,10 +11219,9 @@ async function fillSettings() {
   setRetentionDisplay(String(cfg.history.retention_days ?? 0));
   syncStoreAudioUI();
   $("s-tray").checked = cfg.tray ? cfg.tray.enabled !== false : true;
-  // Vito's own window (WebView2) is Windows-only. Unset means the window,
-  // unless the web app is installed — then this page is that app.
+  // Vito's own window (WebView2) is Windows-only; unset is on.
   $("s-window-opt").hidden = STANDALONE || !/Windows/.test(navigator.userAgent);
-  $("s-window").checked = cfg.ui && typeof cfg.ui.window === "boolean" ? cfg.ui.window : !!window.__VITO_WINDOW__ || !matchMedia("(display-mode: standalone)").matches;
+  $("s-window").checked = !(cfg.ui && cfg.ui.window === false);
   $("s-pill").checked = !cfg.ui || cfg.ui.pill !== false; // default on
   $("s-pill-idle").checked = !(cfg.ui && cfg.ui.pill_idle === false); // unset is on
   $("s-pill-live").checked = !(cfg.ui && cfg.ui.pill_live === false); // unset is on
@@ -12202,7 +12201,6 @@ $("demo-off").onclick = () => {
 buildPeriodDropdown(); // choosing a period saves it and reloads the stats
 // Disabling the tray icon warns first (it's the easy way back to settings).
 $("s-pill").onchange = $("s-pill-idle").onchange = $("s-pill-live").onchange = () => autoSaveSettings();
-// Written only once chosen here, so an unset choice keeps following the default.
 $("s-window").onchange = () => { cfg.ui = Object.assign(cfg.ui || {}, { window: $("s-window").checked }); autoSaveSettings(); };
 $("s-tray").onchange = () => {
   if ($("s-tray").checked) { autoSaveSettings(); return; }
@@ -14147,6 +14145,10 @@ function renderPwaTip(){
     return;
   }
   if (isStandalone() || localStorage.getItem("vito-pwa-dismissed")) { el.innerHTML = ""; return; }
+  // On Windows Vito has its own window (Settings > System); installing this
+  // page as an app is no longer the way to give it one.
+  let ownWindow = true; try { ownWindow = !(cfg && cfg.ui && cfg.ui.window === false); } catch {} // cfg may not exist yet
+  if (!STANDALONE && /Windows/.test(navigator.userAgent) && ownWindow) { el.innerHTML = ""; return; }
   if (deferredPrompt) {
     el.innerHTML = `<div class="banner tip pwa-explain">
       <div class="pwa-head">

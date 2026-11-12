@@ -9,15 +9,12 @@ import (
 	"vito/internal/webapp"
 )
 
-// openNative decides how the daemon opens its page: Vito's own window when
-// ui.window is on, or unset and no web app is installed; ErrNoNative otherwise
-// (and where there is no window to be had), so webapp.Open carries on with the
-// web app or a browser tab. Existing users who installed the web app keep it.
+// openNative decides how the daemon opens its page: Vito's own window unless
+// ui.window is switched off; ErrNoNative then (and where there is no window to
+// be had), so webapp.Open carries on with the web app or a browser tab. The
+// web app still works for whoever opens it, but is no longer the way in.
 func openNative(pref *bool, u string) error {
 	if !windowSupported() || (pref != nil && !*pref) {
-		return webapp.ErrNoNative
-	}
-	if pref == nil && webapp.HasInstalled(u) {
 		return webapp.ErrNoNative
 	}
 	return launchWindow(u)
