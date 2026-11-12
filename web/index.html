@@ -2944,6 +2944,7 @@
             <button type="button" class="flagsel-btn" id="lang-btn">Dutch</button>
             <div class="flagsel-list" id="lang-list"></div>
           </div>
+          <p class="act-note" id="lang-note" hidden></p>
         </div>
         <div class="card" data-sec="stt" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg><span>Speech model</span></h2>
@@ -3867,6 +3868,9 @@ const TR = { nl: {
   "Languages":"Talen",
   "{p}% of dictations":"{p}% van de dictaten",
   "Languages you dictated in this period, by number of dictations.":"De talen waarin je in deze periode dicteerde, naar aantal dictaten.",
+  "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.":"Je keuze is een voorkeur, geen grens: Soniox herkent ook andere talen, zelfs als je midden in een zin wisselt.",
+  "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.":"Parakeet herkent de taal zelf: je kunt in elk van zijn 25 talen dicteren, wat je hier ook kiest.",
+  "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.":"Dit model houdt zich aan de taal die je hier kiest. Wissel je tijdens het dicteren van taal? Kies dan Automatisch.",
   "words per dictation":"woorden per dictaat",
   "Most used words":"Meest gebruikte woorden",
   "Chart in background":"Grafiek op achtergrond",
@@ -5601,8 +5605,22 @@ function langName(code){
 function langIcon(code){
   return flag(code.split("_")[0]) || `<span class="lang-badge">${code.toUpperCase().replace("_","-")}</span>`;
 }
+// Whether the chosen language is a limit depends on the engine: Soniox takes it
+// as a hint and follows a switch mid-sentence, Parakeet detects the language
+// itself, the others (AssemblyAI with a language set, Whisper, Whistle) keep to it.
+function updateLangNote(){
+  const el = $("lang-note"); if (!el) return;
+  const m = SPEECH_MODELS.find(x => x.id === (($("s-model") && $("s-model").value) || ""));
+  const prov = m ? m.provider : "", lang = $("s-lang").value || "auto";
+  let txt = "";
+  if (prov === "soniox") txt = t("Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.");
+  else if (prov === "local") txt = t("Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.");
+  else if (prov && lang !== "auto") txt = t("This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.");
+  el.textContent = txt; el.hidden = !txt;
+}
 function setLang(code){
   $("s-lang").value = code;
+  updateLangNote();
   $("lang-btn").innerHTML = langIcon(code) + "<span>" + langName(code) + "</span>";
   [...$("lang-list").querySelectorAll(".flagsel-opt")].forEach(o => o.classList.toggle("sel", o.dataset.code===code));
 }
@@ -5710,6 +5728,7 @@ function askDownload(p){
 }
 function buildModelCards(){
   const box = $("model-cards"), cur = $("s-model").value || "";
+  updateLangNote();
   // Re-rendering moves the settings blocks, and a moved input loses focus — so
   // while the selection and language stand, only the volatile bits are updated.
   const sig = cur + "|" + (document.documentElement.lang || "") + "|" +
