@@ -21,10 +21,10 @@ import (
 
 const iconSize = 256
 
-// Waveform-V: 7 bars on a 100x100 canvas (x, y, w, h; rx = w/2).
-var bars = [7][4]float64{
-	{10, 24, 8, 16}, {22, 24, 8, 28}, {34, 24, 8, 40}, {46, 24, 8, 54},
-	{58, 24, 8, 40}, {70, 24, 8, 28}, {82, 24, 8, 16},
+// Waveform-V: 5 bars on a 100x100 canvas (x, y, w, h; rx = w/2), the page's
+// MARK in web/index.html and the island's brandTile — keep the three in step.
+var bars = [5][4]float64{
+	{4, 22, 12, 20}, {24, 22, 12, 36}, {44, 22, 12, 56}, {64, 22, 12, 36}, {84, 22, 12, 20},
 }
 
 var (
