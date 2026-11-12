@@ -19,10 +19,7 @@
       <g>
         <rect x="80" y="122" width="76" height="70" rx="14" fill="#251E38" stroke="#FF6B5E" stroke-opacity="0.7" stroke-width="1.5"></rect>
         <g fill="#FF8A7A" transform="translate(96,132) scale(0.44)">
-          <rect x="10" y="24" width="8" height="16" rx="4"></rect><rect x="22" y="24" width="8" height="28" rx="4"></rect>
-          <rect x="34" y="24" width="8" height="40" rx="4"></rect><rect x="46" y="24" width="8" height="54" rx="4"></rect>
-          <rect x="58" y="24" width="8" height="40" rx="4"></rect><rect x="70" y="24" width="8" height="28" rx="4"></rect>
-          <rect x="82" y="24" width="8" height="16" rx="4"></rect>
+          <rect x="4" y="22" width="12" height="20" rx="6"></rect><rect x="24" y="22" width="12" height="36" rx="6"></rect><rect x="44" y="22" width="12" height="56" rx="6"></rect><rect x="64" y="22" width="12" height="36" rx="6"></rect><rect x="84" y="22" width="12" height="20" rx="6"></rect>
         </g>
         <text x="172" y="164" font-size="19" font-weight="700" fill="#F3EFFA">your hotkey</text>
       </g>

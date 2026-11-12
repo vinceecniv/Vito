@@ -1189,10 +1189,9 @@
   .quiet-icon { flex:none; width:64px; height:64px; display:inline-flex; align-items:center; justify-content:center; }
   .quiet-icon svg { width:64px; height:64px; }
   .vito-talk rect { transform-box:fill-box; transform-origin:center; animation:vBar .9s ease-in-out infinite; }
-  .vito-talk rect:nth-of-type(1), .vito-talk rect:nth-of-type(7) { animation-delay:.3s; animation-duration:.8s; }
-  .vito-talk rect:nth-of-type(2), .vito-talk rect:nth-of-type(6) { animation-delay:.15s; animation-duration:1.05s; }
-  .vito-talk rect:nth-of-type(3), .vito-talk rect:nth-of-type(5) { animation-delay:.45s; animation-duration:.7s; }
-  .vito-talk rect:nth-of-type(4) { animation-delay:0s; animation-duration:.95s; }
+  .vito-talk rect:nth-of-type(1), .vito-talk rect:nth-of-type(5) { animation-delay:.3s; animation-duration:.8s; }
+  .vito-talk rect:nth-of-type(2), .vito-talk rect:nth-of-type(4) { animation-delay:.15s; animation-duration:1.05s; }
+  .vito-talk rect:nth-of-type(3) { animation-delay:0s; animation-duration:.95s; }
   @keyframes vBar { 0%,100% { transform:scaleY(1); } 50% { transform:scaleY(.45); } }
   /* The recordings' empty state: a microphone that sways on its stand, sound
      rings leaving it, and a blinking record light. Still, the rings stay. */
@@ -2632,7 +2631,7 @@
     <!-- Demo banner: outside the sections so it shows on every tab. -->
     <!-- Browser version, after moving to the app: this page only opens it (renderMoved). -->
     <div class="moved-screen" id="moved-screen" hidden>
-      <svg viewBox="0 0 100 100" fill="url(#movedGrad)" class="vito-talk moved-logo" aria-hidden="true"><defs><linearGradient id="movedGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs><rect x="10" y="24" width="8" height="16" rx="4"/><rect x="22" y="24" width="8" height="28" rx="4"/><rect x="34" y="24" width="8" height="40" rx="4"/><rect x="46" y="24" width="8" height="54" rx="4"/><rect x="58" y="24" width="8" height="40" rx="4"/><rect x="70" y="24" width="8" height="28" rx="4"/><rect x="82" y="24" width="8" height="16" rx="4"/></svg>
+      <svg viewBox="0 0 100 100" fill="url(#movedGrad)" class="vito-talk moved-logo" aria-hidden="true"><defs><linearGradient id="movedGrad" gradientUnits="userSpaceOnUse" x1="4" y1="22" x2="96" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>
       <div class="moved-title">Vito now runs as an app on this computer</div>
       <div class="moved-text">Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.</div>
       <button type="button" class="btn primary" id="moved-open">Open Vito</button>
@@ -10173,9 +10172,9 @@ function historyEmptyHTML(){
   if (hFavOnly) return `<div class="hist-empty small"><div class="he-title">${t("No favorites yet.")}</div><div class="he-sub">${t("Give a dictation a star and it waits for you here — and is never cleaned up automatically.")}</div></div>`;
   const k = STANDALONE ? fmtHotkey(webHotkey()) : hotkeyHint();
   const line = HIST_EMPTY_LINES[Math.floor(Math.random() * HIST_EMPTY_LINES.length)];
-  const bars = [[10,16],[22,28],[34,40],[46,54],[58,40],[70,28],[82,16]].map(([x, h]) => `<rect x="${x}" y="24" width="8" height="${h}" rx="4"/>`).join("");
+  const bars = [[4,20],[24,36],[44,56],[64,36],[84,20]].map(([x, h]) => `<rect x="${x}" y="22" width="12" height="${h}" rx="6"/>`).join("");
   return `<div class="hist-empty">
-    <svg viewBox="0 0 100 100" fill="url(#heGrad)" class="vito-talk he-logo" aria-hidden="true"><defs><linearGradient id="heGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs>${bars}</svg>
+    <svg viewBox="0 0 100 100" fill="url(#heGrad)" class="vito-talk he-logo" aria-hidden="true"><defs><linearGradient id="heGrad" gradientUnits="userSpaceOnUse" x1="4" y1="22" x2="96" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs>${bars}</svg>
     <div class="he-title">${t(line)}</div>
     <div class="he-sub">${t("Everything you dictate lands here: searchable, with a star for the keepers. Say something — anything — and your first sentence shows up within seconds.")}</div>
     <button type="button" class="btn primary" id="he-start">${t("Start your first dictation")}</button>
@@ -10195,9 +10194,9 @@ function quietTodayHTML(){
   const k = hotkeyHint();
   let lines = QUIET_LINES.filter(l => k || !l.includes("{k}"));
   const line = t(lines[day % lines.length]).replace("{k}", k ? `<b>${ahEsc(k)}</b>` : "");
-  const bars = [[10,16],[22,28],[34,40],[46,54],[58,40],[70,28],[82,16]].map(([x, h]) => `<rect x="${x}" y="24" width="8" height="${h}" rx="4"/>`).join("");
+  const bars = [[4,20],[24,36],[44,56],[64,36],[84,20]].map(([x, h]) => `<rect x="${x}" y="22" width="12" height="${h}" rx="6"/>`).join("");
   return `<div class="quiet-today"><span class="quiet-icon"><svg viewBox="0 0 100 100" fill="url(#quietGrad)" class="vito-talk" aria-hidden="true">` +
-    `<defs><linearGradient id="quietGrad" gradientUnits="userSpaceOnUse" x1="10" y1="24" x2="90" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs>${bars}</svg></span>` +
+    `<defs><linearGradient id="quietGrad" gradientUnits="userSpaceOnUse" x1="4" y1="22" x2="96" y2="78"><stop offset="0" style="stop-color:var(--coral)"/><stop offset="1" style="stop-color:var(--violet)"/></linearGradient></defs>${bars}</svg></span>` +
     `<div class="quiet-line">${line}</div></div>`;
 }
 function cloudCardHTML(ins){
