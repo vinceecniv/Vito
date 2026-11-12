@@ -155,6 +155,12 @@ func (d Def) Earned(s Stats) bool {
 }
 
 // List is every achievement, in display order. Names are deliberately silly.
+//
+// Each ladder starts within the first days and climbs by about ×4 to ×10 a
+// step. The tops are meant for a year or more of daily use (about 750 words,
+// 20 dictations and 6 minutes of speaking a day, measured on a heavy user),
+// a word million longer still. An id keeps its first threshold where that
+// changed: earned badges, their images and the wardrobe hang on the id.
 var List = []Def{
 	// Support badges — ticked by hand, on your honour. Kept apart from the earned
 	// milestones and shown with a little extra sparkle when unlocked.
@@ -171,11 +177,11 @@ var List = []Def{
 	{ID: "words-250k", Group: GroupWords, Icon: "🎩", Name: "The Orator", Desc: "Dictated {n} words", Threshold: 250000},
 	{ID: "words-1m", Group: GroupWords, Icon: "💬", Name: "Word Millionaire", Desc: "Dictated {n} words", Threshold: 1000000},
 
-	// Time spent speaking.
+	// Time spent speaking: 10 minutes, an hour, 5, 25 and 100 hours.
 	{ID: "spoken-10m", Group: GroupSpoken, Icon: "⏱️", Name: "Ten Minutes In", Desc: "Spoke for {n}", Threshold: 600},
 	{ID: "spoken-1h", Group: GroupSpoken, Icon: "🔋", Name: "Hour of Power", Desc: "Spoke for {n}", Threshold: 3600},
-	{ID: "spoken-10h", Group: GroupSpoken, Icon: "🎧", Name: "The Regular", Desc: "Spoke for {n}", Threshold: 36000},
-	{ID: "spoken-50h", Group: GroupSpoken, Icon: "🗯️", Name: "Chatterbox", Desc: "Spoke for {n}", Threshold: 180000},
+	{ID: "spoken-10h", Group: GroupSpoken, Icon: "🎧", Name: "The Regular", Desc: "Spoke for {n}", Threshold: 18000},
+	{ID: "spoken-50h", Group: GroupSpoken, Icon: "🗯️", Name: "Chatterbox", Desc: "Spoke for {n}", Threshold: 90000},
 	{ID: "spoken-100h", Group: GroupSpoken, Icon: "🎤", Name: "The Voice", Desc: "Spoke for {n}", Threshold: 360000},
 
 	// Typing time saved (vs typing it yourself).
@@ -197,10 +203,10 @@ var List = []Def{
 	{ID: "day-2k", Group: GroupDay, Icon: "🎯", Name: "In the Zone", Desc: "Dictated {n} words in a day", Threshold: 2000},
 	{ID: "day-10k", Group: GroupDay, Icon: "🚀", Name: "Big Day", Desc: "Dictated {n} words in a day", Threshold: 10000},
 
-	// Your best week.
+	// Your best week. The top is about a working week of a heavy user's best day.
 	{ID: "week-2k", Group: GroupWeek, Icon: "📈", Name: "Busy Week", Desc: "Dictated {n} words in a week", Threshold: 2000},
 	{ID: "week-10k", Group: GroupWeek, Icon: "📚", Name: "Prolific", Desc: "Dictated {n} words in a week", Threshold: 10000},
-	{ID: "week-40k", Group: GroupWeek, Icon: "🏭", Name: "Word Factory", Desc: "Dictated {n} words in a week", Threshold: 40000},
+	{ID: "week-40k", Group: GroupWeek, Icon: "🏭", Name: "Word Factory", Desc: "Dictated {n} words in a week", Threshold: 25000},
 
 	// Times you reached for the hotkey.
 	{ID: "act-10", Group: GroupActivations, Icon: "🎛️", Name: "Getting the Hang of It", Desc: "Started {n} dictations", Threshold: 10},
@@ -208,11 +214,12 @@ var List = []Def{
 	{ID: "act-1k", Group: GroupActivations, Icon: "🤖", Name: "Reflex", Desc: "Started {n} dictations", Threshold: 1000},
 	{ID: "act-10k", Group: GroupActivations, Icon: "⌨️", Name: "One with the Hotkey", Desc: "Started {n} dictations", Threshold: 10000},
 
+	// Vito Assist commands, which are used now and then rather than all day.
 	{ID: "cmd-1", Group: GroupCommands, Icon: "🛎️", Name: "At Your Service", Desc: "Ran your first Vito Assist command", Threshold: 1},
 	{ID: "cmd-10", Group: GroupCommands, Icon: "🪄", Name: "Getting Assisted", Desc: "Ran {n} Vito Assist commands", Threshold: 10},
 	{ID: "cmd-50", Group: GroupCommands, Icon: "🧠", Name: "Second Brain", Desc: "Ran {n} Vito Assist commands", Threshold: 50},
-	{ID: "cmd-250", Group: GroupCommands, Icon: "🦾", Name: "Power User", Desc: "Ran {n} Vito Assist commands", Threshold: 250},
-	{ID: "cmd-1k", Group: GroupCommands, Icon: "🚀", Name: "Assist Machine", Desc: "Ran {n} Vito Assist commands", Threshold: 1000},
+	{ID: "cmd-250", Group: GroupCommands, Icon: "🦾", Name: "Power User", Desc: "Ran {n} Vito Assist commands", Threshold: 150},
+	{ID: "cmd-1k", Group: GroupCommands, Icon: "🚀", Name: "Assist Machine", Desc: "Ran {n} Vito Assist commands", Threshold: 500},
 
 	// What you've saved by bringing your own key instead of paying a subscription.
 	// {n} is a money amount; the description leaves the baseline to the UI.
