@@ -257,8 +257,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Menyediakan, mengurus dan melindungi kunci tersebut — serta semua kos yang ditanggung akibat penggunaannya di penyedia — adalah sepenuhnya tanggungjawab anda sendiri.",
 "Privacy & data": "Privasi & data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito tidak mengumpul sebarang data pengguna untuk dihantar ke mana-mana, dan tiada sebarang bentuk penjejakan atau analitik terbina dalam aplikasi. Tetapan, kamus dan sejarah anda kekal setempat pada komputer anda sendiri.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Satu-satunya data yang dihantar oleh aplikasi secara luaran ialah suara anda dan teks yang pergi ke penyedia luar model BYOK (pengecaman suara dan pembersihan AI). Data tersebut tertakluk kepada dasar privasi penyedia luar itu.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Versi pelayar di vito.talk mengira secara tanpa nama berapa kerap ia dibuka dan sama ada pelayar mencapai imlak pertama dan kesepuluhnya — tanpa kuki, dan langsung tidak apabila Do Not Track dihidupkan. Tiada apa yang anda sebut atau tetapkan dihantar. Aplikasi yang dipasang tidak mengira apa-apa.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Satu-satunya data yang dihantar oleh aplikasi secara luaran ialah suara anda dan teks yang pergi ke penyedia luar model BYOK (pengecaman suara dan pembersihan AI). Data tersebut tertakluk kepada dasar privasi penyedia luar itu.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Versi pelayar di vito.talk mengira secara tanpa nama berapa kerap ia dibuka dan sama ada pelayar mencapai imlak pertama dan kesepuluhnya — tanpa kuki, dan langsung tidak apabila Do Not Track dihidupkan. Tiada apa yang anda sebut atau tetapkan dihantar. Aplikasi yang dipasang tidak mengira apa-apa.",
 "Show all": "Tunjuk semua",
 "Errors only": "Ralat sahaja",
 "Off": "Mati",
@@ -1455,7 +1455,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "Rakaman panjang yang selesai dalam tempoh ini.",
 "{time} recorded in total.": "Jumlah {time} dirakam.",
-"Open Vito in its own window": "Buka Vito dalam tetingkapnya sendiri"
+"Open Vito in its own window": "Buka Vito dalam tetingkapnya sendiri",
+"Back to 100%": "Kembali ke 100%",
+"Default 100%": "Lalai 100%",
+"How do I get a key?": "Bagaimana untuk mendapatkan kunci?",
+"Soniox API key": "Kunci API Soniox",
+"Achievement sound": "Bunyi pencapaian",
+"Menu": "Menu",
+"Ran your first Vito Assist command": "Menjalankan arahan Vito Assist pertama anda",
+"Ran {n} Vito Assist commands": "Menjalankan {n} arahan Vito Assist",
+"Made by": "Dibuat oleh",
+"Copyright": "Hak cipta"
 },
 "help": {
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",
@@ -1520,6 +1530,7 @@
 "motion": "Menghentikan animasi Vito: peralihan, latar belakang bergerak dan gerakan Vito sendiri. Sistem anda juga mempunyai tetapan untuk ini; apabila ia dihidupkan, Vito sudah mengikutinya.",
 "cursor": "Penuding tetikus dalam warna Vito, dengan logo di tangannya. Mati: penuding biasa sistem anda.",
 "helptips": "Ya, ini salah satunya. Mati: tiada lagi penjelasan apabila anda berhenti seketika di atas tetapan — termasuk yang ini.",
-"soundset": "Bagaimana bunyinya: bunyi Vito sendiri, Lembut (nada hangat), Kaca (loceng cerah), Retro (8-bit) atau Tik (pendek dan kering, paling kurang ketara). Klik satu untuk mendengarnya."
+"soundset": "Bagaimana bunyinya: bunyi Vito sendiri, Lembut (nada hangat), Kaca (loceng cerah), Retro (8-bit) atau Tik (pendek dan kering, paling kurang ketara). Klik satu untuk mendengarnya.",
+"ownwindow": "Membuka Vito dalam tetingkapnya sendiri (Microsoft Edge WebView2), tanpa pelayar. Mati: dalam aplikasi pelayar yang dipasang atau tab pelayar."
 }
 }

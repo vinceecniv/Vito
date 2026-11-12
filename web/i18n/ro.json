@@ -300,8 +300,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Furnizarea, gestionarea și securizarea acestor chei — și toate costurile pe care le implică utilizarea lor la furnizori — sunt în întregime responsabilitatea ta.",
 "Privacy & data": "Confidențialitate și date",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito nu colectează în niciun fel date ale utilizatorilor pentru a le trimite mai departe și nu există nicio formă de urmărire sau analiză integrată în aplicație. Setările, dicționarul și istoricul tău rămân local pe propriul computer.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Singurele date pe care aplicația le trimite extern sunt vocea ta și textele care merg către furnizorii externi ai modelului BYOK (recunoaștere vocală și curățare AI). Acestor date li se aplică politicile de confidențialitate ale acelor furnizori externi.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Versiunea pentru browser de pe vito.talk numără anonim cât de des este deschisă și dacă un browser ajunge la a 1-a și a 10-a dictare — fără cookie-uri, iar cu Do Not Track activat deloc. Nimic din ce spui sau setezi nu este trimis. Aplicația instalată nu numără nimic.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Singurele date pe care aplicația le trimite extern sunt vocea ta și textele care merg către furnizorii externi ai modelului BYOK (recunoaștere vocală și curățare AI). Acestor date li se aplică politicile de confidențialitate ale acelor furnizori externi.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Versiunea pentru browser de pe vito.talk numără anonim cât de des este deschisă și dacă un browser ajunge la a 1-a și a 10-a dictare — fără cookie-uri, iar cu Do Not Track activat deloc. Nimic din ce spui sau setezi nu este trimis. Aplicația instalată nu numără nimic.",
 "Show all": "Arată tot",
 "Errors only": "Doar erori",
 "Off": "Oprit",
@@ -1455,7 +1455,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "Înregistrările lungi încheiate în această perioadă.",
 "{time} recorded in total.": "{time} înregistrate în total.",
-"Open Vito in its own window": "Deschide Vito în propria fereastră"
+"Open Vito in its own window": "Deschide Vito în propria fereastră",
+"Back to 100%": "Înapoi la 100%",
+"Default 100%": "Implicit 100%",
+"How do I get a key?": "Cum obțin o cheie?",
+"Soniox API key": "Cheie API Soniox",
+"Achievement sound": "Sunet pentru realizări",
+"Menu": "Meniu",
+"Ran your first Vito Assist command": "Prima comandă Vito Assist executată",
+"Ran {n} Vito Assist commands": "{n} comenzi Vito Assist executate",
+"Made by": "Realizat de",
+"Copyright": "Drepturi de autor"
 },
 "help": {
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",
@@ -1520,6 +1530,7 @@
 "motion": "Oprește animațiile lui Vito: tranzițiile, fundalurile în mișcare și mișcările lui Vito. Și sistemul tău are o setare pentru asta; când e activă, Vito o urmează deja.",
 "cursor": "Cursorul mouse-ului în culorile lui Vito, cu logoul în mână. Oprit: cursorul obișnuit al sistemului tău.",
 "helptips": "Da, asta e una. Oprit: nicio explicație când zăbovești asupra unei setări — nici aceasta.",
-"soundset": "Cum sună sunetele: cele ale lui Vito, Moale (tonuri calde), Sticlă (clopoței clari), Retro (8 biți) sau Tic (scurt și sec, cel mai discret). Apasă pe unul ca să-l auzi."
+"soundset": "Cum sună sunetele: cele ale lui Vito, Moale (tonuri calde), Sticlă (clopoței clari), Retro (8 biți) sau Tic (scurt și sec, cel mai discret). Apasă pe unul ca să-l auzi.",
+"ownwindow": "Deschide Vito într-o fereastră proprie (Microsoft Edge WebView2), fără browser. Dezactivat: în aplicația de browser instalată sau într-o filă de browser."
 }
 }

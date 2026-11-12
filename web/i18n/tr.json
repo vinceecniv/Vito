@@ -321,8 +321,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Bu anahtarların sağlanması, yönetimi ve güvenliği — ve sağlayıcılarda kullanımlarından doğan tüm maliyetler — tamamen sizin sorumluluğunuzdadır.",
 "Privacy & data": "Gizlilik ve veriler",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito, iletmek amacıyla hiçbir şekilde kullanıcı verisi toplamaz ve uygulamada herhangi bir izleme veya analiz yoktur. Ayarlarınız, sözlüğünüz ve geçmişiniz kendi bilgisayarınızda yerel olarak kalır.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Uygulamanın dışarıya gönderdiği tek veri, BYOK modelinin harici sağlayıcılarına giden sesiniz ve metinlerinizdir (konuşma tanıma ve AI temizleme). Bu veriler, ilgili harici sağlayıcıların gizlilik politikalarına tabidir.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk'taki tarayıcı sürümü, ne sıklıkla açıldığını ve bir tarayıcının 1. ve 10. dikte işlemine ulaşıp ulaşmadığını anonim olarak sayar — çerez kullanmadan, Do Not Track açıkken ise hiç saymaz. Söylediğiniz veya ayarladığınız hiçbir şey gönderilmez. Yüklü uygulama hiçbir şey saymaz.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Uygulamanın dışarıya gönderdiği tek veri, BYOK modelinin harici sağlayıcılarına giden sesiniz ve metinlerinizdir (konuşma tanıma ve AI temizleme). Bu veriler, ilgili harici sağlayıcıların gizlilik politikalarına tabidir.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk'taki tarayıcı sürümü, ne sıklıkla açıldığını ve bir tarayıcının 1. ve 10. dikte işlemine ulaşıp ulaşmadığını anonim olarak sayar — çerez kullanmadan, Do Not Track açıkken ise hiç saymaz. Söylediğiniz veya ayarladığınız hiçbir şey gönderilmez. Yüklü uygulama hiçbir şey saymaz.",
 "Show all": "Tümünü göster",
 "Errors only": "Yalnızca hatalar",
 "Off": "Kapalı",
@@ -1453,7 +1453,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "Bu dönemde tamamlanan uzun kayıtlar.",
 "{time} recorded in total.": "Toplam {time} kaydedildi.",
-"Open Vito in its own window": "Vito'yu kendi penceresinde aç"
+"Open Vito in its own window": "Vito'yu kendi penceresinde aç",
+"Back to 100%": "%100'e dön",
+"Default 100%": "Varsayılan %100",
+"How do I get a key?": "Nasıl anahtar alırım?",
+"Soniox API key": "Soniox API anahtarı",
+"Achievement sound": "Başarım sesi",
+"Menu": "Menü",
+"Ran your first Vito Assist command": "İlk Vito Assist komutun çalıştırıldı",
+"Ran {n} Vito Assist commands": "{n} Vito Assist komutu çalıştırıldı",
+"Made by": "Yapan",
+"Copyright": "Telif hakkı"
 },
 "help": {
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",
@@ -1518,6 +1528,7 @@
 "motion": "Vito'nun animasyonlarını durdurur: geçişler, hareketli arka planlar ve Vito'nun kendi hareketleri. Sisteminizde de bunun için bir ayar var; o açıksa Vito zaten ona uyar.",
 "cursor": "Vito'nun renklerinde, elinde logosuyla fare imleci. Kapalı: sisteminizin olağan imleci.",
 "helptips": "Evet, bu da onlardan biri. Kapalı: bir ayarın üzerinde biraz beklediğinizde artık açıklama yok — bu da dahil.",
-"soundset": "Seslerin nasıl duyulduğu: Vito'nun kendi sesleri, Yumuşak (sıcak tonlar), Cam (parlak çanlar), Retro (8-bit) veya Tık (kısa ve kuru, en az dikkat çeken). Duymak için birine tıklayın."
+"soundset": "Seslerin nasıl duyulduğu: Vito'nun kendi sesleri, Yumuşak (sıcak tonlar), Cam (parlak çanlar), Retro (8-bit) veya Tık (kısa ve kuru, en az dikkat çeken). Duymak için birine tıklayın.",
+"ownwindow": "Vito'yu tarayıcı olmadan kendi penceresinde (Microsoft Edge WebView2) açar. Kapalı: yüklü tarayıcı uygulamasında veya bir tarayıcı sekmesinde."
 }
 }

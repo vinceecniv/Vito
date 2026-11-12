@@ -308,8 +308,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "उन कीज़ को प्रदान करना, प्रबंधित करना और सुरक्षित रखना — और उनके उपयोग से प्रोवाइडर्स के पास होने वाली सभी लागतें — पूरी तरह आपकी अपनी ज़िम्मेदारी हैं।",
 "Privacy & data": "प्राइवेसी और डेटा",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito किसी भी तरह से उपयोगकर्ता डेटा एकत्र नहीं करता कि उसे कहीं भेजे, और ऐप में किसी भी प्रकार की ट्रैकिंग या एनालिटिक्स नहीं है। आपकी सेटिंग्स, शब्दकोश और इतिहास आपके अपने कंप्यूटर पर स्थानीय रहते हैं।",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "ऐप बाहरी रूप से केवल आपकी आवाज़ और वे टेक्स्ट भेजता है जो BYOK मॉडल के बाहरी प्रोवाइडर्स (वाक् पहचान और AI सफ़ाई) को जाते हैं। उस डेटा पर उन बाहरी प्रोवाइडर्स की प्राइवेसी नीतियाँ लागू होती हैं।",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk पर ब्राउज़र संस्करण गुमनाम रूप से गिनता है कि यह कितनी बार खोला जाता है और क्या कोई ब्राउज़र अपने पहले और दसवें डिक्टेशन तक पहुँचता है — बिना कुकीज़ के, और Do Not Track चालू होने पर बिल्कुल नहीं। आप जो बोलते या सेट करते हैं, उसमें से कुछ भी नहीं भेजा जाता। इंस्टॉल किया गया ऐप कुछ भी नहीं गिनता।",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "ऐप बाहरी रूप से केवल आपकी आवाज़ और वे टेक्स्ट भेजता है जो BYOK मॉडल के बाहरी प्रोवाइडर्स (वाक् पहचान और AI सफ़ाई) को जाते हैं। उस डेटा पर उन बाहरी प्रोवाइडर्स की प्राइवेसी नीतियाँ लागू होती हैं।",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk पर ब्राउज़र संस्करण गुमनाम रूप से गिनता है कि यह कितनी बार खोला जाता है और क्या कोई ब्राउज़र अपने पहले और दसवें डिक्टेशन तक पहुँचता है — बिना कुकीज़ के, और Do Not Track चालू होने पर बिल्कुल नहीं। आप जो बोलते या सेट करते हैं, उसमें से कुछ भी नहीं भेजा जाता। इंस्टॉल किया गया ऐप कुछ भी नहीं गिनता।",
 "Show all": "सब दिखाएँ",
 "Errors only": "केवल त्रुटियाँ",
 "Off": "बंद",
@@ -1455,7 +1455,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "इस अवधि में पूरी हुई लंबी रिकॉर्डिंग।",
 "{time} recorded in total.": "कुल {time} रिकॉर्ड किया गया।",
-"Open Vito in its own window": "Vito को उसकी अपनी विंडो में खोलें"
+"Open Vito in its own window": "Vito को उसकी अपनी विंडो में खोलें",
+"Back to 100%": "100% पर वापस",
+"Default 100%": "डिफ़ॉल्ट 100%",
+"How do I get a key?": "कुंजी कैसे पाएँ?",
+"Soniox API key": "Soniox API कुंजी",
+"Achievement sound": "उपलब्धि ध्वनि",
+"Menu": "मेनू",
+"Ran your first Vito Assist command": "अपना पहला Vito Assist कमांड चलाया",
+"Ran {n} Vito Assist commands": "{n} Vito Assist कमांड चलाए",
+"Made by": "निर्माता",
+"Copyright": "कॉपीराइट"
 },
 "help": {
 "theme": "हल्का, गहरा या स्वचालित — स्वचालित आपके सिस्टम की हल्की/गहरी सेटिंग का अनुसरण करता है।",
@@ -1520,6 +1530,7 @@
 "motion": "Vito के एनिमेशन रोक देता है: ट्रांज़िशन, चलती पृष्ठभूमियाँ और Vito की अपनी हरकतें। आपके सिस्टम में भी इसकी एक सेटिंग है; जब वह चालू हो, तो Vito पहले से ही उसका पालन करता है।",
 "cursor": "Vito के रंगों में माउस पॉइंटर, हाथ में लोगो के साथ। बंद: आपके सिस्टम का सामान्य पॉइंटर।",
 "helptips": "हाँ, यह उनमें से एक है। बंद: किसी सेटिंग पर रुकने पर अब कोई व्याख्या नहीं — इसकी भी नहीं।",
-"soundset": "ध्वनियाँ कैसी सुनाई दें: Vito की अपनी, कोमल (गर्म स्वर), काँच (साफ़ घंटियाँ), रेट्रो (8-bit) या टिक (छोटी और सूखी, सबसे कम ध्यान खींचने वाली)। सुनने के लिए किसी एक पर क्लिक करें।"
+"soundset": "ध्वनियाँ कैसी सुनाई दें: Vito की अपनी, कोमल (गर्म स्वर), काँच (साफ़ घंटियाँ), रेट्रो (8-bit) या टिक (छोटी और सूखी, सबसे कम ध्यान खींचने वाली)। सुनने के लिए किसी एक पर क्लिक करें।",
+"ownwindow": "Vito को ब्राउज़र के बिना उसकी अपनी विंडो (Microsoft Edge WebView2) में खोलता है। बंद: इंस्टॉल किए गए ब्राउज़र ऐप में या ब्राउज़र टैब में।"
 }
 }

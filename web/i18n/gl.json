@@ -304,8 +304,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Fornecer, xestionar e protexer esas claves — e todos os custos que o seu uso xere nos provedores — son responsabilidade túa por completo.",
 "Privacy & data": "Privacidade e datos",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito non recolle de ningún xeito datos de usuario para envialos, e non hai ningunha forma de seguimento ou analítica integrada na aplicación. Os teus axustes, dicionario e historial quedan localmente no teu ordenador.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Os únicos datos que a aplicación envía ao exterior son a túa voz e os textos que van aos provedores externos do modelo BYOK (recoñecemento de voz e limpeza con IA). A eses datos aplícanselles as políticas de privacidade deses provedores externos.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "A versión do navegador en vito.talk conta de forma anónima cantas veces se abre e se un navegador chega ao seu 1.º e 10.º ditado — sen cookies, e nada en absoluto con Do Not Track activado. Non se envía nada do que dis ou configuras. A app instalada non conta nada.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Os únicos datos que a aplicación envía ao exterior son a túa voz e os textos que van aos provedores externos do modelo BYOK (recoñecemento de voz e limpeza con IA). A eses datos aplícanselles as políticas de privacidade deses provedores externos.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "A versión do navegador en vito.talk conta de forma anónima cantas veces se abre e se un navegador chega ao seu 1.º e 10.º ditado — sen cookies, e nada en absoluto con Do Not Track activado. Non se envía nada do que dis ou configuras. A app instalada non conta nada.",
 "Show all": "Amosar todo",
 "Errors only": "Só erros",
 "Off": "Desactivado",
@@ -1455,7 +1455,17 @@
 "words": "palabras",
 "Marks": "Marcas",
 "Follows the colours of your desktop": "Segue as cores do teu escritorio",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Preme Caps Lock para comezar a ditar e prémea de novo para parar. Para ditar mantendo a tecla premida necesitas unha versión de niri posterior á 26.04; despois configúraa outra vez."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Preme Caps Lock para comezar a ditar e prémea de novo para parar. Para ditar mantendo a tecla premida necesitas unha versión de niri posterior á 26.04; despois configúraa outra vez.",
+"Back to 100%": "Volver ao 100 %",
+"Default 100%": "Predeterminado 100 %",
+"How do I get a key?": "Como consigo unha clave?",
+"Soniox API key": "Clave de API de Soniox",
+"Achievement sound": "Son de logro",
+"Menu": "Menú",
+"Ran your first Vito Assist command": "Executaches a túa primeira orde de Vito Assist",
+"Ran {n} Vito Assist commands": "Executaches {n} ordes de Vito Assist",
+"Made by": "Feito por",
+"Copyright": "Copyright"
 },
 "help": {
 "theme": "Claro, escuro ou automático — o automático segue a configuración clara/escura do teu sistema.",
@@ -1520,6 +1530,7 @@
 "motion": "Detén as animacións de Vito: transicións, fondos en movemento e os propios movementos de Vito. O teu sistema tamén ten un axuste para isto; se está activado, Vito xa o segue.",
 "cursor": "O punteiro do rato coas cores de Vito, co logo na man. Desactivado: o punteiro habitual do teu sistema.",
 "helptips": "Si, esta é unha. Desactivado: xa non hai explicacións cando te deténs sobre un axuste — esta tampouco.",
-"soundset": "Como soan os sons: os de Vito, Suave (tons cálidos), Vidro (campaíñas claras), Retro (8 bits) ou Tic (curto e seco, o que menos se nota). Fai clic nun para escoitalo."
+"soundset": "Como soan os sons: os de Vito, Suave (tons cálidos), Vidro (campaíñas claras), Retro (8 bits) ou Tic (curto e seco, o que menos se nota). Fai clic nun para escoitalo.",
+"ownwindow": "Abre Vito nunha xanela propia (Microsoft Edge WebView2), sen navegador. Desactivado: na app de navegador instalada ou nunha lapela do navegador."
 }
 }

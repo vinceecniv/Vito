@@ -360,8 +360,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Атрыманне, кіраванне і абарона гэтых ключоў — і ўсе выдаткі, звязаныя з іх выкарыстаннем у правайдэраў — цалкам ваша ўласная адказнасць.",
 "Privacy & data": "Прыватнасць і даныя",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito ніяк не збірае карыстальніцкія даныя для перадачы, і ў праграму не ўбудавана ніякага адсочвання ці аналітыкі. Вашы налады, слоўнік і гісторыя застаюцца лакальна на вашым камп’ютары.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Адзіныя даныя, якія праграма дасылае вонкі, — гэта ваша маўленне і тэксты, што ідуць да знешніх правайдэраў мадэлі BYOK (распазнаванне маўлення і AI-ачыстка). На гэтыя даныя распаўсюджваюцца палітыкі прыватнасці тых знешніх правайдэраў.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Браўзерная версія на vito.talk ананімна лічыць, як часта яе адкрываюць і ці дасягае браўзер 1-й і 10-й дыктоўкі — без cookie, а пры ўключаным Do Not Track зусім нічога. Нічога з таго, што вы кажаце або наладжваеце, не адпраўляецца. Усталяваная праграма нічога не лічыць.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Адзіныя даныя, якія праграма дасылае вонкі, — гэта ваша маўленне і тэксты, што ідуць да знешніх правайдэраў мадэлі BYOK (распазнаванне маўлення і AI-ачыстка). На гэтыя даныя распаўсюджваюцца палітыкі прыватнасці тых знешніх правайдэраў.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Браўзерная версія на vito.talk ананімна лічыць, як часта яе адкрываюць і ці дасягае браўзер 1-й і 10-й дыктоўкі — без cookie, а пры ўключаным Do Not Track зусім нічога. Нічога з таго, што вы кажаце або наладжваеце, не адпраўляецца. Усталяваная праграма нічога не лічыць.",
 "Show all": "Паказваць усё",
 "Errors only": "Толькі памылкі",
 "Off": "Выключана",
@@ -1455,7 +1455,17 @@
 "words": "словы",
 "Marks": "Пазнакі",
 "Follows the colours of your desktop": "Выкарыстоўвае колеры вашага працоўнага стала",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Націсніце Caps Lock, каб пачаць дыктоўку, і націсніце яшчэ раз, каб спыніць. Каб дыктаваць, утрымліваючы клавішу, патрэбна версія niri навейшая за 26.04; тады наладзьце яе зноў."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Націсніце Caps Lock, каб пачаць дыктоўку, і націсніце яшчэ раз, каб спыніць. Каб дыктаваць, утрымліваючы клавішу, патрэбна версія niri навейшая за 26.04; тады наладзьце яе зноў.",
+"Back to 100%": "Вярнуць 100%",
+"Default 100%": "Па змаўчанні 100%",
+"How do I get a key?": "Як атрымаць ключ?",
+"Soniox API key": "API-ключ Soniox",
+"Achievement sound": "Гук дасягнення",
+"Menu": "Меню",
+"Ran your first Vito Assist command": "Выканана першая каманда Vito Assist",
+"Ran {n} Vito Assist commands": "Выканана каманд Vito Assist: {n}",
+"Made by": "Аўтар",
+"Copyright": "Аўтарскае права"
 },
 "help": {
 "theme": "Светлая, цёмная ці аўтаматычная — аўтаматычная сочыць за светлым/цёмным рэжымам вашай сістэмы.",
@@ -1520,6 +1530,7 @@
 "motion": "Спыняе анімацыі Vito: пераходы, рухомыя фоны і ўласныя рухі Vito. У вашай сістэме таксама ёсць такая налада; калі яна ўключана, Vito ўжо выконвае яе.",
 "cursor": "Указальнік мышы ў колерах Vito, з лагатыпам у руцэ. Выключана: звычайны ўказальнік вашай сістэмы.",
 "helptips": "Так, гэта адна з іх. Выключана: больш ніякіх тлумачэнняў, калі вы затрымліваеце курсор над наладай, — і над гэтай таксама.",
-"soundset": "Як гучаць гукі: уласныя Vito, Мяккі (цёплыя тоны), Шкло (звонкія званочкі), Рэтра (8-біт) ці Цік (коратка і суха, найменш прыкметна). Націсніце на набор, каб яго пачуць."
+"soundset": "Як гучаць гукі: уласныя Vito, Мяккі (цёплыя тоны), Шкло (звонкія званочкі), Рэтра (8-біт) ці Цік (коратка і суха, найменш прыкметна). Націсніце на набор, каб яго пачуць.",
+"ownwindow": "Адкрывае Vito ва ўласным акне (Microsoft Edge WebView2), без браўзера. Выключана: ва ўсталяванай праграме браўзера або ва ўкладцы браўзера."
 }
 }

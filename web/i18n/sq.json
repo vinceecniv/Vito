@@ -282,8 +282,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Sigurimi, menaxhimi dhe mbrojtja e këtyre çelësave — dhe të gjitha kostot që sjell përdorimi i tyre te ofruesit — janë tërësisht përgjegjësia jote.",
 "Privacy & data": "Privatësia & të dhënat",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito nuk mbledh në asnjë mënyrë të dhëna përdoruesish për t'i dërguar diku, dhe s'ka asnjë formë gjurmimi apo analitike të ndërtuar në aplikacion. Cilësimet, fjalori dhe historiku yt mbeten lokalë në kompjuterin tënd.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Të vetmet të dhëna që aplikacioni dërgon jashtë janë zëri yt dhe tekstet që shkojnë te ofruesit e jashtëm të modelit BYOK (njohja e zërit dhe pastrimi me AI). Për ato të dhëna vlejnë deklaratat e privatësisë të atyre ofruesve të jashtëm.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Versioni për shfletues në vito.talk numëron në mënyrë anonime sa shpesh hapet dhe nëse një shfletues arrin diktimin e tij të 1-rë dhe të 10-të — pa cookies, dhe aspak kur Do Not Track është aktiv. Asgjë nga ajo që thoni ose vendosni nuk dërgohet. Aplikacioni i instaluar nuk numëron asgjë.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Të vetmet të dhëna që aplikacioni dërgon jashtë janë zëri yt dhe tekstet që shkojnë te ofruesit e jashtëm të modelit BYOK (njohja e zërit dhe pastrimi me AI). Për ato të dhëna vlejnë deklaratat e privatësisë të atyre ofruesve të jashtëm.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Versioni për shfletues në vito.talk numëron në mënyrë anonime sa shpesh hapet dhe nëse një shfletues arrin diktimin e tij të 1-rë dhe të 10-të — pa cookies, dhe aspak kur Do Not Track është aktiv. Asgjë nga ajo që thoni ose vendosni nuk dërgohet. Aplikacioni i instaluar nuk numëron asgjë.",
 "Show all": "Shfaq të gjitha",
 "Errors only": "Vetëm gabimet",
 "Off": "Fikur",
@@ -1455,7 +1455,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "Regjistrimet e gjata të përfunduara në këtë periudhë.",
 "{time} recorded in total.": "{time} të regjistruara gjithsej.",
-"Open Vito in its own window": "Hape Vito-n në dritaren e vet"
+"Open Vito in its own window": "Hape Vito-n në dritaren e vet",
+"Back to 100%": "Kthehu në 100%",
+"Default 100%": "Standarde 100%",
+"How do I get a key?": "Si ta marr një çelës?",
+"Soniox API key": "Çelësi API i Soniox",
+"Achievement sound": "Tingulli i arritjeve",
+"Menu": "Menyja",
+"Ran your first Vito Assist command": "U ekzekutua komanda jote e parë Vito Assist",
+"Ran {n} Vito Assist commands": "U ekzekutuan {n} komanda Vito Assist",
+"Made by": "Krijuar nga",
+"Copyright": "Të drejtat e autorit"
 },
 "help": {
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",
@@ -1520,6 +1530,7 @@
 "motion": "Ndal animacionet e Vitos: kalimet, sfondet lëvizëse dhe lëvizjet e vetë Vitos. Edhe sistemi yt ka një cilësim për këtë; kur është i ndezur, Vito e ndjek tashmë.",
 "cursor": "Treguesi i miut në ngjyrat e Vitos, me logon në dorë. Fikur: treguesi i zakonshëm i sistemit tënd.",
 "helptips": "Po, ky është një i tillë. Fikur: më nuk ka shpjegime kur ndalesh pak mbi një cilësim — as ky.",
-"soundset": "Si tingëllojnë tingujt: ata të Vitos, I butë (tone të ngrohta), Xham (zile të kthjellëta), Retro (8-bit) ose Tik (i shkurtër dhe i thatë, më pak i dukshmi). Kliko njërin për ta dëgjuar."
+"soundset": "Si tingëllojnë tingujt: ata të Vitos, I butë (tone të ngrohta), Xham (zile të kthjellëta), Retro (8-bit) ose Tik (i shkurtër dhe i thatë, më pak i dukshmi). Kliko njërin për ta dëgjuar.",
+"ownwindow": "E hap Vito-n në një dritare të vetën (Microsoft Edge WebView2), pa shfletues. Joaktiv: në aplikacionin e instaluar të shfletuesit ose në një skedë shfletuesi."
 }
 }

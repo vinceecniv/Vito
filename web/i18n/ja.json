@@ -311,8 +311,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "それらのキーの提供、管理、保護、そしてプロバイダーでの使用に伴うすべての費用は、完全にご自身の責任となります。",
 "Privacy & data": "プライバシーとデータ",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vitoは送信目的でユーザーデータを一切収集せず、アプリにはいかなる形式のトラッキングや分析も組み込まれていません。設定、辞書、履歴はご自身のコンピュータ内にローカルで保持されます。",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "アプリが外部に送信する唯一のデータは、BYOKモデルの外部プロバイダー（音声認識とAIクリーンアップ）に送られる音声とテキストです。そのデータには、これらの外部プロバイダーのプライバシーポリシーが適用されます。",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk のブラウザー版は、開かれた回数と、ブラウザーが 1 回目と 10 回目の音声入力に到達したかどうかを匿名でカウントします — Cookie は使わず、Do Not Track が有効なら一切カウントしません。話した内容や設定は一切送信されません。インストール版アプリは何もカウントしません。",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "アプリが外部に送信する唯一のデータは、BYOKモデルの外部プロバイダー（音声認識とAIクリーンアップ）に送られる音声とテキストです。そのデータには、これらの外部プロバイダーのプライバシーポリシーが適用されます。",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk のブラウザー版は、開かれた回数と、ブラウザーが 1 回目と 10 回目の音声入力に到達したかどうかを匿名でカウントします — Cookie は使わず、Do Not Track が有効なら一切カウントしません。話した内容や設定は一切送信されません。インストール版アプリは何もカウントしません。",
 "Show all": "すべて表示",
 "Errors only": "エラーのみ",
 "Off": "オフ",
@@ -1453,7 +1453,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "この期間に終了した長時間録音。",
 "{time} recorded in total.": "合計 {time} 録音しました。",
-"Open Vito in its own window": "Vito を専用のウィンドウで開く"
+"Open Vito in its own window": "Vito を専用のウィンドウで開く",
+"Back to 100%": "100% に戻す",
+"Default 100%": "既定 100%",
+"How do I get a key?": "キーの入手方法は？",
+"Soniox API key": "Soniox API キー",
+"Achievement sound": "実績のサウンド",
+"Menu": "メニュー",
+"Ran your first Vito Assist command": "初めての Vito Assist コマンドを実行",
+"Ran {n} Vito Assist commands": "Vito Assist コマンドを {n} 回実行",
+"Made by": "作成者",
+"Copyright": "著作権"
 },
 "help": {
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",
@@ -1518,6 +1528,7 @@
 "motion": "Vitoのアニメーションを止めます：切り替え効果、動く背景、Vito自身の動き。システムにも同様の設定があり、それがオンならVitoはすでに従っています。",
 "cursor": "Vitoの色をしたマウスポインター。手にロゴを持っています。オフ：システムの通常のポインター。",
 "helptips": "はい、これがその説明です。オフにすると、設定の上にしばらくカーソルを置いても説明は表示されなくなります — これも含めて。",
-"soundset": "サウンドの音色：Vito独自、ソフト（温かい音）、ガラス（澄んだベル）、レトロ（8ビット）、ティック（短く乾いた音、最も控えめ）。クリックすると試聴できます。"
+"soundset": "サウンドの音色：Vito独自、ソフト（温かい音）、ガラス（澄んだベル）、レトロ（8ビット）、ティック（短く乾いた音、最も控えめ）。クリックすると試聴できます。",
+"ownwindow": "ブラウザーを使わず、Vito を専用のウィンドウ（Microsoft Edge WebView2）で開きます。オフ：インストール済みのブラウザーアプリまたはブラウザーのタブで開きます。"
 }
 }

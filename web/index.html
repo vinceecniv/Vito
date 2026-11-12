@@ -2910,8 +2910,8 @@
         </div>
         <div class="card" data-sec="general" id="set-display">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>Display</span></h2>
-          <label class="fld" data-help="zoom" style="max-width:320px;">Zoom level <span class="val" id="s-zoomval">100%</span><button type="button" id="s-zoom-reset" class="reset-btn" hidden title="Terug naar 100%" aria-label="Terug naar 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
-          <div class="slider-wrap" style="--frac:0.375;"><input type="range" id="s-zoom" min="0.7" max="1.5" step="0.05"><span class="slider-mark" title="Standaard 100%" aria-hidden="true"></span></div>
+          <label class="fld" data-help="zoom" style="max-width:320px;">Zoom level <span class="val" id="s-zoomval">100%</span><button type="button" id="s-zoom-reset" class="reset-btn" hidden title="Back to 100%" aria-label="Back to 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
+          <div class="slider-wrap" style="--frac:0.375;"><input type="range" id="s-zoom" min="0.7" max="1.5" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
           <label class="fld" data-help="uilang">Interface language</label>
           <input type="hidden" id="s-uilang">
           <div class="flagsel" id="uilang-sel">
@@ -3023,7 +3023,7 @@
             <button type="button" class="tag" data-sound="warn"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Cleanup failed</button>
           </div>
           <label class="fld" data-help="svol">Feedback sound volume <span class="val" id="s-svolval">100%</span></label>
-          <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-svol" min="0" max="2" step="0.05"><span class="slider-mark" title="Standaard 100%" aria-hidden="true"></span></div>
+          <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-svol" min="0" max="2" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
           <label class="fld" data-help="output">Output device (sounds)</label>
           <div class="isel"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 0 1 0 7M18.5 6a7 7 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><select id="s-output"></select></div>
         </div>
@@ -3063,7 +3063,7 @@
           <div id="prov-holder" hidden>
           <div class="prov-settings" id="prov-soniox" hidden>
           <div class="key-row">
-            <div class="fld-row"><label class="fld" data-help="sonioxkey">Soniox API-key</label><button type="button" class="info-btn" id="info-sonioxkey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+            <div class="fld-row"><label class="fld" data-help="sonioxkey">Soniox API key</label><button type="button" class="info-btn" id="info-sonioxkey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
             <div class="key-input">
               <input type="password" id="s-sonioxkey" autocomplete="off" placeholder="…">
               <button type="button" class="eye-btn" data-eye="s-sonioxkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -3074,7 +3074,7 @@
           <div class="prov-settings" id="prov-assemblyai" hidden>
           <label class="tgl" data-help="eu"><input type="checkbox" id="s-eu"><span class="tr"></span> EU endpoints</label>
           <div class="key-row">
-            <div class="fld-row"><label class="fld" data-help="sttkey">AssemblyAI API key</label><button type="button" class="info-btn" id="info-sttkey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+            <div class="fld-row"><label class="fld" data-help="sttkey">AssemblyAI API key</label><button type="button" class="info-btn" id="info-sttkey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
             <div class="key-input">
               <input type="password" id="s-sttkey" autocomplete="off" placeholder="…">
               <button type="button" class="eye-btn" data-eye="s-sttkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -3093,7 +3093,7 @@
           <label class="fld" data-help="sttbaseurl">Endpoint (base URL)</label>
           <input type="text" id="s-sttbaseurl" placeholder="http://127.0.0.1:8080/v1">
           <div class="key-row">
-            <div class="fld-row"><label class="fld" data-help="sttopenaikey">API key</label><button type="button" class="info-btn" id="info-sttopenaikey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+            <div class="fld-row"><label class="fld" data-help="sttopenaikey">API key</label><button type="button" class="info-btn" id="info-sttopenaikey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
             <div class="key-input">
               <input type="password" id="s-sttopenaikey" autocomplete="off" placeholder="(often none for a local server)">
               <button type="button" class="eye-btn" data-eye="s-sttopenaikey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -3140,7 +3140,7 @@
 
           <div id="cleanup-anthropic">
             <div class="key-row">
-              <div class="fld-row"><label class="fld" data-help="anthropickey">Anthropic API key</label><button type="button" class="info-btn" id="info-anthropickey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+              <div class="fld-row"><label class="fld" data-help="anthropickey">Anthropic API key</label><button type="button" class="info-btn" id="info-anthropickey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
               <div class="key-input">
                 <input type="password" id="s-cleanupkey" autocomplete="off" placeholder="sk-ant-…">
                 <button type="button" class="eye-btn" data-eye="s-cleanupkey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -3161,7 +3161,7 @@
             <label class="fld" data-help="openaibaseurl">Endpoint (base URL)</label>
             <input type="text" id="s-openaibaseurl" placeholder="https://api.groq.com/openai/v1">
             <div class="key-row">
-              <div class="fld-row"><label class="fld" data-help="openaikey">API key</label><button type="button" class="info-btn" id="info-openaikey" title="Hoe kom ik aan een key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
+              <div class="fld-row"><label class="fld" data-help="openaikey">API key</label><button type="button" class="info-btn" id="info-openaikey" title="How do I get a key?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Get a key</span></button></div>
               <div class="key-input">
                 <input type="password" id="s-openaikey" autocomplete="off" placeholder="gsk_…">
                 <button type="button" class="eye-btn" data-eye="s-openaikey" title="Show key" aria-label="Show key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><line class="eye-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/></svg></button>
@@ -4868,6 +4868,16 @@ const TR = { nl: {
   "Vito's background process is unreachable. Dictation and settings don't work without it.":"Vito's achtergrondproces is niet bereikbaar. Zonder dit proces werken dicteren en de instellingen niet.",
   "Show system-tray icon":"Systeemvak-icoon tonen",
   "Open Vito in its own window":"Vito openen in een eigen venster",
+  "Back to 100%":"Terug naar 100%",
+  "Default 100%":"Standaard 100%",
+  "How do I get a key?":"Hoe kom ik aan een key?",
+  "Soniox API key":"Soniox API-key",
+  "Achievement sound":"Geluid bij prestaties",
+  "Menu":"Menu",
+  "Made by":"Gemaakt door",
+  "Copyright":"Copyright",
+  "Ran your first Vito Assist command":"Je eerste Vito Assist-opdracht uitgevoerd",
+  "Ran {n} Vito Assist commands":"{n} Vito Assist-opdrachten uitgevoerd",
   "Speech glow in the live transcript":"Spraakgloed in het live transcript",
   "Show a pill on screen while dictating":"Pil op het scherm tonen tijdens dicteren",
   "Pill style":"Stijl van de pil",
@@ -5027,20 +5037,34 @@ async function loadTranslations(lang){
   } catch {}
 }
 const _orig = new WeakMap();
+// Text a script rendered with t() before the chosen language had loaded is in
+// the language of the first paint (the system's, often Dutch) and no longer an
+// English key, so applyI18n could never translate it again. Map such text back
+// to its English source through every table loaded so far.
+const _rev = new Map(); const _revDone = new Set();
+function enKey(s){
+  if (TR.nl[s] !== undefined) return s;
+  for (const l of Object.keys(TR)) {
+    if (_revDone.has(l) || l === "en") continue;
+    _revDone.add(l);
+    for (const [k, v] of Object.entries(TR[l])) if (typeof v === "string" && !_rev.has(v)) _rev.set(v, k);
+  }
+  return _rev.get(s) || s;
+}
 function applyI18n(root = document.body){
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const nodes = []; while (w.nextNode()) { const p = w.currentNode.parentNode; if (p && (p.tagName === "SCRIPT" || p.tagName === "STYLE" || (p.closest && p.closest("[data-noi18n]")))) continue; nodes.push(w.currentNode); }
   nodes.forEach(n => {
     if (!_orig.has(n)) _orig.set(n, n.nodeValue);
     const raw = _orig.get(n), key = raw.trim();
-    if (key) n.nodeValue = raw.replace(key, t(key));
+    if (key) n.nodeValue = raw.replace(key, t(enKey(key)));
   });
   // In the narrow top bar the pages other than the current one are icons only;
   // their (translated) name shows on hover.
   document.querySelectorAll(".nav-item").forEach(b => { b.title = b.textContent.trim(); });
   root.querySelectorAll("[placeholder]").forEach(el => {
     if (el.dataset.phOrig === undefined) el.dataset.phOrig = el.getAttribute("placeholder");
-    el.setAttribute("placeholder", t(el.dataset.phOrig));
+    el.setAttribute("placeholder", t(enKey(el.dataset.phOrig)));
   });
   // Attributes need translating too — a title or aria-label written in the HTML
   // would otherwise stay Dutch whatever the interface language.
@@ -5048,7 +5072,7 @@ function applyI18n(root = document.body){
     root.querySelectorAll("[" + attr + "]").forEach(el => {
       const memo = "i18n" + attr.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
       if (el.dataset[memo] === undefined) el.dataset[memo] = el.getAttribute(attr);
-      el.setAttribute(attr, t(el.dataset[memo]));
+      el.setAttribute(attr, t(enKey(el.dataset[memo])));
     });
   });
   document.documentElement.lang = uiLang;
@@ -5071,6 +5095,10 @@ async function setUiLang(choice, persist){
   if (typeof syncSetSecUI === "function") syncSetSecUI(); // re-clone the now-translated tab labels
   if (typeof renderPwaTip === "function") renderPwaTip(); // built with t() too
   if (typeof renderWelcomeWeb === "function") renderWelcomeWeb();
+  if (typeof renderSync === "function") try { renderSync(); } catch {}
+  if (typeof lrFolderLoad === "function") lrFolderLoad();
+  if (typeof renderWardrobe === "function") try { renderWardrobe(); } catch {}
+  if (typeof syncAssistMode === "function") try { syncAssistMode(); } catch {}
   if ($("tab-status").classList.contains("active")) loadStats();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { lang: choice });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
@@ -9258,8 +9286,12 @@ async function loadAbout(){
   if (a.version === "dev" && vmDev && !document.querySelector("#mascot-card .vm-dev")) $("mascot-card").appendChild(mascotDevPanel());
   // The browser version has no build of its own to describe: it is whatever
   // vito.talk serves, always the newest.
+  // Who made it, and the copyright the MIT licence carries (LICENSE).
+  const yr = new Date().getFullYear();
+  const credit = row(t("Made by"), "Vincent Blok") +
+    row(t("Copyright"), `© 2026${yr > 2026 ? "–" + yr : ""} Vincent Blok`);
   if (STANDALONE) {
-    box.innerHTML = row(t("Version"), t("Vito in your browser — always the newest")) + row(t("License"), a.license || "MIT");
+    box.innerHTML = row(t("Version"), t("Vito in your browser — always the newest")) + credit + row(t("License"), a.license || "MIT");
     return;
   }
   box.innerHTML =
@@ -9270,6 +9302,7 @@ async function loadAbout(){
     row(t("Interface"), a.ui && a.ui.source === "bundle"
       ? `<code>${escapeHtml(a.ui.version)}</code> <span style="color:var(--text3); font-weight:400;">(${t("downloaded")})</span>`
       : t("built in")) +
+    credit +
     row(t("License"), a.license || "—");
   renderAboutVersion();
 }

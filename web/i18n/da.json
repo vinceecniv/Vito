@@ -284,8 +284,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "At levere, administrere og sikre disse nøgler — og alle de omkostninger, deres brug medfører hos udbyderne — er udelukkende dit eget ansvar.",
 "Privacy & data": "Privatliv og data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito indsamler på ingen måde brugerdata for at sende dem videre, og der er ingen form for sporing eller analyse indbygget i appen. Dine indstillinger, din ordbog og din historik forbliver lokalt på din egen computer.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "De eneste data, appen sender eksternt, er din tale og de tekster, der går til de eksterne udbydere i BYOK-modellen (talegenkendelse og AI-oprydning). Disse data er omfattet af de eksterne udbyderes privatlivspolitikker.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Browserversionen på vito.talk tæller anonymt, hvor ofte den åbnes, og om en browser når sin 1. og 10. diktering — uden cookies og slet ikke med Do Not Track slået til. Intet af det, du siger eller indstiller, sendes. Den installerede app tæller ingenting.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "De eneste data, appen sender eksternt, er din tale og de tekster, der går til de eksterne udbydere i BYOK-modellen (talegenkendelse og AI-oprydning). Disse data er omfattet af de eksterne udbyderes privatlivspolitikker.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Browserversionen på vito.talk tæller anonymt, hvor ofte den åbnes, og om en browser når sin 1. og 10. diktering — uden cookies og slet ikke med Do Not Track slået til. Intet af det, du siger eller indstiller, sendes. Den installerede app tæller ingenting.",
 "Show all": "Vis alt",
 "Errors only": "Kun fejl",
 "Off": "Fra",
@@ -1455,7 +1455,17 @@
 "words": "ord",
 "Marks": "Markeringer",
 "Follows the colours of your desktop": "Følger farverne på dit skrivebord",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tryk på Caps Lock for at begynde at diktere, og tryk igen for at stoppe. Skal du holde den nede for at diktere, kræver det en niri nyere end 26.04; sæt det derefter op igen."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Tryk på Caps Lock for at begynde at diktere, og tryk igen for at stoppe. Skal du holde den nede for at diktere, kræver det en niri nyere end 26.04; sæt det derefter op igen.",
+"Back to 100%": "Tilbage til 100 %",
+"Default 100%": "Standard 100 %",
+"How do I get a key?": "Hvordan får jeg en nøgle?",
+"Soniox API key": "Soniox API-nøgle",
+"Achievement sound": "Lyd ved præstation",
+"Menu": "Menu",
+"Ran your first Vito Assist command": "Kørt din første Vito Assist-kommando",
+"Ran {n} Vito Assist commands": "Kørt {n} Vito Assist-kommandoer",
+"Made by": "Lavet af",
+"Copyright": "Copyright"
 },
 "help": {
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",
@@ -1520,6 +1530,7 @@
 "motion": "Stopper Vitos animationer: overgange, bevægelige baggrunde og Vitos egne bevægelser. Dit system har også en indstilling til dette; når den er slået til, følger Vito den allerede.",
 "cursor": "Musemarkøren i Vitos farver med logoet i hånden. Fra: dit systems sædvanlige markør.",
 "helptips": "Ja, dette er en af dem. Fra: ingen forklaringer mere, når du holder musen over en indstilling — heller ikke denne.",
-"soundset": "Hvordan lydene lyder: Vitos egne, Blød (varme toner), Glas (klare klokker), Retro (8-bit) eller Tik (kort og tør, den mindst påfaldende). Klik på et for at høre det."
+"soundset": "Hvordan lydene lyder: Vitos egne, Blød (varme toner), Glas (klare klokker), Retro (8-bit) eller Tik (kort og tør, den mindst påfaldende). Klik på et for at høre det.",
+"ownwindow": "Åbner Vito i sit eget vindue (Microsoft Edge WebView2), uden browser. Fra: i den installerede browserapp eller en browserfane."
 }
 }

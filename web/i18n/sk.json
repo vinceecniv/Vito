@@ -291,8 +291,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Poskytovanie, správa a zabezpečenie týchto kľúčov — a všetky náklady, ktoré ich používaním u poskytovateľov vzniknú — sú výhradne vašou zodpovednosťou.",
 "Privacy & data": "Súkromie a údaje",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito nijako nezhromažďuje používateľské údaje na ďalšie odosielanie a v aplikácii nie je zabudovaná žiadna forma sledovania ani analytiky. Vaše nastavenia, slovník a história zostávajú lokálne vo vašom počítači.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Jediné údaje, ktoré aplikácia posiela navonok, sú vaša reč a texty smerujúce k externým poskytovateľom modelu BYOK (rozpoznávanie reči a AI čistenie). Na tieto údaje sa vzťahujú zásady ochrany súkromia týchto externých poskytovateľov.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Verzia v prehliadači na vito.talk anonymne počíta, ako často sa otvára a či prehliadač dosiahne svoj 1. a 10. diktát — bez cookies a pri zapnutom Do Not Track vôbec. Nič z toho, čo poviete alebo nastavíte, sa neodosiela. Nainštalovaná aplikácia nepočíta nič.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Jediné údaje, ktoré aplikácia posiela navonok, sú vaša reč a texty smerujúce k externým poskytovateľom modelu BYOK (rozpoznávanie reči a AI čistenie). Na tieto údaje sa vzťahujú zásady ochrany súkromia týchto externých poskytovateľov.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Verzia v prehliadači na vito.talk anonymne počíta, ako často sa otvára a či prehliadač dosiahne svoj 1. a 10. diktát — bez cookies a pri zapnutom Do Not Track vôbec. Nič z toho, čo poviete alebo nastavíte, sa neodosiela. Nainštalovaná aplikácia nepočíta nič.",
 "Show all": "Zobraziť všetko",
 "Errors only": "Len chyby",
 "Off": "Vypnuté",
@@ -1455,7 +1455,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "Dlhé nahrávky dokončené v tomto období.",
 "{time} recorded in total.": "Celkovo nahraté: {time}.",
-"Open Vito in its own window": "Otvoriť Vito vo vlastnom okne"
+"Open Vito in its own window": "Otvoriť Vito vo vlastnom okne",
+"Back to 100%": "Späť na 100 %",
+"Default 100%": "Predvolené 100 %",
+"How do I get a key?": "Ako získam kľúč?",
+"Soniox API key": "API kľúč Soniox",
+"Achievement sound": "Zvuk úspechov",
+"Menu": "Ponuka",
+"Ran your first Vito Assist command": "Prvý vykonaný príkaz Vito Assist",
+"Ran {n} Vito Assist commands": "Vykonaných príkazov Vito Assist: {n}",
+"Made by": "Vytvoril",
+"Copyright": "Autorské práva"
 },
 "help": {
 "theme": "Svetlá, tmavá alebo automatická — automatická sleduje svetlý/tmavý režim vášho systému.",
@@ -1520,6 +1530,7 @@
 "motion": "Zastaví animácie Vita: prechody, pohyblivé pozadia aj Vitove vlastné pohyby. Váš systém má tiež takéto nastavenie; keď je zapnuté, Vito sa ním už riadi.",
 "cursor": "Ukazovateľ myši vo farbách Vita, s logom v ruke. Vypnuté: bežný ukazovateľ vášho systému.",
 "helptips": "Áno, toto je jeden z nich. Vypnuté: žiadne ďalšie vysvetlenia, keď sa pri nastavení chvíľu zdržíte — ani tento.",
-"soundset": "Ako zvuky znejú: Vitove vlastné, Mäkká (teplé tóny), Sklo (jasné zvončeky), Retro (8-bit) alebo Tik (krátke a suché, najmenej nápadné). Kliknite na sadu a vypočujte si ju."
+"soundset": "Ako zvuky znejú: Vitove vlastné, Mäkká (teplé tóny), Sklo (jasné zvončeky), Retro (8-bit) alebo Tik (krátke a suché, najmenej nápadné). Kliknite na sadu a vypočujte si ju.",
+"ownwindow": "Otvorí Vito vo vlastnom okne (Microsoft Edge WebView2), bez prehliadača. Vypnuté: v nainštalovanej aplikácii prehliadača alebo na karte prehliadača."
 }
 }

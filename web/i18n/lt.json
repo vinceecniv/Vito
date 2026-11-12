@@ -265,8 +265,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Tų raktų pateikimas, valdymas ir apsauga — bei visos naudojimo tiekėjams patiriamos išlaidos — yra visiškai jūsų pačių atsakomybė.",
 "Privacy & data": "Privatumas ir duomenys",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito jokiu būdu nerenka naudotojo duomenų, kad juos persiųstų, ir programoje nėra jokios sekimo ar analitikos formos. Jūsų nustatymai, žodynas ir istorija lieka lokaliai jūsų kompiuteryje.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Vieninteliai duomenys, kuriuos programa siunčia į išorę, yra jūsų kalba ir tekstai, keliaujantys pas išorinius BYOK modelio tiekėjus (kalbos atpažinimas ir DI valymas). Šiems duomenims taikomos tų išorinių tiekėjų privatumo politikos.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Naršyklės versija vito.talk anonimiškai skaičiuoja, kaip dažnai ji atidaroma ir ar naršyklė pasiekia savo 1-ąjį ir 10-ąjį diktavimą — be slapukų, o įjungus Do Not Track – visiškai nieko. Niekas iš to, ką sakote ar nustatote, nesiunčiama. Įdiegta programa nieko neskaičiuoja.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Vieninteliai duomenys, kuriuos programa siunčia į išorę, yra jūsų kalba ir tekstai, keliaujantys pas išorinius BYOK modelio tiekėjus (kalbos atpažinimas ir DI valymas). Šiems duomenims taikomos tų išorinių tiekėjų privatumo politikos.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Naršyklės versija vito.talk anonimiškai skaičiuoja, kaip dažnai ji atidaroma ir ar naršyklė pasiekia savo 1-ąjį ir 10-ąjį diktavimą — be slapukų, o įjungus Do Not Track – visiškai nieko. Niekas iš to, ką sakote ar nustatote, nesiunčiama. Įdiegta programa nieko neskaičiuoja.",
 "Show all": "Rodyti viską",
 "Errors only": "Tik klaidas",
 "Off": "Išjungta",
@@ -1455,7 +1455,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "Šiuo laikotarpiu baigti ilgi įrašai.",
 "{time} recorded in total.": "Iš viso įrašyta {time}.",
-"Open Vito in its own window": "Atidaryti Vito atskirame lange"
+"Open Vito in its own window": "Atidaryti Vito atskirame lange",
+"Back to 100%": "Atgal į 100%",
+"Default 100%": "Numatytasis 100%",
+"How do I get a key?": "Kaip gauti raktą?",
+"Soniox API key": "Soniox API raktas",
+"Achievement sound": "Pasiekimo garsas",
+"Menu": "Meniu",
+"Ran your first Vito Assist command": "Įvykdyta pirmoji Vito Assist komanda",
+"Ran {n} Vito Assist commands": "Įvykdyta Vito Assist komandų: {n}",
+"Made by": "Sukūrė",
+"Copyright": "Autorių teisės"
 },
 "help": {
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",
@@ -1520,6 +1530,7 @@
 "motion": "Sustabdo Vito animacijas: perėjimus, judančius fonus ir paties Vito judesius. Jūsų sistemoje taip pat yra toks nustatymas; kai jis įjungtas, Vito jau jo laikosi.",
 "cursor": "Pelės žymeklis Vito spalvomis, su logotipu rankoje. Išjungta: įprastas jūsų sistemos žymeklis.",
 "helptips": "Taip, tai vienas iš jų. Išjungta: daugiau jokių paaiškinimų, kai užsibūnate virš nustatymo — ir šio taip pat.",
-"soundset": "Kaip skamba garsai: paties Vito, Švelnus (šilti tonai), Stiklas (skambūs varpeliai), Retro (8 bitų) arba Tiksėjimas (trumpas ir sausas, mažiausiai pastebimas). Spustelėkite vieną, kad išgirstumėte."
+"soundset": "Kaip skamba garsai: paties Vito, Švelnus (šilti tonai), Stiklas (skambūs varpeliai), Retro (8 bitų) arba Tiksėjimas (trumpas ir sausas, mažiausiai pastebimas). Spustelėkite vieną, kad išgirstumėte.",
+"ownwindow": "Atidaro Vito atskirame lange (Microsoft Edge WebView2), be naršyklės. Išjungta: įdiegtoje naršyklės programėlėje arba naršyklės kortelėje."
 }
 }

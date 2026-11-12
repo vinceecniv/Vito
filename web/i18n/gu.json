@@ -292,8 +292,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "તે કી પૂરી પાડવી, સંચાલિત કરવી અને સુરક્ષિત રાખવી — અને પ્રોવાઇડર પાસે તેમના ઉપયોગથી થતો બધો ખર્ચ — સંપૂર્ણપણે તમારી પોતાની જવાબદારી છે.",
 "Privacy & data": "ગોપનીયતા અને ડેટા",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito આગળ મોકલવા માટે કોઈપણ રીતે વપરાશકર્તા ડેટા એકત્ર કરતું નથી, અને એપમાં કોઈપણ પ્રકારનું ટ્રેકિંગ કે એનાલિટિક્સ બનેલું નથી. તમારી સેટિંગ્સ, શબ્દકોશ અને ઇતિહાસ તમારા પોતાના કમ્પ્યુટર પર સ્થાનિક રહે છે.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "એપ બહાર મોકલે તે એકમાત્ર ડેટા છે તમારો અવાજ અને BYOK મોડેલના બાહ્ય પ્રોવાઇડર (વાણી ઓળખ અને AI સફાઈ) પર જતું લખાણ. તે ડેટા પર તે બાહ્ય પ્રોવાઇડરની ગોપનીયતા નીતિઓ લાગુ પડે છે.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk પરનું બ્રાઉઝર સંસ્કરણ અનામી રીતે ગણે છે કે તે કેટલી વાર ખુલે છે અને કોઈ બ્રાઉઝર તેના 1લા અને 10મા ડિક્ટેશન સુધી પહોંચે છે કે નહીં — કૂકીઝ વિના, અને Do Not Track ચાલુ હોય ત્યારે બિલકુલ નહીં. તમે જે બોલો છો કે સેટ કરો છો તેમાંથી કશું મોકલાતું નથી. ઇન્સ્ટોલ કરેલી એપ કશું ગણતી નથી.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "એપ બહાર મોકલે તે એકમાત્ર ડેટા છે તમારો અવાજ અને BYOK મોડેલના બાહ્ય પ્રોવાઇડર (વાણી ઓળખ અને AI સફાઈ) પર જતું લખાણ. તે ડેટા પર તે બાહ્ય પ્રોવાઇડરની ગોપનીયતા નીતિઓ લાગુ પડે છે.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk પરનું બ્રાઉઝર સંસ્કરણ અનામી રીતે ગણે છે કે તે કેટલી વાર ખુલે છે અને કોઈ બ્રાઉઝર તેના 1લા અને 10મા ડિક્ટેશન સુધી પહોંચે છે કે નહીં — કૂકીઝ વિના, અને Do Not Track ચાલુ હોય ત્યારે બિલકુલ નહીં. તમે જે બોલો છો કે સેટ કરો છો તેમાંથી કશું મોકલાતું નથી. ઇન્સ્ટોલ કરેલી એપ કશું ગણતી નથી.",
 "Show all": "બધું બતાવો",
 "Errors only": "ફક્ત ભૂલો",
 "Off": "બંધ",
@@ -1455,7 +1455,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "આ સમયગાળામાં પૂરાં થયેલાં લાંબાં રેકોર્ડિંગ.",
 "{time} recorded in total.": "કુલ {time} રેકોર્ડ કર્યું.",
-"Open Vito in its own window": "Vito ને તેની પોતાની વિન્ડોમાં ખોલો"
+"Open Vito in its own window": "Vito ને તેની પોતાની વિન્ડોમાં ખોલો",
+"Back to 100%": "100% પર પાછા જાઓ",
+"Default 100%": "ડિફૉલ્ટ 100%",
+"How do I get a key?": "કી કેવી રીતે મેળવવી?",
+"Soniox API key": "Soniox API કી",
+"Achievement sound": "સિદ્ધિ અવાજ",
+"Menu": "મેનૂ",
+"Ran your first Vito Assist command": "તમારો પહેલો Vito Assist આદેશ ચલાવ્યો",
+"Ran {n} Vito Assist commands": "{n} Vito Assist આદેશ ચલાવ્યા",
+"Made by": "નિર્માતા",
+"Copyright": "કૉપિરાઇટ"
 },
 "help": {
 "theme": "આછું, ઘેરું અથવા આપમેળે — આપમેળે તમારી સિસ્ટમની આછી/ઘેરી સેટિંગ અનુસરે છે.",
@@ -1520,6 +1530,7 @@
 "motion": "Vito ના એનિમેશન રોકે છે: સંક્રમણો, હલતી પૃષ્ઠભૂમિ અને Vito ની પોતાની હલનચલન. તમારી સિસ્ટમમાં પણ આ માટે એક સેટિંગ છે; તે ચાલુ હોય ત્યારે Vito પહેલેથી જ તેને અનુસરે છે.",
 "cursor": "Vito ના રંગોમાં માઉસ પોઇન્ટર, હાથમાં લોગો સાથે. બંધ: તમારી સિસ્ટમનું સામાન્ય પોઇન્ટર.",
 "helptips": "હા, આ તેમાંનું એક છે. બંધ: કોઈ સેટિંગ પર અટકો ત્યારે હવે કોઈ સમજૂતી નહીં — આની પણ નહીં.",
-"soundset": "અવાજો કેવા સંભળાય: Vito ના પોતાના, નરમ (હૂંફાળા સૂર), કાચ (તેજસ્વી ઘંટડીઓ), રેટ્રો (8-bit) કે ટિક (ટૂંકા અને સૂકા, સૌથી ઓછા ધ્યાનમાં આવે તેવા). સાંભળવા માટે કોઈ એક પર ક્લિક કરો."
+"soundset": "અવાજો કેવા સંભળાય: Vito ના પોતાના, નરમ (હૂંફાળા સૂર), કાચ (તેજસ્વી ઘંટડીઓ), રેટ્રો (8-bit) કે ટિક (ટૂંકા અને સૂકા, સૌથી ઓછા ધ્યાનમાં આવે તેવા). સાંભળવા માટે કોઈ એક પર ક્લિક કરો.",
+"ownwindow": "Vito ને બ્રાઉઝર વિના તેની પોતાની વિન્ડોમાં (Microsoft Edge WebView2) ખોલે છે. બંધ: ઇન્સ્ટોલ કરેલી બ્રાઉઝર એપમાં અથવા બ્રાઉઝર ટૅબમાં."
 }
 }

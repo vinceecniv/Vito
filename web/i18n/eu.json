@@ -291,8 +291,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Gako horiek eskaintzea, kudeatzea eta babestea — eta horiek hornitzaileetan erabiltzeak sortzen dituen kostu guztiak — erabat zure erantzukizuna dira.",
 "Privacy & data": "Pribatutasuna eta datuak",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vitok ez du inolako erabiltzaile-daturik biltzen inora bidaltzeko, eta ez dago inolako jarraipen edo analitikarik appan integratuta. Zure ezarpenak, hiztegia eta historia zure ordenagailuan bertan geratzen dira.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Appak kanpora bidaltzen dituen datu bakarrak zure ahotsa eta BYOK ereduko kanpoko hornitzaileetara doazen testuak dira (ahots-ezagutza eta AI garbiketa). Datu horiei kanpoko hornitzaile horien pribatutasun-adierazpenak aplikatzen zaizkie.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk-eko nabigatzaile-bertsioak modu anonimoan zenbatzen du zenbat aldiz irekitzen den eta nabigatzaile batek bere 1. eta 10. diktaketara iristen den — cookierik gabe, eta batere ez Do Not Track aktibatuta badago. Esaten edo ezartzen duzunetik ez da ezer bidaltzen. Instalatutako aplikazioak ez du ezer zenbatzen.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Appak kanpora bidaltzen dituen datu bakarrak zure ahotsa eta BYOK ereduko kanpoko hornitzaileetara doazen testuak dira (ahots-ezagutza eta AI garbiketa). Datu horiei kanpoko hornitzaile horien pribatutasun-adierazpenak aplikatzen zaizkie.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "vito.talk-eko nabigatzaile-bertsioak modu anonimoan zenbatzen du zenbat aldiz irekitzen den eta nabigatzaile batek bere 1. eta 10. diktaketara iristen den — cookierik gabe, eta batere ez Do Not Track aktibatuta badago. Esaten edo ezartzen duzunetik ez da ezer bidaltzen. Instalatutako aplikazioak ez du ezer zenbatzen.",
 "Show all": "Erakutsi dena",
 "Errors only": "Erroreak soilik",
 "Off": "Itzalita",
@@ -1455,7 +1455,17 @@
 "words": "hitz",
 "Marks": "Markak",
 "Follows the colours of your desktop": "Zure mahaigaineko koloreei jarraitzen die",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Sakatu Caps Lock diktatzen hasteko eta sakatu berriro gelditzeko. Eutsita diktatzeko 26.04 baino niri berriagoa behar da; orduan ezarri berriro."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Sakatu Caps Lock diktatzen hasteko eta sakatu berriro gelditzeko. Eutsita diktatzeko 26.04 baino niri berriagoa behar da; orduan ezarri berriro.",
+"Back to 100%": "Itzuli % 100era",
+"Default 100%": "Lehenetsia % 100",
+"How do I get a key?": "Nola lortu gako bat?",
+"Soniox API key": "Soniox API-gakoa",
+"Achievement sound": "Lorpen-soinua",
+"Menu": "Menua",
+"Ran your first Vito Assist command": "Zure lehen Vito Assist agindua exekutatuta",
+"Ran {n} Vito Assist commands": "{n} Vito Assist agindu exekutatuta",
+"Made by": "Egilea",
+"Copyright": "Egile-eskubideak"
 },
 "help": {
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",
@@ -1520,6 +1530,7 @@
 "motion": "Vitoren animazioak geldiarazten ditu: trantsizioak, atzealde mugikorrak eta Vitoren beraren mugimenduak. Zure sistemak ere badu horretarako ezarpen bat; aktibo badago, Vitok dagoeneko jarraitzen dio.",
 "cursor": "Saguaren erakuslea Vitoren koloreetan, logoa eskuan duela. Itzalita: zure sistemaren ohiko erakuslea.",
 "helptips": "Bai, hau bat da. Itzalita: ez da azalpen gehiagorik izango ezarpen baten gainean une batez gelditzen zarenean — ezta hau ere.",
-"soundset": "Nola entzuten diren soinuak: Vitorenak, Leuna (tonu beroak), Beira (kanpai argiak), Retro (8 bit) edo Tik (labur eta lehor, gutxien nabarmentzen dena). Egin klik batean entzuteko."
+"soundset": "Nola entzuten diren soinuak: Vitorenak, Leuna (tonu beroak), Beira (kanpai argiak), Retro (8 bit) edo Tik (labur eta lehor, gutxien nabarmentzen dena). Egin klik batean entzuteko.",
+"ownwindow": "Vito bere leiho propioan irekitzen du (Microsoft Edge WebView2), arakatzailerik gabe. Desaktibatuta: instalatutako arakatzaile-aplikazioan edo arakatzailearen fitxa batean."
 }
 }

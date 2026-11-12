@@ -283,8 +283,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Proporcionar, gestionar i protegir aquestes claus — i tots els costos que el seu ús generi als proveïdors — són totalment responsabilitat teva.",
 "Privacy & data": "Privadesa i dades",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito no recopila cap dada d'usuari per enviar-la enlloc, i no hi ha cap mena de seguiment ni analítica integrada a l'app. La teva configuració, diccionari i historial romanen locals al teu propi ordinador.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Les úniques dades que l'app envia externament són la teva veu i els textos que van als proveïdors externs del model BYOK (reconeixement de veu i neteja amb IA). A aquestes dades s'hi apliquen les polítiques de privadesa d'aquests proveïdors externs.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "La versió del navegador a vito.talk compta de manera anònima quantes vegades s'obre i si un navegador arriba al seu 1r i 10è dictat — sense galetes, i gens si Do Not Track està activat. No s'envia res del que dius ni configures. L'aplicació instal·lada no compta res.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Les úniques dades que l'app envia externament són la teva veu i els textos que van als proveïdors externs del model BYOK (reconeixement de veu i neteja amb IA). A aquestes dades s'hi apliquen les polítiques de privadesa d'aquests proveïdors externs.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "La versió del navegador a vito.talk compta de manera anònima quantes vegades s'obre i si un navegador arriba al seu 1r i 10è dictat — sense galetes, i gens si Do Not Track està activat. No s'envia res del que dius ni configures. L'aplicació instal·lada no compta res.",
 "Show all": "Mostrar-ho tot",
 "Errors only": "Només errors",
 "Off": "Desactivat",
@@ -1455,7 +1455,17 @@
 "words": "paraules",
 "Marks": "Marques",
 "Follows the colours of your desktop": "Segueix els colors del teu escriptori",
-"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Prem Caps Lock per començar a dictar i torna-la a prémer per aturar. Per dictar mantenint-la premuda cal un niri més nou que el 26.04; aleshores torna-la a configurar."
+"Press Caps Lock to start dictating and press it again to stop. Holding it to dictate needs a niri newer than 26.04; then set it up again.": "Prem Caps Lock per començar a dictar i torna-la a prémer per aturar. Per dictar mantenint-la premuda cal un niri més nou que el 26.04; aleshores torna-la a configurar.",
+"Back to 100%": "Torna al 100%",
+"Default 100%": "Per defecte 100%",
+"How do I get a key?": "Com obtinc una clau?",
+"Soniox API key": "Clau API de Soniox",
+"Achievement sound": "So d'assoliment",
+"Menu": "Menú",
+"Ran your first Vito Assist command": "Has executat la teva primera ordre de Vito Assist",
+"Ran {n} Vito Assist commands": "Has executat {n} ordres de Vito Assist",
+"Made by": "Fet per",
+"Copyright": "Copyright"
 },
 "help": {
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",
@@ -1520,6 +1530,7 @@
 "motion": "Atura les animacions de Vito: transicions, fons en moviment i els moviments del mateix Vito. El teu sistema també té un ajust per a això; si està activat, Vito ja el segueix.",
 "cursor": "El punter del ratolí amb els colors de Vito, amb el logotip a la mà. Desactivat: el punter habitual del teu sistema.",
 "helptips": "Sí, aquesta n'és una. Desactivat: cap més explicació quan et quedes un moment sobre un ajust — aquesta tampoc.",
-"soundset": "Com sonen els sons: els de Vito, Suau (tons càlids), Vidre (campanetes clares), Retro (8 bits) o Tic (curt i sec, el que menys es nota). Fes clic en un per escoltar-lo."
+"soundset": "Com sonen els sons: els de Vito, Suau (tons càlids), Vidre (campanetes clares), Retro (8 bits) o Tic (curt i sec, el que menys es nota). Fes clic en un per escoltar-lo.",
+"ownwindow": "Obre Vito en una finestra pròpia (Microsoft Edge WebView2), sense navegador. Desactivat: a l'aplicació del navegador instal·lada o en una pestanya del navegador."
 }
 }

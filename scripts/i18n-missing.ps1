@@ -31,10 +31,21 @@ $block = $html.Substring($start, $end - $start)
 
 $src = [ordered]@{}
 foreach ($m in [regex]::Matches($block, '"((?:[^"\\]|\\.)*)"\s*:\s*"((?:[^"\\]|\\.)*)"')) {
-    # The keys are JavaScript string literals: unescape \" and \n, the way the
-    # page itself reads them (a key with a newline is looked up with a real one).
-    $k = ($m.Groups[1].Value -replace '\\"', '"') -replace '\\n', "`n"
+    # The keys are JavaScript string literals: unescape them (\" \n — …)
+    # the way the page itself reads them. Leaving ’ literal once made every
+    # language file carry a key the page never looks up.
+    $k = [regex]::Unescape($m.Groups[1].Value)
     $src[$k] = $k
+}
+
+# The help texts behind each setting's ⓘ: `const HELP = { key:{nl:…,en:…}, … }`.
+# Each language file carries them under "help"; a topic missing there falls back
+# to English, so it counts as missing too.
+$hs = $html.IndexOf("const HELP = {")
+$help = @()
+if ($hs -ge 0) {
+    $he = $html.IndexOf("`n};", $hs)
+    $help = @([regex]::Matches($html.Substring($hs, $he - $hs), '(?m)^\s*([a-z_0-9]+)\s*:\s*\{\s*nl\s*:') | ForEach-Object { $_.Groups[1].Value })
 }
 
 $files = Get-ChildItem (Join-Path $root "web/i18n/*.json")
@@ -47,7 +58,10 @@ $rows = foreach ($f in $files) {
 
     $missing = @($src.Keys | Where-Object { -not $j.strings.ContainsKey($_) })
     foreach ($k in $missing) { $allMissing[$k] = $src[$k] }
-    [pscustomobject]@{ lang = $f.BaseName; strings = $j.strings.Count; missing = $missing.Count; note = "" }
+    $h = if ($j.help) { $j.help } else { @{} }
+    $helpMissing = @($help | Where-Object { -not $h.ContainsKey($_) })
+    $note = if ($helpMissing.Count) { "help missing: " + ($helpMissing -join ", ") } else { "" }
+    [pscustomobject]@{ lang = $f.BaseName; strings = $j.strings.Count; missing = $missing.Count + $helpMissing.Count; note = $note }
 
     if ($Lang -and $missing.Count) {
         Write-Host "`nMissing in $($f.BaseName):" -ForegroundColor Yellow

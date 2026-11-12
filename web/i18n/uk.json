@@ -301,8 +301,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Надання, керування та захист цих ключів — і всі витрати, які їх використання спричиняє у провайдерів — є цілком вашою відповідальністю.",
 "Privacy & data": "Приватність і дані",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito жодним чином не збирає дані користувача для пересилання, і в застосунок не вбудовано жодного стеження чи аналітики. Ваші налаштування, словник та історія залишаються локально на вашому компʼютері.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Єдині дані, які застосунок надсилає назовні, — це ваше мовлення й тексти, що йдуть до зовнішніх провайдерів моделі BYOK (розпізнавання мовлення та очищення ШІ). До цих даних застосовуються політики приватності цих зовнішніх провайдерів.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Браузерна версія на vito.talk анонімно рахує, як часто її відкривають і чи доходить браузер до 1-го та 10-го диктування — без cookie, а з увімкненим Do Not Track узагалі нічого. Нічого з того, що ви кажете чи налаштовуєте, не надсилається. Встановлений застосунок нічого не рахує.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Єдині дані, які застосунок надсилає назовні, — це ваше мовлення й тексти, що йдуть до зовнішніх провайдерів моделі BYOK (розпізнавання мовлення та очищення ШІ). До цих даних застосовуються політики приватності цих зовнішніх провайдерів.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Браузерна версія на vito.talk анонімно рахує, як часто її відкривають і чи доходить браузер до 1-го та 10-го диктування — без cookie, а з увімкненим Do Not Track узагалі нічого. Нічого з того, що ви кажете чи налаштовуєте, не надсилається. Встановлений застосунок нічого не рахує.",
 "Show all": "Показати все",
 "Errors only": "Лише помилки",
 "Off": "Вимкнено",
@@ -1453,7 +1453,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "Довгі записи, завершені за цей період.",
 "{time} recorded in total.": "Усього записано {time}.",
-"Open Vito in its own window": "Відкрити Vito в окремому вікні"
+"Open Vito in its own window": "Відкрити Vito в окремому вікні",
+"Back to 100%": "Повернути 100%",
+"Default 100%": "Типово 100%",
+"How do I get a key?": "Як отримати ключ?",
+"Soniox API key": "Ключ API Soniox",
+"Achievement sound": "Звук досягнень",
+"Menu": "Меню",
+"Ran your first Vito Assist command": "Виконано першу команду Vito Assist",
+"Ran {n} Vito Assist commands": "Виконано команд Vito Assist: {n}",
+"Made by": "Автор",
+"Copyright": "Авторські права"
 },
 "help": {
 "theme": "Світла, темна або автоматична — автоматична відповідає світлому/темному режиму вашої системи.",
@@ -1518,6 +1528,7 @@
 "motion": "Зупиняє анімації Vito: переходи, рухомі тла та власні рухи Vito. У вашій системі теж є таке налаштування; якщо його ввімкнено, Vito вже дотримується його.",
 "cursor": "Вказівник миші в кольорах Vito, з логотипом у руці. Вимкнено: звичайний вказівник вашої системи.",
 "helptips": "Так, це одна з них. Вимкнено: більше жодних пояснень, коли ви затримуєте курсор над налаштуванням, — і над цим теж.",
-"soundset": "Як звучать звуки: власні Vito, Мʼякий (теплі тони), Скло (дзвінкі дзвіночки), Ретро (8-біт) або Тік (коротко й сухо, найменш помітно). Натисніть на набір, щоб його почути."
+"soundset": "Як звучать звуки: власні Vito, Мʼякий (теплі тони), Скло (дзвінкі дзвіночки), Ретро (8-біт) або Тік (коротко й сухо, найменш помітно). Натисніть на набір, щоб його почути.",
+"ownwindow": "Відкриває Vito у власному вікні (Microsoft Edge WebView2), без браузера. Вимкнено: у встановленому браузерному застосунку або у вкладці браузера."
 }
 }

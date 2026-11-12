@@ -294,8 +294,8 @@
 "Providing, managing and securing those keys — and any costs their use incurs at the providers — are entirely your own responsibility.": "Kutoa, kusimamia na kulinda funguo hizo — na gharama zozote zinazotokana na matumizi yake kwa watoa huduma — ni jukumu lako mwenyewe kabisa.",
 "Privacy & data": "Faragha na data",
 "Vito does not collect any user data to send anywhere, and there is no tracking or analytics of any kind built into the app. Your settings, dictionary and history stay local on your own computer.": "Vito haikusanyi data ya mtumiaji kwa njia yoyote ili kuituma popote, na hakuna aina yoyote ya ufuatiliaji au uchanganuzi iliyojengwa ndani ya programu. Mipangilio yako, kamusi na historia hubaki ndani ya kompyuta yako mwenyewe.",
-"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\\u2019 privacy policies.": "Data pekee ambayo programu huituma nje ni sauti yako na maandishi yanayoenda kwa watoa huduma wa nje wa mtindo wa BYOK (utambuzi wa sauti na usafishaji wa AI). Data hiyo inatawaliwa na sera za faragha za watoa huduma hao wa nje.",
-"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \\u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Toleo la kivinjari kwenye vito.talk huhesabu bila kujulikana ni mara ngapi linafunguliwa na kama kivinjari kinafikia imla yake ya 1 na ya 10 — bila vidakuzi, na hakuna kabisa Do Not Track ikiwa imewashwa. Hakuna chochote unachosema au kuweka kinachotumwa. Programu iliyosakinishwa haihesabu chochote.",
+"The only data the app sends externally is your speech and the texts that go to the external BYOK providers (speech recognition and AI cleanup). That data is governed by those external providers\u2019 privacy policies.": "Data pekee ambayo programu huituma nje ni sauti yako na maandishi yanayoenda kwa watoa huduma wa nje wa mtindo wa BYOK (utambuzi wa sauti na usafishaji wa AI). Data hiyo inatawaliwa na sera za faragha za watoa huduma hao wa nje.",
+"The browser version on vito.talk counts anonymously how often it is opened, and whether a browser reaches its 1st and 10th dictation \u2014 without cookies, and not at all with Do Not Track on. Nothing you say or set is sent. The installed app counts nothing.": "Toleo la kivinjari kwenye vito.talk huhesabu bila kujulikana ni mara ngapi linafunguliwa na kama kivinjari kinafikia imla yake ya 1 na ya 10 — bila vidakuzi, na hakuna kabisa Do Not Track ikiwa imewashwa. Hakuna chochote unachosema au kuweka kinachotumwa. Programu iliyosakinishwa haihesabu chochote.",
 "Show all": "Onyesha yote",
 "Errors only": "Hitilafu pekee",
 "Off": "Zima",
@@ -1455,7 +1455,17 @@
 "Assist": "Assist",
 "The long recordings finished in this period.": "Rekodi ndefu zilizokamilika katika kipindi hiki.",
 "{time} recorded in total.": "{time} zimerekodiwa kwa jumla.",
-"Open Vito in its own window": "Fungua Vito katika dirisha lake"
+"Open Vito in its own window": "Fungua Vito katika dirisha lake",
+"Back to 100%": "Rudi kwa 100%",
+"Default 100%": "Chaguo-msingi 100%",
+"How do I get a key?": "Ninapataje ufunguo?",
+"Soniox API key": "Ufunguo wa API wa Soniox",
+"Achievement sound": "Sauti ya mafanikio",
+"Menu": "Menyu",
+"Ran your first Vito Assist command": "Umetekeleza amri yako ya kwanza ya Vito Assist",
+"Ran {n} Vito Assist commands": "Umetekeleza amri {n} za Vito Assist",
+"Made by": "Imetengenezwa na",
+"Copyright": "Hakimiliki"
 },
 "help": {
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",
@@ -1520,6 +1530,7 @@
 "motion": "Husimamisha uhuishaji wa Vito: mipito, mandharinyuma yanayosogea na mienendo ya Vito mwenyewe. Mfumo wako pia una mpangilio wa hili; ukiwa umewashwa, Vito tayari huufuata.",
 "cursor": "Kiashiria cha kipanya kwa rangi za Vito, na nembo mkononi. Zima: kiashiria cha kawaida cha mfumo wako.",
 "helptips": "Ndiyo, hii ni mojawapo. Zima: hakuna maelezo tena unapokaa kidogo juu ya mpangilio — pamoja na huu.",
-"soundset": "Jinsi sauti zinavyosikika: za Vito mwenyewe, Laini (toni za joto), Kioo (kengele angavu), Retro (8-bit) au Tiki (fupi na kavu, isiyoonekana sana). Bofya moja ili uisikie."
+"soundset": "Jinsi sauti zinavyosikika: za Vito mwenyewe, Laini (toni za joto), Kioo (kengele angavu), Retro (8-bit) au Tiki (fupi na kavu, isiyoonekana sana). Bofya moja ili uisikie.",
+"ownwindow": "Hufungua Vito katika dirisha lake lenyewe (Microsoft Edge WebView2), bila kivinjari. Imezimwa: katika programu ya kivinjari iliyosakinishwa au kwenye kichupo cha kivinjari."
 }
 }
