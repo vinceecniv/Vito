@@ -677,8 +677,9 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		return
 	}
 	if st.last != "" {
-		// The text itself copies it; the button pastes it again.
-		ip.targets[tCopy] = rect{lastBox.x, lastBox.y, lastBox.w - 46, lastBox.h}
+		// The text itself copies it; the button over it, shown under the
+		// pointer, pastes it again (the smaller target wins, see hit).
+		ip.targets[tCopy] = lastBox
 	}
 	if st.onBox {
 		fill(buf, w, h, lastBox, 12, boxTint, a)
@@ -692,7 +693,7 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 	case last == "":
 		last, c = ip.t("Nothing dictated yet"), muted
 	}
-	room := fixed.I(int((lastBox.w - 12 - 46) * s))
+	room := fixed.I(int((lastBox.w - 24) * s)) // the whole box: the button only shows under the pointer
 	var lines []string
 	for rest := last; rest != "" && len(lines) < 3; {
 		var line string
@@ -709,8 +710,17 @@ func (ip *islandPainter) mainView(buf []byte, th theme, st islandState, left, to
 		ip.line(buf, fcs().body, l, lastBox.x+12, y+float64(i)*lastLine, c, a)
 	}
 	ip.browse(buf, th, st, lastBox, muted, a)
-	if st.last != "" {
+	if st.last != "" && st.onBox && !st.copied {
 		btn := rect{lastBox.x + lastBox.w - 40, lastBox.y + lastBox.h/2 - 14, 28, 28}
+		// Laid over the text on a disc of the box's own colour, a little
+		// wider than the button and fading at its rim, so the icon stands
+		// free of the words beneath.
+		cx, cy := (btn.x+btn.w/2)*s, (btn.y+btn.h/2)*s
+		halo := 21 * s
+		eachPixel(w, h, cx, cy, halo+1, halo+1, func(x, y int, px, py float64) {
+			d := math.Hypot(px-cx, py-cy)
+			put(buf, w, x, y, boxTint, a*clamp((halo-d)/(5*s)))
+		})
 		// Its hover lights up against the box as the header's do against the
 		// panel.
 		ip.iconButton(buf, th, st, tRepaste, btn, blend(boxTint, th.to, 0.08), a, func(cx, cy float64, c rgb, al float64) {
@@ -1028,13 +1038,16 @@ func tipped(tg target) bool {
 // is dragged by them like by its free space.
 func clickable(tg target) bool { return tg != tWords && tg != tSaved }
 
+// hit is the target under the point; where targets overlap (a button laid
+// over a box) the smallest wins.
 func (ip *islandPainter) hit(x, y float64) target {
+	best, area := tNone, math.Inf(1)
 	for tg, r := range ip.targets {
-		if r.has(x, y) {
-			return tg
+		if r.has(x, y) && r.w*r.h < area {
+			best, area = tg, r.w*r.h
 		}
 	}
-	return tNone
+	return best
 }
 
 // brandTile is Vito's mark as in the app: a rounded square in the coral to
