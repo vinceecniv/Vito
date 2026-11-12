@@ -1087,6 +1087,7 @@ func (s *Server) evaluateAchievements() (st achievements.Stats, earned map[strin
 				st.RecWords += int64(m.Words)
 				if m.Source != "upload" { // "in one go" is recorded, not handed over
 					st.RecLongest = max(st.RecLongest, int64(m.Seconds))
+					st.UsedLongRecording = true
 				}
 			}
 		}

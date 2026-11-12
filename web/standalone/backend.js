@@ -943,10 +943,10 @@ registerProcessor("vito-pcm",P)`;
       if (h < 5) st.night = true; else if (h < 7) st.early = true;
     }
     st.languages = langs.size;
-    let cmds = 0, clips = 0;
-    for (const v of Object.values(days)) { cmds += v.commands || 0; clips += v.clipboard_commands || 0; }
+    let cmds = 0;
+    for (const v of Object.values(days)) cmds += v.commands || 0;
     st.commands = cmds;
-    st.wizard = st.activations > cmds && cmds > clips && clips > 0; // all three modes used
+    st.wizard = false; // dictation, Assist and a long recording: the browser makes no long recordings
     return st;
   }
   function achievements() {

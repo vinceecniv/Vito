@@ -76,10 +76,11 @@ type Stats struct {
 	Early      bool // dictated between 5am and 7am
 	Comeback   bool // resumed after a gap of 30+ days
 	// Mode-usage flags for the hidden "Vito Wizard" badge: ever dictated plainly,
-	// ever ran a spoken Assist command, and ever ran a clipboard Assist command.
-	UsedDictation       bool
-	UsedAssist          bool
-	UsedClipboardAssist bool
+	// ever ran a Vito Assist command (spoken or on the clipboard), and ever
+	// finished a long recording made in Vito (an imported file doesn't count).
+	UsedDictation     bool
+	UsedAssist        bool
+	UsedLongRecording bool
 }
 
 // Value is the current progress figure for a group (used for progress bars).
@@ -146,7 +147,7 @@ func (d Def) Earned(s Stats) bool {
 		case "polyglot":
 			return s.Languages >= 3
 		case "wizard":
-			return s.UsedDictation && s.UsedAssist && s.UsedClipboardAssist
+			return s.UsedDictation && s.UsedAssist && s.UsedLongRecording
 		}
 		return false
 	}
@@ -235,7 +236,7 @@ var List = []Def{
 	{ID: "comeback", Group: GroupSpecial, Icon: "🎗️", Name: "Welcome Back", Desc: "Came back after 30 quiet days", Flag: "comeback", Secret: true},
 	{ID: "upload", Group: GroupSpecial, Icon: "📎", Name: "Bring Your Own Audio", Desc: "Transcribed an audio file", Flag: "upload", Secret: true},
 	{ID: "polyglot", Group: GroupSpecial, Icon: "🌍", Name: "Polyglot", Desc: "Dictated in three languages", Flag: "polyglot", Secret: true},
-	{ID: "vito-wizard", Group: GroupSpecial, Icon: "🧙", Name: "Vito Wizard", Desc: "Used plain dictation, a spoken Vito Assist command, and a clipboard command", Flag: "wizard", Secret: true},
+	{ID: "vito-wizard", Group: GroupSpecial, Icon: "🧙", Name: "Vito Wizard", Desc: "Dictated, gave Vito Assist a command and made a long recording", Flag: "wizard", Secret: true},
 }
 
 // Evaluate returns the ids currently earned.
