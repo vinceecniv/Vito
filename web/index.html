@@ -5142,6 +5142,7 @@ function systemDark(){ return window.matchMedia && matchMedia("(prefers-color-sc
 function effectiveDark(){ return themePref === "dark" || (themePref === "system" && systemDark()); }
 function applyTheme(){
   document.documentElement.dataset.theme = effectiveDark() ? "dark" : "light";
+  document.documentElement.dataset.themePref = themePref; // Vito's own window (Linux) leaves "system" to GTK
   // Match the PWA window title bar to Vito's own theme (Chrome recolors the app
   // title bar live when this changes); blend it with the app background.
   document.querySelector('meta[name=theme-color]').content = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || (effectiveDark() ? "#17141F" : "#FAF6EF");

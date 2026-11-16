@@ -176,6 +176,10 @@ func Close() { C.vw_close() }
 // SetDark makes GTK's own parts (menus, the file chooser, the frame) dark.
 func SetDark(dark bool) { C.vw_set_dark(cbool(dark)) }
 
+// FollowSystem gives GTK, and with it the page's prefers-color-scheme, the
+// desktop's colour scheme again, live. False where GTK cannot (before 4.20).
+func FollowSystem() bool { return C.vw_set_dark(-1) != 0 }
+
 // SetRadius rounds the window's corners.
 func SetRadius(px int) { C.vw_set_radius(C.int(px)) }
 

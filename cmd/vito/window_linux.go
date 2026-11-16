@@ -217,7 +217,7 @@ func runGTKWindow(cfg *config.Config, target, token string) {
 	}, gtkwin.Handlers{
 		Message: func(raw string) {
 			once.Do(func() {
-				gtkwin.SetDark(dark)
+				setWindowScheme(cfg.UI.Theme != "dark" && cfg.UI.Theme != "light", dark)
 				if ln != nil {
 					go serveWindow(ln)
 				}
@@ -279,6 +279,7 @@ func onGTKMessage(raw string) {
 		T    string `json:"t"`
 		URL  string `json:"url"`
 		Dark bool   `json:"dark"`
+		Sys  bool   `json:"system"`
 		Acc  string `json:"accent"`
 		Rad  string `json:"radius"`
 		Msg  string `json:"msg"`
@@ -296,7 +297,7 @@ func onGTKMessage(raw string) {
 		}
 		_ = exec.Command("xdg-open", u.String()).Start()
 	case "theme":
-		gtkwin.SetDark(m.Dark)
+		setWindowScheme(m.Sys, m.Dark)
 		gtkwin.SetRadius(map[string]int{"minimal": 3, "none": 0}[m.Rad] + map[bool]int{true: 12}[m.Rad == ""])
 		gtkwin.SetIconName(launcherIcon(m.Acc, m.Rad, false)) // X11 and KDE show the window's own
 	case "win":
@@ -318,7 +319,7 @@ func onGTKMessage(raw string) {
 const gtkBridgeJS = `(function(){
   const post = (o) => { try { window.webkit.messageHandlers.vito.postMessage(JSON.stringify(o)); } catch (e) {} };
   window.vitoOpenExternal = (u) => post({ t: "open", url: String(u) });
-  window.vitoTheme = (dark, accent, radius) => post({ t: "theme", dark: !!dark, accent: accent || "", radius: radius || "" });
+  window.vitoTheme = (dark, accent, radius, system) => post({ t: "theme", dark: !!dark, system: !!system, accent: accent || "", radius: radius || "" });
   document.addEventListener("keydown", (e) => {
     if (e.key === "F5" || ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && (e.key === "r" || e.key === "R"))) { e.preventDefault(); post({ t: "reload" }); }
   }, true);
@@ -341,7 +342,18 @@ const gtkDebugJS = `(function(){
   const post = (m) => { try { window.webkit.messageHandlers.vito.postMessage(JSON.stringify({ t: "log", msg: String(m) })); } catch (e) {} };
   window.addEventListener("error", (e) => post((e.message || "error") + " @ " + (e.filename || "") + ":" + (e.lineno || 0)));
   window.addEventListener("unhandledrejection", (e) => post("unhandled: " + (e.reason && (e.reason.stack || e.reason.message) || e.reason)));
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => post("prefers-color-scheme: " + (e.matches ? "dark" : "light")));
 })();`
+
+// setWindowScheme: Vito's own light or dark, or with "system" the desktop's.
+// WebKit takes the page's prefers-color-scheme from GTK, so a scheme set here
+// for "system" would hold the page there when the desktop switches.
+func setWindowScheme(system, dark bool) {
+	if system && gtkwin.FollowSystem() {
+		return
+	}
+	gtkwin.SetDark(dark)
+}
 
 // wantDarkWindow: Vito's theme, else the desktop's colour scheme (the
 // Settings portal, as the pill reads it).

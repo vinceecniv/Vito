@@ -75,6 +75,7 @@ static struct {
 	gboolean (*gtk_widget_grab_focus)(gp);
 	gp (*gtk_native_get_surface)(gp);
 	gp (*gtk_settings_get_default)(void);
+	void (*gtk_settings_reset_property)(gp, const char *);
 	gp (*gtk_event_controller_legacy_new)(void);
 	void (*gtk_event_controller_set_propagation_phase)(gp, int);
 	void (*gtk_widget_add_controller)(gp, gp);
@@ -157,7 +158,7 @@ int vw_load(const char **missing) {
 	L(gtk_window_maximize) L(gtk_window_unmaximize) L(gtk_window_minimize) L(gtk_window_close)
 	L(gtk_window_is_maximized) L(gtk_window_is_active) L(gtk_box_new) L(gtk_widget_set_size_request)
 	L(gtk_widget_add_css_class) L(gtk_widget_set_overflow) L(gtk_widget_get_native)
-	L(gtk_widget_grab_focus) L(gtk_native_get_surface) L(gtk_settings_get_default)
+	L(gtk_widget_grab_focus) L(gtk_native_get_surface) L(gtk_settings_get_default) L(gtk_settings_reset_property)
 	L(gtk_event_controller_legacy_new) L(gtk_event_controller_set_propagation_phase)
 	L(gtk_widget_add_controller) L(gtk_css_provider_new) L(gtk_css_provider_load_from_data)
 	L(gtk_style_context_add_provider_for_display) L(gdk_display_get_default)
@@ -195,7 +196,7 @@ int vw_init(const char *app_id) {
 }
 
 static gp win, view, loop, press, css;
-static int dark_now = -1, radius_now = -1;
+static int dark_now = -2, radius_now = -1; // dark_now -1 is "the desktop's"
 
 #define CONNECT(obj, sig, cb) F.g_signal_connect_data(obj, sig, (gp)(cb), NULL, NULL, 0)
 
@@ -291,19 +292,29 @@ void vw_close(void) {
 int vw_maximized(void) { return win && F.gtk_window_is_maximized(win); }
 int vw_active(void) { return win && F.gtk_window_is_active(win); }
 
-void vw_set_dark(int dark) {
+int vw_set_dark(int dark) {
+	// Context menus, the file chooser, the window's border and the page's
+	// prefers-color-scheme follow it. GTK 4.20 names it
+	// gtk-interface-color-scheme (2 dark, 3 light).
+	gp settings = F.gtk_settings_get_default();
+	int scheme = F.g_object_class_find_property(*(gp *)settings, "gtk-interface-color-scheme") != NULL;
+	if (dark < 0 && !scheme) {
+		return 0;
+	}
 	if (dark == dark_now) {
-		return;
+		return 1;
 	}
 	dark_now = dark;
-	// Context menus, the file chooser and the window's border follow it.
-	// GTK 4.20 names it gtk-interface-color-scheme (2 dark, 3 light).
-	gp settings = F.gtk_settings_get_default();
-	if (F.g_object_class_find_property(*(gp *)settings, "gtk-interface-color-scheme")) {
+	if (dark < 0) {
+		// Back to what the desktop says (the portal): setting "default" (1)
+		// would mean no preference, which GTK shows light.
+		F.gtk_settings_reset_property(settings, "gtk-interface-color-scheme");
+	} else if (scheme) {
 		F.g_object_set(settings, "gtk-interface-color-scheme", dark ? 2 : 3, NULL);
 	} else {
 		F.g_object_set(settings, "gtk-application-prefer-dark-theme", dark, NULL);
 	}
+	return 1;
 }
 
 // vw_fix_signals adds SA_ONSTACK to the signal handlers GTK and JavaScriptCore
