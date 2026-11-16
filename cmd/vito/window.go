@@ -85,10 +85,11 @@ const externalLinksJS = `(function(){
   const theme = () => {
     const el = document.documentElement; if (!el || !window.vitoTheme) return;
     const dark = el.dataset.theme === "dark", accent = el.dataset.accent || "", radius = el.dataset.radius || "";
-    const now = dark + "/" + accent + "/" + radius;
-    if (now !== last) { last = now; window.vitoTheme(dark, accent, radius); }
+    const system = (el.dataset.themePref || "system") === "system";
+    const now = dark + "/" + accent + "/" + radius + "/" + system;
+    if (now !== last) { last = now; window.vitoTheme(dark, accent, radius, system); }
   };
-  new MutationObserver(theme).observe(document, { subtree: true, attributes: true, attributeFilter: ["data-theme", "data-accent", "data-radius"] });
+  new MutationObserver(theme).observe(document, { subtree: true, attributes: true, attributeFilter: ["data-theme", "data-theme-pref", "data-accent", "data-radius"] });
   document.addEventListener("DOMContentLoaded", theme);
   const open = window.open;
   window.open = function(u, ...rest) {

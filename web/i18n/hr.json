@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Jačina pozadine",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nizozemski, engleski, njemački, francuski, španjolski, talijanski, portugalski, poljski, češki, slovački, mađarski, rumunjski, bugarski, hrvatski, slovenski, grčki, švedski, danski, finski, estonski, latvijski, litavski, malteški, ruski i ukrajinski — prepoznaju se automatski. Nije prikladno za druge jezike.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Engleski, nizozemski, njemački, francuski, španjolski, talijanski, poljski.",
 "Type (keystrokes)": "Tipkanje (pritisci tipki)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Autorska prava"
 },
 "help": {
+"bdstrength": "Koliko je pozadina prisutna: ulijevo jedva vidljiva, udesno jača od standardne.",
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetlu/tamnu postavku vašeg sustava.",
 "uilang": "Jezik sučelja ove aplikacije. „Automatski” koristi jezik vašeg sustava (inače engleski).",
 "zoom": "Povećajte ili smanjite cijelo sučelje aplikacije. Korisno na velikim ili malim zaslonima.",

@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Sterkte van die agtergrond",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Jou keuse is 'n voorkeur, nie 'n beperking nie: Soniox herken ook ander tale, selfs as jy in die middel van 'n sin oorslaan.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet herken self die taal: jy kan in enige van sy 25 tale dikteer, wat jy ook al hier kies.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Hierdie model hou by die taal wat jy hier kies. Wissel jy van taal terwyl jy dikteer? Kies Outomaties.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Kopiereg"
 },
 "help": {
+"bdstrength": "Hoe sterk die agtergrond aanwesig is: na links skaars sigbaar, na regs sterker as standaard.",
 "theme": "Lig, donker of outomaties — outomaties volg die lig/donker-stand van jou stelsel.",
 "uilang": "Die taal van hierdie toepassing se koppelvlak. 'Outomaties' gebruik jou stelseltaal (anders Engels).",
 "zoom": "Vergroot of verklein die hele toepassingskoppelvlak. Handig op groot of klein skerms.",

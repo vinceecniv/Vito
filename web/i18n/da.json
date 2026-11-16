@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Baggrundens styrke",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Dit valg er en præference, ikke en grænse: Soniox genkender også andre sprog, også når du skifter midt i en sætning.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet genkender selv sproget: du kan diktere på alle dens 25 sprog, uanset hvad du vælger her.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Denne model holder sig til det sprog, du vælger her. Skifter du sprog, mens du dikterer? Vælg Automatisk.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Copyright"
 },
 "help": {
+"bdstrength": "Hvor tydelig baggrunden er: til venstre næsten usynlig, til højre stærkere end standard.",
 "theme": "Lyst, mørkt eller automatisk — automatisk følger dit systems lys/mørke-indstilling.",
 "uilang": "Sproget for denne app-grænseflade. 'Automatisk' bruger dit OS-sprog (ellers engelsk).",
 "zoom": "Skalér hele app-grænsefladen op eller ned. Praktisk på store eller små skærme.",

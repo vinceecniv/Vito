@@ -1304,7 +1304,9 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		if st.active == "" || st.activeName() == "" || !st.known(st.active) {
 			st.active = cleanup.BuiltinPrefix + "default"
 		}
-		st.dark = p.dark()
+		// The palette, font and outfit with it; the side itself is taken in
+		// the loop, which crossfades it (themeK).
+		p.dark()
 	}
 	day := func() {
 		if p.src.Today != nil {
@@ -1425,6 +1427,10 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 	buf := make([]byte, islandWinW*scale*islandWinH*scale*4)
 	frame := make([]byte, surfaceW*scale*surfaceH*scale*4)
 	out := make([]byte, len(buf))
+	// A switch between light and dark crossfades from the last picture of
+	// the old side (was) to the new one, over themeK 0 .. 1.
+	var was, mixed []byte
+	themeK := 1.0
 	tick := time.NewTicker(frameTime)
 	defer tick.Stop()
 	var (
@@ -1769,6 +1775,18 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		if st.said != "" && time.Since(saidAt) > longSaid {
 			st.said, dirty = "", true
 		}
+		// Light or dark changed (the desktop's or Vito's own setting): every
+		// island follows at once, pinned or not, and fades over.
+		if frames%10 == 0 {
+			if now := p.dark(); now != st.dark {
+				if was == nil {
+					was, mixed = make([]byte, len(buf)), make([]byte, len(buf))
+				}
+				copy(was, buf)
+				themeK = 0
+				st.dark, dirty = now, true
+			}
+		}
 		if !st.pinned {
 			// A countdown keeps it open: it shows what is about to happen.
 			if !inside && time.Since(left) > islandGrace && st.count == 0 {
@@ -1957,9 +1975,17 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 			}
 			mv.setCursor(shape)
 		}
+		if themeK < 1 {
+			themeK = min(1, themeK+step(themeTime))
+			moving = true
+		}
 		if moving || dirty {
 			ip.draw(buf, st)
-			if err := w.present(fitPicture(out, buf, shift*scale, 1-(1-dimTo)*smooth(dim))); err != nil {
+			pic := buf
+			if themeK < 1 {
+				pic = crossfade(mixed, was, buf, themeK)
+			}
+			if err := w.present(fitPicture(out, pic, shift*scale, 1-(1-dimTo)*smooth(dim))); err != nil {
 				return st.pinned
 			}
 			dirty = false

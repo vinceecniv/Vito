@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Сіла фону",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Ваш выбар — гэта перавага, а не абмежаванне: Soniox распазнае і іншыя мовы, нават калі вы пераключаецеся пасярод сказа.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet сам распазнае мову: вы можаце дыктаваць на любой з яго 25 моў, што б вы тут ні выбралі.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Гэтая мадэль трымаецца мовы, якую вы выбіраеце тут. Пераключаеце мовы падчас дыктоўкі? Выберыце «Аўтаматычна».",
@@ -1468,6 +1469,7 @@
 "Copyright": "Аўтарскае права"
 },
 "help": {
+"bdstrength": "Наколькі прыкметны фон: улева — амаль нябачны, управа — мацнейшы за стандартны.",
 "theme": "Светлая, цёмная ці аўтаматычная — аўтаматычная сочыць за светлым/цёмным рэжымам вашай сістэмы.",
 "uilang": "Мова інтэрфейсу гэтай праграмы. «Аўтаматычна» выкарыстоўвае мову вашай АС (інакш англійская).",
 "zoom": "Павялічвае ці памяншае ўвесь інтэрфейс праграмы. Зручна на вялікіх ці малых экранах.",

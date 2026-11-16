@@ -31,13 +31,16 @@ void vw_frame(const char *action, const char *edge);
 void vw_present(const char *token);
 void vw_close(void);
 void vw_set_icon_name(const char *name);
-void vw_set_dark(int dark);
+// vw_set_dark: 1 dark, 0 light, -1 the desktop's (0 returned where GTK
+// cannot follow it, before 4.20).
+int vw_set_dark(int dark);
 void vw_set_radius(int px);
 void vw_fix_signals(void);
 // vw_sharp_cursors: GTK can show page pointers sharp on a scaled screen (4.16+).
 int vw_sharp_cursors(void);
 int vw_maximized(void);
 int vw_active(void);
+int vw_tiled(void);
 // vw_decoration_layout is GTK's gtk-decoration-layout ("appmenu:close"),
 // to be freed with free().
 char *vw_decoration_layout(void);

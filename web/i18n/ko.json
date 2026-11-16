@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "배경 강도",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "네덜란드어, 영어, 독일어, 프랑스어, 스페인어, 이탈리아어, 포르투갈어, 폴란드어, 체코어, 슬로바키아어, 헝가리어, 루마니아어, 불가리아어, 크로아티아어, 슬로베니아어, 그리스어, 스웨덴어, 덴마크어, 핀란드어, 에스토니아어, 라트비아어, 리투아니아어, 몰타어, 러시아어, 우크라이나어 — 자동으로 감지됩니다. 다른 언어에는 적합하지 않습니다.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "영어, 네덜란드어, 독일어, 프랑스어, 스페인어, 이탈리아어, 폴란드어.",
 "Type (keystrokes)": "입력 (키 입력)",
@@ -1466,6 +1467,7 @@
 "Copyright": "저작권"
 },
 "help": {
+"bdstrength": "배경이 얼마나 보일지: 왼쪽으로 하면 거의 보이지 않고, 오른쪽으로 하면 기본보다 진해집니다.",
 "theme": "밝게, 어둡게 또는 자동 — 자동은 시스템의 밝게/어둡게 설정을 따릅니다.",
 "uilang": "이 앱 인터페이스의 언어입니다. '자동'은 시스템 언어를 사용합니다(그 외에는 영어).",
 "zoom": "전체 앱 인터페이스를 확대하거나 축소합니다. 크거나 작은 화면에서 유용합니다.",

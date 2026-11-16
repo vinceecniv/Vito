@@ -185,8 +185,13 @@ func runGTKWindow(cfg *config.Config, target, token string) {
 		// the page makes it smaller (cursorCSS), a little soft but the right size.
 		scripts = append(scripts, "window.__VITO_SHRINK_CURSORS__ = true;")
 	}
+	// On a tiling desktop the strip shows only while the window floats.
+	floats := floatWatcher()
+	float := !own && os.Getenv("VITO_WINDOW_FRAME") != "bare"
 	if own {
 		scripts = append(scripts, gtkFrameJS(gtkwin.DecorationLayout()))
+	} else if float {
+		scripts = append(scripts, gtkFloatJS)
 	}
 	scripts = append(scripts, externalLinksJS)
 	if debug {
@@ -217,17 +222,26 @@ func runGTKWindow(cfg *config.Config, target, token string) {
 	}, gtkwin.Handlers{
 		Message: func(raw string) {
 			once.Do(func() {
-				gtkwin.SetDark(dark)
+				setWindowScheme(cfg.UI.Theme != "dark" && cfg.UI.Theme != "light", dark)
 				if ln != nil {
 					go serveWindow(ln)
 				}
 				if token != "" {
 					gtkwin.Present(token)
 				}
+				switch {
+				case float && floats != nil:
+					go floats(setFloating)
+				case float:
+					setFloating(!gtkwin.Tiled())
+				}
 			})
 			onGTKMessage(raw)
 		},
 		State: func(max, active bool) {
+			if float && floats == nil {
+				setFloating(!gtkwin.Tiled())
+			}
 			gtkwin.Eval(fmt.Sprintf("window.vitoFrameState&&vitoFrameState({max:%t,active:%t})", max, active))
 		},
 		Closing: func(w, h int, max bool) {
@@ -279,6 +293,7 @@ func onGTKMessage(raw string) {
 		T    string `json:"t"`
 		URL  string `json:"url"`
 		Dark bool   `json:"dark"`
+		Sys  bool   `json:"system"`
 		Acc  string `json:"accent"`
 		Rad  string `json:"radius"`
 		Msg  string `json:"msg"`
@@ -296,13 +311,16 @@ func onGTKMessage(raw string) {
 		}
 		_ = exec.Command("xdg-open", u.String()).Start()
 	case "theme":
-		gtkwin.SetDark(m.Dark)
+		setWindowScheme(m.Sys, m.Dark)
 		gtkwin.SetRadius(map[string]int{"minimal": 3, "none": 0}[m.Rad] + map[bool]int{true: 12}[m.Rad == ""])
 		gtkwin.SetIconName(launcherIcon(m.Acc, m.Rad, false)) // X11 and KDE show the window's own
 	case "win":
 		if m.A == "hello" {
 			max, active := gtkwin.State()
 			gtkwin.Eval(fmt.Sprintf("window.vitoFrameState&&vitoFrameState({max:%t,active:%t})", max, active))
+			if f := floating.Load(); f != 0 { // a reloaded page asks again
+				gtkwin.Eval(fmt.Sprintf("window.vitoFloating&&vitoFloating(%t)", f > 0))
+			}
 			return
 		}
 		gtkwin.Frame(m.A, m.Edge)
@@ -318,7 +336,7 @@ func onGTKMessage(raw string) {
 const gtkBridgeJS = `(function(){
   const post = (o) => { try { window.webkit.messageHandlers.vito.postMessage(JSON.stringify(o)); } catch (e) {} };
   window.vitoOpenExternal = (u) => post({ t: "open", url: String(u) });
-  window.vitoTheme = (dark, accent, radius) => post({ t: "theme", dark: !!dark, accent: accent || "", radius: radius || "" });
+  window.vitoTheme = (dark, accent, radius, system) => post({ t: "theme", dark: !!dark, system: !!system, accent: accent || "", radius: radius || "" });
   document.addEventListener("keydown", (e) => {
     if (e.key === "F5" || ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && (e.key === "r" || e.key === "R"))) { e.preventDefault(); post({ t: "reload" }); }
   }, true);
@@ -341,7 +359,18 @@ const gtkDebugJS = `(function(){
   const post = (m) => { try { window.webkit.messageHandlers.vito.postMessage(JSON.stringify({ t: "log", msg: String(m) })); } catch (e) {} };
   window.addEventListener("error", (e) => post((e.message || "error") + " @ " + (e.filename || "") + ":" + (e.lineno || 0)));
   window.addEventListener("unhandledrejection", (e) => post("unhandled: " + (e.reason && (e.reason.stack || e.reason.message) || e.reason)));
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => post("prefers-color-scheme: " + (e.matches ? "dark" : "light")));
 })();`
+
+// setWindowScheme: Vito's own light or dark, or with "system" the desktop's.
+// WebKit takes the page's prefers-color-scheme from GTK, so a scheme set here
+// for "system" would hold the page there when the desktop switches.
+func setWindowScheme(system, dark bool) {
+	if system && gtkwin.FollowSystem() {
+		return
+	}
+	gtkwin.SetDark(dark)
+}
 
 // wantDarkWindow: Vito's theme, else the desktop's colour scheme (the
 // Settings portal, as the pill reads it).

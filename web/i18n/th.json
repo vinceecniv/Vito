@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "ความเข้มของพื้นหลัง",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "ดัตช์ อังกฤษ เยอรมัน ฝรั่งเศส สเปน อิตาลี โปรตุเกส โปแลนด์ เช็ก สโลวัก ฮังการี โรมาเนีย บัลแกเรีย โครเอเชีย สโลวีเนีย กรีก สวีเดน เดนมาร์ก ฟินแลนด์ เอสโตเนีย ลัตเวีย ลิทัวเนีย มอลตา รัสเซีย และยูเครน — ตรวจจับภาษาโดยอัตโนมัติ ไม่เหมาะกับภาษาอื่น",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "อังกฤษ ดัตช์ เยอรมัน ฝรั่งเศส สเปน อิตาลี โปแลนด์",
 "Type (keystrokes)": "พิมพ์ (การกดแป้น)",
@@ -1466,6 +1467,7 @@
 "Copyright": "ลิขสิทธิ์"
 },
 "help": {
+"bdstrength": "พื้นหลังเด่นแค่ไหน: ไปทางซ้ายแทบมองไม่เห็น ไปทางขวาเข้มกว่าปกติ",
 "theme": "สว่าง มืด หรืออัตโนมัติ — อัตโนมัติจะตามการตั้งค่าสว่าง/มืดของระบบคุณ",
 "uilang": "ภาษาของอินเทอร์เฟซแอปนี้ 'อัตโนมัติ' จะใช้ภาษาของ OS (มิฉะนั้นเป็นภาษาอังกฤษ)",
 "zoom": "ขยายหรือย่ออินเทอร์เฟซของแอปทั้งหมด สะดวกบนหน้าจอขนาดใหญ่หรือเล็ก",

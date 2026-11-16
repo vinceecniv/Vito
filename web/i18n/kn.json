@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "ಹಿನ್ನೆಲೆಯ ತೀವ್ರತೆ",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "ಡಚ್, ಇಂಗ್ಲಿಷ್, ಜರ್ಮನ್, ಫ್ರೆಂಚ್, ಸ್ಪ್ಯಾನಿಷ್, ಇಟಾಲಿಯನ್, ಪೋರ್ಚುಗೀಸ್, ಪೋಲಿಷ್, ಜೆಕ್, ಸ್ಲೋವಾಕ್, ಹಂಗೇರಿಯನ್, ರೊಮೇನಿಯನ್, ಬಲ್ಗೇರಿಯನ್, ಕ್ರೊಯೇಷಿಯನ್, ಸ್ಲೊವೇನಿಯನ್, ಗ್ರೀಕ್, ಸ್ವೀಡಿಷ್, ಡ್ಯಾನಿಷ್, ಫಿನ್ನಿಷ್, ಎಸ್ಟೋನಿಯನ್, ಲಾಟ್ವಿಯನ್, ಲಿಥುವೇನಿಯನ್, ಮಾಲ್ಟೀಸ್, ರಷ್ಯನ್ ಮತ್ತು ಉಕ್ರೇನಿಯನ್ — ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪತ್ತೆಯಾಗುತ್ತವೆ. ಇತರ ಭಾಷೆಗಳಿಗೆ ಸೂಕ್ತವಲ್ಲ.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "ಇಂಗ್ಲಿಷ್, ಡಚ್, ಜರ್ಮನ್, ಫ್ರೆಂಚ್, ಸ್ಪ್ಯಾನಿಷ್, ಇಟಾಲಿಯನ್, ಪೋಲಿಷ್.",
 "Type (keystrokes)": "ಟೈಪ್ ಮಾಡಿ (ಕೀಸ್ಟ್ರೋಕ್‌ಗಳು)",
@@ -1466,6 +1467,7 @@
 "Copyright": "ಹಕ್ಕುಸ್ವಾಮ್ಯ"
 },
 "help": {
+"bdstrength": "ಹಿನ್ನೆಲೆ ಎಷ್ಟು ಕಾಣಿಸಬೇಕು: ಎಡಕ್ಕೆ ಬಹುತೇಕ ಕಾಣದು, ಬಲಕ್ಕೆ ಸಾಮಾನ್ಯಕ್ಕಿಂತ ಗಾಢ.",
 "theme": "ಬೆಳಕು, ಗಾಢ ಅಥವಾ ಸ್ವಯಂಚಾಲಿತ — ಸ್ವಯಂಚಾಲಿತವು ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಬೆಳಕು/ಗಾಢ ಸೆಟ್ಟಿಂಗ್ ಅನುಸರಿಸುತ್ತದೆ.",
 "uilang": "ಈ ಆಪ್ ಇಂಟರ್ಫೇಸ್‌ನ ಭಾಷೆ. 'ಸ್ವಯಂಚಾಲಿತ' ನಿಮ್ಮ OS ಭಾಷೆಯನ್ನು ಬಳಸುತ್ತದೆ (ಇಲ್ಲದಿದ್ದರೆ ಇಂಗ್ಲಿಷ್).",
 "zoom": "ಸಂಪೂರ್ಣ ಆಪ್ ಇಂಟರ್ಫೇಸ್ ಅನ್ನು ದೊಡ್ಡದಾಗಿ ಅಥವಾ ಚಿಕ್ಕದಾಗಿ ಮಾಡಿ. ದೊಡ್ಡ ಅಥವಾ ಸಣ್ಣ ಪರದೆಗಳಲ್ಲಿ ಉಪಯುಕ್ತ.",

@@ -34,6 +34,10 @@ enum { WEBKIT_INJECT_TOP_FRAME = 1, WEBKIT_INJECT_AT_START = 0 };
 enum { WEBKIT_POLICY_NAVIGATION = 0, WEBKIT_POLICY_NEW_WINDOW = 1 };
 enum { G_USER_DIRECTORY_DOWNLOAD = 2 };
 enum { GTK_STYLE_PROVIDER_PRIORITY_APPLICATION = 600 };
+// GdkToplevelState: tiled at all (xdg-shell before v2) or on an edge.
+enum { GDK_TOPLEVEL_STATE_TILED = 1 << 7, GDK_TOPLEVEL_STATE_TOP_TILED = 1 << 8,
+	GDK_TOPLEVEL_STATE_RIGHT_TILED = 1 << 10, GDK_TOPLEVEL_STATE_BOTTOM_TILED = 1 << 12,
+	GDK_TOPLEVEL_STATE_LEFT_TILED = 1 << 14 };
 
 static struct {
 	// GLib, GObject
@@ -75,6 +79,7 @@ static struct {
 	gboolean (*gtk_widget_grab_focus)(gp);
 	gp (*gtk_native_get_surface)(gp);
 	gp (*gtk_settings_get_default)(void);
+	void (*gtk_settings_reset_property)(gp, const char *);
 	gp (*gtk_event_controller_legacy_new)(void);
 	void (*gtk_event_controller_set_propagation_phase)(gp, int);
 	void (*gtk_widget_add_controller)(gp, gp);
@@ -92,6 +97,7 @@ static struct {
 	void (*gdk_toplevel_begin_move)(gp, gp, int, double, double, uint32_t);
 	void (*gdk_toplevel_begin_resize)(gp, int, gp, int, double, double, uint32_t);
 	gboolean (*gdk_toplevel_show_window_menu)(gp, gp);
+	unsigned (*gdk_toplevel_get_state)(gp);
 	// WebKitGTK, JavaScriptCore
 	GType (*webkit_web_view_get_type)(void);
 	gp (*webkit_network_session_new)(const char *, const char *);
@@ -157,13 +163,14 @@ int vw_load(const char **missing) {
 	L(gtk_window_maximize) L(gtk_window_unmaximize) L(gtk_window_minimize) L(gtk_window_close)
 	L(gtk_window_is_maximized) L(gtk_window_is_active) L(gtk_box_new) L(gtk_widget_set_size_request)
 	L(gtk_widget_add_css_class) L(gtk_widget_set_overflow) L(gtk_widget_get_native)
-	L(gtk_widget_grab_focus) L(gtk_native_get_surface) L(gtk_settings_get_default)
+	L(gtk_widget_grab_focus) L(gtk_native_get_surface) L(gtk_settings_get_default) L(gtk_settings_reset_property)
 	L(gtk_event_controller_legacy_new) L(gtk_event_controller_set_propagation_phase)
 	L(gtk_widget_add_controller) L(gtk_css_provider_new) L(gtk_css_provider_load_from_data)
 	L(gtk_style_context_add_provider_for_display) L(gdk_display_get_default)
 	L(gdk_event_get_event_type) L(gdk_event_get_device) L(gdk_event_get_position)
 	L(gdk_event_get_time) L(gdk_button_event_get_button) L(gdk_event_ref) L(gdk_event_unref)
 	L(gdk_toplevel_begin_move) L(gdk_toplevel_begin_resize) L(gdk_toplevel_show_window_menu)
+	L(gdk_toplevel_get_state)
 	L(webkit_web_view_get_type) L(webkit_network_session_new) L(webkit_user_content_manager_new)
 	L(webkit_user_script_new) L(webkit_user_script_unref) L(webkit_user_content_manager_add_script)
 	L(webkit_user_content_manager_register_script_message_handler) L(webkit_web_view_get_settings)
@@ -195,7 +202,7 @@ int vw_init(const char *app_id) {
 }
 
 static gp win, view, loop, press, css;
-static int dark_now = -1, radius_now = -1;
+static int dark_now = -2, radius_now = -1; // dark_now -1 is "the desktop's"
 
 #define CONNECT(obj, sig, cb) F.g_signal_connect_data(obj, sig, (gp)(cb), NULL, NULL, 0)
 
@@ -291,19 +298,44 @@ void vw_close(void) {
 int vw_maximized(void) { return win && F.gtk_window_is_maximized(win); }
 int vw_active(void) { return win && F.gtk_window_is_active(win); }
 
-void vw_set_dark(int dark) {
+// vw_tiled: the desktop has the window tiled (on any edge), as a tiling
+// compositor says of every window it lays out, and of none it floats.
+int vw_tiled(void) {
+	if (!win) {
+		return 0;
+	}
+	gp surface = F.gtk_native_get_surface(F.gtk_widget_get_native(win));
+	if (!surface) {
+		return 0;
+	}
+	unsigned st = F.gdk_toplevel_get_state(surface);
+	return (st & (GDK_TOPLEVEL_STATE_TILED | GDK_TOPLEVEL_STATE_TOP_TILED | GDK_TOPLEVEL_STATE_RIGHT_TILED |
+		GDK_TOPLEVEL_STATE_BOTTOM_TILED | GDK_TOPLEVEL_STATE_LEFT_TILED)) != 0;
+}
+
+int vw_set_dark(int dark) {
+	// Context menus, the file chooser, the window's border and the page's
+	// prefers-color-scheme follow it. GTK 4.20 names it
+	// gtk-interface-color-scheme (2 dark, 3 light).
+	gp settings = F.gtk_settings_get_default();
+	int scheme = F.g_object_class_find_property(*(gp *)settings, "gtk-interface-color-scheme") != NULL;
+	if (dark < 0 && !scheme) {
+		return 0;
+	}
 	if (dark == dark_now) {
-		return;
+		return 1;
 	}
 	dark_now = dark;
-	// Context menus, the file chooser and the window's border follow it.
-	// GTK 4.20 names it gtk-interface-color-scheme (2 dark, 3 light).
-	gp settings = F.gtk_settings_get_default();
-	if (F.g_object_class_find_property(*(gp *)settings, "gtk-interface-color-scheme")) {
+	if (dark < 0) {
+		// Back to what the desktop says (the portal): setting "default" (1)
+		// would mean no preference, which GTK shows light.
+		F.gtk_settings_reset_property(settings, "gtk-interface-color-scheme");
+	} else if (scheme) {
 		F.g_object_set(settings, "gtk-interface-color-scheme", dark ? 2 : 3, NULL);
 	} else {
 		F.g_object_set(settings, "gtk-application-prefer-dark-theme", dark, NULL);
 	}
+	return 1;
 }
 
 // vw_fix_signals adds SA_ONSTACK to the signal handlers GTK and JavaScriptCore
@@ -606,6 +638,11 @@ int vw_run(const vw_opts *o) {
 	}
 	loop = F.g_main_loop_new(NULL, 0);
 	F.gtk_window_present(win);
+	// The surface exists once presented: its state carries tiled (vw_tiled).
+	gp surface = F.gtk_native_get_surface(F.gtk_widget_get_native(win));
+	if (surface) {
+		CONNECT(surface, "notify::state", on_state);
+	}
 	F.gtk_widget_grab_focus(view);
 	F.g_main_loop_run(loop);
 	return 0;

@@ -223,6 +223,9 @@ type UI struct {
 	// gradient, aurora, sunrise, waves, bubbles, grid, dots, stripes, ripples, contours,
 	// confetti (.bd[data-bd] in web/index.html). The page only.
 	Backdrop string `json:"backdrop,omitempty"`
+	// BackdropStrength scales the background's colours: 0.05 barely there
+	// .. 1.5; 0 (unset) is the standard 1. The page only.
+	BackdropStrength float64 `json:"backdrop_strength,omitempty"`
 	// Radius is the page's corners: "" its own, "minimal" (3px) or "none".
 	// The page only.
 	Radius string `json:"radius,omitempty"`

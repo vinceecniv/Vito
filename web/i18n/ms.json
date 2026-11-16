@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Kekuatan latar belakang",
 "Status": "Status",
 "Settings": "Tetapan",
 "Dictionary": "Kamus",
@@ -1468,6 +1469,7 @@
 "Copyright": "Hak cipta"
 },
 "help": {
+"bdstrength": "Sejauh mana latar belakang kelihatan: ke kiri hampir tidak kelihatan, ke kanan lebih kuat daripada standard.",
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",
 "uilang": "Bahasa antara muka aplikasi ini. 'Automatik' menggunakan bahasa OS anda (jika tidak, Inggeris).",
 "zoom": "Besarkan atau kecilkan keseluruhan antara muka aplikasi. Berguna pada skrin besar atau kecil.",

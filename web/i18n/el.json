@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Ένταση φόντου",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Η επιλογή σας είναι προτίμηση, όχι περιορισμός: το Soniox αναγνωρίζει και άλλες γλώσσες, ακόμη κι όταν αλλάζετε στη μέση της πρότασης.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Το Parakeet αναγνωρίζει μόνο του τη γλώσσα: μπορείτε να υπαγορεύετε σε οποιαδήποτε από τις 25 γλώσσες του, ό,τι κι αν επιλέξετε εδώ.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Αυτό το μοντέλο μένει στη γλώσσα που επιλέγετε εδώ. Αλλάζετε γλώσσα ενώ υπαγορεύετε; Επιλέξτε Αυτόματα.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Πνευματικά δικαιώματα"
 },
 "help": {
+"bdstrength": "Πόσο έντονο είναι το φόντο: προς τα αριστερά σχεδόν αόρατο, προς τα δεξιά πιο έντονο από το κανονικό.",
 "theme": "Φωτεινό, σκοτεινό ή αυτόματο — το αυτόματο ακολουθεί τη ρύθμιση φωτεινού/σκοτεινού του συστήματός σας.",
 "uilang": "Η γλώσσα αυτής της διεπαφής εφαρμογής. Το «Αυτόματα» χρησιμοποιεί τη γλώσσα του συστήματός σας (διαφορετικά Αγγλικά).",
 "zoom": "Μεγεθύνετε ή σμικρύνετε ολόκληρη τη διεπαφή της εφαρμογής. Χρήσιμο σε μεγάλες ή μικρές οθόνες.",

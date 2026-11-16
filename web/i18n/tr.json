@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Arka plan yoğunluğu",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Felemenkçe, İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce, Lehçe, Çekçe, Slovakça, Macarca, Romence, Bulgarca, Hırvatça, Slovence, Yunanca, İsveççe, Danca, Fince, Estonca, Letonca, Litvanca, Maltaca, Rusça ve Ukraynaca — otomatik olarak algılanır. Diğer diller için uygun değildir.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "İngilizce, Felemenkçe, Almanca, Fransızca, İspanyolca, İtalyanca, Lehçe.",
 "Type (keystrokes)": "Yaz (tuş vuruşları)",
@@ -1466,6 +1467,7 @@
 "Copyright": "Telif hakkı"
 },
 "help": {
+"bdstrength": "Arka planın ne kadar belirgin olduğu: sola doğru neredeyse görünmez, sağa doğru standarttan daha güçlü.",
 "theme": "Açık, koyu veya otomatik — otomatik, sisteminizin açık/koyu ayarını izler.",
 "uilang": "Bu uygulama arayüzünün dili. 'Otomatik', işletim sistemi dilinizi kullanır (aksi halde İngilizce).",
 "zoom": "Tüm uygulama arayüzünü büyütür veya küçültür. Büyük veya küçük ekranlarda kullanışlıdır.",

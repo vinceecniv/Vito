@@ -86,6 +86,9 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 	}()
 	var last []uint32
 	dark := p.dark()
+	// fadeFrom, fade: a switch between light and dark crossfades from the
+	// side shown before (fade 0) to the new one (1).
+	fadeFrom, fade := dark, 1.0
 	shown, shownFont, shownWorn, shownCorner := pal(), fcs(), wornNow(), cornersNow() // the colour theme and typeface the pictures are in
 	// The character, when it is the style, lives a little between dictations;
 	// wake brings the frames back for its next blink or gesture.
@@ -137,7 +140,12 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 		if w == nil {
 			return
 		}
-		if err := w.present(p.restPicture(dark, presence(w), hover[name], style, actor, w.connector(), lv, clock)); err != nil {
+		pic := p.restPicture(dark, presence(w), hover[name], style, actor, w.connector(), lv, clock)
+		if fade < 1 {
+			was := p.restPicture(fadeFrom, presence(w), hover[name], style, actor, w.connector(), lv, clock)
+			pic = crossfade(was, was, pic, fade)
+		}
+		if err := w.present(pic); err != nil {
 			p.log.Debug("resting pill not repainted", "err", err)
 		}
 	}
@@ -273,6 +281,11 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 				moving = true
 				repaint()
 			}
+			if fade < 1 {
+				fade = min(1, fade+step(themeTime))
+				moving = true
+				repaint()
+			}
 			if want := restWant(restAt); rest != want {
 				if rest < want {
 					rest = min(want, rest+step(restTime))
@@ -313,6 +326,13 @@ func (p *pill) keepIdle(outputs <-chan []uint32, focused <-chan string, ended <-
 				return <-ended
 			}
 			if now := p.dark(); now != dark || pal() != shown || fcs() != shownFont || wornNow() != shownWorn || cornersNow() != shownCorner {
+				if now != dark && pal() == shown && fcs() == shownFont {
+					// Only the side changed (the desktop's or Vito's own
+					// setting): crossfade. A new palette or font is global,
+					// so the old picture can no longer be drawn.
+					fadeFrom, fade = dark, 0
+					animate()
+				}
 				dark, shown, shownFont, shownWorn, shownCorner = now, pal(), fcs(), wornNow(), cornersNow()
 				repaint()
 			}

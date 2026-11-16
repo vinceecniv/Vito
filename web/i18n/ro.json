@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Intensitatea fundalului",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Neerlandeză, engleză, germană, franceză, spaniolă, italiană, portugheză, poloneză, cehă, slovacă, maghiară, română, bulgară, croată, slovenă, greacă, suedeză, daneză, finlandeză, estonă, letonă, lituaniană, malteză, rusă și ucraineană — detectate automat. Nu este potrivit pentru alte limbi.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Engleză, neerlandeză, germană, franceză, spaniolă, italiană, poloneză.",
 "Type (keystrokes)": "Tastare (apăsări de taste)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Drepturi de autor"
 },
 "help": {
+"bdstrength": "Cât de prezent este fundalul: spre stânga abia vizibil, spre dreapta mai puternic decât standardul.",
 "theme": "Luminos, întunecat sau automat — automatul urmează setarea luminos/întunecat a sistemului tău.",
 "uilang": "Limba acestei interfețe. „Automat” folosește limba sistemului de operare (altfel engleză).",
 "zoom": "Mărește sau micșorează întreaga interfață a aplicației. Util pe ecrane mari sau mici.",

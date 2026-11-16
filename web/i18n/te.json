@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "నేపథ్య తీవ్రత",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "డచ్, ఇంగ్లీష్, జర్మన్, ఫ్రెంచ్, స్పానిష్, ఇటాలియన్, పోర్చుగీస్, పోలిష్, చెక్, స్లోవాక్, హంగేరియన్, రొమేనియన్, బల్గేరియన్, క్రొయేషియన్, స్లోవేనియన్, గ్రీక్, స్వీడిష్, డానిష్, ఫిన్నిష్, ఎస్టోనియన్, లాట్వియన్, లిథువేనియన్, మాల్టీస్, రష్యన్ మరియు ఉక్రేనియన్ — స్వయంచాలకంగా గుర్తించబడతాయి. ఇతర భాషలకు తగినది కాదు.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "ఇంగ్లీష్, డచ్, జర్మన్, ఫ్రెంచ్, స్పానిష్, ఇటాలియన్, పోలిష్.",
 "Type (keystrokes)": "టైప్ చేయి (కీస్ట్రోక్‌లు)",
@@ -1468,6 +1469,7 @@
 "Copyright": "కాపీరైట్"
 },
 "help": {
+"bdstrength": "నేపథ్యం ఎంత కనిపించాలి: ఎడమవైపు దాదాపు కనిపించదు, కుడివైపు సాధారణం కంటే గాఢంగా.",
 "theme": "లేత, ముదురు లేదా స్వయంచాలకం — స్వయంచాలకం మీ సిస్టమ్ లేత/ముదురు సెట్టింగ్‌ను అనుసరిస్తుంది.",
 "uilang": "ఈ యాప్ ఇంటర్‌ఫేస్ భాష. 'స్వయంచాలకం' మీ OS భాషను వాడుతుంది (లేకపోతే ఇంగ్లీష్).",
 "zoom": "మొత్తం యాప్ ఇంటర్‌ఫేస్‌ను పెద్దగా లేదా చిన్నగా చేయి. పెద్ద లేదా చిన్న స్క్రీన్‌లపై అనుకూలం.",

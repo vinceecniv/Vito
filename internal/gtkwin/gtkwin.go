@@ -176,11 +176,20 @@ func Close() { C.vw_close() }
 // SetDark makes GTK's own parts (menus, the file chooser, the frame) dark.
 func SetDark(dark bool) { C.vw_set_dark(cbool(dark)) }
 
+// FollowSystem gives GTK, and with it the page's prefers-color-scheme, the
+// desktop's colour scheme again, live. False where GTK cannot (before 4.20).
+func FollowSystem() bool { return C.vw_set_dark(-1) != 0 }
+
 // SetRadius rounds the window's corners.
 func SetRadius(px int) { C.vw_set_radius(C.int(px)) }
 
 // State says whether the window is maximised and active.
 func State() (max, active bool) { return C.vw_maximized() != 0, C.vw_active() != 0 }
+
+// Tiled says whether the desktop has the window tiled: a tiling compositor
+// says so of every window it lays out and of none that floats (xdg-shell's
+// tiled states). On GNOME or KDE it means snapped to an edge.
+func Tiled() bool { return C.vw_tiled() != 0 }
 
 // DecorationLayout is GTK's gtk-decoration-layout, "appmenu:close" on GNOME:
 // which caption buttons the desktop shows, and on which side.

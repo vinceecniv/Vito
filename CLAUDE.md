@@ -277,7 +277,12 @@ titlebar widget; GTK keeps the frame and resize borders): on a tiling desktop
 (`tilingDesktop`: niri, Hyprland, sway, …) none at all, as other windows there;
 elsewhere the page draws it (`html.frame-gtk`), with the buttons, order and side
 of GTK's `gtk-decoration-layout` (GNOME's default `appmenu:close` shows only
-close). `VITO_WINDOW_FRAME=own|bare` overrides for trying. Dragging, resizing
+close). There a floating window gets the strip back, with maximise and close only
+(`html.frame-float`, `cmd/vito/float_linux.go`): any tiling compositor marks the
+windows it lays out with xdg-shell's tiled states and floating ones not
+(`gtkwin.Tiled`, followed through the surface's `state`); niri marks every
+window tiled under `prefer-no-csd`, so there its event stream decides (by pid).
+`VITO_WINDOW_FRAME=own|bare` overrides for trying. Dragging, resizing
 and the window menu start from the last button press, kept by a capture-phase
 event controller. Wayland gives no say in placement, so only the size and
 maximised state are kept (`window-gtk.json`). Downloads go to the Downloads
