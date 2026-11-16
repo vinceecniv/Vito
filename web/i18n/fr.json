@@ -1531,6 +1531,7 @@
 "cursor": "Le pointeur de la souris aux couleurs de Vito, avec le logo en main. Désactivé : le pointeur habituel de votre système.",
 "helptips": "Oui, en voici une. Désactivé : plus aucune explication quand vous vous attardez sur un réglage — celle-ci non plus.",
 "soundset": "Le timbre des sons : ceux de Vito, Doux (sons chauds), Verre (clochettes claires), Rétro (8 bits) ou Tic (court et sec, le plus discret). Cliquez sur l'un d'eux pour l'écouter.",
+"ownwindowlinux": "Ouvre Vito dans sa propre fenêtre (WebKitGTK), sans navigateur. Désactivé : dans l'application de navigateur installée ou dans un onglet du navigateur.",
 "ownwindow": "Ouvre Vito dans sa propre fenêtre (Microsoft Edge WebView2), sans navigateur. Désactivé : dans l'application de navigateur installée ou dans un onglet du navigateur."
 }
 }

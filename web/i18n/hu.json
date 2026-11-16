@@ -1531,6 +1531,7 @@
 "cursor": "Egérmutató a Vito színeiben, kezében a logóval. Ki: a rendszered megszokott mutatója.",
 "helptips": "Igen, ez is egy ilyen. Ki: nincs több magyarázat, ha egy beállítás fölött időzöl — ennél sem.",
 "soundset": "Hogyan szólnak a hangok: a Vito sajátjai, Lágy (meleg hangok), Üveg (fényes csengők), Retró (8 bites) vagy Tikk (rövid és száraz, a legkevésbé feltűnő). Kattints egyre, hogy meghalld.",
+"ownwindowlinux": "Saját ablakban nyitja meg a Vitót (WebKitGTK), böngésző nélkül. Ki: a telepített böngészőalkalmazásban vagy egy böngészőlapon.",
 "ownwindow": "Saját ablakban nyitja meg a Vitót (Microsoft Edge WebView2), böngésző nélkül. Ki: a telepített böngészőalkalmazásban vagy egy böngészőlapon."
 }
 }

@@ -1531,6 +1531,7 @@
 "cursor": "Hiirekursor Vito värvides, logo käes. Väljas: sinu süsteemi tavaline kursor.",
 "helptips": "Jah, see on üks neist. Väljas: enam selgitusi pole, kui seade kohal viivitad — ka mitte see.",
 "soundset": "Kuidas helid kõlavad: Vito omad, Pehme (soojad toonid), Klaas (heledad kellukesed), Retro (8-bit) või Tiks (lühike ja kuiv, kõige vähem märgatav). Klõpsa ühel, et seda kuulda.",
+"ownwindowlinux": "Avab Vito omaette aknas (WebKitGTK), ilma brauserita. Väljas: paigaldatud brauserirakenduses või brauseri vahekaardil.",
 "ownwindow": "Avab Vito omaette aknas (Microsoft Edge WebView2), ilma brauserita. Väljas: paigaldatud brauserirakenduses või brauseri vahekaardil."
 }
 }

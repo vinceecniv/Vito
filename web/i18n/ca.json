@@ -1531,6 +1531,7 @@
 "cursor": "El punter del ratolí amb els colors de Vito, amb el logotip a la mà. Desactivat: el punter habitual del teu sistema.",
 "helptips": "Sí, aquesta n'és una. Desactivat: cap més explicació quan et quedes un moment sobre un ajust — aquesta tampoc.",
 "soundset": "Com sonen els sons: els de Vito, Suau (tons càlids), Vidre (campanetes clares), Retro (8 bits) o Tic (curt i sec, el que menys es nota). Fes clic en un per escoltar-lo.",
+"ownwindowlinux": "Obre Vito en una finestra pròpia (WebKitGTK), sense navegador. Desactivat: a l'aplicació del navegador instal·lada o en una pestanya del navegador.",
 "ownwindow": "Obre Vito en una finestra pròpia (Microsoft Edge WebView2), sense navegador. Desactivat: a l'aplicació del navegador instal·lada o en una pestanya del navegador."
 }
 }

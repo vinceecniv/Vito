@@ -1531,6 +1531,7 @@
 "cursor": "Treguesi i miut në ngjyrat e Vitos, me logon në dorë. Fikur: treguesi i zakonshëm i sistemit tënd.",
 "helptips": "Po, ky është një i tillë. Fikur: më nuk ka shpjegime kur ndalesh pak mbi një cilësim — as ky.",
 "soundset": "Si tingëllojnë tingujt: ata të Vitos, I butë (tone të ngrohta), Xham (zile të kthjellëta), Retro (8-bit) ose Tik (i shkurtër dhe i thatë, më pak i dukshmi). Kliko njërin për ta dëgjuar.",
+"ownwindowlinux": "E hap Vito-n në një dritare të vetën (WebKitGTK), pa shfletues. Joaktiv: në aplikacionin e instaluar të shfletuesit ose në një skedë shfletuesi.",
 "ownwindow": "E hap Vito-n në një dritare të vetën (Microsoft Edge WebView2), pa shfletues. Joaktiv: në aplikacionin e instaluar të shfletuesit ose në një skedë shfletuesi."
 }
 }

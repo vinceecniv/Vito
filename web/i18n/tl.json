@@ -1529,6 +1529,7 @@
 "cursor": "Ang mouse pointer sa mga kulay ni Vito, hawak ang logo. Off: ang karaniwang pointer ng system mo.",
 "helptips": "Oo, isa ito roon. Off: wala nang paliwanag kapag tumambay ka sandali sa isang setting — kasama na ito.",
 "soundset": "Kung paano tumutunog ang mga tunog: sariling tunog ni Vito, Malambot (mainit na tono), Kristal (malinaw na kampanilya), Retro (8-bit) o Tik (maikli at tuyo, pinakamahirap mapansin). I-click ang isa para marinig ito.",
+"ownwindowlinux": "Binubuksan ang Vito sa sarili nitong window (WebKitGTK), nang walang browser. Naka-off: sa naka-install na browser app o sa isang browser tab.",
 "ownwindow": "Binubuksan ang Vito sa sarili nitong window (Microsoft Edge WebView2), nang walang browser. Naka-off: sa naka-install na browser app o sa isang browser tab."
 }
 }

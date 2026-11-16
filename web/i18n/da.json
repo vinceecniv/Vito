@@ -1531,6 +1531,7 @@
 "cursor": "Musemarkøren i Vitos farver med logoet i hånden. Fra: dit systems sædvanlige markør.",
 "helptips": "Ja, dette er en af dem. Fra: ingen forklaringer mere, når du holder musen over en indstilling — heller ikke denne.",
 "soundset": "Hvordan lydene lyder: Vitos egne, Blød (varme toner), Glas (klare klokker), Retro (8-bit) eller Tik (kort og tør, den mindst påfaldende). Klik på et for at høre det.",
+"ownwindowlinux": "Åbner Vito i sit eget vindue (WebKitGTK), uden browser. Fra: i den installerede browserapp eller en browserfane.",
 "ownwindow": "Åbner Vito i sit eget vindue (Microsoft Edge WebView2), uden browser. Fra: i den installerede browserapp eller en browserfane."
 }
 }

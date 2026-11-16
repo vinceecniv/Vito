@@ -1531,6 +1531,7 @@
 "cursor": "Kazalec miške v barvah Vita, z logotipom v roki. Izklopljeno: običajni kazalec vašega sistema.",
 "helptips": "Da, to je eden od njih. Izklopljeno: nič več pojasnil, ko se za trenutek zadržite nad nastavitvijo — tudi tega ne.",
 "soundset": "Kako zvenijo zvoki: Vitovi lastni, Mehko (topli toni), Steklo (svetli zvončki), Retro (8-bitni) ali Tik (kratki in suhi, najmanj opazni). Kliknite nabor, da ga slišite.",
+"ownwindowlinux": "Odpre Vito v lastnem oknu (WebKitGTK), brez brskalnika. Izklopljeno: v nameščeni aplikaciji brskalnika ali v zavihku brskalnika.",
 "ownwindow": "Odpre Vito v lastnem oknu (Microsoft Edge WebView2), brez brskalnika. Izklopljeno: v nameščeni aplikaciji brskalnika ali v zavihku brskalnika."
 }
 }

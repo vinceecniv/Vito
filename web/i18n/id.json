@@ -1531,6 +1531,7 @@
 "cursor": "Penunjuk tetikus dalam warna Vito, dengan logo di tangannya. Nonaktif: penunjuk biasa sistem Anda.",
 "helptips": "Ya, ini salah satunya. Nonaktif: tidak ada penjelasan lagi saat Anda berhenti sejenak di atas pengaturan — termasuk yang ini.",
 "soundset": "Bagaimana suaranya terdengar: milik Vito sendiri, Lembut (nada hangat), Kaca (lonceng jernih), Retro (8-bit), atau Detak (pendek dan kering, paling tidak mencolok). Klik salah satu untuk mendengarnya.",
+"ownwindowlinux": "Membuka Vito di jendelanya sendiri (WebKitGTK), tanpa browser. Nonaktif: di aplikasi browser yang terpasang atau di tab browser.",
 "ownwindow": "Membuka Vito di jendelanya sendiri (Microsoft Edge WebView2), tanpa browser. Nonaktif: di aplikasi browser yang terpasang atau di tab browser."
 }
 }

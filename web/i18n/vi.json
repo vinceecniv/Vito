@@ -1529,6 +1529,7 @@
 "cursor": "Con trỏ chuột mang màu của Vito, tay cầm logo. Tắt: con trỏ thông thường của hệ thống.",
 "helptips": "Đúng vậy, đây chính là một lời giải thích như thế. Tắt: không còn giải thích khi bạn dừng chuột trên một cài đặt — kể cả cái này.",
 "soundset": "Âm thanh nghe như thế nào: của riêng Vito, Êm dịu (âm ấm), Thủy tinh (chuông trong trẻo), Retro (8-bit) hoặc Tích (ngắn và khô, ít gây chú ý nhất). Nhấp vào một bộ để nghe thử.",
+"ownwindowlinux": "Mở Vito trong cửa sổ riêng (WebKitGTK), không cần trình duyệt. Tắt: trong ứng dụng trình duyệt đã cài hoặc trong một thẻ trình duyệt.",
 "ownwindow": "Mở Vito trong cửa sổ riêng (Microsoft Edge WebView2), không cần trình duyệt. Tắt: trong ứng dụng trình duyệt đã cài hoặc trong một thẻ trình duyệt."
 }
 }

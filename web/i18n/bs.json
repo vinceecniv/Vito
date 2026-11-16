@@ -1532,6 +1532,7 @@
 "cursor": "Pokazivač miša u bojama aplikacije Vito, s logotipom u ruci. Isključeno: uobičajeni pokazivač vašeg sistema.",
 "helptips": "Da, ovo je jedno od njih. Isključeno: nema više objašnjenja kada se zadržite iznad postavke — ni ovog.",
 "soundset": "Kako zvukovi zvuče: Vitovi vlastiti, Meko (topli tonovi), Staklo (jasna zvonca), Retro (8-bitni) ili Tik (kratki i suhi, najmanje upadljivi). Kliknite na set da ga čujete.",
+"ownwindowlinux": "Otvara Vito u vlastitom prozoru (WebKitGTK), bez preglednika. Isključeno: u instaliranoj aplikaciji preglednika ili u kartici preglednika.",
 "ownwindow": "Otvara Vito u vlastitom prozoru (Microsoft Edge WebView2), bez preglednika. Isključeno: u instaliranoj aplikaciji preglednika ili u kartici preglednika."
 }
 }

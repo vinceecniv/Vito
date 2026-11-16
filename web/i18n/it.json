@@ -1529,6 +1529,7 @@
 "cursor": "Il puntatore del mouse nei colori di Vito, con il logo in mano. Off: il solito puntatore del tuo sistema.",
 "helptips": "Sì, questo è uno. Off: niente più spiegazioni quando ti soffermi su un'impostazione — nemmeno questa.",
 "soundset": "Come suonano i suoni: quelli di Vito, Morbido (toni caldi), Vetro (campanelli brillanti), Retro (8 bit) o Tic (breve e secco, il meno invadente). Fai clic su uno per ascoltarlo.",
+"ownwindowlinux": "Apre Vito in una finestra tutta sua (WebKitGTK), senza browser. Off: nell'app del browser installata o in una scheda del browser.",
 "ownwindow": "Apre Vito in una finestra tutta sua (Microsoft Edge WebView2), senza browser. Off: nell'app del browser installata o in una scheda del browser."
 }
 }

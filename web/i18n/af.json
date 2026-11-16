@@ -1531,6 +1531,7 @@
 "cursor": "Die muiswyser in Vito se kleure, met die logo in sy hand. Af: jou stelsel se gewone wyser.",
 "helptips": "Ja, hierdie is een. Af: geen verduidelikings meer as jy oor 'n instelling talm nie — hierdie een ook nie.",
 "soundset": "Hoe die klanke klink: Vito se eie, Sag (warm klanke), Glas (helder klokkies), Retro (8-bis) of Tik (kort en droog, die minste opvallend). Klik op een om dit te hoor.",
+"ownwindowlinux": "Maak Vito in sy eie venster oop (WebKitGTK), sonder 'n blaaier. Af: in die geïnstalleerde blaaier-app of 'n blaaieroortjie.",
 "ownwindow": "Maak Vito in sy eie venster oop (Microsoft Edge WebView2), sonder 'n blaaier. Af: in die geïnstalleerde blaaier-app of 'n blaaieroortjie."
 }
 }

@@ -1531,6 +1531,7 @@
 "cursor": "Vito-nun rənglərində, əlində loqo olan siçan göstəricisi. Sönülü: sisteminizin adi göstəricisi.",
 "helptips": "Bəli, bu da onlardan biridir. Sönülü: parametrin üzərində dayandıqda artıq izah yoxdur — bu da daxil olmaqla.",
 "soundset": "Səslər necə səslənir: Vito-nun öz səsləri, Yumşaq (isti tonlar), Şüşə (parlaq zınqırovlar), Retro (8-bit) və ya Tıq (qısa və quru, ən az nəzərə çarpan). Eşitmək üçün birinə klikləyin.",
+"ownwindowlinux": "Vito-nu brauzer olmadan öz pəncərəsində açır (WebKitGTK). Söndürülüb: quraşdırılmış brauzer tətbiqində və ya brauzer tabında.",
 "ownwindow": "Vito-nu brauzer olmadan öz pəncərəsində açır (Microsoft Edge WebView2). Söndürülüb: quraşdırılmış brauzer tətbiqində və ya brauzer tabında."
 }
 }

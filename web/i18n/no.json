@@ -1531,6 +1531,7 @@
 "cursor": "Musepekeren i Vitos farger, med logoen i hånden. Av: systemets vanlige peker.",
 "helptips": "Ja, dette er en av dem. Av: ingen flere forklaringer når du blir værende over en innstilling — heller ikke denne.",
 "soundset": "Hvordan lydene høres ut: Vitos egne, Myk (varme toner), Glass (klare bjeller), Retro (8-bit) eller Tikk (kort og tørr, minst merkbar). Klikk på en for å høre den.",
+"ownwindowlinux": "Åpner Vito i et eget vindu (WebKitGTK), uten nettleser. Av: i den installerte nettleserappen eller en nettleserfane.",
 "ownwindow": "Åpner Vito i et eget vindu (Microsoft Edge WebView2), uten nettleser. Av: i den installerte nettleserappen eller en nettleserfane."
 }
 }
