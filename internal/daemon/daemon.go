@@ -748,13 +748,14 @@ func (d *Daemon) start() error {
 		lastLevel := time.Time{}
 		var loudest float64
 		var meter meterScale // scaled to the last seconds of speech, per session
+		var voice voiceGate  // what counts as speech on this microphone
 		for chunk := range s.chunks {
 			if err := s.spool.Write(chunk); err != nil {
 				d.log.Error("spool write failed", "err", err)
 			}
 			s.stream.Send(chunk)
 			r, clip := peakRatio(chunk)
-			if listenByLevel && r >= speechGate {
+			if listenByLevel && voice.speaking(r) {
 				s.lastActivity.Store(time.Now().UnixMilli())
 				s.spoke.Store(true)
 			}
@@ -1541,16 +1542,40 @@ func peakRatio(pcm []byte) (float64, bool) {
 }
 
 const (
-	// speechGate is the peak above which a chunk counts as someone talking, for
+	// speechGate is the highest peak voiceGate asks for someone talking, for
 	// sessions that hear no partials (see Start). ≈ -30 dBFS: under the quietest
 	// peak the meter stretches to full, above room noise on a normal microphone.
+	// A quiet microphone never reaches it — a headset measured at 0.022–0.025
+	// while speaking, so every dictation was cancelled as silence — hence the
+	// gate follows the microphone's own noise floor below it.
 	speechGate = 0.03
+	// speechGateMin: the lowest gate, however quiet the floor (≈ -44 dBFS).
+	speechGateMin = 0.006
+	// speechOverFloor: a chunk this many times the noise floor is speech.
+	speechOverFloor = 4
 
 	meterGate   = 0.012                  // ambient hiss: the bar rests at 0 below this
 	meterRefMin = 0.05                   // ≈ -26 dBFS: quietest peak we'll stretch to full
 	meterWindow = 2 * time.Second        // sliding window whose loudest peak is "100%"
 	meterFall   = 400 * time.Millisecond // how fast the scale eases back down
 )
+
+// voiceGate tells speech from silence by the chunk's peak, against the
+// microphone's noise floor: the floor drops at once to a quieter chunk and
+// creeps up slowly, so speech never lifts it far.
+type voiceGate struct {
+	floor float64
+	seen  bool
+}
+
+func (g *voiceGate) speaking(peak float64) bool {
+	if !g.seen || peak < g.floor {
+		g.floor, g.seen = peak, true
+	} else {
+		g.floor += (peak - g.floor) * 0.002
+	}
+	return peak >= min(speechGate, max(speechGateMin, g.floor*speechOverFloor))
+}
 
 type meterSample struct {
 	at   time.Time
