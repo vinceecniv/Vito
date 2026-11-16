@@ -34,6 +34,10 @@ enum { WEBKIT_INJECT_TOP_FRAME = 1, WEBKIT_INJECT_AT_START = 0 };
 enum { WEBKIT_POLICY_NAVIGATION = 0, WEBKIT_POLICY_NEW_WINDOW = 1 };
 enum { G_USER_DIRECTORY_DOWNLOAD = 2 };
 enum { GTK_STYLE_PROVIDER_PRIORITY_APPLICATION = 600 };
+// GdkToplevelState: tiled at all (xdg-shell before v2) or on an edge.
+enum { GDK_TOPLEVEL_STATE_TILED = 1 << 7, GDK_TOPLEVEL_STATE_TOP_TILED = 1 << 8,
+	GDK_TOPLEVEL_STATE_RIGHT_TILED = 1 << 10, GDK_TOPLEVEL_STATE_BOTTOM_TILED = 1 << 12,
+	GDK_TOPLEVEL_STATE_LEFT_TILED = 1 << 14 };
 
 static struct {
 	// GLib, GObject
@@ -93,6 +97,7 @@ static struct {
 	void (*gdk_toplevel_begin_move)(gp, gp, int, double, double, uint32_t);
 	void (*gdk_toplevel_begin_resize)(gp, int, gp, int, double, double, uint32_t);
 	gboolean (*gdk_toplevel_show_window_menu)(gp, gp);
+	unsigned (*gdk_toplevel_get_state)(gp);
 	// WebKitGTK, JavaScriptCore
 	GType (*webkit_web_view_get_type)(void);
 	gp (*webkit_network_session_new)(const char *, const char *);
@@ -165,6 +170,7 @@ int vw_load(const char **missing) {
 	L(gdk_event_get_event_type) L(gdk_event_get_device) L(gdk_event_get_position)
 	L(gdk_event_get_time) L(gdk_button_event_get_button) L(gdk_event_ref) L(gdk_event_unref)
 	L(gdk_toplevel_begin_move) L(gdk_toplevel_begin_resize) L(gdk_toplevel_show_window_menu)
+	L(gdk_toplevel_get_state)
 	L(webkit_web_view_get_type) L(webkit_network_session_new) L(webkit_user_content_manager_new)
 	L(webkit_user_script_new) L(webkit_user_script_unref) L(webkit_user_content_manager_add_script)
 	L(webkit_user_content_manager_register_script_message_handler) L(webkit_web_view_get_settings)
@@ -291,6 +297,21 @@ void vw_close(void) {
 
 int vw_maximized(void) { return win && F.gtk_window_is_maximized(win); }
 int vw_active(void) { return win && F.gtk_window_is_active(win); }
+
+// vw_tiled: the desktop has the window tiled (on any edge), as a tiling
+// compositor says of every window it lays out, and of none it floats.
+int vw_tiled(void) {
+	if (!win) {
+		return 0;
+	}
+	gp surface = F.gtk_native_get_surface(F.gtk_widget_get_native(win));
+	if (!surface) {
+		return 0;
+	}
+	unsigned st = F.gdk_toplevel_get_state(surface);
+	return (st & (GDK_TOPLEVEL_STATE_TILED | GDK_TOPLEVEL_STATE_TOP_TILED | GDK_TOPLEVEL_STATE_RIGHT_TILED |
+		GDK_TOPLEVEL_STATE_BOTTOM_TILED | GDK_TOPLEVEL_STATE_LEFT_TILED)) != 0;
+}
 
 int vw_set_dark(int dark) {
 	// Context menus, the file chooser, the window's border and the page's
@@ -617,6 +638,11 @@ int vw_run(const vw_opts *o) {
 	}
 	loop = F.g_main_loop_new(NULL, 0);
 	F.gtk_window_present(win);
+	// The surface exists once presented: its state carries tiled (vw_tiled).
+	gp surface = F.gtk_native_get_surface(F.gtk_widget_get_native(win));
+	if (surface) {
+		CONNECT(surface, "notify::state", on_state);
+	}
 	F.gtk_widget_grab_focus(view);
 	F.g_main_loop_run(loop);
 	return 0;

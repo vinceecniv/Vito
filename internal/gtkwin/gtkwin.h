@@ -40,6 +40,7 @@ void vw_fix_signals(void);
 int vw_sharp_cursors(void);
 int vw_maximized(void);
 int vw_active(void);
+int vw_tiled(void);
 // vw_decoration_layout is GTK's gtk-decoration-layout ("appmenu:close"),
 // to be freed with free().
 char *vw_decoration_layout(void);

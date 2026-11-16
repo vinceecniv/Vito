@@ -185,8 +185,13 @@ func runGTKWindow(cfg *config.Config, target, token string) {
 		// the page makes it smaller (cursorCSS), a little soft but the right size.
 		scripts = append(scripts, "window.__VITO_SHRINK_CURSORS__ = true;")
 	}
+	// On a tiling desktop the strip shows only while the window floats.
+	floats := floatWatcher()
+	float := !own && os.Getenv("VITO_WINDOW_FRAME") != "bare"
 	if own {
 		scripts = append(scripts, gtkFrameJS(gtkwin.DecorationLayout()))
+	} else if float {
+		scripts = append(scripts, gtkFloatJS)
 	}
 	scripts = append(scripts, externalLinksJS)
 	if debug {
@@ -224,10 +229,19 @@ func runGTKWindow(cfg *config.Config, target, token string) {
 				if token != "" {
 					gtkwin.Present(token)
 				}
+				switch {
+				case float && floats != nil:
+					go floats(setFloating)
+				case float:
+					setFloating(!gtkwin.Tiled())
+				}
 			})
 			onGTKMessage(raw)
 		},
 		State: func(max, active bool) {
+			if float && floats == nil {
+				setFloating(!gtkwin.Tiled())
+			}
 			gtkwin.Eval(fmt.Sprintf("window.vitoFrameState&&vitoFrameState({max:%t,active:%t})", max, active))
 		},
 		Closing: func(w, h int, max bool) {
@@ -304,6 +318,9 @@ func onGTKMessage(raw string) {
 		if m.A == "hello" {
 			max, active := gtkwin.State()
 			gtkwin.Eval(fmt.Sprintf("window.vitoFrameState&&vitoFrameState({max:%t,active:%t})", max, active))
+			if f := floating.Load(); f != 0 { // a reloaded page asks again
+				gtkwin.Eval(fmt.Sprintf("window.vitoFloating&&vitoFloating(%t)", f > 0))
+			}
 			return
 		}
 		gtkwin.Frame(m.A, m.Edge)

@@ -6667,8 +6667,19 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
   addEventListener("scroll", queueTitle, { passive:true });
   addEventListener("resize", queueTitle);
   new MutationObserver(queueTitle).observe(document.querySelector("main"), { subtree:true, attributes:true, attributeFilter:["class"] });
-  if (!window.__VITO_FRAME__ || !window.vitoWin) return;
-  root.classList.add("own-frame");
+  // A tiling desktop (niri, Hyprland, sway, …): no strip while the window is
+  // tiled, like the windows around it; floating, the strip with maximise and
+  // close, to drag it and to double-click it. The window says which
+  // (vitoFloating, cmd/vito/float_linux.go). No minimise: tiling desktops
+  // have nowhere to minimise to.
+  const float = !!window.__VITO_FRAME_FLOAT__;
+  if ((!window.__VITO_FRAME__ && !float) || !window.vitoWin) return;
+  const framed = () => root.classList.contains("own-frame");
+  if (float) {
+    root.classList.add("frame-gtk", "frame-float");
+    $("win-min").style.display = "none";
+    window.vitoFloating = (on) => { root.classList.toggle("own-frame", !!on); queueTitle(); };
+  } else root.classList.add("own-frame");
   // Linux: GTK's decoration layout ("appmenu:close", "close,minimize:") says
   // which buttons the desktop shows, in what order and on which side.
   if (typeof window.__VITO_FRAME_GTK__ === "string") {
@@ -6698,7 +6709,7 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
     if (ev.button === 0) { ev.preventDefault(); vitoWin("resize", e.dataset.edge); }
   }));
   const zone = $("win-zone");
-  const onStrip = (ev) => ev.clientY <= zone.getBoundingClientRect().bottom &&
+  const onStrip = (ev) => framed() && ev.clientY <= zone.getBoundingClientRect().bottom &&
     !(ev.target.closest && ev.target.closest("button, a, input, textarea, select, label, [role=button], [contenteditable], .brand, .card-menu"));
   let last = null; // the previous press on the strip: a second one soon after is a double click
   // GTK hands the pointer to the desktop as soon as a move begins, so the
@@ -6734,7 +6745,7 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
     ![...el.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim());
   let press = null;
   document.addEventListener("mousedown", (ev) => {
-    press = ev.button === 0 && !onStrip(ev) && isBg(ev.target) ? { x: ev.screenX, y: ev.screenY } : null;
+    press = ev.button === 0 && framed() && !onStrip(ev) && isBg(ev.target) ? { x: ev.screenX, y: ev.screenY } : null;
   }, true);
   document.addEventListener("mousemove", (ev) => {
     if (!press) return;
