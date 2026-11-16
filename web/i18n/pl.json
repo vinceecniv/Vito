@@ -1531,6 +1531,7 @@
 "cursor": "Wskaźnik myszy w kolorach Vito, z logo w dłoni. Wył.: zwykły wskaźnik twojego systemu.",
 "helptips": "Tak, to jest jedna z nich. Wył.: koniec z objaśnieniami, gdy zatrzymasz się nad ustawieniem — nad tym też.",
 "soundset": "Jak brzmią dźwięki: własne dźwięki Vito, Miękki (ciepłe tony), Szkło (jasne dzwoneczki), Retro (8-bit) lub Tik (krótki i suchy, najmniej zauważalny). Kliknij zestaw, aby go posłuchać.",
+"ownwindowlinux": "Otwiera Vito w osobnym oknie (WebKitGTK), bez przeglądarki. Wył.: w zainstalowanej aplikacji przeglądarki lub w karcie przeglądarki.",
 "ownwindow": "Otwiera Vito w osobnym oknie (Microsoft Edge WebView2), bez przeglądarki. Wył.: w zainstalowanej aplikacji przeglądarki lub w karcie przeglądarki."
 }
 }

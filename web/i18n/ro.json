@@ -1531,6 +1531,7 @@
 "cursor": "Cursorul mouse-ului în culorile lui Vito, cu logoul în mână. Oprit: cursorul obișnuit al sistemului tău.",
 "helptips": "Da, asta e una. Oprit: nicio explicație când zăbovești asupra unei setări — nici aceasta.",
 "soundset": "Cum sună sunetele: cele ale lui Vito, Moale (tonuri calde), Sticlă (clopoței clari), Retro (8 biți) sau Tic (scurt și sec, cel mai discret). Apasă pe unul ca să-l auzi.",
+"ownwindowlinux": "Deschide Vito într-o fereastră proprie (WebKitGTK), fără browser. Dezactivat: în aplicația de browser instalată sau într-o filă de browser.",
 "ownwindow": "Deschide Vito într-o fereastră proprie (Microsoft Edge WebView2), fără browser. Dezactivat: în aplicația de browser instalată sau într-o filă de browser."
 }
 }

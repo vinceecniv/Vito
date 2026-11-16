@@ -1531,6 +1531,7 @@
 "cursor": "Ukazovateľ myši vo farbách Vita, s logom v ruke. Vypnuté: bežný ukazovateľ vášho systému.",
 "helptips": "Áno, toto je jeden z nich. Vypnuté: žiadne ďalšie vysvetlenia, keď sa pri nastavení chvíľu zdržíte — ani tento.",
 "soundset": "Ako zvuky znejú: Vitove vlastné, Mäkká (teplé tóny), Sklo (jasné zvončeky), Retro (8-bit) alebo Tik (krátke a suché, najmenej nápadné). Kliknite na sadu a vypočujte si ju.",
+"ownwindowlinux": "Otvorí Vito vo vlastnom okne (WebKitGTK), bez prehliadača. Vypnuté: v nainštalovanej aplikácii prehliadača alebo na karte prehliadača.",
 "ownwindow": "Otvorí Vito vo vlastnom okne (Microsoft Edge WebView2), bez prehliadača. Vypnuté: v nainštalovanej aplikácii prehliadača alebo na karte prehliadača."
 }
 }

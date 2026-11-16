@@ -1531,6 +1531,7 @@
 "cursor": "Muspekaren i Vitos färger, med logotypen i handen. Av: ditt systems vanliga pekare.",
 "helptips": "Ja, det här är en. Av: inga fler förklaringar när du dröjer kvar över en inställning — inte heller den här.",
 "soundset": "Hur ljuden låter: Vitos egna, Mjuk (varma toner), Glas (klara klockor), Retro (8-bit) eller Tick (kort och torr, minst märkbar). Klicka på en för att höra den.",
+"ownwindowlinux": "Öppnar Vito i ett eget fönster (WebKitGTK), utan webbläsare. Av: i den installerade webbläsarappen eller i en webbläsarflik.",
 "ownwindow": "Öppnar Vito i ett eget fönster (Microsoft Edge WebView2), utan webbläsare. Av: i den installerade webbläsarappen eller i en webbläsarflik."
 }
 }

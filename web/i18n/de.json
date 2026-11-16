@@ -1531,6 +1531,7 @@
 "cursor": "Der Mauszeiger in Vitos Farben, mit dem Logo in der Hand. Aus: der übliche Mauszeiger deines Systems.",
 "helptips": "Ja, das ist einer. Aus: keine Erklärungen mehr, wenn du kurz über einer Einstellung verweilst – auch diese nicht.",
 "soundset": "Wie die Töne klingen: Vitos eigene, Weich (warme Klänge), Glas (helle Glöckchen), Retro (8-Bit) oder Tick (kurz und trocken, am unauffälligsten). Klicke einen an, um ihn zu hören.",
+"ownwindowlinux": "Öffnet Vito in einem eigenen Fenster (WebKitGTK), ohne Browser. Aus: in der installierten Browser-App oder einem Browser-Tab.",
 "ownwindow": "Öffnet Vito in einem eigenen Fenster (Microsoft Edge WebView2), ohne Browser. Aus: in der installierten Browser-App oder einem Browser-Tab."
 }
 }

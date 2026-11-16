@@ -1532,6 +1532,7 @@
 "cursor": "El puntero del ratón con los colores de Vito, con el logo en la mano. Desactivado: el puntero habitual de tu sistema.",
 "helptips": "Sí, esta es una. Desactivado: no más explicaciones cuando te detienes sobre un ajuste — tampoco esta.",
 "soundset": "Cómo suenan los sonidos: los de Vito, Suave (tonos cálidos), Cristal (campanitas brillantes), Retro (8 bits) o Tic (corto y seco, el menos llamativo). Haz clic en uno para oírlo.",
+"ownwindowlinux": "Abre Vito en su propia ventana (WebKitGTK), sin navegador. Desactivado: en la app de navegador instalada o en una pestaña del navegador.",
 "ownwindow": "Abre Vito en su propia ventana (Microsoft Edge WebView2), sin navegador. Desactivado: en la app de navegador instalada o en una pestaña del navegador."
 }
 }

@@ -1531,6 +1531,7 @@
 "cursor": "Saguaren erakuslea Vitoren koloreetan, logoa eskuan duela. Itzalita: zure sistemaren ohiko erakuslea.",
 "helptips": "Bai, hau bat da. Itzalita: ez da azalpen gehiagorik izango ezarpen baten gainean une batez gelditzen zarenean — ezta hau ere.",
 "soundset": "Nola entzuten diren soinuak: Vitorenak, Leuna (tonu beroak), Beira (kanpai argiak), Retro (8 bit) edo Tik (labur eta lehor, gutxien nabarmentzen dena). Egin klik batean entzuteko.",
+"ownwindowlinux": "Vito bere leiho propioan irekitzen du (WebKitGTK), arakatzailerik gabe. Desaktibatuta: instalatutako arakatzaile-aplikazioan edo arakatzailearen fitxa batean.",
 "ownwindow": "Vito bere leiho propioan irekitzen du (Microsoft Edge WebView2), arakatzailerik gabe. Desaktibatuta: instalatutako arakatzaile-aplikazioan edo arakatzailearen fitxa batean."
 }
 }

@@ -1532,6 +1532,7 @@
 "cursor": "Pwyntydd y llygoden yn lliwiau Vito, gyda'r logo yn ei law. I ffwrdd: pwyntydd arferol dy system.",
 "helptips": "Ydy, dyma un. I ffwrdd: dim mwy o esboniadau pan fyddi di'n oedi uwchben gosodiad — gan gynnwys hwn.",
 "soundset": "Sut mae'r synau'n swnio: rhai Vito ei hun, Meddal (tonau cynnes), Gwydr (clychau clir), Retro (8-did) neu Tic (byr a sych, y lleiaf amlwg). Clicia ar un i'w glywed.",
+"ownwindowlinux": "Yn agor Vito yn ei ffenestr ei hun (WebKitGTK), heb borwr. I ffwrdd: yn yr ap porwr sydd wedi'i osod neu mewn tab porwr.",
 "ownwindow": "Yn agor Vito yn ei ffenestr ei hun (Microsoft Edge WebView2), heb borwr. I ffwrdd: yn yr ap porwr sydd wedi'i osod neu mewn tab porwr."
 }
 }

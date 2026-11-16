@@ -99,6 +99,9 @@ const (
 	// a dictation unfolds it.
 	compactAfter = 4 * time.Minute
 	compactTime  = 450 * time.Millisecond
+	// Woken from rest by the pointer alone — no click, drag or dictation
+	// since — it goes straight back to rest this long after the pointer left.
+	wakeBack = 3 * time.Second
 
 	// embedLiveUp is how far over the microphone the live words stand in the
 	// pinned island: where the last dictation is, which makes way for them.
@@ -1432,6 +1435,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		rx, ry    float64 // and in the window, as the desktop says it
 		dim       float64 // 0 bright .. 1 faded
 		busyAt    = time.Now()
+		woken     bool // brought back from rest by the pointer only (wakeBack)
 		dirty     = true
 		overSince time.Time // when the pointer came onto st.over
 		copiedAt  time.Time // when the last dictation was copied
@@ -1519,6 +1523,9 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 					rel = false
 				}
 			}
+			if !inside && st.pinned && (dim > 0 || st.compact > 0) {
+				woken = true
+			}
 			inside, rx, ry = true, e.x, e.y
 			px, py = rx, ry+float64(shift)
 			busyAt = time.Now()
@@ -1551,7 +1558,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 				savePin()
 			}
 		case pointerClick:
-			busyAt = time.Now()
+			busyAt, woken = time.Now(), false
 			if inPill {
 				embedded.forward(toPill(pointerEvent{kind: pointerClick, x: px, y: py, button: e.button}))
 				return
@@ -1897,11 +1904,15 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		if embedded != nil || inside || dragging || !st.pinned {
 			busyAt = time.Now()
 		}
+		if embedded != nil || dragging || !st.pinned {
+			woken = false // a dictation or a drag is use: the usual timing again
+		}
+		back := woken && time.Since(busyAt) > wakeBack
 		want := 0.0
-		if time.Since(busyAt) > dimAfter {
+		if time.Since(busyAt) > dimAfter || back {
 			want = 1
 		}
-		if fold := st.pinned && time.Since(busyAt) > dimAfter+compactAfter; fold && st.compact < 1 {
+		if fold := st.pinned && (time.Since(busyAt) > dimAfter+compactAfter || back); fold && st.compact < 1 {
 			if st.compact = min(1, st.compact+step(compactTime)); st.compact == 1 {
 				w.setInput(foldRegion())
 			}

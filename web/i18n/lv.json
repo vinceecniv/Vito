@@ -1531,6 +1531,7 @@
 "cursor": "Peles rādītājs Vito krāsās, ar logotipu rokā. Izslēgts: tavas sistēmas parastais rādītājs.",
 "helptips": "Jā, šis ir viens no tiem. Izslēgts: vairs nekādu paskaidrojumu, kad uzkavējies virs iestatījuma — arī šī ne.",
 "soundset": "Kā skan skaņas: Vito paša, Maigs (silti toņi), Stikls (gaiši zvaniņi), Retro (8 bitu) vai Tikšķis (īss un sauss, vismazāk pamanāms). Noklikšķini uz kāda, lai to dzirdētu.",
+"ownwindowlinux": "Atver Vito atsevišķā logā (WebKitGTK), bez pārlūka. Izslēgts: instalētajā pārlūka lietotnē vai pārlūka cilnē.",
 "ownwindow": "Atver Vito atsevišķā logā (Microsoft Edge WebView2), bez pārlūka. Izslēgts: instalētajā pārlūka lietotnē vai pārlūka cilnē."
 }
 }

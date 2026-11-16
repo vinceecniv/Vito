@@ -1531,6 +1531,7 @@
 "cursor": "Hiiren osoitin Viton väreissä, logo kädessään. Pois: järjestelmäsi tavallinen osoitin.",
 "helptips": "Kyllä, tämä on yksi niistä. Pois: ei enää selityksiä, kun viivyt asetuksen kohdalla — ei tätäkään.",
 "soundset": "Miltä äänet kuulostavat: Viton omat, Pehmeä (lämpimät sävyt), Lasi (kirkkaat kellot), Retro (8-bit) tai Tikitys (lyhyt ja kuiva, huomaamattomin). Napsauta yhtä kuullaksesi sen.",
+"ownwindowlinux": "Avaa Viton omaan ikkunaansa (WebKitGTK) ilman selainta. Pois: asennetussa selainsovelluksessa tai selaimen välilehdellä.",
 "ownwindow": "Avaa Viton omaan ikkunaansa (Microsoft Edge WebView2) ilman selainta. Pois: asennetussa selainsovelluksessa tai selaimen välilehdellä."
 }
 }

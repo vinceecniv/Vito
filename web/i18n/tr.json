@@ -1529,6 +1529,7 @@
 "cursor": "Vito'nun renklerinde, elinde logosuyla fare imleci. Kapalı: sisteminizin olağan imleci.",
 "helptips": "Evet, bu da onlardan biri. Kapalı: bir ayarın üzerinde biraz beklediğinizde artık açıklama yok — bu da dahil.",
 "soundset": "Seslerin nasıl duyulduğu: Vito'nun kendi sesleri, Yumuşak (sıcak tonlar), Cam (parlak çanlar), Retro (8-bit) veya Tık (kısa ve kuru, en az dikkat çeken). Duymak için birine tıklayın.",
+"ownwindowlinux": "Vito'yu tarayıcı olmadan kendi penceresinde (WebKitGTK) açar. Kapalı: yüklü tarayıcı uygulamasında veya bir tarayıcı sekmesinde.",
 "ownwindow": "Vito'yu tarayıcı olmadan kendi penceresinde (Microsoft Edge WebView2) açar. Kapalı: yüklü tarayıcı uygulamasında veya bir tarayıcı sekmesinde."
 }
 }
