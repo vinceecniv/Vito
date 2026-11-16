@@ -1365,6 +1365,14 @@
     border:1px solid var(--input-border); border-radius:10px; padding:0 12px; font:inherit; font-size:13.5px;
   }
   textarea { height:auto; padding:10px 12px; resize:vertical; }
+  /* A native <select> drawn by the page, not the toolkit: WebKitGTK paints it
+     as GTK's own (light) combo box whatever the theme. The caret is two
+     gradients, so it takes the theme's colour, like .flagsel-btn's. */
+  select { -webkit-appearance:none; appearance:none; padding-right:34px; text-overflow:ellipsis;
+    background-image:linear-gradient(45deg, transparent 50%, var(--text3) 50%), linear-gradient(135deg, var(--text3) 50%, transparent 50%);
+    background-position:calc(100% - 18px) 52%, calc(100% - 13px) 52%; background-size:5px 5px; background-repeat:no-repeat; }
+  select:disabled { opacity:.6; }
+  option { background:var(--card); color:var(--text); }
   /* The status period picker: same styled dropdown as the other pickers, but it
      sits in the page head, so it needs its own width instead of filling a form
      column. */
