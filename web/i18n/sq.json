@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Forca e sfondit",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Holandisht, anglisht, gjermanisht, frëngjisht, spanjisht, italisht, portugalisht, polonisht, çekisht, sllovakisht, hungarisht, rumanisht, bullgarisht, kroatisht, sllovenisht, greqisht, suedisht, danisht, finlandisht, estonisht, letonisht, lituanisht, maltisht, rusisht dhe ukrainisht — dallohen automatikisht. Nuk është i përshtatshëm për gjuhë të tjera.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Anglisht, holandisht, gjermanisht, frëngjisht, spanjisht, italisht, polonisht.",
 "Type (keystrokes)": "Shkruaj (shtypje tastesh)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Të drejtat e autorit"
 },
 "help": {
+"bdstrength": "Sa i dukshëm është sfondi: majtas mezi duket, djathtas më i fortë se zakonisht.",
 "theme": "E çelët, e errët ose automatike — automatike ndjek cilësimin e çelët/errët të sistemit tënd.",
 "uilang": "Gjuha e kësaj ndërfaqeje aplikacioni. 'Automatik' përdor gjuhën e OS-it (përndryshe anglisht).",
 "zoom": "Zmadho ose zvogëlo gjithë ndërfaqen e aplikacionit. E dobishme në ekrane të mëdha ose të vogla.",

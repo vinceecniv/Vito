@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Fonun gücü",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Seçiminiz məhdudiyyət deyil, üstünlükdür: Soniox cümlənin ortasında dil dəyişdikdə belə digər dilləri də tanıyır.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet dili özü tanıyır: burada nə seçməyinizdən asılı olmayaraq, onun 25 dilindən istənilənində diktə edə bilərsiniz.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Bu model burada seçdiyiniz dilə sadiq qalır. Diktə edərkən dil dəyişirsiniz? Avtomatik seçin.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Müəllif hüquqları"
 },
 "help": {
+"bdstrength": "Fonun nə qədər nəzərə çarpdığı: sola doğru demək olar ki, görünmür, sağa doğru standartdan güclüdür.",
 "theme": "İşıqlı, qaranlıq və ya avtomatik — avtomatik sisteminizin işıqlı/qaranlıq rejiminə uyğunlaşır.",
 "uilang": "Bu tətbiq interfeysinin dili. 'Avtomatik' sistem dilinizi istifadə edir (əks halda İngilis dili).",
 "zoom": "Bütün tətbiq interfeysini böyüdür və ya kiçildir. Böyük və ya kiçik ekranlarda faydalıdır.",

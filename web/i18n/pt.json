@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Intensidade do fundo",
 "Vito now runs as an app on this computer": "O Vito agora corre como uma aplicação neste computador",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Os seus ditados passaram para a aplicação. Continue a ditar a partir de lá — com a sua combinação de teclas, em qualquer programa.",
 "Open Vito": "Abrir o Vito",
@@ -1469,6 +1470,7 @@
 "Copyright": "Direitos de autor"
 },
 "help": {
+"bdstrength": "Quão presente é o fundo: para a esquerda quase invisível, para a direita mais intenso do que o padrão.",
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",
 "uilang": "O idioma desta interface. 'Automático' usa o idioma do seu sistema (caso contrário, inglês).",
 "zoom": "Aumente ou reduza toda a interface da aplicação. Útil em ecrãs grandes ou pequenos.",

@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Độ đậm của hình nền",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Tiếng Hà Lan, Anh, Đức, Pháp, Tây Ban Nha, Ý, Bồ Đào Nha, Ba Lan, Séc, Slovakia, Hungary, Romania, Bulgaria, Croatia, Slovenia, Hy Lạp, Thụy Điển, Đan Mạch, Phần Lan, Estonia, Latvia, Litva, Malta, Nga và Ukraina — tự động nhận diện. Không phù hợp với các ngôn ngữ khác.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Tiếng Anh, Hà Lan, Đức, Pháp, Tây Ban Nha, Ý, Ba Lan.",
 "Type (keystrokes)": "Gõ (nhấn phím)",
@@ -1466,6 +1467,7 @@
 "Copyright": "Bản quyền"
 },
 "help": {
+"bdstrength": "Hình nền hiện rõ đến mức nào: sang trái gần như vô hình, sang phải đậm hơn mặc định.",
 "theme": "Sáng, tối hoặc tự động — tự động sẽ theo chế độ sáng/tối của hệ thống.",
 "uilang": "Ngôn ngữ của giao diện ứng dụng này. 'Tự động' dùng ngôn ngữ hệ điều hành của bạn (nếu không thì tiếng Anh).",
 "zoom": "Phóng to hoặc thu nhỏ toàn bộ giao diện ứng dụng. Tiện trên màn hình lớn hoặc nhỏ.",

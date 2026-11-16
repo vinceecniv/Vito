@@ -401,7 +401,9 @@
      the palette tokens are used, so every colour theme brings its own; the
      dark side is a little stronger (--bd-k) to read on a dark surface. Only
      transforms move, slowly, and nothing moves under reduced motion. ---- */
-  .bd { --bd-k:1; --u:1px;
+  /* --bd-s is the user's strength (ui.backdrop_strength, on <html>): it
+     scales every colour of the background, the picker's swatches too. */
+  .bd { --bd-k:var(--bd-s, 1); --u:1px;
     --b1:color-mix(in srgb, var(--coral) calc(10% * var(--bd-k)), transparent);
     --b2:color-mix(in srgb, var(--violet) calc(10% * var(--bd-k)), transparent);
     --s1:color-mix(in srgb, var(--coral) calc(22% * var(--bd-k)), transparent);
@@ -410,7 +412,7 @@
     --ln:color-mix(in srgb, var(--violet) calc(13% * var(--bd-k)), transparent);
     --dot:color-mix(in srgb, var(--violet) calc(14% * var(--bd-k)), transparent);
     --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 40C100 0 100 0 200 40S300 80 400 40V100H0Z'/%3E%3C/svg%3E"); }
-  :root[data-theme="dark"] .bd { --bd-k:1.45; }
+  :root[data-theme="dark"] .bd { --bd-k:calc(1.45 * var(--bd-s, 1)); }
   #backdrop { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
   .bd::before, .bd::after { content:none; position:absolute; pointer-events:none; }
   .bd[data-bd="gradient"] { background-image:linear-gradient(155deg, var(--s1), transparent 42%, transparent 58%, var(--s2)); }
@@ -531,6 +533,12 @@
   html.theming, html.theming *:not(.tseg):not(#meter):not(#mt-meter) {
     transition: background-color .28s ease, color .28s ease, border-color .28s ease, fill .28s ease, box-shadow .28s ease !important;
   }
+  html.theming.theming-slow, html.theming.theming-slow *:not(.tseg):not(#meter):not(#mt-meter) { transition-duration:.6s !important; }
+  /* Where the browser can, the whole page crossfades instead (switchTheme):
+     the gradients, canvases and pictures too, which no transition reaches.
+     Slower when the system switched, which nobody clicked for. */
+  html.vt-theme::view-transition-old(root), html.vt-theme::view-transition-new(root) { animation-duration:.3s; animation-timing-function:ease; }
+  html.vt-theme.vt-slow::view-transition-old(root), html.vt-theme.vt-slow::view-transition-new(root) { animation-duration:.6s; }
   /* Reserve the scrollbar gutter so appearing/disappearing scrollbars never
      shift content horizontally. */
   html { scrollbar-gutter:stable; overflow-x:hidden; }
@@ -672,7 +680,7 @@
   ::view-transition-group(vt-side), ::view-transition-group(vt-main) { animation-duration:.28s; animation-timing-function:cubic-bezier(.2,.7,.2,1); }
   ::view-transition-old(vt-side), ::view-transition-new(vt-side),
   ::view-transition-old(vt-main), ::view-transition-new(vt-main) { height:100%; width:auto; object-fit:none; object-position:left top; animation-duration:.28s; }
-  ::view-transition-old(root), ::view-transition-new(root) { animation:none; }
+  html.vt-fold::view-transition-old(root), html.vt-fold::view-transition-new(root) { animation:none; }
   .side-toggle { display:flex; align-items:center; gap:11px; width:100%; margin-top:auto; padding:9px 12px; border-radius:10px;
     border:none; background:none; color:var(--text3); font-family:inherit; font-size:13px; text-align:left; cursor:var(--cur-hand); }
   .side-toggle svg { width:17px; height:17px; flex:0 0 17px; }
@@ -2948,6 +2956,10 @@
           <div class="accent-sel" id="density-sel" role="radiogroup" aria-label="Spacing"></div>
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
+          <div id="bd-strength-row" hidden>
+            <label class="fld" data-help="bdstrength" for="s-bdstrength" style="max-width:320px;">Background strength <span class="val" id="s-bdstrengthval">100%</span><button type="button" id="s-bdstrength-reset" class="reset-btn" hidden title="Back to 100%" aria-label="Back to 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
+            <div class="slider-wrap" style="--frac:0.655;"><input type="range" id="s-bdstrength" min="0.05" max="1.5" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
+          </div>
           <div class="subhead" style="margin-top:20px;">Other</div>
           <label class="tgl" data-help="motion"><input type="checkbox" id="s-motion"><span class="tr"></span> Reduce motion</label>
           <label class="tgl" data-help="cursor"><input type="checkbox" id="s-cursor"><span class="tr"></span> Vito mouse cursor</label>
@@ -4220,7 +4232,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Listen to the sounds":"Beluister de geluiden","Sounds have their own sets, under Audio":"Geluiden hebben eigen sets, onder Audio","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","Background strength":"Sterkte van de achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Listen to the sounds":"Beluister de geluiden","Sounds have their own sets, under Audio":"Geluiden hebben eigen sets, onder Audio","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -5153,7 +5165,7 @@ function applyTheme(){
 // "Reset to default" only works once something differs from Vito's own look.
 function syncLookReset(){
   const b = document.getElementById("s-look-reset"); if (!b) return;
-  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref && !motionPref && !densityPref; }
+  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref && !motionPref && !densityPref && Math.abs(bdStrength - 1) < 0.001; }
   catch {} // during start-up, before all of them exist; the last apply sets it
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
@@ -5167,10 +5179,10 @@ function applyAccent(){
   document.querySelectorAll("#accent-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === (root.dataset.accent || "") ? "true" : "false"));
 }
 function setAccent(pref, persist){
+  const changed = (pref || "") !== accentPref;
   accentPref = pref || "";
   try { localStorage.setItem("vito-accent", accentPref); } catch {}
-  fadeTheme();
-  applyAccent();
+  if (changed) switchTheme(applyAccent); else applyAccent();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { accent: accentPref });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
@@ -5230,7 +5242,11 @@ function writeDeskStyle(){
       --sidebar:${dark ? hexMix(c.surface, "#000000", .35) : c.surface}; --sidebar-border:${c.surface_container_high};
       --card:${c.surface}; --card-border:${c.surface_container_high};
       --input-bg:${hexMix(c.surface, c.surface_container_high, .45)}; --input-border:${c.surface_container_highest};
-      --text:${c.on_surface}; --text2:${hexMix(c.on_surface, c.on_surface_variant, .5)}; --text3:${c.on_surface_variant};
+      /* text2/text3 between on_surface_variant and outline: Material keeps
+         on_surface_variant close to on_surface, and a hover (text2 → text)
+         then barely showed. Further on the dark side, where the two are
+         closest; every step keeps 4.5:1 or more on the surfaces. */
+      --text:${c.on_surface}; --text2:${hexMix(c.on_surface_variant, c.outline, dark ? .6 : .35)}; --text3:${hexMix(c.on_surface_variant, c.outline, dark ? .85 : .6)};
       --placeholder:${c.outline}; --toggle-off:${c.surface_container_highest}; --track:${c.surface_container_high}; --bar:${c.surface_container_high};`);
     css.push(`:root:not([data-theme="dark"])[data-accent="${code}"] { ${side(L, false)} }`,
       `:root[data-theme="dark"][data-accent="${code}"] { ${side(D, true)} }`,
@@ -5338,6 +5354,7 @@ function applyBackdrop(){
   const root = document.documentElement, on = backdropPref && BACKDROPS.some(b => b.c === backdropPref) ? backdropPref : "";
   if (on) root.dataset.backdrop = on; else delete root.dataset.backdrop;
   const el = document.getElementById("backdrop"); if (el) el.dataset.bd = on;
+  const row = document.getElementById("bd-strength-row"); if (row) row.hidden = !on; // nothing to make stronger
   document.querySelectorAll("#backdrop-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === on ? "true" : "false"));
   syncLookReset();
 }
@@ -5348,6 +5365,28 @@ function setBackdrop(pref, persist){
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { backdrop: backdropPref });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
+/* ---- its strength (ui.backdrop_strength): 0.05 barely there .. 1.5, the
+   default 1 two thirds along; --bd-s on <html>, cached like the rest ---- */
+let bdStrength = (() => { try { const v = parseFloat(localStorage.getItem("vito-bd-strength")); return v > 0 ? v : 1; } catch { return 1; } })();
+function applyBdStrength(){
+  document.documentElement.style.setProperty("--bd-s", String(bdStrength));
+  const r = document.getElementById("s-bdstrength"); if (!r) return;
+  if (document.activeElement !== r) r.value = bdStrength;
+  document.getElementById("s-bdstrengthval").textContent = Math.round(bdStrength * 100) + "%";
+  document.getElementById("s-bdstrength-reset").hidden = Math.abs(bdStrength - 1) < 0.001;
+  syncLookReset();
+}
+function setBdStrength(v, persist){
+  bdStrength = v > 0 ? Math.min(1.5, v) : 1;
+  try { localStorage.setItem("vito-bd-strength", bdStrength); } catch {}
+  applyBdStrength();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { backdrop_strength: Math.abs(bdStrength - 1) < 0.001 ? 0 : bdStrength });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+applyBdStrength();
+$("s-bdstrength").addEventListener("input", e => setBdStrength(parseFloat(e.target.value), false));
+$("s-bdstrength").addEventListener("change", e => setBdStrength(parseFloat(e.target.value), true));
+$("s-bdstrength-reset").addEventListener("click", () => setBdStrength(1, true));
 function buildBackdropPicker(){
   const box = $("backdrop-sel"); if (!box) return;
   box.innerHTML = BACKDROPS.map(b => `<button type="button" class="acc-opt bd-opt" role="radio" data-code="${b.c}"><i class="bd-sw bd" data-bd="${b.c}" aria-hidden="true"></i><span data-noi18n>${t(b.n)}</span></button>`).join("");
@@ -5367,16 +5406,31 @@ function applyCursors(){
   if (cursorStyle.textContent !== css) cursorStyle.textContent = css;
 }
 let themingTimer;
-function fadeTheme(){
-  document.documentElement.classList.add("theming");
+function fadeTheme(slow){
+  const root = document.documentElement;
+  root.classList.add("theming");
+  root.classList.toggle("theming-slow", !!slow);
   clearTimeout(themingTimer);
-  themingTimer = setTimeout(() => document.documentElement.classList.remove("theming"), 320);
+  themingTimer = setTimeout(() => root.classList.remove("theming", "theming-slow"), slow ? 640 : 320);
+}
+// switchTheme applies a new look as a crossfade of the whole page (a view
+// transition), else with fadeTheme's colour transitions. slow: the system
+// switched, not the user.
+function switchTheme(apply, slow){
+  const root = document.documentElement;
+  let still = true; try { still = reducedMotion(); } catch {} // before motionPref exists: no crossfade
+  if (!document.startViewTransition || still || document.hidden) { fadeTheme(slow); apply(); return; }
+  root.classList.add("vt-theme");
+  root.classList.toggle("vt-slow", !!slow);
+  document.startViewTransition(apply).finished.finally(() => root.classList.remove("vt-theme", "vt-slow"));
 }
 function setTheme(pref, persist){
+  const changed = pref !== themePref;
   themePref = pref;
   localStorage.setItem("vito-theme", pref);
-  fadeTheme();
-  applyTheme();
+  // Only a real change crossfades: a view transition holds the page's input
+  // for its length, and config loads set the theme again unchanged.
+  if (changed) switchTheme(applyTheme); else applyTheme();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme: pref });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
@@ -5420,11 +5474,11 @@ function surpriseLook(){
   vmFlash("happy", 1800);
 }
 function resetLook(){
-  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setMotion(false, false); setDensity("", false);
-  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", reduce_motion:false, density:"" });
+  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setBdStrength(1, false); setMotion(false, false); setDensity("", false);
+  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", backdrop_strength:0, reduce_motion:false, density:"" });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
-matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(themePref==="system"){ if(typeof fadeTheme==="function") fadeTheme(); applyTheme(); } });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(themePref==="system"){ if(typeof switchTheme==="function") switchTheme(applyTheme, true); else applyTheme(); } });
 applyAccent();
 
 async function api(path, opts = {}) {
@@ -11605,6 +11659,7 @@ async function fillSettings() {
   if (cfg.ui && (cfg.ui.accent || "") !== accentPref) setAccent(cfg.ui.accent || "", false);
   if (cfg.ui && (cfg.ui.font || "") !== fontPref) setFont(cfg.ui.font || "", false);
   if (cfg.ui && (cfg.ui.backdrop || "") !== backdropPref) setBackdrop(cfg.ui.backdrop || "", false);
+  if (cfg.ui && ((cfg.ui.backdrop_strength || 1) !== bdStrength)) setBdStrength(cfg.ui.backdrop_strength || 1, false);
   if (cfg.ui && (cfg.ui.density || "") !== densityPref) setDensity(cfg.ui.density || "", false);
   if (cfg.ui && !!cfg.ui.reduce_motion !== motionPref) setMotion(!!cfg.ui.reduce_motion, false);
   if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
@@ -12585,6 +12640,38 @@ $("s-openaireasoning").addEventListener("change", () => { updateReasoningNote();
 // never had the problem.
 document.querySelectorAll("select").forEach(sel =>
   sel.addEventListener("wheel", () => { if (document.activeElement === sel) sel.blur(); }, { passive: true }));
+// A slider under the pointer follows the mouse wheel: up is more. Not while the
+// page is being scrolled — a wheel that was just turning elsewhere (wheelBusy)
+// keeps scrolling past the slider, so scrolling down the settings never moves
+// one by accident. Each step sends "input" (the label follows) and, once the
+// wheel rests, one "change" (what saves, previews the sound, applies the zoom).
+// Fine sliders (1% steps) move 2% a notch, so a few turns cross the range.
+{
+  let elsewhereAt = 0, acc = 0, accFor = null;
+  const settle = new Map();
+  addEventListener("wheel", e => {
+    const r = e.target instanceof Element && e.target.closest('input[type="range"]');
+    if (!r || r.disabled || e.ctrlKey || r.closest("[hidden]")) { elsewhereAt = e.timeStamp; return; }
+    if (e.timeStamp - elsewhereAt < 400) { elsewhereAt = e.timeStamp; return; }
+    e.preventDefault();
+    const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : -e.deltaX;
+    if (accFor !== r) { acc = 0; accFor = r; }
+    // A notch is one step; a touchpad's pixels are added up, ~50 to a step.
+    acc += e.deltaMode === 0 ? d / 50 : Math.sign(d);
+    const n = acc > 0 ? Math.floor(acc) : Math.ceil(acc);
+    if (!n) return;
+    acc -= n;
+    const min = parseFloat(r.min || 0), max = parseFloat(r.max || 100);
+    const step = parseFloat(r.step) || 1, by = Math.max(step, Math.round((max - min) / 50 / step) * step);
+    const was = parseFloat(r.value);
+    const v = Math.min(max, Math.max(min, Math.round((was - n * by - min) / step) * step + min));
+    if (Math.abs(v - was) < step / 2) return;
+    r.value = +v.toFixed(6);
+    r.dispatchEvent(new Event("input", { bubbles: true }));
+    clearTimeout(settle.get(r));
+    settle.set(r, setTimeout(() => { settle.delete(r); r.dispatchEvent(new Event("change", { bubbles: true })); }, 350));
+  }, { passive: false });
+}
 $("s-promptsel").addEventListener("change", () => {
   // "" and "vito:default" mean the same thing; store the empty one so the config
   // has a single spelling for "Vito's default", the same one a fresh install has.
@@ -14599,6 +14686,7 @@ const HELP = {
   helptips:{nl:"Ja, dit is er een. Uit: geen uitleg meer als je even boven een instelling blijft hangen — deze ook niet.",en:"Yes, this is one. Off: no more explanations when you linger over a setting — this one included."},
   theme:{nl:"Licht, donker of automatisch — automatisch volgt de licht/donker-stand van je systeem.",en:"Light, dark or automatic — automatic follows your system's light/dark setting."},
   uilang:{nl:"De taal van deze app-interface. 'Automatisch' gebruikt je systeemtaal (anders Engels).",en:"The language of this app interface. 'Automatic' uses your OS language (English otherwise)."},
+  bdstrength:{nl:"Hoe sterk de achtergrond aanwezig is: naar links bijna onzichtbaar, naar rechts sterker dan standaard.",en:"How present the background is: to the left barely visible, to the right stronger than standard."},
   zoom:{nl:"Vergroot of verklein de hele app-interface. Handig op grote of kleine schermen.",en:"Scale the whole app interface up or down. Handy on large or small screens."},
   appendspace:{nl:"Voegt een spatie toe achter de geplakte tekst, zodat opeenvolgende dictaten netjes van elkaar gescheiden blijven.",en:"Appends a space after the pasted text so back-to-back dictations stay neatly separated."},
   notifications:{nl:"Bureaubladmeldingen bij dictaat. 'Alles' toont elke status (kort, niet bewaard in je meldingsgeschiedenis), 'Alleen fouten' toont enkel problemen, 'Uit' toont niets.",en:"Desktop notifications for dictation. 'Show all' shows every status (briefly, not kept in your notification history), 'Errors only' shows just problems, 'Off' shows nothing."},

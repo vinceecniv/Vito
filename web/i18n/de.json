@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Stärke des Hintergrunds",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Deine Wahl ist eine Vorliebe, keine Grenze: Soniox erkennt auch andere Sprachen, selbst wenn du mitten im Satz wechselst.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet erkennt die Sprache selbst: Du kannst in jeder seiner 25 Sprachen diktieren, egal was du hier wählst.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Dieses Modell bleibt bei der Sprache, die du hier wählst. Du wechselst beim Diktieren die Sprache? Wähle Automatisch.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Copyright"
 },
 "help": {
+"bdstrength": "Wie präsent der Hintergrund ist: nach links kaum sichtbar, nach rechts stärker als standardmäßig.",
 "theme": "Hell, dunkel oder automatisch — automatisch folgt der Hell/Dunkel-Einstellung deines Systems.",
 "uilang": "Die Sprache dieser App-Oberfläche. „Automatisch“ verwendet deine Systemsprache (sonst Englisch).",
 "zoom": "Vergrößere oder verkleinere die gesamte App-Oberfläche. Praktisch auf großen oder kleinen Bildschirmen.",

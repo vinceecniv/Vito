@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Sila pozadia",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Holandčina, angličtina, nemčina, francúzština, španielčina, taliančina, portugalčina, poľština, čeština, slovenčina, maďarčina, rumunčina, bulharčina, chorvátčina, slovinčina, gréčtina, švédčina, dánčina, fínčina, estónčina, lotyština, litovčina, maltčina, ruština a ukrajinčina — rozpoznávajú sa automaticky. Nevhodné pre iné jazyky.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Angličtina, holandčina, nemčina, francúzština, španielčina, taliančina, poľština.",
 "Type (keystrokes)": "Písať (stlačenia kláves)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Autorské práva"
 },
 "help": {
+"bdstrength": "Aké výrazné je pozadie: doľava sotva viditeľné, doprava výraznejšie ako štandardne.",
 "theme": "Svetlá, tmavá alebo automatická — automatická sleduje svetlý/tmavý režim vášho systému.",
 "uilang": "Jazyk rozhrania tejto aplikácie. „Automaticky“ použije jazyk vášho systému (inak angličtinu).",
 "zoom": "Zväčšuje alebo zmenšuje celé rozhranie aplikácie. Praktické na veľkých či malých obrazovkách.",

@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Kekuatan latar belakang",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Belanda, Inggris, Jerman, Prancis, Spanyol, Italia, Portugis, Polandia, Ceko, Slowakia, Hungaria, Rumania, Bulgaria, Kroasia, Slovenia, Yunani, Swedia, Denmark, Finlandia, Estonia, Latvia, Lituania, Malta, Rusia, dan Ukraina — terdeteksi otomatis. Tidak cocok untuk bahasa lain.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Inggris, Belanda, Jerman, Prancis, Spanyol, Italia, Polandia.",
 "Type (keystrokes)": "Ketik (penekanan tombol)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Hak cipta"
 },
 "help": {
+"bdstrength": "Seberapa terlihat latar belakang: ke kiri hampir tak terlihat, ke kanan lebih kuat dari standar.",
 "theme": "Terang, gelap, atau otomatis — otomatis mengikuti pengaturan terang/gelap sistem Anda.",
 "uilang": "Bahasa antarmuka aplikasi ini. 'Otomatis' memakai bahasa OS Anda (jika tidak, bahasa Inggris).",
 "zoom": "Perbesar atau perkecil seluruh antarmuka aplikasi. Berguna pada layar besar atau kecil.",

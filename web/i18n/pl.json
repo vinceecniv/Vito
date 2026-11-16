@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Intensywność tła",
 "Status": "Status",
 "Settings": "Ustawienia",
 "Dictionary": "Słownik",
@@ -1468,6 +1469,7 @@
 "Copyright": "Prawa autorskie"
 },
 "help": {
+"bdstrength": "Jak bardzo widoczne jest tło: w lewo ledwo widoczne, w prawo mocniejsze niż standardowo.",
 "theme": "Jasny, ciemny lub automatyczny — automatyczny podąża za ustawieniem jasny/ciemny twojego systemu.",
 "uilang": "Język interfejsu tej aplikacji. „Automatycznie” używa języka systemu (w przeciwnym razie angielski).",
 "zoom": "Powiększ lub pomniejsz cały interfejs aplikacji. Przydatne na dużych lub małych ekranach.",

@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Síla pozadí",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Vaše volba je preference, ne omezení: Soniox rozpozná i jiné jazyky, i když přepnete uprostřed věty.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet rozpozná jazyk sám: můžete diktovat v kterémkoli z jeho 25 jazyků, ať zde zvolíte cokoli.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Tento model se drží jazyka, který zde zvolíte. Přepínáte při diktování jazyky? Zvolte Automaticky.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Autorská práva"
 },
 "help": {
+"bdstrength": "Jak výrazné je pozadí: doleva sotva viditelné, doprava výraznější než standardně.",
 "theme": "Světlý, tmavý nebo automatický — automatický se řídí nastavením světlého/tmavého režimu vašeho systému.",
 "uilang": "Jazyk rozhraní této aplikace. 'Automaticky' použije jazyk vašeho systému (jinak angličtinu).",
 "zoom": "Zvětší nebo zmenší celé rozhraní aplikace. Užitečné na velkých nebo malých obrazovkách.",

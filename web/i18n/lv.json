@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Fona stiprums",
 "Status": "Statuss",
 "Settings": "Iestatījumi",
 "Dictionary": "Vārdnīca",
@@ -1468,6 +1469,7 @@
 "Copyright": "Autortiesības"
 },
 "help": {
+"bdstrength": "Cik pamanāms ir fons: pa kreisi tik tikko redzams, pa labi spēcīgāks nekā parasti.",
 "theme": "Gaišs, tumšs vai automātisks — automātiskais seko tavas sistēmas gaišajam/tumšajam iestatījumam.",
 "uilang": "Šīs lietotnes saskarnes valoda. “Automātiski” izmanto tavas OS valodu (citādi angļu).",
 "zoom": "Palielina vai samazina visu lietotnes saskarni. Noderīgi uz lieliem vai maziem ekrāniem.",

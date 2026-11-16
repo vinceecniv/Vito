@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "قوة الخلفية",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "اختيارك تفضيل وليس قيدًا: يتعرّف Soniox أيضًا على لغات أخرى، حتى عندما تنتقل بينها في منتصف الجملة.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "يتعرّف Parakeet على اللغة بنفسه: يمكنك الإملاء بأيٍّ من لغاته الـ25، أيًّا كان ما تختاره هنا.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "يلتزم هذا النموذج باللغة التي تختارها هنا. هل تنتقل بين اللغات أثناء الإملاء؟ اختر «تلقائي».",
@@ -1467,6 +1468,7 @@
 "Copyright": "حقوق النشر"
 },
 "help": {
+"bdstrength": "مدى ظهور الخلفية: في أدنى القيم بالكاد تُرى، وفي أعلاها أقوى من المعتاد.",
 "theme": "فاتح أو داكن أو تلقائي — التلقائي يتبع وضع الفاتح/الداكن في نظامك.",
 "uilang": "لغة واجهة هذا التطبيق. 'تلقائي' يستخدم لغة نظامك (وإلا فالإنجليزية).",
 "zoom": "تكبير أو تصغير واجهة التطبيق بالكامل. مفيد على الشاشات الكبيرة أو الصغيرة.",

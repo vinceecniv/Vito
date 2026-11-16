@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Moč ozadja",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nizozemščina, angleščina, nemščina, francoščina, španščina, italijanščina, portugalščina, poljščina, češčina, slovaščina, madžarščina, romunščina, bolgarščina, hrvaščina, slovenščina, grščina, švedščina, danščina, finščina, estonščina, latvijščina, litovščina, malteščina, ruščina in ukrajinščina — samodejno zaznano. Ni primerno za druge jezike.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Angleščina, nizozemščina, nemščina, francoščina, španščina, italijanščina, poljščina.",
 "Type (keystrokes)": "Tipkanje (pritiski tipk)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Avtorske pravice"
 },
 "help": {
+"bdstrength": "Kako izrazito je ozadje: v levo komaj vidno, v desno močnejše od privzetega.",
 "theme": "Svetla, temna ali samodejna — samodejna sledi svetli/temni nastavitvi vašega sistema.",
 "uilang": "Jezik vmesnika te aplikacije. »Samodejno« uporabi jezik vašega sistema (sicer angleščino).",
 "zoom": "Povečajte ali pomanjšajte celoten vmesnik aplikacije. Priročno na velikih ali majhnih zaslonih.",

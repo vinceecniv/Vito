@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "A háttér erőssége",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Holland, angol, német, francia, spanyol, olasz, portugál, lengyel, cseh, szlovák, magyar, román, bolgár, horvát, szlovén, görög, svéd, dán, finn, észt, lett, litván, máltai, orosz és ukrán — automatikusan felismerve. Más nyelvekhez nem alkalmas.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Angol, holland, német, francia, spanyol, olasz, lengyel.",
 "Type (keystrokes)": "Gépelés (billentyűleütések)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Szerzői jog"
 },
 "help": {
+"bdstrength": "Mennyire legyen jelen a háttér: balra alig látható, jobbra az alapértelmezettnél erősebb.",
 "theme": "Világos, sötét vagy automatikus — az automatikus a rendszered világos/sötét beállítását követi.",
 "uilang": "Az alkalmazás felületének nyelve. Az „Automatikus” a rendszernyelvedet használja (egyébként angol).",
 "zoom": "Nagyítsd vagy kicsinyítsd az egész alkalmazásfelületet. Nagy vagy kis képernyőkön hasznos.",
