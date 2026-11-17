@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Tingkad ng background",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Olandes, Ingles, Aleman, Pranses, Espanyol, Italyano, Portuges, Polako, Tseko, Eslobako, Unggaro, Rumano, Bulgaro, Kroato, Eslobeno, Griyego, Suweko, Danes, Finnish, Estonyano, Latbyano, Litwano, Maltes, Ruso at Ukranyano — awtomatikong natutukoy. Hindi angkop para sa ibang wika.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Ingles, Olandes, Aleman, Pranses, Espanyol, Italyano, Polako.",
 "Type (keystrokes)": "I-type (mga keystroke)",
@@ -1466,6 +1467,7 @@
 "Copyright": "Copyright"
 },
 "help": {
+"bdstrength": "Gaano kapansin-pansin ang background: pakaliwa halos hindi makita, pakanan mas matingkad kaysa karaniwan.",
 "theme": "Maliwanag, madilim o awtomatiko — sinusunod ng awtomatiko ang light/dark na setting ng iyong system.",
 "uilang": "Ang wika ng interface ng app na ito. Ginagamit ng 'Awtomatiko' ang wika ng OS mo (English kung hindi).",
 "zoom": "Palakihin o paliitin ang buong interface ng app. Kapaki-pakinabang sa malaki o maliit na screen.",
@@ -1529,6 +1531,7 @@
 "cursor": "Ang mouse pointer sa mga kulay ni Vito, hawak ang logo. Off: ang karaniwang pointer ng system mo.",
 "helptips": "Oo, isa ito roon. Off: wala nang paliwanag kapag tumambay ka sandali sa isang setting — kasama na ito.",
 "soundset": "Kung paano tumutunog ang mga tunog: sariling tunog ni Vito, Malambot (mainit na tono), Kristal (malinaw na kampanilya), Retro (8-bit) o Tik (maikli at tuyo, pinakamahirap mapansin). I-click ang isa para marinig ito.",
+"ownwindowlinux": "Binubuksan ang Vito sa sarili nitong window (WebKitGTK), nang walang browser. Naka-off: sa naka-install na browser app o sa isang browser tab.",
 "ownwindow": "Binubuksan ang Vito sa sarili nitong window (Microsoft Edge WebView2), nang walang browser. Naka-off: sa naka-install na browser app o sa isang browser tab."
 }
 }

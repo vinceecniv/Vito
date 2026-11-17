@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Bakgrundens styrka",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nederländska, engelska, tyska, franska, spanska, italienska, portugisiska, polska, tjeckiska, slovakiska, ungerska, rumänska, bulgariska, kroatiska, slovenska, grekiska, svenska, danska, finska, estniska, lettiska, litauiska, maltesiska, ryska och ukrainska — identifieras automatiskt. Inte lämplig för andra språk.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Engelska, nederländska, tyska, franska, spanska, italienska, polska.",
 "Type (keystrokes)": "Skriv (tangenttryckningar)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Upphovsrätt"
 },
 "help": {
+"bdstrength": "Hur framträdande bakgrunden är: åt vänster knappt synlig, åt höger starkare än standard.",
 "theme": "Ljust, mörkt eller automatiskt — automatiskt följer systemets ljus/mörk-inställning.",
 "uilang": "Språket för detta app-gränssnitt. 'Automatiskt' använder ditt OS-språk (annars engelska).",
 "zoom": "Förstora eller förminska hela app-gränssnittet. Praktiskt på stora eller små skärmar.",
@@ -1531,6 +1533,7 @@
 "cursor": "Muspekaren i Vitos färger, med logotypen i handen. Av: ditt systems vanliga pekare.",
 "helptips": "Ja, det här är en. Av: inga fler förklaringar när du dröjer kvar över en inställning — inte heller den här.",
 "soundset": "Hur ljuden låter: Vitos egna, Mjuk (varma toner), Glas (klara klockor), Retro (8-bit) eller Tick (kort och torr, minst märkbar). Klicka på en för att höra den.",
+"ownwindowlinux": "Öppnar Vito i ett eget fönster (WebKitGTK), utan webbläsare. Av: i den installerade webbläsarappen eller i en webbläsarflik.",
 "ownwindow": "Öppnar Vito i ett eget fönster (Microsoft Edge WebView2), utan webbläsare. Av: i den installerade webbläsarappen eller i en webbläsarflik."
 }
 }

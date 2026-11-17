@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Intensidad del fondo",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Tu elección es una preferencia, no un límite: Soniox también reconoce otros idiomas, incluso si cambias a mitad de frase.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet reconoce el idioma por sí mismo: puedes dictar en cualquiera de sus 25 idiomas, elijas lo que elijas aquí.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Este modelo se ciñe al idioma que elijas aquí. ¿Cambias de idioma mientras dictas? Elige Automático.",
@@ -1469,6 +1470,7 @@
 "Copyright": "Copyright"
 },
 "help": {
+"bdstrength": "Cuánto destaca el fondo: hacia la izquierda casi invisible, hacia la derecha más intenso de lo normal.",
 "theme": "Claro, oscuro o automático — automático sigue el modo claro/oscuro de tu sistema.",
 "uilang": "El idioma de esta interfaz. 'Automático' usa el idioma de tu sistema (inglés en caso contrario).",
 "zoom": "Amplía o reduce toda la interfaz de la app. Útil en pantallas grandes o pequeñas.",
@@ -1532,6 +1534,7 @@
 "cursor": "El puntero del ratón con los colores de Vito, con el logo en la mano. Desactivado: el puntero habitual de tu sistema.",
 "helptips": "Sí, esta es una. Desactivado: no más explicaciones cuando te detienes sobre un ajuste — tampoco esta.",
 "soundset": "Cómo suenan los sonidos: los de Vito, Suave (tonos cálidos), Cristal (campanitas brillantes), Retro (8 bits) o Tic (corto y seco, el menos llamativo). Haz clic en uno para oírlo.",
+"ownwindowlinux": "Abre Vito en su propia ventana (WebKitGTK), sin navegador. Desactivado: en la app de navegador instalada o en una pestaña del navegador.",
 "ownwindow": "Abre Vito en su propia ventana (Microsoft Edge WebView2), sin navegador. Desactivado: en la app de navegador instalada o en una pestaña del navegador."
 }
 }

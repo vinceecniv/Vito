@@ -3,9 +3,11 @@
 package main
 
 import (
+	"bufio"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"vito/internal/selfexe"
 	"vito/web"
@@ -18,9 +20,13 @@ import (
 //
 // It is rewritten on every start so the Exec path stays valid: selfexe prefers
 // $APPIMAGE (a stable location) over the throwaway squashfs mount, so the entry
-// still resolves after a reboot. The entry is deliberately NOT NoDisplay — an
-// earlier hidden version shadowed the launcher entry that AppImage integrators
-// (e.g. GearLever) or a distro package provide, making Vito vanish from the menu.
+// still resolves after a reboot. The entry is NoDisplay only when another
+// visible entry already starts this same file (otherLauncher): an AppImage
+// manager (DMS's Software Depot, Gear Lever, AppImageLauncher) writes its own
+// under its own id, and the menu then listed Vito twice. Hidden, the entry
+// still names the icon a dock finds by the window's app id ("vito"). Always
+// hiding it was tried once: a distro package's vito.desktop has the same id,
+// so a hidden user copy made Vito vanish from the menu.
 func registerLaunchProtocol() {
 	exe, err := selfexe.Path()
 	if err != nil {
@@ -61,6 +67,9 @@ StartupNotify=false
 X-GNOME-UsesNotifications=true
 MimeType=x-scheme-handler/vito;
 `
+	if otherLauncher(exe, dataDir) {
+		desktop += "NoDisplay=true\n"
+	}
 	if err := os.WriteFile(filepath.Join(appsDir, "vito.desktop"), []byte(desktop), 0o644); err != nil {
 		return
 	}
@@ -68,4 +77,64 @@ MimeType=x-scheme-handler/vito;
 	// new entry appears in the menu without a re-login.
 	_ = exec.Command("xdg-mime", "default", "vito.desktop", "x-scheme-handler/vito").Run()
 	_ = exec.Command("update-desktop-database", appsDir).Run()
+}
+
+// otherLauncher reports whether a visible desktop entry other than Vito's own
+// vito.desktop starts exe — the entry an AppImage manager wrote.
+func otherLauncher(exe, dataDir string) bool {
+	dirs := []string{dataDir}
+	sys := os.Getenv("XDG_DATA_DIRS")
+	if sys == "" {
+		sys = "/usr/local/share:/usr/share"
+	}
+	dirs = append(dirs, filepath.SplitList(sys)...)
+	for _, d := range dirs {
+		files, _ := filepath.Glob(filepath.Join(d, "applications", "*.desktop"))
+		for _, f := range files {
+			if filepath.Base(f) != "vito.desktop" && launches(f, exe) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// launches reports whether the desktop entry in file is shown in menus and its
+// Exec runs exe.
+func launches(file, exe string) bool {
+	f, err := os.Open(file)
+	if err != nil {
+		return false
+	}
+	defer f.Close()
+	runs, inEntry := false, false
+	sc := bufio.NewScanner(f)
+	for sc.Scan() {
+		l := strings.TrimSpace(sc.Text())
+		if strings.HasPrefix(l, "[") {
+			inEntry = l == "[Desktop Entry]"
+			continue
+		}
+		if !inEntry {
+			continue
+		}
+		k, v, ok := strings.Cut(l, "=")
+		if !ok {
+			continue
+		}
+		switch strings.TrimSpace(k) {
+		case "NoDisplay", "Hidden":
+			if strings.TrimSpace(v) == "true" {
+				return false
+			}
+		case "Exec":
+			fields := strings.Fields(strings.TrimSpace(v))
+			if len(fields) > 0 && strings.Trim(fields[0], `"'`) == exe {
+				runs = true
+			} else if strings.HasPrefix(strings.TrimSpace(v), `"`+exe+`"`) {
+				runs = true // a quoted path with spaces
+			}
+		}
+	}
+	return runs
 }

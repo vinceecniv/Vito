@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Intensidade do fundo",
 "Vito now runs as an app on this computer": "O Vito agora corre como uma aplicação neste computador",
 "Your dictations moved to the app. Dictate on from there — with your hotkey, in every program.": "Os seus ditados passaram para a aplicação. Continue a ditar a partir de lá — com a sua combinação de teclas, em qualquer programa.",
 "Open Vito": "Abrir o Vito",
@@ -1469,6 +1470,7 @@
 "Copyright": "Direitos de autor"
 },
 "help": {
+"bdstrength": "Quão presente é o fundo: para a esquerda quase invisível, para a direita mais intenso do que o padrão.",
 "theme": "Claro, escuro ou automático — o automático segue a definição claro/escuro do seu sistema.",
 "uilang": "O idioma desta interface. 'Automático' usa o idioma do seu sistema (caso contrário, inglês).",
 "zoom": "Aumente ou reduza toda a interface da aplicação. Útil em ecrãs grandes ou pequenos.",
@@ -1532,6 +1534,7 @@
 "cursor": "O ponteiro do rato nas cores do Vito, com o logótipo na mão. Desligado: o ponteiro habitual do seu sistema.",
 "helptips": "Sim, esta é uma. Desligado: deixa de haver explicações quando se detém sobre uma definição — incluindo esta.",
 "soundset": "Como soam os sons: os do Vito, Suave (tons quentes), Vidro (sininhos claros), Retro (8 bits) ou Tique (curto e seco, o menos percetível). Clique num para o ouvir.",
+"ownwindowlinux": "Abre o Vito numa janela própria (WebKitGTK), sem navegador. Desligado: na aplicação do navegador instalada ou num separador do navegador.",
 "ownwindow": "Abre o Vito numa janela própria (Microsoft Edge WebView2), sem navegador. Desligado: na aplicação do navegador instalada ou num separador do navegador."
 }
 }

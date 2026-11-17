@@ -401,7 +401,9 @@
      the palette tokens are used, so every colour theme brings its own; the
      dark side is a little stronger (--bd-k) to read on a dark surface. Only
      transforms move, slowly, and nothing moves under reduced motion. ---- */
-  .bd { --bd-k:1; --u:1px;
+  /* --bd-s is the user's strength (ui.backdrop_strength, on <html>): it
+     scales every colour of the background, the picker's swatches too. */
+  .bd { --bd-k:var(--bd-s, 1); --u:1px;
     --b1:color-mix(in srgb, var(--coral) calc(10% * var(--bd-k)), transparent);
     --b2:color-mix(in srgb, var(--violet) calc(10% * var(--bd-k)), transparent);
     --s1:color-mix(in srgb, var(--coral) calc(22% * var(--bd-k)), transparent);
@@ -410,7 +412,7 @@
     --ln:color-mix(in srgb, var(--violet) calc(13% * var(--bd-k)), transparent);
     --dot:color-mix(in srgb, var(--violet) calc(14% * var(--bd-k)), transparent);
     --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 40C100 0 100 0 200 40S300 80 400 40V100H0Z'/%3E%3C/svg%3E"); }
-  :root[data-theme="dark"] .bd { --bd-k:1.45; }
+  :root[data-theme="dark"] .bd { --bd-k:calc(1.45 * var(--bd-s, 1)); }
   #backdrop { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
   .bd::before, .bd::after { content:none; position:absolute; pointer-events:none; }
   .bd[data-bd="gradient"] { background-image:linear-gradient(155deg, var(--s1), transparent 42%, transparent 58%, var(--s2)); }
@@ -531,6 +533,12 @@
   html.theming, html.theming *:not(.tseg):not(#meter):not(#mt-meter) {
     transition: background-color .28s ease, color .28s ease, border-color .28s ease, fill .28s ease, box-shadow .28s ease !important;
   }
+  html.theming.theming-slow, html.theming.theming-slow *:not(.tseg):not(#meter):not(#mt-meter) { transition-duration:.6s !important; }
+  /* Where the browser can, the whole page crossfades instead (switchTheme):
+     the gradients, canvases and pictures too, which no transition reaches.
+     Slower when the system switched, which nobody clicked for. */
+  html.vt-theme::view-transition-old(root), html.vt-theme::view-transition-new(root) { animation-duration:.3s; animation-timing-function:ease; }
+  html.vt-theme.vt-slow::view-transition-old(root), html.vt-theme.vt-slow::view-transition-new(root) { animation-duration:.6s; }
   /* Reserve the scrollbar gutter so appearing/disappearing scrollbars never
      shift content horizontally. */
   html { scrollbar-gutter:stable; overflow-x:hidden; }
@@ -601,6 +609,15 @@
   .win-edge.l, .win-edge.r { width:12px; cursor:nwse-resize; }
   .win-edge.l { right:auto; } .win-edge.r { left:auto; cursor:nesw-resize; }
   html.win-max .win-edge, html.wco .win-btns, html.wco .win-edge { display:none; }
+  /* Linux (GTK): the buttons the desktop's layout names, on its side, round
+     as GNOME and most GTK themes draw them; closing is not red there. */
+  html.frame-gtk .win-btns { gap:6px; padding:0 7px; align-items:center; }
+  html.frame-gtk .win-btn { width:24px; height:24px; border-radius:50%;
+    background:color-mix(in srgb, var(--text) 8%, transparent); }
+  html.frame-gtk .win-btn:hover, html.frame-gtk .win-btn.close:hover { background:color-mix(in srgb, var(--text) 15%, transparent); color:var(--text); }
+  html.frame-gtk .win-btn:active, html.frame-gtk .win-btn.close:active { background:color-mix(in srgb, var(--text) 22%, transparent); color:var(--text); }
+  html.frame-gtk .win-btn svg { width:8px; height:8px; stroke-width:1.5; }
+  html.frame-gtk.win-left .win-btns { right:auto; left:0; border-radius:0 0 10px 0; }
   /* Room under the strip: the page head keeps clear of the caption buttons
      at every width, and the sidebar's logo lines up with it. */
   html.own-frame .content, html.wco .content { padding-top:calc(var(--frame-h) + 10px * var(--dn, 1)); }
@@ -663,7 +680,7 @@
   ::view-transition-group(vt-side), ::view-transition-group(vt-main) { animation-duration:.28s; animation-timing-function:cubic-bezier(.2,.7,.2,1); }
   ::view-transition-old(vt-side), ::view-transition-new(vt-side),
   ::view-transition-old(vt-main), ::view-transition-new(vt-main) { height:100%; width:auto; object-fit:none; object-position:left top; animation-duration:.28s; }
-  ::view-transition-old(root), ::view-transition-new(root) { animation:none; }
+  html.vt-fold::view-transition-old(root), html.vt-fold::view-transition-new(root) { animation:none; }
   .side-toggle { display:flex; align-items:center; gap:11px; width:100%; margin-top:auto; padding:9px 12px; border-radius:10px;
     border:none; background:none; color:var(--text3); font-family:inherit; font-size:13px; text-align:left; cursor:var(--cur-hand); }
   .side-toggle svg { width:17px; height:17px; flex:0 0 17px; }
@@ -724,7 +741,9 @@
   /* ---- content ---- */
   /* On a wide screen the column sits in the middle of the space beside the
      sidebar rather than against it. */
-  .content { flex:1; padding:calc(32px * var(--dn, 1)) calc(36px * var(--dn, 1)); max-width:1480px; margin-inline:auto; } /* one width for every page */
+  /* one width for every page; min-width:0 so a wide child (a microphone with a
+     very long name in its <select>) cannot stretch the flex item past the window */
+  .content { flex:1; min-width:0; padding:calc(32px * var(--dn, 1)) calc(36px * var(--dn, 1)); max-width:1480px; margin-inline:auto; }
   .page-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:calc(20px * var(--dn, 1)); gap:16px; position:relative; z-index:5; }
   /* Explicit line heights: title 32 + gap 2 + subtitle 18 = 52, exactly the
      icon tile beside it. Left to the font's own metrics the block ends up a few
@@ -1348,6 +1367,14 @@
     border:1px solid var(--input-border); border-radius:10px; padding:0 12px; font:inherit; font-size:13.5px;
   }
   textarea { height:auto; padding:10px 12px; resize:vertical; }
+  /* A native <select> drawn by the page, not the toolkit: WebKitGTK paints it
+     as GTK's own (light) combo box whatever the theme. The caret is two
+     gradients, so it takes the theme's colour, like .flagsel-btn's. */
+  select { -webkit-appearance:none; appearance:none; padding-right:34px; text-overflow:ellipsis;
+    background-image:linear-gradient(45deg, transparent 50%, var(--text3) 50%), linear-gradient(135deg, var(--text3) 50%, transparent 50%);
+    background-position:calc(100% - 18px) 52%, calc(100% - 13px) 52%; background-size:5px 5px; background-repeat:no-repeat; }
+  select:disabled { opacity:.6; }
+  option { background:var(--card); color:var(--text); }
   /* The status period picker: same styled dropdown as the other pickers, but it
      sits in the page head, so it needs its own width instead of filling a form
      column. */
@@ -2939,6 +2966,10 @@
           <div class="accent-sel" id="density-sel" role="radiogroup" aria-label="Spacing"></div>
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
+          <div id="bd-strength-row" hidden>
+            <label class="fld" data-help="bdstrength" for="s-bdstrength" style="max-width:320px;">Background strength <span class="val" id="s-bdstrengthval">100%</span><button type="button" id="s-bdstrength-reset" class="reset-btn" hidden title="Back to 100%" aria-label="Back to 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
+            <div class="slider-wrap" style="--frac:0.655;"><input type="range" id="s-bdstrength" min="0.05" max="1.5" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
+          </div>
           <div class="subhead" style="margin-top:20px;">Other</div>
           <label class="tgl" data-help="motion"><input type="checkbox" id="s-motion"><span class="tr"></span> Reduce motion</label>
           <label class="tgl" data-help="cursor"><input type="checkbox" id="s-cursor"><span class="tr"></span> Vito mouse cursor</label>
@@ -4211,7 +4242,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Listen to the sounds":"Beluister de geluiden","Sounds have their own sets, under Audio":"Geluiden hebben eigen sets, onder Audio","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","Background strength":"Sterkte van de achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Listen to the sounds":"Beluister de geluiden","Sounds have their own sets, under Audio":"Geluiden hebben eigen sets, onder Audio","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -5133,6 +5164,7 @@ function systemDark(){ return window.matchMedia && matchMedia("(prefers-color-sc
 function effectiveDark(){ return themePref === "dark" || (themePref === "system" && systemDark()); }
 function applyTheme(){
   document.documentElement.dataset.theme = effectiveDark() ? "dark" : "light";
+  document.documentElement.dataset.themePref = themePref; // Vito's own window (Linux) leaves "system" to GTK
   // Match the PWA window title bar to Vito's own theme (Chrome recolors the app
   // title bar live when this changes); blend it with the app background.
   document.querySelector('meta[name=theme-color]').content = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || (effectiveDark() ? "#17141F" : "#FAF6EF");
@@ -5143,7 +5175,7 @@ function applyTheme(){
 // "Reset to default" only works once something differs from Vito's own look.
 function syncLookReset(){
   const b = document.getElementById("s-look-reset"); if (!b) return;
-  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref && !motionPref && !densityPref; }
+  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref && !motionPref && !densityPref && Math.abs(bdStrength - 1) < 0.001; }
   catch {} // during start-up, before all of them exist; the last apply sets it
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
@@ -5157,10 +5189,10 @@ function applyAccent(){
   document.querySelectorAll("#accent-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === (root.dataset.accent || "") ? "true" : "false"));
 }
 function setAccent(pref, persist){
+  const changed = (pref || "") !== accentPref;
   accentPref = pref || "";
   try { localStorage.setItem("vito-accent", accentPref); } catch {}
-  fadeTheme();
-  applyAccent();
+  if (changed) switchTheme(applyAccent); else applyAccent();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { accent: accentPref });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
@@ -5220,7 +5252,11 @@ function writeDeskStyle(){
       --sidebar:${dark ? hexMix(c.surface, "#000000", .35) : c.surface}; --sidebar-border:${c.surface_container_high};
       --card:${c.surface}; --card-border:${c.surface_container_high};
       --input-bg:${hexMix(c.surface, c.surface_container_high, .45)}; --input-border:${c.surface_container_highest};
-      --text:${c.on_surface}; --text2:${hexMix(c.on_surface, c.on_surface_variant, .5)}; --text3:${c.on_surface_variant};
+      /* text2/text3 between on_surface_variant and outline: Material keeps
+         on_surface_variant close to on_surface, and a hover (text2 → text)
+         then barely showed. Further on the dark side, where the two are
+         closest; every step keeps 4.5:1 or more on the surfaces. */
+      --text:${c.on_surface}; --text2:${hexMix(c.on_surface_variant, c.outline, dark ? .6 : .35)}; --text3:${hexMix(c.on_surface_variant, c.outline, dark ? .85 : .6)};
       --placeholder:${c.outline}; --toggle-off:${c.surface_container_highest}; --track:${c.surface_container_high}; --bar:${c.surface_container_high};`);
     css.push(`:root:not([data-theme="dark"])[data-accent="${code}"] { ${side(L, false)} }`,
       `:root[data-theme="dark"][data-accent="${code}"] { ${side(D, true)} }`,
@@ -5328,6 +5364,7 @@ function applyBackdrop(){
   const root = document.documentElement, on = backdropPref && BACKDROPS.some(b => b.c === backdropPref) ? backdropPref : "";
   if (on) root.dataset.backdrop = on; else delete root.dataset.backdrop;
   const el = document.getElementById("backdrop"); if (el) el.dataset.bd = on;
+  const row = document.getElementById("bd-strength-row"); if (row) row.hidden = !on; // nothing to make stronger
   document.querySelectorAll("#backdrop-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === on ? "true" : "false"));
   syncLookReset();
 }
@@ -5338,6 +5375,28 @@ function setBackdrop(pref, persist){
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { backdrop: backdropPref });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
+/* ---- its strength (ui.backdrop_strength): 0.05 barely there .. 1.5, the
+   default 1 two thirds along; --bd-s on <html>, cached like the rest ---- */
+let bdStrength = (() => { try { const v = parseFloat(localStorage.getItem("vito-bd-strength")); return v > 0 ? v : 1; } catch { return 1; } })();
+function applyBdStrength(){
+  document.documentElement.style.setProperty("--bd-s", String(bdStrength));
+  const r = document.getElementById("s-bdstrength"); if (!r) return;
+  if (document.activeElement !== r) r.value = bdStrength;
+  document.getElementById("s-bdstrengthval").textContent = Math.round(bdStrength * 100) + "%";
+  document.getElementById("s-bdstrength-reset").hidden = Math.abs(bdStrength - 1) < 0.001;
+  syncLookReset();
+}
+function setBdStrength(v, persist){
+  bdStrength = v > 0 ? Math.min(1.5, v) : 1;
+  try { localStorage.setItem("vito-bd-strength", bdStrength); } catch {}
+  applyBdStrength();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { backdrop_strength: Math.abs(bdStrength - 1) < 0.001 ? 0 : bdStrength });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+applyBdStrength();
+$("s-bdstrength").addEventListener("input", e => setBdStrength(parseFloat(e.target.value), false));
+$("s-bdstrength").addEventListener("change", e => setBdStrength(parseFloat(e.target.value), true));
+$("s-bdstrength-reset").addEventListener("click", () => setBdStrength(1, true));
 function buildBackdropPicker(){
   const box = $("backdrop-sel"); if (!box) return;
   box.innerHTML = BACKDROPS.map(b => `<button type="button" class="acc-opt bd-opt" role="radio" data-code="${b.c}"><i class="bd-sw bd" data-bd="${b.c}" aria-hidden="true"></i><span data-noi18n>${t(b.n)}</span></button>`).join("");
@@ -5357,16 +5416,31 @@ function applyCursors(){
   if (cursorStyle.textContent !== css) cursorStyle.textContent = css;
 }
 let themingTimer;
-function fadeTheme(){
-  document.documentElement.classList.add("theming");
+function fadeTheme(slow){
+  const root = document.documentElement;
+  root.classList.add("theming");
+  root.classList.toggle("theming-slow", !!slow);
   clearTimeout(themingTimer);
-  themingTimer = setTimeout(() => document.documentElement.classList.remove("theming"), 320);
+  themingTimer = setTimeout(() => root.classList.remove("theming", "theming-slow"), slow ? 640 : 320);
+}
+// switchTheme applies a new look as a crossfade of the whole page (a view
+// transition), else with fadeTheme's colour transitions. slow: the system
+// switched, not the user.
+function switchTheme(apply, slow){
+  const root = document.documentElement;
+  let still = true; try { still = reducedMotion(); } catch {} // before motionPref exists: no crossfade
+  if (!document.startViewTransition || still || document.hidden) { fadeTheme(slow); apply(); return; }
+  root.classList.add("vt-theme");
+  root.classList.toggle("vt-slow", !!slow);
+  document.startViewTransition(apply).finished.finally(() => root.classList.remove("vt-theme", "vt-slow"));
 }
 function setTheme(pref, persist){
+  const changed = pref !== themePref;
   themePref = pref;
   localStorage.setItem("vito-theme", pref);
-  fadeTheme();
-  applyTheme();
+  // Only a real change crossfades: a view transition holds the page's input
+  // for its length, and config loads set the theme again unchanged.
+  if (changed) switchTheme(applyTheme); else applyTheme();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme: pref });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
@@ -5410,11 +5484,11 @@ function surpriseLook(){
   vmFlash("happy", 1800);
 }
 function resetLook(){
-  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setMotion(false, false); setDensity("", false);
-  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", reduce_motion:false, density:"" });
+  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setBdStrength(1, false); setMotion(false, false); setDensity("", false);
+  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", backdrop_strength:0, reduce_motion:false, density:"" });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
-matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(themePref==="system"){ if(typeof fadeTheme==="function") fadeTheme(); applyTheme(); } });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(themePref==="system"){ if(typeof switchTheme==="function") switchTheme(applyTheme, true); else applyTheme(); } });
 applyAccent();
 
 async function api(path, opts = {}) {
@@ -6657,8 +6731,33 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
   addEventListener("scroll", queueTitle, { passive:true });
   addEventListener("resize", queueTitle);
   new MutationObserver(queueTitle).observe(document.querySelector("main"), { subtree:true, attributes:true, attributeFilter:["class"] });
-  if (!window.__VITO_FRAME__ || !window.vitoWin) return;
-  root.classList.add("own-frame");
+  // A tiling desktop (niri, Hyprland, sway, …): no strip while the window is
+  // tiled, like the windows around it; floating, the strip with maximise and
+  // close, to drag it and to double-click it. The window says which
+  // (vitoFloating, cmd/vito/float_linux.go). No minimise: tiling desktops
+  // have nowhere to minimise to.
+  const float = !!window.__VITO_FRAME_FLOAT__;
+  if ((!window.__VITO_FRAME__ && !float) || !window.vitoWin) return;
+  const framed = () => root.classList.contains("own-frame");
+  if (float) {
+    root.classList.add("frame-gtk", "frame-float");
+    $("win-min").style.display = "none";
+    window.vitoFloating = (on) => { root.classList.toggle("own-frame", !!on); queueTitle(); };
+  } else root.classList.add("own-frame");
+  // Linux: GTK's decoration layout ("appmenu:close", "close,minimize:") says
+  // which buttons the desktop shows, in what order and on which side.
+  if (typeof window.__VITO_FRAME_GTK__ === "string") {
+    root.classList.add("frame-gtk");
+    const ids = { minimize:"win-min", maximize:"win-max", close:"win-close" };
+    const names = (s) => (s || "").split(",").map(x => x.trim()).filter(n => ids[n]);
+    const [l, r] = window.__VITO_FRAME_GTK__.split(":");
+    let side = names(r);
+    if (!side.length && names(l).length) { side = names(l); root.classList.add("win-left"); }
+    if (!side.length) side = ["minimize", "maximize", "close"];
+    const box = document.querySelector(".win-btns");
+    Object.entries(ids).forEach(([n, id]) => { $(id).style.display = side.includes(n) ? "" : "none"; });
+    side.forEach(n => box.appendChild($(ids[n])));
+  }
   const max = $("win-max");
   window.vitoFrameState = (s) => {
     root.classList.toggle("win-max", !!s.max);
@@ -6674,16 +6773,31 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
     if (ev.button === 0) { ev.preventDefault(); vitoWin("resize", e.dataset.edge); }
   }));
   const zone = $("win-zone");
-  const onStrip = (ev) => ev.clientY <= zone.getBoundingClientRect().bottom &&
+  const onStrip = (ev) => framed() && ev.clientY <= zone.getBoundingClientRect().bottom &&
     !(ev.target.closest && ev.target.closest("button, a, input, textarea, select, label, [role=button], [contenteditable], .brand, .card-menu"));
   let last = null; // the previous press on the strip: a second one soon after is a double click
+  // GTK hands the pointer to the desktop as soon as a move begins, so the
+  // second click of a double click never reached the page: there the move
+  // waits for the pointer to travel, as on the page's background below.
+  const gtk = root.classList.contains("frame-gtk");
+  let stripPress = null;
   document.addEventListener("mousedown", (ev) => {
     if (ev.button !== 0 || !onStrip(ev)) return;
     ev.preventDefault();
     const dbl = last && ev.timeStamp - last.t < 500 && Math.abs(ev.screenX - last.x) < 5 && Math.abs(ev.screenY - last.y) < 5;
     last = dbl ? null : { t: ev.timeStamp, x: ev.screenX, y: ev.screenY };
-    vitoWin(dbl ? "max" : "drag");
+    if (dbl) { stripPress = null; vitoWin("max"); }
+    else if (gtk) stripPress = { x: ev.screenX, y: ev.screenY };
+    else vitoWin("drag");
   }, true);
+  if (gtk) {
+    document.addEventListener("mousemove", (ev) => {
+      if (!stripPress) return;
+      if (!(ev.buttons & 1)) { stripPress = null; return; }
+      if (Math.hypot(ev.screenX - stripPress.x, ev.screenY - stripPress.y) > 4) { stripPress = null; last = null; vitoWin("drag"); }
+    }, true);
+    document.addEventListener("mouseup", () => { stripPress = null; }, true);
+  }
   document.addEventListener("contextmenu", (ev) => {
     if (onStrip(ev)) { ev.preventDefault(); vitoWin("menu"); }
   }, true);
@@ -6695,7 +6809,7 @@ selectSetSection(localStorage.getItem("vito-set-section") || "general");
     ![...el.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim());
   let press = null;
   document.addEventListener("mousedown", (ev) => {
-    press = ev.button === 0 && !onStrip(ev) && isBg(ev.target) ? { x: ev.screenX, y: ev.screenY } : null;
+    press = ev.button === 0 && framed() && !onStrip(ev) && isBg(ev.target) ? { x: ev.screenX, y: ev.screenY } : null;
   }, true);
   document.addEventListener("mousemove", (ev) => {
     if (!press) return;
@@ -7691,7 +7805,12 @@ const COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 // each falls back to the system cursor should the image not load. Text fields
 // get an I-beam in the same style (var(--cur-text)).
 const cursorCSS = (from, to) => {
-  const svg = (inner) => `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">` +
+  // Vito's window on Linux with GTK before 4.16 shows the pointer at the size
+  // WebKit draws it, the device scale: at 2× it came out twice as large.
+  // There the image is made 32/scale, hot spots likewise (internal/gtkwin).
+  const k = window.__VITO_SHRINK_CURSORS__ ? 1 / (window.devicePixelRatio || 1) : 1, px = 32 * k;
+  const hs = (x, y) => Math.round(x * k) + " " + Math.round(y * k);
+  const svg = (inner) => `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 32 32">` +
     `<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="3" y1="2" x2="25" y2="28"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient>` +
     `<filter id="s" x="-30%" y="-30%" width="170%" height="170%"><feDropShadow dx=".6" dy="1.2" stdDeviation="1.1" flood-color="#1B1530" flood-opacity=".4"/></filter></defs>` +
     inner + `</svg>`;
@@ -7750,8 +7869,8 @@ const cursorCSS = (from, to) => {
   const grab = svg(edged(open, 3.6) + parting("M12.5 7.5v10M16.9 6.5v11M21.3 8v9.5") + palmBars);
   const grabbing = svg(edged(fist, 3.6) + parting("M12.5 11.6v5.6M16.9 11.4v5.8M21.3 12v5.4") + palmBars);
   const url = (x) => `url("data:image/svg+xml,${encodeURIComponent(x)}")`;
-  return `:root{--cur-arrow:${url(arrow)} 4 4, default;--cur-hand:${url(hand)} 12 2, pointer;--cur-text:${url(text)} 16 16, text;` +
-    `--cur-grab:${url(grab)} 16 16, grab;--cur-grabbing:${url(grabbing)} 16 16, grabbing}
+  return `:root{--cur-arrow:${url(arrow)} ${hs(4, 4)}, default;--cur-hand:${url(hand)} ${hs(12, 2)}, pointer;--cur-text:${url(text)} ${hs(16, 16)}, text;` +
+    `--cur-grab:${url(grab)} ${hs(16, 16)}, grab;--cur-grabbing:${url(grabbing)} ${hs(16, 16)}, grabbing}
 html{cursor:var(--cur-arrow)}
 input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=button]):not([type=submit]),
 textarea,[contenteditable="true"],[contenteditable=""]{cursor:var(--cur-text)}
@@ -7760,6 +7879,11 @@ a[href],button:not(:disabled),select,summary,label[for],[role="button"]{cursor:v
 // Redrawn when the colour theme or light/dark changes.
 cursorStyle = document.createElement("style"); document.head.appendChild(cursorStyle);
 applyCursors();
+// Where the page shrinks its pointers, their size follows the screen's scale: drawn
+// again when the window moves to a screen with another one.
+if (window.__VITO_SHRINK_CURSORS__) (function watchScale(){
+  matchMedia(`(resolution: ${window.devicePixelRatio || 1}dppx)`).addEventListener("change", () => { applyCursors(); watchScale(); }, { once: true });
+})();
 // Command mode: while a spoken command ("Vito, vertaal naar Duits") is armed,
 // show it prominently in the live transcript, so it's clear the next
 // dictation gets transformed.
@@ -11517,8 +11641,9 @@ async function fillSettings() {
   setRetentionDisplay(String(cfg.history.retention_days ?? 0));
   syncStoreAudioUI();
   $("s-tray").checked = cfg.tray ? cfg.tray.enabled !== false : true;
-  // Vito's own window (WebView2) is Windows-only; unset is on.
-  $("s-window-opt").hidden = STANDALONE || !/Windows/.test(navigator.userAgent);
+  // Vito's own window: WebView2 on Windows, WebKitGTK on Linux where it is
+  // installed (ownWindowLinux); unset is on.
+  applyOwnWindowOpt();
   $("s-window").checked = !(cfg.ui && cfg.ui.window === false);
   $("s-pill").checked = !cfg.ui || cfg.ui.pill !== false; // default on
   $("s-pill-idle").checked = !(cfg.ui && cfg.ui.pill_idle === false); // unset is on
@@ -11544,6 +11669,7 @@ async function fillSettings() {
   if (cfg.ui && (cfg.ui.accent || "") !== accentPref) setAccent(cfg.ui.accent || "", false);
   if (cfg.ui && (cfg.ui.font || "") !== fontPref) setFont(cfg.ui.font || "", false);
   if (cfg.ui && (cfg.ui.backdrop || "") !== backdropPref) setBackdrop(cfg.ui.backdrop || "", false);
+  if (cfg.ui && ((cfg.ui.backdrop_strength || 1) !== bdStrength)) setBdStrength(cfg.ui.backdrop_strength || 1, false);
   if (cfg.ui && (cfg.ui.density || "") !== densityPref) setDensity(cfg.ui.density || "", false);
   if (cfg.ui && !!cfg.ui.reduce_motion !== motionPref) setMotion(!!cfg.ui.reduce_motion, false);
   if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
@@ -12082,6 +12208,9 @@ function previewSound(name, set){
   api("/api/play-sound?name=" + name + "&set=" + encodeURIComponent(set) + "&volume=" + $("s-svol").value, { method: "POST" }).catch(e => toast(e.message, "err"));
 }
 document.querySelectorAll(".soundtags .tag").forEach(b => b.onclick = () => previewSound(b.dataset.sound, (cfg && cfg.audio.sound_set) || ""));
+// Each volume change plays the start sound at the new level: on release (or a
+// key step), not on every pixel of a drag.
+$("s-svol").addEventListener("change", () => previewSound("start", (cfg && cfg.audio.sound_set) || ""));
 /* ---- the sound set (audio.sound_set): the original, or one made by
    scripts/sounds.py (assets.SoundSets); picking one plays its "done" ---- */
 const SOUNDSETS = [{c:"",n:"Vito default"},{c:"soft",n:"Soft"},{c:"glass",n:"Glass"},{c:"retro",n:"Retro"},{c:"tick",n:"Tick"}];
@@ -12521,6 +12650,38 @@ $("s-openaireasoning").addEventListener("change", () => { updateReasoningNote();
 // never had the problem.
 document.querySelectorAll("select").forEach(sel =>
   sel.addEventListener("wheel", () => { if (document.activeElement === sel) sel.blur(); }, { passive: true }));
+// A slider under the pointer follows the mouse wheel: up is more. Not while the
+// page is being scrolled — a wheel that was just turning elsewhere (wheelBusy)
+// keeps scrolling past the slider, so scrolling down the settings never moves
+// one by accident. Each step sends "input" (the label follows) and, once the
+// wheel rests, one "change" (what saves, previews the sound, applies the zoom).
+// Fine sliders (1% steps) move 2% a notch, so a few turns cross the range.
+{
+  let elsewhereAt = 0, acc = 0, accFor = null;
+  const settle = new Map();
+  addEventListener("wheel", e => {
+    const r = e.target instanceof Element && e.target.closest('input[type="range"]');
+    if (!r || r.disabled || e.ctrlKey || r.closest("[hidden]")) { elsewhereAt = e.timeStamp; return; }
+    if (e.timeStamp - elsewhereAt < 400) { elsewhereAt = e.timeStamp; return; }
+    e.preventDefault();
+    const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : -e.deltaX;
+    if (accFor !== r) { acc = 0; accFor = r; }
+    // A notch is one step; a touchpad's pixels are added up, ~50 to a step.
+    acc += e.deltaMode === 0 ? d / 50 : Math.sign(d);
+    const n = acc > 0 ? Math.floor(acc) : Math.ceil(acc);
+    if (!n) return;
+    acc -= n;
+    const min = parseFloat(r.min || 0), max = parseFloat(r.max || 100);
+    const step = parseFloat(r.step) || 1, by = Math.max(step, Math.round((max - min) / 50 / step) * step);
+    const was = parseFloat(r.value);
+    const v = Math.min(max, Math.max(min, Math.round((was - n * by - min) / step) * step + min));
+    if (Math.abs(v - was) < step / 2) return;
+    r.value = +v.toFixed(6);
+    r.dispatchEvent(new Event("input", { bubbles: true }));
+    clearTimeout(settle.get(r));
+    settle.set(r, setTimeout(() => { settle.delete(r); r.dispatchEvent(new Event("change", { bubbles: true })); }, 350));
+  }, { passive: false });
+}
 $("s-promptsel").addEventListener("change", () => {
   // "" and "vito:default" mean the same thing; store the empty one so the config
   // has a single spelling for "Vito's default", the same one a fresh install has.
@@ -14424,6 +14585,21 @@ function longEvent(e){
 let deferredPrompt = null;
 // Vito's own window counts as the app too: no "install as app" in there.
 const isStandalone = () => !!window.__VITO_WINDOW__ || matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+// Linux has Vito's own window only where WebKitGTK is installed: the daemon
+// says so (/api/linux-tools "window").
+var ownWindowLinux = false; // var: renderPwaTip may run before this line
+function applyOwnWindowOpt(){
+  const opt = $("s-window-opt");
+  opt.hidden = STANDALONE || !(/Windows/.test(navigator.userAgent) || ownWindowLinux);
+  opt.dataset.help = ownWindowLinux ? "ownwindowlinux" : "ownwindow";
+}
+if (!STANDALONE && /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent)) {
+  api("/api/linux-tools").then(i => {
+    ownWindowLinux = !!(i && i.window);
+    applyOwnWindowOpt();
+    renderPwaTip();
+  }).catch(() => {});
+}
 function renderPwaTip(){
   const el = $("pwa-tip");
   // On a phone or tablet the honest tip is a different one: Vito is made for
@@ -14446,7 +14622,7 @@ function renderPwaTip(){
   // On Windows Vito has its own window (Settings > System); installing this
   // page as an app is no longer the way to give it one.
   let ownWindow = true; try { ownWindow = !(cfg && cfg.ui && cfg.ui.window === false); } catch {} // cfg may not exist yet
-  if (!STANDALONE && /Windows/.test(navigator.userAgent) && ownWindow) { el.innerHTML = ""; return; }
+  if (!STANDALONE && (/Windows/.test(navigator.userAgent) || ownWindowLinux) && ownWindow) { el.innerHTML = ""; return; }
   if (deferredPrompt) {
     el.innerHTML = `<div class="banner tip pwa-explain">
       <div class="pwa-head">
@@ -14520,10 +14696,12 @@ const HELP = {
   helptips:{nl:"Ja, dit is er een. Uit: geen uitleg meer als je even boven een instelling blijft hangen — deze ook niet.",en:"Yes, this is one. Off: no more explanations when you linger over a setting — this one included."},
   theme:{nl:"Licht, donker of automatisch — automatisch volgt de licht/donker-stand van je systeem.",en:"Light, dark or automatic — automatic follows your system's light/dark setting."},
   uilang:{nl:"De taal van deze app-interface. 'Automatisch' gebruikt je systeemtaal (anders Engels).",en:"The language of this app interface. 'Automatic' uses your OS language (English otherwise)."},
+  bdstrength:{nl:"Hoe sterk de achtergrond aanwezig is: naar links bijna onzichtbaar, naar rechts sterker dan standaard.",en:"How present the background is: to the left barely visible, to the right stronger than standard."},
   zoom:{nl:"Vergroot of verklein de hele app-interface. Handig op grote of kleine schermen.",en:"Scale the whole app interface up or down. Handy on large or small screens."},
   appendspace:{nl:"Voegt een spatie toe achter de geplakte tekst, zodat opeenvolgende dictaten netjes van elkaar gescheiden blijven.",en:"Appends a space after the pasted text so back-to-back dictations stay neatly separated."},
   notifications:{nl:"Bureaubladmeldingen bij dictaat. 'Alles' toont elke status (kort, niet bewaard in je meldingsgeschiedenis), 'Alleen fouten' toont enkel problemen, 'Uit' toont niets.",en:"Desktop notifications for dictation. 'Show all' shows every status (briefly, not kept in your notification history), 'Errors only' shows just problems, 'Off' shows nothing."},
   autostart:{nl:"Start Vito automatisch zodra je inlogt, zodat je sneltoets altijd klaarstaat.",en:"Launch Vito automatically at login so your hotkey is always ready."},
+  ownwindowlinux:{nl:"Opent Vito in een eigen venster (WebKitGTK), zonder browser. Uit: in de geïnstalleerde browser-app of een browsertabblad.",en:"Opens Vito in a window of its own (WebKitGTK), without a browser. Off: in the installed browser app or a browser tab."},
   ownwindow:{nl:"Opent Vito in een eigen venster (Microsoft Edge WebView2), zonder browser. Uit: in de geïnstalleerde browser-app of een browsertabblad.",en:"Opens Vito in a window of its own (Microsoft Edge WebView2), without a browser. Off: in the installed browser app or a browser tab."},
   tray:{nl:"Toon het Vito-icoon in het systeemvak voor snelle toegang. Werkt na een herstart van Vito.",en:"Show the Vito icon in the system tray for quick access. Takes effect after restarting Vito."},
   pill:{nl:"Toont onderaan het scherm een kleine balk die meebeweegt met je stem, zolang je dicteert. Hij pakt nooit de focus. Wijs hem aan voor twee knoppen: ✕ breekt af, een klik op de rest stopt en plakt. Werkt op desktops met layer-shell, zoals niri; op GNOME nog niet.",en:"Shows a small bar at the bottom of the screen that moves with your voice while you dictate. It never takes the focus. Point at it for two buttons: ✕ cancels, a click anywhere else stops and pastes. Works on desktops with layer-shell, such as niri; not on GNOME yet."},

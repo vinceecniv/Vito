@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Fono stiprumas",
 "Dictate today to start a streak": "Padiktuokite šiandien, kad pradėtumėte seriją",
 "Nothing cleaned up in this period yet": "Šiuo laikotarpiu dar nieko netvarkyta",
 "No languages detected in this period yet": "Šiuo laikotarpiu dar neaptikta jokių kalbų",
@@ -1468,6 +1469,7 @@
 "Copyright": "Autorių teisės"
 },
 "help": {
+"bdstrength": "Kiek ryškus fonas: į kairę vos matomas, į dešinę ryškesnis nei įprastai.",
 "theme": "Šviesi, tamsi arba automatinė — automatinė seka jūsų sistemos šviesią/tamsią nuostatą.",
 "uilang": "Šios programos sąsajos kalba. „Automatiškai“ naudoja jūsų OS kalbą (kitu atveju anglų).",
 "zoom": "Padidinkite arba sumažinkite visą programos sąsają. Patogu dideliuose ar mažuose ekranuose.",
@@ -1531,6 +1533,7 @@
 "cursor": "Pelės žymeklis Vito spalvomis, su logotipu rankoje. Išjungta: įprastas jūsų sistemos žymeklis.",
 "helptips": "Taip, tai vienas iš jų. Išjungta: daugiau jokių paaiškinimų, kai užsibūnate virš nustatymo — ir šio taip pat.",
 "soundset": "Kaip skamba garsai: paties Vito, Švelnus (šilti tonai), Stiklas (skambūs varpeliai), Retro (8 bitų) arba Tiksėjimas (trumpas ir sausas, mažiausiai pastebimas). Spustelėkite vieną, kad išgirstumėte.",
+"ownwindowlinux": "Atidaro Vito atskirame lange (WebKitGTK), be naršyklės. Išjungta: įdiegtoje naršyklės programėlėje arba naršyklės kortelėje.",
 "ownwindow": "Atidaro Vito atskirame lange (Microsoft Edge WebView2), be naršyklės. Išjungta: įdiegtoje naršyklės programėlėje arba naršyklės kortelėje."
 }
 }

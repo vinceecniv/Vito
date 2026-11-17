@@ -776,6 +776,10 @@ func (s *Server) handleReregisterHotkey(w http.ResponseWriter, r *http.Request) 
 // present on this Linux host, so the web UI can show a live "what's installed"
 // report. Non-Linux hosts get os != "linux" and an empty list; the UI hides the
 // card there. Detection is cheap (PATH lookups + a socket stat), safe to re-run.
+// WindowSupported, set by main, says whether this system can show Vito's own
+// window (`vito window`).
+var WindowSupported func() bool
+
 func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 	if runtime.GOOS != "linux" {
 		s.writeJSON(w, http.StatusOK, map[string]any{"os": runtime.GOOS, "present": map[string]bool{}, "pill": pill.Available()})
@@ -807,10 +811,12 @@ func (s *Server) handleLinuxTools(w http.ResponseWriter, r *http.Request) {
 	// chain, "it works" and "it works the way you think" are different claims —
 	// this is the first thing worth knowing when delivery misbehaves.
 	s.writeJSON(w, http.StatusOK, map[string]any{
-		"os":             runtime.GOOS,
-		"present":        present,
-		"pill":           pill.Available(), // the settings page offers its options only then
-		"gnome_ext":      pill.GnomeExtension(),
+		"os":        runtime.GOOS,
+		"present":   present,
+		"pill":      pill.Available(), // the settings page offers its options only then
+		"gnome_ext": pill.GnomeExtension(),
+		// Vito's own window (WebKitGTK): the settings page offers ui.window only then.
+		"window":         WindowSupported != nil && WindowSupported(),
 		"ydotool_socket": socket,
 		"backend":        inject.ActiveBackend(s.d.Config().Injection),
 		// False while the backend is the RemoteDesktop portal and no session has

@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Intensité de l'arrière-plan",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Ton choix est une préférence, pas une limite : Soniox reconnaît aussi d'autres langues, même quand tu changes en pleine phrase.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet reconnaît la langue tout seul : tu peux dicter dans n'importe laquelle de ses 25 langues, quel que soit ton choix ici.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Ce modèle s'en tient à la langue que tu choisis ici. Tu changes de langue en dictant ? Choisis Automatique.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Copyright"
 },
 "help": {
+"bdstrength": "La présence de l'arrière-plan : vers la gauche à peine visible, vers la droite plus marqué que par défaut.",
 "theme": "Clair, sombre ou automatique — le mode automatique suit le réglage clair/sombre de votre système.",
 "uilang": "La langue de cette interface. « Automatique » utilise la langue de votre système (sinon l'anglais).",
 "zoom": "Agrandit ou réduit toute l'interface de l'application. Pratique sur les grands ou petits écrans.",
@@ -1531,6 +1533,7 @@
 "cursor": "Le pointeur de la souris aux couleurs de Vito, avec le logo en main. Désactivé : le pointeur habituel de votre système.",
 "helptips": "Oui, en voici une. Désactivé : plus aucune explication quand vous vous attardez sur un réglage — celle-ci non plus.",
 "soundset": "Le timbre des sons : ceux de Vito, Doux (sons chauds), Verre (clochettes claires), Rétro (8 bits) ou Tic (court et sec, le plus discret). Cliquez sur l'un d'eux pour l'écouter.",
+"ownwindowlinux": "Ouvre Vito dans sa propre fenêtre (WebKitGTK), sans navigateur. Désactivé : dans l'application de navigateur installée ou dans un onglet du navigateur.",
 "ownwindow": "Ouvre Vito dans sa propre fenêtre (Microsoft Edge WebView2), sans navigateur. Désactivé : dans l'application de navigateur installée ou dans un onglet du navigateur."
 }
 }

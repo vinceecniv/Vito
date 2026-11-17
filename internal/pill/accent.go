@@ -126,6 +126,12 @@ func hexStr(s string) rgb {
 	return hex(uint32(v))
 }
 
+// FollowsDesktop reports whether accent is a desktop theme ("dms",
+// "omarchy"), whose colours change with the shell's scheme and side rather
+// than with Vito's settings: what draws them once (the tray, the launcher's
+// icon) has to look again now and then.
+func FollowsDesktop(accent string) bool { return accent == "dms" || accent == "omarchy" }
+
 // BrandColors is the colour theme's gradient as the app icon draws it, for the
 // tray and the window's icon: the warm end, the cool end, and the cool end's
 // light tint. An unknown name is the original pair.
@@ -136,6 +142,19 @@ func BrandColors(accent string) (coral, violet, violetL [3]uint8) {
 	}
 	if p == nil {
 		p = palettes[""]
+	}
+	// A desktop theme's icon is the page's gradient on the shell's side:
+	// primary into a deep primary. p.violet is the light side's, which on a
+	// shell whose two sides differ (DMS: orange dark, violet light) turned
+	// the icon into another theme's.
+	if p != palettes[""] && FollowsDesktop(accent) {
+		if src := desktopcolors.For(accent); src != nil {
+			if s := src.Side()["primary"]; s != "" {
+				pr := hexStr(s)
+				deep := blend(pr, rgb{}, .38)
+				p = &palette{coral: pr, violet: deep, violetL: blend(pr, rgb{1, 1, 1}, .4)}
+			}
+		}
 	}
 	b := func(c rgb) [3]uint8 {
 		return [3]uint8{uint8(clamp(c.r)*255 + 0.5), uint8(clamp(c.g)*255 + 0.5), uint8(clamp(c.b)*255 + 0.5)}

@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Jačina pozadine",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Nizozemski, engleski, njemački, francuski, španjolski, talijanski, portugalski, poljski, češki, slovački, mađarski, rumunjski, bugarski, hrvatski, slovenski, grčki, švedski, danski, finski, estonski, latvijski, litavski, malteški, ruski i ukrajinski — prepoznaju se automatski. Nije prikladno za druge jezike.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Engleski, nizozemski, njemački, francuski, španjolski, talijanski, poljski.",
 "Type (keystrokes)": "Tipkanje (pritisci tipki)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Autorska prava"
 },
 "help": {
+"bdstrength": "Koliko je pozadina prisutna: ulijevo jedva vidljiva, udesno jača od standardne.",
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetlu/tamnu postavku vašeg sustava.",
 "uilang": "Jezik sučelja ove aplikacije. „Automatski” koristi jezik vašeg sustava (inače engleski).",
 "zoom": "Povećajte ili smanjite cijelo sučelje aplikacije. Korisno na velikim ili malim zaslonima.",
@@ -1531,6 +1533,7 @@
 "cursor": "Pokazivač miša u bojama programa Vito, s logotipom u ruci. Isključeno: uobičajeni pokazivač vašeg sustava.",
 "helptips": "Da, ovo je jedno od njih. Isključeno: nema više objašnjenja kada se zadržite iznad postavke — ni ovog.",
 "soundset": "Kako zvukovi zvuče: Vitovi vlastiti, Meko (topli tonovi), Staklo (jasna zvonca), Retro (8-bitni) ili Tik (kratki i suhi, najmanje upadljivi). Kliknite skup da ga čujete.",
+"ownwindowlinux": "Otvara Vito u vlastitom prozoru (WebKitGTK), bez preglednika. Isključeno: u instaliranoj aplikaciji preglednika ili u kartici preglednika.",
 "ownwindow": "Otvara Vito u vlastitom prozoru (Microsoft Edge WebView2), bez preglednika. Isključeno: u instaliranoj aplikaciji preglednika ili u kartici preglednika."
 }
 }

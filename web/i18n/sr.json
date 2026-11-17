@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Jačina pozadine",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Holandski, engleski, nemački, francuski, španski, italijanski, portugalski, poljski, češki, slovački, mađarski, rumunski, bugarski, hrvatski, slovenački, grčki, švedski, danski, finski, estonski, letonski, litvanski, malteški, ruski i ukrajinski — prepoznaju se automatski. Nije pogodno za druge jezike.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Engleski, holandski, nemački, francuski, španski, italijanski, poljski.",
 "Type (keystrokes)": "Kucaj (pritisci tastera)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Autorska prava"
 },
 "help": {
+"bdstrength": "Koliko je pozadina prisutna: ulevo jedva vidljiva, udesno jača od standardne.",
 "theme": "Svetla, tamna ili automatska — automatska prati svetlu/tamnu postavku vašeg sistema.",
 "uilang": "Jezik interfejsa ove aplikacije. „Automatski“ koristi jezik vašeg sistema (inače engleski).",
 "zoom": "Uvećava ili umanjuje ceo interfejs aplikacije. Korisno na velikim ili malim ekranima.",
@@ -1531,6 +1533,7 @@
 "cursor": "Pokazivač miša u bojama aplikacije Vito, s logotipom u ruci. Isključeno: uobičajeni pokazivač vašeg sistema.",
 "helptips": "Da, ovo je jedno od njih. Isključeno: nema više objašnjenja kada se zadržite iznad podešavanja — ni ovog.",
 "soundset": "Kako zvuci zvuče: Vitovi sopstveni, Meko (topli tonovi), Staklo (jasna zvonca), Retro (8-bitni) ili Tik (kratki i suvi, najmanje upadljivi). Kliknite na skup da ga čujete.",
+"ownwindowlinux": "Otvara Vito u sopstvenom prozoru (WebKitGTK), bez pregledača. Isključeno: u instaliranoj aplikaciji pregledača ili na kartici pregledača.",
 "ownwindow": "Otvara Vito u sopstvenom prozoru (Microsoft Edge WebView2), bez pregledača. Isključeno: u instaliranoj aplikaciji pregledača ili na kartici pregledača."
 }
 }

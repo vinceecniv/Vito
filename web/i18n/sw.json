@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Ukali wa mandharinyuma",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Kiholanzi, Kiingereza, Kijerumani, Kifaransa, Kihispania, Kiitaliano, Kireno, Kipolandi, Kicheki, Kislovakia, Kihungaria, Kiromania, Kibulgaria, Kikroeshia, Kislovenia, Kigiriki, Kiswidi, Kidenmaki, Kifini, Kiestonia, Kilatvia, Kilithuania, Kimalta, Kirusi na Kiukraini — hutambuliwa kiotomatiki. Haifai kwa lugha nyingine.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Kiingereza, Kiholanzi, Kijerumani, Kifaransa, Kihispania, Kiitaliano, Kipolandi.",
 "Type (keystrokes)": "Andika (mibonyezo ya vitufe)",
@@ -1468,6 +1469,7 @@
 "Copyright": "Hakimiliki"
 },
 "help": {
+"bdstrength": "Jinsi mandharinyuma yanavyoonekana: kushoto hayaonekani karibu kabisa, kulia ni makali kuliko kawaida.",
 "theme": "Nuru, giza au kiotomatiki — kiotomatiki hufuata mpangilio wa nuru/giza wa mfumo wako.",
 "uilang": "Lugha ya kiolesura cha programu hii. 'Kiotomatiki' hutumia lugha ya mfumo wako (vinginevyo Kiingereza).",
 "zoom": "Kuza au punguza kiolesura kizima cha programu. Ni rahisi kwenye skrini kubwa au ndogo.",
@@ -1531,6 +1533,7 @@
 "cursor": "Kiashiria cha kipanya kwa rangi za Vito, na nembo mkononi. Zima: kiashiria cha kawaida cha mfumo wako.",
 "helptips": "Ndiyo, hii ni mojawapo. Zima: hakuna maelezo tena unapokaa kidogo juu ya mpangilio — pamoja na huu.",
 "soundset": "Jinsi sauti zinavyosikika: za Vito mwenyewe, Laini (toni za joto), Kioo (kengele angavu), Retro (8-bit) au Tiki (fupi na kavu, isiyoonekana sana). Bofya moja ili uisikie.",
+"ownwindowlinux": "Hufungua Vito katika dirisha lake lenyewe (WebKitGTK), bila kivinjari. Imezimwa: katika programu ya kivinjari iliyosakinishwa au kwenye kichupo cha kivinjari.",
 "ownwindow": "Hufungua Vito katika dirisha lake lenyewe (Microsoft Edge WebView2), bila kivinjari. Imezimwa: katika programu ya kivinjari iliyosakinishwa au kwenye kichupo cha kivinjari."
 }
 }

@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Atzealdearen indarra",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Zure aukera lehentasun bat da, ez muga bat: Sonioxek beste hizkuntza batzuk ere ezagutzen ditu, baita esaldi erdian aldatzen duzunean ere.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeetek berak ezagutzen du hizkuntza: bere 25 hizkuntzetako edozeinetan dikta dezakezu, hemen zer aukeratzen duzun gorabehera.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Eredu honek hemen aukeratzen duzun hizkuntzari eusten dio. Diktatzen ari zarela hizkuntzaz aldatzen duzu? Aukeratu Automatikoa.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Egile-eskubideak"
 },
 "help": {
+"bdstrength": "Atzealdea zenbat nabarmentzen den: ezkerrera ia ikusezina, eskuinera ohikoa baino indartsuagoa.",
 "theme": "Argia, iluna edo automatikoa — automatikoak zure sistemaren argi/ilun ezarpenari jarraitzen dio.",
 "uilang": "App-interfaze honen hizkuntza. 'Automatikoak' zure sistemaren hizkuntza erabiltzen du (bestela ingelesa).",
 "zoom": "Handitu edo txikitu app-interfaze osoa. Erabilgarria pantaila handi edo txikietan.",
@@ -1531,6 +1533,7 @@
 "cursor": "Saguaren erakuslea Vitoren koloreetan, logoa eskuan duela. Itzalita: zure sistemaren ohiko erakuslea.",
 "helptips": "Bai, hau bat da. Itzalita: ez da azalpen gehiagorik izango ezarpen baten gainean une batez gelditzen zarenean — ezta hau ere.",
 "soundset": "Nola entzuten diren soinuak: Vitorenak, Leuna (tonu beroak), Beira (kanpai argiak), Retro (8 bit) edo Tik (labur eta lehor, gutxien nabarmentzen dena). Egin klik batean entzuteko.",
+"ownwindowlinux": "Vito bere leiho propioan irekitzen du (WebKitGTK), arakatzailerik gabe. Desaktibatuta: instalatutako arakatzaile-aplikazioan edo arakatzailearen fitxa batean.",
 "ownwindow": "Vito bere leiho propioan irekitzen du (Microsoft Edge WebView2), arakatzailerik gabe. Desaktibatuta: instalatutako arakatzaile-aplikazioan edo arakatzailearen fitxa batean."
 }
 }

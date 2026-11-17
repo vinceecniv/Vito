@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Intensidade do fondo",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "A túa escolla é unha preferencia, non un límite: Soniox tamén recoñece outros idiomas, mesmo cando cambias a metade da frase.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet recoñece o idioma por si mesmo: podes ditar en calquera dos seus 25 idiomas, escollas o que escollas aquí.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Este modelo cíngese ao idioma que escollas aquí. Cambias de idioma mentres ditas? Escolle Automático.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Copyright"
 },
 "help": {
+"bdstrength": "Canto destaca o fondo: cara á esquerda case invisible, cara á dereita máis intenso do normal.",
 "theme": "Claro, escuro ou automático — o automático segue a configuración clara/escura do teu sistema.",
 "uilang": "O idioma desta interface. «Automático» usa o idioma do teu sistema (en caso contrario, inglés).",
 "zoom": "Amplía ou reduce toda a interface da aplicación. Útil en pantallas grandes ou pequenas.",
@@ -1531,6 +1533,7 @@
 "cursor": "O punteiro do rato coas cores de Vito, co logo na man. Desactivado: o punteiro habitual do teu sistema.",
 "helptips": "Si, esta é unha. Desactivado: xa non hai explicacións cando te deténs sobre un axuste — esta tampouco.",
 "soundset": "Como soan os sons: os de Vito, Suave (tons cálidos), Vidro (campaíñas claras), Retro (8 bits) ou Tic (curto e seco, o que menos se nota). Fai clic nun para escoitalo.",
+"ownwindowlinux": "Abre Vito nunha xanela propia (WebKitGTK), sen navegador. Desactivado: na app de navegador instalada ou nunha lapela do navegador.",
 "ownwindow": "Abre Vito nunha xanela propia (Microsoft Edge WebView2), sen navegador. Desactivado: na app de navegador instalada ou nunha lapela do navegador."
 }
 }

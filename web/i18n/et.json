@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Tausta tugevus",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Sinu valik on eelistus, mitte piirang: Soniox tunneb ära ka teisi keeli, isegi kui vahetad keelt lause keskel.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet tunneb keele ise ära: saad dikteerida ükskõik millises tema 25 keelest, olenemata sellest, mida siin valid.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "See mudel jääb siin valitud keele juurde. Vahetad dikteerimise ajal keelt? Vali Automaatne.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Autoriõigus"
 },
 "help": {
+"bdstrength": "Kui esile taust tuleb: vasakule peaaegu nähtamatu, paremale tavalisest tugevam.",
 "theme": "Hele, tume või automaatne — automaatne järgib su süsteemi hele/tume seadet.",
 "uilang": "Selle rakenduse liidese keel. „Automaatne“ kasutab su süsteemikeelt (muidu inglise).",
 "zoom": "Suurenda või vähenda kogu rakenduse liidest. Kasulik suurte või väikeste ekraanide puhul.",
@@ -1531,6 +1533,7 @@
 "cursor": "Hiirekursor Vito värvides, logo käes. Väljas: sinu süsteemi tavaline kursor.",
 "helptips": "Jah, see on üks neist. Väljas: enam selgitusi pole, kui seade kohal viivitad — ka mitte see.",
 "soundset": "Kuidas helid kõlavad: Vito omad, Pehme (soojad toonid), Klaas (heledad kellukesed), Retro (8-bit) või Tiks (lühike ja kuiv, kõige vähem märgatav). Klõpsa ühel, et seda kuulda.",
+"ownwindowlinux": "Avab Vito omaette aknas (WebKitGTK), ilma brauserita. Väljas: paigaldatud brauserirakenduses või brauseri vahekaardil.",
 "ownwindow": "Avab Vito omaette aknas (Microsoft Edge WebView2), ilma brauserita. Väljas: paigaldatud brauserirakenduses või brauseri vahekaardil."
 }
 }

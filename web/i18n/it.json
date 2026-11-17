@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Intensità dello sfondo",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "Olandese, inglese, tedesco, francese, spagnolo, italiano, portoghese, polacco, ceco, slovacco, ungherese, rumeno, bulgaro, croato, sloveno, greco, svedese, danese, finlandese, estone, lettone, lituano, maltese, russo e ucraino — rilevate automaticamente. Non adatto ad altre lingue.",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "Inglese, olandese, tedesco, francese, spagnolo, italiano, polacco.",
 "Type (keystrokes)": "Digita (sequenza di tasti)",
@@ -1466,6 +1467,7 @@
 "Copyright": "Copyright"
 },
 "help": {
+"bdstrength": "Quanto è presente lo sfondo: verso sinistra appena visibile, verso destra più intenso del normale.",
 "theme": "Chiaro, scuro o automatico — automatico segue l'impostazione chiaro/scuro del sistema.",
 "uilang": "La lingua di questa interfaccia dell'app. 'Automatico' usa la lingua del sistema operativo (altrimenti inglese).",
 "zoom": "Ingrandisce o riduce l'intera interfaccia dell'app. Utile su schermi grandi o piccoli.",
@@ -1529,6 +1531,7 @@
 "cursor": "Il puntatore del mouse nei colori di Vito, con il logo in mano. Off: il solito puntatore del tuo sistema.",
 "helptips": "Sì, questo è uno. Off: niente più spiegazioni quando ti soffermi su un'impostazione — nemmeno questa.",
 "soundset": "Come suonano i suoni: quelli di Vito, Morbido (toni caldi), Vetro (campanelli brillanti), Retro (8 bit) o Tic (breve e secco, il meno invadente). Fai clic su uno per ascoltarlo.",
+"ownwindowlinux": "Apre Vito in una finestra tutta sua (WebKitGTK), senza browser. Off: nell'app del browser installata o in una scheda del browser.",
 "ownwindow": "Apre Vito in una finestra tutta sua (Microsoft Edge WebView2), senza browser. Off: nell'app del browser installata o in una scheda del browser."
 }
 }

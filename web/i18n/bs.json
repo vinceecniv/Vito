@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Jačina pozadine",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Tvoj izbor je prednost, a ne ograničenje: Soniox prepoznaje i druge jezike, čak i kad promijeniš jezik usred rečenice.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet sam prepoznaje jezik: možeš diktirati na bilo kojem od njegovih 25 jezika, šta god ovdje izabrao.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Ovaj model se drži jezika koji ovdje izabereš. Mijenjaš jezike dok diktiraš? Izaberi Automatski.",
@@ -1469,6 +1470,7 @@
 "Copyright": "Autorska prava"
 },
 "help": {
+"bdstrength": "Koliko je pozadina prisutna: ulijevo jedva vidljiva, udesno jača od standardne.",
 "theme": "Svijetla, tamna ili automatska — automatska prati svijetli/tamni način vašeg sistema.",
 "uilang": "Jezik sučelja ove aplikacije. 'Automatski' koristi jezik vašeg sistema (inače engleski).",
 "zoom": "Povećajte ili smanjite cijelo sučelje aplikacije. Korisno na velikim ili malim ekranima.",
@@ -1532,6 +1534,7 @@
 "cursor": "Pokazivač miša u bojama aplikacije Vito, s logotipom u ruci. Isključeno: uobičajeni pokazivač vašeg sistema.",
 "helptips": "Da, ovo je jedno od njih. Isključeno: nema više objašnjenja kada se zadržite iznad postavke — ni ovog.",
 "soundset": "Kako zvukovi zvuče: Vitovi vlastiti, Meko (topli tonovi), Staklo (jasna zvonca), Retro (8-bitni) ili Tik (kratki i suhi, najmanje upadljivi). Kliknite na set da ga čujete.",
+"ownwindowlinux": "Otvara Vito u vlastitom prozoru (WebKitGTK), bez preglednika. Isključeno: u instaliranoj aplikaciji preglednika ili u kartici preglednika.",
 "ownwindow": "Otvara Vito u vlastitom prozoru (Microsoft Edge WebView2), bez preglednika. Isključeno: u instaliranoj aplikaciji preglednika ili u kartici preglednika."
 }
 }

@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "背景强度",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "荷兰语、英语、德语、法语、西班牙语、意大利语、葡萄牙语、波兰语、捷克语、斯洛伐克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛文尼亚语、希腊语、瑞典语、丹麦语、芬兰语、爱沙尼亚语、拉脱维亚语、立陶宛语、马耳他语、俄语和乌克兰语——自动识别。不适用于其他语言。",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "英语、荷兰语、德语、法语、西班牙语、意大利语、波兰语。",
 "Type (keystrokes)": "键入（模拟按键）",
@@ -1466,6 +1467,7 @@
 "Copyright": "版权"
 },
 "help": {
+"bdstrength": "背景的显眼程度：向左几乎看不见，向右比默认更明显。",
 "theme": "浅色、深色或自动 — 自动会跟随你系统的浅色/深色设置。",
 "uilang": "此应用界面的语言。“自动”使用你的操作系统语言（否则为英语）。",
 "zoom": "放大或缩小整个应用界面。在大屏或小屏上很有用。",
@@ -1529,6 +1531,7 @@
 "cursor": "Vito 配色的鼠标指针，手里拿着标志。关闭：使用系统的普通指针。",
 "helptips": "没错，这就是其中之一。关闭：在设置上停留时不再显示说明 — 包括这一条。",
 "soundset": "音效的声音：Vito 原版、柔和（温暖的音色）、玻璃（清脆的铃声）、复古（8 位）或滴答（短促干脆，最不显眼）。点击即可试听。",
+"ownwindowlinux": "在独立窗口（WebKitGTK）中打开 Vito，无需浏览器。关闭：在已安装的浏览器应用或浏览器标签页中打开。",
 "ownwindow": "在独立窗口（Microsoft Edge WebView2）中打开 Vito，无需浏览器。关闭：在已安装的浏览器应用或浏览器标签页中打开。"
 }
 }

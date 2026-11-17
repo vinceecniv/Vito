@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "背景の強さ",
 "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.": "オランダ語、英語、ドイツ語、フランス語、スペイン語、イタリア語、ポルトガル語、ポーランド語、チェコ語、スロバキア語、ハンガリー語、ルーマニア語、ブルガリア語、クロアチア語、スロベニア語、ギリシャ語、スウェーデン語、デンマーク語、フィンランド語、エストニア語、ラトビア語、リトアニア語、マルタ語、ロシア語、ウクライナ語 — 自動的に検出されます。その他の言語には適していません。",
 "English, Dutch, German, French, Spanish, Italian, Polish.": "英語、オランダ語、ドイツ語、フランス語、スペイン語、イタリア語、ポーランド語。",
 "Type (keystrokes)": "タイプ入力（キーストローク）",
@@ -1466,6 +1467,7 @@
 "Copyright": "著作権"
 },
 "help": {
+"bdstrength": "背景の目立ち具合：左にするとほとんど見えず、右にすると標準より強くなります。",
 "theme": "ライト、ダーク、または自動 — 自動はシステムのライト／ダーク設定に従います。",
 "uilang": "このアプリインターフェースの言語。「自動」はOSの言語を使用します（それ以外は英語）。",
 "zoom": "アプリインターフェース全体を拡大または縮小します。大画面や小画面で便利です。",
@@ -1529,6 +1531,7 @@
 "cursor": "Vitoの色をしたマウスポインター。手にロゴを持っています。オフ：システムの通常のポインター。",
 "helptips": "はい、これがその説明です。オフにすると、設定の上にしばらくカーソルを置いても説明は表示されなくなります — これも含めて。",
 "soundset": "サウンドの音色：Vito独自、ソフト（温かい音）、ガラス（澄んだベル）、レトロ（8ビット）、ティック（短く乾いた音、最も控えめ）。クリックすると試聴できます。",
+"ownwindowlinux": "ブラウザーを使わず、Vito を専用のウィンドウ（WebKitGTK）で開きます。オフ：インストール済みのブラウザーアプリまたはブラウザーのタブで開きます。",
 "ownwindow": "ブラウザーを使わず、Vito を専用のウィンドウ（Microsoft Edge WebView2）で開きます。オフ：インストール済みのブラウザーアプリまたはブラウザーのタブで開きます。"
 }
 }

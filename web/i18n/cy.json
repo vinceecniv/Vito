@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Cryfder y cefndir",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "Dewis yw dy ddewis di, nid terfyn: mae Soniox hefyd yn adnabod ieithoedd eraill, hyd yn oed pan fyddi di'n newid hanner ffordd drwy frawddeg.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Mae Parakeet yn adnabod yr iaith ei hun: gelli di arddweud yn unrhyw un o'i 25 iaith, beth bynnag a ddewisi di yma.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Mae'r model hwn yn cadw at yr iaith a ddewisi di yma. Newid iaith wrth arddweud? Dewisa Awtomatig.",
@@ -1469,6 +1470,7 @@
 "Copyright": "Hawlfraint"
 },
 "help": {
+"bdstrength": "Pa mor amlwg yw'r cefndir: i'r chwith prin yn weladwy, i'r dde yn gryfach na'r safon.",
 "theme": "Golau, tywyll neu awtomatig — mae awtomatig yn dilyn gosodiad golau/tywyll dy system.",
 "uilang": "Iaith rhyngwyneb yr ap hwn. Mae 'Awtomatig' yn defnyddio iaith dy OS (Saesneg fel arall).",
 "zoom": "Chwyddo neu leihau rhyngwyneb cyfan yr ap. Defnyddiol ar sgriniau mawr neu fach.",
@@ -1532,6 +1534,7 @@
 "cursor": "Pwyntydd y llygoden yn lliwiau Vito, gyda'r logo yn ei law. I ffwrdd: pwyntydd arferol dy system.",
 "helptips": "Ydy, dyma un. I ffwrdd: dim mwy o esboniadau pan fyddi di'n oedi uwchben gosodiad — gan gynnwys hwn.",
 "soundset": "Sut mae'r synau'n swnio: rhai Vito ei hun, Meddal (tonau cynnes), Gwydr (clychau clir), Retro (8-did) neu Tic (byr a sych, y lleiaf amlwg). Clicia ar un i'w glywed.",
+"ownwindowlinux": "Yn agor Vito yn ei ffenestr ei hun (WebKitGTK), heb borwr. I ffwrdd: yn yr ap porwr sydd wedi'i osod neu mewn tab porwr.",
 "ownwindow": "Yn agor Vito yn ei ffenestr ei hun (Microsoft Edge WebView2), heb borwr. I ffwrdd: yn yr ap porwr sydd wedi'i osod neu mewn tab porwr."
 }
 }

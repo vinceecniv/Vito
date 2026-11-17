@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Kekuatan latar belakang",
 "Status": "Status",
 "Settings": "Tetapan",
 "Dictionary": "Kamus",
@@ -1468,6 +1469,7 @@
 "Copyright": "Hak cipta"
 },
 "help": {
+"bdstrength": "Sejauh mana latar belakang kelihatan: ke kiri hampir tidak kelihatan, ke kanan lebih kuat daripada standard.",
 "theme": "Cerah, gelap atau automatik — automatik mengikut tetapan cerah/gelap sistem anda.",
 "uilang": "Bahasa antara muka aplikasi ini. 'Automatik' menggunakan bahasa OS anda (jika tidak, Inggeris).",
 "zoom": "Besarkan atau kecilkan keseluruhan antara muka aplikasi. Berguna pada skrin besar atau kecil.",
@@ -1531,6 +1533,7 @@
 "cursor": "Penuding tetikus dalam warna Vito, dengan logo di tangannya. Mati: penuding biasa sistem anda.",
 "helptips": "Ya, ini salah satunya. Mati: tiada lagi penjelasan apabila anda berhenti seketika di atas tetapan — termasuk yang ini.",
 "soundset": "Bagaimana bunyinya: bunyi Vito sendiri, Lembut (nada hangat), Kaca (loceng cerah), Retro (8-bit) atau Tik (pendek dan kering, paling kurang ketara). Klik satu untuk mendengarnya.",
+"ownwindowlinux": "Membuka Vito dalam tetingkapnya sendiri (WebKitGTK), tanpa pelayar. Mati: dalam aplikasi pelayar yang dipasang atau tab pelayar.",
 "ownwindow": "Membuka Vito dalam tetingkapnya sendiri (Microsoft Edge WebView2), tanpa pelayar. Mati: dalam aplikasi pelayar yang dipasang atau tab pelayar."
 }
 }

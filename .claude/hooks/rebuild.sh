@@ -39,7 +39,11 @@ pids=()
 if [ -d /proc ]; then
   for p in /proc/[0-9]*; do
     t="$(readlink "$p/exe" 2>/dev/null)" || continue
-    if [ "$t" = "$exe" ] || [ "$t" = "$exe (deleted)" ]; then pids+=("${p#/proc/}"); fi
+    if [ "$t" = "$exe" ] || [ "$t" = "$exe (deleted)" ]; then
+      # Only the daemon: Vito's window (`vito window`) closes by itself when
+      # the daemon goes, and the new daemon opens it again.
+      [ "$(tr '\0' '\n' < "$p/cmdline" 2>/dev/null | sed -n 2p)" = serve ] && pids+=("${p#/proc/}")
+    fi
   done
 else
   while read -r pid; do pids+=("$pid"); done < <(pgrep -f "^$exe serve" 2>/dev/null)

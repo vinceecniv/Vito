@@ -1,5 +1,6 @@
 {
 "strings": {
+"Background strength": "Intensitat del fons",
 "Your choice is a preference, not a limit: Soniox also recognises other languages, even when you switch mid-sentence.": "La teva tria és una preferència, no un límit: Soniox també reconeix altres idiomes, fins i tot quan canvies a mitja frase.",
 "Parakeet recognises the language itself: you can dictate in any of its 25 languages, whatever you choose here.": "Parakeet reconeix l'idioma tot sol: pots dictar en qualsevol dels seus 25 idiomes, triïs el que triïs aquí.",
 "This model keeps to the language you choose here. Switch languages while dictating? Choose Automatic.": "Aquest model es cenyeix a l'idioma que triïs aquí. Canvies d'idioma mentre dictes? Tria Automàtic.",
@@ -1468,6 +1469,7 @@
 "Copyright": "Copyright"
 },
 "help": {
+"bdstrength": "Com de present és el fons: cap a l'esquerra gairebé invisible, cap a la dreta més intens que l'estàndard.",
 "theme": "Clar, fosc o automàtic — l'automàtic segueix l'estat clar/fosc del teu sistema.",
 "uilang": "L'idioma d'aquesta interfície de l'app. 'Automàtic' fa servir l'idioma del teu sistema (anglès en cas contrari).",
 "zoom": "Amplia o redueix tota la interfície de l'app. Útil en pantalles grans o petites.",
@@ -1531,6 +1533,7 @@
 "cursor": "El punter del ratolí amb els colors de Vito, amb el logotip a la mà. Desactivat: el punter habitual del teu sistema.",
 "helptips": "Sí, aquesta n'és una. Desactivat: cap més explicació quan et quedes un moment sobre un ajust — aquesta tampoc.",
 "soundset": "Com sonen els sons: els de Vito, Suau (tons càlids), Vidre (campanetes clares), Retro (8 bits) o Tic (curt i sec, el que menys es nota). Fes clic en un per escoltar-lo.",
+"ownwindowlinux": "Obre Vito en una finestra pròpia (WebKitGTK), sense navegador. Desactivat: a l'aplicació del navegador instal·lada o en una pestanya del navegador.",
 "ownwindow": "Obre Vito en una finestra pròpia (Microsoft Edge WebView2), sense navegador. Desactivat: a l'aplicació del navegador instal·lada o en una pestanya del navegador."
 }
 }
