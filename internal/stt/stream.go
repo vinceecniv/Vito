@@ -33,6 +33,9 @@ func NewStream(cfg config.STT, log *slog.Logger, onPartial func(string)) Streame
 	case "soniox":
 		return newSonioxStream(cfg, log, onPartial)
 	case "openai":
+		if localSegmented(cfg) {
+			return newLocalStream(cfg, log, onPartial)
+		}
 		return newOpenAIStream(cfg, log)
 	case "whistle":
 		return newWhistleStream(cfg, log, onPartial)
@@ -48,6 +51,15 @@ func NewStream(cfg config.STT, log *slog.Logger, onPartial func(string)) Streame
 // it, and is named here too for those that read the configured provider.
 func HasPartials(cfg config.STT) bool {
 	return cfg.Provider != "openai" && cfg.Provider != "local"
+}
+
+// LiveText reports whether a dictation shows its words while you speak: every
+// provider with partials, and an endpoint on this computer — Vito local
+// included, configured or resolved — which is sent the recording piece by
+// piece (local_stream.go). Its partials come per piece, too far apart to read
+// speech activity off, so HasPartials stays false for it.
+func LiveText(cfg config.STT) bool {
+	return HasPartials(cfg) || cfg.Provider == "local" || localSegmented(cfg)
 }
 
 // FinishTimeout is how long the daemon waits for Finish. A socket session has

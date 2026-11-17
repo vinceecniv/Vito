@@ -244,6 +244,16 @@ provider (any endpoint speaking `POST /audio/transcriptions`):
   sha256. A warm-up request runs before the engine counts as `running`: on a
   Vulkan build the first request compiles shaders and takes ~30 s. Language is
   detected by the model, uploads must be WAV.
+- **While you speak**: an endpoint on this computer (loopback URL: Vito local
+  once resolved, an own whisper-server) is sent the recording piece by piece
+  (`internal/stt/local_stream.go`, Whistle's stream with a request as its
+  engine): cut at pauses of 450 ms after at least 6 s, so after the stop only
+  the last piece is left — 0.2–0.4 s on this CPU instead of 3–4 s for 30 s of
+  speech (measured). The open piece is sent again for the live text
+  (`stt.LiveText`; `HasPartials` stays false, so speech activity still comes
+  from the level). Pieces join with `joinPieces`; a failed piece makes Finish
+  send the whole recording. A remote endpoint still gets one request: it bills
+  per request.
 - **Bring-your-own endpoint** (`stt.provider = "openai"`): whisper-server,
   Speaches, LocalAI, Groq, OpenAI. For whisper.cpp Vito sends `audio_ctx` sized
   to the recording (halves CPU time — Whisper always encodes 30 s otherwise),

@@ -1292,7 +1292,7 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		c := p.d.Config()
 		st.cleanup, st.enter, st.live = c.Cleanup.Enabled, c.Injection.AppendEnter, c.UI.PillLiveEnabled()
 		st.stats = c.UI.IslandStatsEnabled()
-		st.partials = stt.HasPartials(c.STT)
+		st.partials = stt.LiveText(c.STT)
 		st.style = StyleOf(c.UI.PillStyle)
 		st.rules = st.rules[:0]
 		for _, b := range cleanup.Builtins() {

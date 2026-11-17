@@ -11857,11 +11857,13 @@ function cleanupProviderLabel(cl){
   const p = cl.openai_preset || presetFromBase(cl.openai_base_url);
   return p === "openai" ? "OpenAI" : p === "local" ? t("Local model") : "Groq";
 }
-// Live text needs a speech service that sends text while you speak; Vito
-// local and an own endpoint get the recording whole at the end (stt.HasPartials).
+// Live text needs a speech service that sends text while you speak, or an
+// engine on this computer, which Vito sends the recording piece by piece
+// (stt.LiveText); an endpoint elsewhere gets it whole at the end.
 function syncPillLive(){
   const opt = $("pill-live-opt"), note = $("pill-live-note"); if (!opt || !note || !cfg || !cfg.stt) return;
-  const none = ["openai", "local"].includes(cfg.stt.provider);
+  const loopback = u => { try { return /^(localhost|127\.\d+\.\d+\.\d+|\[::1\])$/i.test(new URL(u).hostname); } catch { return false; } };
+  const none = cfg.stt.provider === "openai" && !loopback(cfg.stt.openai_base_url || "");
   $("s-pill-live").disabled = none;
   opt.classList.toggle("disabled", none);
   note.textContent = none ? t("Your speech service sends no text while you speak") : "";
