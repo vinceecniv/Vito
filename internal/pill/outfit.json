@@ -47,7 +47,7 @@
  "party": {
   "slot": "head",
   "space": "body",
-  "svg": "<g transform=\"rotate(-14 58 30)\"><path d=\"M43 33 L58 0 L73 33 Q58 39 43 33Z\" style=\"fill:var(--violet)\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <path d=\"M49 21 L67 21M46 28 L70 28M53 11 L63 11\" stroke=\"#FFC94D\" stroke-width=\"2.6\" stroke-linecap=\"round\"/> <circle cx=\"58\" cy=\"0\" r=\"4.6\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\"1.2\"/> <path d=\"M43 33 Q58 39 73 33\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\"/></g>"
+  "svg": "<g transform=\"translate(0 6) rotate(-14 58 30)\"><path d=\"M43 33 L58 0 L73 33 Q58 39 43 33Z\" style=\"fill:var(--violet)\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <path d=\"M49 21 L67 21M46 28 L70 28M53 11 L63 11\" stroke=\"#FFC94D\" stroke-width=\"2.6\" stroke-linecap=\"round\"/> <circle cx=\"58\" cy=\"0\" r=\"4.6\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\"1.2\"/> <path d=\"M43 33 Q58 39 73 33\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\"/></g>"
  },
  "crown": {
   "slot": "head",
