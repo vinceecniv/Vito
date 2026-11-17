@@ -672,7 +672,8 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	if cfg.HotkeyWindows != current.HotkeyWindows || cfg.HotkeyCancelWindows != current.HotkeyCancelWindows {
 		s.hk.Rebind(cfg.HotkeyWindows, cfg.HotkeyCancelWindows)
 	}
-	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+	// The dictionary as stamped, so the page shows a new entry's Added at once.
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "dictionary": cfg.Dictionary})
 }
 
 // handleGetHotkey reports the active global hotkeys, whether they registered,
