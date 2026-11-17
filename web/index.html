@@ -7932,6 +7932,7 @@ const cursorCSS = (from, to) => {
   return `:root{--cur-arrow:${url(arrow)} ${hs(4, 4)}, default;--cur-hand:${url(hand)} ${hs(12, 2)}, pointer;--cur-text:${url(text)} ${hs(16, 16)}, text;` +
     `--cur-grab:${url(grab)} ${hs(16, 16)}, grab;--cur-grabbing:${url(grabbing)} ${hs(16, 16)}, grabbing}
 html{cursor:var(--cur-arrow)}
+label{cursor:var(--cur-arrow)} /* the browser's own sheet gives a label cursor:default */
 input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=button]):not([type=submit]),
 textarea,[contenteditable="true"],[contenteditable=""]{cursor:var(--cur-text)}
 a[href],button:not(:disabled),select,summary,label[for],[role="button"]{cursor:var(--cur-hand)}`;
