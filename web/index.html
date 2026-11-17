@@ -741,7 +741,9 @@
   /* ---- content ---- */
   /* On a wide screen the column sits in the middle of the space beside the
      sidebar rather than against it. */
-  .content { flex:1; padding:calc(32px * var(--dn, 1)) calc(36px * var(--dn, 1)); max-width:1480px; margin-inline:auto; } /* one width for every page */
+  /* one width for every page; min-width:0 so a wide child (a microphone with a
+     very long name in its <select>) cannot stretch the flex item past the window */
+  .content { flex:1; min-width:0; padding:calc(32px * var(--dn, 1)) calc(36px * var(--dn, 1)); max-width:1480px; margin-inline:auto; }
   .page-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:calc(20px * var(--dn, 1)); gap:16px; position:relative; z-index:5; }
   /* Explicit line heights: title 32 + gap 2 + subtitle 18 = 52, exactly the
      icon tile beside it. Left to the font's own metrics the block ends up a few
