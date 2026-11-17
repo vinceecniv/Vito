@@ -696,6 +696,7 @@ func (d *Daemon) start() error {
 	// The managed local engine may still be installing or warming up; better to
 	// say so now than to record and have nowhere to send it.
 	sttCfg, err := d.resolveSTT(cfg.STT)
+	sttCfg = stt.Pieces(sttCfg, cfg.Cleanup.Enabled && cleanup.Configured(cfg.Cleanup))
 	if err != nil {
 		d.setIdleWithError(err)
 		d.emit(Event{Type: "state", State: StateIdle})

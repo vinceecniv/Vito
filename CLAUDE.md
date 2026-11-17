@@ -253,7 +253,9 @@ provider (any endpoint speaking `POST /audio/transcriptions`):
   (`stt.LiveText`; `HasPartials` stays false, so speech activity still comes
   from the level). Pieces join with `joinPieces`; a failed piece makes Finish
   send the whole recording. A remote endpoint still gets one request: it bills
-  per request.
+  per request. Only while the AI cleanup is on (`stt.Pieces`, `config.STT.Whole`):
+  the pieces' seams ("als... De tekst") are left for it to smooth; without
+  it the recording goes whole, without live text.
 - **Bring-your-own endpoint** (`stt.provider = "openai"`): whisper-server,
   Speaches, LocalAI, Groq, OpenAI. For whisper.cpp Vito sends `audio_ctx` sized
   to the recording (halves CPU time — Whisper always encodes 30 s otherwise),

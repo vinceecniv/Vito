@@ -184,3 +184,22 @@ func TestJoinPieces(t *testing.T) {
 		}
 	}
 }
+
+func TestPiecesOnlyWithCleanup(t *testing.T) {
+	local := config.STT{Provider: "openai", OpenAIBaseURL: "http://127.0.0.1:4000/v1"}
+	if !localSegmented(Pieces(local, true)) || !LiveText(Pieces(local, true)) {
+		t.Error("with the cleanup on, a local endpoint should go piece by piece")
+	}
+	if localSegmented(Pieces(local, false)) || LiveText(Pieces(local, false)) {
+		t.Error("without the cleanup, a local endpoint should get the recording whole")
+	}
+	if _, ok := NewStream(Pieces(local, false), slog.Default(), nil).(*openaiStream); !ok {
+		t.Error("without the cleanup, NewStream should send the recording whole")
+	}
+	if !LiveText(Pieces(config.STT{Provider: "local"}, true)) || LiveText(Pieces(config.STT{Provider: "local"}, false)) {
+		t.Error("configured Vito local follows the cleanup too")
+	}
+	if !LiveText(Pieces(config.STT{Provider: "soniox"}, false)) {
+		t.Error("a streaming service has live text regardless")
+	}
+}

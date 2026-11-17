@@ -175,21 +175,22 @@ type islandState struct {
 	rest       Frame   // the character's moment, where it is the microphone
 	compact    float64 // 0 the island .. 1 only the resting pill, long left alone
 
-	day         Today
-	last        string
-	kept        bool   // a cancelled dictation can be restored; it takes last's place
-	heard       string // what was heard of it
-	cleanup     bool
-	enter, live bool
-	stats       bool     // today's figures shown (ui.island_stats)
-	recent      []string // the recent dictations, newest first; last is recent[at]
-	onBox       bool     // the pointer on the box, which shows its arrows
-	words       float64  // 0..1 the live words in the last dictation's place
-	at          int
-	partials    bool // the speech service sends text while you speak
-	style       Style
-	rules       []ruleSet
-	active      string // the active rule set's id
+	day                 Today
+	last                string
+	kept                bool   // a cancelled dictation can be restored; it takes last's place
+	heard               string // what was heard of it
+	cleanup             bool
+	enter, live         bool
+	stats               bool     // today's figures shown (ui.island_stats)
+	recent              []string // the recent dictations, newest first; last is recent[at]
+	onBox               bool     // the pointer on the box, which shows its arrows
+	words               float64  // 0..1 the live words in the last dictation's place
+	at                  int
+	partials            bool // the speech service sends text while you speak
+	partialsWithCleanup bool // a local engine, which sends text only with the AI cleanup on
+	style               Style
+	rules               []ruleSet
+	active              string // the active rule set's id
 
 	// The long recording, while one runs: it takes the last dictation's box.
 	long longView
@@ -888,6 +889,9 @@ func (ip *islandPainter) settingsView(buf []byte, th theme, st islandState, left
 		y := row(3, "", tNone)
 		ip.line(buf, fcs().body, ip.t("Live text"), left+panelPad, y+15, muted, a)
 		note := ip.t("Not with this service")
+		if st.partialsWithCleanup { // a local engine: pieces only with the cleanup
+			note = ip.t("Only with AI cleanup")
+		}
 		_, nw := ip.text(fcs().label, note)
 		ip.line(buf, fcs().label, note, right-nw, y+15, muted, a)
 	}
@@ -1292,7 +1296,8 @@ func (p *pill) runIsland(output uint32) (reopen bool) {
 		c := p.d.Config()
 		st.cleanup, st.enter, st.live = c.Cleanup.Enabled, c.Injection.AppendEnter, c.UI.PillLiveEnabled()
 		st.stats = c.UI.IslandStatsEnabled()
-		st.partials = stt.LiveText(c.STT)
+		st.partials = stt.LiveText(stt.Pieces(c.STT, c.Cleanup.Enabled && cleanup.Configured(c.Cleanup)))
+		st.partialsWithCleanup = !st.partials && stt.LiveText(c.STT)
 		st.style = StyleOf(c.UI.PillStyle)
 		st.rules = st.rules[:0]
 		for _, b := range cleanup.Builtins() {

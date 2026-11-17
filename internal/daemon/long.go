@@ -191,6 +191,7 @@ func (d *Daemon) startLong(open func(longrec.Options) (*longrec.Recorder, error)
 	if err != nil {
 		return longrec.Status{}, err
 	}
+	sttCfg = stt.Pieces(sttCfg, d.longCleanSettings().On)
 	d.stopPlayback()
 	rec, err := open(longrec.Options{
 		Store: l.store,

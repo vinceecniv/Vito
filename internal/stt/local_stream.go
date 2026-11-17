@@ -30,9 +30,10 @@ const (
 	localLookEvery = 1500 * time.Millisecond
 )
 
-// localSegmented reports whether cfg is an endpoint on this computer.
+// localSegmented reports whether cfg is an endpoint on this computer that
+// gets the recording piece by piece: not when the daemon asked for it whole.
 func localSegmented(cfg config.STT) bool {
-	if cfg.Provider != "openai" {
+	if cfg.Provider != "openai" || cfg.Whole {
 		return false
 	}
 	u, err := url.Parse(strings.TrimSpace(cfg.OpenAIBaseURL))

@@ -4933,6 +4933,8 @@ const TR = { nl: {
   "Show the words in the pill while you speak":"Woorden in de pil tonen terwijl je praat",
   "Your speech service sends no text while you speak":"Je spraakdienst stuurt geen tekst terwijl je praat",
   "Not with this service":"Niet bij deze dienst",
+  "Only with AI cleanup":"Alleen met AI-opschoning",
+  "Only with AI cleanup: the pieces' seams are smoothed by it":"Alleen met AI-opschoning: die strijkt de naden tussen de stukken glad",
   "Live text":"Live tekst",
   "Pin the window: it stays open and you can drag it anywhere":"Venster vastpinnen: het blijft open en je kunt het overal neerzetten",
   "Unpin: back to the pill at the bottom of the screen":"Losmaken: terug naar de pil onderin het scherm",
@@ -11863,10 +11865,14 @@ function cleanupProviderLabel(cl){
 function syncPillLive(){
   const opt = $("pill-live-opt"), note = $("pill-live-note"); if (!opt || !note || !cfg || !cfg.stt) return;
   const loopback = u => { try { return /^(localhost|127\.\d+\.\d+\.\d+|\[::1\])$/i.test(new URL(u).hostname); } catch { return false; } };
-  const none = cfg.stt.provider === "openai" && !loopback(cfg.stt.openai_base_url || "");
+  // An engine on this computer is sent the pieces only when the AI cleanup
+  // smooths their seams afterwards (stt.Pieces).
+  const local = cfg.stt.provider === "local" || (cfg.stt.provider === "openai" && loopback(cfg.stt.openai_base_url || ""));
+  const noClean = local && !(cfg.cleanup && cfg.cleanup.enabled);
+  const none = (cfg.stt.provider === "openai" && !local) || noClean;
   $("s-pill-live").disabled = none;
   opt.classList.toggle("disabled", none);
-  note.textContent = none ? t("Your speech service sends no text while you speak") : "";
+  note.textContent = noClean ? t("Only with AI cleanup: the pieces' seams are smoothed by it") : none ? t("Your speech service sends no text while you speak") : "";
   note.hidden = !none;
 }
 

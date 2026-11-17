@@ -56,10 +56,17 @@ func HasPartials(cfg config.STT) bool {
 // LiveText reports whether a dictation shows its words while you speak: every
 // provider with partials, and an endpoint on this computer — Vito local
 // included, configured or resolved — which is sent the recording piece by
-// piece (local_stream.go). Its partials come per piece, too far apart to read
+// piece (local_stream.go) while the AI cleanup is on (Pieces). Its partials come per piece, too far apart to read
 // speech activity off, so HasPartials stays false for it.
 func LiveText(cfg config.STT) bool {
-	return HasPartials(cfg) || cfg.Provider == "local" || localSegmented(cfg)
+	return HasPartials(cfg) || (cfg.Provider == "local" && !cfg.Whole) || localSegmented(cfg)
+}
+
+// Pieces sets cfg.Whole from whether the AI cleanup will go over the text:
+// only then is a local endpoint sent the recording piece by piece.
+func Pieces(cfg config.STT, cleanupOn bool) config.STT {
+	cfg.Whole = !cleanupOn
+	return cfg
 }
 
 // FinishTimeout is how long the daemon waits for Finish. A socket session has
