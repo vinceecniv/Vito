@@ -645,7 +645,7 @@
   .brand { display:flex; align-items:center; gap:11px; padding:4px 8px 18px; cursor:var(--cur-hand); }
   .hamburger { display:none; width:40px; height:40px; align-items:center; justify-content:center; background:none; border:1px solid var(--sidebar-border); border-radius:9px; color:var(--text2); cursor:var(--cur-hand); }
   .hamburger svg { width:20px; height:20px; }
-  .brand .tile { width:42px; height:42px; border-radius:12px; background:var(--grad);
+  .brand .tile { color:var(--on-grad); width:42px; height:42px; border-radius:12px; background:var(--grad);
     display:flex; align-items:center; justify-content:center; flex:0 0 auto; box-shadow:0 6px 16px var(--accent-soft); }
   .brand .tile svg { width:25px; height:25px; }
   .brand-text { display:flex; flex-direction:column; line-height:1.02; min-width:0; }
@@ -790,7 +790,7 @@
   .hk-clear { background:none; border:none; color:var(--text3); cursor:var(--cur-hand); font-size:17px; line-height:1; padding:0 6px; margin-left:auto; }
   .hk-clear:hover { color:var(--danger-ink); }
   /* welcome card (gradient onboarding) */
-  .welcome-card { position:relative; border-radius:18px; padding:24px 26px; margin-bottom:20px; color:#fff; overflow:hidden;
+  .welcome-card { position:relative; border-radius:18px; padding:24px 26px; margin-bottom:20px; color:var(--on-grad); overflow:hidden;
     background:var(--grad); box-shadow:0 16px 40px color-mix(in srgb, var(--violet) 30%, transparent); }
   .welcome-card:before { content:""; position:absolute; right:-50px; top:-60px; width:230px; height:230px; border-radius:50%; background:rgba(255,255,255,.12); }
   .welcome-card:after { content:""; position:absolute; right:60px; bottom:-90px; width:170px; height:170px; border-radius:50%; background:rgba(255,255,255,.08); }
@@ -935,7 +935,7 @@
   .linux-act pre { background:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:9px 11px; margin:4px 0 0; overflow-x:auto; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11.5px; line-height:1.5; }
   .linux-act code { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11.5px; background:var(--input-bg); border-radius:5px; padding:1px 5px; }
   .status-hero { display:flex; align-items:center; gap:15px; }
-  .status-hero .hero-tile { width:54px; height:54px; flex:0 0 auto; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px var(--accent-soft); }
+  .status-hero .hero-tile { color:var(--on-grad); width:54px; height:54px; flex:0 0 auto; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px var(--accent-soft); }
   .status-hero .hero-tile svg { width:31px; height:31px; }
   .status-hero .hero-name { font-family:var(--font-head); font-size:30px; font-weight:700; line-height:1.05; color:var(--text); }
   .status-hero .hero-tag { color:var(--text2); font-size:13.5px; margin-top:2px; }
@@ -1555,7 +1555,7 @@
   }
   /* Ko-fi support button, pushed to the right edge of the savings banner. */
   .ach-sav-kofi { margin-left:auto; display:inline-flex; align-items:center; gap:8px; padding:9px 15px; border-radius:12px; white-space:nowrap;
-    background:linear-gradient(135deg,var(--coral),#ff9e5e); color:#fff; font-size:13px; font-weight:600; text-decoration:none;
+    background:linear-gradient(135deg,var(--coral),#ff9e5e); color:var(--on-grad); font-size:13px; font-weight:600; text-decoration:none;
     transition:filter .15s, box-shadow .15s, transform .12s; }
   .ach-sav-kofi:hover { filter:brightness(1.05); transform:translateY(-1px); box-shadow:0 7px 18px color-mix(in srgb, var(--coral) 30%, transparent); }
   .ach-sav-kofi svg { width:18px; height:18px; }
@@ -1916,7 +1916,7 @@
   /* offline overlay (daemon not reachable) */
   #offline-overlay { display:none; position:fixed; inset:0; z-index:300; background:rgba(15,8,25,.6); align-items:center; justify-content:center; padding:20px; }
   .offline-card { background:var(--card); border:1px solid var(--card-border); border-radius:18px; padding:28px 30px; max-width:410px; width:100%; text-align:center; box-shadow:0 30px 70px rgba(20,10,40,.5); }
-  .offline-ic { width:54px; height:54px; margin:0 auto 14px; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; }
+  .offline-ic { color:var(--on-grad); width:54px; height:54px; margin:0 auto 14px; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; }
   .offline-card h3 { font-family:var(--font-head); font-size:19px; margin:0 0 8px; }
   .offline-card p { color:var(--text2); font-size:13.5px; line-height:1.55; margin:0; }
   #offline-status { color:var(--text3); font-size:12.5px; display:inline-flex; align-items:center; gap:8px; }
@@ -2064,7 +2064,7 @@
   .assist-req svg { width:17px; height:17px; flex:0 0 auto; margin-top:1px; color:var(--accent); }
   /* Command mode: a glowing accent bar in the live transcript while a spoken
      command is armed for the next dictation. */
-  .cmd-mode { display:flex; align-items:center; gap:10px; margin-bottom:12px; padding:10px 14px; border-radius:12px; color:#fff;
+  .cmd-mode { display:flex; align-items:center; gap:10px; margin-bottom:12px; padding:10px 14px; border-radius:12px; color:var(--on-grad);
     background:linear-gradient(135deg,var(--coral),var(--violet)); box-shadow:0 8px 22px var(--accent-soft); animation:cmdGlow 1.8s ease-in-out infinite; }
   .cmd-mode .cmd-ico { display:inline-flex; width:20px; height:20px; flex:0 0 auto; }
   .cmd-mode .cmd-ico svg { width:20px; height:20px; }
@@ -2134,7 +2134,7 @@
   .mc-logo { flex:0 0 auto; width:26px; height:26px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; overflow:hidden; background:var(--track); }
   .mc-logo img { width:100%; height:100%; object-fit:cover; display:block; }
   .mc-logo svg { width:16px; height:16px; }
-  .mc-logo.vito { background:linear-gradient(135deg,var(--coral),var(--violet)); }
+  .mc-logo.vito { background:linear-gradient(135deg,var(--coral),var(--violet)); color:var(--on-grad); }
   .mc-logo.vito svg { width:17px; height:17px; }
   .mc-logo.plain { color:var(--text2); }
   .mc-head > b { display:inline-flex; align-items:center; gap:9px; }
@@ -2263,7 +2263,7 @@
   .settings-pane > .card:not([hidden]) ~ .card:not([hidden]) { margin-top:calc(24px * var(--dn, 1)); }
   /* About section */
   .about-head { display:flex; align-items:center; gap:14px; }
-  .about-logo { width:52px; height:52px; border-radius:14px; background:var(--grad); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+  .about-logo { color:var(--on-grad); width:52px; height:52px; border-radius:14px; background:var(--grad); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
   .about-logo svg { width:30px; height:30px; }
   .about-name { font-family:var(--font-head); font-size:26px; font-weight:700; color:var(--text); line-height:1.1; }
   .about-tag { font-size:13px; color:var(--text2); margin-top:2px; }
@@ -2278,11 +2278,11 @@
   .about-link .al-ext { width:13px; height:13px; color:var(--text3); }
   .about-link:hover .al-ext { color:var(--accent); }
   /* Ko-fi: the support call-to-action, filled so it stands out from the rest. */
-  .about-link.kofi { color:#fff; border-color:transparent; background:linear-gradient(135deg,var(--coral),#ff9e5e); }
+  .about-link.kofi { color:var(--on-grad); border-color:transparent; background:linear-gradient(135deg,var(--coral),#ff9e5e); }
   .about-link.kofi:hover { border-color:transparent; background:linear-gradient(135deg,var(--coral),#ff9e5e); filter:brightness(1.05);
     box-shadow:0 7px 18px color-mix(in srgb, var(--coral) 30%, transparent); }
-  .about-link.kofi .al-ext { color:rgba(255,255,255,.8); }
-  .about-link.kofi:hover .al-ext { color:#fff; }
+  .about-link.kofi .al-ext { color:color-mix(in srgb, var(--on-grad) 80%, transparent); }
+  .about-link.kofi:hover .al-ext { color:var(--on-grad); }
   .about-rows { margin-top:16px; display:flex; flex-direction:column; }
   .about-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:11px 2px; border-bottom:1px solid var(--card-border); font-size:13.5px; }
   .about-row:last-child { border-bottom:none; }
@@ -2457,7 +2457,10 @@
   /* ---- Long recordings (Recordings tab) ---- */
   .lr-headact { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .lr-new { display:inline-flex; align-items:center; gap:9px; }
-  .lr-new .lr-dot { background:#fff; }
+  /* The record dot is red everywhere; on a filled button a ring in its text
+     colour keeps it clear of any theme's fill. */
+  .btn.primary .lr-dot { box-shadow:0 0 0 1.5px var(--on-grad); }
+  #btn-toggle > .lr-dot { display:inline-block; vertical-align:-1px; margin-right:4px; }
   .lr-dot { width:10px; height:10px; border-radius:50%; background:var(--danger); flex:0 0 10px; }
   .lr-paused .lr-dot { background:var(--amber-ink); }
   .lr-row { display:grid; grid-template-columns:minmax(0,3fr) minmax(0,1.3fr) minmax(0,1.3fr) minmax(0,.8fr) minmax(0,1.4fr); gap:12px; align-items:center;
@@ -2807,7 +2810,7 @@
       <div class="welcome-card" id="welcome-card" hidden>
         <button class="welcome-x" id="welcome-dismiss" title="Close" aria-label="Close">×</button>
         <div class="welcome-head">
-          <span class="welcome-logo"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
+          <span class="welcome-logo"><svg viewBox="0 0 100 100" fill="currentColor"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
           <div><div class="welcome-title">Welcome to Vito</div><div class="welcome-sub">Voice In, Text Out — your voice becomes clean text</div></div>
         </div>
         <div class="web-only">
@@ -3428,7 +3431,7 @@
         </div>
         <div class="card" data-sec="about" hidden>
           <div class="about-head">
-            <span class="about-logo"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
+            <span class="about-logo"><svg viewBox="0 0 100 100" fill="currentColor"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
             <div><div class="about-name">Vito</div><div class="about-tag">Voice In, Text Out <span class="about-gloss">(Voice In, Text Out)</span></div></div>
           </div>
           <p class="act-note" style="margin:14px 0 0;">Personal, cross-platform voice dictation: press a hotkey, speak, and get clean text where your cursor is.</p>
@@ -3673,7 +3676,7 @@
 <div id="toasts"></div>
 <div id="offline-overlay">
   <div class="offline-card">
-    <div class="offline-ic"><svg viewBox="0 0 100 100" fill="#fff" width="26" height="26"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></div>
+    <div class="offline-ic"><svg viewBox="0 0 100 100" fill="currentColor" width="26" height="26"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></div>
     <h3 id="offline-title">Background process isn't running</h3>
     <p id="offline-text">Vito's background process is unreachable. Dictation and settings don't work without it.</p>
     <div class="rowflex" style="justify-content:center; gap:10px; margin-top:18px; flex-wrap:wrap;">
@@ -5149,7 +5152,7 @@ async function setUiLang(choice, persist){
 { const c = localStorage.getItem("vito-lang"); uiLang = (c && UI_LANGS.includes(c)) ? c : detectLang(); if (uiLang !== "nl" && uiLang !== "en") loadTranslations(uiLang).then(() => applyI18n()); }
 
 /* ---- brand waveform mark (5 bars) ---- */
-const MARK = '<svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>';
+const MARK = '<svg viewBox="0 0 100 100" fill="currentColor"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>';
 // Own sparkle icon for the AI-cleanup marker — an inline SVG renders identically
 // everywhere, unlike the ✨ emoji (which falls back to tofu on some Linux fonts).
 const SPARK_SVG = '<svg class="ico-spark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.7 5.3L19 9l-5.3 1.7L12 16l-1.7-5.3L5 9l5.3-1.7z"/><path d="M18.5 14l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"/></svg>';
@@ -5161,7 +5164,7 @@ document.querySelectorAll(".tux-slot").forEach(s => s.innerHTML = TUX_SVG);
 // same on every platform and match the app's icon style.
 const ICON_PLAY = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
 const ICON_STOP = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
-const ICON_REC = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="6"/></svg>';
+const ICON_REC = '<span class="lr-dot" aria-hidden="true"></span>';
 const ICON_HOURGLASS = '<svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10M7 21h10M8 3c0 4 8 5 8 9s-8 5-8 9M16 3c0 4-8 5-8 9s8 5 8 9"/></svg>';
 const ICON_MIC = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5v4M9 20.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const ICON_SPEAKER = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
@@ -5764,7 +5767,7 @@ const WHISTLE_LANGS = ["nl","en","de","fr","es","it","pl"];
 const PARAKEET_LANGS = ["nl","en","de","fr","es","it","pt","pl","cs","sk","hu","ro","bg","hr","sl","el","sv","da","fi","et","lv","lt","ru","uk"];
 // The marks on the cards: the providers' own icons (web/logos), Vito's bars for
 // its own engine, and a server icon for an endpoint that could be anything.
-const LOGO_VITO = '<span class="mc-logo vito"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>';
+const LOGO_VITO = '<span class="mc-logo vito"><svg viewBox="0 0 100 100" fill="currentColor"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>';
 const LOGO_SERVER = '<span class="mc-logo plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>';
 const LOGO_IMG = (name) => `<span class="mc-logo"><img src="logos/${name}.png" alt=""></span>`;
 const GEAR_SVG = '<svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
@@ -7712,30 +7715,30 @@ function isTyping(){
   const tag = el.tagName;
   return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable;
 }
+// vitoCtrlTab steps through the settings tabs, round and round, as in any
+// tabbed dialog — also from inside a field — and says whether it did. A
+// browser keeps Ctrl+Tab for its own tabs; the installed web app passes it on,
+// and Vito's window on Linux takes it before GTK and calls this (gtkwin.c
+// on_event). The focus is let go, since the field it was in is now hidden;
+// the active tab's own underline shows where you are.
+window.vitoCtrlTab = back => {
+  if (!$("tab-settings").classList.contains("active") || document.querySelector(".modal-backdrop")) return false;
+  const tabs = [...document.querySelectorAll("#settabs button")].filter(b => !b.hidden && getComputedStyle(b).display !== "none");
+  if (!tabs.length) return false;
+  const at = Math.max(0, tabs.findIndex(b => b.classList.contains("active")));
+  selectSetSection(tabs[(at + (back ? -1 : 1) + tabs.length) % tabs.length].dataset.sec);
+  document.activeElement?.blur();
+  return true;
+};
 function hasSelection(){ return String(window.getSelection()).length > 0; }
 document.addEventListener("keydown", (e) => {
   const mod = e.ctrlKey || e.metaKey; // Ctrl on Windows/Linux, Cmd on macOS
   if (!mod || e.altKey) return;
   const key = e.key.toLowerCase();
 
-  // Ctrl+Tab / Ctrl+Shift+Tab (and Ctrl+PageDown / PageUp) step through the
-  // settings tabs, round and round, as in any tabbed dialog — also from inside
-  // a field. A browser keeps Ctrl+Tab for its own tabs; Vito's window and the
-  // installed web app pass it on. Focus goes to the new tab, since the field
-  // it was in is now hidden.
+  // Ctrl+Tab / Ctrl+Shift+Tab (and Ctrl+PageDown / PageUp): see vitoCtrlTab.
   if ((key === "tab" || key === "pagedown" || key === "pageup") && !e.metaKey &&
-      $("tab-settings").classList.contains("active") && !document.querySelector(".modal-backdrop")) {
-    const tabs = [...document.querySelectorAll("#settabs button")].filter(b => !b.hidden && getComputedStyle(b).display !== "none");
-    if (!tabs.length) return;
-    e.preventDefault();
-    const back = key === "pageup" || (key === "tab" && e.shiftKey);
-    const at = Math.max(0, tabs.findIndex(b => b.classList.contains("active")));
-    const next = tabs[(at + (back ? -1 : 1) + tabs.length) % tabs.length];
-    selectSetSection(next.dataset.sec);
-    if (!$("tab-settings").classList.contains("settabs-narrow")) next.focus({ preventScroll: true });
-    else document.activeElement?.blur();
-    return;
-  }
+      vitoCtrlTab(key === "pageup" || (key === "tab" && e.shiftKey))) { e.preventDefault(); return; }
 
   // Ctrl+C with nothing selected, on the Status page: copy the live transcript,
   // exactly as the copy button does. A selection or an editable field is left to
@@ -7994,7 +7997,7 @@ if (window.__VITO_SHRINK_CURSORS__) (function watchScale(){
 // dictation gets transformed.
 let activeCommand = "", commandReceived = false, commandClipboard = false;
 // The Vito mark (equaliser bars), animated in the command bar for a live-assistant feel.
-const MARK_CMD = '<svg viewBox="0 0 100 100" fill="#fff" aria-hidden="true"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>';
+const MARK_CMD = '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>';
 const ICON_CLIP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3.5" width="8" height="4" rx="1.2"/><path d="M9 5.5H6.5A2 2 0 0 0 4.5 7.5v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-12a2 2 0 0 0-2-2H15"/></svg>';
 // The hint at the right of the banner: what to do next, or (for a clipboard
 // command, whose result is easy to miss) where the result landed.

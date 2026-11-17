@@ -1054,20 +1054,21 @@ func (ip *islandPainter) hit(x, y float64) target {
 }
 
 // brandTile is Vito's mark as in the app: a rounded square in the coral to
-// violet gradient with the five white bars hanging in it (favicon.svg).
+// violet gradient with the five bars hanging in it (favicon.svg): white, or a
+// desktop theme's on_primary on its side, as the page's --on-grad.
 func brandTile(buf []byte, w, h int, cx, cy, size float64, th theme, a float64) {
 	half := size / 2
 	eachPixel(w, h, cx, cy, half+1, half+1, func(x, y int, px, py float64) {
 		d := roundBox(px-cx, py-cy, half, half, size*0.24)
 		t := clamp(((px - (cx - half)) + (py - (cy - half))) / (2 * size))
-		put(buf, w, x, y, blend(pal().coral, pal().violet, t), a*clamp(0.5-d))
+		put(buf, w, x, y, blend(th.from, th.fill, t), a*clamp(0.5-d))
 	})
 	k := size / 100
 	for i, bh := range []float64{20, 36, 56, 36, 20} {
 		bx := cx - half + (14+0.72*(4+20*float64(i))+0.72*6)*k
 		top := cy - half + (14+0.72*22)*k
 		hw, hh := 0.72*6*k, 0.72*bh/2*k
-		box(buf, w, h, bx, top+hh, hw, hh, hw, rgb{1, 1, 1}, a)
+		box(buf, w, h, bx, top+hh, hw, hh, hw, th.onAcc, a)
 	}
 }
 
