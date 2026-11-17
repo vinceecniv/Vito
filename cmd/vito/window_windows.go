@@ -24,6 +24,7 @@ import (
 
 	"vito/internal/config"
 	"vito/internal/notify"
+	"vito/internal/pill"
 	"vito/internal/selfexe"
 	"vito/internal/tray"
 	"vito/internal/webapp"
@@ -674,6 +675,10 @@ func sendNavigate(h uintptr, u string) {
 // only once.
 func setWindowIcon(hwnd uintptr, accent, radius string) {
 	look := accent + "/" + radius
+	if pill.FollowsDesktop(accent) { // the "windows" theme changes with the system's accent
+		c, v, _ := pill.BrandColors(accent)
+		look += fmt.Sprint(c, v)
+	}
 	if iconAccent.set && iconAccent.name == look {
 		return
 	}

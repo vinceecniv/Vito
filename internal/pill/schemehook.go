@@ -6,7 +6,7 @@ import (
 )
 
 // What else follows the desktop's light/dark switch (the tray's icon, the
-// launcher's): a desktop theme ("dms", "omarchy") takes the colours of the
+// launcher's): a desktop theme ("dms", "omarchy", "windows", "macos") takes the colours of the
 // side in use, and the switch is the only word Vito gets of it.
 var (
 	schemeMu  sync.Mutex

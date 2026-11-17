@@ -103,7 +103,12 @@ The desktop themes follow the shell's own colours: `dms` Dux Modular Shell, form
 while a `dms-<pid>.pid` in `$XDG_RUNTIME_DIR` is alive) and `omarchy` the
 active Omarchy theme (`current/theme/colors.toml` under `~/.local/state/omarchy`
 or, before Omarchy 3, `~/.config/omarchy`; one side, mapped onto the same
-roles, the other side gets the accents only). `internal/desktopcolors` reads
+roles, the other side gets the accents only); `windows` and `macos` the
+system's accent colour (Windows' `Explorer\Accent\AccentPalette`, Dark1 on the
+light side and Light2 on the dark one; macOS' `AppleAccentColor` through
+`defaults`, mapped onto AppKit's accent colours, untested without a Mac), each
+on the system's own greys, and a change of accent counts as a scheme change
+for the pill, tray and window icon (`desktopcolors.SystemKey`). `internal/desktopcolors` reads
 them, `GET /api/desktop-colors` lists what is available, and the page maps the
 roles onto the tokens in a generated `<style id="desk-accent">`
 (`writeDeskStyle`), offering a theme only where its shell runs, right after

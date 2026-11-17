@@ -69,7 +69,7 @@ var curPalette atomic.Pointer[palette]
 // original pair. It reports whether that changed anything.
 func setAccent(name string) bool {
 	p := palettes[name]
-	if name == "dms" || name == "omarchy" {
+	if FollowsDesktop(name) {
 		p = desktopPalette(name)
 	}
 	if p == nil {
@@ -93,7 +93,7 @@ func (p *palette) violetOn(dark bool) rgb {
 	return p.violet
 }
 
-// The desktop themes ("dms", "omarchy"): the shell's palette, as the page
+// The desktop themes ("dms", "omarchy", "windows", "macos"): the shell's palette, as the page
 // maps it — primary, and a deep primary for the cool end. Built again only
 // when the shell's scheme changed, so setAccent sees the same palette from
 // picture to picture.
@@ -127,17 +127,19 @@ func hexStr(s string) rgb {
 }
 
 // FollowsDesktop reports whether accent is a desktop theme ("dms",
-// "omarchy"), whose colours change with the shell's scheme and side rather
+// "omarchy", "windows", "macos"), whose colours change with the shell's scheme and side rather
 // than with Vito's settings: what draws them once (the tray, the launcher's
 // icon) has to look again now and then.
-func FollowsDesktop(accent string) bool { return accent == "dms" || accent == "omarchy" }
+func FollowsDesktop(accent string) bool {
+	return accent == "dms" || accent == "omarchy" || accent == "windows" || accent == "macos"
+}
 
 // BrandColors is the colour theme's gradient as the app icon draws it, for the
 // tray and the window's icon: the warm end, the cool end, and the cool end's
 // light tint. An unknown name is the original pair.
 func BrandColors(accent string) (coral, violet, violetL [3]uint8) {
 	p := palettes[accent]
-	if accent == "dms" || accent == "omarchy" {
+	if FollowsDesktop(accent) {
 		p = desktopPalette(accent)
 	}
 	if p == nil {

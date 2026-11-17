@@ -10,6 +10,8 @@ import "C"
 import (
 	"log/slog"
 	"time"
+
+	"vito/internal/desktopcolors"
 )
 
 // watchColorScheme follows macOS' appearance (System Settings → Appearance,
@@ -17,10 +19,12 @@ import (
 // windows; reading the preference every few seconds is simpler.
 func watchColorScheme(log *slog.Logger, changed func(dark bool)) {
 	go func() {
-		last, known := false, false
+		last, known, lastKey := false, false, desktopcolors.SystemKey()
 		for {
-			if dark := bool(C.vitoPillDark()); !known || dark != last {
-				last, known = dark, true
+			// The accent colour counts too: the "macos" theme wears it.
+			key := desktopcolors.SystemKey()
+			if dark := bool(C.vitoPillDark()); !known || dark != last || key != lastKey {
+				last, known, lastKey = dark, true, key
 				changed(dark)
 			}
 			time.Sleep(3 * time.Second)

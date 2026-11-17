@@ -1439,7 +1439,7 @@ func (s *Server) handleGetAutostart(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleDesktopColors gives the colour schemes the desktop shells here
-// publish, by their ui.accent name ("dms", "omarchy"). The page offers only
+// publish, by their ui.accent name ("dms", "omarchy", "windows", "macos"). The page offers only
 // the themes listed.
 func (s *Server) handleDesktopColors(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, map[string]any{"schemes": desktopcolors.All()})
