@@ -208,6 +208,7 @@ func Start(d *daemon.Daemon, log *slog.Logger, src Sources) {
 	watchColorScheme(log, func(dark bool) {
 		p.systemDark.Store(dark)
 		p.settingsChanged()
+		schemeChanged()
 	})
 	if d.Config().UI.PillEnabled() {
 		go ensureGnomeExtension(log)
@@ -356,6 +357,7 @@ func (p *pill) settingsChanged() {
 // dark says which side of the theme to draw: Vito's own setting first, as for
 // the tray icon, then the desktop's.
 func (p *pill) dark() bool {
+	SetGradient(p.d.Config().UI.Gradient)
 	setAccent(p.d.Config().UI.Accent) // read with the theme, before every picture
 	setFont(p.d.Config().UI.Font)
 	setOutfit(p.d.Config().UI.Outfit)

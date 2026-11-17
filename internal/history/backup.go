@@ -38,6 +38,16 @@ type BackupData struct {
 	History      []Entry   `json:"history"`
 	DayStats     []DayStat `json:"day_stats"`
 	Achievements []Unlock  `json:"achievements"`
+	// DictUsage is how often each dictionary entry was applied; absent from
+	// backups made before it was kept, and then left as it is on Restore.
+	DictUsage []DictUseRow `json:"dict_usage,omitempty"`
+}
+
+// DictUseRow is one dict_usage row.
+type DictUseRow struct {
+	Kind string `json:"kind"`
+	Key  string `json:"key"`
+	DictUse
 }
 
 // Snapshot reads every row of the three data tables into plain values.
@@ -108,7 +118,24 @@ func (s *Store) Snapshot() (BackupData, error) {
 		b.Achievements = append(b.Achievements, u)
 	}
 	arows.Close()
-	return b, arows.Err()
+	if err := arows.Err(); err != nil {
+		return b, err
+	}
+
+	urows, err := s.db.Query(`SELECT kind,key,uses,last_at FROM dict_usage ORDER BY kind,key`)
+	if err != nil {
+		return b, err
+	}
+	defer urows.Close()
+	b.DictUsage = []DictUseRow{}
+	for urows.Next() {
+		var r DictUseRow
+		if err := urows.Scan(&r.Kind, &r.Key, &r.Uses, &r.LastAt); err != nil {
+			return b, err
+		}
+		b.DictUsage = append(b.DictUsage, r)
+	}
+	return b, urows.Err()
 }
 
 // Restore replaces all stored data with the given snapshot, in one transaction:
@@ -157,6 +184,17 @@ func (s *Store) Restore(b BackupData) error {
 		if _, err := tx.Exec(`INSERT OR REPLACE INTO achievements (id,unlocked_at) VALUES (?,?)`,
 			u.ID, u.UnlockedAt); err != nil {
 			return err
+		}
+	}
+	if b.DictUsage != nil {
+		if _, err := tx.Exec("DELETE FROM dict_usage"); err != nil {
+			return err
+		}
+		for _, r := range b.DictUsage {
+			if _, err := tx.Exec(`INSERT OR REPLACE INTO dict_usage (kind,key,uses,last_at) VALUES (?,?,?,?)`,
+				r.Kind, r.Key, r.Uses, r.LastAt); err != nil {
+				return err
+			}
 		}
 	}
 	if s.maxEntries > 0 {

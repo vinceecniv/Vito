@@ -9,6 +9,7 @@
 package tray
 
 import (
+	"fmt"
 	"log/slog"
 	"runtime"
 	"sync"
@@ -21,6 +22,7 @@ import (
 	"vito/internal/config"
 	"vito/internal/daemon"
 	"vito/internal/longrec"
+	"vito/internal/pill"
 )
 
 // animator holds one static tray icon per state and swaps it on state change —
@@ -35,14 +37,24 @@ type animator struct {
 func newAnimator(d *daemon.Daemon) *animator {
 	a := &animator{state: daemon.StateIdle}
 	a.setLook(d)
+	// A desktop theme takes the colours of the side in use, so it changes
+	// with the desktop's light/dark switch.
+	pill.OnColorScheme(func() {
+		if pill.FollowsDesktop(d.Config().UI.Accent) {
+			a.setLook(d)
+		}
+	})
 	return a
 }
 
 // setLook rebuilds the icon set when the taskbar's theme, Vito's colour theme
-// (ui.accent) or its corners (ui.radius) change.
+// (ui.accent), its colours (a desktop theme's follow the shell) or its corners
+// (ui.radius) change.
 func (a *animator) setLook(d *daemon.Daemon) {
 	ui := d.Config().UI
-	look := ui.Accent + "/" + ui.Radius
+	pill.SetGradient(ui.Gradient)
+	c, v, _ := pill.BrandColors(ui.Accent)
+	look := fmt.Sprint(ui.Accent, "/", ui.Radius, c, v)
 	a.mu.Lock()
 	if a.icons != nil && look == a.look {
 		a.mu.Unlock()

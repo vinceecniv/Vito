@@ -50,8 +50,13 @@ type STT struct {
 	// other key away — you can keep both configured and flip between them.
 	SonioxAPIKey string `json:"soniox_api_key"`
 	Language     string `json:"language"` // ISO code or "auto"
-	Model        string `json:"model"`    // AssemblyAI speech_model; empty = server default
-	EUEndpoint   bool   `json:"eu_endpoint"`
+	// Whole sends an endpoint on this computer the recording in one piece
+	// rather than piece by piece while you speak (stt.LiveText): set by the
+	// daemon when nothing cleans the text afterwards, as the pieces' seams
+	// ("als... De tekst") are left for the cleanup to smooth. Never saved.
+	Whole      bool   `json:"-"`
+	Model      string `json:"model"` // AssemblyAI speech_model; empty = server default
+	EUEndpoint bool   `json:"eu_endpoint"`
 	// OpenAI-compatible provider (provider="openai"): any endpoint that speaks the
 	// OpenAI audio API (POST /audio/transcriptions) — OpenAI itself, Groq's hosted
 	// Whisper, or a server on this machine (whisper.cpp, Speaches, a Parakeet
@@ -139,6 +144,9 @@ func (a Assist) UsesCleanupModel() bool { return a.UseCleanupModel == nil || *a.
 type Correction struct {
 	Wrong string `json:"wrong"`
 	Right string `json:"right"`
+	// Created is when the entry was added (unix millis), 0 for one from before
+	// Vito kept it. Set by StampCreated, not by the page.
+	Created int64 `json:"created,omitempty"`
 }
 
 // Snippet is fixed text that takes the place of a spoken trigger: "mijn
@@ -146,11 +154,41 @@ type Correction struct {
 type Snippet struct {
 	Trigger string `json:"trigger"`
 	Text    string `json:"text"`
+	Created int64  `json:"created,omitempty"` // as Correction.Created
 }
 
 type Dictionary struct {
 	Corrections []Correction `json:"corrections"`
 	Snippets    []Snippet    `json:"snippets,omitempty"`
+}
+
+// StampCreated gives every entry of d its creation time: the one it had in
+// old (found by its misheard word or trigger, ignoring case), or now for an
+// entry old did not have. One from before Vito kept the time stays 0.
+func (d *Dictionary) StampCreated(old Dictionary, now int64) {
+	key := func(s string) string { return strings.ToLower(strings.TrimSpace(s)) }
+	had := map[string]int64{}
+	for _, c := range old.Corrections {
+		had[key(c.Wrong)] = c.Created
+	}
+	for i, c := range d.Corrections {
+		if was, ok := had[key(c.Wrong)]; ok {
+			d.Corrections[i].Created = was
+		} else if c.Created == 0 {
+			d.Corrections[i].Created = now
+		}
+	}
+	had = map[string]int64{}
+	for _, s := range old.Snippets {
+		had[key(s.Trigger)] = s.Created
+	}
+	for i, s := range d.Snippets {
+		if was, ok := had[key(s.Trigger)]; ok {
+			d.Snippets[i].Created = was
+		} else if s.Created == 0 {
+			d.Snippets[i].Created = now
+		}
+	}
 }
 
 // Clone copies the dictionary's slices, so a JSON decode into one copy cannot
@@ -229,6 +267,10 @@ type UI struct {
 	// Radius is the page's corners: "" its own, "minimal" (3px) or "none".
 	// The page only.
 	Radius string `json:"radius,omitempty"`
+	// Gradient is how much the colour theme's gradient shows: "" all of it,
+	// "medium", "subtle" or "none" (one flat colour). The page, the pill and
+	// the icons (pill.SetGradient).
+	Gradient string `json:"gradient,omitempty"`
 	// Outfit is what Vito wears, a piece per slot (head, glasses, ears, neck,
 	// paint), as the page names them (VM_ACC in web/index.html).
 	Outfit map[string]string `json:"outfit,omitempty"`

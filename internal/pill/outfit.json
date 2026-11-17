@@ -47,17 +47,17 @@
  "party": {
   "slot": "head",
   "space": "body",
-  "svg": "<g transform=\"rotate(-14 58 30)\"><path d=\"M43 33 L58 0 L73 33 Q58 39 43 33Z\" style=\"fill:var(--violet)\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <path d=\"M49 21 L67 21M46 28 L70 28M53 11 L63 11\" stroke=\"#FFC94D\" stroke-width=\"2.6\" stroke-linecap=\"round\"/> <circle cx=\"58\" cy=\"0\" r=\"4.6\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\"1.2\"/> <path d=\"M43 33 Q58 39 73 33\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\"/></g>"
+  "svg": "<g transform=\"translate(0 6) rotate(-14 58 30)\"><path d=\"M43 33 L58 0 L73 33 Q58 39 43 33Z\" style=\"fill:var(--violet)\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <path d=\"M49 21 L67 21M46 28 L70 28M53 11 L63 11\" stroke=\"#FFC94D\" stroke-width=\"2.6\" stroke-linecap=\"round\"/> <circle cx=\"58\" cy=\"0\" r=\"4.6\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\"1.2\"/> <path d=\"M43 33 Q58 39 73 33\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\"/></g>"
  },
  "crown": {
   "slot": "head",
   "space": "body",
-  "svg": "<path d=\"M37 38 V20 L46 28.5 L53 13 L60 25 L67 13 L74 28.5 L83 20 V38 Q60 42 37 38Z\" fill=\"#FFC94D\" stroke=\"#D89A1E\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/> <path d=\"M37 33 Q60 37 83 33\" fill=\"none\" stroke=\"#D89A1E\" stroke-width=\"1.4\"/> <circle cx=\"60\" cy=\"31.5\" r=\"3.2\" style=\"fill:var(--coral)\" stroke=\"#fff\" stroke-width=\".9\"/><circle cx=\"47.5\" cy=\"31\" r=\"2.3\" style=\"fill:var(--violet-l)\" stroke=\"#fff\" stroke-width=\".8\"/><circle cx=\"72.5\" cy=\"31\" r=\"2.3\" style=\"fill:var(--violet-l)\" stroke=\"#fff\" stroke-width=\".8\"/> <circle cx=\"53\" cy=\"13\" r=\"2\" fill=\"#fff\"/><circle cx=\"67\" cy=\"13\" r=\"2\" fill=\"#fff\"/>"
+  "svg": "<g transform=\"translate(0 6)\"><path d=\"M37 38 V20 L46 28.5 L53 13 L60 25 L67 13 L74 28.5 L83 20 V38 Q60 42 37 38Z\" fill=\"#FFC94D\" stroke=\"#D89A1E\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/> <path d=\"M37 33 Q60 37 83 33\" fill=\"none\" stroke=\"#D89A1E\" stroke-width=\"1.4\"/> <circle cx=\"60\" cy=\"31.5\" r=\"3.2\" style=\"fill:var(--coral)\" stroke=\"#fff\" stroke-width=\".9\"/><circle cx=\"47.5\" cy=\"31\" r=\"2.3\" style=\"fill:var(--violet-l)\" stroke=\"#fff\" stroke-width=\".8\"/><circle cx=\"72.5\" cy=\"31\" r=\"2.3\" style=\"fill:var(--violet-l)\" stroke=\"#fff\" stroke-width=\".8\"/> <circle cx=\"53\" cy=\"13\" r=\"2\" fill=\"#fff\"/><circle cx=\"67\" cy=\"13\" r=\"2\" fill=\"#fff\"/></g>"
  },
  "nightcap": {
   "slot": "head",
   "space": "body",
-  "svg": "<path d=\"M33 40 C34 14 62 4 86 16 C98 22 106 36 108 54 C100 42 92 36 85 35 L86 40 Z\" style=\"fill:var(--violet)\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <g fill=\"#fff\" opacity=\".55\"><circle cx=\"50\" cy=\"22\" r=\"1.8\"/><circle cx=\"66\" cy=\"16\" r=\"1.6\"/><circle cx=\"80\" cy=\"24\" r=\"1.8\"/><circle cx=\"60\" cy=\"31\" r=\"1.5\"/><circle cx=\"95\" cy=\"36\" r=\"1.4\"/></g> <rect x=\"29\" y=\"35\" width=\"61\" height=\"10\" rx=\"5\" fill=\"#fff\" stroke=\"#E6E0F2\" stroke-width=\"1\"/> <circle cx=\"108\" cy=\"56\" r=\"5.5\" fill=\"#fff\" stroke=\"#E6E0F2\" stroke-width=\"1\"/>"
+  "svg": "<g transform=\"translate(0 4)\"><path d=\"M33 40 C34 14 62 4 86 16 C98 22 106 36 108 54 C100 42 92 36 85 35 L86 40 Z\" style=\"fill:var(--violet)\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <g fill=\"#fff\" opacity=\".55\"><circle cx=\"50\" cy=\"22\" r=\"1.8\"/><circle cx=\"66\" cy=\"16\" r=\"1.6\"/><circle cx=\"80\" cy=\"24\" r=\"1.8\"/><circle cx=\"60\" cy=\"31\" r=\"1.5\"/><circle cx=\"95\" cy=\"36\" r=\"1.4\"/></g> <rect x=\"29\" y=\"35\" width=\"61\" height=\"10\" rx=\"5\" fill=\"#fff\" stroke=\"#E6E0F2\" stroke-width=\"1\"/> <circle cx=\"108\" cy=\"56\" r=\"5.5\" fill=\"#fff\" stroke=\"#E6E0F2\" stroke-width=\"1\"/></g>"
  },
  "headphones": {
   "slot": "head",
@@ -67,7 +67,7 @@
  "wizard": {
   "slot": "head",
   "space": "body",
-  "svg": "<path d=\"M40 36 Q52 20 57 2 Q61 -4 64 4 Q70 22 81 34 Z\" fill=\"#3B2A7A\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <ellipse cx=\"60\" cy=\"37\" rx=\"33\" ry=\"6.5\" fill=\"#3B2A7A\" stroke=\"#fff\" stroke-width=\"1.6\"/> <path d=\"M44 31 Q60 36 77 30\" fill=\"none\" style=\"stroke:var(--coral)\" stroke-width=\"3.4\"/> <path d=\"M61.0 13.4 L62.2 16.3 L65.4 16.6 L63.0 18.6 L63.7 21.7 L61.0 20.1 L58.3 21.7 L59.0 18.6 L56.6 16.6 L59.8 16.3Z\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\".8\" stroke-linejoin=\"round\"/><path d=\"M53 23.4 Q53.468 25.532 55.6 26 Q53.468 26.468 53 28.6 Q52.532 26.468 50.4 26 Q52.532 25.532 53 23.4Z\" fill=\"#FFC94D\"/><path d=\"M70 7.8 Q70.396 9.604 72.2 10 Q70.396 10.396 70 12.2 Q69.604 10.396 67.8 10 Q69.604 9.604 70 7.8Z\" fill=\"#fff\"/>"
+  "svg": "<g transform=\"translate(0 6)\"><path d=\"M40 36 Q52 20 57 2 Q61 -4 64 4 Q70 22 81 34 Z\" fill=\"#3B2A7A\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/> <ellipse cx=\"60\" cy=\"37\" rx=\"33\" ry=\"6.5\" fill=\"#3B2A7A\" stroke=\"#fff\" stroke-width=\"1.6\"/> <path d=\"M44 31 Q60 36 77 30\" fill=\"none\" style=\"stroke:var(--coral)\" stroke-width=\"3.4\"/> <path d=\"M61.0 13.4 L62.2 16.3 L65.4 16.6 L63.0 18.6 L63.7 21.7 L61.0 20.1 L58.3 21.7 L59.0 18.6 L56.6 16.6 L59.8 16.3Z\" fill=\"#FFC94D\" stroke=\"#fff\" stroke-width=\".8\" stroke-linejoin=\"round\"/><path d=\"M53 23.4 Q53.468 25.532 55.6 26 Q53.468 26.468 53 28.6 Q52.532 26.468 50.4 26 Q52.532 25.532 53 23.4Z\" fill=\"#FFC94D\"/><path d=\"M70 7.8 Q70.396 9.604 72.2 10 Q70.396 10.396 70 12.2 Q69.604 10.396 67.8 10 Q69.604 9.604 70 7.8Z\" fill=\"#fff\"/></g>"
  },
  "hoops": {
   "slot": "ears",

@@ -6,6 +6,8 @@ import (
 	"log/slog"
 	"time"
 
+	"vito/internal/desktopcolors"
+
 	"golang.org/x/sys/windows/registry"
 )
 
@@ -23,10 +25,12 @@ func watchColorScheme(log *slog.Logger, changed func(dark bool)) {
 		return err == nil && v == 0, err == nil
 	}
 	go func() {
-		last, known := false, false
+		last, known, lastKey := false, false, desktopcolors.SystemKey()
 		for {
-			if dark, ok := read(); ok && (!known || dark != last) {
-				last, known = dark, true
+			// The accent colour counts too: the "windows" theme wears it.
+			key := desktopcolors.SystemKey()
+			if dark, ok := read(); ok && (!known || dark != last || key != lastKey) {
+				last, known, lastKey = dark, true, key
 				changed(dark)
 			}
 			time.Sleep(3 * time.Second)

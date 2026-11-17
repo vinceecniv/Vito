@@ -78,18 +78,19 @@ const externalLinksJS = `(function(){
     e.preventDefault();
   });
   // The window's title bar follows Vito's theme, not only the system's, and
-  // its icon Vito's colour theme and corners.
+  // its icon Vito's colour theme, gradient and corners (data-deskv: a desktop
+  // theme's colours changed).
   // This runs before the page exists (no <html> yet), so it watches the
   // document as a whole.
   let last = null;
   const theme = () => {
     const el = document.documentElement; if (!el || !window.vitoTheme) return;
     const dark = el.dataset.theme === "dark", accent = el.dataset.accent || "", radius = el.dataset.radius || "";
-    const system = (el.dataset.themePref || "system") === "system";
-    const now = dark + "/" + accent + "/" + radius + "/" + system;
-    if (now !== last) { last = now; window.vitoTheme(dark, accent, radius, system); }
+    const system = (el.dataset.themePref || "system") === "system", gradient = el.dataset.gradient || "";
+    const now = [dark, accent, radius, system, gradient, el.dataset.deskv || ""].join("/");
+    if (now !== last) { last = now; window.vitoTheme(dark, accent, radius, system, gradient); }
   };
-  new MutationObserver(theme).observe(document, { subtree: true, attributes: true, attributeFilter: ["data-theme", "data-theme-pref", "data-accent", "data-radius"] });
+  new MutationObserver(theme).observe(document, { subtree: true, attributes: true, attributeFilter: ["data-theme", "data-theme-pref", "data-accent", "data-radius", "data-gradient", "data-deskv"] });
   document.addEventListener("DOMContentLoaded", theme);
   const open = window.open;
   window.open = function(u, ...rest) {

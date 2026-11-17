@@ -24,6 +24,7 @@ import (
 
 	"vito/internal/config"
 	"vito/internal/notify"
+	"vito/internal/pill"
 	"vito/internal/selfexe"
 	"vito/internal/tray"
 	"vito/internal/webapp"
@@ -302,6 +303,7 @@ func runWindow(cfg *config.Config, target string) error {
 	if w.hwnd == 0 {
 		return errNoEngine
 	}
+	pill.SetGradient(cfg.UI.Gradient)
 	setWindowIcon(w.hwnd, cfg.UI.Accent, cfg.UI.Radius)
 	setWindowCorners(w.hwnd, cfg.UI.Radius)
 	hideCaptionIcon(w.hwnd)
@@ -372,7 +374,7 @@ func runWindow(cfg *config.Config, target string) error {
 const windowBridgeJS = `(function(){
   const post = (o) => { try { window.chrome.webview.postMessage(JSON.stringify(o)); } catch (e) {} };
   window.vitoOpenExternal = (u) => post({ t: "open", url: String(u) });
-  window.vitoTheme = (dark, accent, radius) => post({ t: "theme", dark: !!dark, accent: accent || "", radius: radius || "" });
+  window.vitoTheme = (dark, accent, radius, system, gradient) => post({ t: "theme", dark: !!dark, accent: accent || "", radius: radius || "", gradient: gradient || "" });
 })();`
 
 // windowDebugJS (VITO_DEBUG) sends the page's errors to the window's log,
@@ -391,6 +393,7 @@ func (w *vwin) onMessage(raw string) {
 		Dark bool   `json:"dark"`
 		Acc  string `json:"accent"`
 		Rad  string `json:"radius"`
+		Grad string `json:"gradient"`
 		Msg  string `json:"msg"`
 		A    string `json:"a"`
 		Edge string `json:"edge"`
@@ -407,6 +410,7 @@ func (w *vwin) onMessage(raw string) {
 		_ = exec.Command("rundll32", "url.dll,FileProtocolHandler", u.String()).Start()
 	case "theme":
 		setDarkTitleBar(w.hwnd, m.Dark)
+		pill.SetGradient(m.Grad)
 		setWindowIcon(w.hwnd, m.Acc, m.Rad)
 		setWindowCorners(w.hwnd, m.Rad)
 	case "win":
@@ -673,7 +677,10 @@ func sendNavigate(h uintptr, u string) {
 // and Alt+Tab show it. The icons it replaces are destroyed; one look is drawn
 // only once.
 func setWindowIcon(hwnd uintptr, accent, radius string) {
-	look := accent + "/" + radius
+	// The colours too: a desktop theme follows the system, and ui.gradient
+	// moves the cool end.
+	c, v, _ := pill.BrandColors(accent)
+	look := accent + "/" + radius + fmt.Sprint(c, v)
 	if iconAccent.set && iconAccent.name == look {
 		return
 	}

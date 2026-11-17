@@ -201,10 +201,23 @@ func serve() error {
 		return windowSupported() && (w == nil || *w)
 	}
 	// The launcher's icon follows the colour theme and corners (Linux).
+	pill.SetGradient(cfg.UI.Gradient)
 	refreshLauncherIcon(cfg.UI.Accent, cfg.UI.Radius)
 	d.AddEventListener(func(e daemon.Event) {
 		if e.Type == "config" {
-			go func() { ui := d.Config().UI; refreshLauncherIcon(ui.Accent, ui.Radius) }()
+			go func() {
+				ui := d.Config().UI
+				pill.SetGradient(ui.Gradient)
+				refreshLauncherIcon(ui.Accent, ui.Radius)
+			}()
+		}
+	})
+	// A desktop theme takes the colours of the side in use, so it changes
+	// with the desktop's light/dark switch (refreshLauncherIcon writes only
+	// what changed).
+	pill.OnColorScheme(func() {
+		if ui := d.Config().UI; pill.FollowsDesktop(ui.Accent) {
+			refreshLauncherIcon(ui.Accent, ui.Radius)
 		}
 	})
 	hk := hotkey.New(d, log)

@@ -3,6 +3,7 @@ package whistle
 import (
 	"encoding/binary"
 	"math"
+	"time"
 )
 
 // The model hears at most 30 s at a time, and is best given whole phrases, so
@@ -33,10 +34,23 @@ type Segmenter struct {
 	speech   bool      // the open segment has had speech
 	loud     int       // frames above the noise in the open segment
 	quietRun int       // frames of quiet at the end
+	minSeg   int       // frames a segment needs before a pause ends it
+	pause    int       // frames of quiet that end a segment
 }
 
 // NewSegmenter starts at offset 0.
-func NewSegmenter() *Segmenter { return &Segmenter{floor: -60} }
+func NewSegmenter() *Segmenter {
+	return &Segmenter{floor: -60, minSeg: minSegFrames, pause: pauseFrames}
+}
+
+// NewSegmenterFor is a Segmenter whose segments run at least min and end at
+// a pause of at least pause (still at most 22 s): fewer, longer pieces, cut
+// where a sentence more likely ends, for a model that marks each piece's end
+// as one.
+func NewSegmenterFor(min, pause time.Duration) *Segmenter {
+	frames := func(d time.Duration) int { return int(d / (30 * time.Millisecond)) }
+	return &Segmenter{floor: -60, minSeg: max(minSegFrames, frames(min)), pause: max(pauseFrames, frames(pause))}
+}
 
 // Start is where the open segment begins: the audio from here on is not yet in
 // a finished segment.
@@ -70,7 +84,7 @@ func (s *Segmenter) Add(pcm []byte) []int {
 			s.quietRun++
 		}
 		switch {
-		case s.speech && s.quietRun >= pauseFrames && len(s.levels) >= minSegFrames:
+		case s.speech && s.quietRun >= s.pause && len(s.levels) >= s.minSeg:
 			cuts = append(cuts, s.cut(len(s.levels)-s.quietRun/2))
 		case !s.speech && len(s.levels) > 70:
 			// Only quiet so far: let the start move along rather than send

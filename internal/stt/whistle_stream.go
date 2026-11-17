@@ -8,6 +8,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"unicode"
 
 	"vito/internal/config"
 	"vito/internal/whistle"
@@ -44,13 +45,19 @@ func whistleLang(cfg config.STT) string {
 // (whistle.Segmenter), each finished segment is transcribed once, and the
 // segment still being spoken is transcribed again every so often for the live
 // text. One worker does the transcribing, finished segments first, so the
-// final text is ready moments after you stop.
+// final text is ready moments after you stop. The same runs an endpoint on
+// this computer (localSegmented): run is then a request to it.
 type whistleStream struct {
-	eng       whistle.Engine
+	run       func(ctx context.Context, pcm []byte) (whistle.Result, error)
 	engErr    error
-	lang      string
 	log       *slog.Logger
 	onPartial func(string)
+	// whole, when set, transcribes the entire recording in one go: what
+	// Finish falls back to when a finished segment failed, so no piece of the
+	// dictation goes missing without a word.
+	whole     func(ctx context.Context, pcm []byte) (whistle.Result, error)
+	lookEvery time.Duration
+	lastCost  time.Duration // how long the last transcription took
 
 	mu       sync.Mutex
 	wake     *sync.Cond
@@ -76,13 +83,19 @@ type whistleStream struct {
 const whistleLookEvery = 1200 * time.Millisecond
 
 func newWhistleStream(cfg config.STT, log *slog.Logger, onPartial func(string)) *whistleStream {
-	s := &whistleStream{lang: whistleLang(cfg), log: log, onPartial: onPartial, seg: whistle.NewSegmenter()}
-	s.eng, s.engErr = whistleEngine()
+	s := &whistleStream{log: log, onPartial: onPartial, seg: whistle.NewSegmenter(), lookEvery: whistleLookEvery}
+	eng, err := whistleEngine()
+	lang := whistleLang(cfg)
+	s.run, s.engErr = func(ctx context.Context, pcm []byte) (whistle.Result, error) { return eng.Transcribe(ctx, pcm, lang) }, err
+	s.start()
+	return s
+}
+
+func (s *whistleStream) start() {
 	s.wake = sync.NewCond(&s.mu)
 	if s.engErr == nil {
 		go s.work()
 	}
-	return s
 }
 
 func (s *whistleStream) Send(pcm []byte) {
@@ -102,7 +115,7 @@ func (s *whistleStream) Send(pcm []byte) {
 		}
 	}
 	open := len(s.pcm) - s.seg.Start()
-	if !s.looking && s.seg.HasSpeech() && open >= whistle.SampleRate*2*3/2 && time.Since(s.lastLook) >= whistleLookEvery {
+	if !s.looking && s.seg.HasSpeech() && open >= whistle.SampleRate*2*3/2 && time.Since(s.lastLook) >= max(s.lookEvery, 2*s.lastCost) {
 		s.looking = true
 	}
 	s.wake.Signal()
@@ -140,10 +153,12 @@ func (s *whistleStream) work() {
 		s.busy = true
 		s.mu.Unlock()
 
-		res, err := s.eng.Transcribe(ctx, clip, s.lang)
+		began := time.Now()
+		res, err := s.run(ctx, clip)
 
 		s.mu.Lock()
 		s.busy = false
+		s.lastCost = time.Since(began)
 		switch {
 		case err != nil:
 			if final && s.err == nil {
@@ -174,7 +189,38 @@ func (s *whistleStream) joined() string {
 	if s.openText != "" {
 		parts = append(parts, s.openText)
 	}
-	return strings.Join(parts, " ")
+	return joinPieces(parts)
+}
+
+// joinPieces puts the segments' texts together. A model hearing a piece end
+// mid-sentence often marks that with an ellipsis ("kleur moet zijn als...")
+// and starts the next piece with a capital ("De tekst"). Between two pieces
+// the ellipsis goes, and so does the next capital when it is on a short word
+// that is otherwise lower case ("De", "of", "en"): a name would be kept
+// capitalised either way, and a longer word is likelier to be one. The last
+// piece keeps its ending.
+func joinPieces(parts []string) string {
+	var out []string
+	for _, p := range parts {
+		if p = strings.TrimSpace(p); p != "" {
+			out = append(out, p)
+		}
+	}
+	for i := 0; i+1 < len(out); i++ {
+		cut := strings.TrimRight(strings.TrimSuffix(strings.TrimSuffix(out[i], "..."), "…"), " ")
+		if cut == out[i] || cut == "" {
+			continue
+		}
+		out[i] = cut
+		w, _, _ := strings.Cut(out[i+1], " ")
+		r := []rune(w)
+		if len(r) >= 2 && len(r) <= 3 && unicode.IsUpper(r[0]) && strings.ToLower(string(r[1:])) == string(r[1:]) {
+			first := []rune(out[i+1])
+			first[0] = unicode.ToLower(first[0])
+			out[i+1] = string(first)
+		}
+	}
+	return strings.Join(out, " ")
 }
 
 func (s *whistleStream) Finish(ctx context.Context) (string, error) {
@@ -201,11 +247,26 @@ func (s *whistleStream) Finish(ctx context.Context) (string, error) {
 		return "", ctx.Err()
 	}
 	s.mu.Lock()
-	defer s.mu.Unlock()
-	if s.err != nil && len(s.texts) == 0 {
-		return "", s.err
+	err, pcm := s.err, s.pcm
+	text := joinPieces(s.texts)
+	s.mu.Unlock()
+	if err != nil && s.whole != nil {
+		s.log.Warn("segment failed; transcribing the whole recording", "err", err)
+		res, err := s.whole(ctx, pcm)
+		if err != nil {
+			return "", err
+		}
+		if res.Language != "" {
+			s.mu.Lock()
+			s.langSeen = res.Language
+			s.mu.Unlock()
+		}
+		return res.Text, nil
 	}
-	return strings.Join(s.texts, " "), nil
+	if err != nil && text == "" {
+		return "", err
+	}
+	return text, nil
 }
 
 func (s *whistleStream) Language() string {

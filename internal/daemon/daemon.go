@@ -696,6 +696,7 @@ func (d *Daemon) start() error {
 	// The managed local engine may still be installing or warming up; better to
 	// say so now than to record and have nowhere to send it.
 	sttCfg, err := d.resolveSTT(cfg.STT)
+	sttCfg = stt.Pieces(sttCfg, cfg.Cleanup.Enabled && cleanup.Configured(cfg.Cleanup))
 	if err != nil {
 		d.setIdleWithError(err)
 		d.emit(Event{Type: "state", State: StateIdle})
@@ -748,13 +749,14 @@ func (d *Daemon) start() error {
 		lastLevel := time.Time{}
 		var loudest float64
 		var meter meterScale // scaled to the last seconds of speech, per session
+		var voice voiceGate  // what counts as speech on this microphone
 		for chunk := range s.chunks {
 			if err := s.spool.Write(chunk); err != nil {
 				d.log.Error("spool write failed", "err", err)
 			}
 			s.stream.Send(chunk)
 			r, clip := peakRatio(chunk)
-			if listenByLevel && r >= speechGate {
+			if listenByLevel && voice.speaking(r) {
 				s.lastActivity.Store(time.Now().UnixMilli())
 				s.spoke.Store(true)
 			}
@@ -1205,7 +1207,8 @@ func (d *Daemon) finish(s *session) {
 	}
 
 	// Deterministic corrections run always, so raw mode benefits too.
-	raw = dictionary.Apply(raw, cfg.Dictionary.Corrections)
+	raw, usedFix := dictionary.ApplyUsed(raw, cfg.Dictionary.Corrections)
+	d.recordDictUse("correction", usedFix)
 	// Characters many apps cannot show (a non-breaking hyphen comes out as a box
 	// in Notepad) become their plain equivalents, in what is pasted and kept.
 	raw = cleanup.Plain(raw)
@@ -1269,7 +1272,9 @@ func (d *Daemon) finish(s *session) {
 	// and the fixed text goes in after, so the model can never rewrite it.
 	marked, snips := raw, []string(nil)
 	if !clipboardOut {
-		marked, snips = dictionary.Mark(raw, cfg.Dictionary.Snippets)
+		var usedSnips []string
+		marked, snips, usedSnips = dictionary.MarkUsed(raw, cfg.Dictionary.Snippets)
+		d.recordDictUse("snippet", usedSnips)
 		raw = dictionary.Expand(marked, snips)
 	}
 
@@ -1293,7 +1298,7 @@ func (d *Daemon) finish(s *session) {
 	// Cleanup must be on. A pending command then forces a pass even below the
 	// min-words threshold (that's how the command is applied).
 	if d.cleanupEffective(s) && (instruction != "" || wordCount(raw) >= cfg.Cleanup.MinWords) && !dictionary.OnlySnippets(marked) {
-		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cleanCfg.TimeoutMS)*time.Millisecond)
+		ctx, cancel := context.WithTimeout(context.Background(), cleanup.Timeout(cleanCfg.TimeoutMS, marked))
 		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, marked, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
 		cancel()
 		cleanUsage = usage // tokens are billed even if we then reject the output
@@ -1541,16 +1546,40 @@ func peakRatio(pcm []byte) (float64, bool) {
 }
 
 const (
-	// speechGate is the peak above which a chunk counts as someone talking, for
+	// speechGate is the highest peak voiceGate asks for someone talking, for
 	// sessions that hear no partials (see Start). ≈ -30 dBFS: under the quietest
 	// peak the meter stretches to full, above room noise on a normal microphone.
+	// A quiet microphone never reaches it — a headset measured at 0.022–0.025
+	// while speaking, so every dictation was cancelled as silence — hence the
+	// gate follows the microphone's own noise floor below it.
 	speechGate = 0.03
+	// speechGateMin: the lowest gate, however quiet the floor (≈ -44 dBFS).
+	speechGateMin = 0.006
+	// speechOverFloor: a chunk this many times the noise floor is speech.
+	speechOverFloor = 4
 
 	meterGate   = 0.012                  // ambient hiss: the bar rests at 0 below this
 	meterRefMin = 0.05                   // ≈ -26 dBFS: quietest peak we'll stretch to full
 	meterWindow = 2 * time.Second        // sliding window whose loudest peak is "100%"
 	meterFall   = 400 * time.Millisecond // how fast the scale eases back down
 )
+
+// voiceGate tells speech from silence by the chunk's peak, against the
+// microphone's noise floor: the floor drops at once to a quieter chunk and
+// creeps up slowly, so speech never lifts it far.
+type voiceGate struct {
+	floor float64
+	seen  bool
+}
+
+func (g *voiceGate) speaking(peak float64) bool {
+	if !g.seen || peak < g.floor {
+		g.floor, g.seen = peak, true
+	} else {
+		g.floor += (peak - g.floor) * 0.002
+	}
+	return peak >= min(speechGate, max(speechGateMin, g.floor*speechOverFloor))
+}
 
 type meterSample struct {
 	at   time.Time
@@ -1637,6 +1666,19 @@ func absLevel(r float64) int {
 }
 
 func wordCount(s string) int { return len(strings.Fields(s)) }
+
+// recordDictUse counts the dictionary entries one dictation applied, for the
+// dictionary page's "last used" and its count.
+func (d *Daemon) recordDictUse(kind string, keys []string) {
+	if d.hist == nil || len(keys) == 0 {
+		return
+	}
+	go func() {
+		if err := d.hist.RecordDictUse(kind, keys, time.Now()); err != nil {
+			d.log.Warn("dictionary usage not recorded", "err", err)
+		}
+	}()
+}
 
 func preview(text string) string {
 	const max = 80

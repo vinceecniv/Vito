@@ -103,10 +103,17 @@ The desktop themes follow the shell's own colours: `dms` Dux Modular Shell, form
 while a `dms-<pid>.pid` in `$XDG_RUNTIME_DIR` is alive) and `omarchy` the
 active Omarchy theme (`current/theme/colors.toml` under `~/.local/state/omarchy`
 or, before Omarchy 3, `~/.config/omarchy`; one side, mapped onto the same
-roles, the other side gets the accents only). `internal/desktopcolors` reads
+roles, the other side gets the accents only); `windows` and `macos` the
+system's accent colour (Windows' `Explorer\Accent\AccentPalette`, Dark1 on the
+light side and Light2 on the dark one; macOS' `AppleAccentColor` through
+`defaults`, mapped onto AppKit's accent colours, untested without a Mac), each
+on the system's own greys, and a change of accent counts as a scheme change
+for the pill, tray and window icon (`desktopcolors.SystemKey`). `internal/desktopcolors` reads
 them, `GET /api/desktop-colors` lists what is available, and the page maps the
 roles onto the tokens in a generated `<style id="desk-accent">`
-(`writeDeskStyle`), offering a theme only where its shell runs, right after
+(`writeDeskStyle`), offering a theme only where its shell runs,
+with text and switch knobs on primary in `on_primary` (`--on-grad`,
+`--toggle-knob`; `desktopcolors.readable` makes it 4.5:1 for every shell), right after
 Vito's own; the pill builds its palette from the same roles.
 
 ## Backgrounds
@@ -124,6 +131,13 @@ live on their own settings tab, Appearance (`data-sec="appearance"`).
 so new CSS needs no part in it (`.spinner` and the picker's `.rad-sw` are
 left out). The pill, its cards and the island cap their surfaces the same
 way (`corner()` in `internal/pill/corners.go`); icons keep their shapes.
+`ui.gradient` ("", `medium`, `subtle`, `none`) moves the cool end of every
+colour theme towards the warm end (0, .4, .75, 1 — `none` is one flat colour):
+`writeGradStyle` reads the theme's own tokens and lays the mixed `--violet`,
+`--violet-l`, `--grad`, `--acc-l`/`--acc-d` over them in `<style id="grad-mix">`
+(`!important`, rewritten by every `applyTheme`); `hc-bw` is left alone. The pill
+and the icons mix the same fractions (`pill.SetGradient`, `graded`); the
+window gets it with the theme message.
 `ui.density` ("", `compact`, `spacious`) sets `data-density`, which sets
 `--dn` (.65 / 1.3): the page's margins, the cards' padding and gaps, fields,
 toggles, history rows and the line height are written as
@@ -174,6 +188,16 @@ original. `assets.Sound(set, cue)` falls back to the original. The browser
 version fetches the same files (`sounds/<set>/<cue>.wav`, written by
 `packaging/uibundle app`).
 
+## Dictionary dates and counts
+
+Each correction and snippet carries `created` (unix ms), stamped by the PUT
+`/api/config` handler (`Dictionary.StampCreated`: kept by key, now for a new
+key, 0 for one from before). How often and when last each was applied lives in
+the `dict_usage` table (`history.RecordDictUse`, fed by `ApplyUsed`/`MarkUsed`
+in a dictation and an upload; part of a backup, not synced) and reaches the
+page through `GET /api/dictionary/usage`. `web/standalone/backend.js` keeps the
+same in localStorage.
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.
@@ -220,6 +244,18 @@ provider (any endpoint speaking `POST /audio/transcriptions`):
   sha256. A warm-up request runs before the engine counts as `running`: on a
   Vulkan build the first request compiles shaders and takes ~30 s. Language is
   detected by the model, uploads must be WAV.
+- **While you speak**: an endpoint on this computer (loopback URL: Vito local
+  once resolved, an own whisper-server) is sent the recording piece by piece
+  (`internal/stt/local_stream.go`, Whistle's stream with a request as its
+  engine): cut at pauses of 450 ms after at least 6 s, so after the stop only
+  the last piece is left — 0.2–0.4 s on this CPU instead of 3–4 s for 30 s of
+  speech (measured). The open piece is sent again for the live text
+  (`stt.LiveText`; `HasPartials` stays false, so speech activity still comes
+  from the level). Pieces join with `joinPieces`; a failed piece makes Finish
+  send the whole recording. A remote endpoint still gets one request: it bills
+  per request. Only while the AI cleanup is on (`stt.Pieces`, `config.STT.Whole`):
+  the pieces' seams ("als... De tekst") are left for it to smooth; without
+  it the recording goes whole, without live text.
 - **Bring-your-own endpoint** (`stt.provider = "openai"`): whisper-server,
   Speaches, LocalAI, Groq, OpenAI. For whisper.cpp Vito sends `audio_ctx` sized
   to the recording (halves CPU time — Whisper always encodes 30 s otherwise),
@@ -297,7 +333,14 @@ keeps it sharp too. Before 4.16 the page draws them 32/scale instead
 (`cmd/vito/launchericon_linux.go`): the daemon draws it with `tray.BrandPNG`,
 names it after its picture's hash and writes that file's **full path** into
 `vito.desktop`'s `Icon=` (a new theme name left GNOME Shell showing a generic
-icon until it rescanned). Measured in the VMs: KDE's taskbar follows at once;
+icon until it rescanned). A desktop theme (`dms`, `omarchy`) draws the side
+in use, primary into a deep primary as the page does, and is redrawn on the
+desktop's light/dark switch (`pill.OnColorScheme`, the portal signal the
+pill follows; the tray too). When an AppImage manager (DMS's Software Depot,
+Gear Lever) has its own entry starting the same file, Vito's `vito.desktop`
+gets `NoDisplay=true` (else Vito is listed twice) and the manager's `Icon=` is
+pointed at the themed icon, its own kept as `X-Vito-Icon-Orig=` for the
+default look. Measured in the VMs: KDE's taskbar follows at once;
 GNOME's dock keeps a running app's icon and shows the new one from the window's
 next start. On GNOME (`appmenu:close`) the strip shows only close; on KDE
 minimise, maximise and close. Without WebKitGTK (the KDE VM before

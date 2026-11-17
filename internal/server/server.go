@@ -189,6 +189,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/linux-tools", s.auth(s.handleLinuxTools))
 	mux.HandleFunc("GET /api/autostart", s.auth(s.handleGetAutostart))
 	mux.HandleFunc("GET /api/desktop-colors", s.auth(s.handleDesktopColors))
+	mux.HandleFunc("GET /api/dictionary/usage", s.auth(s.handleDictUsage))
 	mux.HandleFunc("PUT /api/autostart", s.auth(s.handlePutAutostart))
 	mux.HandleFunc("GET /api/privacy", s.auth(s.handleGetPrivacy))
 	mux.HandleFunc("PUT /api/privacy", s.auth(s.handlePutPrivacy))
@@ -626,6 +627,7 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	// Sync has its own endpoints; a settings save only stamps a dictionary
 	// change, so the newest one wins across computers.
 	cfg.Sync = current.Sync
+	cfg.Dictionary.StampCreated(savedDict, time.Now().UnixMilli())
 	if !slices.Equal(cfg.Dictionary.Corrections, savedDict.Corrections) ||
 		!slices.Equal(cfg.Dictionary.Snippets, savedDict.Snippets) {
 		cfg.Sync.DictionaryAt = time.Now().UnixMilli()
@@ -670,7 +672,8 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	if cfg.HotkeyWindows != current.HotkeyWindows || cfg.HotkeyCancelWindows != current.HotkeyCancelWindows {
 		s.hk.Rebind(cfg.HotkeyWindows, cfg.HotkeyCancelWindows)
 	}
-	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+	// The dictionary as stamped, so the page shows a new entry's Added at once.
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "dictionary": cfg.Dictionary})
 }
 
 // handleGetHotkey reports the active global hotkeys, whether they registered,
@@ -1438,8 +1441,19 @@ func (s *Server) handleGetAutostart(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, resp)
 }
 
+// handleDictUsage gives how often each dictionary correction and text snippet
+// was applied, and when last, by kind and key (history.DictKey).
+func (s *Server) handleDictUsage(w http.ResponseWriter, r *http.Request) {
+	u, err := s.hist.DictUsage()
+	if err != nil {
+		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	s.writeJSON(w, http.StatusOK, u)
+}
+
 // handleDesktopColors gives the colour schemes the desktop shells here
-// publish, by their ui.accent name ("dms", "omarchy"). The page offers only
+// publish, by their ui.accent name ("dms", "omarchy", "windows", "macos"). The page offers only
 // the themes listed.
 func (s *Server) handleDesktopColors(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, map[string]any{"schemes": desktopcolors.All()})

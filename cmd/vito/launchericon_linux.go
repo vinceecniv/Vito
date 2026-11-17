@@ -9,6 +9,7 @@ import (
 	"strings"
 	"sync"
 
+	"vito/internal/selfexe"
 	"vito/internal/tray"
 )
 
@@ -84,6 +85,13 @@ func refreshLauncherIcon(accent, radius string) {
 	if name != "vito" {
 		name = filepath.Join(userDataDir(), "icons", "hicolor", "512x512", "apps", name+".png")
 	}
+	// An AppImage manager's entry is the one the menu shows (registerLaunchProtocol
+	// hides Vito's own then), so its icon follows the look too.
+	if exe, err := selfexe.Path(); err == nil {
+		for _, f := range managerEntries(exe, userDataDir()) {
+			setManagerIcon(f, name)
+		}
+	}
 	file := filepath.Join(userDataDir(), "applications", "vito.desktop")
 	b, err := os.ReadFile(file)
 	if err != nil || !strings.Contains(string(b), "x-scheme-handler/vito") {
@@ -103,6 +111,87 @@ func refreshLauncherIcon(accent, radius string) {
 	}
 	if !changed {
 		return
+	}
+	tmp := file + ".tmp"
+	if os.WriteFile(tmp, []byte(strings.Join(lines, "\n")), 0o644) == nil {
+		_ = os.Rename(tmp, file)
+	}
+}
+
+// managerEntries lists the visible entries in the user's own applications
+// folder, other than vito.desktop, that start exe: an AppImage manager's.
+func managerEntries(exe, dataDir string) []string {
+	var out []string
+	files, _ := filepath.Glob(filepath.Join(dataDir, "applications", "*.desktop"))
+	for _, f := range files {
+		if filepath.Base(f) != "vito.desktop" && launches(f, exe) {
+			out = append(out, f)
+		}
+	}
+	return out
+}
+
+// origIconKey keeps the manager's own Icon= beside ours, so Vito's default
+// look gives it back.
+const origIconKey = "X-Vito-Icon-Orig="
+
+// setManagerIcon points the [Desktop Entry] Icon= of a manager's entry at icon
+// ("vito" for the default look: the manager's own icon again). Nothing else in
+// the file changes.
+func setManagerIcon(file, icon string) {
+	b, err := os.ReadFile(file)
+	if err != nil {
+		return
+	}
+	lines := strings.Split(string(b), "\n")
+	iconAt, origAt, entryEnd := -1, -1, len(lines)
+	inEntry := false
+	for i, l := range lines {
+		t := strings.TrimSpace(l)
+		if strings.HasPrefix(t, "[") {
+			if inEntry {
+				entryEnd = i
+				break
+			}
+			inEntry = t == "[Desktop Entry]"
+			continue
+		}
+		if !inEntry {
+			continue
+		}
+		switch {
+		case strings.HasPrefix(t, "Icon="):
+			iconAt = i
+		case strings.HasPrefix(t, origIconKey):
+			origAt = i
+		}
+	}
+	if iconAt < 0 {
+		return
+	}
+	cur := strings.TrimPrefix(strings.TrimSpace(lines[iconAt]), "Icon=")
+	orig := cur
+	if origAt >= 0 {
+		orig = strings.TrimPrefix(strings.TrimSpace(lines[origAt]), origIconKey)
+	}
+	want := icon
+	if icon == "vito" {
+		want = orig
+	}
+	if want == cur && (icon == "vito") == (origAt < 0) {
+		return
+	}
+	lines[iconAt] = "Icon=" + want
+	switch {
+	case icon == "vito" && origAt >= 0:
+		lines = append(lines[:origAt], lines[origAt+1:]...)
+	case icon != "vito" && origAt < 0:
+		// Keep the manager's icon at the end of [Desktop Entry].
+		at := entryEnd
+		for at > 0 && strings.TrimSpace(lines[at-1]) == "" {
+			at--
+		}
+		lines = append(lines[:at], append([]string{origIconKey + orig}, lines[at:]...)...)
 	}
 	tmp := file + ".tmp"
 	if os.WriteFile(tmp, []byte(strings.Join(lines, "\n")), 0o644) == nil {

@@ -1,5 +1,5 @@
 // Package desktopcolors reads the colour scheme a desktop shell publishes, so
-// Vito can wear it (ui.accent "dms" or "omarchy").
+// Vito can wear it (ui.accent "dms", "omarchy", "windows" or "macos").
 //
 // Dux Modular Shell (formerly DankMaterialShell) writes its Material
 // palette — generated from the wallpaper by matugen, or one of its registry
@@ -8,7 +8,9 @@
 // Material roles each, and rewrites it whenever the scheme changes.
 // Omarchy keeps the active theme's colors.toml in its current/theme folder
 // (omarchy.go): one side, light or dark, in names of its own, which are
-// mapped onto the same roles.
+// mapped onto the same roles. On Windows the accent colour of Settings →
+// Personalisation → Colours (windows.go), on macOS that of System Settings
+// → Appearance (macos.go), each on the system's own greys.
 package desktopcolors
 
 import (
@@ -35,7 +37,7 @@ var Roles = []string{
 // shell itself is on. A shell with only one side (Omarchy) gives the other
 // side its accents alone — primary and secondary — and no surfaces.
 type Palette struct {
-	Source string            `json:"source"` // dms | omarchy
+	Source string            `json:"source"` // dms | omarchy | windows | macos
 	Mode   string            `json:"mode"`   // dark | light, as the shell is now
 	Dark   map[string]string `json:"dark"`
 	Light  map[string]string `json:"light"`
@@ -61,6 +63,12 @@ func All() map[string]*Palette {
 	if p, err := Omarchy(); err == nil {
 		out["omarchy"] = p
 	}
+	if p, err := Windows(); err == nil {
+		out["windows"] = p
+	}
+	if p, err := MacOS(); err == nil {
+		out["macos"] = p
+	}
 	return out
 }
 
@@ -72,6 +80,10 @@ func For(name string) *Palette {
 		p, _ = DMS()
 	case "omarchy":
 		p, _ = Omarchy()
+	case "windows":
+		p, _ = Windows()
+	case "macos":
+		p, _ = MacOS()
 	}
 	return p
 }
@@ -120,7 +132,7 @@ func (s *source) get() (*Palette, error) {
 		if err != nil {
 			continue
 		}
-		s.cached, s.key = pal, key
+		s.cached, s.key = readable(pal), key
 		return pal, nil
 	}
 	s.cached = nil
