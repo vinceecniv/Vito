@@ -186,6 +186,16 @@ original. `assets.Sound(set, cue)` falls back to the original. The browser
 version fetches the same files (`sounds/<set>/<cue>.wav`, written by
 `packaging/uibundle app`).
 
+## Dictionary dates and counts
+
+Each correction and snippet carries `created` (unix ms), stamped by the PUT
+`/api/config` handler (`Dictionary.StampCreated`: kept by key, now for a new
+key, 0 for one from before). How often and when last each was applied lives in
+the `dict_usage` table (`history.RecordDictUse`, fed by `ApplyUsed`/`MarkUsed`
+in a dictation and an upload; part of a backup, not synced) and reaches the
+page through `GET /api/dictionary/usage`. `web/standalone/backend.js` keeps the
+same in localStorage.
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.

@@ -96,8 +96,11 @@ func (d *Daemon) TranscribeUpload(ctx context.Context, path, name string, durati
 		durationMS = out.DurationMS
 	}
 
-	raw := cleanup.Plain(dictionary.Apply(strings.TrimSpace(out.Text), cfg.Dictionary.Corrections))
-	marked, snips := dictionary.Mark(raw, cfg.Dictionary.Snippets)
+	fixed, usedFix := dictionary.ApplyUsed(strings.TrimSpace(out.Text), cfg.Dictionary.Corrections)
+	raw := cleanup.Plain(fixed)
+	marked, snips, usedSnips := dictionary.MarkUsed(raw, cfg.Dictionary.Snippets)
+	d.recordDictUse("correction", usedFix)
+	d.recordDictUse("snippet", usedSnips)
 	raw = dictionary.Expand(marked, snips)
 	if raw == "" {
 		err := fmt.Errorf("geen spraak herkend in dit bestand")

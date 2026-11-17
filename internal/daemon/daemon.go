@@ -1206,7 +1206,8 @@ func (d *Daemon) finish(s *session) {
 	}
 
 	// Deterministic corrections run always, so raw mode benefits too.
-	raw = dictionary.Apply(raw, cfg.Dictionary.Corrections)
+	raw, usedFix := dictionary.ApplyUsed(raw, cfg.Dictionary.Corrections)
+	d.recordDictUse("correction", usedFix)
 	// Characters many apps cannot show (a non-breaking hyphen comes out as a box
 	// in Notepad) become their plain equivalents, in what is pasted and kept.
 	raw = cleanup.Plain(raw)
@@ -1270,7 +1271,9 @@ func (d *Daemon) finish(s *session) {
 	// and the fixed text goes in after, so the model can never rewrite it.
 	marked, snips := raw, []string(nil)
 	if !clipboardOut {
-		marked, snips = dictionary.Mark(raw, cfg.Dictionary.Snippets)
+		var usedSnips []string
+		marked, snips, usedSnips = dictionary.MarkUsed(raw, cfg.Dictionary.Snippets)
+		d.recordDictUse("snippet", usedSnips)
 		raw = dictionary.Expand(marked, snips)
 	}
 
@@ -1662,6 +1665,19 @@ func absLevel(r float64) int {
 }
 
 func wordCount(s string) int { return len(strings.Fields(s)) }
+
+// recordDictUse counts the dictionary entries one dictation applied, for the
+// dictionary page's "last used" and its count.
+func (d *Daemon) recordDictUse(kind string, keys []string) {
+	if d.hist == nil || len(keys) == 0 {
+		return
+	}
+	go func() {
+		if err := d.hist.RecordDictUse(kind, keys, time.Now()); err != nil {
+			d.log.Warn("dictionary usage not recorded", "err", err)
+		}
+	}()
+}
 
 func preview(text string) string {
 	const max = 80

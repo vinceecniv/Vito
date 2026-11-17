@@ -25,10 +25,18 @@ var placeholderRe = regexp.MustCompile(`⟦(\d+)⟧`)
 // nothing but one trigger becomes the bare placeholder: the speaker asked for
 // that text, not a sentence ending in a full stop.
 func Mark(text string, snippets []config.Snippet) (string, []string) {
+	text, texts, _ := MarkUsed(text, snippets)
+	return text, texts
+}
+
+// MarkUsed is Mark, also returning the trigger of every snippet it found,
+// once per occurrence (for the dictionary's usage counts).
+func MarkUsed(text string, snippets []config.Snippet) (string, []string, []string) {
 	type pat struct {
-		re   *regexp.Regexp
-		text string
-		n    int // trigger length: longer ones first, so one never eats another
+		re      *regexp.Regexp
+		text    string
+		trigger string
+		n       int // trigger length: longer ones first, so one never eats another
 	}
 	var pats []pat
 	for _, s := range snippets {
@@ -36,14 +44,14 @@ func Mark(text string, snippets []config.Snippet) (string, []string) {
 			continue
 		}
 		if re := triggerRe(s.Trigger); re != nil {
-			pats = append(pats, pat{re, s.Text, len(s.Trigger)})
+			pats = append(pats, pat{re, s.Text, s.Trigger, len(s.Trigger)})
 		}
 	}
 	if len(pats) == 0 {
-		return text, nil
+		return text, nil, nil
 	}
 	sort.SliceStable(pats, func(i, j int) bool { return pats[i].n > pats[j].n })
-	var texts []string
+	var texts, used []string
 	for _, p := range pats {
 		var b strings.Builder
 		last := 0
@@ -52,6 +60,7 @@ func Mark(text string, snippets []config.Snippet) (string, []string) {
 				continue
 			}
 			texts = append(texts, p.text)
+			used = append(used, p.trigger)
 			b.WriteString(text[last:m[0]])
 			b.WriteString("⟦" + strconv.Itoa(len(texts)) + "⟧")
 			last = m[1]
@@ -66,7 +75,7 @@ func Mark(text string, snippets []config.Snippet) (string, []string) {
 			text = bare
 		}
 	}
-	return text, texts
+	return text, texts, used
 }
 
 // Expand puts the snippet texts in place of their placeholders.

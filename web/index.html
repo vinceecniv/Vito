@@ -1824,6 +1824,11 @@
   td,th { padding:7px 8px; border-bottom:1px solid var(--card-border); text-align:left; font-size:13px; }
   th { color:var(--text3); font-weight:600; }
   td input { height:34px; }
+  /* When an entry was added and last applied: small, and gone on a narrow page. */
+  #d-corrections .d-when, #d-snippets .d-when { width:1%; white-space:nowrap; font-size:12px; color:var(--text3); padding-left:10px; }
+  td.d-when { vertical-align:middle; }
+  #d-snippets td.d-when { padding-top:calc(10px * var(--dn, 1)); }
+  @media (max-width: 720px) { #d-corrections .d-when, #d-snippets .d-when { display:none; } }
   #d-snippets td { vertical-align:top; }
   #d-snippets td:first-child { width:34%; }
   #d-snippets textarea { min-height:34px; }
@@ -3473,7 +3478,7 @@
       <div class="card" style="margin-bottom:24px;">
         <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span>Corrections (misheard → intended)</span></h2>
         <p class="act-note" style="margin:2px 0 10px;">Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.</p>
-        <table id="d-corrections"><thead><tr><th>Misheard</th><th>Intended</th><th></th></tr></thead><tbody></tbody></table>
+        <table id="d-corrections"><thead><tr><th>Misheard</th><th>Intended</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
         <div class="rowflex" style="margin-top:12px;">
           <button class="btn primary small" id="d-add">+ Row</button>
           <button class="btn ghost small" id="d-export">Export</button>
@@ -3486,7 +3491,7 @@
         <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Text snippets</span></h2>
         <p class="act-note" style="margin:2px 0 0;">Say the trigger and Vito types the fixed text in its place: a link, your address, a standard reply. The AI cleanup never changes it. Capitals, punctuation and “m'n” or “mijn” don't matter.</p>
         <p class="act-note" style="margin:6px 0 10px;"><b>Tip:</b> pick a trigger of two or more words that you wouldn't say by accident, such as “my sign-off”. A single or everyday word like “address” would also bring in the text in the middle of an ordinary sentence.</p>
-        <table id="d-snippets"><thead><tr><th>When you say</th><th>Vito types</th><th></th></tr></thead><tbody></tbody></table>
+        <table id="d-snippets"><thead><tr><th>When you say</th><th>Vito types</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
         <div class="rowflex" style="margin-top:12px;">
           <button class="btn primary small" id="d-snip-add">+ Snippet</button>
         </div>
@@ -4404,7 +4409,7 @@ const TR = { nl: {
   "Interface language":"Interface-taal",
   "Automatic (OS)":"Automatisch (OS)",
   "Corrections (misheard → intended)":"Correcties (fout herkend → bedoeld)",
-  "Misheard":"Fout herkend",
+  "Misheard":"Fout herkend","Added":"Toegevoegd","Last used":"Laatst gebruikt","today":"vandaag","yesterday":"gisteren","Added before Vito kept track":"Toegevoegd voordat Vito dit bijhield","Applied once":"Eén keer toegepast","Applied {n} times":"{n} keer toegepast","last":"laatst","Not applied yet":"Nog niet toegepast",
   "Suggested":"Voorgesteld","Your models":"Jouw modellen","Type a model name":"Typ een modelnaam","Remove":"Verwijderen",
   "Complete guide on vito.talk":"Complete uitleg op vito.talk",
   "Hotkey in your desktop":"Sneltoets in je desktop","Cleanup off":"Opschoning uit","Local model":"Lokaal model","Auto":"Auto",
@@ -5134,6 +5139,7 @@ async function setUiLang(choice, persist){
   if (typeof renderSync === "function") try { renderSync(); } catch {}
   if (typeof lrFolderLoad === "function") lrFolderLoad();
   if (typeof renderWardrobe === "function") try { renderWardrobe(); } catch {}
+  if (typeof fillDictWhen === "function") try { fillDictWhen(); } catch {}
   if (typeof syncAssistMode === "function") try { syncAssistMode(); } catch {}
   if ($("tab-status").classList.contains("active")) loadStats();
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { lang: choice });
@@ -7454,6 +7460,7 @@ function handleEvent(e) {
       if (!span || span.className !== "partial") { tr.innerHTML = '<span class="partial"></span>'; span = tr.firstChild; }
       typeInto(span, curPartial || LISTENING_HINT);
     } else if (e.type === "final") {
+      if ($("tab-dictionary") && $("tab-dictionary").classList.contains("active")) setTimeout(loadDictUsage, 500); // its counts moved
       // The result is not typed out: the raw text was already typed live as
       // partials, and the cleaned version is a finished answer — it just fades
       // in as a whole.
@@ -12792,14 +12799,51 @@ $("s-promptrules").addEventListener("input", () => {
 function renderCorrections(list) {
   const tbody = $("d-corrections").querySelector("tbody");
   tbody.innerHTML = "";
-  list.forEach((c) => addCorrectionRow(c.wrong, c.right));
+  list.forEach((c) => addCorrectionRow(c.wrong, c.right, c.created));
   renderCorrectionIdeas();
+  loadDictUsage();
 }
-function addCorrectionRow(wrong = "", right = "") {
+// When each entry was added (its created, kept by the daemon) and how often
+// and when last it was applied (GET /api/dictionary/usage, by its misheard
+// word or trigger in lower case): two small cells per row, the count in the
+// tooltip of the second.
+let dictUsage = { correction: {}, snippet: {} };
+async function loadDictUsage(){
+  try { const u = await api("/api/dictionary/usage"); dictUsage = { correction: u.correction || {}, snippet: u.snippet || {} }; } catch {}
+  fillDictWhen();
+}
+function dictDate(ms){
+  const d = new Date(ms), today = new Date();
+  const days = Math.round((new Date(today.toDateString()) - new Date(d.toDateString())) / 864e5);
+  if (days === 0) return t("today");
+  if (days === 1) return t("yesterday");
+  return d.toLocaleDateString(numLoc(), { day:"numeric", month:"short", year: d.getFullYear() === today.getFullYear() ? undefined : "numeric" });
+}
+const dictFull = ms => new Date(ms).toLocaleString(numLoc(), { day:"numeric", month:"long", year:"numeric", hour:"2-digit", minute:"2-digit" });
+function fillDictWhen(){
+  for (const [table, kind] of [["d-corrections", "correction"], ["d-snippets", "snippet"]]) {
+    $(table).querySelectorAll("tbody tr").forEach(tr => {
+      const [added, used] = tr.querySelectorAll("td.d-when");
+      if (!added || !used) return;
+      const created = +tr.dataset.created || 0;
+      added.textContent = created ? dictDate(created) : "—";
+      added.dataset.tipText = created ? dictFull(created) : t("Added before Vito kept track");
+      const u = dictUsage[kind][tr.querySelector("input").value.trim().toLowerCase()];
+      used.textContent = u && u.last_at ? dictDate(u.last_at) : "—";
+      used.dataset.tipText = u && u.uses ? (u.uses === 1 ? t("Applied once") : t("Applied {n} times").replace("{n}", u.uses.toLocaleString(numLoc()))) + " · " + t("last") + " " + dictFull(u.last_at) : t("Not applied yet");
+    });
+  }
+}
+function dictWhenCells(tr, created){
+  if (created) tr.dataset.created = created;
+  for (let i = 0; i < 2; i++) { const td = document.createElement("td"); td.className = "d-when"; td.dataset.tipLabel = "1"; tr.appendChild(td); }
+}
+function addCorrectionRow(wrong = "", right = "", created = 0) {
   const tbody = $("d-corrections").querySelector("tbody");
   const tr = document.createElement("tr");
   const mk = (val) => { const td = document.createElement("td"); const inp = document.createElement("input"); inp.type = "text"; inp.value = val; td.appendChild(inp); return td; };
   tr.appendChild(mk(wrong)); tr.appendChild(mk(right));
+  dictWhenCells(tr, created);
   tr.querySelectorAll("input").forEach(inp => inp.addEventListener("input", autoSaveDict));
   const tdDel = document.createElement("td");
   const del = document.createElement("button"); del.className = "btn danger small"; del.textContent = "×"; del.onclick = () => { tr.remove(); autoSaveDict(); renderCorrectionIdeas(); };
@@ -12824,12 +12868,12 @@ function autoSaveDict(){
 function collectDictionary() {
   const corrections = [...$("d-corrections").querySelectorAll("tbody tr")].map(tr => {
     const [w, r] = tr.querySelectorAll("input");
-    return { wrong: w.value.trim(), right: r.value.trim() };
+    return Object.assign({ wrong: w.value.trim(), right: r.value.trim() }, +tr.dataset.created ? { created: +tr.dataset.created } : {});
   }).filter(c => c.wrong && c.right);
-  const snippets = [...$("d-snippets").querySelectorAll("tbody tr")].map(tr => ({
+  const snippets = [...$("d-snippets").querySelectorAll("tbody tr")].map(tr => Object.assign({
     trigger: tr.querySelector("input").value.trim(),
     text: tr.querySelector("textarea").value.replace(/^\s*\n|\s+$/g, ""), // inner line breaks and indents are the user's
-  })).filter(s => s.trigger && s.text);
+  }, +tr.dataset.created ? { created: +tr.dataset.created } : {})).filter(s => s.trigger && s.text);
   return { corrections, snippets };
 }
 
@@ -12837,8 +12881,9 @@ function collectDictionary() {
 function renderSnippets(list) {
   const tbody = $("d-snippets").querySelector("tbody");
   tbody.innerHTML = "";
-  list.forEach((s) => addSnippetRow(s.trigger, s.text));
+  list.forEach((s) => addSnippetRow(s.trigger, s.text, s.created));
   renderSnippetIdeas();
+  loadDictUsage();
 }
 // A few snippets to show what they are good for. Taking one adds it as a row
 // with its text selected, to be replaced by the user's own; an idea already
@@ -12907,7 +12952,7 @@ function renderCorrectionIdeas() {
       [...$("d-corrections").querySelectorAll("tbody tr")].pop().querySelector("input").focus();
     } });
 }
-function addSnippetRow(trigger = "", text = "") {
+function addSnippetRow(trigger = "", text = "", created = 0) {
   const tbody = $("d-snippets").querySelector("tbody");
   const tr = document.createElement("tr");
   const td1 = document.createElement("td"), inp = document.createElement("input");
@@ -12927,7 +12972,9 @@ function addSnippetRow(trigger = "", text = "") {
   const tdDel = document.createElement("td");
   const del = document.createElement("button"); del.className = "btn danger small"; del.textContent = "×"; del.onclick = () => { tr.remove(); autoSaveDict(); renderSnippetIdeas(); };
   tdDel.appendChild(del);
-  tr.append(td1, td2, tdDel);
+  tr.append(td1, td2);
+  dictWhenCells(tr, created);
+  tr.append(tdDel);
   tbody.appendChild(tr);
   return inp;
 }

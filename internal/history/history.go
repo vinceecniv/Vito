@@ -189,6 +189,17 @@ CREATE TABLE IF NOT EXISTS history (
 );
 CREATE INDEX IF NOT EXISTS idx_history_ts ON history(ts);
 
+-- How often each dictionary correction and text snippet was applied, and when
+-- last: kind 'correction' or 'snippet', key its misheard word or trigger in
+-- lower case. Numbers only; kept on this computer.
+CREATE TABLE IF NOT EXISTS dict_usage (
+  kind    TEXT NOT NULL,
+  key     TEXT NOT NULL,
+  uses    INTEGER NOT NULL DEFAULT 0,
+  last_at INTEGER NOT NULL DEFAULT 0,   -- unix millis
+  PRIMARY KEY (kind, key)
+);
+
 -- Achievements the user has earned, with the moment each was first recorded.
 -- Deciding what is earned is deterministic from the aggregates above; this only
 -- remembers when, so the UI can show a date and celebrate a new one once.

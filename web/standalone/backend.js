@@ -102,14 +102,42 @@
   }
   // internal/cleanup/plain.go
   const plain = (t) => t.replace(/[‐‑]/g, "-").replace(/[   ]/g, " ").replace(/[­​‌⁠﻿]/g, "");
+  // internal/history/dictusage.go: how often each correction and snippet was
+  // applied, and when last, by kind and key (lower case).
+  const DICT_USAGE = "vito-dict-usage";
+  function dictUsage() { try { return JSON.parse(localStorage.getItem(DICT_USAGE)) || {}; } catch { return {}; } }
+  function recordDictUse(kind, keys) {
+    if (!keys.length) return;
+    const u = dictUsage(), now = Date.now();
+    u.correction = u.correction || {}; u.snippet = u.snippet || {};
+    for (const k of keys) {
+      const key = String(k).trim().toLowerCase(), e = u[kind][key] || { uses: 0, last_at: 0 };
+      e.uses++; e.last_at = Math.max(e.last_at, now); u[kind][key] = e;
+    }
+    try { localStorage.setItem(DICT_USAGE, JSON.stringify(u)); } catch {}
+  }
+  // config.Dictionary.StampCreated: an entry keeps its creation time by key;
+  // a new one gets now.
+  function stampCreated(next, prev) {
+    const key = (s) => String(s || "").trim().toLowerCase(), now = Date.now();
+    for (const [list, field] of [["corrections", "wrong"], ["snippets", "trigger"]]) {
+      const had = new Map(((prev && prev[list]) || []).map((e) => [key(e[field]), e.created || 0]));
+      for (const e of (next && next[list]) || []) {
+        if (had.has(key(e[field]))) { if (had.get(key(e[field]))) e.created = had.get(key(e[field])); else delete e.created; }
+        else if (!e.created) e.created = now;
+      }
+    }
+  }
   // internal/dictionary: corrections, case-insensitive on word boundaries.
   function applyDictionary(text) {
+    const used = [];
     for (const c of (cfg.dictionary && cfg.dictionary.corrections) || []) {
       const wrong = (c.wrong || "").trim();
       if (!wrong || !c.right) continue;
       const re = new RegExp("(?<![\\p{L}\\p{N}_])" + wrong.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?![\\p{L}\\p{N}_])", "giu");
-      text = text.replace(re, () => c.right);
+      text = text.replace(re, () => { used.push(wrong); return c.right; });
     }
+    recordDictUse("correction", used);
     return text;
   }
   // internal/dictionary/snippets.go: a spoken trigger becomes a placeholder the
@@ -128,10 +156,12 @@
   }
   function markSnippets(text) {
     const list = ((cfg.dictionary && cfg.dictionary.snippets) || []).filter((s) => s.text)
-      .map((s) => ({ re: triggerRe(s.trigger), text: s.text, n: String(s.trigger || "").length })).filter((p) => p.re)
+      .map((s) => ({ re: triggerRe(s.trigger), text: s.text, trigger: s.trigger, n: String(s.trigger || "").length })).filter((p) => p.re)
       .sort((a, b) => b.n - a.n);
     const texts = [];
-    for (const p of list) text = text.replace(p.re, () => { texts.push(p.text); return "⟦" + texts.length + "⟧"; });
+    const used = [];
+    for (const p of list) text = text.replace(p.re, () => { texts.push(p.text); used.push(p.trigger); return "⟦" + texts.length + "⟧"; });
+    recordDictUse("snippet", used);
     if (texts.length === 1) {
       const bare = text.replace(/^(?:(?![⟦⟧])[\s\p{P}])+|(?:(?![⟦⟧])[\s\p{P}])+$/gu, "");
       if (bare === "⟦1⟧") text = bare;
@@ -990,8 +1020,9 @@ registerProcessor("vito-pcm",P)`;
     if (p === "/api/status") return { state, last_timings: lastTimings, boot: "web", web: true, command: pendingCmd, credit: creditList() };
     if (p === "/api/config") {
       if (method === "GET") return cfg;
-      const keep = cfg.ui && cfg.ui.dashboard;
+      const keep = cfg.ui && cfg.ui.dashboard, prevDict = cfg.dictionary;
       cfg = merge(structuredClone(DEFAULTS), body || {});
+      stampCreated(cfg.dictionary, prevDict);
       cfg.ui = cfg.ui || {}; if (keep !== undefined) cfg.ui.dashboard = keep;
       if (!BROWSER_STT.includes(cfg.stt.provider)) { cfg.stt.provider = "whistle"; cfg.stt.model = "whistle"; }
       saveConfig(); pruneHistory();
@@ -1076,6 +1107,7 @@ registerProcessor("vito-pcm",P)`;
     }
     if (p === "/api/ui") return { source: "web", api: 0 };
     if (p === "/api/linux-tools") return {};
+    if (p === "/api/dictionary/usage") { const u = dictUsage(); return { correction: u.correction || {}, snippet: u.snippet || {} }; }
     return helperOnly();
   }
 
