@@ -111,7 +111,9 @@ on the system's own greys, and a change of accent counts as a scheme change
 for the pill, tray and window icon (`desktopcolors.SystemKey`). `internal/desktopcolors` reads
 them, `GET /api/desktop-colors` lists what is available, and the page maps the
 roles onto the tokens in a generated `<style id="desk-accent">`
-(`writeDeskStyle`), offering a theme only where its shell runs, right after
+(`writeDeskStyle`), offering a theme only where its shell runs,
+with text and switch knobs on primary in `on_primary` (`--on-grad`,
+`--toggle-knob`; `desktopcolors.readable` makes it 4.5:1 for every shell), right after
 Vito's own; the pill builds its palette from the same roles.
 
 ## Backgrounds

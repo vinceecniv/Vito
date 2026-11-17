@@ -100,7 +100,7 @@
     --text:#2B2440; --text2:#5A5470; --text3:#6F6887; /* 4.6:1 or more on every surface: WCAG AA for small text */ --placeholder:#B8B2A4;
     --toggle-off:#D9D2C4; --toggle-on:var(--violet); --track:#EDE7D9;
     --nav-active-bg:color-mix(in srgb, var(--violet) 9%, transparent); --nav-active:var(--accent);
-    --accent:var(--acc-l); --accent-soft:color-mix(in srgb, var(--violet) 9%, transparent);
+    --on-grad:#fff; --accent:var(--acc-l); --accent-soft:color-mix(in srgb, var(--violet) 9%, transparent);
     --coral-soft:color-mix(in srgb, var(--coral) 11%, transparent);
     /* Coral and amber as text: darker than the brand fills, so small type keeps
        4.5:1 on the light surfaces. The dark theme uses the fills as they are. */
@@ -1407,7 +1407,7 @@
   .rcal-day.today { color:var(--accent); font-weight:700; }
   .rcal-day:disabled { color:var(--placeholder); cursor:var(--cur-arrow); }
   .rcal-day.in, .rcal-day.in:hover:not(:disabled) { background:var(--accent-soft); border-radius:0; }
-  .rcal-day.start, .rcal-day.end, .rcal-day.start:hover, .rcal-day.end:hover { background:var(--violet); color:#fff; font-weight:600; }
+  .rcal-day.start, .rcal-day.end, .rcal-day.start:hover, .rcal-day.end:hover { background:var(--violet); color:var(--on-grad); font-weight:600; }
   .rcal-day.start { border-radius:8px 0 0 8px; }
   .rcal-day.end { border-radius:0 8px 8px 0; }
   .rcal-day.start.end { border-radius:8px; }
@@ -1453,7 +1453,7 @@
   .tgl .tr { width:40px; height:24px; flex:0 0 40px; border-radius:99px; background:var(--toggle-off); position:relative; transition:background .15s; }
   .tgl .tr::after { content:""; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:left .15s; }
   .tgl input:checked + .tr { background:var(--toggle-on); }
-  .tgl input:checked + .tr::after { left:19px; }
+  .tgl input:checked + .tr::after { left:19px; background:var(--toggle-knob, #fff); }
   .tgl.disabled { opacity:.45; cursor:var(--cur-arrow); }
   /* Version card: same shell as a statistic card, different contents. */
   .card.stat .upd-ver { font-size:22px; letter-spacing:-0.01em; }
@@ -1477,7 +1477,7 @@
   .credit-card .cr-btns { display:flex; flex-direction:column; gap:7px; margin-top:12px; }
   .credit-card .cr-btn { display:inline-flex; align-items:center; justify-content:center; gap:7px;
     border:none; border-radius:10px; padding:8px 12px; font:inherit; font-size:12.5px; font-weight:600; cursor:var(--cur-hand);
-    color:#fff; background:linear-gradient(135deg,var(--coral),var(--violet)); }
+    color:var(--on-grad); background:linear-gradient(135deg,var(--coral),var(--violet)); }
   .credit-card .cr-btn:hover { filter:brightness(1.06); }
   /* Dismiss. The warning is true and stays true, but after the third look it is
      only in the way — so it can be closed, and the daemon keeps it closed until
@@ -1530,7 +1530,7 @@
     background:linear-gradient(135deg, color-mix(in srgb, var(--coral) 14%, var(--card)), color-mix(in srgb, var(--violet) 16%, var(--card)));
     border:1px solid var(--card-border); }
   .ach-savings .ach-sav-ico { width:54px; height:54px; flex:0 0 54px; border-radius:14px; display:flex; align-items:center; justify-content:center;
-    background:linear-gradient(135deg,var(--coral),var(--violet)); color:#fff; }
+    background:linear-gradient(135deg,var(--coral),var(--violet)); color:var(--on-grad); }
   .ach-savings .ach-sav-ico svg { width:34px; height:34px; }
   /* The amount and its line take the room beside the icon. Narrow, the
      banner is a grid: the icon on the left, the text and the button under it
@@ -1707,7 +1707,7 @@
   .ach-group-head.ach-today-head { color:var(--coral-ink); }
   .card.stat.ach-mini:hover { border-color:color-mix(in srgb,var(--violet) 35%, var(--card-border)); }
   /* Celebration toast: a bigger, warmer variant of the normal toast. */
-  .toast.ach-pop { display:flex; align-items:center; gap:12px; background:linear-gradient(135deg,var(--violet),var(--coral)); color:#fff; padding:13px 18px; }
+  .toast.ach-pop { display:flex; align-items:center; gap:12px; background:linear-gradient(135deg,var(--violet),var(--coral)); color:var(--on-grad); padding:13px 18px; }
   .toast.ach-pop .ach-pop-medal { width:32px; height:32px; flex:0 0 32px; display:inline-flex; align-items:center; justify-content:center; font-size:26px; line-height:1; animation:achspin .7s ease; }
   .toast.ach-pop .ach-pop-medal img, .toast.ach-pop .ach-pop-medal svg { width:32px; height:32px; object-fit:contain; }
   .toast.ach-pop .ach-pop-t { font-size:11px; text-transform:uppercase; letter-spacing:.07em; opacity:.85; }
@@ -1730,7 +1730,7 @@
 
   /* buttons */
   .btn { border:none; border-radius:12px; padding:11px 22px; font:inherit; font-size:13.5px; font-weight:600; cursor:var(--cur-hand); }
-  .btn.primary { background:var(--grad); color:#fff; box-shadow:var(--save-shadow); }
+  .btn.primary { background:var(--grad); color:var(--on-grad); box-shadow:var(--save-shadow); }
   .btn.ghost { background:none; border:1px solid var(--input-border); color:var(--text2); }
   .btn.small { padding:8px 14px; border-radius:10px; }
   .btn.danger { background:none; border:1px solid var(--input-border); color:var(--danger-ink); }
@@ -1947,7 +1947,7 @@
     background:var(--card); border:1px solid var(--card-border); border-radius:11px; color:var(--text2); cursor:var(--cur-hand); }
   .privacy-btn svg { width:19px; height:19px; }
   .privacy-btn:hover { border-color:var(--violet); color:var(--accent); }
-  .privacy-btn.active { background:var(--grad); color:#fff; border-color:transparent; }
+  .privacy-btn.active { background:var(--grad); color:var(--on-grad); border-color:transparent; }
   .privacy-btn { position:relative; }
   .privacy-btn[data-tip]::after {
     content:attr(data-tip); position:absolute; top:calc(100% + 8px); right:0; width:230px;
@@ -2194,7 +2194,7 @@
     background:rgba(224,154,44,.12); font-size:12.5px; line-height:1.45; color:var(--text); }
   .mc-pending span { flex:1 1 220px; min-width:0; }
   .mc-pending[hidden] { display:none; }
-  .mc-lang-hit { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; color:#fff; background:linear-gradient(135deg,var(--coral),var(--violet)); padding:2px 9px; border-radius:99px; }
+  .mc-lang-hit { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; color:var(--on-grad); background:linear-gradient(135deg,var(--coral),var(--violet)); padding:2px 9px; border-radius:99px; }
   .mc-lang-hit .flag { width:14px; height:auto; border-radius:2px; }
   .modelcard.off { opacity:.55; cursor:not-allowed; }
   .modelcard.off:hover { border-color:var(--input-border); }
@@ -2366,8 +2366,8 @@
   .moved .content > section, .moved .content > .install-banner, .moved .content > .demo-banner,
   .moved .sidebar .nav-item, .moved .sidebar .side-toggle { display:none !important; }
   .help-web, .dl-web { display:none; }
-  .standalone .dl-web { display:flex; color:#fff; border-color:transparent; background:var(--grad); box-shadow:0 4px 14px color-mix(in srgb, var(--violet) 30%, transparent); }
-  .standalone .dl-web:hover { filter:brightness(1.08); color:#fff; }
+  .standalone .dl-web { display:flex; color:var(--on-grad); border-color:transparent; background:var(--grad); box-shadow:0 4px 14px color-mix(in srgb, var(--violet) 30%, transparent); }
+  .standalone .dl-web:hover { filter:brightness(1.08); color:var(--on-grad); }
   .install-banner { position:relative; display:flex; gap:16px; align-items:flex-start; border-radius:16px; padding:18px 20px; margin-bottom:18px;
     color:#fff; background:linear-gradient(135deg,var(--violet),color-mix(in srgb, var(--violet) 75%, #000)); box-shadow:0 10px 30px color-mix(in srgb, var(--violet) 25%, transparent); overflow:hidden; }
   .install-banner.done { background:var(--grad); }
@@ -2387,7 +2387,7 @@
   .confetti-bit { position:fixed; width:9px; height:14px; border-radius:2px; pointer-events:none; z-index:400; }
   .standalone .help-web { display:flex; color:var(--violet); border-color:color-mix(in srgb, var(--violet) 40%, transparent);
     background:color-mix(in srgb, var(--violet) 12%, var(--card)); }
-  .standalone .help-web:hover, .standalone .help-web.on { background:var(--violet); color:#fff; border-color:transparent; }
+  .standalone .help-web:hover, .standalone .help-web.on { background:var(--violet); color:var(--on-grad); border-color:transparent; }
   @keyframes helpPing { 0%,100% { box-shadow:0 0 0 0 transparent; } 40% { box-shadow:0 0 0 8px color-mix(in srgb, var(--violet) 28%, transparent); } }
   .help-web.ping { animation:helpPing .9s ease-out 2; }
   .wl-bar { display:block; height:6px; border-radius:99px; background:rgba(255,255,255,.25); margin:6px 0 2px; overflow:hidden; max-width:320px; }
@@ -5296,6 +5296,13 @@ function hexMix(a, b, t){
   const x = p(a), y = p(b);
   return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join("");
 }
+// hexContrast is WCAG's contrast ratio of two #rrggbb colours.
+function hexContrast(a, b){
+  const lum = h => { const [r, g, bl] = [1, 3, 5].map(i => { const v = parseInt(h.slice(i, i + 2), 16) / 255;
+    return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }); return .2126 * r + .7152 * g + .0722 * bl; };
+  const x = lum(a), y = lum(b);
+  return (Math.max(x, y) + .05) / (Math.min(x, y) + .05);
+}
 function writeDeskStyle(){
   let el = document.getElementById("desk-accent");
   if (!Object.keys(deskPals).length) { if (el) el.remove(); return; }
@@ -5308,8 +5315,15 @@ function writeDeskStyle(){
     // switches are primary itself.
     // Mixed here rather than with color-mix(): the cursor, the transcript's
     // glow and the title bar read these tokens and take only #rrggbb.
-    const deep = c => hexMix(c.primary, "#000000", .38);
-    const side = (c, dark) => `--coral:${c.primary}; --violet:${deep(c)};
+    // The text on primary, and a switch's knob, are the shell's on_primary
+    // (dark on a light primary, as in its own buttons and switches; made
+    // legible by the daemon, desktopcolors.readable), and the deep end
+    // darkens only as far as that text keeps 4.5:1 on it.
+    const onP = c => c.on_primary || "#ffffff";
+    const deep = c => { let t = .38;
+      while (t > 0 && hexContrast(onP(c), hexMix(c.primary, "#000000", t)) < 4.5 && hexContrast(onP(c), c.primary) >= 4.5) t -= .02;
+      return hexMix(c.primary, "#000000", Math.max(t, 0)); };
+    const side = (c, dark) => `--coral:${c.primary}; --violet:${deep(c)}; --on-grad:${onP(c)}; --toggle-knob:${onP(c)};
       --coral-l:${hexMix(c.primary, "#ffffff", .4)}; --violet-l:${hexMix(c.primary, "#ffffff", .4)};
       --acc-l:${L.primary}; --acc-d:${D.primary}; --ink-l:${L.primary}; --toggle-on:${c.primary};
       --grad:linear-gradient(135deg, ${c.primary}, ${deep(c)});` + (!c.surface ? "" : `
@@ -12403,8 +12417,9 @@ $("h-clear-x").onclick = () => { $("h-search").value=""; $("h-clear-x").style.di
 async function saveConfig(patch, okMsg = "Saved and applied") {
   Object.assign(cfg, patch);
   try {
-    await api("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cfg) });
+    const r = await api("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cfg) });
     toast(t(okMsg), "ok");
+    return r;
   } catch (err) { toast(t("Save failed: ") + err.message, "err"); }
 }
 
@@ -12728,7 +12743,7 @@ document.querySelectorAll("select").forEach(sel =>
 // keeps scrolling past the slider, so scrolling down the settings never moves
 // one by accident. Each step sends "input" (the label follows) and, once the
 // wheel rests, one "change" (what saves, previews the sound, applies the zoom).
-// Fine sliders (1% steps) move 2% a notch, so a few turns cross the range.
+// A notch moves one step, as far as dragging does.
 {
   let elsewhereAt = 0, acc = 0, accFor = null;
   const settle = new Map();
@@ -12739,13 +12754,15 @@ document.querySelectorAll("select").forEach(sel =>
     e.preventDefault();
     const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : -e.deltaX;
     if (accFor !== r) { acc = 0; accFor = r; }
-    // A notch is one step; a touchpad's pixels are added up, ~50 to a step.
-    acc += e.deltaMode === 0 ? d / 50 : Math.sign(d);
+    // A notch is one step — a mouse wheel's notch arrives as 100 or 120
+    // pixels, or as a line; a touchpad's small pixel deltas are added up,
+    // ~100 to a step.
+    acc += e.deltaMode === 0 && Math.abs(d) < 40 ? d / 100 : Math.sign(d);
     const n = acc > 0 ? Math.floor(acc) : Math.ceil(acc);
     if (!n) return;
     acc -= n;
     const min = parseFloat(r.min || 0), max = parseFloat(r.max || 100);
-    const step = parseFloat(r.step) || 1, by = Math.max(step, Math.round((max - min) / 50 / step) * step);
+    const step = parseFloat(r.step) || 1, by = step;
     const was = parseFloat(r.value);
     const v = Math.min(max, Math.max(min, Math.round((was - n * by - min) / step) * step + min));
     if (Math.abs(v - was) < step / 2) return;
@@ -12862,8 +12879,24 @@ function autoSaveDict(){
     // the row is actually complete.
     if (JSON.stringify(d.corrections) === JSON.stringify(cur.corrections || []) &&
         JSON.stringify(d.snippets) === JSON.stringify(cur.snippets || [])) return;
-    saveConfig({ dictionary: d }, "Dictionary saved");
+    saveConfig({ dictionary: d }, "Dictionary saved").then(r => { if (r && r.dictionary) takeDictCreated(r.dictionary); });
   }, 600);
+}
+// The daemon stamps a new entry's creation time on saving (StampCreated) and
+// sends the dictionary back: its times go onto the rows by key, so Added
+// shows at once rather than after the next load.
+function takeDictCreated(dict){
+  cfg.dictionary = Object.assign(cfg.dictionary || {}, dict);
+  const key = s => String(s || "").trim().toLowerCase();
+  for (const [table, list, field] of [["d-corrections", "corrections", "wrong"], ["d-snippets", "snippets", "trigger"]]) {
+    const at = new Map((dict[list] || []).map(e => [key(e[field]), e.created || 0]));
+    $(table).querySelectorAll("tbody tr").forEach(tr => {
+      const k = key(tr.querySelector("input").value);
+      if (!at.has(k)) return; // not complete yet, so not saved
+      if (at.get(k)) tr.dataset.created = at.get(k); else delete tr.dataset.created;
+    });
+  }
+  fillDictWhen();
 }
 function collectDictionary() {
   const corrections = [...$("d-corrections").querySelectorAll("tbody tr")].map(tr => {
