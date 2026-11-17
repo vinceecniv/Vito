@@ -7718,6 +7718,25 @@ document.addEventListener("keydown", (e) => {
   if (!mod || e.altKey) return;
   const key = e.key.toLowerCase();
 
+  // Ctrl+Tab / Ctrl+Shift+Tab (and Ctrl+PageDown / PageUp) step through the
+  // settings tabs, round and round, as in any tabbed dialog — also from inside
+  // a field. A browser keeps Ctrl+Tab for its own tabs; Vito's window and the
+  // installed web app pass it on. Focus goes to the new tab, since the field
+  // it was in is now hidden.
+  if ((key === "tab" || key === "pagedown" || key === "pageup") && !e.metaKey &&
+      $("tab-settings").classList.contains("active") && !document.querySelector(".modal-backdrop")) {
+    const tabs = [...document.querySelectorAll("#settabs button")].filter(b => !b.hidden && getComputedStyle(b).display !== "none");
+    if (!tabs.length) return;
+    e.preventDefault();
+    const back = key === "pageup" || (key === "tab" && e.shiftKey);
+    const at = Math.max(0, tabs.findIndex(b => b.classList.contains("active")));
+    const next = tabs[(at + (back ? -1 : 1) + tabs.length) % tabs.length];
+    selectSetSection(next.dataset.sec);
+    if (!$("tab-settings").classList.contains("settabs-narrow")) next.focus({ preventScroll: true });
+    else document.activeElement?.blur();
+    return;
+  }
+
   // Ctrl+C with nothing selected, on the Status page: copy the live transcript,
   // exactly as the copy button does. A selection or an editable field is left to
   // the browser so ordinary copying still works.
