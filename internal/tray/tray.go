@@ -52,6 +52,7 @@ func newAnimator(d *daemon.Daemon) *animator {
 // (ui.radius) change.
 func (a *animator) setLook(d *daemon.Daemon) {
 	ui := d.Config().UI
+	pill.SetGradient(ui.Gradient)
 	c, v, _ := pill.BrandColors(ui.Accent)
 	look := fmt.Sprint(ui.Accent, "/", ui.Radius, c, v)
 	a.mu.Lock()

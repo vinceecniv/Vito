@@ -1,6 +1,7 @@
 package pill
 
 import (
+	"math"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -75,7 +76,60 @@ func setAccent(name string) bool {
 	if p == nil {
 		p = palettes[""]
 	}
+	p = graded(p)
 	return curPalette.Swap(p) != p
+}
+
+// Gradient (ui.gradient) is how far the cool end of the theme's gradient
+// moves towards the warm end: "" none of the way (the theme as it is),
+// "medium", "subtle", or "none" — one flat colour. The page mixes the same
+// fractions (GRADIENTS in web/index.html).
+var gradMix atomic.Uint64 // math.Float64bits of the fraction
+
+func gradientFraction(name string) float64 {
+	return map[string]float64{"medium": .4, "subtle": .75, "none": 1}[name]
+}
+
+// SetGradient makes name (ui.gradient) the gradient drawn from now on, by
+// the pill, the tray and the window's icon. It reports whether that changed
+// anything.
+func SetGradient(name string) bool {
+	v := math.Float64bits(gradientFraction(name))
+	return gradMix.Swap(v) != v
+}
+
+var (
+	gradMu   sync.Mutex
+	gradMemo = map[gradKey]*palette{}
+)
+
+type gradKey struct {
+	p *palette
+	t float64
+}
+
+// graded is p with its cool end moved towards the warm end by the current
+// gradient. The same *palette for the same input, so setAccent's comparison
+// still tells a change. A black-and-white palette keeps its two ends.
+func graded(p *palette) *palette {
+	t := math.Float64frombits(gradMix.Load())
+	if t == 0 || p == nil || p.mono {
+		return p
+	}
+	gradMu.Lock()
+	defer gradMu.Unlock()
+	k := gradKey{p, t}
+	if g := gradMemo[k]; g != nil {
+		return g
+	}
+	if len(gradMemo) > 64 { // desktop palettes come and go
+		clear(gradMemo)
+	}
+	g := &palette{coral: p.coral, violet: blend(p.violet, p.coral, t),
+		violetL:    blend(p.violetL, blend(p.coral, rgb{1, 1, 1}, .3), t),
+		violetDark: blend(p.violetDark, p.coral, t)}
+	gradMemo[k] = g
+	return g
 }
 
 func pal() *palette {
@@ -158,6 +212,7 @@ func BrandColors(accent string) (coral, violet, violetL [3]uint8) {
 			}
 		}
 	}
+	p = graded(p)
 	b := func(c rgb) [3]uint8 {
 		return [3]uint8{uint8(clamp(c.r)*255 + 0.5), uint8(clamp(c.g)*255 + 0.5), uint8(clamp(c.b)*255 + 0.5)}
 	}

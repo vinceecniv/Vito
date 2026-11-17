@@ -22,6 +22,7 @@ import (
 	"vito/internal/config"
 	"vito/internal/gtkwin"
 	"vito/internal/notify"
+	"vito/internal/pill"
 	"vito/internal/selfexe"
 	"vito/internal/webapp"
 	"vito/internal/xdgportal"
@@ -296,6 +297,7 @@ func onGTKMessage(raw string) {
 		Sys  bool   `json:"system"`
 		Acc  string `json:"accent"`
 		Rad  string `json:"radius"`
+		Grad string `json:"gradient"`
 		Msg  string `json:"msg"`
 		A    string `json:"a"`
 		Edge string `json:"edge"`
@@ -313,6 +315,7 @@ func onGTKMessage(raw string) {
 	case "theme":
 		setWindowScheme(m.Sys, m.Dark)
 		gtkwin.SetRadius(map[string]int{"minimal": 3, "none": 0}[m.Rad] + map[bool]int{true: 12}[m.Rad == ""])
+		pill.SetGradient(m.Grad)
 		gtkwin.SetIconName(launcherIcon(m.Acc, m.Rad, false)) // X11 and KDE show the window's own
 	case "win":
 		if m.A == "hello" {
@@ -336,7 +339,7 @@ func onGTKMessage(raw string) {
 const gtkBridgeJS = `(function(){
   const post = (o) => { try { window.webkit.messageHandlers.vito.postMessage(JSON.stringify(o)); } catch (e) {} };
   window.vitoOpenExternal = (u) => post({ t: "open", url: String(u) });
-  window.vitoTheme = (dark, accent, radius, system) => post({ t: "theme", dark: !!dark, system: !!system, accent: accent || "", radius: radius || "" });
+  window.vitoTheme = (dark, accent, radius, system, gradient) => post({ t: "theme", dark: !!dark, system: !!system, accent: accent || "", radius: radius || "", gradient: gradient || "" });
   document.addEventListener("keydown", (e) => {
     if (e.key === "F5" || ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && (e.key === "r" || e.key === "R"))) { e.preventDefault(); post({ t: "reload" }); }
   }, true);

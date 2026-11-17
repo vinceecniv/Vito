@@ -129,6 +129,13 @@ live on their own settings tab, Appearance (`data-sec="appearance"`).
 so new CSS needs no part in it (`.spinner` and the picker's `.rad-sw` are
 left out). The pill, its cards and the island cap their surfaces the same
 way (`corner()` in `internal/pill/corners.go`); icons keep their shapes.
+`ui.gradient` ("", `medium`, `subtle`, `none`) moves the cool end of every
+colour theme towards the warm end (0, .4, .75, 1 — `none` is one flat colour):
+`writeGradStyle` reads the theme's own tokens and lays the mixed `--violet`,
+`--violet-l`, `--grad`, `--acc-l`/`--acc-d` over them in `<style id="grad-mix">`
+(`!important`, rewritten by every `applyTheme`); `hc-bw` is left alone. The pill
+and the icons mix the same fractions (`pill.SetGradient`, `graded`); the
+window gets it with the theme message.
 `ui.density` ("", `compact`, `spacious`) sets `data-density`, which sets
 `--dn` (.65 / 1.3): the page's margins, the cards' padding and gaps, fields,
 toggles, history rows and the line height are written as

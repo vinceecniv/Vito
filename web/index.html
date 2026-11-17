@@ -394,6 +394,9 @@
   /* The desktop themes (Dux Modular Shell, Omarchy): the shell's mark in the
      swatch and an accent edge, so following the desktop stands out. */
   .acc-desk { border-color:color-mix(in srgb, var(--accent) 50%, var(--input-border)); }
+  /* ui.gradient's swatches: the theme's own two ends (--g-from/--g-to, written
+     by writeGradStyle), the cool one moved towards the warm one by --gp. */
+  .grad-opt .acc-sw { background:linear-gradient(135deg, var(--g-from, var(--coral)), color-mix(in srgb, var(--g-to, var(--violet)) var(--gp), var(--g-from, var(--coral)))); }
   .acc-desk .acc-sw { display:grid; place-items:center; width:22px; height:22px; color:#fff; }
   .acc-desk .acc-sw svg { width:15px; height:15px; }
   /* ---- the app's background (ui.backdrop): #backdrop behind everything,
@@ -2958,6 +2961,8 @@
           <div class="tri-seg" id="theme-seg" role="radiogroup" aria-label="Theme"></div>
           <label class="fld" data-help="accent">Colours</label>
           <div class="accent-sel" id="accent-sel" role="radiogroup" aria-label="Colours"></div>
+          <label class="fld" data-help="gradient">Colour gradient</label>
+          <div class="accent-sel" id="gradient-sel" role="radiogroup" aria-label="Colour gradient"></div>
           <label class="fld" data-help="font">Font</label>
           <div class="accent-sel" id="font-sel" role="radiogroup" aria-label="Font"></div>
           <label class="fld" data-help="radius">Corners</label>
@@ -4242,7 +4247,7 @@ const TR = { nl: {
   "Clipboard only":"Alleen klembord",
   "Restore clipboard after paste":"Klembord herstellen na plakken",
   "Keep history":"Geschiedenis bijhouden",
-  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","Background strength":"Sterkte van de achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Listen to the sounds":"Beluister de geluiden","Sounds have their own sets, under Audio":"Geluiden hebben eigen sets, onder Audio","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
+  "Last modified":"Laatst aangepast","Colours":"Kleuren","Font":"Lettertype","Appearance":"Uiterlijk","Background":"Achtergrond","Background strength":"Sterkte van de achtergrond","None":"Geen","Gradient":"Verloop","Aurora":"Noorderlicht","Sunrise":"Zonsopkomst","Waves":"Golven","Bubbles":"Bellen","Grid":"Raster","Dots":"Stippen","Stripes":"Strepen","Ripples":"Rimpels","Contour lines":"Hoogtelijnen","Corners":"Afronding","Sound set":"Geluidsset","Listen to the sounds":"Beluister de geluiden","Sounds have their own sets, under Audio":"Geluiden hebben eigen sets, onder Audio","Cleanup failed":"Opschonen mislukt","Soft":"Zacht","Glass":"Glas","Retro":"Retro","Tick":"Tik","Reduce motion":"Minder beweging","Spacing":"Ruimte","Compact":"Krap","Standard":"Standaard","Spacious":"Ruim","Rounded":"Afgerond","Colour gradient":"Kleurverloop","Strong":"Sterk","Moderate":"Gemiddeld","Subtle":"Subtiel","Confetti":"Confetti","Ocean":"Oceaan","High contrast":"Hoog contrast","High contrast black and white":"Hoog contrast zwart-wit",
   "Keep recordings (last 10)":"Opnames bewaren (laatste 10)",
   "Download recording":"Opname downloaden",
   "Download the recording of this dictation (.wav)":"Opname van dit dictaat downloaden (.wav)",
@@ -5162,8 +5167,58 @@ $("brand-mark").innerHTML = MARK;
 let themePref = localStorage.getItem("vito-theme") || "system";
 function systemDark(){ return window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches; }
 function effectiveDark(){ return themePref === "dark" || (themePref === "system" && systemDark()); }
+/* ---- gradient (ui.gradient): how far the cool end of the colour theme's
+   gradient moves towards the warm end, down to one flat colour. Every theme
+   writes its palette in the CSS (or desk-accent), so the mixed colours are
+   computed from what applies and laid over it in a style sheet of their own,
+   again whenever the theme or its side changes. The pill and the icons mix
+   the same fractions (pill.SetGradient). ---- */
+const GRADIENTS = [{c:"",n:"Strong",t:0},{c:"medium",n:"Moderate",t:.4},{c:"subtle",n:"Subtle",t:.75},{c:"none",n:"None",t:1}];
+let gradPref = (() => { try { return localStorage.getItem("vito-gradient") || ""; } catch { return ""; } })();
+function writeGradStyle(){
+  let el = document.getElementById("grad-mix");
+  if (!el) { el = document.createElement("style"); el.id = "grad-mix"; document.head.appendChild(el); }
+  el.textContent = ""; // read the theme's own colours
+  const root = document.documentElement, cs = getComputedStyle(root);
+  const hex = n => { const v = cs.getPropertyValue(n).trim(); return /^#[0-9a-f]{6}$/i.test(v) ? v : ""; };
+  const c = hex("--coral"), v = hex("--violet"), vl = hex("--violet-l"), cl = hex("--coral-l"), al = hex("--acc-l"), ad = hex("--acc-d"), ink = hex("--ink-l");
+  const g = GRADIENTS.find(x => x.c === gradPref) || GRADIENTS[0];
+  let css = c && v ? `:root { --g-from:${c}; --g-to:${v}; }` : "";
+  // Black and white keeps its two ends: they are the whole theme.
+  if (g.t && c && v && root.dataset.accent !== "hc-bw") {
+    const mv = hexMix(v, c, g.t);
+    const props = [`--violet:${mv}`, `--grad:linear-gradient(135deg,${c},${mv})`];
+    if (vl && cl) props.push(`--violet-l:${hexMix(vl, cl, g.t)}`);
+    // Accent text towards the warm end's own text colours, which keep their contrast.
+    if (al && ink) props.push(`--acc-l:${hexMix(al, ink, g.t)}`);
+    if (ad && cl) props.push(`--acc-d:${hexMix(ad, cl, g.t)}`);
+    css += `
+:root { ${props.map(p => p + " !important").join("; ")}; }`;
+  }
+  el.textContent = css;
+}
+function applyGradient(){
+  const root = document.documentElement, on = GRADIENTS.some(g => g.c === gradPref) ? gradPref : "";
+  if (on) root.dataset.gradient = on; else delete root.dataset.gradient;
+  document.querySelectorAll("#gradient-sel .acc-opt").forEach(b => b.setAttribute("aria-checked", b.dataset.code === on ? "true" : "false"));
+  applyTheme();
+}
+function setGradient(pref, persist){
+  gradPref = pref || "";
+  try { localStorage.setItem("vito-gradient", gradPref); } catch {}
+  applyGradient();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { gradient: gradPref });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+function buildGradientPicker(){
+  const box = $("gradient-sel"); if (!box) return;
+  box.innerHTML = GRADIENTS.map(g => `<button type="button" class="acc-opt grad-opt" role="radio" data-code="${g.c}"><i class="acc-sw" style="--gp:${Math.round((1 - g.t) * 100)}%" aria-hidden="true"></i><span data-noi18n>${t(g.n)}</span></button>`).join("");
+  box.querySelectorAll(".acc-opt").forEach(b => b.onclick = () => setGradient(b.dataset.code, true));
+  applyGradient();
+}
 function applyTheme(){
   document.documentElement.dataset.theme = effectiveDark() ? "dark" : "light";
+  writeGradStyle();
   document.documentElement.dataset.themePref = themePref; // Vito's own window (Linux) leaves "system" to GTK
   // Match the PWA window title bar to Vito's own theme (Chrome recolors the app
   // title bar live when this changes); blend it with the app background.
@@ -5175,7 +5230,7 @@ function applyTheme(){
 // "Reset to default" only works once something differs from Vito's own look.
 function syncLookReset(){
   const b = document.getElementById("s-look-reset"); if (!b) return;
-  try { b.disabled = themePref === "system" && !accentPref && !fontPref && !radiusPref && !backdropPref && !motionPref && !densityPref && Math.abs(bdStrength - 1) < 0.001; }
+  try { b.disabled = themePref === "system" && !accentPref && !gradPref && !fontPref && !radiusPref && !backdropPref && !motionPref && !densityPref && Math.abs(bdStrength - 1) < 0.001; }
   catch {} // during start-up, before all of them exist; the last apply sets it
 }
 /* ---- colour theme (ui.accent): "" is coral & violet, the others are
@@ -5225,6 +5280,7 @@ async function loadDesktopColors(){
   if (JSON.stringify(next) === JSON.stringify(deskPals)) return;
   deskPals = next;
   writeDeskStyle();
+  document.documentElement.dataset.deskv = String(Date.now()); // the window redraws its icon
   buildAccentPicker();
   if (DESK_LOGOS[accentPref]) applyTheme(); // the title bar colour follows --bg
 }
@@ -5487,8 +5543,8 @@ function surpriseLook(){
   vmFlash("happy", 1800);
 }
 function resetLook(){
-  setTheme("system", false); setAccent("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setBdStrength(1, false); setMotion(false, false); setDensity("", false);
-  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", font:"", radius:"", backdrop:"", backdrop_strength:0, reduce_motion:false, density:"" });
+  setTheme("system", false); setAccent("", false); setGradient("", false); setFont("", false); setRadius("", false); setBackdrop("", false); setBdStrength(1, false); setMotion(false, false); setDensity("", false);
+  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { theme:"system", accent:"", gradient:"", font:"", radius:"", backdrop:"", backdrop_strength:0, reduce_motion:false, density:"" });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(themePref==="system"){ if(typeof switchTheme==="function") switchTheme(applyTheme, true); else applyTheme(); } });
@@ -6528,6 +6584,7 @@ function buildThemeDropdown(){
 }
 buildThemeDropdown();
 buildAccentPicker();
+buildGradientPicker();
 buildFontPicker();
 buildBackdropPicker();
 buildDensityPicker();
@@ -11676,6 +11733,7 @@ async function fillSettings() {
   if (cfg.ui && (cfg.ui.density || "") !== densityPref) setDensity(cfg.ui.density || "", false);
   if (cfg.ui && !!cfg.ui.reduce_motion !== motionPref) setMotion(!!cfg.ui.reduce_motion, false);
   if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
+  if (cfg.ui && (cfg.ui.gradient || "") !== gradPref) setGradient(cfg.ui.gradient || "", false);
   if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {
     vmOutfit = Object.assign({}, cfg.ui.outfit);
     try { localStorage.setItem("vito-outfit", JSON.stringify(vmOutfit)); } catch {}
@@ -14689,6 +14747,7 @@ tagReveals();
 
 /* ---- per-option help tooltips (shown after a short delay) ---- */
 const HELP = {
+  gradient:{nl:"Hoeveel kleurverloop het kleurthema laat zien: alles, gemiddeld, subtiel, of geen — dan is alles één vlakke kleur, de eerste kleur van het thema. Ook in de pil, het eiland en het icoon.",en:"How much of the colour theme's gradient shows: all of it, moderate, subtle, or none — then everything is one flat colour, the theme's first colour. In the pill, the island and the icon too."},
   radius:{nl:"Hoe rond de hoeken van vensters, kaarten, knoppen en velden zijn: zoals Vito ze maakt, nauwelijks, of helemaal niet. Ook in de pil en het eiland.",en:"How round the corners of windows, cards, buttons and fields are: as Vito makes them, barely, or not at all. In the pill and the island too."},
   backdrop:{nl:"Een achtergrond achter de kaarten, in de kleuren van je thema. Noorderlicht, Golven en Bellen bewegen langzaam, behalve als je systeem om minder beweging vraagt.",en:"A background behind the cards, in your colour theme. Aurora, Waves and Bubbles move slowly, unless your system asks for less motion."},
   font:{nl:"Het lettertype van Vito, ook in de pil en het eiland. Atkinson Hyperlegible is gemaakt voor slechtzienden, Noto Sans heeft de meeste schriften.",en:"Vito's typeface, in the pill and the island too. Atkinson Hyperlegible is made for low vision, Noto Sans has the most scripts."},

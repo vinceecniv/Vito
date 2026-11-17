@@ -229,6 +229,10 @@ type UI struct {
 	// Radius is the page's corners: "" its own, "minimal" (3px) or "none".
 	// The page only.
 	Radius string `json:"radius,omitempty"`
+	// Gradient is how much the colour theme's gradient shows: "" all of it,
+	// "medium", "subtle" or "none" (one flat colour). The page, the pill and
+	// the icons (pill.SetGradient).
+	Gradient string `json:"gradient,omitempty"`
 	// Outfit is what Vito wears, a piece per slot (head, glasses, ears, neck,
 	// paint), as the page names them (VM_ACC in web/index.html).
 	Outfit map[string]string `json:"outfit,omitempty"`
