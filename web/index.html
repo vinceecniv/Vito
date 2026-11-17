@@ -3761,6 +3761,9 @@ const TR = { nl: {
   "Vito is all ears, but nothing has been recorded yet.":"Vito is een en al oor, maar er is nog niets opgenomen.",
   "A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.":"Een opname loopt zo lang als je nodig hebt — een college, een vergadering of een lang dictaat. Vito schrijft mee terwijl je praat, en je kunt momenten markeren en kopjes toevoegen.",
   "Start your first recording":"Start je eerste opname",
+  "Switching to {build}, the current one keeps running until it is in…":"Overstappen op {build}, de huidige draait door tot die binnen is…",
+  "Switching failed:":"Overstappen mislukt:",
+  "Switching to {build}…":"Overstappen op {build}…",
   "or turn an audio file into a recording":"of maak een opname van een audiobestand",
   "Paused":"Gepauzeerd",
   "From a file":"Uit bestand",
@@ -6399,10 +6402,14 @@ function renderLocalStt(){
     case "stopped": line = t("Installed, not running — select the card above to use it.") + ` · ${engine}`; break;
     default: line = s.supported ? t("Not installed.") + ` ${t("Download of about {mb} MB, once.").replace("{mb}", s.model_mb)}` : t("There is no build of this engine for your system.");
   }
+  // Another build on its way while this one keeps running (installLocalStt
+  // on changing the build); a switch that failed says so beside the state.
+  if (s.switching) line = t("Switching to {build}, the current one keeps running until it is in…").replace("{build}", t(VARIANT_LABELS[s.switching] || s.switching)) + ` ${Math.round((s.frac || 0) * 100)}%`;
+  else if (s.error && s.phase !== "error") line += " · ✗ " + t("Switching failed:") + " " + s.error;
   box.textContent = line;
-  bar.hidden = s.phase !== "downloading";
+  bar.hidden = s.phase !== "downloading" && !s.switching;
   bar.querySelector("i").style.width = Math.round((s.frac || 0) * 100) + "%";
-  const busy = s.phase === "downloading";
+  const busy = s.phase === "downloading" || !!s.switching;
   $("localstt-install").hidden = !s.supported || busy;
   $("localstt-install").textContent = s.installed ? t("Reinstall") : t("Install");
   $("localstt-remove").hidden = !s.installed || busy;
@@ -6415,7 +6422,9 @@ async function installLocalStt(){
     if (!r.ok) { toast("✗ " + (r.error || t("Install failed.")), "err"); return; }
     if (cfg && cfg.stt) { cfg.stt.local_variant = variant; }
     autoSaveSettings();
-    toast(t("Installing the local speech engine…"), "info");
+    toast(localStt && localStt.installed && localStt.variant !== variant
+      ? t("Switching to {build}…").replace("{build}", t(VARIANT_LABELS[variant] || variant))
+      : t("Installing the local speech engine…"), "info");
   } catch { toast(t("Install failed."), "err"); }
 }
 function removeLocalStt(){
@@ -9139,7 +9148,14 @@ $("localstt-install").onclick = installLocalStt;
 $("whistle-install").onclick = installWhistle;
 $("whistle-remove").onclick = removeWhistle;
 $("localstt-remove").onclick = removeLocalStt;
-$("s-localvariant").addEventListener("change", autoSaveSettings);
+// Another build takes effect at once: with the engine installed, changing it
+// fetches that build (the current one runs on until it is in). Before the
+// install it is only the choice the Install button will use.
+$("s-localvariant").addEventListener("change", () => {
+  const s = localStt, v = $("s-localvariant").value;
+  if (s && s.installed && v && v !== s.variant && !s.switching) installLocalStt();
+  else autoSaveSettings();
+});
 $("info-sttopenaikey").onclick = () => showKeyInfo($("s-sttpreset").value === "openai" ? "openai" : "groq");
 ["s-sttbaseurl","s-sttopenaikey","s-sttopenaimodel"].forEach(id => $(id).addEventListener("input", syncSttEndpointUI));
 ["s-sttkey","s-sonioxkey"].forEach(id => $(id).addEventListener("input", () => {
@@ -14896,7 +14912,7 @@ const HELP = {
   sttbaseurl:{nl:"De base-URL van het endpoint, bijv. http://127.0.0.1:8080/v1 voor whisper-server op je eigen computer, of https://api.groq.com/openai/v1. Vito stuurt de opname naar <base-URL>/audio/transcriptions.",en:"The base URL of the endpoint, e.g. http://127.0.0.1:8080/v1 for whisper-server on your own machine, or https://api.groq.com/openai/v1. Vito posts the recording to <base URL>/audio/transcriptions."},
   sttopenaikey:{nl:"De API-key voor dit endpoint. Een server op je eigen computer heeft er meestal geen nodig — laat het veld dan leeg.",en:"The API key for this endpoint. A server on your own machine usually needs none — leave it empty in that case."},
   localstt:{nl:"Vito downloadt de engine (parakeet.cpp, ~2 MB) en het model (Parakeet TDT 0.6B v3, ~900 MB) eenmalig naar je cachemap, controleert de controlesommen en draait de engine als achtergrondproces zolang deze kaart gekozen is. Alles blijft op je computer. Whisper via een eigen endpoint blijft de betere keuze voor Nederlands met veel Engels vakjargon.",en:"Vito downloads the engine (parakeet.cpp, ~2 MB) and the model (Parakeet TDT 0.6B v3, ~900 MB) once into your cache folder, verifies the checksums and runs the engine as a background process while this card is selected. Everything stays on your computer. Whisper through your own endpoint remains the better choice for Dutch with a lot of English jargon."},
-  localvariant:{nl:"Welke build van de engine: 'CPU' werkt overal en kost ongeveer een seconde per dictaat; 'GPU (Vulkan)' gebruikt je videokaart of iGPU (Intel Arc, AMD, NVIDIA) en is een paar keer sneller, maar het eerste dictaat na het opstarten duurt langer door het compileren van shaders. Op Apple Silicon gebruikt de standaardbuild al de GPU.",en:"Which build of the engine: 'CPU' works everywhere and takes about a second per dictation; 'GPU (Vulkan)' uses your graphics card or iGPU (Intel Arc, AMD, NVIDIA) and is several times faster, but the first dictation after start-up takes longer while shaders compile. On Apple Silicon the standard build already uses the GPU."},
+  localvariant:{nl:"Welke build van de engine: 'CPU' werkt overal en kost ongeveer een seconde per dictaat; 'GPU (Vulkan)' gebruikt je videokaart: met een losse kaart (AMD, NVIDIA, Intel Arc) een paar keer sneller, met de ingebouwde grafische chip van een gewone processor vaak maar een klein beetje. Het eerste dictaat na het opstarten duurt langer door het compileren van shaders. Een andere keuze haalt die build meteen op; tot hij binnen is, blijft de huidige werken. Op Apple Silicon gebruikt de standaardbuild al de GPU.",en:"Which build of the engine: 'CPU' works everywhere and takes about a second per dictation; 'GPU (Vulkan)' uses your graphics card: several times faster with a dedicated one (AMD, NVIDIA, Intel Arc), often only a little with the graphics built into an ordinary processor. The first dictation after start-up takes longer while shaders compile. Choosing another build fetches it at once; until it is in, the current one keeps working. On Apple Silicon the standard build already uses the GPU."},
   sttopenaimodel:{nl:"Welk model het endpoint moet gebruiken, bijv. whisper-large-v3-turbo. Een lokale server met één geladen model negeert dit veld vaak. Voor Nederlands: kies minimaal 'medium' of 'large-v3-turbo' — kleinere Whisper-modellen zijn voor Nederlands onbruikbaar.",en:"Which model the endpoint should use, e.g. whisper-large-v3-turbo. A local server with one loaded model often ignores this field. For a language other than English pick at least 'medium' or 'large-v3-turbo' — the smaller Whisper models are not usable there."},
   cleanup:{nl:"Laat Claude elke dictatie automatisch opschonen: interpunctie, hoofdletters en 'eh/uhm' eruit.",en:"Let Claude automatically clean up every dictation: punctuation, capitals, and removing 'eh/uhm'."},
   anthropickey:{nl:"Je Anthropic-sleutel voor de Claude-opschoning. Zonder key wordt de ruwe tekst geplakt.",en:"Your Anthropic key for the Claude cleanup. Without a key the raw text is pasted."},
