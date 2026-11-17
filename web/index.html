@@ -2457,9 +2457,10 @@
   /* ---- Long recordings (Recordings tab) ---- */
   .lr-headact { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .lr-new { display:inline-flex; align-items:center; gap:9px; }
-  /* The record dot is red everywhere; on a filled button a ring in its text
-     colour keeps it clear of any theme's fill. */
-  .btn.primary .lr-dot { box-shadow:0 0 0 1.5px var(--on-grad); }
+  /* The record dot is red, on a filled button too, unless the theme's fill
+     is itself red-ish: then it takes the button's text colour (--rec-dot,
+     writeGradStyle). */
+  .btn.primary .lr-dot { background:var(--rec-dot, var(--danger)); }
   #btn-toggle > .lr-dot { display:inline-block; vertical-align:-1px; margin-right:4px; }
   .lr-dot { width:10px; height:10px; border-radius:50%; background:var(--danger); flex:0 0 10px; }
   .lr-paused .lr-dot { background:var(--amber-ink); }
@@ -5198,6 +5199,11 @@ function writeGradStyle(){
   const c = hex("--coral"), v = hex("--violet"), vl = hex("--violet-l"), cl = hex("--coral-l"), al = hex("--acc-l"), ad = hex("--acc-d"), ink = hex("--ink-l");
   const g = GRADIENTS.find(x => x.c === gradPref) || GRADIENTS[0];
   let css = c && v ? `:root { --g-from:${c}; --g-to:${v}; }` : "";
+  // A red record dot vanishes on a red-ish fill (Vito's own coral is the
+  // danger red): there it takes the text colour on the fill instead.
+  const danger = hex("--danger"), fillEnd = g.t && c && v ? hexMix(v, c, g.t) : v;
+  if (danger && c && fillEnd && [c, fillEnd].some(f => hueGap(f, danger) < 40 && chroma(f) > .25))
+    css += `\n:root { --rec-dot:var(--on-grad); }`;
   // Black and white keeps its two ends: they are the whole theme.
   if (g.t && c && v && root.dataset.accent !== "hc-bw") {
     const mv = hexMix(v, c, g.t);
@@ -5211,6 +5217,17 @@ function writeGradStyle(){
   }
   el.textContent = css;
 }
+// hueGap is how far apart two colours' hues are, in degrees (0..180); chroma
+// how coloured one is (0 grey .. 1 pure), both from #rrggbb.
+function hueOf(h){
+  const [r, g, b] = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
+  const mx = Math.max(r, g, b), d = mx - Math.min(r, g, b);
+  if (!d) return 0;
+  const hh = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return (hh * 60 + 360) % 360;
+}
+function chroma(h){ const v = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255); return Math.max(...v) - Math.min(...v); }
+function hueGap(a, b){ const d = Math.abs(hueOf(a) - hueOf(b)) % 360; return Math.min(d, 360 - d); }
 function applyGradient(){
   const root = document.documentElement, on = GRADIENTS.some(g => g.c === gradPref) ? gradPref : "";
   if (on) root.dataset.gradient = on; else delete root.dataset.gradient;
