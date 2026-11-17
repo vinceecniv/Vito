@@ -579,7 +579,9 @@ registerProcessor("vito-pcm",P)`;
   const stripThinking = (s) => (s || "").replace(/<(think|thinking)>[\s\S]*?<\/(think|thinking)>/g, "").trim();
   async function aiCleanup(text, language, cl, instruction) {
     const ctl = new AbortController();
-    const timer = setTimeout(() => ctl.abort(), cl.timeout_ms || 5000);
+    // Longer text takes longer to write back: as cleanup.Timeout in Go.
+    const extra = Math.max(0, text.split(/\s+/).filter(Boolean).length - 100) * 20;
+    const timer = setTimeout(() => ctl.abort(), Math.min(60000, (cl.timeout_ms || 5000) + extra));
     try {
       let resp, body;
       if (cl.provider === "anthropic") {

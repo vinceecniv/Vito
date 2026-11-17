@@ -1294,7 +1294,7 @@ func (d *Daemon) finish(s *session) {
 	// Cleanup must be on. A pending command then forces a pass even below the
 	// min-words threshold (that's how the command is applied).
 	if d.cleanupEffective(s) && (instruction != "" || wordCount(raw) >= cfg.Cleanup.MinWords) && !dictionary.OnlySnippets(marked) {
-		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cleanCfg.TimeoutMS)*time.Millisecond)
+		ctx, cancel := context.WithTimeout(context.Background(), cleanup.Timeout(cleanCfg.TimeoutMS, marked))
 		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, marked, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
 		cancel()
 		cleanUsage = usage // tokens are billed even if we then reject the output

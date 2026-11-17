@@ -13,6 +13,7 @@ import (
 	neturl "net/url"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -41,6 +42,23 @@ func NewCleaner(cfg config.Cleanup) Cleaner {
 		return NewOpenAICleaner(cfg)
 	}
 	return NewAnthropicCleaner(cfg)
+}
+
+// Timeout is how long one pass over text may take: the configured time for a
+// short dictation, plus time for every word beyond the first 100, because the
+// model writes the whole text back and that takes longer the longer it is.
+// Measured with Groq gpt-oss-120b: about 1.5–2 s at 100 words, 3.5–3.7 s at
+// 260–320 words. A flat 5 s let every dictation that long time out now and
+// then (no rate limit involved: 2.5k tokens a call, never a 429), and the raw
+// transcript was pasted instead.
+func Timeout(ms int, text string) time.Duration {
+	if ms <= 0 {
+		ms = 5000
+	}
+	if extra := len(strings.Fields(text)) - 100; extra > 0 {
+		ms += extra * 20
+	}
+	return min(time.Duration(ms)*time.Millisecond, 60*time.Second)
 }
 
 // Configured reports whether the selected provider has what it needs to run: a
