@@ -297,7 +297,14 @@ keeps it sharp too. Before 4.16 the page draws them 32/scale instead
 (`cmd/vito/launchericon_linux.go`): the daemon draws it with `tray.BrandPNG`,
 names it after its picture's hash and writes that file's **full path** into
 `vito.desktop`'s `Icon=` (a new theme name left GNOME Shell showing a generic
-icon until it rescanned). Measured in the VMs: KDE's taskbar follows at once;
+icon until it rescanned). A desktop theme (`dms`, `omarchy`) draws the side
+in use, primary into a deep primary as the page does, and is redrawn on the
+desktop's light/dark switch (`pill.OnColorScheme`, the portal signal the
+pill follows; the tray too). When an AppImage manager (DMS's Software Depot,
+Gear Lever) has its own entry starting the same file, Vito's `vito.desktop`
+gets `NoDisplay=true` (else Vito is listed twice) and the manager's `Icon=` is
+pointed at the themed icon, its own kept as `X-Vito-Icon-Orig=` for the
+default look. Measured in the VMs: KDE's taskbar follows at once;
 GNOME's dock keeps a running app's icon and shows the new one from the window's
 next start. On GNOME (`appmenu:close`) the strip shows only close; on KDE
 minimise, maximise and close. Without WebKitGTK (the KDE VM before

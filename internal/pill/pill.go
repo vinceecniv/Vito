@@ -208,6 +208,7 @@ func Start(d *daemon.Daemon, log *slog.Logger, src Sources) {
 	watchColorScheme(log, func(dark bool) {
 		p.systemDark.Store(dark)
 		p.settingsChanged()
+		schemeChanged()
 	})
 	if d.Config().UI.PillEnabled() {
 		go ensureGnomeExtension(log)

@@ -207,6 +207,14 @@ func serve() error {
 			go func() { ui := d.Config().UI; refreshLauncherIcon(ui.Accent, ui.Radius) }()
 		}
 	})
+	// A desktop theme takes the colours of the side in use, so it changes
+	// with the desktop's light/dark switch (refreshLauncherIcon writes only
+	// what changed).
+	pill.OnColorScheme(func() {
+		if ui := d.Config().UI; pill.FollowsDesktop(ui.Accent) {
+			refreshLauncherIcon(ui.Accent, ui.Radius)
+		}
+	})
 	hk := hotkey.New(d, log)
 	server.Version = version
 	server.WindowSupported = windowSupported
