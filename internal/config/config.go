@@ -54,9 +54,9 @@ type STT struct {
 	// rather than piece by piece while you speak (stt.LiveText): set by the
 	// daemon when nothing cleans the text afterwards, as the pieces' seams
 	// ("als... De tekst") are left for the cleanup to smooth. Never saved.
-	Whole bool `json:"-"`
-	Model        string `json:"model"`    // AssemblyAI speech_model; empty = server default
-	EUEndpoint   bool   `json:"eu_endpoint"`
+	Whole      bool   `json:"-"`
+	Model      string `json:"model"` // AssemblyAI speech_model; empty = server default
+	EUEndpoint bool   `json:"eu_endpoint"`
 	// OpenAI-compatible provider (provider="openai"): any endpoint that speaks the
 	// OpenAI audio API (POST /audio/transcriptions) — OpenAI itself, Groq's hosted
 	// Whisper, or a server on this machine (whisper.cpp, Speaches, a Parakeet
