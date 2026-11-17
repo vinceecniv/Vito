@@ -1348,7 +1348,7 @@
   .weekwrap.dense .bar { border-radius:3px 3px 1px 1px; }
   .weekwrap.dense .weekcol:hover .bar { transform:scaleY(1.03); }
   .weekcol.empty .bar { background:var(--bar); }
-  .weekcol.placeholder .bar { background:var(--bar); opacity:.5; cursor:help; }
+  .weekcol.placeholder .bar { background:var(--bar); opacity:.5; cursor:var(--cur-arrow); }
   .weekcol.placeholder .d { opacity:.7; }
   .weekcol .d { font-size:11px; color:var(--text3); }
   .weekcol.peak .d { color:var(--accent); font-weight:600; }
@@ -5466,7 +5466,8 @@ applyBackdrop();
 var cursorStyle; // made once cursorCSS exists
 // The system's own cursors, when the Vito ones are switched off.
 const plainCursorCSS = `:root{--cur-arrow:default;--cur-hand:pointer;--cur-text:text;--cur-grab:grab;--cur-grabbing:grabbing}
-a[href],button:not(:disabled),select,summary,label[for],[role="button"]{cursor:pointer}`;
+a[href],button:not(:disabled),select,summary,label[for],[role="button"],
+input:is([type=checkbox],[type=radio],[type=range],[type=color],[type=file]):not(:disabled){cursor:pointer}`;
 let vitoCursor = (() => { try { return localStorage.getItem("vito-cursor") !== "0"; } catch { return true; } })(); // default on
 function applyCursors(){
   if (!cursorStyle) return;
@@ -5530,15 +5531,16 @@ function surpriseLook(){
   const accent = pick(ACCENTS.filter(a => !a.desk && a.c !== accentPref && a.c !== "hc" && a.c !== "hc-bw").map(a => a.c));
   const font = pick(FONTS.filter(f => f.c !== fontPref).map(f => f.c));
   const radius = pick(["", "", "minimal", "none"]);
+  const gradient = pick(["", "", "medium", "subtle", "none"]);
   const backdrop = pick(BACKDROPS.slice(1).map(b => b.c));
-  setAccent(accent, false); setFont(font, false); setRadius(radius, false); setBackdrop(backdrop, false);
+  setAccent(accent, false); setGradient(gradient, false); setFont(font, false); setRadius(radius, false); setBackdrop(backdrop, false);
   const outfit = {};
   ["head", "glasses", "paint"].forEach(slot => {
     const open = Object.keys(VM_ACC).filter(k => VM_ACC[k].slot === slot && vmUnlocked(k) === true);
     if (open.length && Math.random() < .75) outfit[slot] = pick(open);
   });
   ["head", "glasses", "paint"].forEach(slot => setOutfit(slot, outfit[slot] || "", false));
-  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { accent, font, radius, backdrop, outfit: Object.assign({}, vmOutfit) });
+  if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { accent, gradient, font, radius, backdrop, outfit: Object.assign({}, vmOutfit) });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
   vmFlash("happy", 1800);
 }
@@ -7935,7 +7937,9 @@ html{cursor:var(--cur-arrow)}
 label{cursor:var(--cur-arrow)} /* the browser's own sheet gives a label cursor:default */
 input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=button]):not([type=submit]),
 textarea,[contenteditable="true"],[contenteditable=""]{cursor:var(--cur-text)}
-a[href],button:not(:disabled),select,summary,label[for],[role="button"]{cursor:var(--cur-hand)}`;
+a[href],button:not(:disabled),select,summary,label[for],[role="button"]{cursor:var(--cur-hand)}
+input:is([type=checkbox],[type=radio],[type=range],[type=color],[type=file]):not(:disabled){cursor:var(--cur-hand)}
+input:disabled{cursor:var(--cur-arrow)}`;
 };
 // Redrawn when the colour theme or light/dark changes.
 cursorStyle = document.createElement("style"); document.head.appendChild(cursorStyle);
