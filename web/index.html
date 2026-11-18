@@ -1178,6 +1178,22 @@
   .settabs[data-fit^="icons"] button { padding-inline:11px; }
   .settings-pane { max-width:none; } /* one column, as wide as the page */
   .settings-pane > .card[hidden] { display:none; }
+  /* Basic or all settings (ui.settings_all): what is marked data-adv shows
+     only under "All" — and always while searching, so a search finds it. */
+  #tab-settings.set-basic:not(.searching) [data-adv] { display:none !important; }
+  .set-tools { flex-wrap:wrap; justify-content:flex-end; }
+  .set-search { flex:0 1 240px; min-width:170px; }
+  .set-mode { display:inline-flex; padding:3px; gap:2px; border-radius:999px; background:var(--card); border:1px solid var(--card-border); }
+  .set-mode button { border:none; background:none; padding:6px 14px; border-radius:999px; font:inherit; font-size:13px; font-weight:600; color:var(--text2); cursor:var(--cur-hand); }
+  .set-mode button:hover { color:var(--text); }
+  .set-mode button.on { background:var(--accent-soft); color:var(--accent); }
+  .set-more { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:4px 0 24px; padding:12px 16px; border-radius:12px; border:1px dashed var(--card-border); color:var(--text2); font-size:13.5px; }
+  .set-more[hidden], .set-none[hidden] { display:none; }
+  .set-none { color:var(--text3); text-align:center; padding:30px 0; }
+  /* A search shows every section's cards that match, the matches marked. */
+  #tab-settings.searching .settabs button.active { color:var(--text2); border-bottom-color:transparent; font-weight:inherit; }
+  .settings-pane .s-hit { border-radius:6px; background:color-mix(in srgb, var(--accent) 16%, transparent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent); }
+  @media (max-width:600px){ .set-tools { width:100%; justify-content:stretch; } .set-search { flex:1 1 auto; } }
   /* The tabs may wrap onto a second line; only when they'd need a third does
      a dropdown take over, reusing the .flagsel pattern from the theme/language
      pickers. That is counted (fitSetTabs), not guessed from a breakpoint: the
@@ -2947,6 +2963,17 @@
     <section id="tab-settings">
       <div class="page-head">
         <div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="9" cy="8" r="2.4" fill="var(--card)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--card)"/></svg></span><h1>Settings</h1></div><div class="sub">Configure Vito exactly to your liking</div></div>
+        <div class="ph-right set-tools">
+          <div class="searchbox set-search">
+            <svg class="s-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+            <input type="text" id="set-search" placeholder="Search settings…" aria-label="Search settings" autocomplete="off" spellcheck="false">
+            <button class="s-x" id="set-search-x" data-tip-text="Clear search" aria-label="Clear search" style="display:none;">×</button>
+          </div>
+          <div class="set-mode" id="set-mode" role="radiogroup" aria-label="Which settings to show">
+            <button type="button" role="radio" data-mode="basic">Basic</button>
+            <button type="button" role="radio" data-mode="all">All</button>
+          </div>
+        </div>
       </div>
       <div class="flagsel setsec-sel" id="setsec-sel">
         <button type="button" class="flagsel-btn" id="setsec-btn">
@@ -2979,15 +3006,17 @@
         </div>
         <div class="card" data-sec="general" id="set-display">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>Display</span></h2>
+          <div data-adv>
           <label class="fld" data-help="zoom" style="max-width:320px;">Zoom level <span class="val" id="s-zoomval">100%</span><button type="button" id="s-zoom-reset" class="reset-btn" hidden title="Back to 100%" aria-label="Back to 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
           <div class="slider-wrap" style="--frac:0.375;"><input type="range" id="s-zoom" min="0.7" max="1.5" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
+          </div>
           <label class="fld" data-help="uilang">Interface language</label>
           <input type="hidden" id="s-uilang">
           <div class="flagsel" id="uilang-sel">
             <button type="button" class="flagsel-btn" id="uilang-btn">Automatic (OS)</button>
             <div class="flagsel-list" id="uilang-list"></div>
           </div>
-          <label class="tgl" data-help="helptips"><input type="checkbox" id="s-helptips"><span class="tr"></span> Show help tips on hover</label>
+          <label class="tgl" data-help="helptips" data-adv><input type="checkbox" id="s-helptips"><span class="tr"></span> Show help tips on hover</label>
         </div>
         <div class="card" data-sec="appearance" id="set-look">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.2" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="7.4" r="1.1" fill="currentColor" stroke="none"/></svg><span>Appearance</span></h2>
@@ -3000,40 +3029,46 @@
           <div class="tri-seg" id="theme-seg" role="radiogroup" aria-label="Theme"></div>
           <label class="fld" data-help="accent">Colours</label>
           <div class="accent-sel" id="accent-sel" role="radiogroup" aria-label="Colours"></div>
+          <div data-adv>
           <label class="fld" data-help="gradient">Colour gradient</label>
           <div class="accent-sel" id="gradient-sel" role="radiogroup" aria-label="Colour gradient"></div>
+          </div>
           <label class="fld" data-help="font">Font</label>
           <div class="accent-sel" id="font-sel" role="radiogroup" aria-label="Font"></div>
+          <div data-adv>
           <label class="fld" data-help="radius">Corners</label>
           <div class="accent-sel" id="radius-sel" role="radiogroup" aria-label="Corners"></div>
           <label class="fld" data-help="density">Spacing</label>
           <div class="accent-sel" id="density-sel" role="radiogroup" aria-label="Spacing"></div>
+          </div>
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
-          <div id="bd-strength-row" hidden>
+          <div id="bd-strength-row" data-adv hidden>
             <label class="fld" data-help="bdstrength" for="s-bdstrength" style="max-width:320px;">Background strength <span class="val" id="s-bdstrengthval">100%</span><button type="button" id="s-bdstrength-reset" class="reset-btn" hidden title="Back to 100%" aria-label="Back to 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
             <div class="slider-wrap" style="--frac:0.655;"><input type="range" id="s-bdstrength" min="0.05" max="1.5" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
           </div>
           <div class="subhead" style="margin-top:20px;">Other</div>
           <label class="tgl" data-help="motion"><input type="checkbox" id="s-motion"><span class="tr"></span> Reduce motion</label>
-          <label class="tgl" data-help="cursor"><input type="checkbox" id="s-cursor"><span class="tr"></span> Vito mouse cursor</label>
+          <label class="tgl" data-help="cursor" data-adv><input type="checkbox" id="s-cursor"><span class="tr"></span> Vito mouse cursor</label>
           <div class="s-vito-row">
             <span class="s-vito-prev"><span class="vmascot" data-state="happy" id="s-vito-prev"></span></span>
             <button type="button" class="btn ghost small" id="s-dress">Dress up Vito</button>
           </div>
-          <button type="button" class="linkbtn look-sounds" id="s-goto-sounds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Sounds have their own sets, under Audio</span></button>
+          <button type="button" class="linkbtn look-sounds" id="s-goto-sounds" data-adv><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Sounds have their own sets, under Audio</span></button>
           <button type="button" class="btn ghost small" id="s-look-reset" style="margin-top:16px;">Reset to default</button>
         </div>
         <div class="card" data-sec="general" id="set-system">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg><span>System</span></h2>
           <label class="tgl" data-help="autostart"><input type="checkbox" id="s-autostart"><span class="tr"></span> Start with the system</label>
           <label class="tgl" data-help="tray"><input type="checkbox" id="s-tray"><span class="tr"></span> Show system-tray icon</label>
-          <label class="tgl" data-help="ownwindow" id="s-window-opt" hidden><input type="checkbox" id="s-window"><span class="tr"></span> Open Vito in its own window</label>
+          <label class="tgl" data-help="ownwindow" id="s-window-opt" data-adv hidden><input type="checkbox" id="s-window"><span class="tr"></span> Open Vito in its own window</label>
+          <div data-adv>
           <label class="fld" data-help="notifications" style="margin-top:16px;">Notifications</label>
           <input type="hidden" id="s-notify">
           <div class="flagsel" id="notify-sel">
             <button type="button" class="flagsel-btn" id="notify-btn"></button>
             <div class="flagsel-list" id="notify-list"></div>
+          </div>
           </div>
         </div>
         <!-- Shown where the pill works (loadLinuxTools: pillHere). -->
@@ -3042,7 +3077,7 @@
           <p class="act-note" id="pill-gnome-note" hidden style="margin:2px 0 10px; padding:9px 12px; border-radius:9px; background:var(--accent-soft); color:var(--text2);"></p>
           <label class="tgl" id="pill-opt" data-help="pill" style="display:none;"><input type="checkbox" id="s-pill"><span class="tr"></span> Show a pill on screen while dictating</label>
           <label class="tgl" id="pill-idle-opt" data-help="pillidle" style="display:none;"><input type="checkbox" id="s-pill-idle"><span class="tr"></span> Keep a small pill on screen when not dictating</label>
-          <label class="tgl" id="pill-live-opt" data-help="pilllive" style="display:none;"><input type="checkbox" id="s-pill-live"><span class="tr"></span> Show the words in the pill while you speak <span id="pill-live-note" style="display:block;font-size:12px;color:var(--text3);" hidden></span></label>
+          <label class="tgl" id="pill-live-opt" data-adv data-help="pilllive" style="display:none;"><input type="checkbox" id="s-pill-live"><span class="tr"></span> Show the words in the pill while you speak <span id="pill-live-note" style="display:block;font-size:12px;color:var(--text3);" hidden></span></label>
           <div id="pill-style-opt" style="display:none;">
             <label class="fld" data-help="pillstyle">Pill style</label>
             <input type="hidden" id="s-pillstyle">
@@ -3055,7 +3090,7 @@
           <label class="tgl" data-help="updateauto"><input type="checkbox" id="s-updateauto"><span class="tr"></span> Install updates automatically</label>
           <p class="act-note" id="upd-auto-note" style="margin:2px 0 8px;" hidden></p>
         </div>
-        <div class="card" data-sec="general" id="set-other">
+        <div class="card" data-sec="general" id="set-other" data-adv>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span>Other</span></h2>
           <label class="fld" data-help="typingspeed" style="margin-top:0;">Typing speed (for time saved)</label>
           <input type="hidden" id="s-typespeed">
@@ -3075,11 +3110,13 @@
           <div class="isel"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5v4M9 20.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><select id="s-input"></select></div>
           <label class="fld" data-help="level">Microphone level <span class="val" id="s-inputlevelval">–</span></label>
           <input type="range" id="s-inputlevel" min="0" max="1" step="0.01" disabled>
+          <div data-adv>
           <label class="fld" data-help="media">Media while dictating</label>
           <input type="hidden" id="s-mediaaction">
           <div class="flagsel" id="mediaaction-sel">
             <button type="button" class="flagsel-btn" id="mediaaction-btn"></button>
             <div class="flagsel-list" id="mediaaction-list"></div>
+          </div>
           </div>
           <button class="btn ghost small" id="btn-mictest" style="margin-top:14px;"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5v4M9 20.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Test microphone</button>
 
@@ -3087,6 +3124,7 @@
         <div class="card" data-sec="audio" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg><span>Feedback sounds</span></h2>
           <label class="tgl" data-help="sounds"><input type="checkbox" id="s-sounds"><span class="tr"></span> Play feedback sounds</label>
+          <div data-adv>
           <label class="fld" data-help="soundset">Sound set</label>
           <div class="accent-sel" id="soundset-sel" role="radiogroup" aria-label="Sound set"></div>
           <label class="fld">Listen to the sounds</label>
@@ -3097,12 +3135,15 @@
             <button type="button" class="tag" data-sound="command"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Vito Assist</button>
             <button type="button" class="tag" data-sound="warn"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Cleanup failed</button>
           </div>
+          </div>
           <label class="fld" data-help="svol">Feedback sound volume <span class="val" id="s-svolval">100%</span></label>
           <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-svol" min="0" max="2" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
+          <div data-adv>
           <label class="fld" data-help="output">Output device (sounds)</label>
           <div class="isel"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 0 1 0 7M18.5 6a7 7 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><select id="s-output"></select></div>
+          </div>
         </div>
-        <div class="card" data-sec="audio" hidden>
+        <div class="card" data-sec="audio" data-adv hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg><span>Stopping automatically</span></h2>
           <label class="fld" data-help="silence" style="margin-top:0;">Auto-stop on silence</label>
           <div class="rowflex" style="gap:9px; align-items:center; margin-top:2px;">
@@ -3249,6 +3290,7 @@
               <input type="text" id="s-openaimodel" placeholder="openai/gpt-oss-120b" autocomplete="off">
               <div class="flagsel-list" id="modelcombo-list"></div>
             </div>
+            <div data-adv>
             <label class="fld" data-help="reasoning">Thinking</label>
             <select id="s-openaireasoning">
               <option value="">Let the model decide</option>
@@ -3259,6 +3301,7 @@
               <option value="high">High</option>
             </select>
             <p class="act-note" id="reasoning-note" style="margin:6px 0 0;"></p>
+            </div>
           </div>
 
         </div>
@@ -3268,6 +3311,7 @@
           <label class="fld">Rule set</label>
           <select id="s-promptsel"></select>
           <p class="act-note" id="prompt-desc" style="margin:6px 0 0;"></p>
+          <div data-adv>
           <div class="rowflex" style="gap:8px; margin-top:10px;">
             <button type="button" class="mini-btn" id="prompt-new">New from this one</button>
             <button type="button" class="mini-btn" id="prompt-rename">Rename</button>
@@ -3276,8 +3320,9 @@
           <textarea id="s-promptrules" rows="14" spellcheck="false" style="margin-top:10px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; line-height:1.55;"></textarea>
           <p class="act-note prompt-fixed" id="prompt-contract"></p>
           <p class="act-note" style="margin-top:10px;">A Vito Assist command (“Vito, …”) doesn't use these rules: carrying out an instruction replaces them rather than extending them. The dictionary corrections and the language are sent separately, so you don't need to repeat them here.</p>
+          </div>
         </div>
-        <div class="card" data-sec="cleanup" hidden>
+        <div class="card" data-sec="cleanup" data-adv hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg><span data-help="cleanuprate">Token cost estimate</span></h2>
           <div class="rowflex" style="gap:10px;">
             <div style="flex:1;min-width:0;"><label class="fld" data-help="cleanuprate">Input · $/Mtok</label><input type="number" id="s-cleanupinrate" min="0" step="0.01" placeholder="0"></div>
@@ -3330,7 +3375,7 @@
           <div class="assist-req"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Vito Assist only works when AI cleanup is on — that pass is what carries out the command.</span></div>
 
         </div>
-        <div class="card" data-sec="assist" hidden>
+        <div class="card" data-sec="assist" data-adv hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg><span>Model</span></h2>
           <label class="tgl" data-help="assistmodel"><input type="checkbox" id="s-assist-usecleanup"><span class="tr"></span> Use the AI cleanup model</label>
           <p class="act-note" id="assist-model-active" style="margin:6px 0 0;"></p>
@@ -3385,20 +3430,22 @@
         </div>
         <div class="card" data-sec="output" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg><span>Output</span></h2>
+          <div data-adv>
           <label class="fld" data-help="inject">Injection method</label>
           <input type="hidden" id="s-inject">
           <div class="flagsel" id="inject-sel">
             <button type="button" class="flagsel-btn" id="inject-btn"></button>
             <div class="flagsel-list" id="inject-list"></div>
           </div>
-          <label class="tgl" data-help="restore"><input type="checkbox" id="s-restore"><span class="tr"></span> Restore clipboard after paste</label>
+          </div>
+          <label class="tgl" data-help="restore" data-adv><input type="checkbox" id="s-restore"><span class="tr"></span> Restore clipboard after paste</label>
           <label class="tgl" data-help="appendspace"><input type="checkbox" id="s-appendspace"><span class="tr"></span> Add a space after the text</label>
-          <label class="tgl" data-help="appendenter"><input type="checkbox" id="s-appendenter"><span class="tr"></span> Add Enter after text</label>
+          <label class="tgl" data-help="appendenter" data-adv><input type="checkbox" id="s-appendenter"><span class="tr"></span> Add Enter after text</label>
         </div>
         <div class="card" data-sec="output" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>History</span></h2>
           <label class="tgl" data-help="history"><input type="checkbox" id="s-history"><span class="tr"></span> Keep history</label>
-          <label class="tgl" data-help="storeaudio"><input type="checkbox" id="s-storeaudio"><span class="tr"></span> Keep recordings (last 10)</label>
+          <label class="tgl" data-help="storeaudio" data-adv><input type="checkbox" id="s-storeaudio"><span class="tr"></span> Keep recordings (last 10)</label>
           <label class="fld" data-help="retention">Automatically delete old entries</label>
           <input type="hidden" id="s-retention">
           <div class="flagsel" id="retention-sel">
@@ -3406,7 +3453,7 @@
             <div class="flagsel-list" id="retention-list"></div>
           </div>
         </div>
-        <div class="card" data-sec="output" hidden id="set-lrfolder">
+        <div class="card" data-sec="output" hidden id="set-lrfolder" data-adv>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2 2 0 0 1 5 5.5h4l2 2.2h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10.5h18"/></svg><span>Recordings</span></h2>
           <label class="tgl" style="margin-top:4px;"><input type="checkbox" id="lrs-clean"><span class="tr"></span> Clean up each block</label>
           <p class="act-note" style="margin:4px 0 0;">The AI cleanup (Settings → Cleanup) tidies the text block by block while you record. Off: the raw transcript only.</p>
@@ -3503,6 +3550,11 @@
           <p class="act-note" style="margin:0;">Achievement medals and animations use <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> by Google (static under Apache-2.0, animations under CC BY 4.0), played with <a href="https://github.com/airbnb/lottie-web" target="_blank" rel="noopener">lottie-web</a> by Airbnb (MIT). Country flags are <a href="https://github.com/lipis/flag-icons" target="_blank" rel="noopener">flag-icons</a> by Panayiotis Lipiridis (MIT).</p>
           <p class="act-note" style="margin:8px 0 0;">Recordings are stored as MP3 with the <a href="https://github.com/braheezy/shine-mp3" target="_blank" rel="noopener">shine</a> encoder (LGPL-2, Go port by braheezy) and read back with <a href="https://github.com/hajimehoshi/go-mp3" target="_blank" rel="noopener">go-mp3</a> by Hajime Hoshi (Apache-2.0).</p>
         </div>
+        <div class="set-more" id="set-more" hidden>
+          <span class="grow">Only the basic settings are shown. This section has more.</span>
+          <button type="button" class="btn ghost small" id="set-more-btn">Show all settings</button>
+        </div>
+        <p class="set-none" id="set-none" hidden>No settings match your search.</p>
       </div>
     </section>
 
@@ -4032,6 +4084,9 @@ const TR = { nl: {
   "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
+  "Search settings…":"Instellingen zoeken…", "Search settings":"Instellingen zoeken", "Which settings to show":"Welke instellingen je ziet",
+  "Basic":"Basis", "All":"Alles", "Only the basic settings are shown. This section has more.":"Je ziet alleen de basisinstellingen. Dit onderdeel heeft er meer.",
+  "Show all settings":"Alle instellingen tonen", "No settings match your search.":"Geen instellingen gevonden voor je zoekopdracht.",
   "Corrections":"Correcties", "Dictionary sections":"Onderdelen van het woordenboek", "{n} of {total}":"{n} van {total}",
   "Like “{term}” in your dictionary":"Lijkt op “{term}” uit je woordenboek", "heard once":"1× gehoord", "heard {n} times":"{n}× gehoord",
   "the cleanup left it":"de opschoning liet het staan", "the cleanup left it {n}×":"de opschoning liet het {n}× staan", "{n} more after these":"daarna nog {n}",
@@ -6771,8 +6826,14 @@ $("hamburger").onclick = (e) => { e.stopPropagation(); $("sidebar").classList.to
 // back where you left off. Cards stay in the DOM (just hidden) — every settings
 // field is collected on save regardless of which section is showing.
 const SET_SECTIONS = ["general", "appearance", "activation", "audio", "stt", "cleanup", "assist", "output", "backup", "linux", "about"];
+// Basic or all settings (ui.settings_all, remembered here too so the page
+// opens in the right view before the config arrives).
+let setAll = (() => { try { return localStorage.getItem("vito-set-all") === "1"; } catch { return false; } })();
+let curSetSec = "general";
 function selectSetSection(sec){
   if (!SET_SECTIONS.includes(sec)) sec = "general";
+  // Picking a section ends a search.
+  if ($("set-search").value) { $("set-search").value = ""; endSetSearch(); }
   // A hidden tab is one that doesn't apply to this OS; a remembered choice
   // must not resurrect it.
   const tabFor = document.querySelector(`#settabs button[data-sec="${sec}"]`);
@@ -6782,8 +6843,92 @@ function selectSetSection(sec){
   syncSetSecUI();
   setTimeout(fitSetTabs); // which tab keeps its name changed (after init: SETTABS_MAX_LINES)
   if (sec === "backup" && typeof loadBackups === "function") { renderBackupAutoNote(); loadBackups(); }
+  curSetSec = sec;
+  syncSetMore();
   try { localStorage.setItem("vito-set-section", sec); } catch {}
 }
+function applySetMode(){
+  $("tab-settings").classList.toggle("set-basic", !setAll);
+  document.querySelectorAll("#set-mode button").forEach(b => {
+    const on = (b.dataset.mode === "all") === setAll;
+    b.classList.toggle("on", on); b.setAttribute("aria-checked", on ? "true" : "false");
+  });
+  syncSetMore();
+}
+function setSetAll(on, persist){
+  setAll = !!on;
+  try { localStorage.setItem("vito-set-all", setAll ? "1" : ""); } catch {}
+  applySetMode();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { settings_all: setAll });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+// Under "Basic", a section that has more says so at its foot. What the page
+// hides for this system (hidden, display:none) is no "more".
+function syncSetMore(){
+  const searching = $("tab-settings").classList.contains("searching");
+  const more = !setAll && !searching && [...document.querySelectorAll(`.settings-pane > .card[data-sec="${curSetSec}"]`)].some(c =>
+    c.style.display !== "none" && [c, ...c.querySelectorAll("[data-adv]")].some(e => e.matches("[data-adv]") && !e.hidden && e.style.display !== "none"));
+  $("set-more").hidden = !more;
+}
+document.querySelectorAll("#set-mode button").forEach(b => b.onclick = () => setSetAll(b.dataset.mode === "all", true));
+$("set-more-btn").onclick = () => setSetAll(true, true);
+// Search: every section's cards whose text (or help tip) holds all the words,
+// basic or not; the closest matching lines are marked. Picking a section, the
+// × or Escape ends it.
+const setFold = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+function setHelpText(el){
+  const k = el.dataset && el.dataset.help, h = k && typeof HELP !== "undefined" && HELP[k];
+  if (!h) return "";
+  return (uiLang === "en" ? h.en : ((HELP_TR[uiLang] && HELP_TR[uiLang][k]) || h[uiLang] || h.en)) || "";
+}
+function endSetSearch(){
+  const pane = $("tab-settings");
+  document.querySelectorAll(".settings-pane .s-hit").forEach(e => e.classList.remove("s-hit"));
+  $("set-search-x").style.display = "none";
+  $("set-none").hidden = true;
+  if (pane.classList.contains("searching")) {
+    pane.classList.remove("searching");
+    document.querySelectorAll("#settabs button").forEach(b => b.classList.toggle("active", b.dataset.sec === curSetSec));
+    document.querySelectorAll(".settings-pane > .card").forEach(c => { c.hidden = c.dataset.sec !== curSetSec; });
+    syncSetMore();
+  }
+}
+function runSetSearch(){
+  const q = setFold($("set-search").value.trim());
+  const words = q.split(/\s+/).filter(Boolean);
+  if (!words.length || q.length < 2) { endSetSearch(); $("set-search-x").style.display = q ? "" : "none"; return; }
+  const pane = $("tab-settings");
+  pane.classList.add("searching");
+  $("set-search-x").style.display = "";
+  document.querySelectorAll(".settings-pane .s-hit").forEach(e => e.classList.remove("s-hit"));
+  document.querySelectorAll("#settabs button").forEach(b => b.classList.remove("active"));
+  const tabOf = sec => document.querySelector(`#settabs button[data-sec="${sec}"]`);
+  const shown = b => b && !b.hidden && getComputedStyle(b).display !== "none";
+  const cards = [...document.querySelectorAll(".settings-pane > .card")];
+  // Laid out first: innerText only leaves out what is not rendered.
+  cards.forEach(c => { c.hidden = !shown(tabOf(c.dataset.sec)); });
+  const txt = e => setFold(e.innerText + " " + setHelpText(e));
+  let n = 0;
+  for (const c of cards) {
+    if (c.hidden || !c.getClientRects().length) { c.hidden = true; continue; }
+    const helps = [...c.querySelectorAll("[data-help]")].filter(e => e.getClientRects().length).map(setHelpText).join(" ");
+    const hay = setFold(c.innerText + " " + helps + " " + tabOf(c.dataset.sec).innerText);
+    const ok = words.every(w => hay.includes(w));
+    c.hidden = !ok;
+    if (!ok) continue;
+    n++;
+    // Short lines only: a model card or a paragraph lit up whole says little.
+    const cand = [...c.querySelectorAll("h2, label, .subhead, p, button, li, .assist-ex-i")].filter(e => e.getClientRects().length && e.innerText.length < 140);
+    let hits = cand.filter(e => words.every(w => txt(e).includes(w)));
+    if (!hits.length) hits = cand.filter(e => words.some(w => txt(e).includes(w)));
+    hits.filter(e => !hits.some(o => o !== e && e.contains(o))).forEach(e => e.classList.add("s-hit"));
+  }
+  $("set-none").hidden = n > 0;
+  syncSetMore();
+}
+$("set-search").addEventListener("input", runSetSearch);
+$("set-search").addEventListener("keydown", e => { if (e.key === "Escape" && $("set-search").value) { e.preventDefault(); e.stopPropagation(); $("set-search").value = ""; endSetSearch(); } });
+$("set-search-x").onclick = () => { $("set-search").value = ""; endSetSearch(); $("set-search").focus(); };
 // Mirrors the tab bar into the narrow-viewport dropdown. Icons and labels are
 // cloned from the tabs (which applyI18n keeps translated) and the nodes are
 // rebuilt on every sync, so a language switch can't leave a stale label behind.
@@ -6811,6 +6956,7 @@ document.querySelectorAll("#settabs button").forEach(b => { b.onclick = () => se
 $("setsec-btn").onclick = (e) => { e.stopPropagation(); $("setsec-sel").classList.toggle("open"); };
 document.addEventListener("click", () => $("setsec-sel").classList.remove("open"));
 selectSetSection(localStorage.getItem("vito-set-section") || "general");
+applySetMode();
 // On the narrow layout the top bar is sticky, so whatever else sticks (the
 // settings tabs) has to sit below it: publish its height as --sticky-top.
 (function stickyTop(){
@@ -7775,6 +7921,12 @@ document.addEventListener("keydown", (e) => {
   if (key === "f" && curTab === "dictionary") {
     e.preventDefault();
     focusDictFilter();
+    return;
+  }
+  // Ctrl+F on the Settings page: its search box.
+  if (key === "f" && curTab === "settings") {
+    e.preventDefault();
+    $("set-search").focus(); $("set-search").select();
     return;
   }
   // Ctrl+F: jump to the history and put the cursor in the search box, so you can
@@ -11807,6 +11959,7 @@ async function fillSettings() {
   if (cfg.ui && ((cfg.ui.backdrop_strength || 1) !== bdStrength)) setBdStrength(cfg.ui.backdrop_strength || 1, false);
   if (cfg.ui && (cfg.ui.density || "") !== densityPref) setDensity(cfg.ui.density || "", false);
   if (cfg.ui && !!cfg.ui.reduce_motion !== motionPref) setMotion(!!cfg.ui.reduce_motion, false);
+  if (cfg.ui && !!cfg.ui.settings_all !== setAll) setSetAll(!!cfg.ui.settings_all, false);
   if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
   if (cfg.ui && (cfg.ui.gradient || "") !== gradPref) setGradient(cfg.ui.gradient || "", false);
   if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {

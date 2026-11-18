@@ -145,6 +145,17 @@ setting: animations and transitions end at once; scripts ask
 `reducedMotion()`, never `matchMedia` directly. The pill follows it too
 (`internal/pill/motion.go`: `step` jumps, `Frame.T` holds).
 
+## The settings page: basic or all, and search
+
+`ui.settings_all` (unset = basic) picks between the basic settings and all of
+them (Basis/Alles in the page head). Whatever is marked `data-adv` — a card,
+a toggle, or a `<div data-adv>` around a label and its control — shows only
+under "All"; a section with more says so at its foot (`syncSetMore`). Mark a
+new setting `data-adv` unless a newcomer needs it. The search box (and
+Ctrl+F on that page) shows every section's cards whose rendered text, help
+tip or section name holds all the words, basic or not, and marks the short
+lines that match (`runSetSearch`).
+
 ## Typefaces
 
 `ui.font` ("" Sora with Baloo 2 for headings; `system`, `inter`, `atkinson`,
