@@ -193,6 +193,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/desktop-colors", s.auth(s.handleDesktopColors))
 	mux.HandleFunc("GET /api/dictionary/usage", s.auth(s.handleDictUsage))
 	mux.HandleFunc("GET /api/apps", s.auth(s.handleApps))
+	mux.HandleFunc("GET /api/apps/icon/{id}", s.handleAppIcon)
 	mux.HandleFunc("GET /api/dictionary/suggestions", s.auth(s.handleDictSuggestions))
 	mux.HandleFunc("POST /api/dictionary/suggestions/dismiss", s.auth(s.handleDictDismiss))
 	mux.HandleFunc("PUT /api/autostart", s.auth(s.handlePutAutostart))
@@ -1475,6 +1476,30 @@ func (s *Server) handleApps(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	s.writeJSON(w, http.StatusOK, out)
+}
+
+// handleAppIcon serves a program's kept icon (frontapp.Icon). An <img> sends
+// no header, so the token comes in the query, as for the event stream: a page
+// elsewhere must not learn which programs are used here by trying icons.
+func (s *Server) handleAppIcon(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Query().Get("token") != s.token {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+	path, ct, ok := frontapp.Icon(r.PathValue("id"))
+	if !ok {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", ct)
+	// A day without asking, then a week more shown at once while it is asked
+	// again in the background; ServeFile's Last-Modified makes that a 304.
+	w.Header().Set("Cache-Control", "private, max-age=86400, stale-while-revalidate=604800")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	if ct == "image/svg+xml" { // an icon theme's SVG runs no script in an <img>, nor when opened alone
+		w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'")
+	}
+	http.ServeFile(w, r, path)
 }
 
 // handleDictSuggestions offers corrections the history argues for: words the

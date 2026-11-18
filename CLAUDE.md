@@ -267,7 +267,15 @@ history keeps `app`/`app_id` per entry; `GET /api/apps` lists them with the
 one in front now. The dashboard's Programs card reads `insights.apps` (per
 period; two cells show a list, one the top share; not in the browser
 version), and the secret App Hopper / Many Hands count programs with two
-dictations or more (`Stats.Apps`). `app_prompts` is a map: `handlePutConfig` decodes it fresh,
+dictations or more (`Stats.Apps`). Icons: when a program is first seen in
+front (`keepIcon`, again after a week) its icon is kept in
+`<UserCacheDir>/vito/app-icons/<id>.png|svg` — Windows draws the exe's icon
+at 64 px (`icon_windows.go`), Linux takes the `.desktop` file's `Icon=` from
+hicolor or pixmaps, macOS has none yet. `GET /api/apps/icon/{id}?token=`
+serves it (the token in the query: an `<img>` sends no header, and another
+page must not probe which programs are used), cached a day plus a week
+stale-while-revalidate; `appIcon()` in the page shows the first letter until
+it loads and remembers loaded and missing ones. `app_prompts` is a map: `handlePutConfig` decodes it fresh,
 as the outfit, or a removed program would stay.
 
 ## Text snippets

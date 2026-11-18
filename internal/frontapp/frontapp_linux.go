@@ -32,6 +32,7 @@ func current() App {
 	case desktopIs("gnome"):
 		var name string
 		if id, name = gnomeApp(); id != "" && name != "" {
+			keepIcon(strings.ToLower(id), cachedName("icon:"+strings.ToLower(id), func() string { _, ic := desktopEntry(id); return ic }))
 			return App{ID: id, Name: name}
 		}
 	case desktopIs("kde"):
@@ -40,6 +41,7 @@ func current() App {
 	if id == "" {
 		return App{}
 	}
+	keepIcon(strings.ToLower(id), cachedName("icon:"+strings.ToLower(id), func() string { _, ic := desktopEntry(id); return ic }))
 	return App{ID: id, Name: cachedName(strings.ToLower(id), func() string { return desktopName(id) })}
 }
 
@@ -115,6 +117,14 @@ func x11App() string {
 // desktopName finds what the program's .desktop file calls it: the file named
 // after the id, else the one whose StartupWMClass is the id; else the id.
 func desktopName(id string) string {
+	if n, _ := desktopEntry(id); n != "" {
+		return n
+	}
+	return id
+}
+
+// dataDirs are the XDG data folders, the user's first, Flatpak's exports last.
+func dataDirs() []string {
 	var dirs []string
 	home, _ := os.UserHomeDir()
 	if d := os.Getenv("XDG_DATA_HOME"); d != "" {
@@ -131,33 +141,41 @@ func desktopName(id string) string {
 	if home != "" {
 		dirs = append(dirs, filepath.Join(home, ".local/share/flatpak/exports/share"))
 	}
+	return dirs
+}
+
+// desktopEntry finds the program's .desktop file — the one named after the
+// id, else the one whose StartupWMClass is the id — and gives its Name= and
+// Icon=.
+func desktopEntry(id string) (name, icon string) {
+	dirs := dataDirs()
 	for _, d := range dirs {
 		for _, f := range []string{id, strings.ToLower(id)} {
-			if n := entryName(filepath.Join(d, "applications", f+".desktop"), ""); n != "" {
-				return n
+			if n, ic := entryName(filepath.Join(d, "applications", f+".desktop"), ""); n != "" {
+				return n, ic
 			}
 		}
 	}
 	for _, d := range dirs {
 		files, _ := filepath.Glob(filepath.Join(d, "applications", "*.desktop"))
 		for _, f := range files {
-			if n := entryName(f, id); n != "" {
-				return n
+			if n, ic := entryName(f, id); n != "" {
+				return n, ic
 			}
 		}
 	}
-	return id
+	return "", ""
 }
 
-// entryName reads Name= from a desktop entry; with wmClass set, only when its
-// StartupWMClass is that (any case).
-func entryName(path, wmClass string) string {
+// entryName reads Name= and Icon= from a desktop entry; with wmClass set,
+// only when its StartupWMClass is that (any case).
+func entryName(path, wmClass string) (string, string) {
 	f, err := os.Open(path)
 	if err != nil {
-		return ""
+		return "", ""
 	}
 	defer f.Close()
-	var name, class string
+	var name, class, icon string
 	inEntry := false
 	sc := bufio.NewScanner(f)
 	for sc.Scan() {
@@ -173,10 +191,45 @@ func entryName(path, wmClass string) string {
 			name = v
 		} else if v, ok := strings.CutPrefix(l, "StartupWMClass="); ok {
 			class = v
+		} else if v, ok := strings.CutPrefix(l, "Icon="); ok && icon == "" {
+			icon = strings.TrimSpace(v)
 		}
 	}
 	if wmClass != "" && !strings.EqualFold(class, wmClass) {
-		return ""
+		return "", ""
 	}
-	return name
+	return name, icon
+}
+
+// iconData reads a desktop entry's Icon=: a path, or a name looked up in the
+// hicolor theme (which every icon theme falls back to), largest bitmap first,
+// then the scalable one, then pixmaps.
+func iconData(icon string) ([]byte, string) {
+	var cands []string
+	if filepath.IsAbs(icon) {
+		cands = []string{icon}
+	} else {
+		for _, d := range dataDirs() {
+			for _, sz := range []string{"256x256", "128x128", "96x96", "64x64", "48x48"} {
+				cands = append(cands, filepath.Join(d, "icons/hicolor", sz, "apps", icon+".png"))
+			}
+			cands = append(cands, filepath.Join(d, "icons/hicolor/scalable/apps", icon+".svg"))
+		}
+		for _, d := range dataDirs() {
+			cands = append(cands, filepath.Join(d, "pixmaps", icon+".png"), filepath.Join(d, "pixmaps", icon+".svg"))
+		}
+	}
+	for _, c := range cands {
+		ext := strings.ToLower(filepath.Ext(c))
+		if ext != ".png" && ext != ".svg" {
+			continue
+		}
+		if st, err := os.Stat(c); err != nil || st.Size() == 0 || st.Size() > 2<<20 {
+			continue
+		}
+		if b, err := os.ReadFile(c); err == nil {
+			return b, ext
+		}
+	}
+	return nil, ""
 }

@@ -34,6 +34,7 @@ func current() App {
 		return App{}
 	}
 	id := strings.TrimSuffix(strings.ToLower(filepath.Base(path)), ".exe")
+	keepIcon(id, path)
 	return App{ID: id, Name: cachedName(strings.ToLower(path), func() string { return describe(path) })}
 }
 

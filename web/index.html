@@ -1286,6 +1286,15 @@
   .lang-card .lang-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-bar { display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
   .lang-bar i { display:block; height:100%; }
+  /* A program's icon, over its first letter, which shows until (or unless) it loads. */
+  .app-ic { position:relative; display:inline-flex; align-items:center; justify-content:center; flex:none;
+    width:1.25em; height:1.25em; margin-right:.4em; vertical-align:-.25em; border-radius:4px;
+    background:var(--track); color:var(--text2); font-size:1em; line-height:1; }
+  .app-ic::before { content:attr(data-l); font-size:.62em; font-weight:700; }
+  .app-ic img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; }
+  .app-ic.ok { background:none; }
+  .app-ic.ok::before { content:none; }
+  .app-ic.ok img { opacity:1; }
   /* Programs: one cell like the languages; two cells a list of the top ones. */
   .apps-list { display:none; position:relative; z-index:1; margin-top:12px; flex-direction:column; gap:calc(7px * var(--dn, 1)); }
   .apps-card.span2 .apps-list, .apps-card.span3 .apps-list { display:flex; }
@@ -9265,7 +9274,7 @@ function renderAppRules(){
     const u = appUses.find(x => x.id === id);
     const n = u ? `<span class="ar-n">${u.count.toLocaleString(numLoc())}×</span>` : "";
     const sel = ownOf(appPrompts[id]) || builtinOf(appPrompts[id]) ? appPrompts[id] : "vito:default";
-    return `<div class="app-rule" data-app="${ahEsc(id)}"><span class="ar-name" title="${ahEsc(id)}">${ahEsc(appName(id))}${n}</span>` +
+    return `<div class="app-rule" data-app="${ahEsc(id)}"><span class="ar-name" title="${ahEsc(id)}">${appIcon(id, appName(id))}${ahEsc(appName(id))}${n}</span>` +
       `<select aria-label="${ahEsc(t("Rule set"))}">${promptOptions(sel)}</select>` +
       `<button type="button" class="ar-x" aria-label="${ahEsc(t("Remove"))}" data-tip-text="${ahEsc(t("Remove"))}">×</button></div>`;
   }).join("");
@@ -10893,6 +10902,24 @@ function langCardHTML(ins){
 // The programs dictated into (internal/frontapp), laid out as the languages
 // card: the top one's share as the figure, its name beneath, every program as
 // a share of one bar, the breakdown in words in the tooltip.
+// A program's icon, kept by the daemon when it first saw the program in front
+// (GET /api/apps/icon/{id}; an <img> sends no header, so the token rides in
+// the query). Its first letter shows until the picture loads, and stays when
+// there is none. The browser version knows no programs.
+// The page remembers which icons loaded and which have none, so a card that
+// redraws shows a loaded one at once (from the browser's cache) and doesn't
+// ask again for a missing one until the page reloads.
+const appIconSeen = new Map(); // id → true (loaded) / false (none)
+function appIcon(id, name){
+  if (STANDALONE || !id) return "";
+  const l = ahEsc(String(name || id).trim().charAt(0).toUpperCase()), seen = appIconSeen.get(id);
+  if (seen === false) return `<span class="app-ic" data-l="${l}" aria-hidden="true"></span>`;
+  return `<span class="app-ic${seen ? " ok" : ""}" data-l="${l}" data-app="${ahEsc(id)}" aria-hidden="true"><img alt="" decoding="async" ` +
+    `src="/api/apps/icon/${encodeURIComponent(id)}?token=${encodeURIComponent(TOKEN)}"></span>`;
+}
+const appIconOf = (t) => t.tagName === "IMG" && t.parentNode && t.parentNode.classList && t.parentNode.classList.contains("app-ic") ? t.parentNode : null;
+document.addEventListener("load", (e) => { const s = appIconOf(e.target); if (s) { s.classList.add("ok"); appIconSeen.set(s.dataset.app, true); } }, true);
+document.addEventListener("error", (e) => { const s = appIconOf(e.target); if (s) { appIconSeen.set(s.dataset.app, false); e.target.remove(); } }, true);
 function appsCardHTML(ins){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6" cy="6.5" r=".6" fill="currentColor"/><circle cx="8.4" cy="6.5" r=".6" fill="currentColor"/></svg>';
   const apps = ins.apps || [];
@@ -10903,10 +10930,10 @@ function appsCardHTML(ins){
   const seg = shown.map((a, i) => `<i style="width:${a.count / total * 100}%;background:${LANG_COLORS[i]}"></i>`).join("") +
     (rest ? `<i style="width:${rest / total * 100}%;background:var(--text3)"></i>` : "");
   const pct = (n) => Math.round(n / total * 100);
-  const list = apps.slice(0, 4).map((a, i) => `<div class="al-row"><span class="al-n">${ahEsc(a.name)}</span><span class="al-p">${pct(a.count)}%</span>` +
+  const list = apps.slice(0, 4).map((a, i) => `<div class="al-row"><span class="al-n">${appIcon(a.id, a.name)}${ahEsc(a.name)}</span><span class="al-p">${pct(a.count)}%</span>` +
     `<span class="al-b"><i style="width:${a.count / total * 100}%;background:${LANG_COLORS[i]}"></i></span></div>`).join("");
   return `<div class="chip violet">${icon}</div><div class="apps-one"><div class="num">${pct(apps[0].count)}%</div>` +
-    `<div class="lbl lang-name">${ahEsc(apps[0].name)}</div><div class="lang-bar">${seg}</div></div><div class="apps-list">${list}</div>`;
+    `<div class="lbl lang-name">${appIcon(apps[0].id, apps[0].name)}${ahEsc(apps[0].name)}</div><div class="lang-bar">${seg}</div></div><div class="apps-list">${list}</div>`;
 }
 function appsBreakdown(ins){
   const apps = ins.apps || [], total = apps.reduce((s, a) => s + a.count, 0);
@@ -13784,7 +13811,7 @@ function historyEntryEl(e){
   const aiTag = e.command_text
     ? " · " + SPARK_SVG + t("Vito Assist") + ": " + ahEsc(e.command_text)
     : (e.cleanup_used ? " · " + SPARK_SVG + t("cleanup") : "");
-  const appTag = e.app ? ` · <span class="h-app" title="${ahEsc(t("Dictated into"))}">${ahEsc(e.app)}</span>` : "";
+  const appTag = e.app ? ` · <span class="h-app" title="${ahEsc(t("Dictated into"))}">${appIcon(e.app_id, e.app)}${ahEsc(e.app)}</span>` : "";
   meta.innerHTML = `${new Date(e.timestamp).toLocaleString(numLoc())} · ${(e.duration_ms / 1000).toFixed(1)}s · ${langIcon(e.language || "auto")} · ${e.source}${appTag}${aiTag}`;
   const main = document.createElement("div"); main.className = "htext";
   renderWords(main, e.cleanup_used && e.cleaned ? e.cleaned : e.raw);
