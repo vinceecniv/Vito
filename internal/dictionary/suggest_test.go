@@ -52,3 +52,45 @@ func TestPhonetic(t *testing.T) {
 		t.Error("unlike words share a key")
 	}
 }
+
+func TestVariants(t *testing.T) {
+	var pairs []Pair
+	add := func(n int, raw, cleaned string) {
+		for range n {
+			pairs = append(pairs, Pair{raw, cleaned})
+		}
+	}
+	add(1, "staat Pricelerper op GitHub", "Staat Pricelerper op GitHub?") // left wrong
+	add(1, "hoe Kama Express nu draait", "Hoe Kamera-express nu draait.") // repaired
+	add(1, "staat in Windmill", "Staat in Windmill.")                     // the term itself
+	add(1, "de consignaties", "De consignaties.")                         // contains the term
+	add(1, "meer op een toets drukken", "Meer op een toets drukken.")     // sounds alike only
+	add(4, "zie de bijlage", "Zie de bijlage.")                           // a word of its own
+	add(5, "de reden is de detectie", "De reden is de detectie.")         // a common word added
+	terms := []string{"Priceslurper", "Kamera-express", "Windmill", "consignatie", "tray-icon", "bijlagen", "einddetectie"}
+	got := map[string]Suggestion{}
+	for _, s := range Variants(pairs, terms, nil) {
+		got[s.Wrong] = s
+	}
+	if len(got) != 2 {
+		t.Fatalf("got %+v", got)
+	}
+	if s := got["pricelerper"]; s.Right != "Priceslurper" || s.Left != 1 || s.Kind != "variant" {
+		t.Errorf("pricelerper: %+v", s)
+	}
+	if s := got["kama express"]; s.Right != "Kamera-express" || s.Left != 0 {
+		t.Errorf("kama express: %+v", s)
+	}
+	if v := Variants(pairs, terms, func(w, r string) bool { return w == "pricelerper" }); len(v) != 1 {
+		t.Errorf("skip ignored: %+v", v)
+	}
+}
+
+func TestMerge(t *testing.T) {
+	a := []Suggestion{{Wrong: "x", Score: 1, Kind: "repair"}, {Wrong: "y", Score: 5}}
+	b := []Suggestion{{Wrong: "x", Score: 3, Kind: "variant"}, {Wrong: "z", Score: 2}}
+	m := Merge(2, a, b)
+	if len(m) != 2 || m[0].Wrong != "y" || m[1].Wrong != "x" || m[1].Kind != "variant" {
+		t.Errorf("%+v", m)
+	}
+}

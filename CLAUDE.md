@@ -206,11 +206,19 @@ into one capitalised word still counts), and the cleanup replaces the word
 in at least half the dictations it occurs in — that last rule is what drops
 its own rephrasing ("kan je" → "kun je"). A repair seen once counts only for
 a name. Ranking doubles when the intended word is also heard right
-elsewhere. `GET /api/dictionary/suggestions` (top 8, without words already
-corrected or turned down), `POST …/dismiss` (table `dict_dismissed`, this
-computer only); the page shows five above the corrections. The browser
-version has the same in `backend.js` (`dictSuggest`) — keep them in step.
-`VITO_SUGGEST_DIR=<copy of a config dir> go test ./internal/history -run
+elsewhere. A second source, `variants.go`, compares the raw words with the
+terms already in the dictionary (its intended spellings): sounding or
+looking alike without a correction for them ("Pricelerper", "Kama Express"),
+also where the cleanup left them wrong, which scores higher. Not a variant:
+containing the term, a stretch with a common extra word ("de detectie"),
+or the term with an ending more or less that is itself used often
+("bijlage"). `GET /api/dictionary/suggestions` merges both (`Merge`, a
+stock of 20, without words already corrected or turned down), `POST
+…/dismiss` (table `dict_dismissed`, this computer only); the page shows
+five above the corrections and fills up from the stock. The browser
+version has the same in `backend.js` (`dictSuggest`, `dictVariants`) —
+keep them in step. `VITO_SUGGEST_DIR=<copy of a config dir>
+VITO_SUGGEST_CONFIG=<config.json> go test ./internal/history -run
 TestSuggestRealHistory -v` prints them for a real history.
 The corrections get a filter from more than 15 rows, and on Ctrl+F on the
 Dictionary page at any count.

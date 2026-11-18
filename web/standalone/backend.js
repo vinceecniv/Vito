@@ -189,9 +189,75 @@
       if (r < 0.5) continue;
       if (n < 2 && !(sgUpper(g.right) && sgPhonetic(sgFlat(wrong)) === sgPhonetic(sgFlat(g.right)))) continue;
       const heard = rawIn.get(g.right.split(" ")[0].toLowerCase()) || 0;
-      const s = { wrong, right: g.right, count: n, ratio: r, heard, example: g.example, score: n * r * (heard ? 2 : 1) };
+      const s = { wrong, right: g.right, count: n, ratio: r, heard, example: g.example, score: n * r * (heard ? 2 : 1), kind: "repair" };
       if (!best.has(wrong) || s.score > best.get(wrong).score) best.set(wrong, s);
     }
+    return [...best.values()].sort((x, y) => y.score - x.score || (x.wrong < y.wrong ? -1 : 1)).slice(0, limit);
+  }
+  // internal/dictionary/variants.go: raw words that sound or look like a term
+  // already in the dictionary without a correction for them.
+  function dictVariants() {
+    const corr = cfg.dictionary.corrections || [];
+    const have = new Set(corr.map((c) => c.wrong.trim().toLowerCase()));
+    const gone = new Set(dictDismissed());
+    const ts = [], seenTerm = new Set();
+    for (let t of corr.map((c) => c.right)) {
+      t = t.trim(); const f = sgFlat(t);
+      if ([...f].length < 4 || seenTerm.has(f)) continue;
+      seenTerm.add(f); ts.push({ text: t, flat: f, sound: sgPhonetic(f), words: t.split(/\s+/).filter(Boolean).length });
+    }
+    if (!ts.length) return [];
+    const hist = history.filter((e) => e.raw && !e.command_text).slice(0, 3000);
+    const rawIn = new Map();
+    for (const e of hist) for (const w of new Set(sgWords(e.raw).map((x) => x.toLowerCase()))) rawIn.set(w, (rawIn.get(w) || 0) + 1);
+    const common = Math.max(3, Math.floor(hist.length * 3 / 100));
+    const commonExtra = (ws, term) => {
+      const own = new Set(sgWords(term).map((w) => w.toLowerCase()));
+      return ws.some((w) => !own.has(w.toLowerCase()) && (rawIn.get(w.toLowerCase()) || 0) > common);
+    };
+    const found = new Map();
+    for (const e of hist) {
+      const a = sgWords(e.raw), cleaned = sgFlat(e.cleaned || "");
+      for (const t of ts) {
+        const hits = [], lt = [...t.flat].length;
+        for (const n of [t.words - 1, t.words, t.words + 1]) {
+          if (n < 1) continue;
+          for (let i = 0; i + n <= a.length; i++) {
+            const g = a.slice(i, i + n).join(" "), fg = sgFlat(g), lg = [...fg].length;
+            if (lg < 4 || fg === t.flat || fg.includes(t.flat)) continue;
+            if (Math.abs(lg - lt) > Math.max(2, Math.floor(lt / 4))) continue;
+            const r = sgRatio(fg, t.flat);
+            if (!(r >= 0.8 || (r >= 0.7 && sgPhonetic(fg) === t.sound))) continue;
+            if (n > 1 && commonExtra(a.slice(i, i + n), t.text)) continue;
+            if (n === 1 && (rawIn.get(g.toLowerCase()) || 0) >= 3 &&
+                (t.flat.startsWith(fg) || fg.startsWith(t.flat.slice(0, Math.max(0, lt - 2)))) && Math.abs(lg - lt) <= 2) continue;
+            hits.push({ i, n, r });
+          }
+        }
+        hits.sort((x, y) => y.r - x.r);
+        const taken = new Array(a.length).fill(false), seen = new Set();
+        for (const h of hits) {
+          let free = true;
+          for (let k = h.i; k < h.i + h.n; k++) if (taken[k]) free = false;
+          if (!free) continue;
+          for (let k = h.i; k < h.i + h.n; k++) taken[k] = true;
+          const wrong = a.slice(h.i, h.i + h.n).join(" ").toLowerCase();
+          if (seen.has(wrong) || have.has(wrong) || gone.has(wrong + "\0" + t.text.toLowerCase())) continue;
+          seen.add(wrong);
+          const k = wrong + "\0" + t.text;
+          if (!found.has(k)) found.set(k, { right: t.text, example: a.slice(Math.max(0, h.i - 5), Math.min(a.length, h.i + h.n + 5)).join(" "), n: 0, left: 0 });
+          const g = found.get(k); g.n++;
+          if (!cleaned.includes(t.flat)) g.left++;
+        }
+      }
+    }
+    return [...found].map(([k, g]) => ({ wrong: k.slice(0, k.indexOf("\0")), right: g.right, count: g.n, ratio: 1, heard: 0,
+      example: g.example, score: g.n + g.left, kind: "variant", left: g.left }));
+  }
+  // dictionary.Merge: one per misheard word, the higher score, best first.
+  function dictMerge(limit, ...lists) {
+    const best = new Map();
+    for (const l of lists) for (const s of l) if (!best.has(s.wrong) || s.score > best.get(s.wrong).score) best.set(s.wrong, s);
     return [...best.values()].sort((x, y) => y.score - x.score || (x.wrong < y.wrong ? -1 : 1)).slice(0, limit);
   }
   // config.Dictionary.StampCreated: an entry keeps its creation time by key;
@@ -1185,7 +1251,7 @@ registerProcessor("vito-pcm",P)`;
     }
     if (p === "/api/ui") return { source: "web", api: 0 };
     if (p === "/api/linux-tools") return {};
-    if (p === "/api/dictionary/suggestions") return dictSuggest(8);
+    if (p === "/api/dictionary/suggestions") return dictMerge(20, dictSuggest(Infinity), dictVariants());
     if (p === "/api/dictionary/suggestions/dismiss") {
       const d = dictDismissed(), k = String(body && body.wrong || "").trim().toLowerCase() + "\0" + String(body && body.right || "").trim().toLowerCase();
       if (!d.includes(k)) { d.push(k); try { localStorage.setItem(DICT_DISMISSED, JSON.stringify(d)); } catch {} }

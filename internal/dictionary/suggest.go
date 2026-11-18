@@ -27,6 +27,11 @@ type Suggestion struct {
 	Heard   int     `json:"heard"`
 	Example string  `json:"example"`
 	Score   float64 `json:"score"`
+	// Kind is where it comes from: "repair" (Suggest) or "variant"
+	// (Variants: sounds like a term already in the dictionary). Left is
+	// how many of a variant's dictations the cleanup left it wrong in.
+	Kind string `json:"kind"`
+	Left int    `json:"left,omitempty"`
 }
 
 // Suggest finds words the speech recognition keeps mishearing, from how the
@@ -108,7 +113,7 @@ func Suggest(pairs []Pair, skip func(wrong, right string) bool, limit int) []Sug
 		if heard > 0 {
 			score *= 2
 		}
-		s := Suggestion{Wrong: wrong, Right: g.right, Count: n, Ratio: min(r, 1), Heard: heard, Example: g.example, Score: score}
+		s := Suggestion{Wrong: wrong, Right: g.right, Count: n, Ratio: min(r, 1), Heard: heard, Example: g.example, Score: score, Kind: "repair"}
 		if cur, ok := best[wrong]; !ok || s.Score > cur.Score {
 			best[wrong] = s
 		}

@@ -1455,8 +1455,9 @@ func (s *Server) handleDictUsage(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleDictSuggestions offers corrections the history argues for: words the
-// cleanup kept repairing (dictionary.Suggest), leaving out what the
-// dictionary already has and what the user turned down.
+// cleanup kept repairing (dictionary.Suggest) and words that sound like a
+// term already in the dictionary (dictionary.Variants), leaving out what the
+// dictionary already corrects and what the user turned down.
 func (s *Server) handleDictSuggestions(w http.ResponseWriter, r *http.Request) {
 	if s.demo() || s.hist == nil {
 		s.writeJSON(w, http.StatusOK, []dictionary.Suggestion{})
@@ -1469,12 +1470,15 @@ func (s *Server) handleDictSuggestions(w http.ResponseWriter, r *http.Request) {
 	}
 	gone, _ := s.hist.DictDismissed()
 	have := map[string]bool{}
+	var terms []string
 	for _, c := range s.d.Config().Dictionary.Corrections {
 		have[history.DictKey(c.Wrong)] = true
+		terms = append(terms, c.Right)
 	}
-	out := dictionary.Suggest(pairs, func(wrong, right string) bool {
-		return have[wrong] || gone[wrong+"\x00"+right]
-	}, 8)
+	skip := func(wrong, right string) bool { return have[wrong] || gone[wrong+"\x00"+right] }
+	// A stock of 20: the page shows five and fills up from the rest as
+	// suggestions are added or ignored.
+	out := dictionary.Merge(20, dictionary.Suggest(pairs, skip, 0), dictionary.Variants(pairs, terms, skip))
 	s.writeJSON(w, http.StatusOK, out)
 }
 

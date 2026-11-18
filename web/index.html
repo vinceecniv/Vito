@@ -1862,6 +1862,7 @@
   .ds-ex { font-size:12.5px; color:var(--text2); font-style:italic; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .ds-ex mark { background:none; color:var(--accent); font-weight:600; font-style:normal; }
   .ds-act { display:flex; gap:6px; }
+  .ds-more { font-weight:500; letter-spacing:0; text-transform:none; }
   .hgroup { font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--text3); margin:22px 0 2px; padding-bottom:6px; border-bottom:1px solid var(--card-border); }
   .hgroup:first-child { margin-top:0; }
   /* Total-entries badge in the History header, and the "loading more" spinner. */
@@ -4016,6 +4017,8 @@ const TR = { nl: {
   "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
+  "Like “{term}” in your dictionary":"Lijkt op “{term}” uit je woordenboek", "heard once":"1× gehoord", "heard {n} times":"{n}× gehoord",
+  "the cleanup left it":"de opschoning liet het staan", "the cleanup left it {n}×":"de opschoning liet het {n}× staan", "{n} more after these":"daarna nog {n}",
   "<b>A new suggestion</b> for your dictionary, from your dictations.":"<b>Een nieuwe suggestie</b> voor je woordenboek, uit je dictaten.",
   "<b>{n} new suggestions</b> for your dictionary, from your dictations.":"<b>{n} nieuwe suggesties</b> voor je woordenboek, uit je dictaten.",
   "History":"Geschiedenis",
@@ -12894,9 +12897,18 @@ function renderDictSuggestions(){
   box.hidden = !list.length;
   if (!list.length) { box.innerHTML = ""; return; }
   const mark = (ex, w) => ahEsc(ex).replace(new RegExp("(" + reEsc(ahEsc(w)).replace(/ /g, "\\s+") + ")", "ig"), "<mark>$1</mark>");
-  box.innerHTML = `<div class="snip-ideas-h">${t("Suggested from your dictations")}</div>` + list.map((s, i) => {
-    let meta = s.count === 1 ? t("Repaired once by the cleanup") : t("Repaired {n} times by the cleanup").replace("{n}", s.count.toLocaleString(numLoc()));
-    if (s.heard) meta += " · " + (s.heard === 1 ? t("heard right once") : t("heard right {n} times").replace("{n}", s.heard.toLocaleString(numLoc())));
+  const more = dictSugg.filter(s => !firstCol("d-corrections").has(s.wrong.toLowerCase())).length - list.length;
+  box.innerHTML = `<div class="snip-ideas-h">${t("Suggested from your dictations")}${more > 0 ? ` <span class="ds-more">· ${t("{n} more after these").replace("{n}", more)}</span>` : ""}</div>` + list.map((s, i) => {
+    const num = n => n.toLocaleString(numLoc());
+    let meta;
+    if (s.kind === "variant") {
+      // Sounds like a term already in the dictionary (dictionary.Variants).
+      meta = t("Like “{term}” in your dictionary").replace("{term}", ahEsc(s.right)) + " · " + (s.count === 1 ? t("heard once") : t("heard {n} times").replace("{n}", num(s.count)));
+      if (s.left) meta += " · " + (s.left === s.count ? t("the cleanup left it") : t("the cleanup left it {n}×").replace("{n}", num(s.left)));
+    } else {
+      meta = s.count === 1 ? t("Repaired once by the cleanup") : t("Repaired {n} times by the cleanup").replace("{n}", num(s.count));
+      if (s.heard) meta += " · " + (s.heard === 1 ? t("heard right once") : t("heard right {n} times").replace("{n}", num(s.heard)));
+    }
     return `<div class="ds-row" data-i="${i}"><div class="ds-main">
       <div class="ds-pair"><span class="ds-w">${ahEsc(s.wrong)}</span><span class="si-arrow">→</span><span class="ds-r">${ahEsc(s.right)}</span><span class="ds-meta">${meta}</span></div>
       <div class="ds-ex">“${mark(s.example, s.wrong)}”</div></div>
