@@ -49,9 +49,10 @@ var shellNames = map[string]string{
 	"lockapp":                 "Lock screen",
 	"explorer":                "File Explorer",
 	"applicationframehost":    "Windows app",
+	"vito":                    "Vito", // its description is a sentence
 }
 
-// ShellName is the name of one of Windows' own parts by its id, or "".
+// ShellName is the name of one of Windows' own parts (or Vito's) by its id, or "".
 func ShellName(id string) string { return shellNames[strings.ToLower(id)] }
 
 // osProduct reports a product name that only says "Windows".
