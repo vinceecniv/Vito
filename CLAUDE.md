@@ -221,7 +221,8 @@ keep them in step. `VITO_SUGGEST_DIR=<copy of a config dir>
 VITO_SUGGEST_CONFIG=<config.json> go test ./internal/history -run
 TestSuggestRealHistory -v` prints them for a real history.
 The corrections get a filter from more than 15 rows, and on Ctrl+F on the
-Dictionary page at any count.
+Dictionary page at any count. Both cards show their count ("3 of 22" while
+filtering), and a sticky bar under the page head jumps between them.
 
 ## Text snippets
 

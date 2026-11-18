@@ -1863,6 +1863,17 @@
   .ds-ex mark { background:none; color:var(--accent); font-weight:600; font-style:normal; }
   .ds-act { display:flex; gap:6px; }
   .ds-more { font-weight:500; letter-spacing:0; text-transform:none; }
+  /* Counts on the dictionary's cards, and a bar that stays on top to jump
+     between them when the corrections run long. */
+  .dict-count { margin-left:auto; font-size:12.5px; font-weight:600; color:var(--text3); font-variant-numeric:tabular-nums; }
+  .dict-jump { position:sticky; top:var(--sticky-top, 0px); z-index:6; display:flex; gap:8px; flex-wrap:wrap; margin:0 -6px 14px; padding:8px 6px; background:var(--bg); }
+  :root[data-backdrop] .dict-jump { background:color-mix(in srgb, var(--bg) 55%, transparent); -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
+  .dj-btn { display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; border:1px solid var(--card-border); background:var(--card); color:var(--text2); font:inherit; font-size:13px; font-weight:600; cursor:var(--cur-hand); }
+  .dj-btn:hover { border-color:var(--accent); color:var(--text); }
+  .dj-btn.on { border-color:var(--accent); background:var(--accent-soft); color:var(--text); }
+  .dj-n { min-width:20px; padding:1px 7px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font-size:12px; text-align:center; font-variant-numeric:tabular-nums; }
+  .dj-btn.on .dj-n { background:var(--accent); color:#fff; }
+  .dict-card { scroll-margin-top:calc(var(--sticky-top, 0px) + 60px); }
   .hgroup { font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--text3); margin:22px 0 2px; padding-bottom:6px; border-bottom:1px solid var(--card-border); }
   .hgroup:first-child { margin-top:0; }
   /* Total-entries badge in the History header, and the "loading more" spinner. */
@@ -3498,8 +3509,12 @@
     <!-- DICTIONARY -->
     <section id="tab-dictionary">
       <div class="page-head"><div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M18 16H7a2 2 0 0 0-2 2"/></svg></span><h1>Dictionary</h1></div><div class="sub">Corrections and text snippets</div></div></div>
-      <div class="card" style="margin-bottom:24px;">
-        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span>Corrections (misheard → intended)</span></h2>
+      <nav class="dict-jump" id="dict-jump" aria-label="Dictionary sections">
+        <button type="button" class="dj-btn" data-to="dict-corr-card"><span>Corrections</span><span class="dj-n" id="dj-corr">0</span></button>
+        <button type="button" class="dj-btn" data-to="dict-snip-card"><span>Text snippets</span><span class="dj-n" id="dj-snip">0</span></button>
+      </nav>
+      <div class="card dict-card" id="dict-corr-card" style="margin-bottom:24px;">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span>Corrections (misheard → intended)</span><span class="dict-count" id="d-corr-count"></span></h2>
         <p class="act-note" style="margin:2px 0 10px;">Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.</p>
         <div class="dict-sugg" id="d-sugg" hidden></div>
         <div class="searchbox d-filter" id="d-filter-wrap" hidden>
@@ -3517,8 +3532,8 @@
         <p class="act-note" id="d-filter-none" hidden>No corrections match this filter.</p>
         <div class="snip-ideas" id="d-corr-ideas"></div>
       </div>
-      <div class="card" style="margin-bottom:24px;">
-        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Text snippets</span></h2>
+      <div class="card dict-card" id="dict-snip-card" style="margin-bottom:24px;">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Text snippets</span><span class="dict-count" id="d-snip-count"></span></h2>
         <p class="act-note" style="margin:2px 0 0;">Say the trigger and Vito types the fixed text in its place: a link, your address, a standard reply. The AI cleanup never changes it. Capitals, punctuation and “m'n” or “mijn” don't matter.</p>
         <p class="act-note" style="margin:6px 0 10px;"><b>Tip:</b> pick a trigger of two or more words that you wouldn't say by accident, such as “my sign-off”. A single or everyday word like “address” would also bring in the text in the middle of an ordinary sentence.</p>
         <table id="d-snippets"><thead><tr><th>When you say</th><th>Vito types</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
@@ -4017,6 +4032,7 @@ const TR = { nl: {
   "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
+  "Corrections":"Correcties", "Dictionary sections":"Onderdelen van het woordenboek", "{n} of {total}":"{n} van {total}",
   "Like “{term}” in your dictionary":"Lijkt op “{term}” uit je woordenboek", "heard once":"1× gehoord", "heard {n} times":"{n}× gehoord",
   "the cleanup left it":"de opschoning liet het staan", "the cleanup left it {n}×":"de opschoning liet het {n}× staan", "{n} more after these":"daarna nog {n}",
   "<b>A new suggestion</b> for your dictionary, from your dictations.":"<b>Een nieuwe suggestie</b> voor je woordenboek, uit je dictaten.",
@@ -12946,6 +12962,41 @@ function applyDictFilter(){
     tr.hidden = !hit; if (hit) shown++;
   });
   $("d-filter-none").hidden = !q || shown > 0 || !rows;
+  updateDictCounts();
+}
+// How many corrections and snippets there are, on each card and in the jump
+// bar; while the filter is on, the corrections say "3 of 22".
+function updateDictCounts(){
+  const num = n => n.toLocaleString(numLoc());
+  const rows = [...$("d-corrections").querySelectorAll("tbody tr")];
+  const filled = tr => [...tr.querySelectorAll("input, textarea")].some(i => i.value.trim());
+  const corr = rows.filter(filled), shown = corr.filter(tr => !tr.hidden).length;
+  const snips = [...$("d-snippets").querySelectorAll("tbody tr")].filter(filled).length;
+  $("d-corr-count").textContent = $("d-filter").value.trim() ? t("{n} of {total}").replace("{n}", num(shown)).replace("{total}", num(corr.length)) : num(corr.length);
+  $("d-snip-count").textContent = num(snips);
+  $("dj-corr").textContent = num(corr.length);
+  $("dj-snip").textContent = num(snips);
+}
+for (const id of ["d-corrections", "d-snippets"]) {
+  new MutationObserver(() => updateDictCounts()).observe($(id).querySelector("tbody"), { childList: true });
+  $(id).addEventListener("input", () => { clearTimeout(window.__dictCountT); window.__dictCountT = setTimeout(updateDictCounts, 300); });
+}
+// The jump bar: a click brings the card to the top, under the bar; the
+// button of the card in view is lit.
+document.querySelectorAll("#dict-jump .dj-btn").forEach(b => b.onclick = () =>
+  $(b.dataset.to).scrollIntoView({ block: "start", behavior: reducedMotion() ? "auto" : "smooth" }));
+{
+  const lit = () => {
+    if (curTab !== "dictionary") return;
+    const bar = $("dict-jump").getBoundingClientRect().bottom + 20;
+    const snipTop = $("dict-snip-card").getBoundingClientRect().top;
+    const atEnd = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+    const on = snipTop <= bar || atEnd ? "dict-snip-card" : "dict-corr-card";
+    document.querySelectorAll("#dict-jump .dj-btn").forEach(b => b.classList.toggle("on", b.dataset.to === on));
+  };
+  addEventListener("scroll", lit, { passive: true });
+  addEventListener("resize", lit);
+  setTimeout(lit, 0);
 }
 function focusDictFilter(){
   $("d-filter-wrap").hidden = false;
