@@ -129,3 +129,26 @@ func TestRelevant(t *testing.T) {
 		}
 	}
 }
+
+func TestTermsAndPick(t *testing.T) {
+	cs := []config.Correction{
+		{Wrong: "focas", Right: "Vocas", Created: 1},
+		{Wrong: "vokas", Right: "vocas", Created: 2},
+		{Wrong: "omarchi", Right: "Omarchy", Created: 5},
+		{Wrong: "kama express", Right: "Kamera-express", Created: 3},
+	}
+	use := map[string][2]int64{"kama express": {4, 10}, "focas": {2, 50}, "vokas": {3, 20}}
+	got := Terms(cs, func(w string) (int, int64) { u := use[w]; return int(u[0]), u[1] })
+	if want := []string{"Vocas", "Kamera-express", "Omarchy"}; !slices.Equal(got, want) {
+		t.Errorf("Terms = %v, want %v", got, want)
+	}
+	if p := Pick(got, 2, 0, 0, 0); !slices.Equal(p, []string{"Vocas", "Kamera-express"}) {
+		t.Errorf("Pick n = %v", p)
+	}
+	if p := Pick(got, 0, 7, 0, 0); !slices.Equal(p, []string{"Vocas", "Omarchy"}) {
+		t.Errorf("Pick maxLen = %v", p)
+	}
+	if p := Pick(got, 0, 0, 0, 21); !slices.Equal(p, []string{"Vocas", "Kamera-express"}) {
+		t.Errorf("Pick total = %v", p)
+	}
+}

@@ -18,6 +18,7 @@ import (
 	"vito/internal/apierr"
 	"vito/internal/audio"
 	"vito/internal/config"
+	"vito/internal/dictionary"
 )
 
 // streamChunkBytes is ~50 ms of 16 kHz mono s16le, the chunk size the
@@ -151,13 +152,26 @@ func (s *Stream) run(ctx context.Context, cfg config.STT) {
 	if cfg.Model != "" {
 		q.Set("speech_model", cfg.Model)
 	}
-	wsURL := streamURL(cfg) + "?" + q.Encode()
-
-	dialCtx, dialDone := context.WithTimeout(ctx, 5*time.Second)
-	conn, resp, err := websocket.Dial(dialCtx, wsURL, &websocket.DialOptions{
-		HTTPHeader: http.Header{"Authorization": []string{cfg.APIKey}},
-	})
-	dialDone()
+	dial := func() (*websocket.Conn, *http.Response, error) {
+		dialCtx, dialDone := context.WithTimeout(ctx, 5*time.Second)
+		defer dialDone()
+		return websocket.Dial(dialCtx, streamURL(cfg)+"?"+q.Encode(), &websocket.DialOptions{
+			HTTPHeader: http.Header{"Authorization": []string{cfg.APIKey}},
+		})
+	}
+	// The dictionary's vocabulary: 100 terms of at most 50 characters, as a
+	// JSON array. A model that refuses it still gets the dictation: once
+	// more without.
+	if t := dictionary.Pick(cfg.Terms, 100, 50, 0, 0); len(t) > 0 {
+		b, _ := json.Marshal(t)
+		q.Set("keyterms_prompt", string(b))
+	}
+	conn, resp, err := dial()
+	if err != nil && resp != nil && q.Has("keyterms_prompt") && (resp.StatusCode == http.StatusBadRequest || resp.StatusCode == http.StatusUnprocessableEntity) {
+		s.log.Warn("assemblyai refused the keyterms; dialling without", "status", resp.StatusCode)
+		q.Del("keyterms_prompt")
+		conn, resp, err = dial()
+	}
 	if err != nil {
 		// A depleted balance is rejected on the handshake (402); flag it as such
 		// so the caller skips the async fallback that would only fail the same way.

@@ -15,6 +15,7 @@ import (
 	"vito/internal/apierr"
 	"vito/internal/audio"
 	"vito/internal/config"
+	"vito/internal/dictionary"
 )
 
 // SonioxModel is the realtime model. Soniox runs one unified realtime model
@@ -148,13 +149,14 @@ func (s *sonioxStream) fail(err error) {
 
 // sonioxConfig is the first message; without it the server transcribes nothing.
 type sonioxConfig struct {
-	APIKey                       string   `json:"api_key"`
-	Model                        string   `json:"model"`
-	AudioFormat                  string   `json:"audio_format"`
-	SampleRate                   int      `json:"sample_rate"`
-	NumChannels                  int      `json:"num_channels"`
-	LanguageHints                []string `json:"language_hints,omitempty"`
-	EnableLanguageIdentification bool     `json:"enable_language_identification,omitempty"`
+	APIKey                       string         `json:"api_key"`
+	Model                        string         `json:"model"`
+	AudioFormat                  string         `json:"audio_format"`
+	SampleRate                   int            `json:"sample_rate"`
+	NumChannels                  int            `json:"num_channels"`
+	LanguageHints                []string       `json:"language_hints,omitempty"`
+	EnableLanguageIdentification bool           `json:"enable_language_identification,omitempty"`
+	Context                      *sonioxContext `json:"context,omitempty"`
 }
 
 func (s *sonioxStream) run(ctx context.Context, cfg config.STT) {
@@ -186,6 +188,7 @@ func (s *sonioxStream) run(ctx context.Context, cfg config.STT) {
 	if cfg.Language != "auto" && cfg.Language != "" {
 		start.LanguageHints = []string{cfg.Language}
 	}
+	start.Context = sonioxTerms(cfg)
 	payload, err := json.Marshal(start)
 	if err != nil {
 		s.fail(err)
@@ -295,4 +298,20 @@ func (s *sonioxStream) readLoop(ctx context.Context, conn *websocket.Conn) error
 			return nil
 		}
 	}
+}
+
+// sonioxContext is Soniox's context: of its sections Vito fills only terms,
+// the words it should expect and how to spell them.
+type sonioxContext struct {
+	Terms []string `json:"terms,omitempty"`
+}
+
+// sonioxTerms is the dictionary's vocabulary as Soniox's context, or nil.
+// Context is billed as input tokens, so a hundred terms at most (~$0.002 a
+// dictation).
+func sonioxTerms(cfg config.STT) *sonioxContext {
+	if t := dictionary.Pick(cfg.Terms, 100, 0, 0, 0); len(t) > 0 {
+		return &sonioxContext{Terms: t}
+	}
+	return nil
 }

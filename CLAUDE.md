@@ -241,6 +241,15 @@ The cleanup gets only the corrections a transcript could need
 one. On the user's history (41 corrections) that kept 0.44 per dictation
 and never dropped one whose term the cleanup wrote.
 
+The speech recognition gets the intended spellings beforehand
+(`stt.hints`, nil = on): `resolveSTT` fills `STT.Terms` (never saved) from
+`dictionary.Terms`, most used first, and each provider takes what fits
+(`dictionary.Pick`) — Soniox `context.terms` (100; billed as text tokens),
+AssemblyAI `keyterms_prompt` (streaming: 100 × ≤50 chars as a JSON array in
+the URL, redialled without on a 400/422; async: 200 phrases of ≤6 words),
+Whisper/Groq `prompt` (comma-separated, ≤500 chars ≈ its 224 tokens). Not
+for Parakeet or Whistle.
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.

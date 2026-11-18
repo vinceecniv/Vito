@@ -307,3 +307,16 @@ func TestOpenAIRates(t *testing.T) {
 		}
 	}
 }
+
+// The dictionary's terms go along as Whisper's prompt, a comma-separated list.
+func TestOpenAIPromptFromTerms(t *testing.T) {
+	srv, seen := serveAudio(t, func(int, request) (int, string) { return 200, `{"text":"ok"}` })
+	cfg := openaiCfg(srv.URL)
+	cfg.Terms = []string{"Vocas", "Priceslurper", "Kamera-express"}
+	if _, err := newOpenAIClient(cfg).transcribeUpload(context.Background(), wavFile(t, 1), func(UploadProgress) {}); err != nil {
+		t.Fatal(err)
+	}
+	if got := (*seen)[0].fields["prompt"]; got != "Vocas, Priceslurper, Kamera-express" {
+		t.Errorf("prompt = %q", got)
+	}
+}

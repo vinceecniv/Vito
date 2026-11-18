@@ -3172,6 +3172,7 @@
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg><span>Speech model</span></h2>
           <input type="hidden" id="s-model">
           <div class="modelcards" id="model-cards"></div>
+          <label class="tgl" data-help="stthints" data-adv style="margin-top:14px;"><input type="checkbox" id="s-stthints"><span class="tr"></span> Tell the speech recognition the words in your dictionary</label>
           <!-- Each provider's settings live in a fold-out under its card. The
                blocks are written here once, with their ids and listeners, and
                buildModelCards moves them into the cards' panels, and parks
@@ -4084,6 +4085,7 @@ const TR = { nl: {
   "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
+  "Tell the speech recognition the words in your dictionary":"Geef de spraakherkenning de woorden uit je woordenboek mee",
   "Search settings…":"Instellingen zoeken…", "Search settings":"Instellingen zoeken", "Which settings to show":"Welke instellingen je ziet",
   "Basic":"Basis", "All":"Alles", "Only the basic settings are shown. This section has more.":"Je ziet alleen de basisinstellingen. Dit onderdeel heeft er meer.",
   "Show all settings":"Alle instellingen tonen", "No settings match your search.":"Geen instellingen gevonden voor je zoekopdracht.",
@@ -11872,6 +11874,7 @@ async function fillSettings() {
   buildLangDropdown();
   setLang(cfg.stt.language || "nl");
   $("s-eu").checked = cfg.stt.eu_endpoint;
+  $("s-stthints").checked = cfg.stt.hints !== false; // unset is on
   $("s-sttkey").value = cfg.stt.api_key;
   $("s-sonioxkey").value = cfg.stt.soniox_api_key || "";
   $("s-sttbaseurl").value = cfg.stt.openai_base_url || "";
@@ -12637,7 +12640,7 @@ function collectSettings() {
     }),
     stt: Object.assign(cfg.stt, {
       language: $("s-lang").value, model: $("s-model").value,
-      eu_endpoint: $("s-eu").checked,
+      eu_endpoint: $("s-eu").checked, hints: $("s-stthints").checked,
       api_key: $("s-sttkey").value, soniox_api_key: $("s-sonioxkey").value,
       openai_base_url: $("s-sttbaseurl").value.trim(), openai_key: $("s-sttopenaikey").value,
       openai_model: $("s-sttopenaimodel").value.trim(), openai_preset: $("s-sttpreset").value || "local",
@@ -12691,7 +12694,7 @@ function autoSaveSettings() {
 }
 // s-typespeed / s-notify are custom icon dropdowns (hidden inputs) — they call
 // autoSaveSettings() themselves on pick, so they're not in this change list.
-["s-input","s-output","s-model","s-sounds","s-eu","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-updateauto","s-demo"]
+["s-input","s-output","s-model","s-sounds","s-eu","s-stthints","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-updateauto","s-demo"]
   .forEach(id => $(id).addEventListener("change", autoSaveSettings));
 ["s-updatecheck","s-updateauto"].forEach(id => $(id).addEventListener("change", renderAutoUpdateNote));
 // The Assist toggle also flips its model section and refreshes the "which model" note.
@@ -15195,6 +15198,7 @@ const HELP = {
   svol:{nl:"Hoe hard de feedbackgeluidjes klinken, los van je systeemvolume.",en:"How loud the feedback sounds are, independent of your system volume."},
   lang:{nl:"De taal die je inspreekt. 'Automatisch' laat de dienst de taal zelf detecteren.",en:"The language you speak. 'Automatic' lets the service detect the language itself."},
   model:{nl:"Het spraakherkenningsmodel. De standaard (Universal Streaming) is snel en werkt voor de meeste talen.",en:"The speech-recognition model. The default (Universal Streaming) is fast and works for most languages."},
+  stthints:{nl:"Vito geeft de spraakherkenning de bedoelde schrijfwijzen uit je woordenboek mee, de meest gebruikte eerst, zodat namen en vaktermen meteen goed verstaan worden. Niet bij de lokale modellen (Parakeet, Whistle). Bij Soniox kost dat iets extra: de woorden worden als tekst-tokens gerekend.",en:"Vito gives the speech recognition the intended spellings from your dictionary, the most used first, so names and jargon are heard right the first time. Not with the local models (Parakeet, Whistle). With Soniox it costs a little extra: the words are billed as text tokens."},
   eu:{nl:"Verwerk je audio via Europese servers (data-residentie in de EU).",en:"Process your audio via European servers (data residency in the EU)."},
   sttkey:{nl:"Je persoonlijke AssemblyAI-sleutel voor de spraak-naar-tekst dienst.",en:"Your personal AssemblyAI key for the speech-to-text service."},
   sttpreset:{nl:"Snelle voorinstelling. 'Lokaal / eigen endpoint' is voor een server op je eigen computer (whisper.cpp's whisper-server, Speaches, een Parakeet-wrapper) — dan verlaat je audio je computer nooit. Groq en OpenAI bieden gehoste Whisper-modellen.",en:"A quick preset. 'Local / custom endpoint' is for a server on your own machine (whisper.cpp's whisper-server, Speaches, a Parakeet wrapper) — then your audio never leaves your computer. Groq and OpenAI offer hosted Whisper models."},

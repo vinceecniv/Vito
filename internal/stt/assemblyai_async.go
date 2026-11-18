@@ -12,6 +12,7 @@ import (
 
 	"vito/internal/apierr"
 	"vito/internal/config"
+	"vito/internal/dictionary"
 )
 
 // AsyncClient transcribes a spool WAV via the v2 REST API. Slower than
@@ -67,6 +68,10 @@ func (c *AsyncClient) createTranscript(ctx context.Context, audioURL string) (st
 		body["language_detection"] = true
 	} else {
 		body["language_code"] = c.cfg.Language
+	}
+	// The dictionary's vocabulary: up to 1,000 words, 6 to a phrase.
+	if t := dictionary.Pick(c.cfg.Terms, 200, 0, 6, 0); len(t) > 0 {
+		body["keyterms_prompt"] = t
 	}
 	data, _ := json.Marshal(body)
 

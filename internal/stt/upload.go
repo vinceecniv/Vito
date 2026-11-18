@@ -288,6 +288,9 @@ func (c *sonioxFileClient) createJob(ctx context.Context, fileID string) (string
 	if c.cfg.Language != "auto" && c.cfg.Language != "" {
 		body["language_hints"] = []string{c.cfg.Language}
 	}
+	if sc := sonioxTerms(c.cfg); sc != nil {
+		body["context"] = sc
+	}
 	data, _ := json.Marshal(body)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, sonioxAPI+"/v1/transcriptions", strings.NewReader(string(data)))
 	if err != nil {

@@ -68,7 +68,17 @@ type STT struct {
 	// "vulkan" (GPU on Windows/Linux). See internal/localstt. Which one is
 	// actually on disk is the manager's business, not the config's.
 	LocalVariant string `json:"local_variant,omitempty"`
+	// Hints sends the dictionary's intended spellings to the speech
+	// recognition as its vocabulary (Soniox context terms, AssemblyAI
+	// keyterms, Whisper's prompt). Nil-safe: unset is on.
+	Hints *bool `json:"hints,omitempty"`
+	// Terms are those spellings for this recording, best first, filled by
+	// the daemon (resolveSTT); never saved.
+	Terms []string `json:"-"`
 }
+
+// HintsOn reports whether the dictionary's terms go to the speech recognition.
+func (s STT) HintsOn() bool { return s.Hints == nil || *s.Hints }
 
 type Cleanup struct {
 	Enabled  bool   `json:"enabled"`

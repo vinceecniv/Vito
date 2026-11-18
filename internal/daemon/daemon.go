@@ -216,6 +216,11 @@ func (d *Daemon) Whistle() *whistle.Manager { return d.whistle }
 // pointed at whatever port the sidecar is on right now. An engine that is not
 // running says why, in words meant for the notification the caller shows.
 func (d *Daemon) resolveSTT(cfg config.STT) (config.STT, error) {
+	// The dictionary's spellings as the recognition's vocabulary. Not for the
+	// local engines: Parakeet and Whistle take no prompt.
+	if cfg.HintsOn() && cfg.Provider != "local" && cfg.Provider != "whistle" {
+		cfg.Terms = d.sttTerms()
+	}
 	if cfg.Provider != "local" {
 		return cfg, nil
 	}
@@ -229,6 +234,20 @@ func (d *Daemon) resolveSTT(cfg config.STT) (config.STT, error) {
 	cfg.OpenAIModel = localstt.ModelName
 	cfg.OpenAIPreset = ""
 	return cfg, nil
+}
+
+// sttTerms are the dictionary's intended spellings, the most used first.
+func (d *Daemon) sttTerms() []string {
+	var usage map[string]history.DictUse
+	if d.hist != nil {
+		if u, err := d.hist.DictUsage(); err == nil {
+			usage = u["correction"]
+		}
+	}
+	return dictionary.Terms(d.Config().Dictionary.Corrections, func(wrong string) (int, int64) {
+		u := usage[wrong]
+		return int(u.Uses), u.LastAt
+	})
 }
 
 // sttProviderName is the display name of the configured speech-recognition
