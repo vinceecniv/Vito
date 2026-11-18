@@ -388,10 +388,11 @@ func (p *painter) Draw(buf []byte, w, h int, f Frame) {
 	defer drawClock(buf, w, h, cx, cy, s, f, th, alpha)
 	const pitch, width = 5.5, 2.5
 	busy := smooth(f.Busy)
-	// The bars make way for the clock rather than show half behind it.
+	// The bars stay in sight behind the clock, a little dimmed so the time
+	// still reads on its see-through chip.
 	gap := 0.0
 	if f.Clock != nil && f.ClockShow > 0 {
-		gap = (float64(f.Clock.Bounds().Dx())/2 + 7*s) * smooth(f.ClockShow)
+		gap = (float64(f.Clock.Bounds().Dx())/2 + 5*s) * smooth(f.ClockShow)
 	}
 	for i := range bars {
 		x := (float64(i) - (bars-1)/2.0) * pitch * s
@@ -400,7 +401,7 @@ func (p *painter) Draw(buf []byte, w, h int, f Frame) {
 		edge := (hw - mix(13, 22, f.Hover)*s - math.Abs(x)) / (4 * s)
 		a := clamp(edge) * alpha * barsIn
 		if gap > 0 {
-			a *= clamp((math.Abs(x) - gap) / (3 * s))
+			a *= 1 - 0.6*clamp((gap-math.Abs(x))/(3*s))
 		}
 		if a <= 0 {
 			continue
@@ -425,7 +426,8 @@ func (p *painter) Draw(buf []byte, w, h int, f Frame) {
 }
 
 // drawClock lays the time a long dictation has run over the middle of the
-// pill, on a chip of the pill's own colour so it reads over bars and glow.
+// pill, on a see-through chip of the pill's own colour: enough to read the
+// time, while the bars or the glow behind it stay in sight.
 func drawClock(buf []byte, w, h int, cx, cy, s float64, f Frame, th theme, alpha float64) {
 	if f.Clock == nil || f.ClockShow <= 0 {
 		return
@@ -433,7 +435,7 @@ func drawClock(buf []byte, w, h int, cx, cy, s float64, f Frame, th theme, alpha
 	a := smooth(f.ClockShow) * alpha
 	b := f.Clock.Bounds()
 	hw, hh := float64(b.Dx())/2+5*s, 8*s
-	box(buf, w, h, cx, cy, hw, hh, corner(hh, s), th.body, 0.94*a)
+	box(buf, w, h, cx, cy, hw, hh, corner(hh, s), th.body, 0.62*a)
 	m := fcs().main.Metrics()
 	baseline := cy + float64((m.Ascent-m.Descent).Ceil())/2
 	x0 := int(math.Round(cx - float64(b.Dx())/2))
