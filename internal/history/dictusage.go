@@ -1,6 +1,8 @@
 package history
 
 import (
+	"vito/internal/dictionary"
+
 	"strings"
 	"time"
 )
@@ -58,6 +60,57 @@ func (s *Store) DictUsage() (map[string]map[string]DictUse, error) {
 			out[kind] = map[string]DictUse{}
 		}
 		out[kind][key] = u
+	}
+	return out, rows.Err()
+}
+
+// DictPairs returns the raw and cleaned text of the newest dictations (at
+// most limit), for dictionary.Suggest. Commands are left out.
+func (s *Store) DictPairs(limit int) ([]dictionary.Pair, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	rows, err := s.db.Query(`SELECT raw, COALESCE(cleaned, '') FROM history
+		WHERE raw <> '' AND COALESCE(command_text, '') = '' ORDER BY ts DESC LIMIT ?`, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []dictionary.Pair
+	for rows.Next() {
+		var p dictionary.Pair
+		if err := rows.Scan(&p.Raw, &p.Cleaned); err != nil {
+			return nil, err
+		}
+		out = append(out, p)
+	}
+	return out, rows.Err()
+}
+
+// DismissDictSuggestion remembers that the user turned a suggestion down.
+func (s *Store) DismissDictSuggestion(wrong, right string, at time.Time) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	_, err := s.db.Exec(`INSERT OR REPLACE INTO dict_dismissed(wrong, right, at) VALUES(?, ?, ?)`,
+		DictKey(wrong), DictKey(right), at.UnixMilli())
+	return err
+}
+
+// DictDismissed returns the turned-down suggestions as "wrong\x00right".
+func (s *Store) DictDismissed() (map[string]bool, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	rows, err := s.db.Query(`SELECT wrong, right FROM dict_dismissed`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := map[string]bool{}
+	for rows.Next() {
+		var w, r string
+		if err := rows.Scan(&w, &r); err != nil {
+			return nil, err
+		}
+		out[w+"\x00"+r] = true
 	}
 	return out, rows.Err()
 }

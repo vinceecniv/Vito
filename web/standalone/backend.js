@@ -116,6 +116,84 @@
     }
     try { localStorage.setItem(DICT_USAGE, JSON.stringify(u)); } catch {}
   }
+  // internal/dictionary/suggest.go: corrections the history argues for —
+  // words the cleanup kept repairing. Keep the two in step.
+  const DICT_DISMISSED = "vito-dict-dismissed";
+  function dictDismissed() { try { return JSON.parse(localStorage.getItem(DICT_DISMISSED)) || []; } catch { return []; } }
+  const sgWords = (s) => (s || "").match(/[\p{L}\p{N}][\p{L}\p{N}'’\-.]*[\p{L}\p{N}]|[\p{L}\p{N}]/gu) || [];
+  const sgFlat = (s) => s.toLowerCase().replace(/[\s\-'’]/g, "");
+  const sgFold = (s) => s.toLowerCase().normalize("NFD").replace(/\p{Mn}/gu, "");
+  const sgUpper = (s) => { const c = [...s][0] || ""; return c !== c.toLowerCase() && c === c.toUpperCase(); };
+  const SG_RULES = [["ph","f"],["ck","k"],["ch","g"],["c","k"],["q","k"],["x","ks"],["z","s"],["y","i"],["ij","i"],["ei","i"],["w","f"],["v","f"],["dt","t"],["d","t"],["oo","o"],["ee","e"],["aa","a"],["uu","u"],["h",""]];
+  // Go's strings.Replacer: one pass, at each place the first rule that matches.
+  function sgPhonetic(s) {
+    s = sgFold(s); let out = "";
+    for (let i = 0; i < s.length;) {
+      const r = SG_RULES.find(([a]) => s.startsWith(a, i));
+      if (r) { out += r[1]; i += r[0].length; } else { out += s[i]; i++; }
+    }
+    return out.replace(/[aeiou]+/g, "a").replace(/(.)\1+/g, "$1");
+  }
+  function sgLcs(x, y) {
+    let prev = new Array(y.length + 1).fill(0), cur = new Array(y.length + 1).fill(0);
+    for (let i = 0; i < x.length; i++) {
+      for (let j = 0; j < y.length; j++) cur[j + 1] = x[i] === y[j] ? prev[j] + 1 : Math.max(cur[j], prev[j + 1]);
+      [prev, cur] = [cur, prev];
+    }
+    return prev[y.length];
+  }
+  const sgRatio = (a, b) => { const x = [...sgFold(a)], y = [...sgFold(b)]; return x.length + y.length ? 2 * sgLcs(x, y) / (x.length + y.length) : 1; };
+  function sgReplacements(a, b) {
+    const la = a.map((w) => w.toLowerCase()), lb = b.map((w) => w.toLowerCase());
+    let p = 0; while (p < la.length && p < lb.length && la[p] === lb[p]) p++;
+    let ea = la.length, eb = lb.length; while (ea > p && eb > p && la[ea - 1] === lb[eb - 1]) { ea--; eb--; }
+    const n = ea - p, m = eb - p;
+    if (!n || !m || n * m > 4e6) return [];
+    const w = m + 1, t = new Uint16Array((n + 1) * w);
+    for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--)
+      t[i * w + j] = la[p + i] === lb[p + j] ? t[(i + 1) * w + j + 1] + 1 : Math.max(t[(i + 1) * w + j], t[i * w + j + 1]);
+    const out = []; let i = 0, j = 0, si = 0, sj = 0;
+    const flush = () => { if (i > si && j > sj) out.push([p + si, p + i, p + sj, p + j]); };
+    while (i < n && j < m) {
+      if (la[p + i] === lb[p + j]) { flush(); i++; j++; si = i; sj = j; }
+      else if (t[(i + 1) * w + j] >= t[i * w + j + 1]) i++; else j++;
+    }
+    i = n; j = m; flush();
+    return out;
+  }
+  function dictSuggest(limit) {
+    const rawIn = new Map(), found = new Map();
+    const have = new Set((cfg.dictionary.corrections || []).map((c) => c.wrong.trim().toLowerCase()));
+    const gone = new Set(dictDismissed());
+    history.filter((e) => e.raw && !e.command_text).slice(0, 3000).forEach((e, id) => {
+      const a = sgWords(e.raw);
+      for (const w of new Set(a.map((x) => x.toLowerCase()))) rawIn.set(w, (rawIn.get(w) || 0) + 1);
+      if (!(e.cleaned || "").trim()) return;
+      const b = sgWords(e.cleaned);
+      for (const [i1, i2, j1, j2] of sgReplacements(a, b)) {
+        if (i2 - i1 > 2 || j2 - j1 > 3) continue;
+        const f = a.slice(i1, i2).join(" "), t = b.slice(j1, j2).join(" "), ff = sgFlat(f), ft = sgFlat(t);
+        const joined = i2 - i1 > j2 - j1 && j2 - j1 === 1 && sgUpper(t) && !/[-'’]/.test(t);
+        if (!ff || !ft || (ff === ft && !joined)) continue;
+        if (sgRatio(ff, ft) < 0.6 && sgPhonetic(ff) !== sgPhonetic(ft)) continue;
+        const k = f.toLowerCase() + "\0" + t;
+        if (!found.has(k)) found.set(k, { ids: new Set(), right: t, example: a.slice(Math.max(0, i1 - 5), Math.min(a.length, i2 + 5)).join(" ") });
+        found.get(k).ids.add(id);
+      }
+    });
+    const best = new Map();
+    for (const [k, g] of found) {
+      const wrong = k.slice(0, k.indexOf("\0"));
+      if (have.has(wrong) || gone.has(wrong + "\0" + g.right.toLowerCase())) continue;
+      const n = g.ids.size, r = Math.min(1, n / (rawIn.get(wrong.split(" ")[0]) || 1));
+      if (r < 0.5) continue;
+      if (n < 2 && !(sgUpper(g.right) && sgPhonetic(sgFlat(wrong)) === sgPhonetic(sgFlat(g.right)))) continue;
+      const heard = rawIn.get(g.right.split(" ")[0].toLowerCase()) || 0;
+      const s = { wrong, right: g.right, count: n, ratio: r, heard, example: g.example, score: n * r * (heard ? 2 : 1) };
+      if (!best.has(wrong) || s.score > best.get(wrong).score) best.set(wrong, s);
+    }
+    return [...best.values()].sort((x, y) => y.score - x.score || (x.wrong < y.wrong ? -1 : 1)).slice(0, limit);
+  }
   // config.Dictionary.StampCreated: an entry keeps its creation time by key;
   // a new one gets now.
   function stampCreated(next, prev) {
@@ -1107,6 +1185,12 @@ registerProcessor("vito-pcm",P)`;
     }
     if (p === "/api/ui") return { source: "web", api: 0 };
     if (p === "/api/linux-tools") return {};
+    if (p === "/api/dictionary/suggestions") return dictSuggest(8);
+    if (p === "/api/dictionary/suggestions/dismiss") {
+      const d = dictDismissed(), k = String(body && body.wrong || "").trim().toLowerCase() + "\0" + String(body && body.right || "").trim().toLowerCase();
+      if (!d.includes(k)) { d.push(k); try { localStorage.setItem(DICT_DISMISSED, JSON.stringify(d)); } catch {} }
+      return ok();
+    }
     if (p === "/api/dictionary/usage") { const u = dictUsage(); return { correction: u.correction || {}, snippet: u.snippet || {} }; }
     return helperOnly();
   }

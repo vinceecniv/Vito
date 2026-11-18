@@ -1846,6 +1846,20 @@
     border-radius:6px; font-size:15px; line-height:1; color:var(--text3); }
   .snip-idea .si-x:hover { color:var(--danger-ink); background:var(--danger-soft); }
   .snip-ideas[hidden] { display:none; }
+  .d-filter { margin:0 0 12px; }
+  .d-filter[hidden], .dict-sugg[hidden], #d-corrections tr[hidden], #d-filter-none[hidden] { display:none; }
+  .dict-sugg { margin:4px 0 16px; padding:calc(12px * var(--dn, 1)) calc(14px * var(--dn, 1)); border-radius:12px; background:var(--accent-soft); display:grid; gap:calc(10px * var(--dn, 1)); }
+  .ds-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .ds-row + .ds-row { padding-top:calc(10px * var(--dn, 1)); border-top:1px solid var(--card-border); }
+  .ds-main { flex:1 1 260px; min-width:0; display:grid; gap:3px; }
+  .ds-pair { font-size:13.5px; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .ds-pair .ds-w { color:var(--text2); text-decoration:line-through; text-decoration-color:var(--text3); }
+  .ds-pair .ds-r { font-weight:700; color:var(--text); }
+  .ds-pair .si-arrow { color:var(--text3); }
+  .ds-meta { font-size:12px; color:var(--text3); }
+  .ds-ex { font-size:12.5px; color:var(--text2); font-style:italic; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ds-ex mark { background:none; color:var(--accent); font-weight:600; font-style:normal; }
+  .ds-act { display:flex; gap:6px; }
   .hgroup { font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--text3); margin:22px 0 2px; padding-bottom:6px; border-bottom:1px solid var(--card-border); }
   .hgroup:first-child { margin-top:0; }
   /* Total-entries badge in the History header, and the "loading more" spinner. */
@@ -3478,6 +3492,12 @@
       <div class="card" style="margin-bottom:24px;">
         <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span>Corrections (misheard → intended)</span></h2>
         <p class="act-note" style="margin:2px 0 10px;">Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.</p>
+        <div class="dict-sugg" id="d-sugg" hidden></div>
+        <div class="searchbox d-filter" id="d-filter-wrap" hidden>
+          <svg class="s-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input type="text" id="d-filter" placeholder="Filter corrections…" aria-label="Filter corrections">
+          <button class="s-x" id="d-filter-x" data-tip-text="Clear filter" aria-label="Clear filter" style="display:none;">×</button>
+        </div>
         <table id="d-corrections"><thead><tr><th>Misheard</th><th>Intended</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
         <div class="rowflex" style="margin-top:12px;">
           <button class="btn primary small" id="d-add">+ Row</button>
@@ -3485,6 +3505,7 @@
           <button class="btn ghost small" id="d-import">Import</button>
           <input type="file" id="d-importfile" accept=".json,.txt,.csv" style="display:none">
         </div>
+        <p class="act-note" id="d-filter-none" hidden>No corrections match this filter.</p>
         <div class="snip-ideas" id="d-corr-ideas"></div>
       </div>
       <div class="card" style="margin-bottom:24px;">
@@ -3983,6 +4004,10 @@ const TR = { nl: {
   "Animation when there's an update":"Animatie bij een update",
   "Settings":"Instellingen",
   "Dictionary":"Woordenboek",
+  "Filter corrections…":"Correcties filteren…", "Clear filter":"Filter wissen", "No corrections match this filter.":"Geen correcties gevonden voor dit filter.",
+  "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
+  "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
+  "Not this":"Niet doen",
   "History":"Geschiedenis",
   // Achievements
   "Achievements":"Prestaties",
@@ -7714,6 +7739,13 @@ document.addEventListener("keydown", (e) => {
     return;
   }
 
+  // Ctrl+F on the Dictionary page: the corrections filter (shown for it when
+  // the list is short), also from a field on that page.
+  if (key === "f" && curTab === "dictionary") {
+    e.preventDefault();
+    focusDictFilter();
+    return;
+  }
   // Ctrl+F: jump to the history and put the cursor in the search box, so you can
   // search your dictations at once. Skipped while typing, so the browser's own
   // find still works inside a field (including the search box itself).
@@ -12799,10 +12831,77 @@ $("s-promptrules").addEventListener("input", () => {
 function renderCorrections(list) {
   const tbody = $("d-corrections").querySelector("tbody");
   tbody.innerHTML = "";
-  list.forEach((c) => addCorrectionRow(c.wrong, c.right, c.created));
+  list.forEach((c) => addCorrectionRow(c.wrong, c.right, c.created, true));
   renderCorrectionIdeas();
+  dictFilterSync();
   loadDictUsage();
+  loadDictSuggestions();
 }
+// Suggestions from the history (GET /api/dictionary/suggestions,
+// internal/dictionary/suggest.go): words the cleanup kept repairing. Add takes
+// one into the table, Not this turns it down for good.
+let dictSugg = [];
+async function loadDictSuggestions(){
+  try { const s = await api("/api/dictionary/suggestions"); dictSugg = Array.isArray(s) ? s : []; } catch { dictSugg = []; }
+  renderDictSuggestions();
+}
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function renderDictSuggestions(){
+  const box = $("d-sugg"); if (!box) return;
+  const have = firstCol("d-corrections");
+  const list = dictSugg.filter(s => !have.has(s.wrong.toLowerCase())).slice(0, 5);
+  box.hidden = !list.length;
+  if (!list.length) { box.innerHTML = ""; return; }
+  const mark = (ex, w) => ahEsc(ex).replace(new RegExp("(" + reEsc(ahEsc(w)).replace(/ /g, "\\s+") + ")", "ig"), "<mark>$1</mark>");
+  box.innerHTML = `<div class="snip-ideas-h">${t("Suggested from your dictations")}</div>` + list.map((s, i) => {
+    let meta = s.count === 1 ? t("Repaired once by the cleanup") : t("Repaired {n} times by the cleanup").replace("{n}", s.count.toLocaleString(numLoc()));
+    if (s.heard) meta += " · " + (s.heard === 1 ? t("heard right once") : t("heard right {n} times").replace("{n}", s.heard.toLocaleString(numLoc())));
+    return `<div class="ds-row" data-i="${i}"><div class="ds-main">
+      <div class="ds-pair"><span class="ds-w">${ahEsc(s.wrong)}</span><span class="si-arrow">→</span><span class="ds-r">${ahEsc(s.right)}</span><span class="ds-meta">${meta}</span></div>
+      <div class="ds-ex">“${mark(s.example, s.wrong)}”</div></div>
+      <div class="ds-act"><button type="button" class="btn primary small" data-add>${t("Add")}</button><button type="button" class="btn ghost small" data-no>${t("Not this")}</button></div></div>`;
+  }).join("");
+  box.querySelectorAll(".ds-row").forEach(row => {
+    const s = list[+row.dataset.i];
+    row.querySelector("[data-add]").onclick = () => {
+      addCorrectionRow(s.wrong, s.right);
+      autoSaveDict(); renderCorrectionIdeas(); renderDictSuggestions();
+    };
+    row.querySelector("[data-no]").onclick = () => {
+      dictSugg = dictSugg.filter(x => x !== s); renderDictSuggestions();
+      api("/api/dictionary/suggestions/dismiss", { method: "POST", body: JSON.stringify({ wrong: s.wrong, right: s.right }) }).catch(() => {});
+    };
+  });
+}
+// The filter over the corrections: there by itself from more than 15 rows,
+// and on Ctrl+F at any count; with fewer it goes again once empty and left.
+// A row shows when either side contains the text.
+const DICT_FILTER_FROM = 15;
+function dictFilterSync(){
+  const inp = $("d-filter");
+  const rows = $("d-corrections").querySelectorAll("tbody tr").length;
+  $("d-filter-wrap").hidden = !(rows > DICT_FILTER_FROM || inp.value || document.activeElement === inp);
+  applyDictFilter();
+}
+function applyDictFilter(){
+  const inp = $("d-filter"), q = inp.value.trim().toLowerCase();
+  $("d-filter-x").style.display = inp.value ? "" : "none";
+  let shown = 0, rows = 0;
+  $("d-corrections").querySelectorAll("tbody tr").forEach(tr => {
+    rows++;
+    const hit = !q || [...tr.querySelectorAll("input")].some(i => i.value.toLowerCase().includes(q));
+    tr.hidden = !hit; if (hit) shown++;
+  });
+  $("d-filter-none").hidden = !q || shown > 0 || !rows;
+}
+function focusDictFilter(){
+  $("d-filter-wrap").hidden = false;
+  const inp = $("d-filter"); inp.focus(); inp.select();
+}
+$("d-filter").addEventListener("input", applyDictFilter);
+$("d-filter").addEventListener("keydown", e => { if (e.key === "Escape" && $("d-filter").value) { e.preventDefault(); e.stopPropagation(); $("d-filter").value = ""; applyDictFilter(); } });
+$("d-filter").addEventListener("blur", () => setTimeout(dictFilterSync, 150));
+$("d-filter-x").onclick = () => { $("d-filter").value = ""; applyDictFilter(); $("d-filter").focus(); };
 // When each entry was added (its created, kept by the daemon) and how often
 // and when last it was applied (GET /api/dictionary/usage, by its misheard
 // word or trigger in lower case): two small cells per row, the count in the
@@ -12838,7 +12937,7 @@ function dictWhenCells(tr, created){
   if (created) tr.dataset.created = created;
   for (let i = 0; i < 2; i++) { const td = document.createElement("td"); td.className = "d-when"; td.dataset.tipLabel = "1"; tr.appendChild(td); }
 }
-function addCorrectionRow(wrong = "", right = "", created = 0) {
+function addCorrectionRow(wrong = "", right = "", created = 0, bulk = false) {
   const tbody = $("d-corrections").querySelector("tbody");
   const tr = document.createElement("tr");
   const mk = (val) => { const td = document.createElement("td"); const inp = document.createElement("input"); inp.type = "text"; inp.value = val; td.appendChild(inp); return td; };
@@ -12846,9 +12945,13 @@ function addCorrectionRow(wrong = "", right = "", created = 0) {
   dictWhenCells(tr, created);
   tr.querySelectorAll("input").forEach(inp => inp.addEventListener("input", autoSaveDict));
   const tdDel = document.createElement("td");
-  const del = document.createElement("button"); del.className = "btn danger small"; del.textContent = "×"; del.onclick = () => { tr.remove(); autoSaveDict(); renderCorrectionIdeas(); };
+  const del = document.createElement("button"); del.className = "btn danger small"; del.textContent = "×"; del.onclick = () => { tr.remove(); autoSaveDict(); renderCorrectionIdeas(); renderDictSuggestions(); dictFilterSync(); };
   tdDel.appendChild(del); tr.appendChild(tdDel);
   tbody.appendChild(tr);
+  if (bulk) return;
+  // A row added while filtering would be hidden by the filter: clear it.
+  $("d-filter").value = "";
+  dictFilterSync();
 }
 // Corrections auto-save (debounced), like the settings — no explicit save button.
 let dictSaveTimer;

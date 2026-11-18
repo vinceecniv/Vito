@@ -199,6 +199,14 @@ CREATE TABLE IF NOT EXISTS dict_usage (
   last_at INTEGER NOT NULL DEFAULT 0,   -- unix millis
   PRIMARY KEY (kind, key)
 );
+-- Dictionary suggestions the user turned down (misheard and intended word,
+-- lower case), so they are not offered again. Kept on this computer.
+CREATE TABLE IF NOT EXISTS dict_dismissed (
+  wrong TEXT NOT NULL,
+  right TEXT NOT NULL,
+  at    INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (wrong, right)
+);
 
 -- Achievements the user has earned, with the moment each was first recorded.
 -- Deciding what is earned is deterministic from the aggregates above; this only

@@ -43,6 +43,7 @@ import (
 	"vito/internal/daemon"
 	"vito/internal/demo"
 	"vito/internal/desktopcolors"
+	"vito/internal/dictionary"
 	"vito/internal/history"
 	"vito/internal/hotkey"
 	"vito/internal/inject"
@@ -190,6 +191,8 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/autostart", s.auth(s.handleGetAutostart))
 	mux.HandleFunc("GET /api/desktop-colors", s.auth(s.handleDesktopColors))
 	mux.HandleFunc("GET /api/dictionary/usage", s.auth(s.handleDictUsage))
+	mux.HandleFunc("GET /api/dictionary/suggestions", s.auth(s.handleDictSuggestions))
+	mux.HandleFunc("POST /api/dictionary/suggestions/dismiss", s.auth(s.handleDictDismiss))
 	mux.HandleFunc("PUT /api/autostart", s.auth(s.handlePutAutostart))
 	mux.HandleFunc("GET /api/privacy", s.auth(s.handleGetPrivacy))
 	mux.HandleFunc("PUT /api/privacy", s.auth(s.handlePutPrivacy))
@@ -1449,6 +1452,46 @@ func (s *Server) handleDictUsage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.writeJSON(w, http.StatusOK, u)
+}
+
+// handleDictSuggestions offers corrections the history argues for: words the
+// cleanup kept repairing (dictionary.Suggest), leaving out what the
+// dictionary already has and what the user turned down.
+func (s *Server) handleDictSuggestions(w http.ResponseWriter, r *http.Request) {
+	if s.demo() || s.hist == nil {
+		s.writeJSON(w, http.StatusOK, []dictionary.Suggestion{})
+		return
+	}
+	pairs, err := s.hist.DictPairs(3000)
+	if err != nil {
+		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	gone, _ := s.hist.DictDismissed()
+	have := map[string]bool{}
+	for _, c := range s.d.Config().Dictionary.Corrections {
+		have[history.DictKey(c.Wrong)] = true
+	}
+	out := dictionary.Suggest(pairs, func(wrong, right string) bool {
+		return have[wrong] || gone[wrong+"\x00"+right]
+	}, 8)
+	s.writeJSON(w, http.StatusOK, out)
+}
+
+// handleDictDismiss turns a suggestion down for good.
+func (s *Server) handleDictDismiss(w http.ResponseWriter, r *http.Request) {
+	var req struct{ Wrong, Right string }
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || strings.TrimSpace(req.Wrong) == "" {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "wrong and right are needed"})
+		return
+	}
+	if s.hist != nil {
+		if err := s.hist.DismissDictSuggestion(req.Wrong, req.Right, time.Now()); err != nil {
+			s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+			return
+		}
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
 // handleDesktopColors gives the colour schemes the desktop shells here

@@ -196,6 +196,25 @@ in a dictation and an upload; part of a backup, not synced) and reaches the
 page through `GET /api/dictionary/usage`. `web/standalone/backend.js` keeps the
 same in localStorage.
 
+## Dictionary suggestions
+
+`internal/dictionary/suggest.go` reads the history's raw and cleaned text
+side by side: a word-level diff gives the cleanup's repairs, and a repair
+counts when both sides look or sound alike (`phonetic`, a rough Dutch/English
+sound key), is more than spacing/hyphens/apostrophes (a split name joined
+into one capitalised word still counts), and the cleanup replaces the word
+in at least half the dictations it occurs in — that last rule is what drops
+its own rephrasing ("kan je" → "kun je"). A repair seen once counts only for
+a name. Ranking doubles when the intended word is also heard right
+elsewhere. `GET /api/dictionary/suggestions` (top 8, without words already
+corrected or turned down), `POST …/dismiss` (table `dict_dismissed`, this
+computer only); the page shows five above the corrections. The browser
+version has the same in `backend.js` (`dictSuggest`) — keep them in step.
+`VITO_SUGGEST_DIR=<copy of a config dir> go test ./internal/history -run
+TestSuggestRealHistory -v` prints them for a real history.
+The corrections get a filter from more than 15 rows, and on Ctrl+F on the
+Dictionary page at any count.
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.
