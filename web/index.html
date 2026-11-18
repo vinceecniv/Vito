@@ -1808,6 +1808,8 @@
   /* PWA tip / banners */
   .banner { display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; margin-bottom:18px; font-size:13px; }
   .banner.tip { background:var(--accent-soft); color:var(--text); }
+  .dict-note { cursor:var(--cur-hand); }
+  .dict-note > svg { flex:0 0 auto; color:var(--accent); }
   .banner.warn { background:var(--danger-soft); color:var(--text); }
   .banner .grow { flex:1; }
   .banner button { flex:0 0 auto; }
@@ -2817,6 +2819,12 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.8"/><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"/></svg>
           </button>
         </div>
+      </div>
+      <div class="banner tip dict-note" id="dict-note" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M18 16H7a2 2 0 0 0-2 2"/></svg>
+        <span class="grow" id="dict-note-text"></span>
+        <button type="button" class="btn primary small" id="dict-note-go">Show</button>
+        <button type="button" class="x" id="dict-note-x" data-tip-text="Later" aria-label="Later">×</button>
       </div>
       <div class="welcome-card" id="welcome-card" hidden>
         <button class="welcome-x" id="welcome-dismiss" title="Close" aria-label="Close">×</button>
@@ -4007,7 +4015,9 @@ const TR = { nl: {
   "Filter corrections…":"Correcties filteren…", "Clear filter":"Filter wissen", "No corrections match this filter.":"Geen correcties gevonden voor dit filter.",
   "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
-  "Not this":"Niet doen",
+  "Ignore":"Negeren",
+  "<b>A new suggestion</b> for your dictionary, from your dictations.":"<b>Een nieuwe suggestie</b> voor je woordenboek, uit je dictaten.",
+  "<b>{n} new suggestions</b> for your dictionary, from your dictations.":"<b>{n} nieuwe suggesties</b> voor je woordenboek, uit je dictaten.",
   "History":"Geschiedenis",
   // Achievements
   "Achievements":"Prestaties",
@@ -6667,6 +6677,7 @@ function selectTab(name){
   positionToasts(); // the column changes width between pages
   if (name === "history") loadHistory();
   if (name === "achievements") loadAchievements();
+  if (name === "dictionary" && typeof markDictSuggSeen === "function") markDictSuggSeen();
   if (name === "long" && !STANDALONE) loadLong();
   if (typeof lrNavRec === "function") lrNavRec();
   // Coming back to Status replays the chart's build-up, the same way opening the
@@ -7486,6 +7497,7 @@ function handleEvent(e) {
       typeInto(span, curPartial || LISTENING_HINT);
     } else if (e.type === "final") {
       if ($("tab-dictionary") && $("tab-dictionary").classList.contains("active")) setTimeout(loadDictUsage, 500); // its counts moved
+      clearTimeout(window.__dictSuggT); window.__dictSuggT = setTimeout(loadDictSuggestions, 4000); // a new repair may make a suggestion
       // The result is not typed out: the raw text was already typed live as
       // partials, and the cleaned version is a finished answer — it just fades
       // in as a whole.
@@ -12839,17 +12851,46 @@ function renderCorrections(list) {
 }
 // Suggestions from the history (GET /api/dictionary/suggestions,
 // internal/dictionary/suggest.go): words the cleanup kept repairing. Add takes
-// one into the table, Not this turns it down for good.
+// one into the table, Ignore turns it down for good.
 let dictSugg = [];
 async function loadDictSuggestions(){
   try { const s = await api("/api/dictionary/suggestions"); dictSugg = Array.isArray(s) ? s : []; } catch { dictSugg = []; }
   renderDictSuggestions();
 }
 const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// The Status page points at suggestions not seen yet (by misheard and
+// intended word, remembered in this browser); seeing them on the Dictionary
+// page, or Later, puts the note away until a new one comes up.
+const DICT_SEEN = "vito-dict-sugg-seen";
+const dictSuggKey = s => s.wrong.toLowerCase() + "\u0000" + s.right.toLowerCase();
+function dictSeen(){ try { return JSON.parse(localStorage.getItem(DICT_SEEN) || "[]"); } catch { return []; } }
+function markDictSuggSeen(){
+  const seen = new Set(dictSeen());
+  dictSugg.forEach(s => seen.add(dictSuggKey(s)));
+  try { localStorage.setItem(DICT_SEEN, JSON.stringify([...seen].slice(-300))); } catch {}
+  renderDictNote();
+}
+// The five the Dictionary page shows: none for a word it already corrects.
+function shownDictSugg(){
+  const have = firstCol("d-corrections");
+  return dictSugg.filter(s => !have.has(s.wrong.toLowerCase())).slice(0, 5);
+}
+function renderDictNote(){
+  const note = $("dict-note"); if (!note) return;
+  const seen = new Set(dictSeen()), fresh = shownDictSugg().filter(s => !seen.has(dictSuggKey(s))).length;
+  note.hidden = !fresh;
+  if (fresh) $("dict-note-text").innerHTML = fresh === 1 ? t("<b>A new suggestion</b> for your dictionary, from your dictations.")
+    : t("<b>{n} new suggestions</b> for your dictionary, from your dictations.").replace("{n}", fresh);
+}
+$("dict-note").onclick = (e) => {
+  if (e.target.closest("#dict-note-x")) { markDictSuggSeen(); return; }
+  selectTab("dictionary");
+  setTimeout(() => $("d-sugg").scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }), 50);
+};
 function renderDictSuggestions(){
   const box = $("d-sugg"); if (!box) return;
-  const have = firstCol("d-corrections");
-  const list = dictSugg.filter(s => !have.has(s.wrong.toLowerCase())).slice(0, 5);
+  if (curTab === "dictionary") markDictSuggSeen(); else renderDictNote();
+  const list = shownDictSugg();
   box.hidden = !list.length;
   if (!list.length) { box.innerHTML = ""; return; }
   const mark = (ex, w) => ahEsc(ex).replace(new RegExp("(" + reEsc(ahEsc(w)).replace(/ /g, "\\s+") + ")", "ig"), "<mark>$1</mark>");
@@ -12859,7 +12900,7 @@ function renderDictSuggestions(){
     return `<div class="ds-row" data-i="${i}"><div class="ds-main">
       <div class="ds-pair"><span class="ds-w">${ahEsc(s.wrong)}</span><span class="si-arrow">→</span><span class="ds-r">${ahEsc(s.right)}</span><span class="ds-meta">${meta}</span></div>
       <div class="ds-ex">“${mark(s.example, s.wrong)}”</div></div>
-      <div class="ds-act"><button type="button" class="btn primary small" data-add>${t("Add")}</button><button type="button" class="btn ghost small" data-no>${t("Not this")}</button></div></div>`;
+      <div class="ds-act"><button type="button" class="btn primary small" data-add>${t("Add")}</button><button type="button" class="btn ghost small" data-no>${t("Ignore")}</button></div></div>`;
   }).join("");
   box.querySelectorAll(".ds-row").forEach(row => {
     const s = list[+row.dataset.i];
