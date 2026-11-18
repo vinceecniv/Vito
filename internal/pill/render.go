@@ -401,7 +401,7 @@ func (p *painter) Draw(buf []byte, w, h int, f Frame) {
 		edge := (hw - mix(13, 22, f.Hover)*s - math.Abs(x)) / (4 * s)
 		a := clamp(edge) * alpha * barsIn
 		if gap > 0 {
-			a *= 1 - 0.6*clamp((gap-math.Abs(x))/(3*s))
+			a *= 1 - 0.45*clamp((gap-math.Abs(x))/(3*s))
 		}
 		if a <= 0 {
 			continue
@@ -435,7 +435,7 @@ func drawClock(buf []byte, w, h int, cx, cy, s float64, f Frame, th theme, alpha
 	a := smooth(f.ClockShow) * alpha
 	b := f.Clock.Bounds()
 	hw, hh := float64(b.Dx())/2+5*s, 8*s
-	box(buf, w, h, cx, cy, hw, hh, corner(hh, s), th.body, 0.62*a)
+	box(buf, w, h, cx, cy, hw, hh, corner(hh, s), th.body, 0.45*a)
 	m := fcs().main.Metrics()
 	baseline := cy + float64((m.Ascent-m.Descent).Ceil())/2
 	x0 := int(math.Round(cx - float64(b.Dx())/2))
