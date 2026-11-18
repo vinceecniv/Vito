@@ -1,6 +1,11 @@
 package dictionary
 
-import "testing"
+import (
+	"slices"
+	"testing"
+
+	"vito/internal/config"
+)
 
 func TestSuggest(t *testing.T) {
 	var pairs []Pair
@@ -92,5 +97,35 @@ func TestMerge(t *testing.T) {
 	m := Merge(2, a, b)
 	if len(m) != 2 || m[0].Wrong != "y" || m[1].Wrong != "x" || m[1].Kind != "variant" {
 		t.Errorf("%+v", m)
+	}
+}
+
+func TestRelevant(t *testing.T) {
+	cs := []config.Correction{
+		{Wrong: "focas", Right: "Vocas"},
+		{Wrong: "price slurper", Right: "Priceslurper"},
+		{Wrong: "kama express", Right: "Kamera-express"},
+		{Wrong: "omarchi", Right: "Omarchy"},
+		{Wrong: "vito", Right: "Vito"},
+		{Wrong: "ai", Right: "AI"},
+	}
+	got := func(text string) []string {
+		var out []string
+		for _, c := range Relevant(text, cs) {
+			out = append(out, c.Right)
+		}
+		return out
+	}
+	cases := map[string][]string{
+		"Stuur het naar Vocas en de Pricelerper.":        {"Vocas", "Priceslurper"},
+		"Ik heb bij camera express een lens gekocht.":    {"Kamera-express"},
+		"Het nieuwe Vocaslogo staat online.":             {"Vocas"},
+		"Een gewone zin zonder bijzondere woorden erin.": nil,
+		"Vraag het aan AI.":                              {"AI"},
+	}
+	for text, want := range cases {
+		if g := got(text); !slices.Equal(g, want) {
+			t.Errorf("%q: got %v, want %v", text, g, want)
+		}
 	}
 }

@@ -235,6 +235,12 @@ The corrections get a filter from more than 15 rows, and on Ctrl+F on the
 Dictionary page at any count. Both cards show their count ("3 of 22" while
 filtering), and a sticky bar under the page head jumps between them.
 
+The cleanup gets only the corrections a transcript could need
+(`dictionary.Relevant`, in `buildUserPrompt`; `dictRelevant` in
+`backend.js`): a side in the text, or a stretch that looks or sounds like
+one. On the user's history (41 corrections) that kept 0.44 per dictation
+and never dropped one whose term the cleanup wrote.
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.

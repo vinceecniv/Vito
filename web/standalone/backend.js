@@ -742,9 +742,45 @@ registerProcessor("vito-pcm",P)`;
     const rules = ((b && b.rules) || (own && own.rules) || "").trim() || CLEANUP.default_rules || "";
     return rules + "\n" + (CLEANUP.contract || "");
   }
+  // internal/dictionary/relevant.go: only the corrections this transcript could
+  // need — a side of it in the text, or a stretch that looks or sounds like
+  // one. Keep the two in step.
+  function dictRelevant(text, cs) {
+    if (!cs.length) return [];
+    const ws = sgWords(text), whole = sgFlat(text), grams = new Map(), seen = new Set();
+    const nWords = (s) => s.trim().split(/\s+/).filter(Boolean).length;
+    let maxN = 1;
+    for (const c of cs) maxN = Math.max(maxN, nWords(c.wrong) + 1, nWords(c.right) + 1);
+    maxN = Math.min(maxN, 5);
+    for (let n = 1; n <= maxN; n++) {
+      const l = [];
+      for (let i = 0; i + n <= ws.length; i++) {
+        const f = sgFlat(ws.slice(i, i + n).join(" "));
+        if (!seen.has(n + f)) { seen.add(n + f); l.push({ f, sound: sgPhonetic(f), r: [...sgFold(f)] }); }
+      }
+      grams.set(n, l);
+    }
+    const near = (side) => {
+      const f = sgFlat(side.trim()), lf = [...f].length;
+      if (!lf) return false;
+      if (lf >= 5 && whole.includes(f)) return true;
+      const n = nWords(side), sound = sgPhonetic(f), fr = [...sgFold(f)];
+      for (let m = Math.max(1, n - 1); m <= Math.min(maxN, n + 1); m++) {
+        for (const g of grams.get(m) || []) {
+          if (g.f === f) return true;
+          if (lf < 4) continue;
+          if (Math.abs(g.r.length - fr.length) > Math.max(2, Math.floor(lf / 4))) continue;
+          const r = 2 * sgLcs(g.r, fr) / (g.r.length + fr.length);
+          if (r >= 0.75 || (r >= 0.6 && g.sound === sound)) return true;
+        }
+      }
+      return false;
+    };
+    return cs.filter((c) => c.wrong.trim() && c.right.trim() && (near(c.right) || near(c.wrong)));
+  }
   function userPrompt(text, language) {
     let u = "Language: " + language + "\n";
-    const cs = (cfg.dictionary && cfg.dictionary.corrections) || [];
+    const cs = dictRelevant(text, (cfg.dictionary && cfg.dictionary.corrections) || []);
     if (cs.length) u += "Corrections (misheard -> intended):\n" + cs.map((c) => "- " + JSON.stringify(c.wrong) + " -> " + JSON.stringify(c.right) + "\n").join("");
     if (text.includes("⟦")) u += SNIPPET_NOTE + "\n";
     return u + "Transcript:\n" + text;

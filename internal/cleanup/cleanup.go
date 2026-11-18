@@ -20,6 +20,7 @@ import (
 
 	"vito/internal/apierr"
 	"vito/internal/config"
+	"vito/internal/dictionary"
 )
 
 // Usage reports the token counts of a cleanup call, for cost estimation.
@@ -90,7 +91,12 @@ func ProviderName(cfg config.Cleanup) string {
 
 // buildUserPrompt assembles the user turn shared by both providers: the language,
 // the dictionary corrections and the raw transcript.
+//
+// Only the corrections this transcript could need go along
+// (dictionary.Relevant): the whole dictionary on every dictation costs tokens
+// and tempts the model to apply a correction that does not belong.
 func buildUserPrompt(text, language string, corrections []config.Correction) string {
+	corrections = dictionary.Relevant(text, corrections)
 	var user strings.Builder
 	fmt.Fprintf(&user, "Language: %s\n", language)
 	if len(corrections) > 0 {
