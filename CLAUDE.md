@@ -274,8 +274,8 @@ at 64 px (`icon_windows.go`), Linux takes the `.desktop` file's `Icon=` from
 hicolor or pixmaps, macOS has none yet. `GET /api/apps/icon/{id}?token=`
 serves it (the token in the query: an `<img>` sends no header, and another
 page must not probe which programs are used), cached a day plus a week
-stale-while-revalidate; `appIcon()` in the page shows the first letter until
-it loads and remembers loaded and missing ones. `app_prompts` is a map: `handlePutConfig` decodes it fresh,
+stale-while-revalidate; `appIcon()` in the page shows it once loaded (nothing
+without one) and remembers loaded and missing ones. `app_prompts` is a map: `handlePutConfig` decodes it fresh,
 as the outfit, or a removed program would stay.
 
 ## Text snippets

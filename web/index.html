@@ -1286,15 +1286,11 @@
   .lang-card .lang-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-bar { display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
   .lang-bar i { display:block; height:100%; }
-  /* A program's icon, over its first letter, which shows until (or unless) it loads. */
-  .app-ic { position:relative; display:inline-flex; align-items:center; justify-content:center; flex:none;
-    width:1.25em; height:1.25em; margin-right:.4em; vertical-align:-.25em; border-radius:4px;
-    background:var(--track); color:var(--text2); font-size:1em; line-height:1; }
-  .app-ic::before { content:attr(data-l); font-size:.62em; font-weight:700; }
-  .app-ic img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; }
-  .app-ic.ok { background:none; }
-  .app-ic.ok::before { content:none; }
-  .app-ic.ok img { opacity:1; }
+  /* A program's icon: takes no room until it has loaded, and none at all
+     for a program without one. */
+  .app-ic { display:none; flex:none; width:1.25em; height:1.25em; margin-right:.4em; vertical-align:-.25em; }
+  .app-ic.ok { display:inline-block; }
+  .app-ic img { display:block; width:100%; height:100%; object-fit:contain; }
   /* Programs: one cell like the languages; two cells a list of the top ones. */
   .apps-list { display:none; position:relative; z-index:1; margin-top:12px; flex-direction:column; gap:calc(7px * var(--dn, 1)); }
   .apps-card.span2 .apps-list, .apps-card.span3 .apps-list { display:flex; }
@@ -10904,22 +10900,22 @@ function langCardHTML(ins){
 // a share of one bar, the breakdown in words in the tooltip.
 // A program's icon, kept by the daemon when it first saw the program in front
 // (GET /api/apps/icon/{id}; an <img> sends no header, so the token rides in
-// the query). Its first letter shows until the picture loads, and stays when
-// there is none. The browser version knows no programs.
+// the query). It shows once loaded; a program without one shows only its
+// name. The browser version knows no programs.
 // The page remembers which icons loaded and which have none, so a card that
 // redraws shows a loaded one at once (from the browser's cache) and doesn't
 // ask again for a missing one until the page reloads.
 const appIconSeen = new Map(); // id → true (loaded) / false (none)
 function appIcon(id, name){
   if (STANDALONE || !id) return "";
-  const l = ahEsc(String(name || id).trim().charAt(0).toUpperCase()), seen = appIconSeen.get(id);
-  if (seen === false) return `<span class="app-ic" data-l="${l}" aria-hidden="true"></span>`;
-  return `<span class="app-ic${seen ? " ok" : ""}" data-l="${l}" data-app="${ahEsc(id)}" aria-hidden="true"><img alt="" decoding="async" ` +
+  const seen = appIconSeen.get(id);
+  if (seen === false) return "";
+  return `<span class="app-ic${seen ? " ok" : ""}" data-app="${ahEsc(id)}" aria-hidden="true"><img alt="" decoding="async" ` +
     `src="/api/apps/icon/${encodeURIComponent(id)}?token=${encodeURIComponent(TOKEN)}"></span>`;
 }
 const appIconOf = (t) => t.tagName === "IMG" && t.parentNode && t.parentNode.classList && t.parentNode.classList.contains("app-ic") ? t.parentNode : null;
 document.addEventListener("load", (e) => { const s = appIconOf(e.target); if (s) { s.classList.add("ok"); appIconSeen.set(s.dataset.app, true); } }, true);
-document.addEventListener("error", (e) => { const s = appIconOf(e.target); if (s) { appIconSeen.set(s.dataset.app, false); e.target.remove(); } }, true);
+document.addEventListener("error", (e) => { const s = appIconOf(e.target); if (s) { appIconSeen.set(s.dataset.app, false); s.remove(); } }, true);
 function appsCardHTML(ins){
   const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6" cy="6.5" r=".6" fill="currentColor"/><circle cx="8.4" cy="6.5" r=".6" fill="currentColor"/></svg>';
   const apps = ins.apps || [];
