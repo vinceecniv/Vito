@@ -218,6 +218,28 @@ func activeRules(cfg config.Cleanup) string {
 	return ""
 }
 
+// ActiveSet is the rule set a cleanup with cfg uses: its id (empty for Vito's
+// default) and its name — English for Vito's own sets, which the page
+// translates, the user's own as written. A set that no longer exists is
+// Vito's default, as activeRules has it.
+func ActiveSet(cfg config.Cleanup) (id, name string) {
+	def := Builtins()[0]
+	if cfg.ActivePrompt == "" || cfg.ActivePrompt == def.ID {
+		return "", def.Name
+	}
+	for _, b := range Builtins() {
+		if b.ID == cfg.ActivePrompt {
+			return b.ID, b.Name
+		}
+	}
+	for _, p := range cfg.Prompts {
+		if p.ID == cfg.ActivePrompt {
+			return p.ID, p.Name
+		}
+	}
+	return "", def.Name
+}
+
 // builtinRules resolves one of Vito's own ids to its rules.
 func builtinRules(id string) (string, bool) {
 	for _, b := range Builtins() {

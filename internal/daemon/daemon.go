@@ -1343,6 +1343,7 @@ func (d *Daemon) finish(s *session) {
 	// and its name for the model.
 	app := s.appOf()
 	cleanCfg = cleanCfg.ForApp(app.ID, app.Name)
+	rulesID, rulesName := cleanup.ActiveSet(cleanCfg) // kept with the entry when the cleanup ran
 	if d.cleanupEffective(s) && (instruction != "" || wordCount(raw) >= cfg.Cleanup.MinWords) && !dictionary.OnlySnippets(marked) {
 		ctx, cancel := context.WithTimeout(context.Background(), cleanup.Timeout(cleanCfg.TimeoutMS, marked))
 		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, marked, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
@@ -1426,6 +1427,9 @@ func (d *Daemon) finish(s *session) {
 		s.spool.Remove()
 	}
 
+	if !cleanupUsed || instruction != "" { // a rule set only counts for a cleanup pass
+		rulesID, rulesName = "", ""
+	}
 	if cfg.History.Enabled && d.hist != nil {
 		entry := history.Entry{
 			ID:               entryID,
@@ -1442,6 +1446,8 @@ func (d *Daemon) finish(s *session) {
 			ClipboardCommand: clipboardOut,
 			App:              s.appOf().Name,
 			AppID:            s.appOf().ID,
+			Rules:            rulesID,
+			RulesName:        rulesName,
 			SttMS:            timings.SttFinal.Milliseconds(),
 			CleanupMS:        timings.Cleanup.Milliseconds(),
 			InjectedMS:       timings.Injected.Milliseconds(),

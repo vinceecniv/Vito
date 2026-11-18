@@ -58,7 +58,7 @@ func (s *Store) Snapshot() (BackupData, error) {
 
 	rows, err := s.db.Query(`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,
 		stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,
-		command_in_tokens,command_out_tokens,command_text,favorite,app,app_id
+		command_in_tokens,command_out_tokens,command_text,favorite,app,app_id,rules,rules_name
 		FROM history ORDER BY ts`)
 	if err != nil {
 		return b, err
@@ -69,7 +69,7 @@ func (s *Store) Snapshot() (BackupData, error) {
 		var used, favorite int
 		if err := rows.Scan(&e.ID, &ts, &e.DurationMS, &e.Language, &e.Source, &e.Raw, &e.Cleaned,
 			&used, &e.CleanupError, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences,
-			&e.CleanupInTokens, &e.CleanupOutTokens, &e.CommandInTokens, &e.CommandOutTokens, &e.CommandText, &favorite, &e.App, &e.AppID); err != nil {
+			&e.CleanupInTokens, &e.CleanupOutTokens, &e.CommandInTokens, &e.CommandOutTokens, &e.CommandText, &favorite, &e.App, &e.AppID, &e.Rules, &e.RulesName); err != nil {
 			rows.Close()
 			return b, err
 		}
@@ -158,11 +158,11 @@ func (s *Store) Restore(b BackupData) error {
 	for _, e := range b.History {
 		if _, err := tx.Exec(
 			`INSERT OR REPLACE INTO history
-			 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text,favorite,app,app_id)
-			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+			 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text,favorite,app,app_id,rules,rules_name)
+			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 			e.ID, e.Timestamp.UnixMilli(), e.DurationMS, e.Language, e.Source, e.Raw, e.Cleaned,
 			b2i(e.CleanupUsed), e.CleanupError, e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences,
-			e.CleanupInTokens, e.CleanupOutTokens, e.CommandInTokens, e.CommandOutTokens, e.CommandText, b2i(e.Favorite), e.App, e.AppID); err != nil {
+			e.CleanupInTokens, e.CleanupOutTokens, e.CommandInTokens, e.CommandOutTokens, e.CommandText, b2i(e.Favorite), e.App, e.AppID, e.Rules, e.RulesName); err != nil {
 			return err
 		}
 	}

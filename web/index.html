@@ -1188,11 +1188,14 @@
   .app-rule .ar-name { flex:1; min-width:0; font-weight:600; font-size:13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .app-rule .ar-n { color:var(--text3); font-weight:500; font-size:12.5px; margin-left:6px; }
   .app-rule select { width:auto; max-width:220px; }
-  .app-rule .ar-x { background:none; border:none; color:var(--text3); font-size:17px; width:26px; height:26px; border-radius:50%; cursor:var(--cur-hand); }
-  .app-rule .ar-x:hover { background:var(--track); color:var(--text); }
+  .app-rule.own { border-color:color-mix(in srgb, var(--violet) 45%, var(--card-border)); }
+  .app-rule.own select { font-weight:600; }
+  /* A program's name elsewhere (history, dashboard) leads to its row here. */
+  .app-go { cursor:var(--cur-hand); border-radius:4px; }
+  .app-go:hover { text-decoration:underline; text-underline-offset:2px; }
   .h-app { font-weight:600; }
   /* The browser version cannot know which program is in front. */
-  .standalone .app-per, .standalone label:has(> #s-appcontext) { display:none; }
+  .standalone #set-apps, .standalone label:has(> #s-appcontext) { display:none !important; }
   .set-search { flex:0 1 240px; min-width:170px; }
   .set-mode { display:inline-flex; padding:3px; gap:2px; border-radius:999px; background:var(--card); border:1px solid var(--card-border); }
   .set-mode button { border:none; background:none; padding:6px 14px; border-radius:999px; font:inherit; font-size:13px; font-weight:600; color:var(--text2); cursor:var(--cur-hand); }
@@ -3338,15 +3341,6 @@
           <label class="fld">Rule set</label>
           <select id="s-promptsel"></select>
           <p class="act-note" id="prompt-desc" style="margin:6px 0 0;"></p>
-          <div class="app-per">
-          <div class="subhead" style="margin-top:18px;" data-help="appprompts">Per app</div>
-          <p class="act-note" style="margin:2px 0 8px;">Vito sees which program you dictate into. Give one of them rules of its own — casual for a chat, neat for e-mail.</p>
-          <div class="app-rules" id="app-rules"></div>
-          <div class="rowflex" style="gap:8px; margin-top:8px;">
-            <select id="app-rules-add" style="width:auto; max-width:320px;"></select>
-          </div>
-          <p class="act-note" id="app-rules-note" style="margin:6px 0 0;" hidden></p>
-          </div>
           <div data-adv>
           <div class="rowflex" style="gap:8px; margin-top:10px;">
             <button type="button" class="mini-btn" id="prompt-new">New from this one</button>
@@ -3357,6 +3351,13 @@
           <p class="act-note prompt-fixed" id="prompt-contract"></p>
           <p class="act-note" style="margin-top:10px;">A Vito Assist command (“Vito, …”) doesn't use these rules: carrying out an instruction replaces them rather than extending them. The dictionary corrections and the language are sent separately, so you don't need to repeat them here.</p>
           </div>
+        </div>
+        <div class="card" data-sec="cleanup" hidden id="set-apps">
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M7 13h5M7 16h8"/></svg><span>Rule set per program</span></h2>
+          <p class="act-note" style="margin:0 0 12px;" data-help="appprompts">Vito sees which program you dictate into. Give one its own rules — casual for a chat, neat for e-mail; the others follow the rule set above.</p>
+          <div class="app-rules" id="app-rules"></div>
+          <button type="button" class="mini-btn" id="app-rules-more" style="margin-top:10px;" hidden></button>
+          <p class="act-note" id="app-rules-note" style="margin:6px 0 0;" hidden></p>
         </div>
         <div class="card" data-sec="cleanup" data-adv hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg><span data-help="cleanuprate">Token cost estimate</span></h2>
@@ -4120,8 +4121,10 @@ const TR = { nl: {
   "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
-  "Per app":"Per app", "Vito sees which program you dictate into. Give one of them rules of its own — casual for a chat, neat for e-mail.":"Vito ziet in welk programma je dicteert. Geef er een eigen regels — losjes voor een chat, netjes voor e-mail.",
-  "Add a program…":"Programma toevoegen…", "Dictate into a program first: it shows up here. Some desktops don't say which program is in front.":"Dicteer eerst in een programma: dan verschijnt het hier. Sommige desktops vertellen niet welk programma vooraan staat.",
+  "Rule set per program":"Regelset per programma", "Vito sees which program you dictate into. Give one its own rules — casual for a chat, neat for e-mail; the others follow the rule set above.":"Vito ziet in welk programma je dicteert. Geef er een eigen regels — losjes voor een chat, netjes voor e-mail; de rest volgt de regelset hierboven.",
+  "General ({set})":"Algemeen ({set})", "Rule set for {app}":"Regelset voor {app}", "Show all {n} programs":"Alle {n} programma's tonen", "Show fewer":"Minder tonen",
+  "Choose the rule set for this program":"Kies de regelset voor dit programma", "Cleaned with this rule set":"Opgeschoond met deze regelset",
+  "Dictate into a program first: it shows up here. Some desktops don't say which program is in front.":"Dicteer eerst in een programma: dan verschijnt het hier. Sommige desktops vertellen niet welk programma vooraan staat.",
   "Tell the cleanup which program you dictate into":"Vertel de opschoning in welk programma je dicteert", "Dictated into":"Gedicteerd in",
   "Tell the speech recognition the words in your dictionary":"Geef de spraakherkenning de woorden uit je woordenboek mee",
   "Search settings…":"Instellingen zoeken…", "Search settings":"Instellingen zoeken", "Which settings to show":"Welke instellingen je ziet",
@@ -9263,41 +9266,68 @@ function promptOptions(sel){
   const group = (label, items) => items.length ? `<optgroup label="${ahEsc(label)}">${items.map(opt).join("")}</optgroup>` : "";
   return group(t("Vito"), promptBuiltins) + group(t("Your own"), promptList);
 }
+// Every program dictated into (most used first), the one in front now and any
+// with a set of its own, each with a picker: "General" follows the rule set
+// above (the program is not in the map), any other choice is its own. The
+// first ten show; the rest behind a button, or when one is asked for.
+const APP_RULES_SHOWN = 10;
+let appRulesAll = false;
+function appRuleList(){
+  const list = appUses.map(a => ({ id: a.id, name: a.name, count: a.count }));
+  if (appNow && !list.some(a => a.id === appNow.id)) list.push({ id: appNow.id, name: appNow.name, count: 0 });
+  for (const id of Object.keys(appPrompts)) if (!list.some(a => a.id === id)) list.push({ id, name: id, count: 0 });
+  return list.filter(a => a.id !== "vito");
+}
 function renderAppRules(){
-  const box = $("app-rules"), add = $("app-rules-add"); if (!box || !add) return;
-  const ids = Object.keys(appPrompts);
-  box.innerHTML = ids.map(id => {
-    const u = appUses.find(x => x.id === id);
-    const n = u ? `<span class="ar-n">${u.count.toLocaleString(numLoc())}×</span>` : "";
-    const sel = ownOf(appPrompts[id]) || builtinOf(appPrompts[id]) ? appPrompts[id] : "vito:default";
-    return `<div class="app-rule" data-app="${ahEsc(id)}"><span class="ar-name" title="${ahEsc(id)}">${appIcon(id, appName(id))}${ahEsc(appName(id))}${n}</span>` +
-      `<select aria-label="${ahEsc(t("Rule set"))}">${promptOptions(sel)}</select>` +
-      `<button type="button" class="ar-x" aria-label="${ahEsc(t("Remove"))}" data-tip-text="${ahEsc(t("Remove"))}">×</button></div>`;
+  const box = $("app-rules"); if (!box) return;
+  const list = appRuleList();
+  const shown = appRulesAll ? list : list.slice(0, APP_RULES_SHOWN);
+  const gp = ownOf(promptActive) || builtinOf(promptActive) || promptBuiltins[0];
+  const general = gp ? t(gp.name) : "";
+  box.innerHTML = shown.map(a => {
+    const own = a.id in appPrompts;
+    const sel = !own ? "@general" : (ownOf(appPrompts[a.id]) || builtinOf(appPrompts[a.id]) ? appPrompts[a.id] : "vito:default");
+    const n = a.count ? `<span class="ar-n">${a.count.toLocaleString(numLoc())}×</span>` : "";
+    return `<div class="app-rule${own ? " own" : ""}" data-app="${ahEsc(a.id)}"><span class="ar-name" title="${ahEsc(a.id)}">${appIcon(a.id, a.name)}${ahEsc(a.name)}${n}</span>` +
+      `<select aria-label="${ahEsc(t("Rule set for {app}").replace("{app}", a.name))}">` +
+      `<option value="@general"${sel === "@general" ? " selected" : ""}>${ahEsc(t("General ({set})").replace("{set}", general))}</option>${promptOptions(sel)}</select></div>`;
   }).join("");
   box.querySelectorAll(".app-rule").forEach(row => {
     const id = row.dataset.app;
-    row.querySelector("select").onchange = (e) => { appPrompts[id] = e.target.value === "vito:default" ? "" : e.target.value; saveAppPrompts(); };
-    row.querySelector(".ar-x").onclick = () => { delete appPrompts[id]; renderAppRules(); saveAppPrompts(); };
+    row.querySelector("select").onchange = (e) => {
+      const v = e.target.value;
+      if (v === "@general") delete appPrompts[id]; else appPrompts[id] = v === "vito:default" ? "" : v;
+      row.classList.toggle("own", v !== "@general");
+      saveAppPrompts();
+    };
   });
-  // The programs to add: those dictated into, and the one in front now.
-  const seen = [...appUses];
-  if (appNow && !seen.some(a => a.id === appNow.id)) seen.unshift({ id: appNow.id, name: appNow.name, count: 0 });
-  const free = seen.filter(a => !(a.id in appPrompts) && a.id !== "vito");
-  add.innerHTML = `<option value="">${ahEsc(t("Add a program…"))}</option>` +
-    free.map(a => `<option value="${ahEsc(a.id)}">${ahEsc(a.name)}${a.count ? " · " + a.count.toLocaleString(numLoc()) + "×" : ""}</option>`).join("");
-  add.hidden = !free.length;
+  const more = $("app-rules-more");
+  more.hidden = list.length <= APP_RULES_SHOWN;
+  more.textContent = appRulesAll ? t("Show fewer") : t("Show all {n} programs").replace("{n}", list.length.toLocaleString(numLoc()));
   const note = $("app-rules-note");
-  note.hidden = seen.length > 0;
+  note.hidden = list.length > 0;
   note.textContent = t("Dictate into a program first: it shows up here. Some desktops don't say which program is in front.");
+}
+$("app-rules-more").onclick = () => { appRulesAll = !appRulesAll; renderAppRules(); };
+// From a program's name in the history or on the dashboard: its row here,
+// scrolled to and lit for a moment.
+async function openAppRule(id){
+  if (STANDALONE || !id) return;
+  selectTab("settings"); selectSetSection("cleanup");
+  if (!appRuleList().some(a => a.id === id)) await loadApps();
+  const i = appRuleList().findIndex(a => a.id === id);
+  if (i >= APP_RULES_SHOWN && !appRulesAll) { appRulesAll = true; renderAppRules(); }
+  setTimeout(() => {
+    const row = document.querySelector(`#app-rules .app-rule[data-app="${CSS.escape(id)}"]`) || $("set-apps");
+    row.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "center" });
+    row.classList.remove("flash-hl"); void row.offsetWidth; row.classList.add("flash-hl");
+    setTimeout(() => row.classList.remove("flash-hl"), 1600);
+    const sel = row.querySelector("select"); if (sel) sel.focus({ preventScroll: true });
+  }, 80);
 }
 function saveAppPrompts(){
   saveConfig({ cleanup: Object.assign({}, cfg.cleanup, { app_prompts: appPrompts }) }, t("Saved"));
 }
-$("app-rules-add").addEventListener("change", (e) => {
-  const id = e.target.value; if (!id) return;
-  appPrompts[id] = promptActive; // starts as the general set; pick another
-  renderAppRules(); saveAppPrompts();
-});
 function deletePrompt(){
   const p = promptList.find(x => x.id === promptActive); if (!p) return;
   modal(t("Delete rule set?"),
@@ -10914,6 +10944,10 @@ function appIcon(id, name){
     `src="/api/apps/icon/${encodeURIComponent(id)}?token=${encodeURIComponent(TOKEN)}"></span>`;
 }
 const appIconOf = (t) => t.tagName === "IMG" && t.parentNode && t.parentNode.classList && t.parentNode.classList.contains("app-ic") ? t.parentNode : null;
+document.addEventListener("click", (e) => {
+  const g = e.target.closest && e.target.closest(".app-go[data-app]");
+  if (g && g.dataset.app) { e.preventDefault(); e.stopPropagation(); openAppRule(g.dataset.app); }
+}, true);
 document.addEventListener("load", (e) => { const s = appIconOf(e.target); if (s) { s.classList.add("ok"); appIconSeen.set(s.dataset.app, true); } }, true);
 document.addEventListener("error", (e) => { const s = appIconOf(e.target); if (s) { appIconSeen.set(s.dataset.app, false); s.remove(); } }, true);
 function appsCardHTML(ins){
@@ -10926,10 +10960,10 @@ function appsCardHTML(ins){
   const seg = shown.map((a, i) => `<i style="width:${a.count / total * 100}%;background:${LANG_COLORS[i]}"></i>`).join("") +
     (rest ? `<i style="width:${rest / total * 100}%;background:var(--text3)"></i>` : "");
   const pct = (n) => Math.round(n / total * 100);
-  const list = apps.slice(0, 4).map((a, i) => `<div class="al-row"><span class="al-n">${appIcon(a.id, a.name)}${ahEsc(a.name)}</span><span class="al-p">${pct(a.count)}%</span>` +
+  const list = apps.slice(0, 4).map((a, i) => `<div class="al-row"><span class="al-n"><span class="app-go" data-app="${ahEsc(a.id)}">${appIcon(a.id, a.name)}${ahEsc(a.name)}</span></span><span class="al-p">${pct(a.count)}%</span>` +
     `<span class="al-b"><i style="width:${a.count / total * 100}%;background:${LANG_COLORS[i]}"></i></span></div>`).join("");
   return `<div class="chip violet">${icon}</div><div class="apps-one"><div class="num">${pct(apps[0].count)}%</div>` +
-    `<div class="lbl lang-name">${appIcon(apps[0].id, apps[0].name)}${ahEsc(apps[0].name)}</div><div class="lang-bar">${seg}</div></div><div class="apps-list">${list}</div>`;
+    `<div class="lbl lang-name"><span class="app-go" data-app="${ahEsc(apps[0].id)}">${appIcon(apps[0].id, apps[0].name)}${ahEsc(apps[0].name)}</span></div><div class="lang-bar">${seg}</div></div><div class="apps-list">${list}</div>`;
 }
 function appsBreakdown(ins){
   const apps = ins.apps || [], total = apps.reduce((s, a) => s + a.count, 0);
@@ -13806,8 +13840,11 @@ function historyEntryEl(e){
   // "cleanup" tag — the cleanup pass is what carried the command out.
   const aiTag = e.command_text
     ? " · " + SPARK_SVG + t("Vito Assist") + ": " + ahEsc(e.command_text)
-    : (e.cleanup_used ? " · " + SPARK_SVG + t("cleanup") : "");
-  const appTag = e.app ? ` · <span class="h-app" title="${ahEsc(t("Dictated into"))}">${appIcon(e.app_id, e.app)}${ahEsc(e.app)}</span>` : "";
+    : (e.cleanup_used ? " · " + (e.rules_name
+        ? `<span class="h-rules" title="${ahEsc(t("Cleaned with this rule set"))}">${SPARK_SVG}${ahEsc(t(e.rules_name))}</span>`
+        : SPARK_SVG + t("cleanup")) : "");
+  const appGo = e.app_id && !STANDALONE;
+  const appTag = e.app ? ` · <span class="h-app${appGo ? " app-go" : ""}" data-app="${ahEsc(e.app_id || "")}" title="${ahEsc(appGo ? t("Choose the rule set for this program") : t("Dictated into"))}">${appIcon(e.app_id, e.app)}${ahEsc(e.app)}</span>` : "";
   meta.innerHTML = `${new Date(e.timestamp).toLocaleString(numLoc())} · ${(e.duration_ms / 1000).toFixed(1)}s · ${langIcon(e.language || "auto")} · ${e.source}${appTag}${aiTag}`;
   const main = document.createElement("div"); main.className = "htext";
   renderWords(main, e.cleanup_used && e.cleaned ? e.cleaned : e.raw);

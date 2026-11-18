@@ -109,10 +109,10 @@ func (s *Store) Import(source string, entries []Entry, days map[string]DaySums) 
 		e.fillDefaults()
 		res, err := s.db.Exec(
 			`INSERT OR IGNORE INTO history
-			 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,favorite,origin,command_text,app,app_id)
-			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+			 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,favorite,origin,command_text,app,app_id,rules,rules_name)
+			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 			e.ID, e.Timestamp.UnixMilli(), e.DurationMS, e.Language, e.Source, e.Raw, e.Cleaned,
-			b2i(e.CleanupUsed), e.CleanupError, e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, b2i(e.Favorite), source, e.CommandText, e.App, e.AppID)
+			b2i(e.CleanupUsed), e.CleanupError, e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, b2i(e.Favorite), source, e.CommandText, e.App, e.AppID, e.Rules, e.RulesName)
 		if err != nil {
 			return added, err
 		}
@@ -166,7 +166,7 @@ func (s *Store) Import(source string, entries []Entry, days map[string]DaySums) 
 func (s *Store) OwnEntries(from, to time.Time) ([]Entry, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	rows, err := s.db.Query(`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite,app,app_id
+	rows, err := s.db.Query(`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite,app,app_id,rules,rules_name
 		FROM history WHERE origin NOT LIKE ? AND source != ? AND ts >= ? AND ts < ? ORDER BY ts`,
 		syncPrefix+"%", SourceUpload, from.UnixMilli(), to.UnixMilli())
 	if err != nil {
