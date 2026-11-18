@@ -250,6 +250,23 @@ the URL, redialled without on a 400/422; async: 200 phrases of ≤6 words),
 Whisper/Groq `prompt` (comma-separated, ≤500 chars ≈ its 224 tokens). Not
 for Parakeet or Whistle.
 
+## The program dictated into
+
+`internal/frontapp` names the program with the keyboard when a dictation
+starts (`frontapp.Current`, asked off the start path, read by
+`session.appOf`): Windows the foreground process and its FileDescription
+(a UWP app's own process, not ApplicationFrameHost); niri and Hyprland over
+their IPC; X11 `WM_CLASS`; GNOME Vito's Shell extension (`App`, from version
+6); KDE a KWin script Vito loads that reports the active window to
+`talk.vito.Front` over D-Bus (as kdotool does); macOS `lsappinfo` (untested).
+On Linux the name comes from the program's `.desktop` file. Only the
+program, never a window title. The cleanup is told its name
+(`cleanup.app_context`, nil = on; a line in `buildUserPrompt`), and
+`cleanup.app_prompts` picks a rule set per program (`Cleanup.ForApp`). The
+history keeps `app`/`app_id` per entry; `GET /api/apps` lists them with the
+one in front now. `app_prompts` is a map: `handlePutConfig` decodes it fresh,
+as the outfit, or a removed program would stay.
+
 ## Text snippets
 
 `dictionary.snippets` maps a spoken trigger ("mijn LinkedIn") to fixed text.

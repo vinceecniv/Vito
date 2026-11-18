@@ -17,12 +17,13 @@ import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 import Cogl from 'gi://Cogl';
 import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const BUS_NAME = 'talk.vito.Pill';
 const OBJECT_PATH = '/talk/vito/Pill';
-const VERSION = 5;
+const VERSION = 6;
 
 const IFACE = `<node><interface name="talk.vito.Pill">
   <property name="Version" type="u" access="read"/>
@@ -69,6 +70,10 @@ const IFACE = `<node><interface name="talk.vito.Pill">
   <method name="Focus">
     <arg type="i" name="monitor" direction="out"/>
     <arg type="b" name="window" direction="out"/>
+  </method>
+  <method name="App">
+    <arg type="s" name="id" direction="out"/>
+    <arg type="s" name="name" direction="out"/>
   </method>
   <signal name="Pointer">
     <arg type="u" name="id"/>
@@ -484,5 +489,18 @@ export default class VitoPillExtension extends Extension {
 
     Focus() {
         return [this._focusMonitor(), global.display.focus_window !== null];
+    }
+
+    // App names the program with the keyboard, for Vito's cleanup (frontapp):
+    // its desktop id and name, else the window's WM class. Never its title.
+    App() {
+        const w = global.display.focus_window;
+        if (!w)
+            return ['', ''];
+        const app = Shell.WindowTracker.get_default().get_window_app(w);
+        if (app && !app.is_window_backed())
+            return [(app.get_id() || '').replace(/\.desktop$/, ''), app.get_name() || ''];
+        const cls = w.get_wm_class() || '';
+        return [cls, cls];
     }
 }

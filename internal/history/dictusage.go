@@ -114,3 +114,33 @@ func (s *Store) DictDismissed() (map[string]bool, error) {
 	}
 	return out, rows.Err()
 }
+
+// AppUse is one program dictated into: its key, the name the system gives
+// it, how many dictations went there and when last (unix ms).
+type AppUse struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Count int    `json:"count"`
+	Last  int64  `json:"last"`
+}
+
+// Apps lists the programs dictated into, the most used first.
+func (s *Store) Apps() ([]AppUse, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	rows, err := s.db.Query(`SELECT app_id, MAX(app), COUNT(*), MAX(ts) FROM history
+		WHERE app_id <> '' GROUP BY app_id ORDER BY COUNT(*) DESC, MAX(ts) DESC LIMIT 100`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []AppUse
+	for rows.Next() {
+		var a AppUse
+		if err := rows.Scan(&a.ID, &a.Name, &a.Count, &a.Last); err != nil {
+			return nil, err
+		}
+		out = append(out, a)
+	}
+	return out, rows.Err()
+}

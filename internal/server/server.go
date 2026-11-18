@@ -44,6 +44,7 @@ import (
 	"vito/internal/demo"
 	"vito/internal/desktopcolors"
 	"vito/internal/dictionary"
+	"vito/internal/frontapp"
 	"vito/internal/history"
 	"vito/internal/hotkey"
 	"vito/internal/inject"
@@ -191,6 +192,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/autostart", s.auth(s.handleGetAutostart))
 	mux.HandleFunc("GET /api/desktop-colors", s.auth(s.handleDesktopColors))
 	mux.HandleFunc("GET /api/dictionary/usage", s.auth(s.handleDictUsage))
+	mux.HandleFunc("GET /api/apps", s.auth(s.handleApps))
 	mux.HandleFunc("GET /api/dictionary/suggestions", s.auth(s.handleDictSuggestions))
 	mux.HandleFunc("POST /api/dictionary/suggestions/dismiss", s.auth(s.handleDictDismiss))
 	mux.HandleFunc("PUT /api/autostart", s.auth(s.handlePutAutostart))
@@ -609,6 +611,8 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	// place, so a piece taken off would stay on. Decode into a fresh one and
 	// keep the current outfit only when the save does not mention it.
 	cfg.UI.Outfit = nil
+	// The same for the rule set per program: a program removed must go.
+	cfg.Cleanup.AppPrompts = nil
 	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 1<<20))
 	if err == nil {
 		err = json.Unmarshal(body, &cfg)
@@ -621,6 +625,12 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 		UI struct {
 			Outfit json.RawMessage `json:"outfit"`
 		} `json:"ui"`
+		Cleanup struct {
+			AppPrompts json.RawMessage `json:"app_prompts"`
+		} `json:"cleanup"`
+	}
+	if json.Unmarshal(body, &says) == nil && says.Cleanup.AppPrompts == nil {
+		cfg.Cleanup.AppPrompts = maps.Clone(current.Cleanup.AppPrompts)
 	}
 	if json.Unmarshal(body, &says) == nil && says.UI.Outfit == nil {
 		cfg.UI.Outfit = maps.Clone(current.UI.Outfit)
@@ -1452,6 +1462,19 @@ func (s *Server) handleDictUsage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.writeJSON(w, http.StatusOK, u)
+}
+
+// handleApps lists the programs dictated into, the most used first, and the
+// one with the keyboard now (the settings page offers them for a rule set of
+// their own).
+func (s *Server) handleApps(w http.ResponseWriter, r *http.Request) {
+	out := map[string]any{"apps": []history.AppUse{}, "now": frontapp.Current()}
+	if s.hist != nil && !s.demo() {
+		if a, err := s.hist.Apps(); err == nil && a != nil {
+			out["apps"] = a
+		}
+	}
+	s.writeJSON(w, http.StatusOK, out)
 }
 
 // handleDictSuggestions offers corrections the history argues for: words the

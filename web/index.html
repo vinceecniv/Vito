@@ -1182,6 +1182,17 @@
      only under "All" — and always while searching, so a search finds it. */
   #tab-settings.set-basic:not(.searching) [data-adv] { display:none !important; }
   .set-tools { flex-wrap:wrap; justify-content:flex-end; }
+  /* Rule sets per program (cleanup.app_prompts). */
+  .app-rules { display:flex; flex-direction:column; gap:6px; }
+  .app-rule { display:flex; align-items:center; gap:10px; padding:6px 8px 6px 12px; border-radius:10px; border:1px solid var(--card-border); background:var(--card); }
+  .app-rule .ar-name { flex:1; min-width:0; font-weight:600; font-size:13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .app-rule .ar-n { color:var(--text3); font-weight:500; font-size:12.5px; margin-left:6px; }
+  .app-rule select { width:auto; max-width:220px; }
+  .app-rule .ar-x { background:none; border:none; color:var(--text3); font-size:17px; width:26px; height:26px; border-radius:50%; cursor:var(--cur-hand); }
+  .app-rule .ar-x:hover { background:var(--track); color:var(--text); }
+  .h-app { font-weight:600; }
+  /* The browser version cannot know which program is in front. */
+  .standalone .app-per, .standalone label:has(> #s-appcontext) { display:none; }
   .set-search { flex:0 1 240px; min-width:170px; }
   .set-mode { display:inline-flex; padding:3px; gap:2px; border-radius:999px; background:var(--card); border:1px solid var(--card-border); }
   .set-mode button { border:none; background:none; padding:6px 14px; border-radius:999px; font:inherit; font-size:13px; font-weight:600; color:var(--text2); cursor:var(--cur-hand); }
@@ -3247,6 +3258,7 @@
         <div class="card" data-sec="cleanup" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z"/><path d="M19 15l.7 1.8L21.5 18l-1.8.7L19 20.5l-.7-1.8L16.5 18l1.8-.5z"/></svg><span>AI cleanup</span></h2>
           <label class="tgl" data-help="cleanup"><input type="checkbox" id="s-cleanup"><span class="tr"></span> Auto-clean dictations</label>
+          <label class="tgl" data-help="appcontext" data-adv><input type="checkbox" id="s-appcontext"><span class="tr"></span> Tell the cleanup which program you dictate into</label>
 
           <label class="fld" data-help="cleanupprovider">Cleanup provider</label>
           <input type="hidden" id="s-cleanupprovider">
@@ -3312,6 +3324,15 @@
           <label class="fld">Rule set</label>
           <select id="s-promptsel"></select>
           <p class="act-note" id="prompt-desc" style="margin:6px 0 0;"></p>
+          <div class="app-per">
+          <div class="subhead" style="margin-top:18px;" data-help="appprompts">Per app</div>
+          <p class="act-note" style="margin:2px 0 8px;">Vito sees which program you dictate into. Give one of them rules of its own — casual for a chat, neat for e-mail.</p>
+          <div class="app-rules" id="app-rules"></div>
+          <div class="rowflex" style="gap:8px; margin-top:8px;">
+            <select id="app-rules-add" style="width:auto; max-width:320px;"></select>
+          </div>
+          <p class="act-note" id="app-rules-note" style="margin:6px 0 0;" hidden></p>
+          </div>
           <div data-adv>
           <div class="rowflex" style="gap:8px; margin-top:10px;">
             <button type="button" class="mini-btn" id="prompt-new">New from this one</button>
@@ -4085,6 +4106,9 @@ const TR = { nl: {
   "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
+  "Per app":"Per app", "Vito sees which program you dictate into. Give one of them rules of its own — casual for a chat, neat for e-mail.":"Vito ziet in welk programma je dicteert. Geef er een eigen regels — losjes voor een chat, netjes voor e-mail.",
+  "Add a program…":"Programma toevoegen…", "Dictate into a program first: it shows up here. Some desktops don't say which program is in front.":"Dicteer eerst in een programma: dan verschijnt het hier. Sommige desktops vertellen niet welk programma vooraan staat.",
+  "Tell the cleanup which program you dictate into":"Vertel de opschoning in welk programma je dicteert", "Dictated into":"Gedicteerd in",
   "Tell the speech recognition the words in your dictionary":"Geef de spraakherkenning de woorden uit je woordenboek mee",
   "Search settings…":"Instellingen zoeken…", "Search settings":"Instellingen zoeken", "Which settings to show":"Welke instellingen je ziet",
   "Basic":"Basis", "All":"Alles", "Only the basic settings are shown. This section has more.":"Je ziet alleen de basisinstellingen. Dit onderdeel heeft er meer.",
@@ -9172,6 +9196,7 @@ function renderPromptPicker(){
   $("prompt-rename").disabled = !own;
   $("prompt-del").disabled = !own;
   renderRulesetPill();
+  renderAppRules(); // their pickers list the same sets
 }
 // A short random id, so renaming a set keeps it selected.
 const newPromptID = () => "p" + Math.random().toString(36).slice(2, 10);
@@ -9206,6 +9231,56 @@ function renamePrompt(){
     });
   setTimeout(() => { const i = m.querySelector("#pr-name"); i.focus(); i.select(); }, 30);
 }
+/* ---- a rule set per program (cleanup.app_prompts) ---- */
+// The daemon knows which program had the keyboard when a dictation started
+// (internal/frontapp) and keeps it with the history; GET /api/apps lists them,
+// the most used first, and the one in front now.
+let appUses = [], appNow = null, appPrompts = {};
+async function loadApps(){
+  try { const d = await api("/api/apps"); appUses = d.apps || []; appNow = d.now && d.now.id ? d.now : null; } catch {}
+  renderAppRules();
+}
+const appName = (id) => { const a = appUses.find(x => x.id === id); return a ? a.name : (appNow && appNow.id === id ? appNow.name : id); };
+function promptOptions(sel){
+  const opt = (p) => `<option value="${ahEsc(p.id)}"${p.id === sel ? " selected" : ""}>${ahEsc(t(p.name))}</option>`;
+  const group = (label, items) => items.length ? `<optgroup label="${ahEsc(label)}">${items.map(opt).join("")}</optgroup>` : "";
+  return group(t("Vito"), promptBuiltins) + group(t("Your own"), promptList);
+}
+function renderAppRules(){
+  const box = $("app-rules"), add = $("app-rules-add"); if (!box || !add) return;
+  const ids = Object.keys(appPrompts);
+  box.innerHTML = ids.map(id => {
+    const u = appUses.find(x => x.id === id);
+    const n = u ? `<span class="ar-n">${u.count.toLocaleString(numLoc())}×</span>` : "";
+    const sel = ownOf(appPrompts[id]) || builtinOf(appPrompts[id]) ? appPrompts[id] : "vito:default";
+    return `<div class="app-rule" data-app="${ahEsc(id)}"><span class="ar-name" title="${ahEsc(id)}">${ahEsc(appName(id))}${n}</span>` +
+      `<select aria-label="${ahEsc(t("Rule set"))}">${promptOptions(sel)}</select>` +
+      `<button type="button" class="ar-x" aria-label="${ahEsc(t("Remove"))}" data-tip-text="${ahEsc(t("Remove"))}">×</button></div>`;
+  }).join("");
+  box.querySelectorAll(".app-rule").forEach(row => {
+    const id = row.dataset.app;
+    row.querySelector("select").onchange = (e) => { appPrompts[id] = e.target.value === "vito:default" ? "" : e.target.value; saveAppPrompts(); };
+    row.querySelector(".ar-x").onclick = () => { delete appPrompts[id]; renderAppRules(); saveAppPrompts(); };
+  });
+  // The programs to add: those dictated into, and the one in front now.
+  const seen = [...appUses];
+  if (appNow && !seen.some(a => a.id === appNow.id)) seen.unshift({ id: appNow.id, name: appNow.name, count: 0 });
+  const free = seen.filter(a => !(a.id in appPrompts) && a.id !== "vito");
+  add.innerHTML = `<option value="">${ahEsc(t("Add a program…"))}</option>` +
+    free.map(a => `<option value="${ahEsc(a.id)}">${ahEsc(a.name)}${a.count ? " · " + a.count.toLocaleString(numLoc()) + "×" : ""}</option>`).join("");
+  add.hidden = !free.length;
+  const note = $("app-rules-note");
+  note.hidden = seen.length > 0;
+  note.textContent = t("Dictate into a program first: it shows up here. Some desktops don't say which program is in front.");
+}
+function saveAppPrompts(){
+  saveConfig({ cleanup: Object.assign({}, cfg.cleanup, { app_prompts: appPrompts }) }, t("Saved"));
+}
+$("app-rules-add").addEventListener("change", (e) => {
+  const id = e.target.value; if (!id) return;
+  appPrompts[id] = promptActive; // starts as the general set; pick another
+  renderAppRules(); saveAppPrompts();
+});
 function deletePrompt(){
   const p = promptList.find(x => x.id === promptActive); if (!p) return;
   modal(t("Delete rule set?"),
@@ -9213,6 +9288,8 @@ function deletePrompt(){
     () => {
       promptList = promptList.filter(x => x.id !== p.id);
       promptActive = ""; // back to Vito's default, never to nothing
+      for (const k in appPrompts) if (appPrompts[k] === p.id) appPrompts[k] = "";
+      cfg.cleanup.app_prompts = appPrompts;
       renderPromptPicker(); savePrompts(t("Rule set deleted"));
     }, "Delete", true);
 }
@@ -11892,7 +11969,10 @@ async function fillSettings() {
   updateReasoningNote();
   promptList = Array.isArray(cfg.cleanup.prompts) ? cfg.cleanup.prompts : [];
   promptActive = cfg.cleanup.active_prompt || "";
+  appPrompts = Object.assign({}, cfg.cleanup.app_prompts || {});
+  $("s-appcontext").checked = cfg.cleanup.app_context !== false; // unset is on
   renderPromptPicker();
+  loadApps();
   loadLocalStt();
   loadWhistle();
   // Vito's own sets come from the daemon, not the page: they are the prompts the
@@ -12648,7 +12728,7 @@ function collectSettings() {
       provider: (SPEECH_MODELS.find(m => m.id === $("s-model").value) || {}).provider || "assemblyai",
     }),
     cleanup: Object.assign(cfg.cleanup, {
-      enabled: $("s-cleanup").checked,
+      enabled: $("s-cleanup").checked, app_context: $("s-appcontext").checked, app_prompts: appPrompts,
       provider: $("s-cleanupprovider").value || "anthropic",
       api_key: $("s-cleanupkey").value, model: $("s-cleanupmodel").value,
       openai_base_url: $("s-openaibaseurl").value.trim(),
@@ -12694,7 +12774,7 @@ function autoSaveSettings() {
 }
 // s-typespeed / s-notify are custom icon dropdowns (hidden inputs) — they call
 // autoSaveSettings() themselves on pick, so they're not in this change list.
-["s-input","s-output","s-model","s-sounds","s-eu","s-stthints","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-updateauto","s-demo"]
+["s-input","s-output","s-model","s-sounds","s-eu","s-stthints","s-appcontext","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-updateauto","s-demo"]
   .forEach(id => $(id).addEventListener("change", autoSaveSettings));
 ["s-updatecheck","s-updateauto"].forEach(id => $(id).addEventListener("change", renderAutoUpdateNote));
 // The Assist toggle also flips its model section and refreshes the "which model" note.
@@ -13664,7 +13744,8 @@ function historyEntryEl(e){
   const aiTag = e.command_text
     ? " · " + SPARK_SVG + t("Vito Assist") + ": " + ahEsc(e.command_text)
     : (e.cleanup_used ? " · " + SPARK_SVG + t("cleanup") : "");
-  meta.innerHTML = `${new Date(e.timestamp).toLocaleString(numLoc())} · ${(e.duration_ms / 1000).toFixed(1)}s · ${langIcon(e.language || "auto")} · ${e.source}${aiTag}`;
+  const appTag = e.app ? ` · <span class="h-app" title="${ahEsc(t("Dictated into"))}">${ahEsc(e.app)}</span>` : "";
+  meta.innerHTML = `${new Date(e.timestamp).toLocaleString(numLoc())} · ${(e.duration_ms / 1000).toFixed(1)}s · ${langIcon(e.language || "auto")} · ${e.source}${appTag}${aiTag}`;
   const main = document.createElement("div"); main.className = "htext";
   renderWords(main, e.cleanup_used && e.cleaned ? e.cleaned : e.raw);
   div.appendChild(meta); div.appendChild(main);
@@ -15198,6 +15279,8 @@ const HELP = {
   svol:{nl:"Hoe hard de feedbackgeluidjes klinken, los van je systeemvolume.",en:"How loud the feedback sounds are, independent of your system volume."},
   lang:{nl:"De taal die je inspreekt. 'Automatisch' laat de dienst de taal zelf detecteren.",en:"The language you speak. 'Automatic' lets the service detect the language itself."},
   model:{nl:"Het spraakherkenningsmodel. De standaard (Universal Streaming) is snel en werkt voor de meeste talen.",en:"The speech-recognition model. The default (Universal Streaming) is fast and works for most languages."},
+  appprompts:{nl:"Vito ziet in welk programma je dicteert. Geef een programma een eigen regelset, dan geldt die daar in plaats van de algemene. Programma's verschijnen hier zodra je erin gedicteerd hebt.",en:"Vito sees which program you dictate into. Give a program a rule set of its own and it applies there instead of the general one. Programs show up here once you have dictated into them."},
+  appcontext:{nl:"De opschoning krijgt de naam van het programma mee (alleen de naam, nooit de venstertitel), zodat de vorm past: geen afsluiting in een chat, geen punt aan het eind in een terminal. De inhoud blijft wat je zei.",en:"The cleanup is told the program's name (only its name, never the window title), so the form fits: no sign-off in a chat, no closing full stop in a terminal. The content stays what you said."},
   stthints:{nl:"Vito geeft de spraakherkenning de bedoelde schrijfwijzen uit je woordenboek mee, de meest gebruikte eerst, zodat namen en vaktermen meteen goed verstaan worden. Niet bij de lokale modellen (Parakeet, Whistle). Bij Soniox kost dat iets extra: de woorden worden als tekst-tokens gerekend.",en:"Vito gives the speech recognition the intended spellings from your dictionary, the most used first, so names and jargon are heard right the first time. Not with the local models (Parakeet, Whistle). With Soniox it costs a little extra: the words are billed as text tokens."},
   eu:{nl:"Verwerk je audio via Europese servers (data-residentie in de EU).",en:"Process your audio via European servers (data residency in the EU)."},
   sttkey:{nl:"Je persoonlijke AssemblyAI-sleutel voor de spraak-naar-tekst dienst.",en:"Your personal AssemblyAI key for the speech-to-text service."},

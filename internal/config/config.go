@@ -120,6 +120,32 @@ type Cleanup struct {
 	// leaves them empty.
 	Prompts      []Prompt `json:"prompts,omitempty"`
 	ActivePrompt string   `json:"active_prompt,omitempty"`
+	// AppPrompts picks a rule set per program dictated into: its key
+	// (frontapp.App.ID) to a prompt id as ActivePrompt takes it. A program not
+	// in the map gets ActivePrompt.
+	AppPrompts map[string]string `json:"app_prompts,omitempty"`
+	// AppContext tells the model which program the text goes to, so it fits
+	// the form to it. Nil-safe: unset is on.
+	AppContext *bool `json:"app_context,omitempty"`
+	// App is the program of this dictation, as the model is told it; filled
+	// by the daemon, never saved.
+	App string `json:"-"`
+}
+
+// AppContextOn reports whether the model is told the program dictated into.
+func (c Cleanup) AppContextOn() bool { return c.AppContext == nil || *c.AppContext }
+
+// ForApp is this configuration for a dictation into the program with key
+// id and name: its own rule set when one is chosen for it, and its name for
+// the model when that is on.
+func (c Cleanup) ForApp(id, name string) Cleanup {
+	if p, ok := c.AppPrompts[id]; ok && id != "" {
+		c.ActivePrompt = p
+	}
+	if c.AppContextOn() {
+		c.App = name
+	}
+	return c
 }
 
 // Prompt is one named set of cleanup rules. The id is what ActivePrompt refers

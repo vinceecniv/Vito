@@ -95,10 +95,17 @@ func ProviderName(cfg config.Cleanup) string {
 // Only the corrections this transcript could need go along
 // (dictionary.Relevant): the whole dictionary on every dictation costs tokens
 // and tempts the model to apply a correction that does not belong.
-func buildUserPrompt(text, language string, corrections []config.Correction) string {
+//
+// app is the program the text will be typed into, when known: it may decide
+// the form (no sign-off in a chat, no closing full stop in a terminal) where
+// the rules leave that open, never the content.
+func buildUserPrompt(text, language string, corrections []config.Correction, app string) string {
 	corrections = dictionary.Relevant(text, corrections)
 	var user strings.Builder
 	fmt.Fprintf(&user, "Language: %s\n", language)
+	if app = strings.TrimSpace(app); app != "" {
+		fmt.Fprintf(&user, "App the text is typed into: %s (let it shape only the form where the rules leave that open; never add or drop content)\n", app)
+	}
 	if len(corrections) > 0 {
 		user.WriteString("Corrections (misheard -> intended):\n")
 		for _, corr := range corrections {
@@ -312,6 +319,7 @@ type AnthropicCleaner struct {
 	client anthropic.Client
 	model  string
 	rules  string // active cleanup rules; empty = Vito's own
+	app    string // the program dictated into, for the model; may be empty
 }
 
 func NewAnthropicCleaner(cfg config.Cleanup) *AnthropicCleaner {
@@ -319,6 +327,7 @@ func NewAnthropicCleaner(cfg config.Cleanup) *AnthropicCleaner {
 		client: anthropic.NewClient(option.WithAPIKey(cfg.APIKey)),
 		model:  cfg.Model,
 		rules:  activeRules(cfg),
+		app:    cfg.App,
 	}
 }
 
@@ -329,7 +338,7 @@ func (c *AnthropicCleaner) Clean(ctx context.Context, text, language string, cor
 		Temperature: anthropic.Float(0),
 		System:      []anthropic.TextBlockParam{{Text: systemPromptWith(instruction, c.rules)}},
 		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(buildUserPrompt(text, language, corrections))),
+			anthropic.NewUserMessage(anthropic.NewTextBlock(buildUserPrompt(text, language, corrections, c.app))),
 		},
 	})
 	if err != nil {
@@ -367,6 +376,7 @@ type OpenAICleaner struct {
 	name    string // display name for errors/credit (Groq, OpenAI, Local model, …)
 	effort  string // reasoning_effort, sent only when set
 	rules   string // active cleanup rules; empty = Vito's own
+	app     string // the program dictated into, for the model; may be empty
 	http    *http.Client
 }
 
@@ -378,6 +388,7 @@ func NewOpenAICleaner(cfg config.Cleanup) *OpenAICleaner {
 		name:    ProviderName(cfg),
 		effort:  strings.TrimSpace(cfg.ReasoningEffort),
 		rules:   activeRules(cfg),
+		app:     cfg.App,
 		http:    &http.Client{}, // the caller's context carries the timeout
 	}
 }
@@ -419,7 +430,7 @@ func (c *OpenAICleaner) Clean(ctx context.Context, text, language string, correc
 		ReasoningEffort: c.effort,
 		Messages: []openAIMessage{
 			{Role: "system", Content: systemPromptWith(instruction, c.rules)},
-			{Role: "user", Content: buildUserPrompt(text, language, corrections)},
+			{Role: "user", Content: buildUserPrompt(text, language, corrections, c.app)},
 		},
 	})
 	if err != nil {

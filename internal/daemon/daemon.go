@@ -25,6 +25,7 @@ import (
 	"vito/internal/cleanup"
 	"vito/internal/config"
 	"vito/internal/dictionary"
+	"vito/internal/frontapp"
 	"vito/internal/history"
 	"vito/internal/inject"
 	"vito/internal/localstt"
@@ -143,6 +144,26 @@ type session struct {
 	// restored: a cancelled dictation brought back (kept.go). Its recording is
 	// over and its stream gone; finish transcribes the kept audio file.
 	restored bool
+	// appCh brings the program that had the keyboard when the dictation
+	// started (frontapp, asked off the start path); appOf reads it once.
+	appCh   chan frontapp.App
+	appOnce sync.Once
+	app     frontapp.App
+}
+
+// appOf is the program dictated into, waiting a moment for the answer; a
+// zero App when unknown or never asked (a restored dictation).
+func (s *session) appOf() frontapp.App {
+	s.appOnce.Do(func() {
+		if s.appCh == nil {
+			return
+		}
+		select {
+		case s.app = <-s.appCh:
+		case <-time.After(500 * time.Millisecond):
+		}
+	})
+	return s.app
 }
 
 type Daemon struct {
@@ -734,7 +755,10 @@ func (d *Daemon) start() error {
 		spool:   spool,
 		started: time.Now(),
 		chunks:  make(chan []byte, 256),
+		appCh:   make(chan frontapp.App, 1),
 	}
+	// Which program the text will go to: the one with the keyboard now.
+	go func() { s.appCh <- frontapp.Current() }()
 
 	// Duck (or pause) any playing music/video for the duration of the
 	// recording. This runs in the background (see media.Start) so it adds no
@@ -1315,6 +1339,10 @@ func (d *Daemon) finish(s *session) {
 	}
 	// Cleanup must be on. A pending command then forces a pass even below the
 	// min-words threshold (that's how the command is applied).
+	// The program dictated into: its own rule set, if one is chosen for it,
+	// and its name for the model.
+	app := s.appOf()
+	cleanCfg = cleanCfg.ForApp(app.ID, app.Name)
 	if d.cleanupEffective(s) && (instruction != "" || wordCount(raw) >= cfg.Cleanup.MinWords) && !dictionary.OnlySnippets(marked) {
 		ctx, cancel := context.WithTimeout(context.Background(), cleanup.Timeout(cleanCfg.TimeoutMS, marked))
 		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, marked, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
@@ -1412,6 +1440,8 @@ func (d *Daemon) finish(s *session) {
 			Command:          instruction != "",
 			CommandText:      instruction,
 			ClipboardCommand: clipboardOut,
+			App:              s.appOf().Name,
+			AppID:            s.appOf().ID,
 			SttMS:            timings.SttFinal.Milliseconds(),
 			CleanupMS:        timings.Cleanup.Milliseconds(),
 			InjectedMS:       timings.Injected.Milliseconds(),
