@@ -35,6 +35,9 @@ func current() App {
 	}
 	id := strings.TrimSuffix(strings.ToLower(filepath.Base(path)), ".exe")
 	keepIcon(id, path)
+	if n := ShellName(id); n != "" {
+		return App{ID: id, Name: n}
+	}
 	return App{ID: id, Name: cachedName(strings.ToLower(path), func() string { return describe(path) })}
 }
 
@@ -69,7 +72,8 @@ func uwpChild(parent windows.HWND, host uint32) uint32 {
 }
 
 // describe reads the executable's FileDescription, else its ProductName,
-// else gives its name without ".exe".
+// else gives its name without ".exe". A description that is only the file's
+// name, or a product name that is only Windows', says nothing.
 func describe(path string) string {
 	fallback := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 	size, err := windows.GetFileVersionInfoSize(path, nil)
@@ -93,7 +97,7 @@ func describe(path string) string {
 			var n uint32
 			if windows.VerQueryValue(unsafe.Pointer(&block[0]), `\StringFileInfo\`+l+`\`+field, unsafe.Pointer(&v), &n) == nil && n > 1 {
 				s := strings.TrimSpace(windows.UTF16PtrToString((*uint16)(v)))
-				if s != "" {
+				if s != "" && !strings.EqualFold(s, filepath.Base(path)) && !osProduct(s) {
 					return s
 				}
 			}

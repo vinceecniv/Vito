@@ -131,6 +131,7 @@ func NewStore(maxEntries, retentionDays int) (*Store, error) {
 	// The program dictated into (added later than the table).
 	_, _ = db.Exec("ALTER TABLE history ADD COLUMN app TEXT NOT NULL DEFAULT ''")
 	_, _ = db.Exec("ALTER TABLE history ADD COLUMN app_id TEXT NOT NULL DEFAULT ''")
+	tidyAppNames(db)
 	migrateImport(func(q string) error { _, err := db.Exec(q); return err })
 	s := &Store{db: db, maxEntries: maxEntries, retentionDays: retentionDays}
 	s.importLegacy(filepath.Join(base, "history.jsonl"))

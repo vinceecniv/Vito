@@ -37,6 +37,28 @@ func Current() App {
 	return a
 }
 
+// shellNames are Windows' own parts, whose files describe themselves badly
+// or not at all ("Microsoft® Windows® Operating System" is every one's
+// product name).
+var shellNames = map[string]string{
+	"searchhost":              "Windows Search",
+	"searchapp":               "Windows Search",
+	"startmenuexperiencehost": "Start menu",
+	"shellexperiencehost":     "Windows Shell",
+	"textinputhost":           "Windows input",
+	"lockapp":                 "Lock screen",
+	"explorer":                "File Explorer",
+	"applicationframehost":    "Windows app",
+}
+
+// ShellName is the name of one of Windows' own parts by its id, or "".
+func ShellName(id string) string { return shellNames[strings.ToLower(id)] }
+
+// osProduct reports a product name that only says "Windows".
+func osProduct(s string) bool {
+	return strings.Contains(strings.ToLower(s), "operating system")
+}
+
 // names caches what a program is called: looking it up reads a file.
 var (
 	namesMu sync.Mutex

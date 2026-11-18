@@ -1,7 +1,10 @@
 package history
 
 import (
+	"database/sql"
+
 	"vito/internal/dictionary"
+	"vito/internal/frontapp"
 
 	"strings"
 	"time"
@@ -143,4 +146,29 @@ func (s *Store) Apps() ([]AppUse, error) {
 		out = append(out, a)
 	}
 	return out, rows.Err()
+}
+
+// tidyAppNames renames the entries kept before Vito knew better, when a part
+// of Windows was called by its product name ("Microsoft® Windows® Operating
+// System"): its own name where Vito has one, else its id.
+func tidyAppNames(db *sql.DB) {
+	rows, err := db.Query(`SELECT DISTINCT app_id FROM history WHERE app_id != '' AND app LIKE '%Operating System%'`)
+	if err != nil {
+		return
+	}
+	var ids []string
+	for rows.Next() {
+		var id string
+		if rows.Scan(&id) == nil {
+			ids = append(ids, id)
+		}
+	}
+	rows.Close()
+	for _, id := range ids {
+		name := frontapp.ShellName(id)
+		if name == "" {
+			name = id
+		}
+		_, _ = db.Exec(`UPDATE history SET app = ? WHERE app_id = ? AND app LIKE '%Operating System%'`, name, id)
+	}
 }
