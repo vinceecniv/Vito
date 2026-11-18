@@ -473,12 +473,12 @@ func Default() *Config {
 		Server: Server{Port: 4573},
 		Audio:  Audio{InputGain: 1.0, SoundsEnabled: true, SoundsVolume: 1.0, MediaAction: "duck", SilenceTimeoutSec: 15, AutoStopSilenceMS: 1200},
 		STT: STT{
-			// Default to Soniox: its single realtime model (stt-rt-v5) covers all
+			// Default to Soniox: its single realtime model (stt-rt-v6) covers all
 			// 60 languages and is the first choice in the UI's model list — the
 			// sensible starting point on a fresh install, before any keys exist.
 			Provider:   "soniox",
 			Language:   "nl",
-			Model:      "stt-rt-v5",
+			Model:      "stt-rt-v6",
 			EUEndpoint: true, // only affects AssemblyAI; harmless for Soniox
 		},
 		Cleanup: Cleanup{
@@ -636,10 +636,18 @@ func Load() (*Config, error) {
 	// code". That was never free choice: those sessions are billed as Realtime
 	// Universal-3.5 Pro. Naming it makes the price visible and the setting
 	// honest, without changing which model actually runs. This predates Soniox
-	// (whose configs always carry stt-rt-v5), so the concrete AssemblyAI model is
+	// (whose configs always carry a stt-rt model), so the concrete AssemblyAI model is
 	// the right fill-in — not the current default provider's model.
 	if cfg.STT.Model == "" {
 		cfg.STT.Model = "universal-3-5-pro"
+		if err := cfg.Save(); err != nil {
+			return nil, err
+		}
+	}
+	// Soniox replaced stt-rt-v5 by stt-rt-v6 (v5 goes on 15 December 2026,
+	// then routed to v6): the setting names the model that runs.
+	if cfg.STT.Model == "stt-rt-v5" {
+		cfg.STT.Model = "stt-rt-v6"
 		if err := cfg.Save(); err != nil {
 			return nil, err
 		}

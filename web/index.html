@@ -5853,7 +5853,7 @@ const PRO_LANGS = ["en","es","fr","de","it","pt","ar","da","nl","he","hi","ja","
 // user's own language. English is skipped — it's supported everywhere and is
 // effectively the default, so a tag would be noise.
 const OS_LANG = (navigator.language || "").slice(0, 2).toLowerCase();
-// Soniox's stt-rt-v5 covers all 60 languages from its official supported-languages
+// Soniox's stt-rt-v6 covers all 60 languages from its official supported-languages
 // list — each with a real flag (served from /flags) and a localized name below.
 const SONIOX_LANGS = ["en","nl","de","fr","es","it","pt","pl","ru","uk","cs","sk","sv","da","no","fi","el","hu","ro","bg","hr","sr","sl","bs","sq","mk","be","lt","lv","et","ca","eu","gl","cy","tr","az","kk","ar","he","fa","ur","hi","bn","gu","pa","mr","kn","ml","ta","te","zh","ja","ko","vi","th","id","ms","tl","af","sw"];
 // Parakeet TDT 0.6B v3's 25 languages, minus Maltese (no flag in LANG_DATA).
@@ -5877,7 +5877,7 @@ const SPEECH_MODELS_ALL = [
     sub:"On this computer, free, nothing leaves it. One download of about 1 GB.",
     needs:"Requires: nothing but the one-time download below — no account, no key, no server of your own.",
     bullets:["Best for: privacy and zero cost", "25 European languages, detected automatically", "About a second per dictation on a CPU", "Needs ≈ 1 GB RAM while active, 0.9 GB disk", "No live transcript: the text arrives after you stop"] },
-  { id:"stt-rt-v5", provider:"soniox", name:"Soniox stt-rt-v5", price:0.12, langs:SONIOX_LANGS, logo:LOGO_IMG("soniox"),
+  { id:"stt-rt-v6", provider:"soniox", name:"Soniox stt-rt-v6", price:0.12, langs:SONIOX_LANGS, logo:LOGO_IMG("soniox"),
     sub:"The cheapest option, with the most languages.",
     needs:"Requires: a Soniox account (free to create) and its API key, entered below. Audio is sent to Soniox.",
     bullets:["Best for: low cost", "60+ languages in one model", "Automatic language detection"] },

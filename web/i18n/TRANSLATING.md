@@ -65,7 +65,7 @@ translates those too.
 These are in the brief, repeated here because they are decisions about the
 product, not about language:
 
-- Model names (`Universal-3.5 Pro Realtime`, `Soniox stt-rt-v5`), provider names
+- Model names (`Universal-3.5 Pro Realtime`, `Soniox stt-rt-v6`), provider names
   and `Vito` are never translated.
 - `"EN, ES, FR, DE, IT, PT"` is a list of language codes and stays as it is.
 - Placeholders and symbols survive verbatim: `{n}`, `→`, `≈`, `ms`, amounts.

@@ -20,7 +20,7 @@ import (
 
 // SonioxModel is the realtime model. Soniox runs one unified realtime model
 // across all its languages, so there is nothing to choose here.
-const SonioxModel = "stt-rt-v5"
+const SonioxModel = "stt-rt-v6"
 
 const sonioxURL = "wss://stt-rt.soniox.com/transcribe-websocket"
 

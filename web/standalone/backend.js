@@ -421,7 +421,7 @@ registerProcessor("vito-pcm",P)`;
     ws.binaryType = "arraybuffer";
     let final = "", tail = "", queue = [], failed = null, finished = null;
     const langs = {};
-    const start = { api_key: (cfg.stt.soniox_api_key || "").trim(), model: "stt-rt-v5", audio_format: "pcm_s16le",
+    const start = { api_key: (cfg.stt.soniox_api_key || "").trim(), model: "stt-rt-v6", audio_format: "pcm_s16le",
       sample_rate: RATE, num_channels: 1, enable_language_identification: true };
     if (cfg.stt.language && cfg.stt.language !== "auto") start.language_hints = [cfg.stt.language];
     const end = () => { if (finished) { const f = finished; finished = null; f(); } };
