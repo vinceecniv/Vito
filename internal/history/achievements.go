@@ -105,6 +105,12 @@ func (s *Store) AchievementInputs(wpm float64) (achievements.Stats, error) {
 		GROUP BY language HAVING COUNT(*) >= ?)`, LangMin)
 	_ = langRow.Scan(&st.Languages)
 
+	// Programs dictated into, each counted from its second dictation, so one
+	// that happened to be in front once doesn't count.
+	appRow := s.db.QueryRow(`SELECT COUNT(*) FROM (SELECT app_id FROM history
+		WHERE source != 'upload' AND app_id != '' GROUP BY app_id HAVING COUNT(*) >= 2)`)
+	_ = appRow.Scan(&st.Apps)
+
 	hourRows, err := s.db.Query(`SELECT ts FROM history WHERE source != 'upload'`)
 	if err == nil {
 		for hourRows.Next() {

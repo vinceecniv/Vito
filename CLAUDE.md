@@ -264,7 +264,10 @@ program, never a window title. The cleanup is told its name
 (`cleanup.app_context`, nil = on; a line in `buildUserPrompt`), and
 `cleanup.app_prompts` picks a rule set per program (`Cleanup.ForApp`). The
 history keeps `app`/`app_id` per entry; `GET /api/apps` lists them with the
-one in front now. `app_prompts` is a map: `handlePutConfig` decodes it fresh,
+one in front now. The dashboard's Programs card reads `insights.apps` (per
+period; two cells show a list, one the top share; not in the browser
+version), and the secret App Hopper / Many Hands count programs with two
+dictations or more (`Stats.Apps`). `app_prompts` is a map: `handlePutConfig` decodes it fresh,
 as the outfit, or a removed program would stay.
 
 ## Text snippets

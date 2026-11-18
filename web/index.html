@@ -1286,6 +1286,15 @@
   .lang-card .lang-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-bar { display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
   .lang-bar i { display:block; height:100%; }
+  /* Programs: one cell like the languages; two cells a list of the top ones. */
+  .apps-list { display:none; position:relative; z-index:1; margin-top:12px; flex-direction:column; gap:calc(7px * var(--dn, 1)); }
+  .apps-card.span2 .apps-list, .apps-card.span3 .apps-list { display:flex; }
+  .apps-card.span2 .apps-one, .apps-card.span3 .apps-one { display:none; }
+  .apps-list .al-row { display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:10px; row-gap:3px; font-size:13px; }
+  .apps-list .al-n { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text2); }
+  .apps-list .al-p { font-weight:700; font-variant-numeric:tabular-nums; }
+  .apps-list .al-b { grid-column:1 / -1; height:5px; border-radius:99px; background:var(--track); overflow:hidden; }
+  .apps-list .al-b i { display:block; height:100%; border-radius:99px; }
   /* Rhythm: twice as wide, so the week-by-hour grid has room. */
   /* The cloud fills the whole card, behind the icon and title too. The card
      keeps the calendar card's size through an invisible spacer with the
@@ -4189,6 +4198,9 @@ const TR = { nl: {
   "Came back after 30 quiet days":"Teruggekomen na 30 stille dagen",
   "Transcribed an audio file":"Een audiobestand getranscribeerd",
   "Dictated in three languages":"In drie talen gedicteerd",
+  "Dictated into five different programs":"In vijf verschillende programma's gedicteerd", "Dictated into ten different programs":"In tien verschillende programma's gedicteerd",
+  "{n} more":"nog {n}", "Programs":"Programma's", "No programs detected in this period yet":"Nog geen programma's herkend in deze periode",
+  "The programs you dictated into in this period, by number of dictations.":"De programma's waarin je in deze periode dicteerde, naar aantal dictaten.",
   "Dictated, gave Vito Assist a command and made a long recording":"Gedicteerd, Vito Assist een opdracht gegeven en een lange opname gemaakt",
   // Backup & restore
   "Backup":"Back-up",
@@ -9838,18 +9850,18 @@ loadAbout();
 // chart, the costs and the live transcript alike — and any card can be dragged
 // to any place, like icons on a phone's home screen.
 const STAT_KEYS = ["credit","words","streak","commands",
-  "cleanupfx","languages","rhythm","wordcloud","achievements","update"];
+  "cleanupfx","languages","apps","rhythm","wordcloud","achievements","update"];
 const LAYOUT_GROUPS = [
   { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript","quicksettings","mascot"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", commands:"Vito Assist and recordings", achievements:"Achievements", update:"Version",
-  streak:"days in a row", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
+  streak:"days in a row", cleanupfx:"changed by AI cleanup", languages:"Languages", apps:"Programs", rhythm:"words per dictation", wordcloud:"Most used words",
   cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings", mascot:"Vito" };
 // The fixed cards are written in the page; the statistic cards are built from
 // their data (renderStatCards). Some cards take two cells, the transcript a
 // whole row — and it can't be hidden, it holds Start / Stop.
 const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card", mascot:"mascot-card" };
-const LAYOUT_SPAN2 = ["words","chart","rhythm","wordcloud","quicksettings","mascot"];
+const LAYOUT_SPAN2 = ["words","chart","rhythm","wordcloud","quicksettings","mascot","apps"];
 // The widths, in cells, each card can be set to from its menu — where a choice
 // makes sense. The cards with a chart in them can go up to three; the words
 // chart, the calendar and quick settings are too cramped in one; the
@@ -9884,7 +9896,7 @@ const LAYOUT_DEFAULT = [...STAT_KEYS, "cost", "chart", "transcript", "quicksetti
 // The cards that only appear when they have news (Vito Assist, the version,
 // out of credit) take their place when they do.
 const LAYOUT_FRESH = ["transcript", "words", "mascot", "wordcloud", "commands", "achievements", "streak", "cleanupfx",
-  "chart", "rhythm", "languages", "cost", "quicksettings", "update", "credit"];
+  "chart", "rhythm", "languages", "apps", "cost", "quicksettings", "update", "credit"];
 const freshLayout = () => ({ order: [...LAYOUT_FRESH], hidden: [], updateAlways: true,
   widths: { words: 3, chart: 2, mascot: 1, streak: 1 }, spark: {}, main: "saved", matrix: true, streakFx: true });
 let statusLayout = null;
@@ -10878,6 +10890,31 @@ function langCardHTML(ins){
   return `<div class="chip coral">${icon}</div><div class="num">${pct(langs[0].count)}%</div>` +
     `<div class="lbl lang-name">${ahEsc(langShortName(langs[0].code))}</div><div class="lang-bar">${seg}</div>`;
 }
+// The programs dictated into (internal/frontapp), laid out as the languages
+// card: the top one's share as the figure, its name beneath, every program as
+// a share of one bar, the breakdown in words in the tooltip.
+function appsCardHTML(ins){
+  const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6" cy="6.5" r=".6" fill="currentColor"/><circle cx="8.4" cy="6.5" r=".6" fill="currentColor"/></svg>';
+  const apps = ins.apps || [];
+  const total = apps.reduce((s, a) => s + a.count, 0);
+  if (!total) return `<div class="chip violet">${icon}</div><div class="num">–</div><div class="lbl">${t("Programs")}</div>` +
+    `<div class="delta flat">${t("No programs detected in this period yet")}</div>`;
+  const shown = apps.slice(0, 4), rest = total - shown.reduce((s, a) => s + a.count, 0);
+  const seg = shown.map((a, i) => `<i style="width:${a.count / total * 100}%;background:${LANG_COLORS[i]}"></i>`).join("") +
+    (rest ? `<i style="width:${rest / total * 100}%;background:var(--text3)"></i>` : "");
+  const pct = (n) => Math.round(n / total * 100);
+  const list = apps.slice(0, 4).map((a, i) => `<div class="al-row"><span class="al-n">${ahEsc(a.name)}</span><span class="al-p">${pct(a.count)}%</span>` +
+    `<span class="al-b"><i style="width:${a.count / total * 100}%;background:${LANG_COLORS[i]}"></i></span></div>`).join("");
+  return `<div class="chip violet">${icon}</div><div class="apps-one"><div class="num">${pct(apps[0].count)}%</div>` +
+    `<div class="lbl lang-name">${ahEsc(apps[0].name)}</div><div class="lang-bar">${seg}</div></div><div class="apps-list">${list}</div>`;
+}
+function appsBreakdown(ins){
+  const apps = ins.apps || [], total = apps.reduce((s, a) => s + a.count, 0);
+  if (!total) return "";
+  const top = apps.slice(0, 8).map(a => `${a.name} ${Math.round(a.count / total * 100)}%`);
+  if (apps.length > 8) top.push(t("{n} more").replace("{n}", (apps.length - 8).toLocaleString(numLoc())));
+  return top.join(" · ");
+}
 // Every language and its share, for the languages card's tooltip.
 function langBreakdown(ins){
   const langs = ins.languages || [], total = langs.reduce((s, l) => s + l.count, 0);
@@ -11041,7 +11078,7 @@ function renderStatCards(all){
       if (c.minis) el.classList.add("has-minis");
       statEls[c.key] = el;
     }
-    if (c.custom) { el.innerHTML = c.html(); if (c.cardClass) el.classList.add(c.cardClass); (c.wire || wireUpdateCard)(el); return; }
+    if (c.custom) { el.innerHTML = c.html(); if (c.cardClass) el.classList.add(...c.cardClass.split(" ")); (c.wire || wireUpdateCard)(el); return; }
     const chip = el.querySelector(".chip");
     if (chip && c.minis) { chip.className = "chip " + c.cls; chip.innerHTML = c.icon; } // the volume card's main figure can change
     el.querySelector(".lbl").textContent = c.lbl;
@@ -11703,6 +11740,9 @@ async function loadStatsNow(){
       tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
     { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
       [langBreakdown(ins), t("Languages you dictated in this period, by number of dictations.")].filter(Boolean).join(" — ")) },
+    // The browser can't tell which program has the keyboard: there it has no card.
+    ...(STANDALONE ? [] : [{ key:"apps", custom:true, cardClass:"apps-card lang-card", html:() => appsCardHTML(ins), wire:el => setCardTip(el,
+      [appsBreakdown(ins), t("The programs you dictated into in this period, by number of dictations.")].filter(Boolean).join(" — ")) }]),
     { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => { setCardTip(el,
       t("The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.")); fitCloud(el);
       // Rendered while the page is hidden there is nothing to measure yet; fit
