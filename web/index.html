@@ -3367,6 +3367,7 @@
           <div class="rowflex" style="gap:8px; margin-top:10px; flex-wrap:wrap;">
             <button type="button" class="mini-btn" id="app-rules-more" hidden></button>
             <button type="button" class="mini-btn" id="app-rules-manage">Edit rule sets…</button>
+            <button type="button" class="mini-btn" id="app-output-manage">Space and Enter for all programs…</button>
           </div>
           <p class="act-note" id="app-rules-note" style="margin:6px 0 0;" hidden></p>
         </div>
@@ -3476,7 +3477,7 @@
             </div>
           </div>
         </div>
-        <div class="card" data-sec="output" hidden>
+        <div class="card" data-sec="output" hidden id="set-output">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg><span>Output</span></h2>
           <div data-adv>
           <label class="fld" data-help="inject">Injection method</label>
@@ -4136,7 +4137,7 @@ const TR = { nl: {
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
   "Per program":"Per programma", "Vito sees which program you dictate into. A dash (—) follows the general setting; choose something else and only that program differs — Enter for a chat, neat rules for e-mail, no history for a password manager. A program shows up here by itself once you have dictated into it.":"Vito ziet in welk programma je dicteert. Een streepje (—) volgt de algemene instelling; kies je iets anders, dan wijkt alleen dat programma af — Enter voor een chat, nette regels voor e-mail, geen geschiedenis voor een wachtwoordmanager. Een programma verschijnt hier vanzelf zodra je erin gedicteerd hebt.",
-  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor",
+  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor", "Space and Enter for all programs…":"Spatie en Enter voor alle programma's…",
   "1 dictation":"1 dictaat", "No dictations yet":"Nog geen dictaten",
   "own choice":"eigen keuze", "general":"algemeen", "not kept":"niet bewaard", "on":"aan", "off":"uit", "Don't keep":"Niet bewaren",
   "Always on for {apps}":"Altijd aan voor {apps}", "For a password manager or another program where you dictate sensitive things, it can be on always:":"Voor een wachtwoordmanager of een ander programma waarin je gevoelige dingen dicteert, kan hij altijd aan staan:", "set it per program":"stel het in per programma", "change per program":"aan te passen per programma", "General (on)":"Algemeen (aan)", "General (off)":"Algemeen (uit)",
@@ -9394,18 +9395,23 @@ function renderAppOver(){
 ["s-appendspace", "s-appendenter", "s-history"].forEach(id => $(id).addEventListener("change", renderAppRules));
 $("app-rules-more").onclick = () => { appRulesAll = !appRulesAll; renderAppRules(); };
 // The rule sets themselves live under AI cleanup: there, lit for a moment.
-$("app-rules-manage").onclick = () => {
-  if (!setAll) setSetAll(true, false); // editing a set is under "All"; for now, not saved
-  selectSetSection("cleanup");
+// The general settings these choices start from: their card, lit for a moment.
+function openSetCard(sec, id){
+  selectSetSection(sec);
   setTimeout(() => {
-    const card = $("set-rules");
+    const card = $(id);
     // Its head clear of the sticky section tabs.
     const top = card.getBoundingClientRect().top + scrollY - $("settabs").offsetHeight - 40;
     window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion() ? "auto" : "smooth" });
     card.classList.remove("flash-hl"); void card.offsetWidth; card.classList.add("flash-hl");
     setTimeout(() => card.classList.remove("flash-hl"), 1600);
   }, 80);
+}
+$("app-rules-manage").onclick = () => {
+  if (!setAll) setSetAll(true, false); // editing a set is under "All"; for now, not saved
+  openSetCard("cleanup", "set-rules");
 };
+$("app-output-manage").onclick = () => openSetCard("output", "set-output");
 // From a program's name in the history or on the dashboard: its row here,
 // scrolled to and lit for a moment.
 async function openAppRule(id){
