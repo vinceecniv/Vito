@@ -264,7 +264,9 @@ program, never a window title. The cleanup is told its name
 (`cleanup.app_context`, nil = on; a line in `buildUserPrompt`), and
 `cleanup.app_prompts` picks a rule set per program (`Cleanup.ForApp`) and
 `injection.apps` the space and Enter after the text (`Injection.ForApp`, nil
-field = general). The settings tab Programs (`data-sec="apps"`, card
+field = general); `history.skip_apps` keeps a program's dictations out of
+the history as privacy mode does (day statistics only, no recording, no text
+in the notification; `History.Skips`). The settings tab Programs (`data-sec="apps"`, card
 `#set-apps`) lists every program used with all three, "General (…)" = not
 in the map; under each general setting `.app-over` names the programs set
 differently. A program's name in the history or on the

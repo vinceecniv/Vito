@@ -1409,7 +1409,10 @@ func (d *Daemon) finish(s *session) {
 	entryID := history.NewID()
 	recordingID := ""
 	storedID := "" // entryID once the row is really on disk, "" otherwise
-	if cfg.History.Enabled && cfg.History.StoreAudio && d.hist != nil && !d.privacyActive() {
+	// Privacy mode, or a program kept out of the history: the statistics only,
+	// no text, no recording, and no text in the notification.
+	private := d.privacyActive() || cfg.History.Skips(app.ID)
+	if cfg.History.Enabled && cfg.History.StoreAudio && d.hist != nil && !private {
 		// Favorites' recordings are kept regardless of the last-N cap.
 		keep, _ := d.hist.FavoriteIDs()
 		if _, err := audio.SaveRecording(s.spool.Path(), entryID, keep); err != nil {
@@ -1419,7 +1422,11 @@ func (d *Daemon) finish(s *session) {
 		}
 	}
 	d.setIdle(func(st *Status) {
-		st.LastPreview = preview(final)
+		if !private {
+			st.LastPreview = preview(final)
+		} else {
+			st.LastPreview = ""
+		}
 		st.LastTimings = timings
 		st.LastRecordingID = recordingID
 	})
@@ -1463,14 +1470,14 @@ func (d *Daemon) finish(s *session) {
 		// Privacy mode keeps the usage statistics but never writes the transcript
 		// text to disk; otherwise store the full entry.
 		var err error
-		if d.privacyActive() {
+		if private {
 			err = d.hist.AppendStatsOnly(entry)
 		} else {
 			err = d.hist.Append(entry)
 		}
 		if err != nil {
 			d.log.Warn("history append failed", "err", err)
-		} else if !d.privacyActive() {
+		} else if !private {
 			storedID = entry.ID // there is a row to point the failure at
 		}
 	}
@@ -1501,6 +1508,14 @@ func (d *Daemon) finish(s *session) {
 			d.noteErr("vito: opschoning mislukt", where+" — reden staat bij dit dictaat in de geschiedenis")
 		} else {
 			d.noteErr("vito: opschoning mislukt", where+" — "+preview(cleanupErr))
+		}
+	case private && !d.privacyActive():
+		// The text of a program kept private never goes to the desktop's
+		// notification history either.
+		if mode == inject.ModeClipboardOnly {
+			d.note("vito: in klembord", "")
+		} else {
+			d.note("vito: klaar", "")
 		}
 	case mode == inject.ModeClipboardOnly:
 		d.note("vito: in klembord", preview(final))

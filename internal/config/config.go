@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 )
 
@@ -278,6 +279,16 @@ type History struct {
 	// RetentionDays auto-deletes entries older than this many days (0 = keep
 	// forever). Starred favorites are never removed by it.
 	RetentionDays int `json:"retention_days"`
+	// SkipApps are programs (frontapp.App.ID) whose dictations never reach
+	// the history's text or recordings — a password manager, say. They still
+	// count in the day statistics, as in privacy mode.
+	SkipApps []string `json:"skip_apps,omitempty"`
+}
+
+// Skips reports whether dictations into the program with key id stay out of
+// the history.
+func (h History) Skips(id string) bool {
+	return id != "" && slices.Contains(h.SkipApps, id)
 }
 
 type Tray struct {

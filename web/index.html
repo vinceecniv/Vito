@@ -3362,7 +3362,7 @@
         </div>
         <div class="card" data-sec="apps" hidden id="set-apps">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M7 13h5M7 16h8"/></svg><span>Per program</span></h2>
-          <p class="act-note" style="margin:0 0 12px;" data-help="appprompts">Vito sees which program you dictate into. Everything starts at — (General): the setting under AI cleanup and Output that holds everywhere; choose something else and only that program goes its own way — casual rules and Enter for a chat, neat rules and no Enter for e-mail.</p>
+          <p class="act-note" style="margin:0 0 12px;" data-help="appprompts">Vito sees which program you dictate into. A dash (—) follows the general setting; choose something else and only that program differs — Enter for a chat, neat rules for e-mail, no history for a password manager. A program shows up here by itself once you have dictated into it.</p>
           <div class="app-rules" id="app-rules"></div>
           <div class="rowflex" style="gap:8px; margin-top:10px; flex-wrap:wrap;">
             <button type="button" class="mini-btn" id="app-rules-more" hidden></button>
@@ -3495,6 +3495,7 @@
         <div class="card" data-sec="output" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>History</span></h2>
           <label class="tgl" data-help="history"><input type="checkbox" id="s-history"><span class="tr"></span> Keep history</label>
+          <p class="act-note app-over" data-over="history" hidden></p>
           <label class="tgl" data-help="storeaudio" data-adv><input type="checkbox" id="s-storeaudio"><span class="tr"></span> Keep recordings (last 10)</label>
           <label class="fld" data-help="retention">Automatically delete old entries</label>
           <input type="hidden" id="s-retention">
@@ -4134,8 +4135,9 @@ const TR = { nl: {
   "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
-  "Per program":"Per programma", "Vito sees which program you dictate into. Everything starts at — (General): the setting under AI cleanup and Output that holds everywhere; choose something else and only that program goes its own way — casual rules and Enter for a chat, neat rules and no Enter for e-mail.":"Vito ziet in welk programma je dicteert. Alles staat eerst op — (algemeen): de instelling onder AI-opschoning en Uitvoer die overal geldt. Kies je iets anders, dan gaat alleen dat programma zijn eigen gang — losse regels en Enter voor een chat, nette regels en geen Enter voor e-mail.",
-  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor", "Edit rule sets…":"Regelsets bewerken…", "General (on)":"Algemeen (aan)", "General (off)":"Algemeen (uit)",
+  "Per program":"Per programma", "Vito sees which program you dictate into. A dash (—) follows the general setting; choose something else and only that program differs — Enter for a chat, neat rules for e-mail, no history for a password manager. A program shows up here by itself once you have dictated into it.":"Vito ziet in welk programma je dicteert. Een streepje (—) volgt de algemene instelling; kies je iets anders, dan wijkt alleen dat programma af — Enter voor een chat, nette regels voor e-mail, geen geschiedenis voor een wachtwoordmanager. Een programma verschijnt hier vanzelf zodra je erin gedicteerd hebt.",
+  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor", "Don't keep":"Niet bewaren",
+  "Always on for {apps}":"Altijd aan voor {apps}", "For a password manager or another program where you dictate sensitive things, it can be on always:":"Voor een wachtwoordmanager of een ander programma waarin je gevoelige dingen dicteert, kan hij altijd aan staan:", "set it per program":"stel het in per programma", "change per program":"aan te passen per programma", "General (on)":"Algemeen (aan)", "General (off)":"Algemeen (uit)",
   "General ({set})":"Algemeen ({set})", "Rule set for {app}":"Regelset voor {app}", "Show all {n} programs":"Alle {n} programma's tonen", "Show fewer":"Minder tonen",
   "Settings for this program":"Instellingen voor dit programma", "Cleaned with this rule set":"Opgeschoond met deze regelset",
   "Dictate into a program first: it shows up here. Some desktops don't say which program is in front.":"Dicteer eerst in een programma: dan verschijnt het hier. Sommige desktops vertellen niet welk programma vooraan staat.",
@@ -9269,7 +9271,7 @@ function renamePrompt(){
 // The daemon knows which program had the keyboard when a dictation started
 // (internal/frontapp) and keeps it with the history; GET /api/apps lists them,
 // the most used first, and the one in front now.
-let appUses = [], appNow = null, appPrompts = {}, appInj = {}; // appInj: injection.apps, id → {space, enter}
+let appUses = [], appNow = null, appPrompts = {}, appInj = {}, appSkip = []; // appSkip: history.skip_apps; // appInj: injection.apps, id → {space, enter}
 async function loadApps(){
   try { const d = await api("/api/apps"); appUses = d.apps || []; appNow = d.now && d.now.id ? d.now : null; } catch {}
   renderAppRules();
@@ -9289,7 +9291,7 @@ let appRulesAll = false;
 function appRuleList(){
   const list = appUses.map(a => ({ id: a.id, name: a.name, count: a.count }));
   if (appNow && !list.some(a => a.id === appNow.id)) list.push({ id: appNow.id, name: appNow.name, count: 0 });
-  for (const id of [...Object.keys(appPrompts), ...Object.keys(appInj)]) if (!list.some(a => a.id === id)) list.push({ id, name: id, count: 0 });
+  for (const id of [...Object.keys(appPrompts), ...Object.keys(appInj), ...appSkip]) if (!list.some(a => a.id === id)) list.push({ id, name: id, count: 0 });
   return list.filter(a => a.id !== "vito");
 }
 function renderAppRules(){
@@ -9308,6 +9310,13 @@ function renderAppRules(){
       o("@general", "—") + o("on", t("On")) + o("off", t("Off")) + `</select></label>`;
   };
   const gSpace = $("s-appendspace").checked, gEnter = $("s-appendenter").checked;
+  // History: kept as everywhere, or never (text and recording; the day's
+  // numbers still count, as in privacy mode) — for a password manager, say.
+  const skipSel = (id) => {
+    const skip = appSkip.includes(id);
+    return `<label class="ar-f yn"><span>${ahEsc(t("History"))}</span><select data-k="history"${skip ? ' class="own"' : ""} title="${ahEsc($("s-history").checked ? t("General (on)") : t("General (off)"))}">` +
+      `<option value="@general"${skip ? "" : " selected"}>—</option><option value="skip"${skip ? " selected" : ""}>${ahEsc(t("Don't keep"))}</option></select></label>`;
+  };
   box.innerHTML = shown.map(a => {
     const ownRules = a.id in appPrompts;
     const sel = !ownRules ? "@general" : (ownOf(appPrompts[a.id]) || builtinOf(appPrompts[a.id]) ? appPrompts[a.id] : "vito:default");
@@ -9315,13 +9324,15 @@ function renderAppRules(){
     return `<div class="app-rule${appIsOwn(a.id) ? " own" : ""}" data-app="${ahEsc(a.id)}"><span class="ar-name" title="${ahEsc(a.id)}">${appIcon(a.id, a.name)}${ahEsc(a.name)}${n}</span>` +
       `<label class="ar-f"><span>${ahEsc(t("Rule set"))}</span><select data-k="rules"${ownRules ? ' class="own"' : ""} title="${ahEsc(t("General ({set})").replace("{set}", general))}" aria-label="${ahEsc(t("Rule set for {app}").replace("{app}", a.name))}">` +
       `<option value="@general"${sel === "@general" ? " selected" : ""}>—</option>${promptOptions(sel)}</select></label>` +
-      yn("space", t("Space after"), a.id, gSpace) + yn("enter", t("Enter after"), a.id, gEnter) + `</div>`;
+      yn("space", t("Space after"), a.id, gSpace) + yn("enter", t("Enter after"), a.id, gEnter) + skipSel(a.id) + `</div>`;
   }).join("");
   box.querySelectorAll(".app-rule").forEach(row => {
     const id = row.dataset.app;
     row.querySelectorAll("select").forEach(selEl => selEl.onchange = (e) => {
       const k = selEl.dataset.k, v = e.target.value;
-      if (k === "rules") {
+      if (k === "history") {
+        appSkip = appSkip.filter(x => x !== id); if (v === "skip") appSkip.push(id);
+      } else if (k === "rules") {
         if (v === "@general") delete appPrompts[id]; else appPrompts[id] = v === "vito:default" ? "" : v;
       } else {
         const o = Object.assign({}, appInj[id]);
@@ -9341,7 +9352,7 @@ function renderAppRules(){
   note.textContent = t("Dictate into a program first: it shows up here. Some desktops don't say which program is in front.");
   renderAppOver();
 }
-const appIsOwn = (id) => id in appPrompts || id in appInj;
+const appIsOwn = (id) => id in appPrompts || id in appInj || appSkip.includes(id);
 // Under each general setting: the programs that go their own way, leading to
 // their rows — so a general switch never seems to be ignored.
 function renderAppOver(){
@@ -9349,6 +9360,7 @@ function renderAppOver(){
     rules: Object.keys(appPrompts),
     space: Object.keys(appInj).filter(id => typeof appInj[id].space === "boolean"),
     enter: Object.keys(appInj).filter(id => typeof appInj[id].enter === "boolean"),
+    history: appSkip,
   };
   document.querySelectorAll(".app-over").forEach(p => {
     const ids = which[p.dataset.over] || [];
@@ -9359,7 +9371,7 @@ function renderAppOver(){
     p.innerHTML = ahEsc(t("Set differently for")) + " " + names;
   });
 }
-["s-appendspace", "s-appendenter"].forEach(id => $(id).addEventListener("change", renderAppRules));
+["s-appendspace", "s-appendenter", "s-history"].forEach(id => $(id).addEventListener("change", renderAppRules));
 $("app-rules-more").onclick = () => { appRulesAll = !appRulesAll; renderAppRules(); };
 // The rule sets themselves live under AI cleanup: there, lit for a moment.
 $("app-rules-manage").onclick = () => {
@@ -9392,7 +9404,8 @@ async function openAppRule(id){
 }
 function saveAppPrompts(){
   saveConfig({ cleanup: Object.assign({}, cfg.cleanup, { app_prompts: appPrompts }),
-    injection: Object.assign({}, cfg.injection, { apps: appInj }) }, t("Saved"));
+    injection: Object.assign({}, cfg.injection, { apps: appInj }),
+    history: Object.assign({}, cfg.history, { skip_apps: appSkip }) }, t("Saved"));
 }
 function deletePrompt(){
   const p = promptList.find(x => x.id === promptActive); if (!p) return;
@@ -12134,6 +12147,7 @@ async function fillSettings() {
   promptActive = cfg.cleanup.active_prompt || "";
   appPrompts = Object.assign({}, cfg.cleanup.app_prompts || {});
   appInj = JSON.parse(JSON.stringify(cfg.injection.apps || {}));
+  appSkip = [...(cfg.history.skip_apps || [])];
   $("s-appcontext").checked = cfg.cleanup.app_context !== false; // unset is on
   renderPromptPicker();
   loadApps();
@@ -12809,6 +12823,15 @@ function privacyStatusText(){
   if (p.until_ms){ const left = p.until_ms - Date.now(); if (left > 0) txt += ` · ${uiLang==="en" ? fmtLeft(left)+" "+t("left") : "nog "+fmtLeft(left)}`; }
   return txt;
 }
+// A program can stay out of the history always (history.skip_apps): say so,
+// with the programs that already do, and the way to the setting.
+function privacyAppsNote(){
+  const names = appSkip.map(id => ahEsc(appName(id)));
+  const link = `<a href="#" data-act="apps" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">${ahEsc(names.length ? t("change per program") : t("set it per program"))}</a>`;
+  const text = names.length ? t("Always on for {apps}").replace("{apps}", names.join(", ")) + " —"
+    : ahEsc(t("For a password manager or another program where you dictate sensitive things, it can be on always:"));
+  return `<p class="act-note" style="margin:14px 0 0;">${text} ${link}.</p>`;
+}
 function fillPrivacyModal(body){
   const p = privacyState;
   body.innerHTML = `<div style="color:var(--text2); font-size:13px; margin-bottom:14px;">${privacyStatusText()}</div>
@@ -12816,8 +12839,10 @@ function fillPrivacyModal(body){
       p.enabled ? `<button class="btn primary small" data-act="off">${t("Turn off")}</button>`
         : `<button class="btn ghost small" data-act="15">15 min</button>
            <button class="btn ghost small" data-act="60">1 hour</button>
-           <button class="btn ghost small" data-act="0">${t("Until I turn it off")}</button>`}</div>`;
-  body.querySelectorAll("[data-act]").forEach(b => b.onclick = () => { const a=b.dataset.act; a==="off" ? setPrivacy(false,0) : setPrivacy(true, parseInt(a)); });
+           <button class="btn ghost small" data-act="0">${t("Until I turn it off")}</button>`}</div>${STANDALONE ? "" : privacyAppsNote()}`;
+  body.querySelectorAll("[data-act]").forEach(b => b.onclick = (e) => { const a=b.dataset.act;
+    if (a === "apps") { e.preventDefault(); const m = body.closest(".modal-backdrop"); if (m) m.querySelector("#privacy-close").click(); selectTab("settings"); selectSetSection("apps"); window.scrollTo(0, 0); return; }
+    a==="off" ? setPrivacy(false,0) : setPrivacy(true, parseInt(a)); });
 }
 function privacyTip(){
   const p = privacyState;
@@ -12920,7 +12945,7 @@ function collectSettings() {
       mode: $("s-inject").value, restore_clipboard: $("s-restore").checked,
       append_enter: $("s-appendenter").checked, append_space: $("s-appendspace").checked, apps: appInj,
     }),
-    history: Object.assign(cfg.history, { enabled: $("s-history").checked, store_audio: $("s-storeaudio").checked, retention_days: parseInt($("s-retention").value, 10) || 0 }),
+    history: Object.assign(cfg.history, { enabled: $("s-history").checked, store_audio: $("s-storeaudio").checked, retention_days: parseInt($("s-retention").value, 10) || 0, skip_apps: appSkip }),
     tray: Object.assign(cfg.tray || {}, { enabled: $("s-tray").checked }),
     stats: Object.assign(cfg.stats || {}, { typing_speed: $("s-typespeed").value }),
     ui: Object.assign(cfg.ui || {}, { notifications: $("s-notify").value, pill: $("s-pill").checked, pill_idle: $("s-pill-idle").checked, pill_live: $("s-pill-live").checked, pill_style: $("s-pillstyle").value }),

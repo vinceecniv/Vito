@@ -21,3 +21,10 @@ func TestInjectionForApp(t *testing.T) {
 		t.Errorf("none: %+v", g)
 	}
 }
+
+func TestHistorySkips(t *testing.T) {
+	h := History{SkipApps: []string{"keepassxc"}}
+	if !h.Skips("keepassxc") || h.Skips("slack") || h.Skips("") {
+		t.Error("Skips")
+	}
+}
