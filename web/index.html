@@ -1193,6 +1193,13 @@
   .app-rule .ar-f select.own { font-weight:600; color:var(--text); border-color:color-mix(in srgb, var(--violet) 55%, var(--card-border)); }
   .app-rule .ar-f.yn select { min-width:118px; }
   .app-over { margin:2px 0 8px 0 !important; }
+  /* What each rule set does, for choosing one here. */
+  .rs-legend { margin-top:14px; padding:10px 12px; border-radius:10px; background:var(--track); font-size:12.5px; line-height:1.5; color:var(--text2); }
+  .rs-legend h4 { margin:0 0 4px; font-size:12px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:.04em; }
+  .rs-legend dl { margin:0; display:grid; grid-template-columns:max-content 1fr; gap:3px 12px; }
+  .rs-legend dt { font-weight:600; color:var(--text); }
+  .rs-legend dd { margin:0; }
+  @media (max-width:560px){ .rs-legend dl { grid-template-columns:1fr; } .rs-legend dd { margin-bottom:4px; } }
   .app-over a { color:inherit; text-decoration:underline; text-underline-offset:2px; cursor:var(--cur-hand); }
   .app-rule .ar-n { color:var(--text3); font-weight:500; font-size:12.5px; margin-left:6px; }
   .app-rule select { width:auto; max-width:220px; }
@@ -3364,8 +3371,9 @@
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M7 13h5M7 16h8"/></svg><span>Per program</span></h2>
           <p class="act-note" style="margin:0 0 12px;" data-help="appprompts">Vito sees which program you dictate into. A dash (—) follows the general setting; choose something else and only that program differs — Enter for a chat, neat rules for e-mail, no history for a password manager. A program shows up here by itself once you have dictated into it.</p>
           <div class="app-rules" id="app-rules"></div>
+          <button type="button" class="mini-btn" id="app-rules-more" style="margin-top:10px;" hidden></button>
+          <div class="rs-legend" id="rs-legend"></div>
           <div class="rowflex" style="gap:8px; margin-top:10px; flex-wrap:wrap;">
-            <button type="button" class="mini-btn" id="app-rules-more" hidden></button>
             <button type="button" class="mini-btn" id="app-rules-manage">Edit rule sets…</button>
             <button type="button" class="mini-btn" id="app-output-manage">Space and Enter for all programs…</button>
           </div>
@@ -4137,7 +4145,7 @@ const TR = { nl: {
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
   "Per program":"Per programma", "Vito sees which program you dictate into. A dash (—) follows the general setting; choose something else and only that program differs — Enter for a chat, neat rules for e-mail, no history for a password manager. A program shows up here by itself once you have dictated into it.":"Vito ziet in welk programma je dicteert. Een streepje (—) volgt de algemene instelling; kies je iets anders, dan wijkt alleen dat programma af — Enter voor een chat, nette regels voor e-mail, geen geschiedenis voor een wachtwoordmanager. Een programma verschijnt hier vanzelf zodra je erin gedicteerd hebt.",
-  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor", "Space and Enter for all programs…":"Spatie en Enter voor alle programma's…",
+  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor", "What the rule sets do":"Wat de regelsets doen", "Your own rule set":"Je eigen regelset", "Space and Enter for all programs…":"Spatie en Enter voor alle programma's…",
   "1 dictation":"1 dictaat", "No dictations yet":"Nog geen dictaten",
   "own choice":"eigen keuze", "general":"algemeen", "not kept":"niet bewaard", "on":"aan", "off":"uit", "Don't keep":"Niet bewaren",
   "Always on for {apps}":"Altijd aan voor {apps}", "For a password manager or another program where you dictate sensitive things, it can be on always:":"Voor een wachtwoordmanager of een ander programma waarin je gevoelige dingen dicteert, kan hij altijd aan staan:", "set it per program":"stel het in per programma", "change per program":"aan te passen per programma", "General (on)":"Algemeen (aan)", "General (off)":"Algemeen (uit)",
@@ -9355,6 +9363,17 @@ function renderAppRules(){
   note.hidden = list.length > 0;
   note.textContent = t("Dictate into a program first: it shows up here. Some desktops don't say which program is in front.");
   renderAppOver();
+  renderRsLegend();
+}
+// Every rule set with what it does: Vito's own from their description, the
+// user's own as such.
+function renderRsLegend(){
+  const box = $("rs-legend"); if (!box) return;
+  const row = (name, desc) => `<dt>${ahEsc(name)}</dt><dd>${ahEsc(desc)}</dd>`;
+  const items = promptBuiltins.map(p => row(t(p.name), p.description ? t(p.description) : ""))
+    .concat(promptList.map(p => row(p.name, t("Your own rule set"))));
+  box.hidden = !items.length;
+  box.innerHTML = `<h4>${ahEsc(t("What the rule sets do"))}</h4><dl>${items.join("")}</dl>`;
 }
 // A program's tip: how often it was used, then each setting, its own or the
 // general one.
