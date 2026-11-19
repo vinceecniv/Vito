@@ -246,6 +246,29 @@ type Injection struct {
 	RestoreDelayMS   int    `json:"restore_delay_ms"` // delay before restoring previous clipboard
 	AppendEnter      bool   `json:"append_enter"`     // press Enter after the text (submits chat/REPL inputs)
 	AppendSpace      bool   `json:"append_space"`     // append a trailing space, so back-to-back dictations stay separated
+	// Apps overrides AppendSpace and AppendEnter per program dictated into
+	// (frontapp.App.ID); a nil field follows the general setting.
+	Apps map[string]AppInjection `json:"apps,omitempty"`
+}
+
+// AppInjection is one program's own choice for the space and the Enter after
+// the text; nil follows Injection's own.
+type AppInjection struct {
+	Space *bool `json:"space,omitempty"`
+	Enter *bool `json:"enter,omitempty"`
+}
+
+// ForApp is this configuration for a dictation into the program with key id.
+func (c Injection) ForApp(id string) Injection {
+	if o, ok := c.Apps[id]; ok && id != "" {
+		if o.Space != nil {
+			c.AppendSpace = *o.Space
+		}
+		if o.Enter != nil {
+			c.AppendEnter = *o.Enter
+		}
+	}
+	return c
 }
 
 type History struct {

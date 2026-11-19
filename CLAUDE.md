@@ -262,9 +262,12 @@ their IPC; X11 `WM_CLASS`; GNOME Vito's Shell extension (`App`, from version
 On Linux the name comes from the program's `.desktop` file. Only the
 program, never a window title. The cleanup is told its name
 (`cleanup.app_context`, nil = on; a line in `buildUserPrompt`), and
-`cleanup.app_prompts` picks a rule set per program (`Cleanup.ForApp`;
-the card "Rule set per program", `#set-apps`, lists every program used with
-"General" = not in the map). A program's name in the history or on the
+`cleanup.app_prompts` picks a rule set per program (`Cleanup.ForApp`) and
+`injection.apps` the space and Enter after the text (`Injection.ForApp`, nil
+field = general). The settings tab Programs (`data-sec="apps"`, card
+`#set-apps`) lists every program used with all three, "General (…)" = not
+in the map; under each general setting `.app-over` names the programs set
+differently. A program's name in the history or on the
 dashboard (`.app-go`) opens its row there (`openAppRule`). Each entry keeps
 the rule set it was cleaned with as `rules`/`rules_name`
 (`cleanup.ActiveSet`; empty without a cleanup pass or for an Assist command). The

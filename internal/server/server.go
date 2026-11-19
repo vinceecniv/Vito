@@ -614,6 +614,7 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	cfg.UI.Outfit = nil
 	// The same for the rule set per program: a program removed must go.
 	cfg.Cleanup.AppPrompts = nil
+	cfg.Injection.Apps = nil
 	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 1<<20))
 	if err == nil {
 		err = json.Unmarshal(body, &cfg)
@@ -629,9 +630,15 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 		Cleanup struct {
 			AppPrompts json.RawMessage `json:"app_prompts"`
 		} `json:"cleanup"`
+		Injection struct {
+			Apps json.RawMessage `json:"apps"`
+		} `json:"injection"`
 	}
 	if json.Unmarshal(body, &says) == nil && says.Cleanup.AppPrompts == nil {
 		cfg.Cleanup.AppPrompts = maps.Clone(current.Cleanup.AppPrompts)
+	}
+	if json.Unmarshal(body, &says) == nil && says.Injection.Apps == nil {
+		cfg.Injection.Apps = maps.Clone(current.Injection.Apps)
 	}
 	if json.Unmarshal(body, &says) == nil && says.UI.Outfit == nil {
 		cfg.UI.Outfit = maps.Clone(current.UI.Outfit)

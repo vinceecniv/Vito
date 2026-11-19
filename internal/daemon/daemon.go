@@ -1381,7 +1381,7 @@ func (d *Daemon) finish(s *session) {
 	// the clipboard for you to paste yourself, rather than pasting into whatever
 	// happens to be focused (which the restore step would then overwrite with the
 	// original input).
-	injCfg := cfg.Injection
+	injCfg := cfg.Injection.ForApp(app.ID) // a program may want its own space or Enter
 	if clipboardOut {
 		injCfg = config.Injection{Mode: "clipboard_only"}
 	}
