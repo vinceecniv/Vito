@@ -1188,6 +1188,8 @@
   .app-rule { flex-wrap:wrap; }
   .app-rule .ar-name { flex:1 1 160px; min-width:0; font-weight:600; font-size:13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .app-rule .ar-f { display:flex; flex-direction:column; gap:2px; font-size:11px; color:var(--text3); font-weight:500; }
+  .app-rule .ar-f select:not(.own) { color:var(--text3); }
+  .app-rule .ar-f select option { color:var(--text); }
   .app-rule .ar-f select.own { font-weight:600; color:var(--text); border-color:color-mix(in srgb, var(--violet) 55%, var(--card-border)); }
   .app-rule .ar-f.yn select { min-width:118px; }
   .app-over { margin:2px 0 8px 0 !important; }
@@ -3360,9 +3362,12 @@
         </div>
         <div class="card" data-sec="apps" hidden id="set-apps">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M7 13h5M7 16h8"/></svg><span>Per program</span></h2>
-          <p class="act-note" style="margin:0 0 12px;" data-help="appprompts">Vito sees which program you dictate into. Everything starts at General, the setting under AI cleanup and Output that holds everywhere; choose something else and only that program goes its own way — casual rules and Enter for a chat, neat rules and no Enter for e-mail.</p>
+          <p class="act-note" style="margin:0 0 12px;" data-help="appprompts">Vito sees which program you dictate into. Everything starts at — (General): the setting under AI cleanup and Output that holds everywhere; choose something else and only that program goes its own way — casual rules and Enter for a chat, neat rules and no Enter for e-mail.</p>
           <div class="app-rules" id="app-rules"></div>
-          <button type="button" class="mini-btn" id="app-rules-more" style="margin-top:10px;" hidden></button>
+          <div class="rowflex" style="gap:8px; margin-top:10px; flex-wrap:wrap;">
+            <button type="button" class="mini-btn" id="app-rules-more" hidden></button>
+            <button type="button" class="mini-btn" id="app-rules-manage">Edit rule sets…</button>
+          </div>
           <p class="act-note" id="app-rules-note" style="margin:6px 0 0;" hidden></p>
         </div>
         <div class="card" data-sec="cleanup" data-adv hidden>
@@ -4129,8 +4134,8 @@ const TR = { nl: {
   "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
-  "Per program":"Per programma", "Vito sees which program you dictate into. Everything starts at General, the setting under AI cleanup and Output that holds everywhere; choose something else and only that program goes its own way — casual rules and Enter for a chat, neat rules and no Enter for e-mail.":"Vito ziet in welk programma je dicteert. Alles staat eerst op Algemeen: de instelling onder AI-opschoning en Uitvoer die overal geldt. Kies je iets anders, dan gaat alleen dat programma zijn eigen gang — losse regels en Enter voor een chat, nette regels en geen Enter voor e-mail.",
-  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor", "General (on)":"Algemeen (aan)", "General (off)":"Algemeen (uit)",
+  "Per program":"Per programma", "Vito sees which program you dictate into. Everything starts at — (General): the setting under AI cleanup and Output that holds everywhere; choose something else and only that program goes its own way — casual rules and Enter for a chat, neat rules and no Enter for e-mail.":"Vito ziet in welk programma je dicteert. Alles staat eerst op — (algemeen): de instelling onder AI-opschoning en Uitvoer die overal geldt. Kies je iets anders, dan gaat alleen dat programma zijn eigen gang — losse regels en Enter voor een chat, nette regels en geen Enter voor e-mail.",
+  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor", "Edit rule sets…":"Regelsets bewerken…", "General (on)":"Algemeen (aan)", "General (off)":"Algemeen (uit)",
   "General ({set})":"Algemeen ({set})", "Rule set for {app}":"Regelset voor {app}", "Show all {n} programs":"Alle {n} programma's tonen", "Show fewer":"Minder tonen",
   "Settings for this program":"Instellingen voor dit programma", "Cleaned with this rule set":"Opgeschoond met deze regelset",
   "Dictate into a program first: it shows up here. Some desktops don't say which program is in front.":"Dicteer eerst in een programma: dan verschijnt het hier. Sommige desktops vertellen niet welk programma vooraan staat.",
@@ -9298,8 +9303,9 @@ function renderAppRules(){
   const yn = (key, label, id, globalOn) => {
     const v = appInj[id] && typeof appInj[id][key] === "boolean" ? (appInj[id][key] ? "on" : "off") : "@general";
     const o = (val, txt) => `<option value="${val}"${v === val ? " selected" : ""}>${ahEsc(txt)}</option>`;
-    return `<label class="ar-f yn"><span>${ahEsc(label)}</span><select data-k="${key}"${v !== "@general" ? ' class="own"' : ""}>` +
-      o("@general", globalOn ? t("General (on)") : t("General (off)")) + o("on", t("On")) + o("off", t("Off")) + `</select></label>`;
+    const gen = globalOn ? t("General (on)") : t("General (off)");
+    return `<label class="ar-f yn"><span>${ahEsc(label)}</span><select data-k="${key}"${v !== "@general" ? ' class="own"' : ""} title="${ahEsc(gen)}">` +
+      o("@general", "—") + o("on", t("On")) + o("off", t("Off")) + `</select></label>`;
   };
   const gSpace = $("s-appendspace").checked, gEnter = $("s-appendenter").checked;
   box.innerHTML = shown.map(a => {
@@ -9307,8 +9313,8 @@ function renderAppRules(){
     const sel = !ownRules ? "@general" : (ownOf(appPrompts[a.id]) || builtinOf(appPrompts[a.id]) ? appPrompts[a.id] : "vito:default");
     const n = a.count ? `<span class="ar-n">${a.count.toLocaleString(numLoc())}×</span>` : "";
     return `<div class="app-rule${appIsOwn(a.id) ? " own" : ""}" data-app="${ahEsc(a.id)}"><span class="ar-name" title="${ahEsc(a.id)}">${appIcon(a.id, a.name)}${ahEsc(a.name)}${n}</span>` +
-      `<label class="ar-f"><span>${ahEsc(t("Rule set"))}</span><select data-k="rules"${ownRules ? ' class="own"' : ""} aria-label="${ahEsc(t("Rule set for {app}").replace("{app}", a.name))}">` +
-      `<option value="@general"${sel === "@general" ? " selected" : ""}>${ahEsc(t("General ({set})").replace("{set}", general))}</option>${promptOptions(sel)}</select></label>` +
+      `<label class="ar-f"><span>${ahEsc(t("Rule set"))}</span><select data-k="rules"${ownRules ? ' class="own"' : ""} title="${ahEsc(t("General ({set})").replace("{set}", general))}" aria-label="${ahEsc(t("Rule set for {app}").replace("{app}", a.name))}">` +
+      `<option value="@general"${sel === "@general" ? " selected" : ""}>—</option>${promptOptions(sel)}</select></label>` +
       yn("space", t("Space after"), a.id, gSpace) + yn("enter", t("Enter after"), a.id, gEnter) + `</div>`;
   }).join("");
   box.querySelectorAll(".app-rule").forEach(row => {
@@ -9355,6 +9361,19 @@ function renderAppOver(){
 }
 ["s-appendspace", "s-appendenter"].forEach(id => $(id).addEventListener("change", renderAppRules));
 $("app-rules-more").onclick = () => { appRulesAll = !appRulesAll; renderAppRules(); };
+// The rule sets themselves live under AI cleanup: there, lit for a moment.
+$("app-rules-manage").onclick = () => {
+  if (!setAll) setSetAll(true, false); // editing a set is under "All"; for now, not saved
+  selectSetSection("cleanup");
+  setTimeout(() => {
+    const card = $("set-rules");
+    // Its head clear of the sticky section tabs.
+    const top = card.getBoundingClientRect().top + scrollY - $("settabs").offsetHeight - 40;
+    window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion() ? "auto" : "smooth" });
+    card.classList.remove("flash-hl"); void card.offsetWidth; card.classList.add("flash-hl");
+    setTimeout(() => card.classList.remove("flash-hl"), 1600);
+  }, 80);
+};
 // From a program's name in the history or on the dashboard: its row here,
 // scrolled to and lit for a moment.
 async function openAppRule(id){
