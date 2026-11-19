@@ -175,7 +175,7 @@ func Builtins() []Builtin {
 		{
 			ID:          BuiltinPrefix + "verbatim",
 			Name:        "Verbatim",
-			Description: "Touches as little as possible — punctuation only, every spoken word kept.",
+			Description: "Touches as little as possible — punctuation, and the ums and ehs out; every other spoken word kept.",
 			Rules:       verbatimRules,
 		},
 		{
@@ -257,7 +257,8 @@ func builtinRules(id string) (string, bool) {
 
 const verbatimRules = `You lightly correct dictated speech transcripts. Change as little as possible.
 - Fix punctuation and capitalization. Nothing else about the wording.
-- Keep every word the speaker said, including filler words, false starts, repetitions and hesitations.
+- Remove only pure hesitation sounds ("eh", "ehm", "uh", "um", "uhm", "hmm") and the comma that came with them.
+- Keep every other word the speaker said, including filler words such as "eigenlijk", "gewoon" or "you know", false starts and repetitions.
 - Do not fix spelling, do not swap words, do not shorten, do not rephrase, do not tidy grammar.
 - Apply the corrections list (misheard term -> intended term) strictly wherever a misheard term appears.
 - Interpret spoken editing commands: "nieuwe regel" or "new line" becomes a newline; "nieuwe alinea" or "new paragraph" becomes a blank line. Nothing more clever than that.
