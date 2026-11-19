@@ -2080,7 +2080,7 @@
 
   /* delayed styled help tooltip for settings */
   #help-tip { position:fixed; z-index:150; max-width:280px; background:#2B2440; color:#F2EFFA; border-radius:10px;
-    padding:10px 13px; font-size:12px; line-height:1.55; box-shadow:0 12px 34px rgba(20,10,40,.36);
+    padding:10px 13px; font-size:12px; line-height:1.55; box-shadow:0 12px 34px rgba(20,10,40,.36); white-space:pre-line;
     pointer-events:none; opacity:0; transform:translateY(-4px); transition:opacity .14s, transform .14s; }
   #help-tip.show { opacity:1; transform:none; }
   /* Help-enabled elements keep a normal cursor on hover — no question-mark
@@ -4136,7 +4136,9 @@ const TR = { nl: {
   "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
   "Ignore":"Negeren",
   "Per program":"Per programma", "Vito sees which program you dictate into. A dash (—) follows the general setting; choose something else and only that program differs — Enter for a chat, neat rules for e-mail, no history for a password manager. A program shows up here by itself once you have dictated into it.":"Vito ziet in welk programma je dicteert. Een streepje (—) volgt de algemene instelling; kies je iets anders, dan wijkt alleen dat programma af — Enter voor een chat, nette regels voor e-mail, geen geschiedenis voor een wachtwoordmanager. Een programma verschijnt hier vanzelf zodra je erin gedicteerd hebt.",
-  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor", "Don't keep":"Niet bewaren",
+  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor",
+  "1 dictation":"1 dictaat", "No dictations yet":"Nog geen dictaten",
+  "own choice":"eigen keuze", "general":"algemeen", "not kept":"niet bewaard", "on":"aan", "off":"uit", "Don't keep":"Niet bewaren",
   "Always on for {apps}":"Altijd aan voor {apps}", "For a password manager or another program where you dictate sensitive things, it can be on always:":"Voor een wachtwoordmanager of een ander programma waarin je gevoelige dingen dicteert, kan hij altijd aan staan:", "set it per program":"stel het in per programma", "change per program":"aan te passen per programma", "General (on)":"Algemeen (aan)", "General (off)":"Algemeen (uit)",
   "General ({set})":"Algemeen ({set})", "Rule set for {app}":"Regelset voor {app}", "Show all {n} programs":"Alle {n} programma's tonen", "Show fewer":"Minder tonen",
   "Settings for this program":"Instellingen voor dit programma", "Cleaned with this rule set":"Opgeschoond met deze regelset",
@@ -9292,7 +9294,7 @@ function appRuleList(){
   const list = appUses.map(a => ({ id: a.id, name: a.name, count: a.count }));
   if (appNow && !list.some(a => a.id === appNow.id)) list.push({ id: appNow.id, name: appNow.name, count: 0 });
   for (const id of [...Object.keys(appPrompts), ...Object.keys(appInj), ...appSkip]) if (!list.some(a => a.id === id)) list.push({ id, name: id, count: 0 });
-  return list.filter(a => a.id !== "vito");
+  return list.filter(a => a.id !== "vito").sort((a, b) => b.count - a.count); // stable: ties keep their order
 }
 function renderAppRules(){
   const box = $("app-rules"); if (!box) return;
@@ -9320,8 +9322,7 @@ function renderAppRules(){
   box.innerHTML = shown.map(a => {
     const ownRules = a.id in appPrompts;
     const sel = !ownRules ? "@general" : (ownOf(appPrompts[a.id]) || builtinOf(appPrompts[a.id]) ? appPrompts[a.id] : "vito:default");
-    const n = a.count ? `<span class="ar-n">${a.count.toLocaleString(numLoc())}×</span>` : "";
-    return `<div class="app-rule${appIsOwn(a.id) ? " own" : ""}" data-app="${ahEsc(a.id)}"><span class="ar-name" title="${ahEsc(a.id)}">${appIcon(a.id, a.name)}${ahEsc(a.name)}${n}</span>` +
+    return `<div class="app-rule${appIsOwn(a.id) ? " own" : ""}" data-app="${ahEsc(a.id)}"><span class="ar-name" data-tip-label="1" data-tip-text="${ahEsc(appTip(a, general, gSpace, gEnter))}">${appIcon(a.id, a.name)}${ahEsc(a.name)}</span>` +
       `<label class="ar-f"><span>${ahEsc(t("Rule set"))}</span><select data-k="rules"${ownRules ? ' class="own"' : ""} title="${ahEsc(t("General ({set})").replace("{set}", general))}" aria-label="${ahEsc(t("Rule set for {app}").replace("{app}", a.name))}">` +
       `<option value="@general"${sel === "@general" ? " selected" : ""}>—</option>${promptOptions(sel)}</select></label>` +
       yn("space", t("Space after"), a.id, gSpace) + yn("enter", t("Enter after"), a.id, gEnter) + skipSel(a.id) + `</div>`;
@@ -9341,6 +9342,8 @@ function renderAppRules(){
       }
       selEl.classList.toggle("own", v !== "@general");
       row.classList.toggle("own", appIsOwn(id));
+      const a = appRuleList().find(x => x.id === id), nm = row.querySelector(".ar-name");
+      if (a && nm) nm.dataset.tipText = appTip(a, general, gSpace, gEnter);
       saveAppPrompts();
     });
   });
@@ -9351,6 +9354,23 @@ function renderAppRules(){
   note.hidden = list.length > 0;
   note.textContent = t("Dictate into a program first: it shows up here. Some desktops don't say which program is in front.");
   renderAppOver();
+}
+// A program's tip: how often it was used, then each setting, its own or the
+// general one.
+function appTip(a, general, gSpace, gEnter){
+  const used = a.count === 1 ? t("1 dictation") : a.count ? t("{n} dictations").replace("{n}", a.count.toLocaleString(numLoc())) : t("No dictations yet");
+  const onOff = (v) => v ? t("on") : t("off");
+  const line = (label, own, value, generalValue) => `${label}: ${own ? value + " · " + t("own choice") : generalValue + " · " + t("general")}`;
+  const ownRules = a.id in appPrompts;
+  const rs = ownRules ? (ownOf(appPrompts[a.id]) || builtinOf(appPrompts[a.id]) || builtinOf("vito:default") || {}) : null;
+  const inj = appInj[a.id] || {};
+  const lines = [
+    line(t("Rule set"), ownRules, rs ? t(rs.name || "") : "", general),
+    line(t("Space after"), typeof inj.space === "boolean", onOff(inj.space), onOff(gSpace)),
+    line(t("Enter after"), typeof inj.enter === "boolean", onOff(inj.enter), onOff(gEnter)),
+    line(t("History"), appSkip.includes(a.id), t("not kept"), onOff($("s-history").checked)),
+  ];
+  return `${a.name} — ${used}\n${lines.join("\n")}`;
 }
 const appIsOwn = (id) => id in appPrompts || id in appInj || appSkip.includes(id);
 // Under each general setting: the programs that go their own way, leading to
