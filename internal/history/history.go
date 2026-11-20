@@ -62,6 +62,17 @@ type Entry struct {
 	// pruning (the row cap and the age-based auto-delete) and floats to the top of
 	// search results.
 	Favorite bool `json:"favorite"`
+	// App is the program the dictation went to, as the system names it
+	// ("Microsoft Outlook"), and AppID its stable key ("outlook"); empty when
+	// the desktop could not say (internal/frontapp).
+	App   string `json:"app,omitempty"`
+	AppID string `json:"app_id,omitempty"`
+	// Rules is the cleanup rule set the dictation was cleaned with (its id,
+	// as ActivePrompt takes it; empty for Vito's default) and RulesName what
+	// it was called then: a set may be renamed or deleted since. Both empty
+	// when the cleanup did not run.
+	Rules     string `json:"rules,omitempty"`
+	RulesName string `json:"rules_name,omitempty"`
 }
 
 // maxCleanupError caps the stored failure reason.
@@ -123,6 +134,13 @@ func NewStore(maxEntries, retentionDays int) (*Store, error) {
 	// Where an entry came from when it was not dictated here: 'web:<id>' for a
 	// browser hand-over, 'sync:<device>' for another computer (see import.go).
 	_, _ = db.Exec("ALTER TABLE history ADD COLUMN origin TEXT NOT NULL DEFAULT ''")
+	// The program dictated into (added later than the table).
+	_, _ = db.Exec("ALTER TABLE history ADD COLUMN app TEXT NOT NULL DEFAULT ''")
+	_, _ = db.Exec("ALTER TABLE history ADD COLUMN app_id TEXT NOT NULL DEFAULT ''")
+	// The cleanup rule set a dictation was cleaned with.
+	_, _ = db.Exec("ALTER TABLE history ADD COLUMN rules TEXT NOT NULL DEFAULT ''")
+	_, _ = db.Exec("ALTER TABLE history ADD COLUMN rules_name TEXT NOT NULL DEFAULT ''")
+	tidyAppNames(db)
 	migrateImport(func(q string) error { _, err := db.Exec(q); return err })
 	s := &Store{db: db, maxEntries: maxEntries, retentionDays: retentionDays}
 	s.importLegacy(filepath.Join(base, "history.jsonl"))
@@ -199,6 +217,14 @@ CREATE TABLE IF NOT EXISTS dict_usage (
   last_at INTEGER NOT NULL DEFAULT 0,   -- unix millis
   PRIMARY KEY (kind, key)
 );
+-- Dictionary suggestions the user turned down (misheard and intended word,
+-- lower case), so they are not offered again. Kept on this computer.
+CREATE TABLE IF NOT EXISTS dict_dismissed (
+  wrong TEXT NOT NULL,
+  right TEXT NOT NULL,
+  at    INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (wrong, right)
+);
 
 -- Achievements the user has earned, with the moment each was first recorded.
 -- Deciding what is earned is deterministic from the aggregates above; this only
@@ -244,10 +270,10 @@ func (s *Store) Append(e Entry) error {
 	e.fillDefaults()
 	_, err := s.db.Exec(
 		`INSERT OR REPLACE INTO history
-		 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text)
-		 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+		 (id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,cleanup_in_tokens,cleanup_out_tokens,command_in_tokens,command_out_tokens,command_text,app,app_id,rules,rules_name)
+		 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 		e.ID, e.Timestamp.UnixMilli(), e.DurationMS, e.Language, e.Source, e.Raw, e.Cleaned,
-		b2i(e.CleanupUsed), e.CleanupError, e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, e.CleanupInTokens, e.CleanupOutTokens, e.CommandInTokens, e.CommandOutTokens, e.CommandText)
+		b2i(e.CleanupUsed), e.CleanupError, e.SttMS, e.CleanupMS, e.InjectedMS, e.Words, e.Sentences, e.CleanupInTokens, e.CleanupOutTokens, e.CommandInTokens, e.CommandOutTokens, e.CommandText, e.App, e.AppID, e.Rules, e.RulesName)
 	if err != nil {
 		return err
 	}
@@ -486,7 +512,7 @@ func (s *Store) CommandTotal(fromDay, toDay string) (int, error) {
 func (s *Store) List(query string, favoritesOnly bool, limit, offset int) ([]Entry, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	q := `SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite
+	q := `SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite,app,app_id,rules,rules_name
 	      FROM history`
 	where, args := listWhere(query, favoritesOnly)
 	q += where
@@ -553,7 +579,7 @@ func (s *Store) Get(id string) (Entry, bool, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	row := s.db.QueryRow(
-		`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite
+		`SELECT id,ts,duration_ms,language,source,raw,cleaned,cleanup_used,cleanup_error,stt_ms,cleanup_ms,injected_ms,words,sentences,command_text,favorite,app,app_id,rules,rules_name
 		 FROM history WHERE id=?`, id)
 	e, err := scanEntry(row)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -671,7 +697,7 @@ func scanEntry(sc scanner) (Entry, error) {
 	var ts int64
 	var cleanup, favorite int
 	if err := sc.Scan(&e.ID, &ts, &e.DurationMS, &e.Language, &e.Source, &e.Raw, &e.Cleaned,
-		&cleanup, &e.CleanupError, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences, &e.CommandText, &favorite); err != nil {
+		&cleanup, &e.CleanupError, &e.SttMS, &e.CleanupMS, &e.InjectedMS, &e.Words, &e.Sentences, &e.CommandText, &favorite, &e.App, &e.AppID, &e.Rules, &e.RulesName); err != nil {
 		return Entry{}, err
 	}
 	e.Timestamp = time.UnixMilli(ts)

@@ -142,3 +142,5 @@ tool supports it, a fixed seed per batch for extra consistency, then export to
 | `comeback` | Welcome Back | a folded award ribbon with a warm welcoming feel |
 | `upload` | Bring Your Own Audio | a paperclip holding a small audio-waveform card |
 | `polyglot` | Polyglot | a small globe ringed by speech bubbles in different scripts |
+| `apps-5` | App Hopper | a kangaroo leaping between small app windows |
+| `apps-10` | Many Hands | an octopus with a different app window in each arm |

@@ -30,6 +30,11 @@ type Insights struct {
 
 	Languages []LangCount `json:"languages"` // most used first
 
+	// Apps are the programs dictated into (internal/frontapp), most used
+	// first; dictations from before Vito knew, or where the desktop didn't
+	// say, are left out.
+	Apps []AppCount `json:"apps"`
+
 	// TopWords are the words used most, for the word cloud: most used first,
 	// common function words left out (see stopwords.go).
 	TopWords []WordCount `json:"top_words"`
@@ -56,6 +61,13 @@ type LangCount struct {
 	Count int    `json:"count"`
 }
 
+// AppCount is how many dictations went into one program.
+type AppCount struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Count int    `json:"count"`
+}
+
 // Insights gathers the per-dictation figures for from..to, both local
 // midnights and both included; a zero from means from the start. Uploads are
 // left out: their timing and language say nothing about dictating.
@@ -68,8 +80,8 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 	if !from.IsZero() {
 		start = from.UnixMilli()
 	}
-	rows, err := s.db.Query(`SELECT ts, language, raw, cleaned, cleanup_used, cleanup_error, stt_ms, cleanup_ms, injected_ms
-		FROM history WHERE source != 'upload' AND ts >= ? AND ts < ?`, start, end)
+	rows, err := s.db.Query(`SELECT ts, language, raw, cleaned, cleanup_used, cleanup_error, stt_ms, cleanup_ms, injected_ms, app, app_id
+		FROM history WHERE source != 'upload' AND ts >= ? AND ts < ? ORDER BY ts`, start, end)
 	if err != nil {
 		return Insights{}, err
 	}
@@ -79,11 +91,12 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 	var latency, stt, cleanup []int
 	langs := map[string]int{}
 	words := map[string]int{}
+	apps := map[string]*AppCount{}
 	for rows.Next() {
 		var ts, sttMS, cleanupMS, injectedMS int64
-		var lang, raw, cleaned, cleanupErr string
+		var lang, raw, cleaned, cleanupErr, app, appID string
 		var used bool
-		if err := rows.Scan(&ts, &lang, &raw, &cleaned, &used, &cleanupErr, &sttMS, &cleanupMS, &injectedMS); err != nil {
+		if err := rows.Scan(&ts, &lang, &raw, &cleaned, &used, &cleanupErr, &sttMS, &cleanupMS, &injectedMS, &app, &appID); err != nil {
 			return Insights{}, err
 		}
 		in.Dictations++
@@ -107,6 +120,17 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 		}
 		if lang = strings.ToLower(strings.TrimSpace(lang)); lang != "" && lang != "auto" {
 			langs[lang]++
+		}
+		if appID != "" {
+			a := apps[appID]
+			if a == nil {
+				a = &AppCount{ID: appID, Name: app}
+				apps[appID] = a
+			}
+			a.Count++
+			if app != "" {
+				a.Name = app // the newest name (rows come oldest first)
+			}
 		}
 		// The words come from what was pasted: the cleaned text, or the raw
 		// transcript when cleanup didn't run.
@@ -141,6 +165,18 @@ func (s *Store) Insights(from, to time.Time) (Insights, error) {
 			break
 		}
 	}
+	for _, a := range apps {
+		if a.Name == "" {
+			a.Name = a.ID
+		}
+		in.Apps = append(in.Apps, *a)
+	}
+	sort.Slice(in.Apps, func(i, j int) bool {
+		if in.Apps[i].Count != in.Apps[j].Count {
+			return in.Apps[i].Count > in.Apps[j].Count
+		}
+		return in.Apps[i].Name < in.Apps[j].Name
+	})
 	in.TopWords = topWords(words, topWordsMax)
 	return in, nil
 }

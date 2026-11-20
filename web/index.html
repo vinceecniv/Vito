@@ -1178,6 +1178,49 @@
   .settabs[data-fit^="icons"] button { padding-inline:11px; }
   .settings-pane { max-width:none; } /* one column, as wide as the page */
   .settings-pane > .card[hidden] { display:none; }
+  /* Basic or all settings (ui.settings_all): what is marked data-adv shows
+     only under "All" — and always while searching, so a search finds it. */
+  #tab-settings.set-basic:not(.searching) [data-adv] { display:none !important; }
+  .set-tools { flex-wrap:wrap; justify-content:flex-end; }
+  /* Rule sets per program (cleanup.app_prompts). */
+  .app-rules { display:flex; flex-direction:column; gap:6px; }
+  .app-rule { display:flex; align-items:center; gap:10px; padding:6px 8px 6px 12px; border-radius:10px; border:1px solid var(--card-border); background:var(--card); }
+  .app-rule { flex-wrap:wrap; }
+  .app-rule .ar-name { flex:1 1 160px; min-width:0; font-weight:600; font-size:13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .app-rule .ar-f { display:flex; flex-direction:column; gap:2px; font-size:11px; color:var(--text3); font-weight:500; }
+  .app-rule .ar-f select:not(.own) { color:var(--text3); }
+  .app-rule .ar-f select option { color:var(--text); }
+  .app-rule .ar-f select.own { font-weight:600; color:var(--text); border-color:color-mix(in srgb, var(--violet) 55%, var(--card-border)); }
+  .app-rule .ar-f.yn select { min-width:118px; }
+  .app-over { margin:2px 0 8px 0 !important; }
+  /* What each rule set does, for choosing one here. */
+  .rs-legend { margin-top:14px; padding:10px 12px; border-radius:10px; background:var(--track); font-size:12.5px; line-height:1.5; color:var(--text2); }
+  .rs-legend h4 { margin:0 0 4px; font-size:12px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:.04em; }
+  .rs-legend dl { margin:0; display:grid; grid-template-columns:max-content 1fr; gap:3px 12px; }
+  .rs-legend dt { font-weight:600; color:var(--text); }
+  .rs-legend dd { margin:0; }
+  @media (max-width:560px){ .rs-legend dl { grid-template-columns:1fr; } .rs-legend dd { margin-bottom:4px; } }
+  .app-over a { color:inherit; text-decoration:underline; text-underline-offset:2px; cursor:var(--cur-hand); }
+  .app-rule .ar-n { color:var(--text3); font-weight:500; font-size:12.5px; margin-left:6px; }
+  .app-rule select { width:auto; max-width:220px; }
+  /* A program's name elsewhere (history, dashboard) leads to its row here. */
+  .app-go { cursor:var(--cur-hand); border-radius:4px; }
+  .app-go:hover { text-decoration:underline; text-underline-offset:2px; }
+  .h-app { font-weight:600; }
+  /* The browser version cannot know which program is in front. */
+  .standalone #set-apps, .standalone #settab-apps, .standalone .app-over, .standalone label:has(> #s-appcontext) { display:none !important; }
+  .set-search { flex:0 1 240px; min-width:170px; }
+  .set-mode { display:inline-flex; padding:3px; gap:2px; border-radius:999px; background:var(--card); border:1px solid var(--card-border); }
+  .set-mode button { border:none; background:none; padding:6px 14px; border-radius:999px; font:inherit; font-size:13px; font-weight:600; color:var(--text2); cursor:var(--cur-hand); }
+  .set-mode button:hover { color:var(--text); }
+  .set-mode button.on { background:var(--accent-soft); color:var(--accent); }
+  .set-more { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:4px 0 24px; padding:12px 16px; border-radius:12px; border:1px dashed var(--card-border); color:var(--text2); font-size:13.5px; }
+  .set-more[hidden], .set-none[hidden] { display:none; }
+  .set-none { color:var(--text3); text-align:center; padding:30px 0; }
+  /* A search shows every section's cards that match, the matches marked. */
+  #tab-settings.searching .settabs button.active { color:var(--text2); border-bottom-color:transparent; font-weight:inherit; }
+  .settings-pane .s-hit { border-radius:6px; background:color-mix(in srgb, var(--accent) 16%, transparent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent); }
+  @media (max-width:600px){ .set-tools { width:100%; justify-content:stretch; } .set-search { flex:1 1 auto; } }
   /* The tabs may wrap onto a second line; only when they'd need a third does
      a dropdown take over, reusing the .flagsel pattern from the theme/language
      pickers. That is counted (fitSetTabs), not guessed from a breakpoint: the
@@ -1259,6 +1302,20 @@
   .lang-card .lang-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lang-bar { display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--track); margin-top:10px; }
   .lang-bar i { display:block; height:100%; }
+  /* A program's icon: takes no room until it has loaded, and none at all
+     for a program without one. */
+  .app-ic { display:none; flex:none; width:1.25em; height:1.25em; margin-right:.4em; vertical-align:-.25em; }
+  .app-ic.ok { display:inline-block; }
+  .app-ic img { display:block; width:100%; height:100%; object-fit:contain; }
+  /* Programs: one cell like the languages; two cells a list of the top ones. */
+  .apps-list { display:none; position:relative; z-index:1; margin-top:12px; flex-direction:column; gap:calc(7px * var(--dn, 1)); }
+  .apps-card.span2 .apps-list, .apps-card.span3 .apps-list { display:flex; }
+  .apps-card.span2 .apps-one, .apps-card.span3 .apps-one { display:none; }
+  .apps-list .al-row { display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:10px; row-gap:3px; font-size:13px; }
+  .apps-list .al-n { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text2); }
+  .apps-list .al-p { font-weight:700; font-variant-numeric:tabular-nums; }
+  .apps-list .al-b { grid-column:1 / -1; height:5px; border-radius:99px; background:var(--track); overflow:hidden; }
+  .apps-list .al-b i { display:block; height:100%; border-radius:99px; }
   /* Rhythm: twice as wide, so the week-by-hour grid has room. */
   /* The cloud fills the whole card, behind the icon and title too. The card
      keeps the calendar card's size through an invisible spacer with the
@@ -1808,6 +1865,8 @@
   /* PWA tip / banners */
   .banner { display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; margin-bottom:18px; font-size:13px; }
   .banner.tip { background:var(--accent-soft); color:var(--text); }
+  .dict-note { cursor:var(--cur-hand); }
+  .dict-note > svg { flex:0 0 auto; color:var(--accent); }
   .banner.warn { background:var(--danger-soft); color:var(--text); }
   .banner .grow { flex:1; }
   .banner button { flex:0 0 auto; }
@@ -1846,6 +1905,32 @@
     border-radius:6px; font-size:15px; line-height:1; color:var(--text3); }
   .snip-idea .si-x:hover { color:var(--danger-ink); background:var(--danger-soft); }
   .snip-ideas[hidden] { display:none; }
+  .d-filter { margin:0 0 12px; }
+  .d-filter[hidden], .dict-sugg[hidden], #d-corrections tr[hidden], #d-filter-none[hidden] { display:none; }
+  .dict-sugg { margin:4px 0 16px; padding:calc(12px * var(--dn, 1)) calc(14px * var(--dn, 1)); border-radius:12px; background:var(--accent-soft); display:grid; gap:calc(10px * var(--dn, 1)); }
+  .ds-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .ds-row + .ds-row { padding-top:calc(10px * var(--dn, 1)); border-top:1px solid var(--card-border); }
+  .ds-main { flex:1 1 260px; min-width:0; display:grid; gap:3px; }
+  .ds-pair { font-size:13.5px; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .ds-pair .ds-w { color:var(--text2); text-decoration:line-through; text-decoration-color:var(--text3); }
+  .ds-pair .ds-r { font-weight:700; color:var(--text); }
+  .ds-pair .si-arrow { color:var(--text3); }
+  .ds-meta { font-size:12px; color:var(--text3); }
+  .ds-ex { font-size:12.5px; color:var(--text2); font-style:italic; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ds-ex mark { background:none; color:var(--accent); font-weight:600; font-style:normal; }
+  .ds-act { display:flex; gap:6px; }
+  .ds-more { font-weight:500; letter-spacing:0; text-transform:none; }
+  /* Counts on the dictionary's cards, and a bar that stays on top to jump
+     between them when the corrections run long. */
+  .dict-count { margin-left:auto; font-size:12.5px; font-weight:600; color:var(--text3); font-variant-numeric:tabular-nums; }
+  .dict-jump { position:sticky; top:var(--sticky-top, 0px); z-index:6; display:flex; gap:8px; flex-wrap:wrap; margin:0 -6px 14px; padding:8px 6px; background:var(--bg); }
+  :root[data-backdrop] .dict-jump { background:color-mix(in srgb, var(--bg) 55%, transparent); -webkit-backdrop-filter:blur(14px) saturate(1.2); backdrop-filter:blur(14px) saturate(1.2); }
+  .dj-btn { display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; border:1px solid var(--card-border); background:var(--card); color:var(--text2); font:inherit; font-size:13px; font-weight:600; cursor:var(--cur-hand); }
+  .dj-btn:hover { border-color:var(--accent); color:var(--text); }
+  .dj-btn.on { border-color:var(--accent); background:var(--accent-soft); color:var(--text); }
+  .dj-n { min-width:20px; padding:1px 7px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font-size:12px; text-align:center; font-variant-numeric:tabular-nums; }
+  .dj-btn.on .dj-n { background:var(--accent); color:#fff; }
+  .dict-card { scroll-margin-top:calc(var(--sticky-top, 0px) + 60px); }
   .hgroup { font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--text3); margin:22px 0 2px; padding-bottom:6px; border-bottom:1px solid var(--card-border); }
   .hgroup:first-child { margin-top:0; }
   /* Total-entries badge in the History header, and the "loading more" spinner. */
@@ -2002,7 +2087,7 @@
 
   /* delayed styled help tooltip for settings */
   #help-tip { position:fixed; z-index:150; max-width:280px; background:#2B2440; color:#F2EFFA; border-radius:10px;
-    padding:10px 13px; font-size:12px; line-height:1.55; box-shadow:0 12px 34px rgba(20,10,40,.36);
+    padding:10px 13px; font-size:12px; line-height:1.55; box-shadow:0 12px 34px rgba(20,10,40,.36); white-space:pre-line;
     pointer-events:none; opacity:0; transform:translateY(-4px); transition:opacity .14s, transform .14s; }
   #help-tip.show { opacity:1; transform:none; }
   /* Help-enabled elements keep a normal cursor on hover — no question-mark
@@ -2808,6 +2893,12 @@
           </button>
         </div>
       </div>
+      <div class="banner tip dict-note" id="dict-note" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M18 16H7a2 2 0 0 0-2 2"/></svg>
+        <span class="grow" id="dict-note-text"></span>
+        <button type="button" class="btn primary small" id="dict-note-go">Show</button>
+        <button type="button" class="x" id="dict-note-x" data-tip-text="Later" aria-label="Later">×</button>
+      </div>
       <div class="welcome-card" id="welcome-card" hidden>
         <button class="welcome-x" id="welcome-dismiss" title="Close" aria-label="Close">×</button>
         <div class="welcome-head">
@@ -2917,6 +3008,17 @@
     <section id="tab-settings">
       <div class="page-head">
         <div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="9" cy="8" r="2.4" fill="var(--card)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--card)"/></svg></span><h1>Settings</h1></div><div class="sub">Configure Vito exactly to your liking</div></div>
+        <div class="ph-right set-tools">
+          <div class="searchbox set-search">
+            <svg class="s-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+            <input type="text" id="set-search" placeholder="Search settings…" aria-label="Search settings" autocomplete="off" spellcheck="false">
+            <button class="s-x" id="set-search-x" data-tip-text="Clear search" aria-label="Clear search" style="display:none;">×</button>
+          </div>
+          <div class="set-mode" id="set-mode" role="radiogroup" aria-label="Which settings to show">
+            <button type="button" role="radio" data-mode="basic">Basic</button>
+            <button type="button" role="radio" data-mode="all">All</button>
+          </div>
+        </div>
       </div>
       <div class="flagsel setsec-sel" id="setsec-sel">
         <button type="button" class="flagsel-btn" id="setsec-btn">
@@ -2934,6 +3036,7 @@
         <button type="button" data-sec="cleanup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z"/><path d="M19 15l.7 1.8L21.5 18l-1.8.7L19 20.5l-.7-1.8L16.5 18l1.8-.5z"/></svg><span>AI cleanup</span></button>
         <button type="button" data-sec="assist"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.6" y="9" width="2.8" height="6" rx="1.4"/><rect x="6.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="10.6" y="3.5" width="2.8" height="17" rx="1.4"/><rect x="15.1" y="6" width="2.8" height="12" rx="1.4"/><rect x="19.6" y="9" width="2.8" height="6" rx="1.4"/></svg><span>Vito Assist</span></button>
         <button type="button" data-sec="output"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg><span>Output</span></button>
+        <button type="button" data-sec="apps" id="settab-apps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg><span>Programs</span></button>
         <button type="button" data-sec="backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z"/><path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><span>Backup</span></button>
         <button type="button" data-sec="linux" id="settab-linux" hidden><span class="tux-slot" aria-hidden="true"></span><span>Linux</span></button>
         <button type="button" data-sec="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>About</span></button>
@@ -2949,15 +3052,17 @@
         </div>
         <div class="card" data-sec="general" id="set-display">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>Display</span></h2>
+          <div data-adv>
           <label class="fld" data-help="zoom" style="max-width:320px;">Zoom level <span class="val" id="s-zoomval">100%</span><button type="button" id="s-zoom-reset" class="reset-btn" hidden title="Back to 100%" aria-label="Back to 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
           <div class="slider-wrap" style="--frac:0.375;"><input type="range" id="s-zoom" min="0.7" max="1.5" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
+          </div>
           <label class="fld" data-help="uilang">Interface language</label>
           <input type="hidden" id="s-uilang">
           <div class="flagsel" id="uilang-sel">
             <button type="button" class="flagsel-btn" id="uilang-btn">Automatic (OS)</button>
             <div class="flagsel-list" id="uilang-list"></div>
           </div>
-          <label class="tgl" data-help="helptips"><input type="checkbox" id="s-helptips"><span class="tr"></span> Show help tips on hover</label>
+          <label class="tgl" data-help="helptips" data-adv><input type="checkbox" id="s-helptips"><span class="tr"></span> Show help tips on hover</label>
         </div>
         <div class="card" data-sec="appearance" id="set-look">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.2" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="7.4" r="1.1" fill="currentColor" stroke="none"/></svg><span>Appearance</span></h2>
@@ -2970,40 +3075,46 @@
           <div class="tri-seg" id="theme-seg" role="radiogroup" aria-label="Theme"></div>
           <label class="fld" data-help="accent">Colours</label>
           <div class="accent-sel" id="accent-sel" role="radiogroup" aria-label="Colours"></div>
+          <div data-adv>
           <label class="fld" data-help="gradient">Colour gradient</label>
           <div class="accent-sel" id="gradient-sel" role="radiogroup" aria-label="Colour gradient"></div>
+          </div>
           <label class="fld" data-help="font">Font</label>
           <div class="accent-sel" id="font-sel" role="radiogroup" aria-label="Font"></div>
+          <div data-adv>
           <label class="fld" data-help="radius">Corners</label>
           <div class="accent-sel" id="radius-sel" role="radiogroup" aria-label="Corners"></div>
           <label class="fld" data-help="density">Spacing</label>
           <div class="accent-sel" id="density-sel" role="radiogroup" aria-label="Spacing"></div>
+          </div>
           <label class="fld" data-help="backdrop">Background</label>
           <div class="accent-sel" id="backdrop-sel" role="radiogroup" aria-label="Background"></div>
-          <div id="bd-strength-row" hidden>
+          <div id="bd-strength-row" data-adv hidden>
             <label class="fld" data-help="bdstrength" for="s-bdstrength" style="max-width:320px;">Background strength <span class="val" id="s-bdstrengthval">100%</span><button type="button" id="s-bdstrength-reset" class="reset-btn" hidden title="Back to 100%" aria-label="Back to 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button></label>
             <div class="slider-wrap" style="--frac:0.655;"><input type="range" id="s-bdstrength" min="0.05" max="1.5" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
           </div>
           <div class="subhead" style="margin-top:20px;">Other</div>
           <label class="tgl" data-help="motion"><input type="checkbox" id="s-motion"><span class="tr"></span> Reduce motion</label>
-          <label class="tgl" data-help="cursor"><input type="checkbox" id="s-cursor"><span class="tr"></span> Vito mouse cursor</label>
+          <label class="tgl" data-help="cursor" data-adv><input type="checkbox" id="s-cursor"><span class="tr"></span> Vito mouse cursor</label>
           <div class="s-vito-row">
             <span class="s-vito-prev"><span class="vmascot" data-state="happy" id="s-vito-prev"></span></span>
             <button type="button" class="btn ghost small" id="s-dress">Dress up Vito</button>
           </div>
-          <button type="button" class="linkbtn look-sounds" id="s-goto-sounds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Sounds have their own sets, under Audio</span></button>
+          <button type="button" class="linkbtn look-sounds" id="s-goto-sounds" data-adv><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Sounds have their own sets, under Audio</span></button>
           <button type="button" class="btn ghost small" id="s-look-reset" style="margin-top:16px;">Reset to default</button>
         </div>
         <div class="card" data-sec="general" id="set-system">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg><span>System</span></h2>
           <label class="tgl" data-help="autostart"><input type="checkbox" id="s-autostart"><span class="tr"></span> Start with the system</label>
           <label class="tgl" data-help="tray"><input type="checkbox" id="s-tray"><span class="tr"></span> Show system-tray icon</label>
-          <label class="tgl" data-help="ownwindow" id="s-window-opt" hidden><input type="checkbox" id="s-window"><span class="tr"></span> Open Vito in its own window</label>
+          <label class="tgl" data-help="ownwindow" id="s-window-opt" data-adv hidden><input type="checkbox" id="s-window"><span class="tr"></span> Open Vito in its own window</label>
+          <div data-adv>
           <label class="fld" data-help="notifications" style="margin-top:16px;">Notifications</label>
           <input type="hidden" id="s-notify">
           <div class="flagsel" id="notify-sel">
             <button type="button" class="flagsel-btn" id="notify-btn"></button>
             <div class="flagsel-list" id="notify-list"></div>
+          </div>
           </div>
         </div>
         <!-- Shown where the pill works (loadLinuxTools: pillHere). -->
@@ -3012,7 +3123,7 @@
           <p class="act-note" id="pill-gnome-note" hidden style="margin:2px 0 10px; padding:9px 12px; border-radius:9px; background:var(--accent-soft); color:var(--text2);"></p>
           <label class="tgl" id="pill-opt" data-help="pill" style="display:none;"><input type="checkbox" id="s-pill"><span class="tr"></span> Show a pill on screen while dictating</label>
           <label class="tgl" id="pill-idle-opt" data-help="pillidle" style="display:none;"><input type="checkbox" id="s-pill-idle"><span class="tr"></span> Keep a small pill on screen when not dictating</label>
-          <label class="tgl" id="pill-live-opt" data-help="pilllive" style="display:none;"><input type="checkbox" id="s-pill-live"><span class="tr"></span> Show the words in the pill while you speak <span id="pill-live-note" style="display:block;font-size:12px;color:var(--text3);" hidden></span></label>
+          <label class="tgl" id="pill-live-opt" data-adv data-help="pilllive" style="display:none;"><input type="checkbox" id="s-pill-live"><span class="tr"></span> Show the words in the pill while you speak <span id="pill-live-note" style="display:block;font-size:12px;color:var(--text3);" hidden></span></label>
           <div id="pill-style-opt" style="display:none;">
             <label class="fld" data-help="pillstyle">Pill style</label>
             <input type="hidden" id="s-pillstyle">
@@ -3025,7 +3136,7 @@
           <label class="tgl" data-help="updateauto"><input type="checkbox" id="s-updateauto"><span class="tr"></span> Install updates automatically</label>
           <p class="act-note" id="upd-auto-note" style="margin:2px 0 8px;" hidden></p>
         </div>
-        <div class="card" data-sec="general" id="set-other">
+        <div class="card" data-sec="general" id="set-other" data-adv>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span>Other</span></h2>
           <label class="fld" data-help="typingspeed" style="margin-top:0;">Typing speed (for time saved)</label>
           <input type="hidden" id="s-typespeed">
@@ -3045,11 +3156,13 @@
           <div class="isel"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5v4M9 20.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><select id="s-input"></select></div>
           <label class="fld" data-help="level">Microphone level <span class="val" id="s-inputlevelval">–</span></label>
           <input type="range" id="s-inputlevel" min="0" max="1" step="0.01" disabled>
+          <div data-adv>
           <label class="fld" data-help="media">Media while dictating</label>
           <input type="hidden" id="s-mediaaction">
           <div class="flagsel" id="mediaaction-sel">
             <button type="button" class="flagsel-btn" id="mediaaction-btn"></button>
             <div class="flagsel-list" id="mediaaction-list"></div>
+          </div>
           </div>
           <button class="btn ghost small" id="btn-mictest" style="margin-top:14px;"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5v4M9 20.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Test microphone</button>
 
@@ -3057,6 +3170,7 @@
         <div class="card" data-sec="audio" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg><span>Feedback sounds</span></h2>
           <label class="tgl" data-help="sounds"><input type="checkbox" id="s-sounds"><span class="tr"></span> Play feedback sounds</label>
+          <div data-adv>
           <label class="fld" data-help="soundset">Sound set</label>
           <div class="accent-sel" id="soundset-sel" role="radiogroup" aria-label="Sound set"></div>
           <label class="fld">Listen to the sounds</label>
@@ -3067,12 +3181,15 @@
             <button type="button" class="tag" data-sound="command"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Vito Assist</button>
             <button type="button" class="tag" data-sound="warn"><svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Cleanup failed</button>
           </div>
+          </div>
           <label class="fld" data-help="svol">Feedback sound volume <span class="val" id="s-svolval">100%</span></label>
           <div class="slider-wrap" style="--frac:0.5;"><input type="range" id="s-svol" min="0" max="2" step="0.05"><span class="slider-mark" title="Default 100%" aria-hidden="true"></span></div>
+          <div data-adv>
           <label class="fld" data-help="output">Output device (sounds)</label>
           <div class="isel"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 0 1 0 7M18.5 6a7 7 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><select id="s-output"></select></div>
+          </div>
         </div>
-        <div class="card" data-sec="audio" hidden>
+        <div class="card" data-sec="audio" data-adv hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg><span>Stopping automatically</span></h2>
           <label class="fld" data-help="silence" style="margin-top:0;">Auto-stop on silence</label>
           <div class="rowflex" style="gap:9px; align-items:center; margin-top:2px;">
@@ -3101,6 +3218,7 @@
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg><span>Speech model</span></h2>
           <input type="hidden" id="s-model">
           <div class="modelcards" id="model-cards"></div>
+          <label class="tgl" data-help="stthints" data-adv style="margin-top:14px;"><input type="checkbox" id="s-stthints"><span class="tr"></span> Tell the speech recognition the words in your dictionary</label>
           <!-- Each provider's settings live in a fold-out under its card. The
                blocks are written here once, with their ids and listeners, and
                buildModelCards moves them into the cards' panels, and parks
@@ -3175,6 +3293,7 @@
         <div class="card" data-sec="cleanup" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z"/><path d="M19 15l.7 1.8L21.5 18l-1.8.7L19 20.5l-.7-1.8L16.5 18l1.8-.5z"/></svg><span>AI cleanup</span></h2>
           <label class="tgl" data-help="cleanup"><input type="checkbox" id="s-cleanup"><span class="tr"></span> Auto-clean dictations</label>
+          <label class="tgl" data-help="appcontext" data-adv><input type="checkbox" id="s-appcontext"><span class="tr"></span> Tell the cleanup which program you dictate into</label>
 
           <label class="fld" data-help="cleanupprovider">Cleanup provider</label>
           <input type="hidden" id="s-cleanupprovider">
@@ -3219,6 +3338,7 @@
               <input type="text" id="s-openaimodel" placeholder="openai/gpt-oss-120b" autocomplete="off">
               <div class="flagsel-list" id="modelcombo-list"></div>
             </div>
+            <div data-adv>
             <label class="fld" data-help="reasoning">Thinking</label>
             <select id="s-openaireasoning">
               <option value="">Let the model decide</option>
@@ -3229,6 +3349,7 @@
               <option value="high">High</option>
             </select>
             <p class="act-note" id="reasoning-note" style="margin:6px 0 0;"></p>
+            </div>
           </div>
 
         </div>
@@ -3238,6 +3359,8 @@
           <label class="fld">Rule set</label>
           <select id="s-promptsel"></select>
           <p class="act-note" id="prompt-desc" style="margin:6px 0 0;"></p>
+          <p class="act-note app-over" data-over="rules" hidden></p>
+          <div data-adv>
           <div class="rowflex" style="gap:8px; margin-top:10px;">
             <button type="button" class="mini-btn" id="prompt-new">New from this one</button>
             <button type="button" class="mini-btn" id="prompt-rename">Rename</button>
@@ -3246,8 +3369,21 @@
           <textarea id="s-promptrules" rows="14" spellcheck="false" style="margin-top:10px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; line-height:1.55;"></textarea>
           <p class="act-note prompt-fixed" id="prompt-contract"></p>
           <p class="act-note" style="margin-top:10px;">A Vito Assist command (“Vito, …”) doesn't use these rules: carrying out an instruction replaces them rather than extending them. The dictionary corrections and the language are sent separately, so you don't need to repeat them here.</p>
+          </div>
         </div>
-        <div class="card" data-sec="cleanup" hidden>
+        <div class="card" data-sec="apps" hidden id="set-apps">
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M7 13h5M7 16h8"/></svg><span>Per program</span></h2>
+          <p class="act-note" style="margin:0 0 12px;" data-help="appprompts">Vito sees which program you dictate into. A dash (—) follows the general setting; choose something else and only that program differs — Enter for a chat, neat rules for e-mail, no history for a password manager. A program shows up here by itself once you have dictated into it.</p>
+          <div class="app-rules" id="app-rules"></div>
+          <button type="button" class="mini-btn" id="app-rules-more" style="margin-top:10px;" hidden></button>
+          <div class="rs-legend" id="rs-legend"></div>
+          <div class="rowflex" style="gap:8px; margin-top:10px; flex-wrap:wrap;">
+            <button type="button" class="mini-btn" id="app-rules-manage">Edit rule sets…</button>
+            <button type="button" class="mini-btn" id="app-output-manage">Space and Enter for all programs…</button>
+          </div>
+          <p class="act-note" id="app-rules-note" style="margin:6px 0 0;" hidden></p>
+        </div>
+        <div class="card" data-sec="cleanup" data-adv hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 10.5h6M7 13.5h6"/></svg><span data-help="cleanuprate">Token cost estimate</span></h2>
           <div class="rowflex" style="gap:10px;">
             <div style="flex:1;min-width:0;"><label class="fld" data-help="cleanuprate">Input · $/Mtok</label><input type="number" id="s-cleanupinrate" min="0" step="0.01" placeholder="0"></div>
@@ -3300,7 +3436,7 @@
           <div class="assist-req"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="1.15" fill="currentColor" stroke="none"/></svg><span>Vito Assist only works when AI cleanup is on — that pass is what carries out the command.</span></div>
 
         </div>
-        <div class="card" data-sec="assist" hidden>
+        <div class="card" data-sec="assist" data-adv hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg><span>Model</span></h2>
           <label class="tgl" data-help="assistmodel"><input type="checkbox" id="s-assist-usecleanup"><span class="tr"></span> Use the AI cleanup model</label>
           <p class="act-note" id="assist-model-active" style="margin:6px 0 0;"></p>
@@ -3353,22 +3489,27 @@
             </div>
           </div>
         </div>
-        <div class="card" data-sec="output" hidden>
+        <div class="card" data-sec="output" hidden id="set-output">
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg><span>Output</span></h2>
+          <div data-adv>
           <label class="fld" data-help="inject">Injection method</label>
           <input type="hidden" id="s-inject">
           <div class="flagsel" id="inject-sel">
             <button type="button" class="flagsel-btn" id="inject-btn"></button>
             <div class="flagsel-list" id="inject-list"></div>
           </div>
-          <label class="tgl" data-help="restore"><input type="checkbox" id="s-restore"><span class="tr"></span> Restore clipboard after paste</label>
+          </div>
+          <label class="tgl" data-help="restore" data-adv><input type="checkbox" id="s-restore"><span class="tr"></span> Restore clipboard after paste</label>
           <label class="tgl" data-help="appendspace"><input type="checkbox" id="s-appendspace"><span class="tr"></span> Add a space after the text</label>
+          <p class="act-note app-over" data-over="space" hidden></p>
           <label class="tgl" data-help="appendenter"><input type="checkbox" id="s-appendenter"><span class="tr"></span> Add Enter after text</label>
+          <p class="act-note app-over" data-over="enter" hidden></p>
         </div>
         <div class="card" data-sec="output" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>History</span></h2>
           <label class="tgl" data-help="history"><input type="checkbox" id="s-history"><span class="tr"></span> Keep history</label>
-          <label class="tgl" data-help="storeaudio"><input type="checkbox" id="s-storeaudio"><span class="tr"></span> Keep recordings (last 10)</label>
+          <p class="act-note app-over" data-over="history" hidden></p>
+          <label class="tgl" data-help="storeaudio" data-adv><input type="checkbox" id="s-storeaudio"><span class="tr"></span> Keep recordings (last 10)</label>
           <label class="fld" data-help="retention">Automatically delete old entries</label>
           <input type="hidden" id="s-retention">
           <div class="flagsel" id="retention-sel">
@@ -3376,7 +3517,7 @@
             <div class="flagsel-list" id="retention-list"></div>
           </div>
         </div>
-        <div class="card" data-sec="output" hidden id="set-lrfolder">
+        <div class="card" data-sec="output" hidden id="set-lrfolder" data-adv>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2 2 0 0 1 5 5.5h4l2 2.2h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10.5h18"/></svg><span>Recordings</span></h2>
           <label class="tgl" style="margin-top:4px;"><input type="checkbox" id="lrs-clean"><span class="tr"></span> Clean up each block</label>
           <p class="act-note" style="margin:4px 0 0;">The AI cleanup (Settings → Cleanup) tidies the text block by block while you record. Off: the raw transcript only.</p>
@@ -3473,32 +3614,48 @@
           <p class="act-note" style="margin:0;">Achievement medals and animations use <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> by Google (static under Apache-2.0, animations under CC BY 4.0), played with <a href="https://github.com/airbnb/lottie-web" target="_blank" rel="noopener">lottie-web</a> by Airbnb (MIT). Country flags are <a href="https://github.com/lipis/flag-icons" target="_blank" rel="noopener">flag-icons</a> by Panayiotis Lipiridis (MIT).</p>
           <p class="act-note" style="margin:8px 0 0;">Recordings are stored as MP3 with the <a href="https://github.com/braheezy/shine-mp3" target="_blank" rel="noopener">shine</a> encoder (LGPL-2, Go port by braheezy) and read back with <a href="https://github.com/hajimehoshi/go-mp3" target="_blank" rel="noopener">go-mp3</a> by Hajime Hoshi (Apache-2.0).</p>
         </div>
+        <div class="set-more" id="set-more" hidden>
+          <span class="grow">Only the basic settings are shown. This section has more.</span>
+          <button type="button" class="btn ghost small" id="set-more-btn">Show all settings</button>
+        </div>
+        <p class="set-none" id="set-none" hidden>No settings match your search.</p>
       </div>
     </section>
 
     <!-- DICTIONARY -->
     <section id="tab-dictionary">
       <div class="page-head"><div class="ph-left"><div class="ph-titlerow"><span class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M18 16H7a2 2 0 0 0-2 2"/></svg></span><h1>Dictionary</h1></div><div class="sub">Corrections and text snippets</div></div></div>
-      <div class="card" style="margin-bottom:24px;">
-        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span>Corrections (misheard → intended)</span></h2>
+      <nav class="dict-jump" id="dict-jump" aria-label="Dictionary sections">
+        <button type="button" class="dj-btn" data-to="dict-corr-card"><span>Corrections</span><span class="dj-n" id="dj-corr">0</span></button>
+        <button type="button" class="dj-btn" data-to="dict-snip-card"><span>Text snippets</span><span class="dj-n" id="dj-snip">0</span></button>
+      </nav>
+      <div class="card dict-card" id="dict-corr-card" style="margin-bottom:24px;">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span>Corrections (misheard → intended)</span><span class="dict-count" id="d-corr-count"></span></h2>
         <p class="act-note" style="margin:2px 0 10px;">Corrections are applied to every dictation. Tip: in History, hover over a word and click it to quickly add a correction for it.</p>
-        <table id="d-corrections"><thead><tr><th>Misheard</th><th>Intended</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
-        <div class="rowflex" style="margin-top:12px;">
+        <div class="dict-sugg" id="d-sugg" hidden></div>
+        <div class="searchbox d-filter" id="d-filter-wrap" hidden>
+          <svg class="s-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input type="text" id="d-filter" placeholder="Filter corrections…" aria-label="Filter corrections">
+          <button class="s-x" id="d-filter-x" data-tip-text="Clear filter" aria-label="Clear filter" style="display:none;">×</button>
+        </div>
+        <div class="rowflex" style="margin-bottom:10px;">
           <button class="btn primary small" id="d-add">+ Row</button>
           <button class="btn ghost small" id="d-export">Export</button>
           <button class="btn ghost small" id="d-import">Import</button>
           <input type="file" id="d-importfile" accept=".json,.txt,.csv" style="display:none">
         </div>
+        <table id="d-corrections"><thead><tr><th>Misheard</th><th>Intended</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
+        <p class="act-note" id="d-filter-none" hidden>No corrections match this filter.</p>
         <div class="snip-ideas" id="d-corr-ideas"></div>
       </div>
-      <div class="card" style="margin-bottom:24px;">
-        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Text snippets</span></h2>
+      <div class="card dict-card" id="dict-snip-card" style="margin-bottom:24px;">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Text snippets</span><span class="dict-count" id="d-snip-count"></span></h2>
         <p class="act-note" style="margin:2px 0 0;">Say the trigger and Vito types the fixed text in its place: a link, your address, a standard reply. The AI cleanup never changes it. Capitals, punctuation and “m'n” or “mijn” don't matter.</p>
         <p class="act-note" style="margin:6px 0 10px;"><b>Tip:</b> pick a trigger of two or more words that you wouldn't say by accident, such as “my sign-off”. A single or everyday word like “address” would also bring in the text in the middle of an ordinary sentence.</p>
-        <table id="d-snippets"><thead><tr><th>When you say</th><th>Vito types</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
-        <div class="rowflex" style="margin-top:12px;">
+        <div class="rowflex" style="margin-bottom:10px;">
           <button class="btn primary small" id="d-snip-add">+ Snippet</button>
         </div>
+        <table id="d-snippets"><thead><tr><th>When you say</th><th>Vito types</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
         <div class="snip-ideas" id="d-snip-ideas"></div>
       </div>
     </section>
@@ -3990,6 +4147,28 @@ const TR = { nl: {
   "Animation when there's an update":"Animatie bij een update",
   "Settings":"Instellingen",
   "Dictionary":"Woordenboek",
+  "Filter corrections…":"Correcties filteren…", "Clear filter":"Filter wissen", "No corrections match this filter.":"Geen correcties gevonden voor dit filter.",
+  "Suggested from your dictations":"Voorgesteld uit je dictaten", "Repaired once by the cleanup":"1× hersteld door de opschoning",
+  "Repaired {n} times by the cleanup":"{n}× hersteld door de opschoning", "heard right once":"1× goed verstaan", "heard right {n} times":"{n}× goed verstaan",
+  "Ignore":"Negeren",
+  "Per program":"Per programma", "Vito sees which program you dictate into. A dash (—) follows the general setting; choose something else and only that program differs — Enter for a chat, neat rules for e-mail, no history for a password manager. A program shows up here by itself once you have dictated into it.":"Vito ziet in welk programma je dicteert. Een streepje (—) volgt de algemene instelling; kies je iets anders, dan wijkt alleen dat programma af — Enter voor een chat, nette regels voor e-mail, geen geschiedenis voor een wachtwoordmanager. Een programma verschijnt hier vanzelf zodra je erin gedicteerd hebt.",
+  "Space after":"Spatie erna", "Enter after":"Enter erna", "On":"Aan", "Set differently for":"Anders ingesteld voor", "What the rule sets do":"Wat de regelsets doen", "Your own rule set":"Je eigen regelset", "Space and Enter for all programs…":"Spatie en Enter voor alle programma's…",
+  "1 dictation":"1 dictaat", "No dictations yet":"Nog geen dictaten",
+  "own choice":"eigen keuze", "general":"algemeen", "not kept":"niet bewaard", "on":"aan", "off":"uit", "Don't keep":"Niet bewaren",
+  "Always on for {apps}":"Altijd aan voor {apps}", "For a password manager or another program where you dictate sensitive things, it can be on always:":"Voor een wachtwoordmanager of een ander programma waarin je gevoelige dingen dicteert, kan hij altijd aan staan:", "set it per program":"stel het in per programma", "change per program":"aan te passen per programma", "General (on)":"Algemeen (aan)", "General (off)":"Algemeen (uit)",
+  "General ({set})":"Algemeen ({set})", "Rule set for {app}":"Regelset voor {app}", "Show all {n} programs":"Alle {n} programma's tonen", "Show fewer":"Minder tonen",
+  "Settings for this program":"Instellingen voor dit programma", "Cleaned with this rule set":"Opgeschoond met deze regelset",
+  "Dictate into a program first: it shows up here. Some desktops don't say which program is in front.":"Dicteer eerst in een programma: dan verschijnt het hier. Sommige desktops vertellen niet welk programma vooraan staat.",
+  "Tell the cleanup which program you dictate into":"Vertel de opschoning in welk programma je dicteert", "Dictated into":"Gedicteerd in",
+  "Tell the speech recognition the words in your dictionary":"Geef de spraakherkenning de woorden uit je woordenboek mee",
+  "Search settings…":"Instellingen zoeken…", "Search settings":"Instellingen zoeken", "Which settings to show":"Welke instellingen je ziet",
+  "Basic":"Basis", "All":"Alles", "Only the basic settings are shown. This section has more.":"Je ziet alleen de basisinstellingen. Dit onderdeel heeft er meer.",
+  "Show all settings":"Alle instellingen tonen", "No settings match your search.":"Geen instellingen gevonden voor je zoekopdracht.",
+  "Corrections":"Correcties", "Dictionary sections":"Onderdelen van het woordenboek", "{n} of {total}":"{n} van {total}",
+  "Like “{term}” in your dictionary":"Lijkt op “{term}” uit je woordenboek", "heard once":"1× gehoord", "heard {n} times":"{n}× gehoord",
+  "the cleanup left it":"de opschoning liet het staan", "the cleanup left it {n}×":"de opschoning liet het {n}× staan", "{n} more after these":"daarna nog {n}",
+  "<b>A new suggestion</b> for your dictionary, from your dictations.":"<b>Een nieuwe suggestie</b> voor je woordenboek, uit je dictaten.",
+  "<b>{n} new suggestions</b> for your dictionary, from your dictations.":"<b>{n} nieuwe suggesties</b> voor je woordenboek, uit je dictaten.",
   "History":"Geschiedenis",
   // Achievements
   "Achievements":"Prestaties",
@@ -4061,6 +4240,9 @@ const TR = { nl: {
   "Came back after 30 quiet days":"Teruggekomen na 30 stille dagen",
   "Transcribed an audio file":"Een audiobestand getranscribeerd",
   "Dictated in three languages":"In drie talen gedicteerd",
+  "Dictated into five different programs":"In vijf verschillende programma's gedicteerd", "Dictated into ten different programs":"In tien verschillende programma's gedicteerd",
+  "{n} more":"nog {n}", "Programs":"Programma's", "No programs detected in this period yet":"Nog geen programma's herkend in deze periode",
+  "The programs you dictated into in this period, by number of dictations.":"De programma's waarin je in deze periode dicteerde, naar aantal dictaten.",
   "Dictated, gave Vito Assist a command and made a long recording":"Gedicteerd, Vito Assist een opdracht gegeven en een lange opname gemaakt",
   // Backup & restore
   "Backup":"Back-up",
@@ -4200,7 +4382,7 @@ const TR = { nl: {
   "Follows the colours of your desktop":"Volgt de kleuren van je bureaublad",
   "Balanced tidy-up: punctuation, spelling and fillers fixed, your wording left alone.":"Evenwichtig opschonen: interpunctie, spelling en stopwoorden opgelost, je formulering blijft van jou.",
   "Verbatim":"Letterlijk",
-  "Touches as little as possible — punctuation only, every spoken word kept.":"Raakt zo min mogelijk aan — alleen interpunctie, elk gesproken woord blijft staan.",
+  "Touches as little as possible — punctuation, and the ums and ehs out; every other spoken word kept.":"Raakt zo min mogelijk aan — interpunctie, en de eh's en ehm's eruit; elk ander gesproken woord blijft staan.",
   "Business writing":"Zakelijk",
   "Rewrites spoken phrasing into clean, professional sentences.":"Herschrijft spreektaal naar nette, zakelijke zinnen.",
   "Notes":"Notities",
@@ -5781,7 +5963,7 @@ const PRO_LANGS = ["en","es","fr","de","it","pt","ar","da","nl","he","hi","ja","
 // user's own language. English is skipped — it's supported everywhere and is
 // effectively the default, so a tag would be noise.
 const OS_LANG = (navigator.language || "").slice(0, 2).toLowerCase();
-// Soniox's stt-rt-v5 covers all 60 languages from its official supported-languages
+// Soniox's stt-rt-v6 covers all 60 languages from its official supported-languages
 // list — each with a real flag (served from /flags) and a localized name below.
 const SONIOX_LANGS = ["en","nl","de","fr","es","it","pt","pl","ru","uk","cs","sk","sv","da","no","fi","el","hu","ro","bg","hr","sr","sl","bs","sq","mk","be","lt","lv","et","ca","eu","gl","cy","tr","az","kk","ar","he","fa","ur","hi","bn","gu","pa","mr","kn","ml","ta","te","zh","ja","ko","vi","th","id","ms","tl","af","sw"];
 // Parakeet TDT 0.6B v3's 25 languages, minus Maltese (no flag in LANG_DATA).
@@ -5805,7 +5987,7 @@ const SPEECH_MODELS_ALL = [
     sub:"On this computer, free, nothing leaves it. One download of about 1 GB.",
     needs:"Requires: nothing but the one-time download below — no account, no key, no server of your own.",
     bullets:["Best for: privacy and zero cost", "25 European languages, detected automatically", "About a second per dictation on a CPU", "Needs ≈ 1 GB RAM while active, 0.9 GB disk", "No live transcript: the text arrives after you stop"] },
-  { id:"stt-rt-v5", provider:"soniox", name:"Soniox stt-rt-v5", price:0.12, langs:SONIOX_LANGS, logo:LOGO_IMG("soniox"),
+  { id:"stt-rt-v6", provider:"soniox", name:"Soniox stt-rt-v6", price:0.12, langs:SONIOX_LANGS, logo:LOGO_IMG("soniox"),
     sub:"The cheapest option, with the most languages.",
     needs:"Requires: a Soniox account (free to create) and its API key, entered below. Audio is sent to Soniox.",
     bullets:["Best for: low cost", "60+ languages in one model", "Automatic language detection"] },
@@ -6687,6 +6869,7 @@ function selectTab(name){
   positionToasts(); // the column changes width between pages
   if (name === "history") loadHistory();
   if (name === "achievements") loadAchievements();
+  if (name === "dictionary" && typeof markDictSuggSeen === "function") markDictSuggSeen();
   if (name === "long" && !STANDALONE) loadLong();
   if (typeof lrNavRec === "function") lrNavRec();
   // Coming back to Status replays the chart's build-up, the same way opening the
@@ -6760,9 +6943,15 @@ $("hamburger").onclick = (e) => { e.stopPropagation(); $("sidebar").classList.to
 // One category visible at a time; the choice sticks across reloads so you come
 // back where you left off. Cards stay in the DOM (just hidden) — every settings
 // field is collected on save regardless of which section is showing.
-const SET_SECTIONS = ["general", "appearance", "activation", "audio", "stt", "cleanup", "assist", "output", "backup", "linux", "about"];
+const SET_SECTIONS = ["general", "appearance", "activation", "audio", "stt", "cleanup", "assist", "output", "apps", "backup", "linux", "about"];
+// Basic or all settings (ui.settings_all, remembered here too so the page
+// opens in the right view before the config arrives).
+let setAll = (() => { try { return localStorage.getItem("vito-set-all") === "1"; } catch { return false; } })();
+let curSetSec = "general";
 function selectSetSection(sec){
   if (!SET_SECTIONS.includes(sec)) sec = "general";
+  // Picking a section ends a search.
+  if ($("set-search").value) { $("set-search").value = ""; endSetSearch(); }
   // A hidden tab is one that doesn't apply to this OS; a remembered choice
   // must not resurrect it.
   const tabFor = document.querySelector(`#settabs button[data-sec="${sec}"]`);
@@ -6772,8 +6961,92 @@ function selectSetSection(sec){
   syncSetSecUI();
   setTimeout(fitSetTabs); // which tab keeps its name changed (after init: SETTABS_MAX_LINES)
   if (sec === "backup" && typeof loadBackups === "function") { renderBackupAutoNote(); loadBackups(); }
+  curSetSec = sec;
+  syncSetMore();
   try { localStorage.setItem("vito-set-section", sec); } catch {}
 }
+function applySetMode(){
+  $("tab-settings").classList.toggle("set-basic", !setAll);
+  document.querySelectorAll("#set-mode button").forEach(b => {
+    const on = (b.dataset.mode === "all") === setAll;
+    b.classList.toggle("on", on); b.setAttribute("aria-checked", on ? "true" : "false");
+  });
+  syncSetMore();
+}
+function setSetAll(on, persist){
+  setAll = !!on;
+  try { localStorage.setItem("vito-set-all", setAll ? "1" : ""); } catch {}
+  applySetMode();
+  if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { settings_all: setAll });
+    api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
+}
+// Under "Basic", a section that has more says so at its foot. What the page
+// hides for this system (hidden, display:none) is no "more".
+function syncSetMore(){
+  const searching = $("tab-settings").classList.contains("searching");
+  const more = !setAll && !searching && [...document.querySelectorAll(`.settings-pane > .card[data-sec="${curSetSec}"]`)].some(c =>
+    c.style.display !== "none" && [c, ...c.querySelectorAll("[data-adv]")].some(e => e.matches("[data-adv]") && !e.hidden && e.style.display !== "none"));
+  $("set-more").hidden = !more;
+}
+document.querySelectorAll("#set-mode button").forEach(b => b.onclick = () => setSetAll(b.dataset.mode === "all", true));
+$("set-more-btn").onclick = () => setSetAll(true, true);
+// Search: every section's cards whose text (or help tip) holds all the words,
+// basic or not; the closest matching lines are marked. Picking a section, the
+// × or Escape ends it.
+const setFold = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+function setHelpText(el){
+  const k = el.dataset && el.dataset.help, h = k && typeof HELP !== "undefined" && HELP[k];
+  if (!h) return "";
+  return (uiLang === "en" ? h.en : ((HELP_TR[uiLang] && HELP_TR[uiLang][k]) || h[uiLang] || h.en)) || "";
+}
+function endSetSearch(){
+  const pane = $("tab-settings");
+  document.querySelectorAll(".settings-pane .s-hit").forEach(e => e.classList.remove("s-hit"));
+  $("set-search-x").style.display = "none";
+  $("set-none").hidden = true;
+  if (pane.classList.contains("searching")) {
+    pane.classList.remove("searching");
+    document.querySelectorAll("#settabs button").forEach(b => b.classList.toggle("active", b.dataset.sec === curSetSec));
+    document.querySelectorAll(".settings-pane > .card").forEach(c => { c.hidden = c.dataset.sec !== curSetSec; });
+    syncSetMore();
+  }
+}
+function runSetSearch(){
+  const q = setFold($("set-search").value.trim());
+  const words = q.split(/\s+/).filter(Boolean);
+  if (!words.length || q.length < 2) { endSetSearch(); $("set-search-x").style.display = q ? "" : "none"; return; }
+  const pane = $("tab-settings");
+  pane.classList.add("searching");
+  $("set-search-x").style.display = "";
+  document.querySelectorAll(".settings-pane .s-hit").forEach(e => e.classList.remove("s-hit"));
+  document.querySelectorAll("#settabs button").forEach(b => b.classList.remove("active"));
+  const tabOf = sec => document.querySelector(`#settabs button[data-sec="${sec}"]`);
+  const shown = b => b && !b.hidden && getComputedStyle(b).display !== "none";
+  const cards = [...document.querySelectorAll(".settings-pane > .card")];
+  // Laid out first: innerText only leaves out what is not rendered.
+  cards.forEach(c => { c.hidden = !shown(tabOf(c.dataset.sec)); });
+  const txt = e => setFold(e.innerText + " " + setHelpText(e));
+  let n = 0;
+  for (const c of cards) {
+    if (c.hidden || !c.getClientRects().length) { c.hidden = true; continue; }
+    const helps = [...c.querySelectorAll("[data-help]")].filter(e => e.getClientRects().length).map(setHelpText).join(" ");
+    const hay = setFold(c.innerText + " " + helps + " " + tabOf(c.dataset.sec).innerText);
+    const ok = words.every(w => hay.includes(w));
+    c.hidden = !ok;
+    if (!ok) continue;
+    n++;
+    // Short lines only: a model card or a paragraph lit up whole says little.
+    const cand = [...c.querySelectorAll("h2, label, .subhead, p, button, li, .assist-ex-i")].filter(e => e.getClientRects().length && e.innerText.length < 140);
+    let hits = cand.filter(e => words.every(w => txt(e).includes(w)));
+    if (!hits.length) hits = cand.filter(e => words.some(w => txt(e).includes(w)));
+    hits.filter(e => !hits.some(o => o !== e && e.contains(o))).forEach(e => e.classList.add("s-hit"));
+  }
+  $("set-none").hidden = n > 0;
+  syncSetMore();
+}
+$("set-search").addEventListener("input", runSetSearch);
+$("set-search").addEventListener("keydown", e => { if (e.key === "Escape" && $("set-search").value) { e.preventDefault(); e.stopPropagation(); $("set-search").value = ""; endSetSearch(); } });
+$("set-search-x").onclick = () => { $("set-search").value = ""; endSetSearch(); $("set-search").focus(); };
 // Mirrors the tab bar into the narrow-viewport dropdown. Icons and labels are
 // cloned from the tabs (which applyI18n keeps translated) and the nodes are
 // rebuilt on every sync, so a language switch can't leave a stale label behind.
@@ -6801,6 +7074,7 @@ document.querySelectorAll("#settabs button").forEach(b => { b.onclick = () => se
 $("setsec-btn").onclick = (e) => { e.stopPropagation(); $("setsec-sel").classList.toggle("open"); };
 document.addEventListener("click", () => $("setsec-sel").classList.remove("open"));
 selectSetSection(localStorage.getItem("vito-set-section") || "general");
+applySetMode();
 // On the narrow layout the top bar is sticky, so whatever else sticks (the
 // settings tabs) has to sit below it: publish its height as --sticky-top.
 (function stickyTop(){
@@ -7506,6 +7780,7 @@ function handleEvent(e) {
       typeInto(span, curPartial || LISTENING_HINT);
     } else if (e.type === "final") {
       if ($("tab-dictionary") && $("tab-dictionary").classList.contains("active")) setTimeout(loadDictUsage, 500); // its counts moved
+      clearTimeout(window.__dictSuggT); window.__dictSuggT = setTimeout(loadDictSuggestions, 4000); // a new repair may make a suggestion
       // The result is not typed out: the raw text was already typed live as
       // partials, and the cleaned version is a finished answer — it just fades
       // in as a whole.
@@ -7778,6 +8053,19 @@ document.addEventListener("keydown", (e) => {
     return;
   }
 
+  // Ctrl+F on the Dictionary page: the corrections filter (shown for it when
+  // the list is short), also from a field on that page.
+  if (key === "f" && curTab === "dictionary") {
+    e.preventDefault();
+    focusDictFilter();
+    return;
+  }
+  // Ctrl+F on the Settings page: its search box.
+  if (key === "f" && curTab === "settings") {
+    e.preventDefault();
+    $("set-search").focus(); $("set-search").select();
+    return;
+  }
   // Ctrl+F: jump to the history and put the cursor in the search box, so you can
   // search your dictations at once. Skipped while typing, so the browser's own
   // find still works inside a field (including the search box itself).
@@ -9019,6 +9307,7 @@ function renderPromptPicker(){
   $("prompt-rename").disabled = !own;
   $("prompt-del").disabled = !own;
   renderRulesetPill();
+  renderAppRules(); // their pickers list the same sets
 }
 // A short random id, so renaming a set keeps it selected.
 const newPromptID = () => "p" + Math.random().toString(36).slice(2, 10);
@@ -9053,6 +9342,180 @@ function renamePrompt(){
     });
   setTimeout(() => { const i = m.querySelector("#pr-name"); i.focus(); i.select(); }, 30);
 }
+/* ---- a rule set per program (cleanup.app_prompts) ---- */
+// The daemon knows which program had the keyboard when a dictation started
+// (internal/frontapp) and keeps it with the history; GET /api/apps lists them,
+// the most used first, and the one in front now.
+let appUses = [], appNow = null, appPrompts = {}, appInj = {}, appSkip = []; // appSkip: history.skip_apps; // appInj: injection.apps, id → {space, enter}
+async function loadApps(){
+  try { const d = await api("/api/apps"); appUses = d.apps || []; appNow = d.now && d.now.id ? d.now : null; } catch {}
+  renderAppRules();
+}
+const appName = (id) => { const a = appUses.find(x => x.id === id); return a ? a.name : (appNow && appNow.id === id ? appNow.name : id); };
+function promptOptions(sel){
+  const opt = (p) => `<option value="${ahEsc(p.id)}"${p.id === sel ? " selected" : ""}>${ahEsc(t(p.name))}</option>`;
+  const group = (label, items) => items.length ? `<optgroup label="${ahEsc(label)}">${items.map(opt).join("")}</optgroup>` : "";
+  return group(t("Vito"), promptBuiltins) + group(t("Your own"), promptList);
+}
+// Every program dictated into (most used first), the one in front now and any
+// with a set of its own, each with a picker: "General" follows the rule set
+// above (the program is not in the map), any other choice is its own. The
+// first ten show; the rest behind a button, or when one is asked for.
+const APP_RULES_SHOWN = 10;
+let appRulesAll = false;
+function appRuleList(){
+  const list = appUses.map(a => ({ id: a.id, name: a.name, count: a.count }));
+  if (appNow && !list.some(a => a.id === appNow.id)) list.push({ id: appNow.id, name: appNow.name, count: 0 });
+  for (const id of [...Object.keys(appPrompts), ...Object.keys(appInj), ...appSkip]) if (!list.some(a => a.id === id)) list.push({ id, name: id, count: 0 });
+  return list.filter(a => a.id !== "vito").sort((a, b) => b.count - a.count); // stable: ties keep their order
+}
+function renderAppRules(){
+  const box = $("app-rules"); if (!box) return;
+  const list = appRuleList();
+  const shown = appRulesAll ? list : list.slice(0, APP_RULES_SHOWN);
+  const gp = ownOf(promptActive) || builtinOf(promptActive) || promptBuiltins[0];
+  const general = gp ? t(gp.name) : "";
+  // A yes/no that a program may set for itself: General (what holds
+  // everywhere, said in brackets), or on or off.
+  const yn = (key, label, id, globalOn) => {
+    const v = appInj[id] && typeof appInj[id][key] === "boolean" ? (appInj[id][key] ? "on" : "off") : "@general";
+    const o = (val, txt) => `<option value="${val}"${v === val ? " selected" : ""}>${ahEsc(txt)}</option>`;
+    const gen = globalOn ? t("General (on)") : t("General (off)");
+    return `<label class="ar-f yn"><span>${ahEsc(label)}</span><select data-k="${key}"${v !== "@general" ? ' class="own"' : ""} title="${ahEsc(gen)}">` +
+      o("@general", "—") + o("on", t("On")) + o("off", t("Off")) + `</select></label>`;
+  };
+  const gSpace = $("s-appendspace").checked, gEnter = $("s-appendenter").checked;
+  // History: kept as everywhere, or never (text and recording; the day's
+  // numbers still count, as in privacy mode) — for a password manager, say.
+  const skipSel = (id) => {
+    const skip = appSkip.includes(id);
+    return `<label class="ar-f yn"><span>${ahEsc(t("History"))}</span><select data-k="history"${skip ? ' class="own"' : ""} title="${ahEsc($("s-history").checked ? t("General (on)") : t("General (off)"))}">` +
+      `<option value="@general"${skip ? "" : " selected"}>—</option><option value="skip"${skip ? " selected" : ""}>${ahEsc(t("Don't keep"))}</option></select></label>`;
+  };
+  box.innerHTML = shown.map(a => {
+    const ownRules = a.id in appPrompts;
+    const sel = !ownRules ? "@general" : (ownOf(appPrompts[a.id]) || builtinOf(appPrompts[a.id]) ? appPrompts[a.id] : "vito:default");
+    return `<div class="app-rule${appIsOwn(a.id) ? " own" : ""}" data-app="${ahEsc(a.id)}"><span class="ar-name" data-tip-label="1" data-tip-text="${ahEsc(appTip(a, general, gSpace, gEnter))}">${appIcon(a.id, a.name)}${ahEsc(a.name)}</span>` +
+      `<label class="ar-f"><span>${ahEsc(t("Rule set"))}</span><select data-k="rules"${ownRules ? ' class="own"' : ""} title="${ahEsc(t("General ({set})").replace("{set}", general))}" aria-label="${ahEsc(t("Rule set for {app}").replace("{app}", a.name))}">` +
+      `<option value="@general"${sel === "@general" ? " selected" : ""}>—</option>${promptOptions(sel)}</select></label>` +
+      yn("space", t("Space after"), a.id, gSpace) + yn("enter", t("Enter after"), a.id, gEnter) + skipSel(a.id) + `</div>`;
+  }).join("");
+  box.querySelectorAll(".app-rule").forEach(row => {
+    const id = row.dataset.app;
+    row.querySelectorAll("select").forEach(selEl => selEl.onchange = (e) => {
+      const k = selEl.dataset.k, v = e.target.value;
+      if (k === "history") {
+        appSkip = appSkip.filter(x => x !== id); if (v === "skip") appSkip.push(id);
+      } else if (k === "rules") {
+        if (v === "@general") delete appPrompts[id]; else appPrompts[id] = v === "vito:default" ? "" : v;
+      } else {
+        const o = Object.assign({}, appInj[id]);
+        if (v === "@general") delete o[k]; else o[k] = v === "on";
+        if (Object.keys(o).length) appInj[id] = o; else delete appInj[id];
+      }
+      selEl.classList.toggle("own", v !== "@general");
+      row.classList.toggle("own", appIsOwn(id));
+      const a = appRuleList().find(x => x.id === id), nm = row.querySelector(".ar-name");
+      if (a && nm) nm.dataset.tipText = appTip(a, general, gSpace, gEnter);
+      saveAppPrompts();
+    });
+  });
+  const more = $("app-rules-more");
+  more.hidden = list.length <= APP_RULES_SHOWN;
+  more.textContent = appRulesAll ? t("Show fewer") : t("Show all {n} programs").replace("{n}", list.length.toLocaleString(numLoc()));
+  const note = $("app-rules-note");
+  note.hidden = list.length > 0;
+  note.textContent = t("Dictate into a program first: it shows up here. Some desktops don't say which program is in front.");
+  renderAppOver();
+  renderRsLegend();
+}
+// Every rule set with what it does: Vito's own from their description, the
+// user's own as such.
+function renderRsLegend(){
+  const box = $("rs-legend"); if (!box) return;
+  const row = (name, desc) => `<dt>${ahEsc(name)}</dt><dd>${ahEsc(desc)}</dd>`;
+  const items = promptBuiltins.map(p => row(t(p.name), p.description ? t(p.description) : ""))
+    .concat(promptList.map(p => row(p.name, t("Your own rule set"))));
+  box.hidden = !items.length;
+  box.innerHTML = `<h4>${ahEsc(t("What the rule sets do"))}</h4><dl>${items.join("")}</dl>`;
+}
+// A program's tip: how often it was used, then each setting, its own or the
+// general one.
+function appTip(a, general, gSpace, gEnter){
+  const used = a.count === 1 ? t("1 dictation") : a.count ? t("{n} dictations").replace("{n}", a.count.toLocaleString(numLoc())) : t("No dictations yet");
+  const onOff = (v) => v ? t("on") : t("off");
+  const line = (label, own, value, generalValue) => `${label}: ${own ? value + " · " + t("own choice") : generalValue + " · " + t("general")}`;
+  const ownRules = a.id in appPrompts;
+  const rs = ownRules ? (ownOf(appPrompts[a.id]) || builtinOf(appPrompts[a.id]) || builtinOf("vito:default") || {}) : null;
+  const inj = appInj[a.id] || {};
+  const lines = [
+    line(t("Rule set"), ownRules, rs ? t(rs.name || "") : "", general),
+    line(t("Space after"), typeof inj.space === "boolean", onOff(inj.space), onOff(gSpace)),
+    line(t("Enter after"), typeof inj.enter === "boolean", onOff(inj.enter), onOff(gEnter)),
+    line(t("History"), appSkip.includes(a.id), t("not kept"), onOff($("s-history").checked)),
+  ];
+  return `${a.name} — ${used}\n${lines.join("\n")}`;
+}
+const appIsOwn = (id) => id in appPrompts || id in appInj || appSkip.includes(id);
+// Under each general setting: the programs that go their own way, leading to
+// their rows — so a general switch never seems to be ignored.
+function renderAppOver(){
+  const which = {
+    rules: Object.keys(appPrompts),
+    space: Object.keys(appInj).filter(id => typeof appInj[id].space === "boolean"),
+    enter: Object.keys(appInj).filter(id => typeof appInj[id].enter === "boolean"),
+    history: appSkip,
+  };
+  document.querySelectorAll(".app-over").forEach(p => {
+    const ids = which[p.dataset.over] || [];
+    p.hidden = STANDALONE || !ids.length;
+    if (p.hidden) { p.innerHTML = ""; return; }
+    const names = ids.slice(0, 3).map(id => `<a class="app-go" data-app="${ahEsc(id)}">${ahEsc(appName(id))}</a>`).join(", ") +
+      (ids.length > 3 ? " " + ahEsc(t("{n} more").replace("{n}", (ids.length - 3).toLocaleString(numLoc()))) : "");
+    p.innerHTML = ahEsc(t("Set differently for")) + " " + names;
+  });
+}
+["s-appendspace", "s-appendenter", "s-history"].forEach(id => $(id).addEventListener("change", renderAppRules));
+$("app-rules-more").onclick = () => { appRulesAll = !appRulesAll; renderAppRules(); };
+// The rule sets themselves live under AI cleanup: there, lit for a moment.
+// The general settings these choices start from: their card, lit for a moment.
+function openSetCard(sec, id){
+  selectSetSection(sec);
+  setTimeout(() => {
+    const card = $(id);
+    // Its head clear of the sticky section tabs.
+    const top = card.getBoundingClientRect().top + scrollY - $("settabs").offsetHeight - 40;
+    window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion() ? "auto" : "smooth" });
+    card.classList.remove("flash-hl"); void card.offsetWidth; card.classList.add("flash-hl");
+    setTimeout(() => card.classList.remove("flash-hl"), 1600);
+  }, 80);
+}
+$("app-rules-manage").onclick = () => {
+  if (!setAll) setSetAll(true, false); // editing a set is under "All"; for now, not saved
+  openSetCard("cleanup", "set-rules");
+};
+$("app-output-manage").onclick = () => openSetCard("output", "set-output");
+// From a program's name in the history or on the dashboard: its row here,
+// scrolled to and lit for a moment.
+async function openAppRule(id){
+  if (STANDALONE || !id) return;
+  selectTab("settings"); selectSetSection("apps");
+  if (!appRuleList().some(a => a.id === id)) await loadApps();
+  const i = appRuleList().findIndex(a => a.id === id);
+  if (i >= APP_RULES_SHOWN && !appRulesAll) { appRulesAll = true; renderAppRules(); }
+  setTimeout(() => {
+    const row = document.querySelector(`#app-rules .app-rule[data-app="${CSS.escape(id)}"]`) || $("set-apps");
+    row.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "center" });
+    row.classList.remove("flash-hl"); void row.offsetWidth; row.classList.add("flash-hl");
+    setTimeout(() => row.classList.remove("flash-hl"), 1600);
+    const sel = row.querySelector("select"); if (sel) sel.focus({ preventScroll: true });
+  }, 80);
+}
+function saveAppPrompts(){
+  saveConfig({ cleanup: Object.assign({}, cfg.cleanup, { app_prompts: appPrompts }),
+    injection: Object.assign({}, cfg.injection, { apps: appInj }),
+    history: Object.assign({}, cfg.history, { skip_apps: appSkip }) }, t("Saved"));
+}
 function deletePrompt(){
   const p = promptList.find(x => x.id === promptActive); if (!p) return;
   modal(t("Delete rule set?"),
@@ -9060,6 +9523,8 @@ function deletePrompt(){
     () => {
       promptList = promptList.filter(x => x.id !== p.id);
       promptActive = ""; // back to Vito's default, never to nothing
+      for (const k in appPrompts) if (appPrompts[k] === p.id) appPrompts[k] = "";
+      cfg.cleanup.app_prompts = appPrompts;
       renderPromptPicker(); savePrompts(t("Rule set deleted"));
     }, "Delete", true);
 }
@@ -9615,18 +10080,18 @@ loadAbout();
 // chart, the costs and the live transcript alike — and any card can be dragged
 // to any place, like icons on a phone's home screen.
 const STAT_KEYS = ["credit","words","streak","commands",
-  "cleanupfx","languages","rhythm","wordcloud","achievements","update"];
+  "cleanupfx","languages","apps","rhythm","wordcloud","achievements","update"];
 const LAYOUT_GROUPS = [
   { id:"cards", label:"Cards", keys:[...STAT_KEYS, "cost","chart","transcript","quicksettings","mascot"] },
 ];
 const LAYOUT_NAMES = { credit:"Out of credit", words:"words dictated", commands:"Vito Assist and recordings", achievements:"Achievements", update:"Version",
-  streak:"days in a row", cleanupfx:"changed by AI cleanup", languages:"Languages", rhythm:"words per dictation", wordcloud:"Most used words",
+  streak:"days in a row", cleanupfx:"changed by AI cleanup", languages:"Languages", apps:"Programs", rhythm:"words per dictation", wordcloud:"Most used words",
   cost:"Costs", chart:"Words per day", transcript:"Live transcript", quicksettings:"Quick settings", mascot:"Vito" };
 // The fixed cards are written in the page; the statistic cards are built from
 // their data (renderStatCards). Some cards take two cells, the transcript a
 // whole row — and it can't be hidden, it holds Start / Stop.
 const LAYOUT_STATIC = { cost:"cost-card", chart:"chart-card", transcript:"transcript-card", quicksettings:"qs-card", mascot:"mascot-card" };
-const LAYOUT_SPAN2 = ["words","chart","rhythm","wordcloud","quicksettings","mascot"];
+const LAYOUT_SPAN2 = ["words","chart","rhythm","wordcloud","quicksettings","mascot","apps"];
 // The widths, in cells, each card can be set to from its menu — where a choice
 // makes sense. The cards with a chart in them can go up to three; the words
 // chart, the calendar and quick settings are too cramped in one; the
@@ -9661,7 +10126,7 @@ const LAYOUT_DEFAULT = [...STAT_KEYS, "cost", "chart", "transcript", "quicksetti
 // The cards that only appear when they have news (Vito Assist, the version,
 // out of credit) take their place when they do.
 const LAYOUT_FRESH = ["transcript", "words", "mascot", "wordcloud", "commands", "achievements", "streak", "cleanupfx",
-  "chart", "rhythm", "languages", "cost", "quicksettings", "update", "credit"];
+  "chart", "rhythm", "languages", "apps", "cost", "quicksettings", "update", "credit"];
 const freshLayout = () => ({ order: [...LAYOUT_FRESH], hidden: [], updateAlways: true,
   widths: { words: 3, chart: 2, mascot: 1, streak: 1 }, spark: {}, main: "saved", matrix: true, streakFx: true });
 let statusLayout = null;
@@ -10655,6 +11120,53 @@ function langCardHTML(ins){
   return `<div class="chip coral">${icon}</div><div class="num">${pct(langs[0].count)}%</div>` +
     `<div class="lbl lang-name">${ahEsc(langShortName(langs[0].code))}</div><div class="lang-bar">${seg}</div>`;
 }
+// The programs dictated into (internal/frontapp), laid out as the languages
+// card: the top one's share as the figure, its name beneath, every program as
+// a share of one bar, the breakdown in words in the tooltip.
+// A program's icon, kept by the daemon when it first saw the program in front
+// (GET /api/apps/icon/{id}; an <img> sends no header, so the token rides in
+// the query). It shows once loaded; a program without one shows only its
+// name. The browser version knows no programs.
+// The page remembers which icons loaded and which have none, so a card that
+// redraws shows a loaded one at once (from the browser's cache) and doesn't
+// ask again for a missing one until the page reloads.
+const appIconSeen = new Map(); // id → true (loaded) / false (none)
+function appIcon(id, name){
+  if (STANDALONE || !id) return "";
+  const seen = appIconSeen.get(id);
+  if (seen === false) return "";
+  return `<span class="app-ic${seen ? " ok" : ""}" data-app="${ahEsc(id)}" aria-hidden="true"><img alt="" decoding="async" ` +
+    `src="/api/apps/icon/${encodeURIComponent(id)}?token=${encodeURIComponent(TOKEN)}"></span>`;
+}
+const appIconOf = (t) => t.tagName === "IMG" && t.parentNode && t.parentNode.classList && t.parentNode.classList.contains("app-ic") ? t.parentNode : null;
+document.addEventListener("click", (e) => {
+  const g = e.target.closest && e.target.closest(".app-go[data-app]");
+  if (g && g.dataset.app) { e.preventDefault(); e.stopPropagation(); openAppRule(g.dataset.app); }
+}, true);
+document.addEventListener("load", (e) => { const s = appIconOf(e.target); if (s) { s.classList.add("ok"); appIconSeen.set(s.dataset.app, true); } }, true);
+document.addEventListener("error", (e) => { const s = appIconOf(e.target); if (s) { appIconSeen.set(s.dataset.app, false); s.remove(); } }, true);
+function appsCardHTML(ins){
+  const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6" cy="6.5" r=".6" fill="currentColor"/><circle cx="8.4" cy="6.5" r=".6" fill="currentColor"/></svg>';
+  const apps = ins.apps || [];
+  const total = apps.reduce((s, a) => s + a.count, 0);
+  if (!total) return `<div class="chip violet">${icon}</div><div class="num">–</div><div class="lbl">${t("Programs")}</div>` +
+    `<div class="delta flat">${t("No programs detected in this period yet")}</div>`;
+  const shown = apps.slice(0, 4), rest = total - shown.reduce((s, a) => s + a.count, 0);
+  const seg = shown.map((a, i) => `<i style="width:${a.count / total * 100}%;background:${LANG_COLORS[i]}"></i>`).join("") +
+    (rest ? `<i style="width:${rest / total * 100}%;background:var(--text3)"></i>` : "");
+  const pct = (n) => Math.round(n / total * 100);
+  const list = apps.slice(0, 4).map((a, i) => `<div class="al-row"><span class="al-n"><span class="app-go" data-app="${ahEsc(a.id)}">${appIcon(a.id, a.name)}${ahEsc(a.name)}</span></span><span class="al-p">${pct(a.count)}%</span>` +
+    `<span class="al-b"><i style="width:${a.count / total * 100}%;background:${LANG_COLORS[i]}"></i></span></div>`).join("");
+  return `<div class="chip violet">${icon}</div><div class="apps-one"><div class="num">${pct(apps[0].count)}%</div>` +
+    `<div class="lbl lang-name"><span class="app-go" data-app="${ahEsc(apps[0].id)}">${appIcon(apps[0].id, apps[0].name)}${ahEsc(apps[0].name)}</span></div><div class="lang-bar">${seg}</div></div><div class="apps-list">${list}</div>`;
+}
+function appsBreakdown(ins){
+  const apps = ins.apps || [], total = apps.reduce((s, a) => s + a.count, 0);
+  if (!total) return "";
+  const top = apps.slice(0, 8).map(a => `${a.name} ${Math.round(a.count / total * 100)}%`);
+  if (apps.length > 8) top.push(t("{n} more").replace("{n}", (apps.length - 8).toLocaleString(numLoc())));
+  return top.join(" · ");
+}
 // Every language and its share, for the languages card's tooltip.
 function langBreakdown(ins){
   const langs = ins.languages || [], total = langs.reduce((s, l) => s + l.count, 0);
@@ -10818,7 +11330,7 @@ function renderStatCards(all){
       if (c.minis) el.classList.add("has-minis");
       statEls[c.key] = el;
     }
-    if (c.custom) { el.innerHTML = c.html(); if (c.cardClass) el.classList.add(c.cardClass); (c.wire || wireUpdateCard)(el); return; }
+    if (c.custom) { el.innerHTML = c.html(); if (c.cardClass) el.classList.add(...c.cardClass.split(" ")); (c.wire || wireUpdateCard)(el); return; }
     const chip = el.querySelector(".chip");
     if (chip && c.minis) { chip.className = "chip " + c.cls; chip.innerHTML = c.icon; } // the volume card's main figure can change
     el.querySelector(".lbl").textContent = c.lbl;
@@ -11480,6 +11992,9 @@ async function loadStatsNow(){
       tip:t("Of the dictations AI cleanup ran on, the share where it actually changed the text. Failed means the cleanup call errored and the uncleaned text was pasted.") },
     { key:"languages", custom:true, cardClass:"lang-card", html:() => langCardHTML(ins), wire:el => setCardTip(el,
       [langBreakdown(ins), t("Languages you dictated in this period, by number of dictations.")].filter(Boolean).join(" — ")) },
+    // The browser can't tell which program has the keyboard: there it has no card.
+    ...(STANDALONE ? [] : [{ key:"apps", custom:true, cardClass:"apps-card lang-card", html:() => appsCardHTML(ins), wire:el => setCardTip(el,
+      [appsBreakdown(ins), t("The programs you dictated into in this period, by number of dictations.")].filter(Boolean).join(" — ")) }]),
     { key:"wordcloud", custom:true, cardClass:"cloud-card", html:() => cloudCardHTML(ins), wire:el => { setCardTip(el,
       t("The words you dictated most in this period — the bigger, the more often. Words of three letters or fewer and common words such as ‘want’ or ‘because’ are left out.")); fitCloud(el);
       // Rendered while the page is hidden there is nothing to measure yet; fit
@@ -11728,6 +12243,7 @@ async function fillSettings() {
   buildLangDropdown();
   setLang(cfg.stt.language || "nl");
   $("s-eu").checked = cfg.stt.eu_endpoint;
+  $("s-stthints").checked = cfg.stt.hints !== false; // unset is on
   $("s-sttkey").value = cfg.stt.api_key;
   $("s-sonioxkey").value = cfg.stt.soniox_api_key || "";
   $("s-sttbaseurl").value = cfg.stt.openai_base_url || "";
@@ -11745,7 +12261,12 @@ async function fillSettings() {
   updateReasoningNote();
   promptList = Array.isArray(cfg.cleanup.prompts) ? cfg.cleanup.prompts : [];
   promptActive = cfg.cleanup.active_prompt || "";
+  appPrompts = Object.assign({}, cfg.cleanup.app_prompts || {});
+  appInj = JSON.parse(JSON.stringify(cfg.injection.apps || {}));
+  appSkip = [...(cfg.history.skip_apps || [])];
+  $("s-appcontext").checked = cfg.cleanup.app_context !== false; // unset is on
   renderPromptPicker();
+  loadApps();
   loadLocalStt();
   loadWhistle();
   // Vito's own sets come from the daemon, not the page: they are the prompts the
@@ -11815,6 +12336,7 @@ async function fillSettings() {
   if (cfg.ui && ((cfg.ui.backdrop_strength || 1) !== bdStrength)) setBdStrength(cfg.ui.backdrop_strength || 1, false);
   if (cfg.ui && (cfg.ui.density || "") !== densityPref) setDensity(cfg.ui.density || "", false);
   if (cfg.ui && !!cfg.ui.reduce_motion !== motionPref) setMotion(!!cfg.ui.reduce_motion, false);
+  if (cfg.ui && !!cfg.ui.settings_all !== setAll) setSetAll(!!cfg.ui.settings_all, false);
   if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
   if (cfg.ui && (cfg.ui.gradient || "") !== gradPref) setGradient(cfg.ui.gradient || "", false);
   if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {
@@ -12423,6 +12945,15 @@ function privacyStatusText(){
   if (p.until_ms){ const left = p.until_ms - Date.now(); if (left > 0) txt += ` · ${uiLang==="en" ? fmtLeft(left)+" "+t("left") : "nog "+fmtLeft(left)}`; }
   return txt;
 }
+// A program can stay out of the history always (history.skip_apps): say so,
+// with the programs that already do, and the way to the setting.
+function privacyAppsNote(){
+  const names = appSkip.map(id => ahEsc(appName(id)));
+  const link = `<a href="#" data-act="apps" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">${ahEsc(names.length ? t("change per program") : t("set it per program"))}</a>`;
+  const text = names.length ? t("Always on for {apps}").replace("{apps}", names.join(", ")) + " —"
+    : ahEsc(t("For a password manager or another program where you dictate sensitive things, it can be on always:"));
+  return `<p class="act-note" style="margin:14px 0 0;">${text} ${link}.</p>`;
+}
 function fillPrivacyModal(body){
   const p = privacyState;
   body.innerHTML = `<div style="color:var(--text2); font-size:13px; margin-bottom:14px;">${privacyStatusText()}</div>
@@ -12430,8 +12961,10 @@ function fillPrivacyModal(body){
       p.enabled ? `<button class="btn primary small" data-act="off">${t("Turn off")}</button>`
         : `<button class="btn ghost small" data-act="15">15 min</button>
            <button class="btn ghost small" data-act="60">1 hour</button>
-           <button class="btn ghost small" data-act="0">${t("Until I turn it off")}</button>`}</div>`;
-  body.querySelectorAll("[data-act]").forEach(b => b.onclick = () => { const a=b.dataset.act; a==="off" ? setPrivacy(false,0) : setPrivacy(true, parseInt(a)); });
+           <button class="btn ghost small" data-act="0">${t("Until I turn it off")}</button>`}</div>${STANDALONE ? "" : privacyAppsNote()}`;
+  body.querySelectorAll("[data-act]").forEach(b => b.onclick = (e) => { const a=b.dataset.act;
+    if (a === "apps") { e.preventDefault(); const m = body.closest(".modal-backdrop"); if (m) m.querySelector("#privacy-close").click(); selectTab("settings"); selectSetSection("apps"); window.scrollTo(0, 0); return; }
+    a==="off" ? setPrivacy(false,0) : setPrivacy(true, parseInt(a)); });
 }
 function privacyTip(){
   const p = privacyState;
@@ -12499,7 +13032,7 @@ function collectSettings() {
     }),
     stt: Object.assign(cfg.stt, {
       language: $("s-lang").value, model: $("s-model").value,
-      eu_endpoint: $("s-eu").checked,
+      eu_endpoint: $("s-eu").checked, hints: $("s-stthints").checked,
       api_key: $("s-sttkey").value, soniox_api_key: $("s-sonioxkey").value,
       openai_base_url: $("s-sttbaseurl").value.trim(), openai_key: $("s-sttopenaikey").value,
       openai_model: $("s-sttopenaimodel").value.trim(), openai_preset: $("s-sttpreset").value || "local",
@@ -12507,7 +13040,7 @@ function collectSettings() {
       provider: (SPEECH_MODELS.find(m => m.id === $("s-model").value) || {}).provider || "assemblyai",
     }),
     cleanup: Object.assign(cfg.cleanup, {
-      enabled: $("s-cleanup").checked,
+      enabled: $("s-cleanup").checked, app_context: $("s-appcontext").checked, app_prompts: appPrompts,
       provider: $("s-cleanupprovider").value || "anthropic",
       api_key: $("s-cleanupkey").value, model: $("s-cleanupmodel").value,
       openai_base_url: $("s-openaibaseurl").value.trim(),
@@ -12533,9 +13066,9 @@ function collectSettings() {
     costs: Object.assign(cfg.costs || {}, readCostRates()),
     injection: Object.assign(cfg.injection, {
       mode: $("s-inject").value, restore_clipboard: $("s-restore").checked,
-      append_enter: $("s-appendenter").checked, append_space: $("s-appendspace").checked,
+      append_enter: $("s-appendenter").checked, append_space: $("s-appendspace").checked, apps: appInj,
     }),
-    history: Object.assign(cfg.history, { enabled: $("s-history").checked, store_audio: $("s-storeaudio").checked, retention_days: parseInt($("s-retention").value, 10) || 0 }),
+    history: Object.assign(cfg.history, { enabled: $("s-history").checked, store_audio: $("s-storeaudio").checked, retention_days: parseInt($("s-retention").value, 10) || 0, skip_apps: appSkip }),
     tray: Object.assign(cfg.tray || {}, { enabled: $("s-tray").checked }),
     stats: Object.assign(cfg.stats || {}, { typing_speed: $("s-typespeed").value }),
     ui: Object.assign(cfg.ui || {}, { notifications: $("s-notify").value, pill: $("s-pill").checked, pill_idle: $("s-pill-idle").checked, pill_live: $("s-pill-live").checked, pill_style: $("s-pillstyle").value }),
@@ -12553,7 +13086,7 @@ function autoSaveSettings() {
 }
 // s-typespeed / s-notify are custom icon dropdowns (hidden inputs) — they call
 // autoSaveSettings() themselves on pick, so they're not in this change list.
-["s-input","s-output","s-model","s-sounds","s-eu","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-updateauto","s-demo"]
+["s-input","s-output","s-model","s-sounds","s-eu","s-stthints","s-appcontext","s-cleanup","s-restore","s-appendenter","s-appendspace","s-history","s-storeaudio","s-updatecheck","s-updateauto","s-demo"]
   .forEach(id => $(id).addEventListener("change", autoSaveSettings));
 ["s-updatecheck","s-updateauto"].forEach(id => $(id).addEventListener("change", renderAutoUpdateNote));
 // The Assist toggle also flips its model section and refreshes the "which model" note.
@@ -12879,10 +13412,150 @@ $("s-promptrules").addEventListener("input", () => {
 function renderCorrections(list) {
   const tbody = $("d-corrections").querySelector("tbody");
   tbody.innerHTML = "";
-  list.forEach((c) => addCorrectionRow(c.wrong, c.right, c.created));
+  list.forEach((c) => addCorrectionRow(c.wrong, c.right, c.created, true));
   renderCorrectionIdeas();
+  dictFilterSync();
   loadDictUsage();
+  loadDictSuggestions();
 }
+// Suggestions from the history (GET /api/dictionary/suggestions,
+// internal/dictionary/suggest.go): words the cleanup kept repairing. Add takes
+// one into the table, Ignore turns it down for good.
+let dictSugg = [];
+async function loadDictSuggestions(){
+  try { const s = await api("/api/dictionary/suggestions"); dictSugg = Array.isArray(s) ? s : []; } catch { dictSugg = []; }
+  renderDictSuggestions();
+}
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// The Status page points at suggestions not seen yet (by misheard and
+// intended word, remembered in this browser); seeing them on the Dictionary
+// page, or Later, puts the note away until a new one comes up.
+const DICT_SEEN = "vito-dict-sugg-seen";
+const dictSuggKey = s => s.wrong.toLowerCase() + "\u0000" + s.right.toLowerCase();
+function dictSeen(){ try { return JSON.parse(localStorage.getItem(DICT_SEEN) || "[]"); } catch { return []; } }
+function markDictSuggSeen(){
+  const seen = new Set(dictSeen());
+  dictSugg.forEach(s => seen.add(dictSuggKey(s)));
+  try { localStorage.setItem(DICT_SEEN, JSON.stringify([...seen].slice(-300))); } catch {}
+  renderDictNote();
+}
+// The five the Dictionary page shows: none for a word it already corrects.
+function shownDictSugg(){
+  const have = firstCol("d-corrections");
+  return dictSugg.filter(s => !have.has(s.wrong.toLowerCase())).slice(0, 5);
+}
+function renderDictNote(){
+  const note = $("dict-note"); if (!note) return;
+  const seen = new Set(dictSeen()), fresh = shownDictSugg().filter(s => !seen.has(dictSuggKey(s))).length;
+  note.hidden = !fresh;
+  if (fresh) $("dict-note-text").innerHTML = fresh === 1 ? t("<b>A new suggestion</b> for your dictionary, from your dictations.")
+    : t("<b>{n} new suggestions</b> for your dictionary, from your dictations.").replace("{n}", fresh);
+}
+$("dict-note").onclick = (e) => {
+  if (e.target.closest("#dict-note-x")) { markDictSuggSeen(); return; }
+  selectTab("dictionary");
+  setTimeout(() => $("d-sugg").scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }), 50);
+};
+function renderDictSuggestions(){
+  const box = $("d-sugg"); if (!box) return;
+  if (curTab === "dictionary") markDictSuggSeen(); else renderDictNote();
+  const list = shownDictSugg();
+  box.hidden = !list.length;
+  if (!list.length) { box.innerHTML = ""; return; }
+  const mark = (ex, w) => ahEsc(ex).replace(new RegExp("(" + reEsc(ahEsc(w)).replace(/ /g, "\\s+") + ")", "ig"), "<mark>$1</mark>");
+  const more = dictSugg.filter(s => !firstCol("d-corrections").has(s.wrong.toLowerCase())).length - list.length;
+  box.innerHTML = `<div class="snip-ideas-h">${t("Suggested from your dictations")}${more > 0 ? ` <span class="ds-more">· ${t("{n} more after these").replace("{n}", more)}</span>` : ""}</div>` + list.map((s, i) => {
+    const num = n => n.toLocaleString(numLoc());
+    let meta;
+    if (s.kind === "variant") {
+      // Sounds like a term already in the dictionary (dictionary.Variants).
+      meta = t("Like “{term}” in your dictionary").replace("{term}", ahEsc(s.right)) + " · " + (s.count === 1 ? t("heard once") : t("heard {n} times").replace("{n}", num(s.count)));
+      if (s.left) meta += " · " + (s.left === s.count ? t("the cleanup left it") : t("the cleanup left it {n}×").replace("{n}", num(s.left)));
+    } else {
+      meta = s.count === 1 ? t("Repaired once by the cleanup") : t("Repaired {n} times by the cleanup").replace("{n}", num(s.count));
+      if (s.heard) meta += " · " + (s.heard === 1 ? t("heard right once") : t("heard right {n} times").replace("{n}", num(s.heard)));
+    }
+    return `<div class="ds-row" data-i="${i}"><div class="ds-main">
+      <div class="ds-pair"><span class="ds-w">${ahEsc(s.wrong)}</span><span class="si-arrow">→</span><span class="ds-r">${ahEsc(s.right)}</span><span class="ds-meta">${meta}</span></div>
+      <div class="ds-ex">“${mark(s.example, s.wrong)}”</div></div>
+      <div class="ds-act"><button type="button" class="btn primary small" data-add>${t("Add")}</button><button type="button" class="btn ghost small" data-no>${t("Ignore")}</button></div></div>`;
+  }).join("");
+  box.querySelectorAll(".ds-row").forEach(row => {
+    const s = list[+row.dataset.i];
+    row.querySelector("[data-add]").onclick = () => {
+      addCorrectionRow(s.wrong, s.right);
+      autoSaveDict(); renderCorrectionIdeas(); renderDictSuggestions();
+    };
+    row.querySelector("[data-no]").onclick = () => {
+      dictSugg = dictSugg.filter(x => x !== s); renderDictSuggestions();
+      api("/api/dictionary/suggestions/dismiss", { method: "POST", body: JSON.stringify({ wrong: s.wrong, right: s.right }) }).catch(() => {});
+    };
+  });
+}
+// The filter over the corrections: there by itself from more than 15 rows,
+// and on Ctrl+F at any count; with fewer it goes again once empty and left.
+// A row shows when either side contains the text.
+const DICT_FILTER_FROM = 15;
+function dictFilterSync(){
+  const inp = $("d-filter");
+  const rows = $("d-corrections").querySelectorAll("tbody tr").length;
+  $("d-filter-wrap").hidden = !(rows > DICT_FILTER_FROM || inp.value || document.activeElement === inp);
+  applyDictFilter();
+}
+function applyDictFilter(){
+  const inp = $("d-filter"), q = inp.value.trim().toLowerCase();
+  $("d-filter-x").style.display = inp.value ? "" : "none";
+  let shown = 0, rows = 0;
+  $("d-corrections").querySelectorAll("tbody tr").forEach(tr => {
+    rows++;
+    const hit = !q || [...tr.querySelectorAll("input")].some(i => i.value.toLowerCase().includes(q));
+    tr.hidden = !hit; if (hit) shown++;
+  });
+  $("d-filter-none").hidden = !q || shown > 0 || !rows;
+  updateDictCounts();
+}
+// How many corrections and snippets there are, on each card and in the jump
+// bar; while the filter is on, the corrections say "3 of 22".
+function updateDictCounts(){
+  const num = n => n.toLocaleString(numLoc());
+  const rows = [...$("d-corrections").querySelectorAll("tbody tr")];
+  const filled = tr => [...tr.querySelectorAll("input, textarea")].some(i => i.value.trim());
+  const corr = rows.filter(filled), shown = corr.filter(tr => !tr.hidden).length;
+  const snips = [...$("d-snippets").querySelectorAll("tbody tr")].filter(filled).length;
+  $("d-corr-count").textContent = $("d-filter").value.trim() ? t("{n} of {total}").replace("{n}", num(shown)).replace("{total}", num(corr.length)) : num(corr.length);
+  $("d-snip-count").textContent = num(snips);
+  $("dj-corr").textContent = num(corr.length);
+  $("dj-snip").textContent = num(snips);
+}
+for (const id of ["d-corrections", "d-snippets"]) {
+  new MutationObserver(() => updateDictCounts()).observe($(id).querySelector("tbody"), { childList: true });
+  $(id).addEventListener("input", () => { clearTimeout(window.__dictCountT); window.__dictCountT = setTimeout(updateDictCounts, 300); });
+}
+// The jump bar: a click brings the card to the top, under the bar; the
+// button of the card in view is lit.
+document.querySelectorAll("#dict-jump .dj-btn").forEach(b => b.onclick = () =>
+  $(b.dataset.to).scrollIntoView({ block: "start", behavior: reducedMotion() ? "auto" : "smooth" }));
+{
+  const lit = () => {
+    if (curTab !== "dictionary") return;
+    const bar = $("dict-jump").getBoundingClientRect().bottom + 20;
+    const snipTop = $("dict-snip-card").getBoundingClientRect().top;
+    const atEnd = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+    const on = snipTop <= bar || atEnd ? "dict-snip-card" : "dict-corr-card";
+    document.querySelectorAll("#dict-jump .dj-btn").forEach(b => b.classList.toggle("on", b.dataset.to === on));
+  };
+  addEventListener("scroll", lit, { passive: true });
+  addEventListener("resize", lit);
+  setTimeout(lit, 0);
+}
+function focusDictFilter(){
+  $("d-filter-wrap").hidden = false;
+  const inp = $("d-filter"); inp.focus(); inp.select();
+}
+$("d-filter").addEventListener("input", applyDictFilter);
+$("d-filter").addEventListener("keydown", e => { if (e.key === "Escape" && $("d-filter").value) { e.preventDefault(); e.stopPropagation(); $("d-filter").value = ""; applyDictFilter(); } });
+$("d-filter").addEventListener("blur", () => setTimeout(dictFilterSync, 150));
+$("d-filter-x").onclick = () => { $("d-filter").value = ""; applyDictFilter(); $("d-filter").focus(); };
 // When each entry was added (its created, kept by the daemon) and how often
 // and when last it was applied (GET /api/dictionary/usage, by its misheard
 // word or trigger in lower case): two small cells per row, the count in the
@@ -12918,7 +13591,7 @@ function dictWhenCells(tr, created){
   if (created) tr.dataset.created = created;
   for (let i = 0; i < 2; i++) { const td = document.createElement("td"); td.className = "d-when"; td.dataset.tipLabel = "1"; tr.appendChild(td); }
 }
-function addCorrectionRow(wrong = "", right = "", created = 0) {
+function addCorrectionRow(wrong = "", right = "", created = 0, bulk = false) {
   const tbody = $("d-corrections").querySelector("tbody");
   const tr = document.createElement("tr");
   const mk = (val) => { const td = document.createElement("td"); const inp = document.createElement("input"); inp.type = "text"; inp.value = val; td.appendChild(inp); return td; };
@@ -12926,9 +13599,14 @@ function addCorrectionRow(wrong = "", right = "", created = 0) {
   dictWhenCells(tr, created);
   tr.querySelectorAll("input").forEach(inp => inp.addEventListener("input", autoSaveDict));
   const tdDel = document.createElement("td");
-  const del = document.createElement("button"); del.className = "btn danger small"; del.textContent = "×"; del.onclick = () => { tr.remove(); autoSaveDict(); renderCorrectionIdeas(); };
+  const del = document.createElement("button"); del.className = "btn danger small"; del.textContent = "×"; del.onclick = () => { tr.remove(); autoSaveDict(); renderCorrectionIdeas(); renderDictSuggestions(); dictFilterSync(); };
   tdDel.appendChild(del); tr.appendChild(tdDel);
-  tbody.appendChild(tr);
+  if (bulk) { tbody.appendChild(tr); return; }
+  // A new row goes on top, by the button, not after a long list.
+  tbody.prepend(tr);
+  // A row added while filtering would be hidden by the filter: clear it.
+  $("d-filter").value = "";
+  dictFilterSync();
 }
 // Corrections auto-save (debounced), like the settings — no explicit save button.
 let dictSaveTimer;
@@ -12977,7 +13655,7 @@ function collectDictionary() {
 function renderSnippets(list) {
   const tbody = $("d-snippets").querySelector("tbody");
   tbody.innerHTML = "";
-  list.forEach((s) => addSnippetRow(s.trigger, s.text, s.created));
+  list.forEach((s) => addSnippetRow(s.trigger, s.text, s.created, true));
   renderSnippetIdeas();
   loadDictUsage();
 }
@@ -13048,7 +13726,7 @@ function renderCorrectionIdeas() {
       [...$("d-corrections").querySelectorAll("tbody tr")].pop().querySelector("input").focus();
     } });
 }
-function addSnippetRow(trigger = "", text = "", created = 0) {
+function addSnippetRow(trigger = "", text = "", created = 0, bulk = false) {
   const tbody = $("d-snippets").querySelector("tbody");
   const tr = document.createElement("tr");
   const td1 = document.createElement("td"), inp = document.createElement("input");
@@ -13071,7 +13749,8 @@ function addSnippetRow(trigger = "", text = "", created = 0) {
   tr.append(td1, td2);
   dictWhenCells(tr, created);
   tr.append(tdDel);
-  tbody.appendChild(tr);
+  // A new one goes on top, by the button, as with the corrections.
+  if (bulk) tbody.appendChild(tr); else tbody.prepend(tr);
   return inp;
 }
 $("d-snip-add").onclick = () => addSnippetRow().focus();
@@ -13092,7 +13771,7 @@ function modal(title, bodyHTML, onOk, okLabel = "Save", danger = false, onCancel
   return back;
 }
 
-$("d-add").onclick = () => addCorrectionRow();
+$("d-add").onclick = () => { addCorrectionRow(); $("d-corrections").querySelector("tbody input").focus(); };
 $("d-export").onclick = () => {
   const blob = new Blob([JSON.stringify(collectDictionary(), null, 2)], { type: "application/json" });
   const a = document.createElement("a");
@@ -13396,8 +14075,12 @@ function historyEntryEl(e){
   // "cleanup" tag — the cleanup pass is what carried the command out.
   const aiTag = e.command_text
     ? " · " + SPARK_SVG + t("Vito Assist") + ": " + ahEsc(e.command_text)
-    : (e.cleanup_used ? " · " + SPARK_SVG + t("cleanup") : "");
-  meta.innerHTML = `${new Date(e.timestamp).toLocaleString(numLoc())} · ${(e.duration_ms / 1000).toFixed(1)}s · ${langIcon(e.language || "auto")} · ${e.source}${aiTag}`;
+    : (e.cleanup_used ? " · " + (e.rules_name
+        ? `<span class="h-rules" title="${ahEsc(t("Cleaned with this rule set"))}">${SPARK_SVG}${ahEsc(t(e.rules_name))}</span>`
+        : SPARK_SVG + t("cleanup")) : "");
+  const appGo = e.app_id && !STANDALONE;
+  const appTag = e.app ? ` · <span class="h-app${appGo ? " app-go" : ""}" data-app="${ahEsc(e.app_id || "")}" title="${ahEsc(appGo ? t("Settings for this program") : t("Dictated into"))}">${appIcon(e.app_id, e.app)}${ahEsc(e.app)}</span>` : "";
+  meta.innerHTML = `${new Date(e.timestamp).toLocaleString(numLoc())} · ${(e.duration_ms / 1000).toFixed(1)}s · ${langIcon(e.language || "auto")} · ${e.source}${appTag}${aiTag}`;
   const main = document.createElement("div"); main.className = "htext";
   renderWords(main, e.cleanup_used && e.cleaned ? e.cleaned : e.raw);
   div.appendChild(meta); div.appendChild(main);
@@ -14931,6 +15614,9 @@ const HELP = {
   svol:{nl:"Hoe hard de feedbackgeluidjes klinken, los van je systeemvolume.",en:"How loud the feedback sounds are, independent of your system volume."},
   lang:{nl:"De taal die je inspreekt. 'Automatisch' laat de dienst de taal zelf detecteren.",en:"The language you speak. 'Automatic' lets the service detect the language itself."},
   model:{nl:"Het spraakherkenningsmodel. De standaard (Universal Streaming) is snel en werkt voor de meeste talen.",en:"The speech-recognition model. The default (Universal Streaming) is fast and works for most languages."},
+  appprompts:{nl:"Vito ziet in welk programma je dicteert. Per programma kies je de regelset, de spatie en Enter na de tekst, en of de dictaten in de geschiedenis komen. Een streepje (—) volgt de algemene instelling. Programma's verschijnen hier zodra je erin gedicteerd hebt.",en:"Vito sees which program you dictate into. Per program you choose the rule set, the space and Enter after the text, and whether its dictations go into the history. A dash (—) follows the general setting. Programs show up here once you have dictated into them."},
+  appcontext:{nl:"De opschoning krijgt de naam van het programma mee (alleen de naam, nooit de venstertitel), zodat de vorm past: geen afsluiting in een chat, geen punt aan het eind in een terminal. De inhoud blijft wat je zei.",en:"The cleanup is told the program's name (only its name, never the window title), so the form fits: no sign-off in a chat, no closing full stop in a terminal. The content stays what you said."},
+  stthints:{nl:"Vito geeft de spraakherkenning de bedoelde schrijfwijzen uit je woordenboek mee, de meest gebruikte eerst, zodat namen en vaktermen meteen goed verstaan worden. Niet bij de lokale modellen (Parakeet, Whistle). Bij Soniox kost dat iets extra: de woorden worden als tekst-tokens gerekend.",en:"Vito gives the speech recognition the intended spellings from your dictionary, the most used first, so names and jargon are heard right the first time. Not with the local models (Parakeet, Whistle). With Soniox it costs a little extra: the words are billed as text tokens."},
   eu:{nl:"Verwerk je audio via Europese servers (data-residentie in de EU).",en:"Process your audio via European servers (data residency in the EU)."},
   sttkey:{nl:"Je persoonlijke AssemblyAI-sleutel voor de spraak-naar-tekst dienst.",en:"Your personal AssemblyAI key for the speech-to-text service."},
   sttpreset:{nl:"Snelle voorinstelling. 'Lokaal / eigen endpoint' is voor een server op je eigen computer (whisper.cpp's whisper-server, Speaches, een Parakeet-wrapper) — dan verlaat je audio je computer nooit. Groq en OpenAI bieden gehoste Whisper-modellen.",en:"A quick preset. 'Local / custom endpoint' is for a server on your own machine (whisper.cpp's whisper-server, Speaches, a Parakeet wrapper) — then your audio never leaves your computer. Groq and OpenAI offer hosted Whisper models."},

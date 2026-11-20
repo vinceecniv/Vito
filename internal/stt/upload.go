@@ -73,7 +73,7 @@ func TranscribeUpload(ctx context.Context, cfg config.STT, path string, onProgre
 func UploadRateUSD(cfg config.STT) float64 {
 	switch cfg.Provider {
 	case "soniox":
-		return 0.10 // stt-async-v5
+		return 0.10 // stt-async-v6
 	case "openai":
 		return OpenAIRateUSD(cfg) // one price: the audio API has no streaming tier
 	case "local", "whistle":
@@ -194,7 +194,7 @@ func (c *AsyncClient) pollUpload(ctx context.Context, id string) (UploadOutcome,
 // ---- Soniox ----------------------------------------------------------------
 
 // SonioxAsyncModel is the pre-recorded counterpart of the realtime model.
-const SonioxAsyncModel = "stt-async-v5"
+const SonioxAsyncModel = "stt-async-v6"
 
 const sonioxAPI = "https://api.soniox.com"
 
@@ -287,6 +287,9 @@ func (c *sonioxFileClient) createJob(ctx context.Context, fileID string) (string
 	}
 	if c.cfg.Language != "auto" && c.cfg.Language != "" {
 		body["language_hints"] = []string{c.cfg.Language}
+	}
+	if sc := sonioxTerms(c.cfg); sc != nil {
+		body["context"] = sc
 	}
 	data, _ := json.Marshal(body)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, sonioxAPI+"/v1/transcriptions", strings.NewReader(string(data)))

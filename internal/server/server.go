@@ -43,6 +43,8 @@ import (
 	"vito/internal/daemon"
 	"vito/internal/demo"
 	"vito/internal/desktopcolors"
+	"vito/internal/dictionary"
+	"vito/internal/frontapp"
 	"vito/internal/history"
 	"vito/internal/hotkey"
 	"vito/internal/inject"
@@ -190,6 +192,10 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/autostart", s.auth(s.handleGetAutostart))
 	mux.HandleFunc("GET /api/desktop-colors", s.auth(s.handleDesktopColors))
 	mux.HandleFunc("GET /api/dictionary/usage", s.auth(s.handleDictUsage))
+	mux.HandleFunc("GET /api/apps", s.auth(s.handleApps))
+	mux.HandleFunc("GET /api/apps/icon/{id}", s.handleAppIcon)
+	mux.HandleFunc("GET /api/dictionary/suggestions", s.auth(s.handleDictSuggestions))
+	mux.HandleFunc("POST /api/dictionary/suggestions/dismiss", s.auth(s.handleDictDismiss))
 	mux.HandleFunc("PUT /api/autostart", s.auth(s.handlePutAutostart))
 	mux.HandleFunc("GET /api/privacy", s.auth(s.handleGetPrivacy))
 	mux.HandleFunc("PUT /api/privacy", s.auth(s.handlePutPrivacy))
@@ -606,6 +612,9 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 	// place, so a piece taken off would stay on. Decode into a fresh one and
 	// keep the current outfit only when the save does not mention it.
 	cfg.UI.Outfit = nil
+	// The same for the rule set per program: a program removed must go.
+	cfg.Cleanup.AppPrompts = nil
+	cfg.Injection.Apps = nil
 	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 1<<20))
 	if err == nil {
 		err = json.Unmarshal(body, &cfg)
@@ -618,6 +627,18 @@ func (s *Server) handlePutConfig(w http.ResponseWriter, r *http.Request) {
 		UI struct {
 			Outfit json.RawMessage `json:"outfit"`
 		} `json:"ui"`
+		Cleanup struct {
+			AppPrompts json.RawMessage `json:"app_prompts"`
+		} `json:"cleanup"`
+		Injection struct {
+			Apps json.RawMessage `json:"apps"`
+		} `json:"injection"`
+	}
+	if json.Unmarshal(body, &says) == nil && says.Cleanup.AppPrompts == nil {
+		cfg.Cleanup.AppPrompts = maps.Clone(current.Cleanup.AppPrompts)
+	}
+	if json.Unmarshal(body, &says) == nil && says.Injection.Apps == nil {
+		cfg.Injection.Apps = maps.Clone(current.Injection.Apps)
 	}
 	if json.Unmarshal(body, &says) == nil && says.UI.Outfit == nil {
 		cfg.UI.Outfit = maps.Clone(current.UI.Outfit)
@@ -1450,6 +1471,87 @@ func (s *Server) handleDictUsage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.writeJSON(w, http.StatusOK, u)
+}
+
+// handleApps lists the programs dictated into, the most used first, and the
+// one with the keyboard now (the settings page offers them for a rule set of
+// their own).
+func (s *Server) handleApps(w http.ResponseWriter, r *http.Request) {
+	out := map[string]any{"apps": []history.AppUse{}, "now": frontapp.Current()}
+	if s.hist != nil && !s.demo() {
+		if a, err := s.hist.Apps(); err == nil && a != nil {
+			out["apps"] = a
+		}
+	}
+	s.writeJSON(w, http.StatusOK, out)
+}
+
+// handleAppIcon serves a program's kept icon (frontapp.Icon). An <img> sends
+// no header, so the token comes in the query, as for the event stream: a page
+// elsewhere must not learn which programs are used here by trying icons.
+func (s *Server) handleAppIcon(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Query().Get("token") != s.token {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+	path, ct, ok := frontapp.Icon(r.PathValue("id"))
+	if !ok {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", ct)
+	// A day without asking, then a week more shown at once while it is asked
+	// again in the background; ServeFile's Last-Modified makes that a 304.
+	w.Header().Set("Cache-Control", "private, max-age=86400, stale-while-revalidate=604800")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	if ct == "image/svg+xml" { // an icon theme's SVG runs no script in an <img>, nor when opened alone
+		w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'")
+	}
+	http.ServeFile(w, r, path)
+}
+
+// handleDictSuggestions offers corrections the history argues for: words the
+// cleanup kept repairing (dictionary.Suggest) and words that sound like a
+// term already in the dictionary (dictionary.Variants), leaving out what the
+// dictionary already corrects and what the user turned down.
+func (s *Server) handleDictSuggestions(w http.ResponseWriter, r *http.Request) {
+	if s.demo() || s.hist == nil {
+		s.writeJSON(w, http.StatusOK, []dictionary.Suggestion{})
+		return
+	}
+	pairs, err := s.hist.DictPairs(3000)
+	if err != nil {
+		s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+		return
+	}
+	gone, _ := s.hist.DictDismissed()
+	have := map[string]bool{}
+	var terms []string
+	for _, c := range s.d.Config().Dictionary.Corrections {
+		have[history.DictKey(c.Wrong)] = true
+		terms = append(terms, c.Right)
+	}
+	skip := func(wrong, right string) bool { return have[wrong] || gone[wrong+"\x00"+right] }
+	// A stock of 20: the page shows five and fills up from the rest as
+	// suggestions are added or ignored.
+	out := dictionary.Merge(20, dictionary.Suggest(pairs, skip, 0), dictionary.Variants(pairs, terms, skip))
+	s.writeJSON(w, http.StatusOK, out)
+}
+
+// handleDictDismiss turns a suggestion down for good.
+func (s *Server) handleDictDismiss(w http.ResponseWriter, r *http.Request) {
+	var req struct{ Wrong, Right string }
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || strings.TrimSpace(req.Wrong) == "" {
+		s.writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "wrong and right are needed"})
+		return
+	}
+	if s.hist != nil {
+		if err := s.hist.DismissDictSuggestion(req.Wrong, req.Right, time.Now()); err != nil {
+			s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+			return
+		}
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
 // handleDesktopColors gives the colour schemes the desktop shells here

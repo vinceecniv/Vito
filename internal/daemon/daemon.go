@@ -25,6 +25,7 @@ import (
 	"vito/internal/cleanup"
 	"vito/internal/config"
 	"vito/internal/dictionary"
+	"vito/internal/frontapp"
 	"vito/internal/history"
 	"vito/internal/inject"
 	"vito/internal/localstt"
@@ -143,6 +144,26 @@ type session struct {
 	// restored: a cancelled dictation brought back (kept.go). Its recording is
 	// over and its stream gone; finish transcribes the kept audio file.
 	restored bool
+	// appCh brings the program that had the keyboard when the dictation
+	// started (frontapp, asked off the start path); appOf reads it once.
+	appCh   chan frontapp.App
+	appOnce sync.Once
+	app     frontapp.App
+}
+
+// appOf is the program dictated into, waiting a moment for the answer; a
+// zero App when unknown or never asked (a restored dictation).
+func (s *session) appOf() frontapp.App {
+	s.appOnce.Do(func() {
+		if s.appCh == nil {
+			return
+		}
+		select {
+		case s.app = <-s.appCh:
+		case <-time.After(500 * time.Millisecond):
+		}
+	})
+	return s.app
 }
 
 type Daemon struct {
@@ -216,6 +237,11 @@ func (d *Daemon) Whistle() *whistle.Manager { return d.whistle }
 // pointed at whatever port the sidecar is on right now. An engine that is not
 // running says why, in words meant for the notification the caller shows.
 func (d *Daemon) resolveSTT(cfg config.STT) (config.STT, error) {
+	// The dictionary's spellings as the recognition's vocabulary. Not for the
+	// local engines: Parakeet and Whistle take no prompt.
+	if cfg.HintsOn() && cfg.Provider != "local" && cfg.Provider != "whistle" {
+		cfg.Terms = d.sttTerms()
+	}
 	if cfg.Provider != "local" {
 		return cfg, nil
 	}
@@ -229,6 +255,20 @@ func (d *Daemon) resolveSTT(cfg config.STT) (config.STT, error) {
 	cfg.OpenAIModel = localstt.ModelName
 	cfg.OpenAIPreset = ""
 	return cfg, nil
+}
+
+// sttTerms are the dictionary's intended spellings, the most used first.
+func (d *Daemon) sttTerms() []string {
+	var usage map[string]history.DictUse
+	if d.hist != nil {
+		if u, err := d.hist.DictUsage(); err == nil {
+			usage = u["correction"]
+		}
+	}
+	return dictionary.Terms(d.Config().Dictionary.Corrections, func(wrong string) (int, int64) {
+		u := usage[wrong]
+		return int(u.Uses), u.LastAt
+	})
 }
 
 // sttProviderName is the display name of the configured speech-recognition
@@ -716,7 +756,10 @@ func (d *Daemon) start() error {
 		spool:   spool,
 		started: time.Now(),
 		chunks:  make(chan []byte, 256),
+		appCh:   make(chan frontapp.App, 1),
 	}
+	// Which program the text will go to: the one with the keyboard now.
+	go func() { s.appCh <- frontapp.Current() }()
 
 	// Duck (or pause) any playing music/video for the duration of the
 	// recording. This runs in the background (see media.Start) so it adds no
@@ -1297,6 +1340,11 @@ func (d *Daemon) finish(s *session) {
 	}
 	// Cleanup must be on. A pending command then forces a pass even below the
 	// min-words threshold (that's how the command is applied).
+	// The program dictated into: its own rule set, if one is chosen for it,
+	// and its name for the model.
+	app := s.appOf()
+	cleanCfg = cleanCfg.ForApp(app.ID, app.Name)
+	rulesID, rulesName := cleanup.ActiveSet(cleanCfg) // kept with the entry when the cleanup ran
 	if d.cleanupEffective(s) && (instruction != "" || wordCount(raw) >= cfg.Cleanup.MinWords) && !dictionary.OnlySnippets(marked) {
 		ctx, cancel := context.WithTimeout(context.Background(), cleanup.Timeout(cleanCfg.TimeoutMS, marked))
 		out, usage, err := cleanup.NewCleaner(cleanCfg).Clean(ctx, marked, cfg.STT.Language, cfg.Dictionary.Corrections, instruction)
@@ -1334,7 +1382,7 @@ func (d *Daemon) finish(s *session) {
 	// the clipboard for you to paste yourself, rather than pasting into whatever
 	// happens to be focused (which the restore step would then overwrite with the
 	// original input).
-	injCfg := cfg.Injection
+	injCfg := cfg.Injection.ForApp(app.ID) // a program may want its own space or Enter
 	if clipboardOut {
 		injCfg = config.Injection{Mode: "clipboard_only"}
 	}
@@ -1362,7 +1410,10 @@ func (d *Daemon) finish(s *session) {
 	entryID := history.NewID()
 	recordingID := ""
 	storedID := "" // entryID once the row is really on disk, "" otherwise
-	if cfg.History.Enabled && cfg.History.StoreAudio && d.hist != nil && !d.privacyActive() {
+	// Privacy mode, or a program kept out of the history: the statistics only,
+	// no text, no recording, and no text in the notification.
+	private := d.privacyActive() || cfg.History.Skips(app.ID)
+	if cfg.History.Enabled && cfg.History.StoreAudio && d.hist != nil && !private {
 		// Favorites' recordings are kept regardless of the last-N cap.
 		keep, _ := d.hist.FavoriteIDs()
 		if _, err := audio.SaveRecording(s.spool.Path(), entryID, keep); err != nil {
@@ -1372,7 +1423,11 @@ func (d *Daemon) finish(s *session) {
 		}
 	}
 	d.setIdle(func(st *Status) {
-		st.LastPreview = preview(final)
+		if !private {
+			st.LastPreview = preview(final)
+		} else {
+			st.LastPreview = ""
+		}
 		st.LastTimings = timings
 		st.LastRecordingID = recordingID
 	})
@@ -1380,6 +1435,9 @@ func (d *Daemon) finish(s *session) {
 		s.spool.Remove()
 	}
 
+	if !cleanupUsed || instruction != "" { // a rule set only counts for a cleanup pass
+		rulesID, rulesName = "", ""
+	}
 	if cfg.History.Enabled && d.hist != nil {
 		entry := history.Entry{
 			ID:               entryID,
@@ -1394,6 +1452,10 @@ func (d *Daemon) finish(s *session) {
 			Command:          instruction != "",
 			CommandText:      instruction,
 			ClipboardCommand: clipboardOut,
+			App:              s.appOf().Name,
+			AppID:            s.appOf().ID,
+			Rules:            rulesID,
+			RulesName:        rulesName,
 			SttMS:            timings.SttFinal.Milliseconds(),
 			CleanupMS:        timings.Cleanup.Milliseconds(),
 			InjectedMS:       timings.Injected.Milliseconds(),
@@ -1409,14 +1471,14 @@ func (d *Daemon) finish(s *session) {
 		// Privacy mode keeps the usage statistics but never writes the transcript
 		// text to disk; otherwise store the full entry.
 		var err error
-		if d.privacyActive() {
+		if private {
 			err = d.hist.AppendStatsOnly(entry)
 		} else {
 			err = d.hist.Append(entry)
 		}
 		if err != nil {
 			d.log.Warn("history append failed", "err", err)
-		} else if !d.privacyActive() {
+		} else if !private {
 			storedID = entry.ID // there is a row to point the failure at
 		}
 	}
@@ -1447,6 +1509,14 @@ func (d *Daemon) finish(s *session) {
 			d.noteErr("vito: opschoning mislukt", where+" — reden staat bij dit dictaat in de geschiedenis")
 		} else {
 			d.noteErr("vito: opschoning mislukt", where+" — "+preview(cleanupErr))
+		}
+	case private && !d.privacyActive():
+		// The text of a program kept private never goes to the desktop's
+		// notification history either.
+		if mode == inject.ModeClipboardOnly {
+			d.note("vito: in klembord", "")
+		} else {
+			d.note("vito: klaar", "")
 		}
 	case mode == inject.ModeClipboardOnly:
 		d.note("vito: in klembord", preview(final))

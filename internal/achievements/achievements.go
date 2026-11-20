@@ -62,6 +62,7 @@ type Stats struct {
 	BestWeekWords int64
 	LongestStreak int64
 	Languages     int64
+	Apps          int64 // programs dictated into (two dictations or more each)
 	// SubscriptionSavings is what Vito's bring-your-own-key model has saved you
 	// against a typical paid dictation app, in whole units of your display
 	// currency: the months you've had Vito at ~€15/month, minus your actual API
@@ -146,6 +147,10 @@ func (d Def) Earned(s Stats) bool {
 			return s.Uploads > 0
 		case "polyglot":
 			return s.Languages >= 3
+		case "apps5":
+			return s.Apps >= 5
+		case "apps10":
+			return s.Apps >= 10
 		case "wizard":
 			return s.UsedDictation && s.UsedAssist && s.UsedLongRecording
 		}
@@ -249,6 +254,8 @@ var List = []Def{
 	{ID: "comeback", Group: GroupSpecial, Icon: "🪃", Name: "Welcome Back", Desc: "Came back after 30 quiet days", Flag: "comeback", Secret: true},
 	{ID: "upload", Group: GroupSpecial, Icon: "💿", Name: "Bring Your Own Audio", Desc: "Transcribed an audio file", Flag: "upload", Secret: true},
 	{ID: "polyglot", Group: GroupSpecial, Icon: "🌍", Name: "Polyglot", Desc: "Dictated in three languages", Flag: "polyglot", Secret: true},
+	{ID: "apps-5", Group: GroupSpecial, Icon: "🦘", Name: "App Hopper", Desc: "Dictated into five different programs", Flag: "apps5", Secret: true},
+	{ID: "apps-10", Group: GroupSpecial, Icon: "🐙", Name: "Many Hands", Desc: "Dictated into ten different programs", Flag: "apps10", Secret: true},
 	{ID: "vito-wizard", Group: GroupSpecial, Icon: "🔮", Name: "Vito Wizard", Desc: "Dictated, gave Vito Assist a command and made a long recording", Flag: "wizard", Secret: true},
 }
 

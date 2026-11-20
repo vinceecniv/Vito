@@ -113,3 +113,19 @@ func TestBuiltinsAreComplete(t *testing.T) {
 		t.Error("the balanced default should be listed first")
 	}
 }
+
+func TestActiveSet(t *testing.T) {
+	own := []config.Prompt{{ID: "mine", Name: "Mijn mails", Rules: "x"}}
+	for _, c := range []struct{ active, id, name string }{
+		{"", "", "Vito default"},
+		{BuiltinPrefix + "default", "", "Vito default"},
+		{BuiltinPrefix + "notes", BuiltinPrefix + "notes", "Notes"},
+		{"mine", "mine", "Mijn mails"},
+		{"gone", "", "Vito default"},
+	} {
+		id, name := ActiveSet(config.Cleanup{ActivePrompt: c.active, Prompts: own})
+		if id != c.id || name != c.name {
+			t.Errorf("ActiveSet(%q) = %q, %q; want %q, %q", c.active, id, name, c.id, c.name)
+		}
+	}
+}

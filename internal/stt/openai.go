@@ -13,6 +13,7 @@ import (
 
 	"vito/internal/apierr"
 	"vito/internal/config"
+	"vito/internal/dictionary"
 )
 
 // Any endpoint that speaks the OpenAI audio API — POST /audio/transcriptions
@@ -204,6 +205,11 @@ func (c *openaiClient) post(ctx context.Context, url string, open func() (io.Rea
 		// and, on a short clip, misses — the settings page says to pin it.
 		if l := strings.TrimSpace(c.cfg.Language); l != "" && l != "auto" {
 			fields["language"] = l
+		}
+		// The dictionary's spellings as Whisper's prompt, which reads at most
+		// 224 tokens: a comma-separated list is what OpenAI and Groq advise.
+		if t := dictionary.Pick(c.cfg.Terms, 0, 0, 0, 500); len(t) > 0 {
+			fields["prompt"] = strings.Join(t, ", ")
 		}
 		if n := audioCtx(seconds); n > 0 && c.sendsAudioCtx() {
 			fields["audio_ctx"] = strconv.Itoa(n)

@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 )
 
@@ -73,7 +74,17 @@ type STT struct {
 	// "vulkan" (GPU on Windows/Linux). See internal/localstt. Which one is
 	// actually on disk is the manager's business, not the config's.
 	LocalVariant string `json:"local_variant,omitempty"`
+	// Hints sends the dictionary's intended spellings to the speech
+	// recognition as its vocabulary (Soniox context terms, AssemblyAI
+	// keyterms, Whisper's prompt). Nil-safe: unset is on.
+	Hints *bool `json:"hints,omitempty"`
+	// Terms are those spellings for this recording, best first, filled by
+	// the daemon (resolveSTT); never saved.
+	Terms []string `json:"-"`
 }
+
+// HintsOn reports whether the dictionary's terms go to the speech recognition.
+func (s STT) HintsOn() bool { return s.Hints == nil || *s.Hints }
 
 type Cleanup struct {
 	Enabled  bool   `json:"enabled"`
@@ -115,6 +126,32 @@ type Cleanup struct {
 	// leaves them empty.
 	Prompts      []Prompt `json:"prompts,omitempty"`
 	ActivePrompt string   `json:"active_prompt,omitempty"`
+	// AppPrompts picks a rule set per program dictated into: its key
+	// (frontapp.App.ID) to a prompt id as ActivePrompt takes it. A program not
+	// in the map gets ActivePrompt.
+	AppPrompts map[string]string `json:"app_prompts,omitempty"`
+	// AppContext tells the model which program the text goes to, so it fits
+	// the form to it. Nil-safe: unset is on.
+	AppContext *bool `json:"app_context,omitempty"`
+	// App is the program of this dictation, as the model is told it; filled
+	// by the daemon, never saved.
+	App string `json:"-"`
+}
+
+// AppContextOn reports whether the model is told the program dictated into.
+func (c Cleanup) AppContextOn() bool { return c.AppContext == nil || *c.AppContext }
+
+// ForApp is this configuration for a dictation into the program with key
+// id and name: its own rule set when one is chosen for it, and its name for
+// the model when that is on.
+func (c Cleanup) ForApp(id, name string) Cleanup {
+	if p, ok := c.AppPrompts[id]; ok && id != "" {
+		c.ActivePrompt = p
+	}
+	if c.AppContextOn() {
+		c.App = name
+	}
+	return c
 }
 
 // Prompt is one named set of cleanup rules. The id is what ActivePrompt refers
@@ -215,6 +252,29 @@ type Injection struct {
 	RestoreDelayMS   int    `json:"restore_delay_ms"` // delay before restoring previous clipboard
 	AppendEnter      bool   `json:"append_enter"`     // press Enter after the text (submits chat/REPL inputs)
 	AppendSpace      bool   `json:"append_space"`     // append a trailing space, so back-to-back dictations stay separated
+	// Apps overrides AppendSpace and AppendEnter per program dictated into
+	// (frontapp.App.ID); a nil field follows the general setting.
+	Apps map[string]AppInjection `json:"apps,omitempty"`
+}
+
+// AppInjection is one program's own choice for the space and the Enter after
+// the text; nil follows Injection's own.
+type AppInjection struct {
+	Space *bool `json:"space,omitempty"`
+	Enter *bool `json:"enter,omitempty"`
+}
+
+// ForApp is this configuration for a dictation into the program with key id.
+func (c Injection) ForApp(id string) Injection {
+	if o, ok := c.Apps[id]; ok && id != "" {
+		if o.Space != nil {
+			c.AppendSpace = *o.Space
+		}
+		if o.Enter != nil {
+			c.AppendEnter = *o.Enter
+		}
+	}
+	return c
 }
 
 type History struct {
@@ -224,6 +284,16 @@ type History struct {
 	// RetentionDays auto-deletes entries older than this many days (0 = keep
 	// forever). Starred favorites are never removed by it.
 	RetentionDays int `json:"retention_days"`
+	// SkipApps are programs (frontapp.App.ID) whose dictations never reach
+	// the history's text or recordings — a password manager, say. They still
+	// count in the day statistics, as in privacy mode.
+	SkipApps []string `json:"skip_apps,omitempty"`
+}
+
+// Skips reports whether dictations into the program with key id stay out of
+// the history.
+func (h History) Skips(id string) bool {
+	return id != "" && slices.Contains(h.SkipApps, id)
 }
 
 type Tray struct {
@@ -279,6 +349,9 @@ type UI struct {
 	ReduceMotion bool `json:"reduce_motion,omitempty"`
 	// Density is the page's spacing: "" standard, "compact" or "spacious".
 	Density string `json:"density,omitempty"`
+	// SettingsAll shows every setting; unset, the settings page shows the
+	// basic ones and offers the rest (data-adv in web/index.html).
+	SettingsAll bool `json:"settings_all,omitempty"`
 	// PillLive shows the words in the pill while you speak. Nil-safe: unset
 	// counts as on, for new users and for those updating alike (it used to be
 	// a plain bool whose false was never written).
@@ -465,12 +538,12 @@ func Default() *Config {
 		Server: Server{Port: 4573},
 		Audio:  Audio{InputGain: 1.0, SoundsEnabled: true, SoundsVolume: 1.0, MediaAction: "duck", SilenceTimeoutSec: 15, AutoStopSilenceMS: 1200},
 		STT: STT{
-			// Default to Soniox: its single realtime model (stt-rt-v5) covers all
+			// Default to Soniox: its single realtime model (stt-rt-v6) covers all
 			// 60 languages and is the first choice in the UI's model list — the
 			// sensible starting point on a fresh install, before any keys exist.
 			Provider:   "soniox",
 			Language:   "nl",
-			Model:      "stt-rt-v5",
+			Model:      "stt-rt-v6",
 			EUEndpoint: true, // only affects AssemblyAI; harmless for Soniox
 		},
 		Cleanup: Cleanup{
@@ -628,10 +701,18 @@ func Load() (*Config, error) {
 	// code". That was never free choice: those sessions are billed as Realtime
 	// Universal-3.5 Pro. Naming it makes the price visible and the setting
 	// honest, without changing which model actually runs. This predates Soniox
-	// (whose configs always carry stt-rt-v5), so the concrete AssemblyAI model is
+	// (whose configs always carry a stt-rt model), so the concrete AssemblyAI model is
 	// the right fill-in — not the current default provider's model.
 	if cfg.STT.Model == "" {
 		cfg.STT.Model = "universal-3-5-pro"
+		if err := cfg.Save(); err != nil {
+			return nil, err
+		}
+	}
+	// Soniox replaced stt-rt-v5 by stt-rt-v6 (v5 goes on 15 December 2026,
+	// then routed to v6): the setting names the model that runs.
+	if cfg.STT.Model == "stt-rt-v5" {
+		cfg.STT.Model = "stt-rt-v6"
 		if err := cfg.Save(); err != nil {
 			return nil, err
 		}

@@ -1,6 +1,11 @@
 package history
 
 import (
+	"database/sql"
+
+	"vito/internal/dictionary"
+	"vito/internal/frontapp"
+
 	"strings"
 	"time"
 )
@@ -60,4 +65,110 @@ func (s *Store) DictUsage() (map[string]map[string]DictUse, error) {
 		out[kind][key] = u
 	}
 	return out, rows.Err()
+}
+
+// DictPairs returns the raw and cleaned text of the newest dictations (at
+// most limit), for dictionary.Suggest. Commands are left out.
+func (s *Store) DictPairs(limit int) ([]dictionary.Pair, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	rows, err := s.db.Query(`SELECT raw, COALESCE(cleaned, '') FROM history
+		WHERE raw <> '' AND COALESCE(command_text, '') = '' ORDER BY ts DESC LIMIT ?`, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []dictionary.Pair
+	for rows.Next() {
+		var p dictionary.Pair
+		if err := rows.Scan(&p.Raw, &p.Cleaned); err != nil {
+			return nil, err
+		}
+		out = append(out, p)
+	}
+	return out, rows.Err()
+}
+
+// DismissDictSuggestion remembers that the user turned a suggestion down.
+func (s *Store) DismissDictSuggestion(wrong, right string, at time.Time) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	_, err := s.db.Exec(`INSERT OR REPLACE INTO dict_dismissed(wrong, right, at) VALUES(?, ?, ?)`,
+		DictKey(wrong), DictKey(right), at.UnixMilli())
+	return err
+}
+
+// DictDismissed returns the turned-down suggestions as "wrong\x00right".
+func (s *Store) DictDismissed() (map[string]bool, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	rows, err := s.db.Query(`SELECT wrong, right FROM dict_dismissed`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := map[string]bool{}
+	for rows.Next() {
+		var w, r string
+		if err := rows.Scan(&w, &r); err != nil {
+			return nil, err
+		}
+		out[w+"\x00"+r] = true
+	}
+	return out, rows.Err()
+}
+
+// AppUse is one program dictated into: its key, the name the system gives
+// it, how many dictations went there and when last (unix ms).
+type AppUse struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Count int    `json:"count"`
+	Last  int64  `json:"last"`
+}
+
+// Apps lists the programs dictated into, the most used first.
+func (s *Store) Apps() ([]AppUse, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	rows, err := s.db.Query(`SELECT app_id, MAX(app), COUNT(*), MAX(ts) FROM history
+		WHERE app_id <> '' GROUP BY app_id ORDER BY COUNT(*) DESC, MAX(ts) DESC LIMIT 100`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []AppUse
+	for rows.Next() {
+		var a AppUse
+		if err := rows.Scan(&a.ID, &a.Name, &a.Count, &a.Last); err != nil {
+			return nil, err
+		}
+		out = append(out, a)
+	}
+	return out, rows.Err()
+}
+
+// tidyAppNames renames the entries kept before Vito knew better, when a part
+// of Windows was called by its product name ("Microsoft® Windows® Operating
+// System"): its own name where Vito has one, else its id.
+func tidyAppNames(db *sql.DB) {
+	rows, err := db.Query(`SELECT DISTINCT app_id FROM history WHERE app_id != '' AND app LIKE '%Operating System%'`)
+	if err != nil {
+		return
+	}
+	var ids []string
+	for rows.Next() {
+		var id string
+		if rows.Scan(&id) == nil {
+			ids = append(ids, id)
+		}
+	}
+	rows.Close()
+	for _, id := range ids {
+		name := frontapp.ShellName(id)
+		if name == "" {
+			name = id
+		}
+		_, _ = db.Exec(`UPDATE history SET app = ? WHERE app_id = ? AND app LIKE '%Operating System%'`, name, id)
+	}
 }

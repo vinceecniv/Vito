@@ -147,6 +147,17 @@ setting: animations and transitions end at once; scripts ask
 `reducedMotion()`, never `matchMedia` directly. The pill follows it too
 (`internal/pill/motion.go`: `step` jumps, `Frame.T` holds).
 
+## The settings page: basic or all, and search
+
+`ui.settings_all` (unset = basic) picks between the basic settings and all of
+them (Basis/Alles in the page head). Whatever is marked `data-adv` — a card,
+a toggle, or a `<div data-adv>` around a label and its control — shows only
+under "All"; a section with more says so at its foot (`syncSetMore`). Mark a
+new setting `data-adv` unless a newcomer needs it. The search box (and
+Ctrl+F on that page) shows every section's cards whose rendered text, help
+tip or section name holds all the words, basic or not, and marks the short
+lines that match (`runSetSearch`).
+
 ## Typefaces
 
 `ui.font` ("" Sora with Baloo 2 for headings; `system`, `inter`, `atkinson`,
@@ -197,6 +208,87 @@ the `dict_usage` table (`history.RecordDictUse`, fed by `ApplyUsed`/`MarkUsed`
 in a dictation and an upload; part of a backup, not synced) and reaches the
 page through `GET /api/dictionary/usage`. `web/standalone/backend.js` keeps the
 same in localStorage.
+
+## Dictionary suggestions
+
+`internal/dictionary/suggest.go` reads the history's raw and cleaned text
+side by side: a word-level diff gives the cleanup's repairs, and a repair
+counts when both sides look or sound alike (`phonetic`, a rough Dutch/English
+sound key), is more than spacing/hyphens/apostrophes (a split name joined
+into one capitalised word still counts), and the cleanup replaces the word
+in at least half the dictations it occurs in — that last rule is what drops
+its own rephrasing ("kan je" → "kun je"). A repair seen once counts only for
+a name. Ranking doubles when the intended word is also heard right
+elsewhere. A second source, `variants.go`, compares the raw words with the
+terms already in the dictionary (its intended spellings): sounding or
+looking alike without a correction for them ("Pricelerper", "Kama Express"),
+also where the cleanup left them wrong, which scores higher. Not a variant:
+containing the term, a stretch with a common extra word ("de detectie"),
+or the term with an ending more or less that is itself used often
+("bijlage"). `GET /api/dictionary/suggestions` merges both (`Merge`, a
+stock of 20, without words already corrected or turned down), `POST
+…/dismiss` (table `dict_dismissed`, this computer only); the page shows
+five above the corrections and fills up from the stock. The browser
+version has the same in `backend.js` (`dictSuggest`, `dictVariants`) —
+keep them in step. `VITO_SUGGEST_DIR=<copy of a config dir>
+VITO_SUGGEST_CONFIG=<config.json> go test ./internal/history -run
+TestSuggestRealHistory -v` prints them for a real history.
+The corrections get a filter from more than 15 rows, and on Ctrl+F on the
+Dictionary page at any count. Both cards show their count ("3 of 22" while
+filtering), and a sticky bar under the page head jumps between them.
+
+The cleanup gets only the corrections a transcript could need
+(`dictionary.Relevant`, in `buildUserPrompt`; `dictRelevant` in
+`backend.js`): a side in the text, or a stretch that looks or sounds like
+one. On the user's history (41 corrections) that kept 0.44 per dictation
+and never dropped one whose term the cleanup wrote.
+
+The speech recognition gets the intended spellings beforehand
+(`stt.hints`, nil = on): `resolveSTT` fills `STT.Terms` (never saved) from
+`dictionary.Terms`, most used first, and each provider takes what fits
+(`dictionary.Pick`) — Soniox `context.terms` (100; billed as text tokens),
+AssemblyAI `keyterms_prompt` (streaming: 100 × ≤50 chars as a JSON array in
+the URL, redialled without on a 400/422; async: 200 phrases of ≤6 words),
+Whisper/Groq `prompt` (comma-separated, ≤500 chars ≈ its 224 tokens). Not
+for Parakeet or Whistle.
+
+## The program dictated into
+
+`internal/frontapp` names the program with the keyboard when a dictation
+starts (`frontapp.Current`, asked off the start path, read by
+`session.appOf`): Windows the foreground process and its FileDescription
+(a UWP app's own process, not ApplicationFrameHost); niri and Hyprland over
+their IPC; X11 `WM_CLASS`; GNOME Vito's Shell extension (`App`, from version
+6); KDE a KWin script Vito loads that reports the active window to
+`talk.vito.Front` over D-Bus (as kdotool does); macOS `lsappinfo` (untested).
+On Linux the name comes from the program's `.desktop` file. Only the
+program, never a window title. The cleanup is told its name
+(`cleanup.app_context`, nil = on; a line in `buildUserPrompt`), and
+`cleanup.app_prompts` picks a rule set per program (`Cleanup.ForApp`) and
+`injection.apps` the space and Enter after the text (`Injection.ForApp`, nil
+field = general); `history.skip_apps` keeps a program's dictations out of
+the history as privacy mode does (day statistics only, no recording, no text
+in the notification; `History.Skips`). The settings tab Programs (`data-sec="apps"`, card
+`#set-apps`) lists every program used with all three, "General (…)" = not
+in the map; under each general setting `.app-over` names the programs set
+differently. A program's name in the history or on the
+dashboard (`.app-go`) opens its row there (`openAppRule`). Each entry keeps
+the rule set it was cleaned with as `rules`/`rules_name`
+(`cleanup.ActiveSet`; empty without a cleanup pass or for an Assist command). The
+history keeps `app`/`app_id` per entry; `GET /api/apps` lists them with the
+one in front now. The dashboard's Programs card reads `insights.apps` (per
+period; two cells show a list, one the top share; not in the browser
+version), and the secret App Hopper / Many Hands count programs with two
+dictations or more (`Stats.Apps`). Icons: when a program is first seen in
+front (`keepIcon`, again after a week) its icon is kept in
+`<UserCacheDir>/vito/app-icons/<id>.png|svg` — Windows draws the exe's icon
+at 64 px (`icon_windows.go`), Linux takes the `.desktop` file's `Icon=` from
+hicolor or pixmaps, macOS has none yet. `GET /api/apps/icon/{id}?token=`
+serves it (the token in the query: an `<img>` sends no header, and another
+page must not probe which programs are used), cached a day plus a week
+stale-while-revalidate; `appIcon()` in the page shows it once loaded (nothing
+without one) and remembers loaded and missing ones. `app_prompts` is a map: `handlePutConfig` decodes it fresh,
+as the outfit, or a removed program would stay.
 
 ## Text snippets
 

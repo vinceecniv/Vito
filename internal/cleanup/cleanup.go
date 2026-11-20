@@ -20,6 +20,7 @@ import (
 
 	"vito/internal/apierr"
 	"vito/internal/config"
+	"vito/internal/dictionary"
 )
 
 // Usage reports the token counts of a cleanup call, for cost estimation.
@@ -90,9 +91,21 @@ func ProviderName(cfg config.Cleanup) string {
 
 // buildUserPrompt assembles the user turn shared by both providers: the language,
 // the dictionary corrections and the raw transcript.
-func buildUserPrompt(text, language string, corrections []config.Correction) string {
+//
+// Only the corrections this transcript could need go along
+// (dictionary.Relevant): the whole dictionary on every dictation costs tokens
+// and tempts the model to apply a correction that does not belong.
+//
+// app is the program the text will be typed into, when known: it may decide
+// the form (no sign-off in a chat, no closing full stop in a terminal) where
+// the rules leave that open, never the content.
+func buildUserPrompt(text, language string, corrections []config.Correction, app string) string {
+	corrections = dictionary.Relevant(text, corrections)
 	var user strings.Builder
 	fmt.Fprintf(&user, "Language: %s\n", language)
+	if app = strings.TrimSpace(app); app != "" {
+		fmt.Fprintf(&user, "App the text is typed into: %s (let it shape only the form where the rules leave that open; never add or drop content)\n", app)
+	}
 	if len(corrections) > 0 {
 		user.WriteString("Corrections (misheard -> intended):\n")
 		for _, corr := range corrections {
@@ -162,7 +175,7 @@ func Builtins() []Builtin {
 		{
 			ID:          BuiltinPrefix + "verbatim",
 			Name:        "Verbatim",
-			Description: "Touches as little as possible — punctuation only, every spoken word kept.",
+			Description: "Touches as little as possible — punctuation, and the ums and ehs out; every other spoken word kept.",
 			Rules:       verbatimRules,
 		},
 		{
@@ -205,6 +218,28 @@ func activeRules(cfg config.Cleanup) string {
 	return ""
 }
 
+// ActiveSet is the rule set a cleanup with cfg uses: its id (empty for Vito's
+// default) and its name — English for Vito's own sets, which the page
+// translates, the user's own as written. A set that no longer exists is
+// Vito's default, as activeRules has it.
+func ActiveSet(cfg config.Cleanup) (id, name string) {
+	def := Builtins()[0]
+	if cfg.ActivePrompt == "" || cfg.ActivePrompt == def.ID {
+		return "", def.Name
+	}
+	for _, b := range Builtins() {
+		if b.ID == cfg.ActivePrompt {
+			return b.ID, b.Name
+		}
+	}
+	for _, p := range cfg.Prompts {
+		if p.ID == cfg.ActivePrompt {
+			return p.ID, p.Name
+		}
+	}
+	return "", def.Name
+}
+
 // builtinRules resolves one of Vito's own ids to its rules.
 func builtinRules(id string) (string, bool) {
 	for _, b := range Builtins() {
@@ -222,7 +257,8 @@ func builtinRules(id string) (string, bool) {
 
 const verbatimRules = `You lightly correct dictated speech transcripts. Change as little as possible.
 - Fix punctuation and capitalization. Nothing else about the wording.
-- Keep every word the speaker said, including filler words, false starts, repetitions and hesitations.
+- Remove only pure hesitation sounds ("eh", "ehm", "uh", "um", "uhm", "hmm") and the comma that came with them.
+- Keep every other word the speaker said, including filler words such as "eigenlijk", "gewoon" or "you know", false starts and repetitions.
 - Do not fix spelling, do not swap words, do not shorten, do not rephrase, do not tidy grammar.
 - Apply the corrections list (misheard term -> intended term) strictly wherever a misheard term appears.
 - Interpret spoken editing commands: "nieuwe regel" or "new line" becomes a newline; "nieuwe alinea" or "new paragraph" becomes a blank line. Nothing more clever than that.
@@ -306,6 +342,7 @@ type AnthropicCleaner struct {
 	client anthropic.Client
 	model  string
 	rules  string // active cleanup rules; empty = Vito's own
+	app    string // the program dictated into, for the model; may be empty
 }
 
 func NewAnthropicCleaner(cfg config.Cleanup) *AnthropicCleaner {
@@ -313,6 +350,7 @@ func NewAnthropicCleaner(cfg config.Cleanup) *AnthropicCleaner {
 		client: anthropic.NewClient(option.WithAPIKey(cfg.APIKey)),
 		model:  cfg.Model,
 		rules:  activeRules(cfg),
+		app:    cfg.App,
 	}
 }
 
@@ -323,7 +361,7 @@ func (c *AnthropicCleaner) Clean(ctx context.Context, text, language string, cor
 		Temperature: anthropic.Float(0),
 		System:      []anthropic.TextBlockParam{{Text: systemPromptWith(instruction, c.rules)}},
 		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(buildUserPrompt(text, language, corrections))),
+			anthropic.NewUserMessage(anthropic.NewTextBlock(buildUserPrompt(text, language, corrections, c.app))),
 		},
 	})
 	if err != nil {
@@ -361,6 +399,7 @@ type OpenAICleaner struct {
 	name    string // display name for errors/credit (Groq, OpenAI, Local model, …)
 	effort  string // reasoning_effort, sent only when set
 	rules   string // active cleanup rules; empty = Vito's own
+	app     string // the program dictated into, for the model; may be empty
 	http    *http.Client
 }
 
@@ -372,6 +411,7 @@ func NewOpenAICleaner(cfg config.Cleanup) *OpenAICleaner {
 		name:    ProviderName(cfg),
 		effort:  strings.TrimSpace(cfg.ReasoningEffort),
 		rules:   activeRules(cfg),
+		app:     cfg.App,
 		http:    &http.Client{}, // the caller's context carries the timeout
 	}
 }
@@ -413,7 +453,7 @@ func (c *OpenAICleaner) Clean(ctx context.Context, text, language string, correc
 		ReasoningEffort: c.effort,
 		Messages: []openAIMessage{
 			{Role: "system", Content: systemPromptWith(instruction, c.rules)},
-			{Role: "user", Content: buildUserPrompt(text, language, corrections)},
+			{Role: "user", Content: buildUserPrompt(text, language, corrections, c.app)},
 		},
 	})
 	if err != nil {
