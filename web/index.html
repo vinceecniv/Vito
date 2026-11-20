@@ -3634,13 +3634,13 @@
           <input type="text" id="d-filter" placeholder="Filter corrections…" aria-label="Filter corrections">
           <button class="s-x" id="d-filter-x" data-tip-text="Clear filter" aria-label="Clear filter" style="display:none;">×</button>
         </div>
-        <table id="d-corrections"><thead><tr><th>Misheard</th><th>Intended</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
-        <div class="rowflex" style="margin-top:12px;">
+        <div class="rowflex" style="margin-bottom:10px;">
           <button class="btn primary small" id="d-add">+ Row</button>
           <button class="btn ghost small" id="d-export">Export</button>
           <button class="btn ghost small" id="d-import">Import</button>
           <input type="file" id="d-importfile" accept=".json,.txt,.csv" style="display:none">
         </div>
+        <table id="d-corrections"><thead><tr><th>Misheard</th><th>Intended</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
         <p class="act-note" id="d-filter-none" hidden>No corrections match this filter.</p>
         <div class="snip-ideas" id="d-corr-ideas"></div>
       </div>
@@ -13521,8 +13521,9 @@ function addCorrectionRow(wrong = "", right = "", created = 0, bulk = false) {
   const tdDel = document.createElement("td");
   const del = document.createElement("button"); del.className = "btn danger small"; del.textContent = "×"; del.onclick = () => { tr.remove(); autoSaveDict(); renderCorrectionIdeas(); renderDictSuggestions(); dictFilterSync(); };
   tdDel.appendChild(del); tr.appendChild(tdDel);
-  tbody.appendChild(tr);
-  if (bulk) return;
+  if (bulk) { tbody.appendChild(tr); return; }
+  // A new row goes on top, by the button, not after a long list.
+  tbody.prepend(tr);
   // A row added while filtering would be hidden by the filter: clear it.
   $("d-filter").value = "";
   dictFilterSync();
@@ -13673,7 +13674,7 @@ function modal(title, bodyHTML, onOk, okLabel = "Save", danger = false, onCancel
   return back;
 }
 
-$("d-add").onclick = () => addCorrectionRow();
+$("d-add").onclick = () => { addCorrectionRow(); $("d-corrections").querySelector("tbody input").focus(); };
 $("d-export").onclick = () => {
   const blob = new Blob([JSON.stringify(collectDictionary(), null, 2)], { type: "application/json" });
   const a = document.createElement("a");
