@@ -16,6 +16,10 @@ type palette struct {
 	coral, violet, violetL rgb
 	violetDark             rgb  // violet on a dark surface, where it differs
 	mono                   bool // the accent is white on dark, black on light
+	// onLight and onDark are a mark on a filled accent (a switch's knob, a
+	// button's icon) per side: white when nil. A desktop theme's own
+	// on_primary, which is dark on a light primary.
+	onLight, onDark *rgb
 }
 
 func pal4(coral, violet, violetL, violetDark uint32) *palette {
@@ -127,7 +131,7 @@ func graded(p *palette) *palette {
 	}
 	g := &palette{coral: p.coral, violet: blend(p.violet, p.coral, t),
 		violetL:    blend(p.violetL, blend(p.coral, rgb{1, 1, 1}, .3), t),
-		violetDark: blend(p.violetDark, p.coral, t)}
+		violetDark: blend(p.violetDark, p.coral, t), onLight: p.onLight, onDark: p.onDark}
 	gradMemo[k] = g
 	return g
 }
@@ -168,10 +172,31 @@ func desktopPalette(name string) *palette {
 		// As the page: primary, and a deep primary for the cool end.
 		lp, dp := hexStr(src.Light["primary"]), hexStr(src.Dark["primary"])
 		deskPal = &palette{coral: hexStr(src.Side()["primary"]), violet: blend(lp, rgb{}, .38),
-			violetL: blend(dp, rgb{1, 1, 1}, .4), violetDark: dp}
+			violetL: blend(dp, rgb{1, 1, 1}, .4), violetDark: dp,
+			onLight: onPrimary(src.Light), onDark: onPrimary(src.Dark)}
 		deskSrc = src
 	}
 	return deskPal
+}
+
+// onPrimary is a side's on_primary (desktopcolors made it legible), or nil.
+func onPrimary(side map[string]string) *rgb {
+	if s := side["on_primary"]; len(s) == 7 && s[0] == '#' {
+		c := hexStr(s)
+		return &c
+	}
+	return nil
+}
+
+// on is the mark on a filled accent on the given side.
+func (p *palette) on(dark bool) rgb {
+	if c := p.onLight; !dark && c != nil {
+		return *c
+	}
+	if c := p.onDark; dark && c != nil {
+		return *c
+	}
+	return rgb{1, 1, 1}
 }
 
 // hexStr reads "#rrggbb"; desktopcolors checked the form.

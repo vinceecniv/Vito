@@ -26,7 +26,9 @@ typedef long gssize;
 typedef struct { float red, green, blue, alpha; } RGBA;
 
 // The enums, from GDK 4, GTK 4 and WebKitGTK 6.0.
-enum { GDK_BUTTON_PRESS = 2 };
+enum { GDK_BUTTON_PRESS = 2, GDK_KEY_PRESS = 4 };
+enum { GDK_SHIFT_MASK = 1 << 0, GDK_CONTROL_MASK = 1 << 2 };
+enum { GDK_KEY_Tab = 0xff09, GDK_KEY_ISO_Left_Tab = 0xfe20 };
 enum { GTK_PHASE_CAPTURE = 1 };
 enum { GTK_OVERFLOW_HIDDEN = 1 };
 enum { GTK_ORIENTATION_HORIZONTAL = 0 };
@@ -91,6 +93,8 @@ static struct {
 	gp (*gdk_event_get_device)(gp);
 	gboolean (*gdk_event_get_position)(gp, double *, double *);
 	uint32_t (*gdk_event_get_time)(gp);
+	unsigned (*gdk_key_event_get_keyval)(gp);
+	unsigned (*gdk_event_get_modifier_state)(gp);
 	guint (*gdk_button_event_get_button)(gp);
 	gp (*gdk_event_ref)(gp);
 	void (*gdk_event_unref)(gp);
@@ -168,7 +172,7 @@ int vw_load(const char **missing) {
 	L(gtk_widget_add_controller) L(gtk_css_provider_new) L(gtk_css_provider_load_from_data)
 	L(gtk_style_context_add_provider_for_display) L(gdk_display_get_default)
 	L(gdk_event_get_event_type) L(gdk_event_get_device) L(gdk_event_get_position)
-	L(gdk_event_get_time) L(gdk_button_event_get_button) L(gdk_event_ref) L(gdk_event_unref)
+	L(gdk_event_get_time) L(gdk_key_event_get_keyval) L(gdk_event_get_modifier_state) L(gdk_button_event_get_button) L(gdk_event_ref) L(gdk_event_unref)
 	L(gdk_toplevel_begin_move) L(gdk_toplevel_begin_resize) L(gdk_toplevel_show_window_menu)
 	L(gdk_toplevel_get_state)
 	L(webkit_web_view_get_type) L(webkit_network_session_new) L(webkit_user_content_manager_new)
@@ -222,9 +226,22 @@ void vw_eval(const char *js) {
 
 // on_event keeps the last button press: dragging, resizing and the window
 // menu are started from it, as the desktop wants them tied to a real press.
+// It also takes Ctrl+Tab and Ctrl+Shift+Tab before GTK, whose window moves
+// the focus out of the WebView with them (the page then saw only every other
+// press), and hands them to the page (vitoCtrlTab, the settings tabs).
 static gboolean on_event(gp ctrl, gp ev, gp data) {
 	(void)ctrl;
 	(void)data;
+	if (F.gdk_event_get_event_type(ev) == GDK_KEY_PRESS) {
+		unsigned k = F.gdk_key_event_get_keyval(ev), m = F.gdk_event_get_modifier_state(ev);
+		if ((k == GDK_KEY_Tab || k == GDK_KEY_ISO_Left_Tab) && (m & GDK_CONTROL_MASK)) {
+			vw_eval((m & GDK_SHIFT_MASK) || k == GDK_KEY_ISO_Left_Tab
+				? "window.vitoCtrlTab && vitoCtrlTab(true)"
+				: "window.vitoCtrlTab && vitoCtrlTab(false)");
+			return 1;
+		}
+		return 0;
+	}
 	if (F.gdk_event_get_event_type(ev) == GDK_BUTTON_PRESS) {
 		if (press) {
 			F.gdk_event_unref(press);

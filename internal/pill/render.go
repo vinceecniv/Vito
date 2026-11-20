@@ -275,7 +275,7 @@ type theme struct {
 	// the light tint on dark, right for marks and text but too pale for a
 	// fill, which the page draws from --coral to --violet on either side.
 	fill   rgb
-	onAcc  rgb     // a mark on a fill in from or to: white, black on white
+	onAcc  rgb     // a mark on a fill in from or to: white, black on white, a desktop theme's on_primary
 	warn   rgb     // never the coral: that is the brand here, not a warning
 	shadow float64 // strength under the open pill
 
@@ -309,7 +309,7 @@ func themeFor(dark bool) theme {
 	c := pal()
 	if dark {
 		th := darkTheme
-		th.edge, th.from, th.to, th.onAcc = c.violetL, c.coral, c.violetL, rgb{1, 1, 1}
+		th.edge, th.from, th.to, th.onAcc = c.violetL, c.coral, c.violetL, c.on(true)
 		th.fill = c.violetDark
 		if c.mono {
 			th.edge, th.from, th.to, th.onAcc = rgb{1, 1, 1}, rgb{1, 1, 1}, rgb{1, 1, 1}, rgb{}
@@ -318,7 +318,7 @@ func themeFor(dark bool) theme {
 		return th
 	}
 	th := lightTheme
-	th.edge, th.from, th.to, th.onAcc = c.violet, c.coral, c.violet, rgb{1, 1, 1}
+	th.edge, th.from, th.to, th.onAcc = c.violet, c.coral, c.violet, c.on(false)
 	if c.mono {
 		th.edge, th.from, th.to = rgb{}, rgb{}, rgb{}
 	}

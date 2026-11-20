@@ -1206,7 +1206,7 @@ registerProcessor("vito-pcm",P)`;
       cfg.ui = cfg.ui || {}; if (keep !== undefined) cfg.ui.dashboard = keep;
       if (!BROWSER_STT.includes(cfg.stt.provider)) { cfg.stt.provider = "whistle"; cfg.stt.model = "whistle"; }
       saveConfig(); pruneHistory();
-      return ok();
+      return ok({ dictionary: cfg.dictionary });
     }
     if (p === "/api/ui/dashboard") { cfg.ui.dashboard = body; saveConfig(); return ok(); }
     if (p === "/api/welcome-done") { cfg.ui.welcome_done = true; saveConfig(); return ok(); }

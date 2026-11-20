@@ -111,7 +111,9 @@ on the system's own greys, and a change of accent counts as a scheme change
 for the pill, tray and window icon (`desktopcolors.SystemKey`). `internal/desktopcolors` reads
 them, `GET /api/desktop-colors` lists what is available, and the page maps the
 roles onto the tokens in a generated `<style id="desk-accent">`
-(`writeDeskStyle`), offering a theme only where its shell runs, right after
+(`writeDeskStyle`), offering a theme only where its shell runs,
+with text and switch knobs on primary in `on_primary` (`--on-grad`,
+`--toggle-knob`; `desktopcolors.readable` makes it 4.5:1 for every shell), right after
 Vito's own; the pill builds its palette from the same roles.
 
 ## Backgrounds
@@ -334,6 +336,18 @@ provider (any endpoint speaking `POST /audio/transcriptions`):
   sha256. A warm-up request runs before the engine counts as `running`: on a
   Vulkan build the first request compiles shaders and takes ~30 s. Language is
   detected by the model, uploads must be WAV.
+- **While you speak**: an endpoint on this computer (loopback URL: Vito local
+  once resolved, an own whisper-server) is sent the recording piece by piece
+  (`internal/stt/local_stream.go`, Whistle's stream with a request as its
+  engine): cut at pauses of 450 ms after at least 6 s, so after the stop only
+  the last piece is left — 0.2–0.4 s on this CPU instead of 3–4 s for 30 s of
+  speech (measured). The open piece is sent again for the live text
+  (`stt.LiveText`; `HasPartials` stays false, so speech activity still comes
+  from the level). Pieces join with `joinPieces`; a failed piece makes Finish
+  send the whole recording. A remote endpoint still gets one request: it bills
+  per request. Only while the AI cleanup is on (`stt.Pieces`, `config.STT.Whole`):
+  the pieces' seams ("als... De tekst") are left for it to smooth; without
+  it the recording goes whole, without live text.
 - **Bring-your-own endpoint** (`stt.provider = "openai"`): whisper-server,
   Speaches, LocalAI, Groq, OpenAI. For whisper.cpp Vito sends `audio_ctx` sized
   to the recording (halves CPU time — Whisper always encodes 30 s otherwise),

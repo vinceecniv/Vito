@@ -133,7 +133,10 @@ type Status struct {
 	Frac      float64  `json:"frac"`     // download progress 0..1 while downloading
 	Port      int      `json:"port,omitempty"`
 	Error     string   `json:"error,omitempty"`
-	LastMS    int64    `json:"last_ms,omitempty"` // the warm-up's, then each dictation's, latency
+	// Switching is the build being fetched while the installed one keeps
+	// running (Frac is its progress); Error then says why a switch failed.
+	Switching string `json:"switching,omitempty"`
+	LastMS    int64  `json:"last_ms,omitempty"` // the warm-up's, then each dictation's, latency
 }
 
 // Manager owns the sidecar: its files, its process and its state.
@@ -556,12 +559,22 @@ func (m *Manager) install(a asset, variant string) {
 		m.mu.Unlock()
 		m.reconcile()
 	}()
-	// A running server holds the binary open on Windows; swapping the build
-	// under it is not an upgrade path, it is a locked file.
-	m.stop(PhaseDownloading)
-	m.set(func(s *Status) { s.Installed, s.Phase, s.Frac, s.Error = false, PhaseDownloading, 0, "" })
+	// Switching builds (cpu ↔ vulkan) keeps the installed one running while
+	// the other downloads, beside it; only the swap stops it, so dictation
+	// pauses for a restart rather than a download. A failed switch leaves the
+	// old build as it was. A first install has nothing to keep.
+	switching := m.Status().Installed
+	if switching {
+		m.set(func(s *Status) { s.Switching, s.Frac, s.Error = variant, 0, "" })
+	} else {
+		m.set(func(s *Status) { s.Installed, s.Phase, s.Frac, s.Error = false, PhaseDownloading, 0, "" })
+	}
 	fail := func(err error) {
-		m.log.Error("local stt: install failed", "err", err)
+		m.log.Error("local stt: install failed", "err", err, "switching", switching)
+		if switching {
+			m.set(func(s *Status) { s.Switching, s.Error = "", err.Error() })
+			return
+		}
 		m.set(func(s *Status) { s.Phase, s.Error = PhaseError, err.Error() })
 	}
 	ctx := context.Background()
@@ -571,18 +584,19 @@ func (m *Manager) install(a asset, variant string) {
 	}
 
 	// The binary. Small, so always fetched afresh: it is the part that changes
-	// between releases and between variants.
+	// between releases and between variants. Unpacked beside the one in use.
 	archive := filepath.Join(m.dir, "bin", a.name)
+	staged := m.binPath() + ".new"
 	if err := os.MkdirAll(filepath.Dir(archive), 0o755); err != nil {
 		fail(err)
 		return
 	}
-	_ = os.Remove(m.versionPath())
 	if err := download(ctx, m.http, release+a.name, archive, a.size, a.sha, report); err != nil {
 		fail(fmt.Errorf("%s downloaden: %w", Engine, err))
 		return
 	}
-	if err := extractServer(archive, m.binPath()); err != nil {
+	if err := extractServer(archive, staged); err != nil {
+		_ = os.Remove(staged)
 		fail(fmt.Errorf("%s uitpakken: %w", Engine, err))
 		return
 	}
@@ -605,12 +619,27 @@ func (m *Manager) install(a asset, variant string) {
 		}
 	}
 	report(total)
+
+	// The swap. A running server holds its binary open on Windows, so it
+	// stops first; the deferred reconcile starts the new one.
+	m.stop(PhaseStopped)
+	_ = os.Remove(m.versionPath())
+	if err := os.Rename(staged, m.binPath()); err != nil {
+		m.set(func(s *Status) { s.Installed, s.Switching = false, "" })
+		switching = false
+		fail(err)
+		return
+	}
 	if err := os.WriteFile(m.versionPath(), []byte(Version+" "+variant+"\n"), 0o644); err != nil {
+		m.set(func(s *Status) { s.Installed, s.Switching = false, "" })
+		switching = false
 		fail(err)
 		return
 	}
 	m.log.Info("local stt: installed", "engine", Engine, "version", Version, "variant", variant, "model", ModelName)
-	m.set(func(s *Status) { s.Installed, s.Variant, s.Phase, s.Frac, s.Error = true, variant, PhaseStopped, 1, "" })
+	m.set(func(s *Status) {
+		s.Installed, s.Variant, s.Phase, s.Frac, s.Error, s.Switching = true, variant, PhaseStopped, 1, "", ""
+	})
 }
 
 // Remove stops the server and deletes everything it installed.

@@ -100,7 +100,7 @@
     --text:#2B2440; --text2:#5A5470; --text3:#6F6887; /* 4.6:1 or more on every surface: WCAG AA for small text */ --placeholder:#B8B2A4;
     --toggle-off:#D9D2C4; --toggle-on:var(--violet); --track:#EDE7D9;
     --nav-active-bg:color-mix(in srgb, var(--violet) 9%, transparent); --nav-active:var(--accent);
-    --accent:var(--acc-l); --accent-soft:color-mix(in srgb, var(--violet) 9%, transparent);
+    --on-grad:#fff; --accent:var(--acc-l); --accent-soft:color-mix(in srgb, var(--violet) 9%, transparent);
     --coral-soft:color-mix(in srgb, var(--coral) 11%, transparent);
     /* Coral and amber as text: darker than the brand fills, so small type keeps
        4.5:1 on the light surfaces. The dark theme uses the fills as they are. */
@@ -645,7 +645,7 @@
   .brand { display:flex; align-items:center; gap:11px; padding:4px 8px 18px; cursor:var(--cur-hand); }
   .hamburger { display:none; width:40px; height:40px; align-items:center; justify-content:center; background:none; border:1px solid var(--sidebar-border); border-radius:9px; color:var(--text2); cursor:var(--cur-hand); }
   .hamburger svg { width:20px; height:20px; }
-  .brand .tile { width:42px; height:42px; border-radius:12px; background:var(--grad);
+  .brand .tile { color:var(--on-grad); width:42px; height:42px; border-radius:12px; background:var(--grad);
     display:flex; align-items:center; justify-content:center; flex:0 0 auto; box-shadow:0 6px 16px var(--accent-soft); }
   .brand .tile svg { width:25px; height:25px; }
   .brand-text { display:flex; flex-direction:column; line-height:1.02; min-width:0; }
@@ -790,7 +790,7 @@
   .hk-clear { background:none; border:none; color:var(--text3); cursor:var(--cur-hand); font-size:17px; line-height:1; padding:0 6px; margin-left:auto; }
   .hk-clear:hover { color:var(--danger-ink); }
   /* welcome card (gradient onboarding) */
-  .welcome-card { position:relative; border-radius:18px; padding:24px 26px; margin-bottom:20px; color:#fff; overflow:hidden;
+  .welcome-card { position:relative; border-radius:18px; padding:24px 26px; margin-bottom:20px; color:var(--on-grad); overflow:hidden;
     background:var(--grad); box-shadow:0 16px 40px color-mix(in srgb, var(--violet) 30%, transparent); }
   .welcome-card:before { content:""; position:absolute; right:-50px; top:-60px; width:230px; height:230px; border-radius:50%; background:rgba(255,255,255,.12); }
   .welcome-card:after { content:""; position:absolute; right:60px; bottom:-90px; width:170px; height:170px; border-radius:50%; background:rgba(255,255,255,.08); }
@@ -935,7 +935,7 @@
   .linux-act pre { background:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:9px 11px; margin:4px 0 0; overflow-x:auto; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11.5px; line-height:1.5; }
   .linux-act code { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11.5px; background:var(--input-bg); border-radius:5px; padding:1px 5px; }
   .status-hero { display:flex; align-items:center; gap:15px; }
-  .status-hero .hero-tile { width:54px; height:54px; flex:0 0 auto; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px var(--accent-soft); }
+  .status-hero .hero-tile { color:var(--on-grad); width:54px; height:54px; flex:0 0 auto; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px var(--accent-soft); }
   .status-hero .hero-tile svg { width:31px; height:31px; }
   .status-hero .hero-name { font-family:var(--font-head); font-size:30px; font-weight:700; line-height:1.05; color:var(--text); }
   .status-hero .hero-tag { color:var(--text2); font-size:13.5px; margin-top:2px; }
@@ -1464,7 +1464,7 @@
   .rcal-day.today { color:var(--accent); font-weight:700; }
   .rcal-day:disabled { color:var(--placeholder); cursor:var(--cur-arrow); }
   .rcal-day.in, .rcal-day.in:hover:not(:disabled) { background:var(--accent-soft); border-radius:0; }
-  .rcal-day.start, .rcal-day.end, .rcal-day.start:hover, .rcal-day.end:hover { background:var(--violet); color:#fff; font-weight:600; }
+  .rcal-day.start, .rcal-day.end, .rcal-day.start:hover, .rcal-day.end:hover { background:var(--violet); color:var(--on-grad); font-weight:600; }
   .rcal-day.start { border-radius:8px 0 0 8px; }
   .rcal-day.end { border-radius:0 8px 8px 0; }
   .rcal-day.start.end { border-radius:8px; }
@@ -1510,7 +1510,7 @@
   .tgl .tr { width:40px; height:24px; flex:0 0 40px; border-radius:99px; background:var(--toggle-off); position:relative; transition:background .15s; }
   .tgl .tr::after { content:""; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:left .15s; }
   .tgl input:checked + .tr { background:var(--toggle-on); }
-  .tgl input:checked + .tr::after { left:19px; }
+  .tgl input:checked + .tr::after { left:19px; background:var(--toggle-knob, #fff); }
   .tgl.disabled { opacity:.45; cursor:var(--cur-arrow); }
   /* Version card: same shell as a statistic card, different contents. */
   .card.stat .upd-ver { font-size:22px; letter-spacing:-0.01em; }
@@ -1534,7 +1534,7 @@
   .credit-card .cr-btns { display:flex; flex-direction:column; gap:7px; margin-top:12px; }
   .credit-card .cr-btn { display:inline-flex; align-items:center; justify-content:center; gap:7px;
     border:none; border-radius:10px; padding:8px 12px; font:inherit; font-size:12.5px; font-weight:600; cursor:var(--cur-hand);
-    color:#fff; background:linear-gradient(135deg,var(--coral),var(--violet)); }
+    color:var(--on-grad); background:linear-gradient(135deg,var(--coral),var(--violet)); }
   .credit-card .cr-btn:hover { filter:brightness(1.06); }
   /* Dismiss. The warning is true and stays true, but after the third look it is
      only in the way — so it can be closed, and the daemon keeps it closed until
@@ -1587,7 +1587,7 @@
     background:linear-gradient(135deg, color-mix(in srgb, var(--coral) 14%, var(--card)), color-mix(in srgb, var(--violet) 16%, var(--card)));
     border:1px solid var(--card-border); }
   .ach-savings .ach-sav-ico { width:54px; height:54px; flex:0 0 54px; border-radius:14px; display:flex; align-items:center; justify-content:center;
-    background:linear-gradient(135deg,var(--coral),var(--violet)); color:#fff; }
+    background:linear-gradient(135deg,var(--coral),var(--violet)); color:var(--on-grad); }
   .ach-savings .ach-sav-ico svg { width:34px; height:34px; }
   /* The amount and its line take the room beside the icon. Narrow, the
      banner is a grid: the icon on the left, the text and the button under it
@@ -1612,7 +1612,7 @@
   }
   /* Ko-fi support button, pushed to the right edge of the savings banner. */
   .ach-sav-kofi { margin-left:auto; display:inline-flex; align-items:center; gap:8px; padding:9px 15px; border-radius:12px; white-space:nowrap;
-    background:linear-gradient(135deg,var(--coral),#ff9e5e); color:#fff; font-size:13px; font-weight:600; text-decoration:none;
+    background:linear-gradient(135deg,var(--coral),#ff9e5e); color:var(--on-grad); font-size:13px; font-weight:600; text-decoration:none;
     transition:filter .15s, box-shadow .15s, transform .12s; }
   .ach-sav-kofi:hover { filter:brightness(1.05); transform:translateY(-1px); box-shadow:0 7px 18px color-mix(in srgb, var(--coral) 30%, transparent); }
   .ach-sav-kofi svg { width:18px; height:18px; }
@@ -1764,7 +1764,7 @@
   .ach-group-head.ach-today-head { color:var(--coral-ink); }
   .card.stat.ach-mini:hover { border-color:color-mix(in srgb,var(--violet) 35%, var(--card-border)); }
   /* Celebration toast: a bigger, warmer variant of the normal toast. */
-  .toast.ach-pop { display:flex; align-items:center; gap:12px; background:linear-gradient(135deg,var(--violet),var(--coral)); color:#fff; padding:13px 18px; }
+  .toast.ach-pop { display:flex; align-items:center; gap:12px; background:linear-gradient(135deg,var(--violet),var(--coral)); color:var(--on-grad); padding:13px 18px; }
   .toast.ach-pop .ach-pop-medal { width:32px; height:32px; flex:0 0 32px; display:inline-flex; align-items:center; justify-content:center; font-size:26px; line-height:1; animation:achspin .7s ease; }
   .toast.ach-pop .ach-pop-medal img, .toast.ach-pop .ach-pop-medal svg { width:32px; height:32px; object-fit:contain; }
   .toast.ach-pop .ach-pop-t { font-size:11px; text-transform:uppercase; letter-spacing:.07em; opacity:.85; }
@@ -1787,7 +1787,7 @@
 
   /* buttons */
   .btn { border:none; border-radius:12px; padding:11px 22px; font:inherit; font-size:13.5px; font-weight:600; cursor:var(--cur-hand); }
-  .btn.primary { background:var(--grad); color:#fff; box-shadow:var(--save-shadow); }
+  .btn.primary { background:var(--grad); color:var(--on-grad); box-shadow:var(--save-shadow); }
   .btn.ghost { background:none; border:1px solid var(--input-border); color:var(--text2); }
   .btn.small { padding:8px 14px; border-radius:10px; }
   .btn.danger { background:none; border:1px solid var(--input-border); color:var(--danger-ink); }
@@ -2001,7 +2001,7 @@
   /* offline overlay (daemon not reachable) */
   #offline-overlay { display:none; position:fixed; inset:0; z-index:300; background:rgba(15,8,25,.6); align-items:center; justify-content:center; padding:20px; }
   .offline-card { background:var(--card); border:1px solid var(--card-border); border-radius:18px; padding:28px 30px; max-width:410px; width:100%; text-align:center; box-shadow:0 30px 70px rgba(20,10,40,.5); }
-  .offline-ic { width:54px; height:54px; margin:0 auto 14px; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; }
+  .offline-ic { color:var(--on-grad); width:54px; height:54px; margin:0 auto 14px; border-radius:15px; background:var(--grad); display:flex; align-items:center; justify-content:center; }
   .offline-card h3 { font-family:var(--font-head); font-size:19px; margin:0 0 8px; }
   .offline-card p { color:var(--text2); font-size:13.5px; line-height:1.55; margin:0; }
   #offline-status { color:var(--text3); font-size:12.5px; display:inline-flex; align-items:center; gap:8px; }
@@ -2032,7 +2032,7 @@
     background:var(--card); border:1px solid var(--card-border); border-radius:11px; color:var(--text2); cursor:var(--cur-hand); }
   .privacy-btn svg { width:19px; height:19px; }
   .privacy-btn:hover { border-color:var(--violet); color:var(--accent); }
-  .privacy-btn.active { background:var(--grad); color:#fff; border-color:transparent; }
+  .privacy-btn.active { background:var(--grad); color:var(--on-grad); border-color:transparent; }
   .privacy-btn { position:relative; }
   .privacy-btn[data-tip]::after {
     content:attr(data-tip); position:absolute; top:calc(100% + 8px); right:0; width:230px;
@@ -2149,7 +2149,7 @@
   .assist-req svg { width:17px; height:17px; flex:0 0 auto; margin-top:1px; color:var(--accent); }
   /* Command mode: a glowing accent bar in the live transcript while a spoken
      command is armed for the next dictation. */
-  .cmd-mode { display:flex; align-items:center; gap:10px; margin-bottom:12px; padding:10px 14px; border-radius:12px; color:#fff;
+  .cmd-mode { display:flex; align-items:center; gap:10px; margin-bottom:12px; padding:10px 14px; border-radius:12px; color:var(--on-grad);
     background:linear-gradient(135deg,var(--coral),var(--violet)); box-shadow:0 8px 22px var(--accent-soft); animation:cmdGlow 1.8s ease-in-out infinite; }
   .cmd-mode .cmd-ico { display:inline-flex; width:20px; height:20px; flex:0 0 auto; }
   .cmd-mode .cmd-ico svg { width:20px; height:20px; }
@@ -2219,7 +2219,7 @@
   .mc-logo { flex:0 0 auto; width:26px; height:26px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; overflow:hidden; background:var(--track); }
   .mc-logo img { width:100%; height:100%; object-fit:cover; display:block; }
   .mc-logo svg { width:16px; height:16px; }
-  .mc-logo.vito { background:linear-gradient(135deg,var(--coral),var(--violet)); }
+  .mc-logo.vito { background:linear-gradient(135deg,var(--coral),var(--violet)); color:var(--on-grad); }
   .mc-logo.vito svg { width:17px; height:17px; }
   .mc-logo.plain { color:var(--text2); }
   .mc-head > b { display:inline-flex; align-items:center; gap:9px; }
@@ -2279,7 +2279,7 @@
     background:rgba(224,154,44,.12); font-size:12.5px; line-height:1.45; color:var(--text); }
   .mc-pending span { flex:1 1 220px; min-width:0; }
   .mc-pending[hidden] { display:none; }
-  .mc-lang-hit { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; color:#fff; background:linear-gradient(135deg,var(--coral),var(--violet)); padding:2px 9px; border-radius:99px; }
+  .mc-lang-hit { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; color:var(--on-grad); background:linear-gradient(135deg,var(--coral),var(--violet)); padding:2px 9px; border-radius:99px; }
   .mc-lang-hit .flag { width:14px; height:auto; border-radius:2px; }
   .modelcard.off { opacity:.55; cursor:not-allowed; }
   .modelcard.off:hover { border-color:var(--input-border); }
@@ -2348,7 +2348,7 @@
   .settings-pane > .card:not([hidden]) ~ .card:not([hidden]) { margin-top:calc(24px * var(--dn, 1)); }
   /* About section */
   .about-head { display:flex; align-items:center; gap:14px; }
-  .about-logo { width:52px; height:52px; border-radius:14px; background:var(--grad); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+  .about-logo { color:var(--on-grad); width:52px; height:52px; border-radius:14px; background:var(--grad); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
   .about-logo svg { width:30px; height:30px; }
   .about-name { font-family:var(--font-head); font-size:26px; font-weight:700; color:var(--text); line-height:1.1; }
   .about-tag { font-size:13px; color:var(--text2); margin-top:2px; }
@@ -2363,11 +2363,11 @@
   .about-link .al-ext { width:13px; height:13px; color:var(--text3); }
   .about-link:hover .al-ext { color:var(--accent); }
   /* Ko-fi: the support call-to-action, filled so it stands out from the rest. */
-  .about-link.kofi { color:#fff; border-color:transparent; background:linear-gradient(135deg,var(--coral),#ff9e5e); }
+  .about-link.kofi { color:var(--on-grad); border-color:transparent; background:linear-gradient(135deg,var(--coral),#ff9e5e); }
   .about-link.kofi:hover { border-color:transparent; background:linear-gradient(135deg,var(--coral),#ff9e5e); filter:brightness(1.05);
     box-shadow:0 7px 18px color-mix(in srgb, var(--coral) 30%, transparent); }
-  .about-link.kofi .al-ext { color:rgba(255,255,255,.8); }
-  .about-link.kofi:hover .al-ext { color:#fff; }
+  .about-link.kofi .al-ext { color:color-mix(in srgb, var(--on-grad) 80%, transparent); }
+  .about-link.kofi:hover .al-ext { color:var(--on-grad); }
   .about-rows { margin-top:16px; display:flex; flex-direction:column; }
   .about-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:11px 2px; border-bottom:1px solid var(--card-border); font-size:13.5px; }
   .about-row:last-child { border-bottom:none; }
@@ -2451,8 +2451,8 @@
   .moved .content > section, .moved .content > .install-banner, .moved .content > .demo-banner,
   .moved .sidebar .nav-item, .moved .sidebar .side-toggle { display:none !important; }
   .help-web, .dl-web { display:none; }
-  .standalone .dl-web { display:flex; color:#fff; border-color:transparent; background:var(--grad); box-shadow:0 4px 14px color-mix(in srgb, var(--violet) 30%, transparent); }
-  .standalone .dl-web:hover { filter:brightness(1.08); color:#fff; }
+  .standalone .dl-web { display:flex; color:var(--on-grad); border-color:transparent; background:var(--grad); box-shadow:0 4px 14px color-mix(in srgb, var(--violet) 30%, transparent); }
+  .standalone .dl-web:hover { filter:brightness(1.08); color:var(--on-grad); }
   .install-banner { position:relative; display:flex; gap:16px; align-items:flex-start; border-radius:16px; padding:18px 20px; margin-bottom:18px;
     color:#fff; background:linear-gradient(135deg,var(--violet),color-mix(in srgb, var(--violet) 75%, #000)); box-shadow:0 10px 30px color-mix(in srgb, var(--violet) 25%, transparent); overflow:hidden; }
   .install-banner.done { background:var(--grad); }
@@ -2472,7 +2472,7 @@
   .confetti-bit { position:fixed; width:9px; height:14px; border-radius:2px; pointer-events:none; z-index:400; }
   .standalone .help-web { display:flex; color:var(--violet); border-color:color-mix(in srgb, var(--violet) 40%, transparent);
     background:color-mix(in srgb, var(--violet) 12%, var(--card)); }
-  .standalone .help-web:hover, .standalone .help-web.on { background:var(--violet); color:#fff; border-color:transparent; }
+  .standalone .help-web:hover, .standalone .help-web.on { background:var(--violet); color:var(--on-grad); border-color:transparent; }
   @keyframes helpPing { 0%,100% { box-shadow:0 0 0 0 transparent; } 40% { box-shadow:0 0 0 8px color-mix(in srgb, var(--violet) 28%, transparent); } }
   .help-web.ping { animation:helpPing .9s ease-out 2; }
   .wl-bar { display:block; height:6px; border-radius:99px; background:rgba(255,255,255,.25); margin:6px 0 2px; overflow:hidden; max-width:320px; }
@@ -2542,7 +2542,11 @@
   /* ---- Long recordings (Recordings tab) ---- */
   .lr-headact { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .lr-new { display:inline-flex; align-items:center; gap:9px; }
-  .lr-new .lr-dot { background:#fff; }
+  /* The record dot is red, on a filled button too, unless the theme's fill
+     is itself red-ish: then it takes the button's text colour (--rec-dot,
+     writeGradStyle). */
+  .btn.primary .lr-dot { background:var(--rec-dot, var(--danger)); }
+  #btn-toggle > .lr-dot { display:inline-block; vertical-align:-1px; margin-right:4px; }
   .lr-dot { width:10px; height:10px; border-radius:50%; background:var(--danger); flex:0 0 10px; }
   .lr-paused .lr-dot { background:var(--amber-ink); }
   .lr-row { display:grid; grid-template-columns:minmax(0,3fr) minmax(0,1.3fr) minmax(0,1.3fr) minmax(0,.8fr) minmax(0,1.4fr); gap:12px; align-items:center;
@@ -2898,7 +2902,7 @@
       <div class="welcome-card" id="welcome-card" hidden>
         <button class="welcome-x" id="welcome-dismiss" title="Close" aria-label="Close">×</button>
         <div class="welcome-head">
-          <span class="welcome-logo"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
+          <span class="welcome-logo"><svg viewBox="0 0 100 100" fill="currentColor"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
           <div><div class="welcome-title">Welcome to Vito</div><div class="welcome-sub">Voice In, Text Out — your voice becomes clean text</div></div>
         </div>
         <div class="web-only">
@@ -3569,7 +3573,7 @@
         </div>
         <div class="card" data-sec="about" hidden>
           <div class="about-head">
-            <span class="about-logo"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
+            <span class="about-logo"><svg viewBox="0 0 100 100" fill="currentColor"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>
             <div><div class="about-name">Vito</div><div class="about-tag">Voice In, Text Out <span class="about-gloss">(Voice In, Text Out)</span></div></div>
           </div>
           <p class="act-note" style="margin:14px 0 0;">Personal, cross-platform voice dictation: press a hotkey, speak, and get clean text where your cursor is.</p>
@@ -3830,7 +3834,7 @@
 <div id="toasts"></div>
 <div id="offline-overlay">
   <div class="offline-card">
-    <div class="offline-ic"><svg viewBox="0 0 100 100" fill="#fff" width="26" height="26"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></div>
+    <div class="offline-ic"><svg viewBox="0 0 100 100" fill="currentColor" width="26" height="26"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></div>
     <h3 id="offline-title">Background process isn't running</h3>
     <p id="offline-text">Vito's background process is unreachable. Dictation and settings don't work without it.</p>
     <div class="rowflex" style="justify-content:center; gap:10px; margin-top:18px; flex-wrap:wrap;">
@@ -3915,6 +3919,9 @@ const TR = { nl: {
   "Vito is all ears, but nothing has been recorded yet.":"Vito is een en al oor, maar er is nog niets opgenomen.",
   "A recording keeps going for as long as you need — a lecture, a meeting or a long dictation. Vito writes along as you speak, and you can mark moments and add headers.":"Een opname loopt zo lang als je nodig hebt — een college, een vergadering of een lang dictaat. Vito schrijft mee terwijl je praat, en je kunt momenten markeren en kopjes toevoegen.",
   "Start your first recording":"Start je eerste opname",
+  "Switching to {build}, the current one keeps running until it is in…":"Overstappen op {build}, de huidige draait door tot die binnen is…",
+  "Switching failed:":"Overstappen mislukt:",
+  "Switching to {build}…":"Overstappen op {build}…",
   "or turn an audio file into a recording":"of maak een opname van een audiobestand",
   "Paused":"Gepauzeerd",
   "From a file":"Uit bestand",
@@ -5109,6 +5116,8 @@ const TR = { nl: {
   "Show the words in the pill while you speak":"Woorden in de pil tonen terwijl je praat",
   "Your speech service sends no text while you speak":"Je spraakdienst stuurt geen tekst terwijl je praat",
   "Not with this service":"Niet bij deze dienst",
+  "Only with AI cleanup":"Alleen met AI-opschoning",
+  "Only with AI cleanup: the pieces' seams are smoothed by it":"Alleen met AI-opschoning: die strijkt de naden tussen de stukken glad",
   "Live text":"Live tekst",
   "Pin the window: it stays open and you can drag it anywhere":"Venster vastpinnen: het blijft open en je kunt het overal neerzetten",
   "Unpin: back to the pill at the bottom of the screen":"Losmaken: terug naar de pil onderin het scherm",
@@ -5331,7 +5340,7 @@ async function setUiLang(choice, persist){
 { const c = localStorage.getItem("vito-lang"); uiLang = (c && UI_LANGS.includes(c)) ? c : detectLang(); if (uiLang !== "nl" && uiLang !== "en") loadTranslations(uiLang).then(() => applyI18n()); }
 
 /* ---- brand waveform mark (5 bars) ---- */
-const MARK = '<svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>';
+const MARK = '<svg viewBox="0 0 100 100" fill="currentColor"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>';
 // Own sparkle icon for the AI-cleanup marker — an inline SVG renders identically
 // everywhere, unlike the ✨ emoji (which falls back to tofu on some Linux fonts).
 const SPARK_SVG = '<svg class="ico-spark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.7 5.3L19 9l-5.3 1.7L12 16l-1.7-5.3L5 9l5.3-1.7z"/><path d="M18.5 14l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"/></svg>';
@@ -5343,7 +5352,7 @@ document.querySelectorAll(".tux-slot").forEach(s => s.innerHTML = TUX_SVG);
 // same on every platform and match the app's icon style.
 const ICON_PLAY = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
 const ICON_STOP = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
-const ICON_REC = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="6"/></svg>';
+const ICON_REC = '<span class="lr-dot" aria-hidden="true"></span>';
 const ICON_HOURGLASS = '<svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10M7 21h10M8 3c0 4 8 5 8 9s-8 5-8 9M16 3c0 4-8 5-8 9s8 5 8 9"/></svg>';
 const ICON_MIC = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5v4M9 20.5h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const ICON_SPEAKER = '<svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
@@ -5372,6 +5381,11 @@ function writeGradStyle(){
   const c = hex("--coral"), v = hex("--violet"), vl = hex("--violet-l"), cl = hex("--coral-l"), al = hex("--acc-l"), ad = hex("--acc-d"), ink = hex("--ink-l");
   const g = GRADIENTS.find(x => x.c === gradPref) || GRADIENTS[0];
   let css = c && v ? `:root { --g-from:${c}; --g-to:${v}; }` : "";
+  // A red record dot vanishes on a red-ish fill (Vito's own coral is the
+  // danger red): there it takes the text colour on the fill instead.
+  const danger = hex("--danger"), fillEnd = g.t && c && v ? hexMix(v, c, g.t) : v;
+  if (danger && c && fillEnd && [c, fillEnd].some(f => hueGap(f, danger) < 40 && chroma(f) > .25))
+    css += `\n:root { --rec-dot:var(--on-grad); }`;
   // Black and white keeps its two ends: they are the whole theme.
   if (g.t && c && v && root.dataset.accent !== "hc-bw") {
     const mv = hexMix(v, c, g.t);
@@ -5385,6 +5399,17 @@ function writeGradStyle(){
   }
   el.textContent = css;
 }
+// hueGap is how far apart two colours' hues are, in degrees (0..180); chroma
+// how coloured one is (0 grey .. 1 pure), both from #rrggbb.
+function hueOf(h){
+  const [r, g, b] = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
+  const mx = Math.max(r, g, b), d = mx - Math.min(r, g, b);
+  if (!d) return 0;
+  const hh = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return (hh * 60 + 360) % 360;
+}
+function chroma(h){ const v = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255); return Math.max(...v) - Math.min(...v); }
+function hueGap(a, b){ const d = Math.abs(hueOf(a) - hueOf(b)) % 360; return Math.min(d, 360 - d); }
 function applyGradient(){
   const root = document.documentElement, on = GRADIENTS.some(g => g.c === gradPref) ? gradPref : "";
   if (on) root.dataset.gradient = on; else delete root.dataset.gradient;
@@ -5478,6 +5503,13 @@ function hexMix(a, b, t){
   const x = p(a), y = p(b);
   return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join("");
 }
+// hexContrast is WCAG's contrast ratio of two #rrggbb colours.
+function hexContrast(a, b){
+  const lum = h => { const [r, g, bl] = [1, 3, 5].map(i => { const v = parseInt(h.slice(i, i + 2), 16) / 255;
+    return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }); return .2126 * r + .7152 * g + .0722 * bl; };
+  const x = lum(a), y = lum(b);
+  return (Math.max(x, y) + .05) / (Math.min(x, y) + .05);
+}
 function writeDeskStyle(){
   let el = document.getElementById("desk-accent");
   if (!Object.keys(deskPals).length) { if (el) el.remove(); return; }
@@ -5490,8 +5522,15 @@ function writeDeskStyle(){
     // switches are primary itself.
     // Mixed here rather than with color-mix(): the cursor, the transcript's
     // glow and the title bar read these tokens and take only #rrggbb.
-    const deep = c => hexMix(c.primary, "#000000", .38);
-    const side = (c, dark) => `--coral:${c.primary}; --violet:${deep(c)};
+    // The text on primary, and a switch's knob, are the shell's on_primary
+    // (dark on a light primary, as in its own buttons and switches; made
+    // legible by the daemon, desktopcolors.readable), and the deep end
+    // darkens only as far as that text keeps 4.5:1 on it.
+    const onP = c => c.on_primary || "#ffffff";
+    const deep = c => { let t = .38;
+      while (t > 0 && hexContrast(onP(c), hexMix(c.primary, "#000000", t)) < 4.5 && hexContrast(onP(c), c.primary) >= 4.5) t -= .02;
+      return hexMix(c.primary, "#000000", Math.max(t, 0)); };
+    const side = (c, dark) => `--coral:${c.primary}; --violet:${deep(c)}; --on-grad:${onP(c)}; --toggle-knob:${onP(c)};
       --coral-l:${hexMix(c.primary, "#ffffff", .4)}; --violet-l:${hexMix(c.primary, "#ffffff", .4)};
       --acc-l:${L.primary}; --acc-d:${D.primary}; --ink-l:${L.primary}; --toggle-on:${c.primary};
       --grad:linear-gradient(135deg, ${c.primary}, ${deep(c)});` + (!c.surface ? "" : `
@@ -5932,7 +5971,7 @@ const WHISTLE_LANGS = ["nl","en","de","fr","es","it","pl"];
 const PARAKEET_LANGS = ["nl","en","de","fr","es","it","pt","pl","cs","sk","hu","ro","bg","hr","sl","el","sv","da","fi","et","lv","lt","ru","uk"];
 // The marks on the cards: the providers' own icons (web/logos), Vito's bars for
 // its own engine, and a server icon for an endpoint that could be anything.
-const LOGO_VITO = '<span class="mc-logo vito"><svg viewBox="0 0 100 100" fill="#fff"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>';
+const LOGO_VITO = '<span class="mc-logo vito"><svg viewBox="0 0 100 100" fill="currentColor"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg></span>';
 const LOGO_SERVER = '<span class="mc-logo plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>';
 const LOGO_IMG = (name) => `<span class="mc-logo"><img src="logos/${name}.png" alt=""></span>`;
 const GEAR_SVG = '<svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
@@ -6564,10 +6603,14 @@ function renderLocalStt(){
     case "stopped": line = t("Installed, not running — select the card above to use it.") + ` · ${engine}`; break;
     default: line = s.supported ? t("Not installed.") + ` ${t("Download of about {mb} MB, once.").replace("{mb}", s.model_mb)}` : t("There is no build of this engine for your system.");
   }
+  // Another build on its way while this one keeps running (installLocalStt
+  // on changing the build); a switch that failed says so beside the state.
+  if (s.switching) line = t("Switching to {build}, the current one keeps running until it is in…").replace("{build}", t(VARIANT_LABELS[s.switching] || s.switching)) + ` ${Math.round((s.frac || 0) * 100)}%`;
+  else if (s.error && s.phase !== "error") line += " · ✗ " + t("Switching failed:") + " " + s.error;
   box.textContent = line;
-  bar.hidden = s.phase !== "downloading";
+  bar.hidden = s.phase !== "downloading" && !s.switching;
   bar.querySelector("i").style.width = Math.round((s.frac || 0) * 100) + "%";
-  const busy = s.phase === "downloading";
+  const busy = s.phase === "downloading" || !!s.switching;
   $("localstt-install").hidden = !s.supported || busy;
   $("localstt-install").textContent = s.installed ? t("Reinstall") : t("Install");
   $("localstt-remove").hidden = !s.installed || busy;
@@ -6580,7 +6623,9 @@ async function installLocalStt(){
     if (!r.ok) { toast("✗ " + (r.error || t("Install failed.")), "err"); return; }
     if (cfg && cfg.stt) { cfg.stt.local_variant = variant; }
     autoSaveSettings();
-    toast(t("Installing the local speech engine…"), "info");
+    toast(localStt && localStt.installed && localStt.variant !== variant
+      ? t("Switching to {build}…").replace("{build}", t(VARIANT_LABELS[variant] || variant))
+      : t("Installing the local speech engine…"), "info");
   } catch { toast(t("Install failed."), "err"); }
 }
 function removeLocalStt(){
@@ -7973,11 +8018,30 @@ function isTyping(){
   const tag = el.tagName;
   return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable;
 }
+// vitoCtrlTab steps through the settings tabs, round and round, as in any
+// tabbed dialog — also from inside a field — and says whether it did. A
+// browser keeps Ctrl+Tab for its own tabs; the installed web app passes it on,
+// and Vito's window on Linux takes it before GTK and calls this (gtkwin.c
+// on_event). The focus is let go, since the field it was in is now hidden;
+// the active tab's own underline shows where you are.
+window.vitoCtrlTab = back => {
+  if (!$("tab-settings").classList.contains("active") || document.querySelector(".modal-backdrop")) return false;
+  const tabs = [...document.querySelectorAll("#settabs button")].filter(b => !b.hidden && getComputedStyle(b).display !== "none");
+  if (!tabs.length) return false;
+  const at = Math.max(0, tabs.findIndex(b => b.classList.contains("active")));
+  selectSetSection(tabs[(at + (back ? -1 : 1) + tabs.length) % tabs.length].dataset.sec);
+  document.activeElement?.blur();
+  return true;
+};
 function hasSelection(){ return String(window.getSelection()).length > 0; }
 document.addEventListener("keydown", (e) => {
   const mod = e.ctrlKey || e.metaKey; // Ctrl on Windows/Linux, Cmd on macOS
   if (!mod || e.altKey) return;
   const key = e.key.toLowerCase();
+
+  // Ctrl+Tab / Ctrl+Shift+Tab (and Ctrl+PageDown / PageUp): see vitoCtrlTab.
+  if ((key === "tab" || key === "pagedown" || key === "pageup") && !e.metaKey &&
+      vitoCtrlTab(key === "pageup" || (key === "tab" && e.shiftKey))) { e.preventDefault(); return; }
 
   // Ctrl+C with nothing selected, on the Status page: copy the live transcript,
   // exactly as the copy button does. A selection or an editable field is left to
@@ -8249,7 +8313,7 @@ if (window.__VITO_SHRINK_CURSORS__) (function watchScale(){
 // dictation gets transformed.
 let activeCommand = "", commandReceived = false, commandClipboard = false;
 // The Vito mark (equaliser bars), animated in the command bar for a live-assistant feel.
-const MARK_CMD = '<svg viewBox="0 0 100 100" fill="#fff" aria-hidden="true"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>';
+const MARK_CMD = '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><rect x="4" y="22" width="12" height="20" rx="6"/><rect x="24" y="22" width="12" height="36" rx="6"/><rect x="44" y="22" width="12" height="56" rx="6"/><rect x="64" y="22" width="12" height="36" rx="6"/><rect x="84" y="22" width="12" height="20" rx="6"/></svg>';
 const ICON_CLIP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3.5" width="8" height="4" rx="1.2"/><path d="M9 5.5H6.5A2 2 0 0 0 4.5 7.5v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-12a2 2 0 0 0-2-2H15"/></svg>';
 // The hint at the right of the banner: what to do next, or (for a clipboard
 // command, whose result is easy to miss) where the result landed.
@@ -9568,7 +9632,14 @@ $("localstt-install").onclick = installLocalStt;
 $("whistle-install").onclick = installWhistle;
 $("whistle-remove").onclick = removeWhistle;
 $("localstt-remove").onclick = removeLocalStt;
-$("s-localvariant").addEventListener("change", autoSaveSettings);
+// Another build takes effect at once: with the engine installed, changing it
+// fetches that build (the current one runs on until it is in). Before the
+// install it is only the choice the Install button will use.
+$("s-localvariant").addEventListener("change", () => {
+  const s = localStt, v = $("s-localvariant").value;
+  if (s && s.installed && v && v !== s.variant && !s.switching) installLocalStt();
+  else autoSaveSettings();
+});
 $("info-sttopenaikey").onclick = () => showKeyInfo($("s-sttpreset").value === "openai" ? "openai" : "groq");
 ["s-sttbaseurl","s-sttopenaikey","s-sttopenaimodel"].forEach(id => $(id).addEventListener("input", syncSttEndpointUI));
 ["s-sttkey","s-sonioxkey"].forEach(id => $(id).addEventListener("input", () => {
@@ -12327,14 +12398,20 @@ function cleanupProviderLabel(cl){
   const p = cl.openai_preset || presetFromBase(cl.openai_base_url);
   return p === "openai" ? "OpenAI" : p === "local" ? t("Local model") : "Groq";
 }
-// Live text needs a speech service that sends text while you speak; Vito
-// local and an own endpoint get the recording whole at the end (stt.HasPartials).
+// Live text needs a speech service that sends text while you speak, or an
+// engine on this computer, which Vito sends the recording piece by piece
+// (stt.LiveText); an endpoint elsewhere gets it whole at the end.
 function syncPillLive(){
   const opt = $("pill-live-opt"), note = $("pill-live-note"); if (!opt || !note || !cfg || !cfg.stt) return;
-  const none = ["openai", "local"].includes(cfg.stt.provider);
+  const loopback = u => { try { return /^(localhost|127\.\d+\.\d+\.\d+|\[::1\])$/i.test(new URL(u).hostname); } catch { return false; } };
+  // An engine on this computer is sent the pieces only when the AI cleanup
+  // smooths their seams afterwards (stt.Pieces).
+  const local = cfg.stt.provider === "local" || (cfg.stt.provider === "openai" && loopback(cfg.stt.openai_base_url || ""));
+  const noClean = local && !(cfg.cleanup && cfg.cleanup.enabled);
+  const none = (cfg.stt.provider === "openai" && !local) || noClean;
   $("s-pill-live").disabled = none;
   opt.classList.toggle("disabled", none);
-  note.textContent = none ? t("Your speech service sends no text while you speak") : "";
+  note.textContent = noClean ? t("Only with AI cleanup: the pieces' seams are smoothed by it") : none ? t("Your speech service sends no text while you speak") : "";
   note.hidden = !none;
 }
 
@@ -12936,8 +13013,9 @@ $("h-clear-x").onclick = () => { $("h-search").value=""; $("h-clear-x").style.di
 async function saveConfig(patch, okMsg = "Saved and applied") {
   Object.assign(cfg, patch);
   try {
-    await api("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cfg) });
+    const r = await api("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cfg) });
     toast(t(okMsg), "ok");
+    return r;
   } catch (err) { toast(t("Save failed: ") + err.message, "err"); }
 }
 
@@ -13261,7 +13339,7 @@ document.querySelectorAll("select").forEach(sel =>
 // keeps scrolling past the slider, so scrolling down the settings never moves
 // one by accident. Each step sends "input" (the label follows) and, once the
 // wheel rests, one "change" (what saves, previews the sound, applies the zoom).
-// Fine sliders (1% steps) move 2% a notch, so a few turns cross the range.
+// A notch moves one step, as far as dragging does.
 {
   let elsewhereAt = 0, acc = 0, accFor = null;
   const settle = new Map();
@@ -13272,13 +13350,15 @@ document.querySelectorAll("select").forEach(sel =>
     e.preventDefault();
     const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : -e.deltaX;
     if (accFor !== r) { acc = 0; accFor = r; }
-    // A notch is one step; a touchpad's pixels are added up, ~50 to a step.
-    acc += e.deltaMode === 0 ? d / 50 : Math.sign(d);
+    // A notch is one step — a mouse wheel's notch arrives as 100 or 120
+    // pixels, or as a line; a touchpad's small pixel deltas are added up,
+    // ~100 to a step.
+    acc += e.deltaMode === 0 && Math.abs(d) < 40 ? d / 100 : Math.sign(d);
     const n = acc > 0 ? Math.floor(acc) : Math.ceil(acc);
     if (!n) return;
     acc -= n;
     const min = parseFloat(r.min || 0), max = parseFloat(r.max || 100);
-    const step = parseFloat(r.step) || 1, by = Math.max(step, Math.round((max - min) / 50 / step) * step);
+    const step = parseFloat(r.step) || 1, by = step;
     const was = parseFloat(r.value);
     const v = Math.min(max, Math.max(min, Math.round((was - n * by - min) / step) * step + min));
     if (Math.abs(v - was) < step / 2) return;
@@ -13540,8 +13620,24 @@ function autoSaveDict(){
     // the row is actually complete.
     if (JSON.stringify(d.corrections) === JSON.stringify(cur.corrections || []) &&
         JSON.stringify(d.snippets) === JSON.stringify(cur.snippets || [])) return;
-    saveConfig({ dictionary: d }, "Dictionary saved");
+    saveConfig({ dictionary: d }, "Dictionary saved").then(r => { if (r && r.dictionary) takeDictCreated(r.dictionary); });
   }, 600);
+}
+// The daemon stamps a new entry's creation time on saving (StampCreated) and
+// sends the dictionary back: its times go onto the rows by key, so Added
+// shows at once rather than after the next load.
+function takeDictCreated(dict){
+  cfg.dictionary = Object.assign(cfg.dictionary || {}, dict);
+  const key = s => String(s || "").trim().toLowerCase();
+  for (const [table, list, field] of [["d-corrections", "corrections", "wrong"], ["d-snippets", "snippets", "trigger"]]) {
+    const at = new Map((dict[list] || []).map(e => [key(e[field]), e.created || 0]));
+    $(table).querySelectorAll("tbody tr").forEach(tr => {
+      const k = key(tr.querySelector("input").value);
+      if (!at.has(k)) return; // not complete yet, so not saved
+      if (at.get(k)) tr.dataset.created = at.get(k); else delete tr.dataset.created;
+    });
+  }
+  fillDictWhen();
 }
 function collectDictionary() {
   const corrections = [...$("d-corrections").querySelectorAll("tbody tr")].map(tr => {
@@ -15527,7 +15623,7 @@ const HELP = {
   sttbaseurl:{nl:"De base-URL van het endpoint, bijv. http://127.0.0.1:8080/v1 voor whisper-server op je eigen computer, of https://api.groq.com/openai/v1. Vito stuurt de opname naar <base-URL>/audio/transcriptions.",en:"The base URL of the endpoint, e.g. http://127.0.0.1:8080/v1 for whisper-server on your own machine, or https://api.groq.com/openai/v1. Vito posts the recording to <base URL>/audio/transcriptions."},
   sttopenaikey:{nl:"De API-key voor dit endpoint. Een server op je eigen computer heeft er meestal geen nodig — laat het veld dan leeg.",en:"The API key for this endpoint. A server on your own machine usually needs none — leave it empty in that case."},
   localstt:{nl:"Vito downloadt de engine (parakeet.cpp, ~2 MB) en het model (Parakeet TDT 0.6B v3, ~900 MB) eenmalig naar je cachemap, controleert de controlesommen en draait de engine als achtergrondproces zolang deze kaart gekozen is. Alles blijft op je computer. Whisper via een eigen endpoint blijft de betere keuze voor Nederlands met veel Engels vakjargon.",en:"Vito downloads the engine (parakeet.cpp, ~2 MB) and the model (Parakeet TDT 0.6B v3, ~900 MB) once into your cache folder, verifies the checksums and runs the engine as a background process while this card is selected. Everything stays on your computer. Whisper through your own endpoint remains the better choice for Dutch with a lot of English jargon."},
-  localvariant:{nl:"Welke build van de engine: 'CPU' werkt overal en kost ongeveer een seconde per dictaat; 'GPU (Vulkan)' gebruikt je videokaart of iGPU (Intel Arc, AMD, NVIDIA) en is een paar keer sneller, maar het eerste dictaat na het opstarten duurt langer door het compileren van shaders. Op Apple Silicon gebruikt de standaardbuild al de GPU.",en:"Which build of the engine: 'CPU' works everywhere and takes about a second per dictation; 'GPU (Vulkan)' uses your graphics card or iGPU (Intel Arc, AMD, NVIDIA) and is several times faster, but the first dictation after start-up takes longer while shaders compile. On Apple Silicon the standard build already uses the GPU."},
+  localvariant:{nl:"Welke build van de engine: 'CPU' werkt overal en kost ongeveer een seconde per dictaat; 'GPU (Vulkan)' gebruikt je videokaart: met een losse kaart (AMD, NVIDIA, Intel Arc) een paar keer sneller, met de ingebouwde grafische chip van een gewone processor vaak maar een klein beetje. Het eerste dictaat na het opstarten duurt langer door het compileren van shaders. Een andere keuze haalt die build meteen op; tot hij binnen is, blijft de huidige werken. Op Apple Silicon gebruikt de standaardbuild al de GPU.",en:"Which build of the engine: 'CPU' works everywhere and takes about a second per dictation; 'GPU (Vulkan)' uses your graphics card: several times faster with a dedicated one (AMD, NVIDIA, Intel Arc), often only a little with the graphics built into an ordinary processor. The first dictation after start-up takes longer while shaders compile. Choosing another build fetches it at once; until it is in, the current one keeps working. On Apple Silicon the standard build already uses the GPU."},
   sttopenaimodel:{nl:"Welk model het endpoint moet gebruiken, bijv. whisper-large-v3-turbo. Een lokale server met één geladen model negeert dit veld vaak. Voor Nederlands: kies minimaal 'medium' of 'large-v3-turbo' — kleinere Whisper-modellen zijn voor Nederlands onbruikbaar.",en:"Which model the endpoint should use, e.g. whisper-large-v3-turbo. A local server with one loaded model often ignores this field. For a language other than English pick at least 'medium' or 'large-v3-turbo' — the smaller Whisper models are not usable there."},
   cleanup:{nl:"Laat Claude elke dictatie automatisch opschonen: interpunctie, hoofdletters en 'eh/uhm' eruit.",en:"Let Claude automatically clean up every dictation: punctuation, capitals, and removing 'eh/uhm'."},
   anthropickey:{nl:"Je Anthropic-sleutel voor de Claude-opschoning. Zonder key wordt de ruwe tekst geplakt.",en:"Your Anthropic key for the Claude cleanup. Without a key the raw text is pasted."},

@@ -132,7 +132,7 @@ func (s *source) get() (*Palette, error) {
 		if err != nil {
 			continue
 		}
-		s.cached, s.key = pal, key
+		s.cached, s.key = readable(pal), key
 		return pal, nil
 	}
 	s.cached = nil

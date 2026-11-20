@@ -113,5 +113,5 @@ func windowsPalette(raw []byte, light bool) (*Palette, error) {
 	if light {
 		p.Mode = "light"
 	}
-	return p, nil
+	return readable(p), nil
 }

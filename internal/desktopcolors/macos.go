@@ -100,5 +100,5 @@ func macPalette(accent int, light bool) *Palette {
 	if light {
 		p.Mode = "light"
 	}
-	return p
+	return readable(p)
 }
