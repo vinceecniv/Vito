@@ -12,7 +12,7 @@ require (
 	github.com/jchv/go-webview2 v0.0.0-20260205173254-56598839c808
 	github.com/jezek/xgb v1.3.1
 	golang.org/x/image v0.47.0
-	golang.org/x/sys v0.49.0
+	golang.org/x/sys v0.50.0
 	golang.org/x/text v0.43.0
 	modernc.org/sqlite v1.61.1
 )
