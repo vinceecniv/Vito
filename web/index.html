@@ -3648,10 +3648,10 @@
         <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Text snippets</span><span class="dict-count" id="d-snip-count"></span></h2>
         <p class="act-note" style="margin:2px 0 0;">Say the trigger and Vito types the fixed text in its place: a link, your address, a standard reply. The AI cleanup never changes it. Capitals, punctuation and “m'n” or “mijn” don't matter.</p>
         <p class="act-note" style="margin:6px 0 10px;"><b>Tip:</b> pick a trigger of two or more words that you wouldn't say by accident, such as “my sign-off”. A single or everyday word like “address” would also bring in the text in the middle of an ordinary sentence.</p>
-        <table id="d-snippets"><thead><tr><th>When you say</th><th>Vito types</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
-        <div class="rowflex" style="margin-top:12px;">
+        <div class="rowflex" style="margin-bottom:10px;">
           <button class="btn primary small" id="d-snip-add">+ Snippet</button>
         </div>
+        <table id="d-snippets"><thead><tr><th>When you say</th><th>Vito types</th><th class="d-when">Added</th><th class="d-when">Last used</th><th></th></tr></thead><tbody></tbody></table>
         <div class="snip-ideas" id="d-snip-ideas"></div>
       </div>
     </section>
@@ -13559,7 +13559,7 @@ function collectDictionary() {
 function renderSnippets(list) {
   const tbody = $("d-snippets").querySelector("tbody");
   tbody.innerHTML = "";
-  list.forEach((s) => addSnippetRow(s.trigger, s.text, s.created));
+  list.forEach((s) => addSnippetRow(s.trigger, s.text, s.created, true));
   renderSnippetIdeas();
   loadDictUsage();
 }
@@ -13630,7 +13630,7 @@ function renderCorrectionIdeas() {
       [...$("d-corrections").querySelectorAll("tbody tr")].pop().querySelector("input").focus();
     } });
 }
-function addSnippetRow(trigger = "", text = "", created = 0) {
+function addSnippetRow(trigger = "", text = "", created = 0, bulk = false) {
   const tbody = $("d-snippets").querySelector("tbody");
   const tr = document.createElement("tr");
   const td1 = document.createElement("td"), inp = document.createElement("input");
@@ -13653,7 +13653,8 @@ function addSnippetRow(trigger = "", text = "", created = 0) {
   tr.append(td1, td2);
   dictWhenCells(tr, created);
   tr.append(tdDel);
-  tbody.appendChild(tr);
+  // A new one goes on top, by the button, as with the corrections.
+  if (bulk) tbody.appendChild(tr); else tbody.prepend(tr);
   return inp;
 }
 $("d-snip-add").onclick = () => addSnippetRow().focus();
