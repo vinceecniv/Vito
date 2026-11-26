@@ -341,7 +341,7 @@ type UI struct {
 	// "medium", "subtle" or "none" (one flat colour). The page, the pill and
 	// the icons (pill.SetGradient).
 	Gradient string `json:"gradient,omitempty"`
-	// Outfit is what Vito wears, a piece per slot (head, glasses, ears, neck,
+	// Outfit is what Vito wears, a piece per slot (head, glasses, beard, ears, neck,
 	// paint), as the page names them (VM_ACC in web/index.html).
 	Outfit map[string]string `json:"outfit,omitempty"`
 	// ReduceMotion stills the page's animations, for whoever has not found
@@ -371,6 +371,9 @@ type UI struct {
 	// welcome card back, and localStorage (keyed by the unchanged 127.0.0.1 origin)
 	// would otherwise silently remember "seen" across a clean reinstall.
 	WelcomeDone bool `json:"welcome_done"`
+	// IntroDone: the introduction was followed to its end (POST /api/intro-done),
+	// which earns the "intro" achievement. Closing it early sets only WelcomeDone.
+	IntroDone bool `json:"intro_done,omitempty"`
 	// Dashboard is the dashboard's card layout — order, widths, hidden cards and
 	// the cards' own options — as the web UI stores it. Kept here, besides in
 	// the browser, so it survives a change of browser and travels with a
@@ -577,12 +580,18 @@ func Default() *Config {
 	}
 }
 
-// defaultHotkey is the dictation key a new install starts with. A Mac gets
-// Fn: hold it to dictate, as in Wispr Flow, which Mac users switching over
-// already know. Elsewhere Ctrl+Shift+D; Ctrl+Alt+Space is often taken (Claude,
-// among others).
+// defaultHotkey is the dictation key a new install starts with: one key of
+// its own, hold to dictate and double-tap for hands-free (hotkey.Gesture).
+// Windows gets Caps Lock, read by Vito's own keyboard hook and swallowed, so
+// capitals never lock. A Mac gets Fn, as in Wispr Flow, which Mac users
+// switching over already know. Linux keeps Ctrl+Shift+D: Caps Lock there needs
+// the desktop's keyboard layout changed (caps:menu), which Vito only does when
+// asked. Ctrl+Alt+Space is often taken (Claude, among others).
 func defaultHotkey() string {
-	if runtime.GOOS == "darwin" {
+	switch runtime.GOOS {
+	case "windows":
+		return "capslock"
+	case "darwin":
 		return "fn"
 	}
 	return "ctrl+shift+d"
@@ -705,6 +714,16 @@ func Load() (*Config, error) {
 	// the right fill-in — not the current default provider's model.
 	if cfg.STT.Model == "" {
 		cfg.STT.Model = "universal-3-5-pro"
+		if err := cfg.Save(); err != nil {
+			return nil, err
+		}
+	}
+	// The moustache moved from the face paint to the beards.
+	if cfg.UI.Outfit["paint"] == "mustache" {
+		delete(cfg.UI.Outfit, "paint")
+		if cfg.UI.Outfit["beard"] == "" {
+			cfg.UI.Outfit["beard"] = "mustache"
+		}
 		if err := cfg.Save(); err != nil {
 			return nil, err
 		}

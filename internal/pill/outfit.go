@@ -27,9 +27,10 @@ import (
 //go:embed outfit.json
 var outfitJSON []byte
 
-// Which slots draw over which: in the face the paint goes under the glasses,
-// on the body the head goes over the earrings and the necklace.
-var outfitOrder = map[string][]string{"face": {"paint", "glasses"}, "body": {"ears", "neck", "head"}}
+// Which slots draw over which: in the face the paint goes under the beard and
+// that under the glasses, on the body the head goes over the earrings and the
+// necklace.
+var outfitOrder = map[string][]string{"face": {"paint", "beard", "glasses"}, "body": {"ears", "neck", "head"}}
 
 type outfitPiece struct {
 	Slot, Space, SVG string

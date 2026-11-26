@@ -137,6 +137,7 @@ tool supports it, a fixed seed per batch for extra consistency, then export to
 | id | name | emblem |
 |----|------|--------|
 | `first` | Hello, Vito | a friendly waving hand beside a small five-bar audio waveform |
+| `intro` | Guided Tour | a golden compass (Noto Emoji 🧭) |
 | `night` | Night Owl | a crescent moon with a cute perched owl |
 | `early` | Early Bird | a cheerful little bird against a sunrise arc |
 | `comeback` | Welcome Back | a folded award ribbon with a warm welcoming feel |

@@ -790,6 +790,107 @@
   .hk-clear { background:none; border:none; color:var(--text3); cursor:var(--cur-hand); font-size:17px; line-height:1; padding:0 6px; margin-left:auto; }
   .hk-clear:hover { color:var(--danger-ink); }
   /* welcome card (gradient onboarding) */
+  /* ---- the introduction (onboarding) ---- */
+  .ob { position:fixed; left:0; right:0; bottom:0; top:var(--frame-h, 0px); z-index:120; display:flex; flex-direction:column;
+    color:var(--text); animation:obIn .35s ease; }
+  /* The page itself steps aside: only the chosen background stays behind. */
+  html.ob-open body > .app, html.ob-open body > #app { visibility:hidden; }
+  .ob[hidden] { display:none; }
+  @keyframes obIn { from { opacity:0; transform:scale(.985); } to { opacity:1; transform:none; } }
+  .ob-top { display:flex; align-items:center; gap:14px; padding:calc(14px * var(--dn, 1)) 20px 6px; max-width:1040px; width:100%; margin:0 auto; box-sizing:border-box; }
+  .ob-prog { flex:1; min-width:0; }
+  .ob-steps { list-style:none; margin:0; padding:0; display:flex; justify-content:space-between; gap:4px; }
+  .ob-steps li { flex:1; min-width:0; }
+  .ob-steps button { all:unset; box-sizing:border-box; width:100%; display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer;
+    color:var(--text3); font-size:11.5px; text-align:center; padding:2px; border-radius:8px; }
+  .ob-steps button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .ob-steps .ob-dot { width:24px; height:24px; border-radius:50%; display:grid; place-items:center; font-size:11.5px; font-weight:600;
+    background:var(--card); border:1.5px solid var(--card-border); color:var(--text3); transition:background .2s, border-color .2s, color .2s; }
+  .ob-steps .ob-lbl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+  .ob-steps li.seen .ob-dot { border-color:var(--accent); color:var(--accent); }
+  .ob-steps li.skipped .ob-dot { border-style:dashed; }
+  .ob-steps li.cur .ob-dot { background:var(--grad); border-color:transparent; color:var(--on-grad); box-shadow:var(--save-shadow); }
+  .ob-steps li.cur button { color:var(--text); font-weight:600; }
+  .ob-bar { height:4px; border-radius:2px; background:var(--track); margin-top:8px; overflow:hidden; }
+  .ob-bar i { display:block; height:100%; width:0; background:var(--grad); border-radius:2px; transition:width .35s ease; }
+  .ob-x { all:unset; cursor:pointer; width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:22px; line-height:1;
+    color:var(--text2); background:var(--card); border:1px solid var(--card-border); flex:none; }
+  .ob-x:hover { color:var(--text); }
+  .ob-x:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .ob-main { flex:1; min-height:0; overflow:auto; display:grid; grid-template-columns:220px minmax(0, 1fr); gap:28px; align-items:start;
+    max-width:1040px; width:100%; margin:0 auto; padding:calc(18px * var(--dn, 1)) 20px 24px; box-sizing:border-box; }
+  .ob-guide { position:sticky; top:0; display:flex; flex-direction:column; align-items:center; gap:12px; padding-top:8px; }
+  .ob-vito { width:132px; height:132px; }
+  .ob-vito .vmascot { width:100%; height:100%; }
+  .ob-say { position:relative; background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:12px 14px;
+    font-size:13.5px; line-height:1.55; color:var(--text); box-shadow:0 6px 20px rgba(0,0,0,.06); }
+  .ob-say::before { content:""; position:absolute; top:-7px; left:50%; width:12px; height:12px; margin-left:-6px; background:var(--card);
+    border-left:1px solid var(--card-border); border-top:1px solid var(--card-border); transform:rotate(45deg); }
+  .ob-say.pop { animation:obPop .3s ease; }
+  @keyframes obPop { from { transform:translateY(4px); opacity:.4; } to { transform:none; opacity:1; } }
+  .ob-count { font-size:12px; color:var(--text3); letter-spacing:.02em; }
+  .ob-title { font-family:var(--font-head); font-size:26px; line-height:1.2; margin:2px 0 16px; }
+  .ob-body > .card + .card { margin-top:calc(18px * var(--dn, 1)); }
+  .ob-body [data-adv], .ob-body .s-vito-row { display:none !important; }
+  .ob-tip { display:flex; gap:10px; align-items:flex-start; margin-top:14px; font-size:13px; line-height:1.5; color:var(--text2); }
+  .ob-tip svg { width:18px; height:18px; flex:none; color:var(--accent); margin-top:1px; }
+  .ob-body .ob-lead { color:var(--text2); font-size:14px; line-height:1.6; margin:0 0 16px; }
+  .ob-foot { display:flex; align-items:center; gap:10px; padding:12px 20px calc(14px * var(--dn, 1)); max-width:1040px; width:100%; margin:0 auto; box-sizing:border-box;
+    border-top:1px solid var(--card-border); }
+  .ob-foot .grow { flex:1; }
+  #ob-next.ping { animation:obPing 1.2s ease 2; }
+  @keyframes obPing { 50% { box-shadow:0 0 0 8px color-mix(in srgb, var(--violet) 22%, transparent); } }
+  .ob-points { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+  .ob-points li { display:flex; gap:12px; align-items:flex-start; font-size:14px; line-height:1.5; }
+  .ob-points .ob-n { flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; background:var(--accent-soft); color:var(--accent); font-weight:700; font-size:13px; }
+  .ob-uilang { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 16px; padding-bottom:14px; border-bottom:1px solid var(--line); }
+  .ob-uilang .fld { margin:0; }
+  .ob-uilang .flagsel { min-width:220px; }
+  .ob-note { margin:16px 0 0; font-size:12.5px; color:var(--text3); line-height:1.5; }
+  .ob-warn { margin:0 0 16px; padding:12px 14px; border-radius:12px; background:var(--danger-soft); color:var(--danger-ink);
+    border:1px solid color-mix(in srgb, var(--danger) 35%, transparent); font-size:13.5px; line-height:1.5; font-weight:500; }
+  .ob-warn.soft { background:color-mix(in srgb, #F59E0B 14%, transparent); color:var(--amber-ink);
+    border-color:color-mix(in srgb, #F59E0B 45%, transparent); }
+  .ob-warn.shake { animation:obShake .4s ease; }
+  @keyframes obShake { 20%, 60% { transform:translateX(-5px); } 40%, 80% { transform:translateX(5px); } }
+  .ob-tasks { list-style:none; margin:0 0 14px; padding:0; display:grid; gap:8px; }
+  .ob-tasks li { display:flex; gap:10px; align-items:flex-start; font-size:14px; line-height:1.5; padding:10px 12px; border-radius:12px;
+    background:var(--input-bg); border:1px solid var(--input-border); transition:background .25s, border-color .25s; }
+  .ob-tasks .ob-chk { flex:none; width:20px; height:20px; border-radius:50%; border:1.5px solid var(--input-border); display:grid; place-items:center; margin-top:1px;
+    font-size:12px; color:transparent; }
+  .ob-tasks li.now { border-color:var(--accent); }
+  .ob-tasks li.done { background:var(--accent-soft); border-color:transparent; }
+  .ob-tasks li.done .ob-chk { background:var(--grad); border-color:transparent; color:var(--on-grad); }
+  .ob-tasks li.done .ob-tt { color:var(--text2); }
+  .ob-keyname { display:inline-block; padding:1px 8px; border-radius:6px; background:var(--card); border:1px solid var(--card-border); font-weight:600; white-space:nowrap; }
+  .ob-pad { width:100%; min-height:110px; box-sizing:border-box; resize:vertical; font:inherit; font-size:14.5px; line-height:1.55; }
+  .ob-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:12px; }
+  .ob-award { display:flex; gap:18px; align-items:center; margin-bottom:16px; padding:18px 20px; border-radius:16px;
+    background:var(--grad); color:var(--on-grad); box-shadow:var(--save-shadow); animation:obAward .6s cubic-bezier(.2,1.4,.4,1); }
+  .ob-award[hidden] { display:none; }
+  @keyframes obAward { from { transform:scale(.85); opacity:0; } to { transform:none; opacity:1; } }
+  .ob-award-medal { flex:none; width:84px; height:84px; display:grid; place-items:center; font-size:58px; line-height:1;
+    background:rgba(255,255,255,.18); border-radius:50%; }
+  .ob-award-medal img, .ob-award-medal svg { width:72px; height:72px; }
+  .ob-award-text { display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .ob-award-t { font-size:11.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; opacity:.9; }
+  .ob-award-n { font-family:var(--font-head); font-size:22px; line-height:1.2; }
+  .ob-award-d { font-size:14px; opacity:.95; }
+  .ob-award-more { font-size:12.5px; line-height:1.5; opacity:.9; margin-top:6px; }
+  .ob-tour { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:12px; }
+  .ob-tour > div { background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:14px; }
+  .ob-tour b { display:flex; align-items:center; gap:8px; font-size:14px; margin-bottom:5px; }
+  .ob-tour b svg { width:18px; height:18px; color:var(--accent); flex:none; }
+  .ob-tour span { font-size:13px; line-height:1.5; color:var(--text2); }
+  .ob-sum .status-tags, .ob-sum > div { pointer-events:none; }
+  @media (max-width:760px){
+    .ob-main { grid-template-columns:1fr; gap:14px; }
+    .ob-guide { position:static; flex-direction:row; align-items:center; }
+    .ob-vito { width:76px; height:76px; flex:none; }
+    .ob-say::before { top:50%; left:-7px; margin:-6px 0 0; transform:rotate(-45deg); }
+    .ob-steps .ob-lbl { display:none; }
+    .ob-title { font-size:22px; }
+  }
   .welcome-card { position:relative; border-radius:18px; padding:24px 26px; margin-bottom:20px; color:var(--on-grad); overflow:hidden;
     background:var(--grad); box-shadow:0 16px 40px color-mix(in srgb, var(--violet) 30%, transparent); }
   .welcome-card:before { content:""; position:absolute; right:-50px; top:-60px; width:230px; height:230px; border-radius:50%; background:rgba(255,255,255,.12); }
@@ -800,12 +901,6 @@
   .welcome-title { font-family:var(--font-head); font-size:24px; font-weight:700; line-height:1.1; }
   .welcome-sub { font-size:13px; opacity:.92; margin-top:2px; }
   .welcome-intro { position:relative; margin:16px 0 10px; font-size:14px; opacity:.96; line-height:1.55; max-width:900px; }
-  .welcome-steps { position:relative; margin:0; padding-left:20px; display:flex; flex-direction:column; gap:7px; font-size:13.5px; line-height:1.5; max-width:900px; }
-  .welcome-steps li::marker { font-weight:700; }
-  /* The two ways speech becomes text, as a sub-list of step 1: a choice, not a step. */
-  .welcome-opts { margin:6px 0 0; padding-left:18px; display:flex; flex-direction:column; gap:4px; font-size:13px; opacity:.95; }
-  .welcome-opts li::marker { font-weight:400; }
-  .welcome-tip { position:relative; margin:14px 0 0; font-size:12.5px; line-height:1.5; opacity:.95; background:rgba(255,255,255,.15); padding:10px 13px; border-radius:10px; max-width:900px; }
   .welcome-actions { position:relative; display:flex; gap:10px; margin-top:20px; flex-wrap:wrap; }
   .welcome-actions .btn { background:#fff; color:var(--violet); border:none; font-weight:600; }
   .welcome-actions .btn:hover { filter:brightness(.97); }
@@ -2477,7 +2572,7 @@
   .help-web.ping { animation:helpPing .9s ease-out 2; }
   .wl-bar { display:block; height:6px; border-radius:99px; background:rgba(255,255,255,.25); margin:6px 0 2px; overflow:hidden; max-width:320px; }
   .wl-bar i { display:block; height:100%; background:#fff; border-radius:99px; transition:width .2s; }
-  .welcome-steps .linkbtn, .wl-grid .linkbtn { color:#fff; text-decoration:underline; font:inherit; padding:0; }
+  .wl-grid .linkbtn { color:#fff; text-decoration:underline; font:inherit; padding:0; }
   .wl-grid { position:relative; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; max-width:760px; margin:4px 0 12px; }
   @media (max-width:640px){ .wl-grid { grid-template-columns:1fr; } }
   .wl-wide { grid-column:1 / -1; }
@@ -2806,6 +2901,29 @@
 </head>
 <body>
 <div id="backdrop" class="bd" aria-hidden="true"></div>
+<!-- The introduction (onboarding): Vito walks a new user through the settings
+     that matter. Its steps borrow the real settings cards (obBorrow), so
+     every control keeps its own handlers and saves as it does there. -->
+<div id="onboarding" class="ob" hidden role="dialog" aria-modal="true" aria-labelledby="ob-title">
+  <div class="ob-top">
+    <div class="ob-prog"><ol class="ob-steps" id="ob-steps"></ol><div class="ob-bar"><i id="ob-bar"></i></div></div>
+    <button type="button" class="ob-x" id="ob-close" aria-label="Close the introduction" data-tip-text="Close the introduction">×</button>
+  </div>
+  <div class="ob-main" id="ob-main">
+    <aside class="ob-guide"><div class="ob-vito" id="ob-vito"></div><div class="ob-say" id="ob-say" aria-live="polite"></div></aside>
+    <div class="ob-panel">
+      <div class="ob-count" id="ob-count"></div>
+      <h1 class="ob-title" id="ob-title"></h1>
+      <div class="ob-body" id="ob-body"></div>
+    </div>
+  </div>
+  <div class="ob-foot">
+    <button type="button" class="btn ghost" id="ob-back">Back</button>
+    <span class="grow"></span>
+    <button type="button" class="btn ghost" id="ob-skip">Skip this step</button>
+    <button type="button" class="btn primary" id="ob-next">Next</button>
+  </div>
+</div>
 <div class="winbar" id="winbar">
   <div class="win-zone" id="win-zone"></div>
   <div class="win-title" id="win-title" aria-hidden="true"></div>
@@ -2916,28 +3034,12 @@
         </div>
         <p class="wl-note"><b>Good to know:</b> in the browser Vito uses Whistle, a small speech model — fine for trying, not the best recognition. Better: Soniox with your own key, or the Vito app.</p>
         </div>
-        <div class="helper-only">
-        <p class="welcome-intro">Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:</p>
-        <ol class="welcome-steps">
-          <li>Choose how your speech becomes text, under Settings → Speech recognition:
-            <ul class="welcome-opts">
-              <li>Cloud (Soniox or AssemblyAI): the most accurate, live transcript while you speak, all languages — needs a free API key; from $0.10 per hour of audio after the starting credit.</li>
-              <li>Vito local: free, works offline, nothing leaves your computer — one download of about 1 GB; 25 European languages, the text arrives after you stop. Best for privacy.</li>
-            </ul>
-          </li>
-          <li>Want automatic AI cleanup? Add a key for Anthropic (Claude) or any OpenAI-compatible endpoint — Groq has a free tier, or point Vito at a local model.</li>
-          <li>Choose your dictation key under Settings → Activation: Caps Lock (Fn on a Mac) works on its own, a key combination is possible too. <span id="wl-app-key"></span></li>
-          <li>Hold the key while you speak and let go: Vito pastes the text where your cursor is.</li>
-        </ol>
-        </div>
-        <p class="welcome-tip helper-only"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/></svg> Tip: each API-key field on the settings page has a 'Get a key' button with step-by-step instructions to request that key.</p>
         <div class="welcome-actions">
           <span class="web-only-inline">
             <a class="btn js-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
             <button type="button" class="btn js-to-app" hidden>Move to the app</button>
             <button type="button" class="btn ghost js-find-app">I have the app</button>
           </span>
-          <button class="btn helper-only" id="welcome-settings">Go to settings</button>
           <button class="btn ghost" id="welcome-ok">Got it</button>
         </div>
       </div>
@@ -3246,7 +3348,8 @@
           </div>
           </div>
           <div class="prov-settings" id="prov-openai" hidden>
-          <p class="act-note" style="margin:0 0 8px;">No live transcript with this provider: the whole recording is sent when you stop, and the text follows once the endpoint is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.</p>
+          <p class="act-note helper-only" style="margin:0 0 8px;">A server on this computer gets the recording a piece at each pause, so the text grows while you speak (with the AI cleanup on). A hosted endpoint gets the whole recording when you stop, and the text follows once it is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.</p>
+          <p class="act-note web-only" style="margin:0 0 8px;">No live transcript with this provider: the whole recording is sent when you stop, and the text follows once the endpoint is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.</p>
           <label class="fld" data-help="sttpreset">Preset</label>
           <input type="hidden" id="s-sttpreset">
           <div class="flagsel" id="sttpreset-sel">
@@ -3597,6 +3700,11 @@
             </a>
           </div>
           <div class="about-rows" id="about-rows"></div>
+        </div>
+        <div class="card" data-sec="about" id="about-intro" hidden>
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg><span>Introduction</span></h2>
+          <p class="act-note" style="margin:0;">Vito walks you through the settings that matter, your dictation key and a few practice dictations. Skip whatever you like.</p>
+          <button type="button" class="btn primary small" id="ob-restart" style="margin-top:12px;">Start the introduction again</button>
         </div>
         <div class="card" data-sec="about" hidden>
           <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="15.5" cy="8.5" r="5.5"/><circle cx="17" cy="7" r="1.2" fill="currentColor" stroke="none"/><path d="M11.6 12.4 3 21M5.5 18.5l2.3 2.3M8.3 15.7l1.8 1.8"/></svg><span>Bring Your Own Key (BYOK) <span class="about-gloss">(Bring your own key)</span></span></h2>
@@ -4056,16 +4164,16 @@ const TR = { nl: {
   "Whisper, Parakeet or any server that speaks the OpenAI audio API.":"Whisper, Parakeet of elke server die de OpenAI-audio-API spreekt.",
   "Best for: privacy — runs on your own machine":"Ideaal voor: privacy — draait op je eigen computer",
   "Any language the model supports":"Elke taal die het model ondersteunt",
+  "Live transcript while you speak, a piece at each pause (with the AI cleanup on)":"Live transcript terwijl je praat, een stuk bij elke pauze (met de AI-opschoning aan)",
   "No live transcript: the text arrives after you stop":"Geen live transcript: de tekst komt nadat je stopt",
   "No live transcript with this provider: the whole recording is sent when you stop, and the text follows once the endpoint is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.":"Geen live transcript bij deze provider: de hele opname wordt verstuurd zodra je stopt, en de tekst volgt als het endpoint klaar is. Kies hierboven een vaste taal in plaats van 'Automatisch' — Whisper raadt de taal uit de eerste seconden en zit er bij een kort dictaat naast.",
+  "On this computer: live transcript at each pause (with the AI cleanup on); a hosted endpoint sends the text after you stop":"Op deze computer: live transcript bij elke pauze (met de AI-opschoning aan); een gehost endpoint stuurt de tekst nadat je stopt",
+  "A server on this computer gets the recording a piece at each pause, so the text grows while you speak (with the AI cleanup on). A hosted endpoint gets the whole recording when you stop, and the text follows once it is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.":"Een server op deze computer krijgt de opname per stuk bij elke pauze, zodat de tekst meegroeit terwijl je praat (met de AI-opschoning aan). Een gehost endpoint krijgt de hele opname als je stopt, en de tekst volgt zodra het klaar is. Zet de taal hierboven vast in plaats van 'Automatisch' — Whisper raadt hem uit de eerste seconden en zit er bij een kort dictaat naast.",
   "Endpoint missing":"Endpoint ontbreekt",
   "Requires: a Soniox account (free to create) and its API key, entered below. Audio is sent to Soniox.":"Vereist: een Soniox-account (gratis aan te maken) en de API-key daarvan, hieronder in te vullen. Audio gaat naar Soniox.",
   "Requires: an AssemblyAI account (free starting credit) and its API key, entered below. Audio is sent to AssemblyAI.":"Vereist: een AssemblyAI-account (gratis starttegoed) en de API-key daarvan, hieronder in te vullen. Audio gaat naar AssemblyAI.",
   "Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.":"Vereist: een server die je zelf opzet (whisper-server, Speaches, LocalAI) of een account bij Groq of OpenAI — de base-URL hieronder, plus een API-key voor de gehoste varianten.",
   "Requires: nothing but the one-time download below — no account, no key, no server of your own.":"Vereist: alleen de eenmalige download hieronder — geen account, geen key, geen eigen server.",
-  "Choose how your speech becomes text, under Settings → Speech recognition:":"Kies hoe je spraak tekst wordt, onder Instellingen → Spraakherkenning:",
-  "Cloud (Soniox or AssemblyAI): the most accurate, live transcript while you speak, all languages — needs a free API key; from $0.10 per hour of audio after the starting credit.":"Cloud (Soniox of AssemblyAI): het nauwkeurigst, live transcript terwijl je spreekt, alle talen — vereist een gratis API-key; vanaf $0,10 per uur audio na het starttegoed.",
-  "Vito local: free, works offline, nothing leaves your computer — one download of about 1 GB; 25 European languages, the text arrives after you stop. Best for privacy.":"Vito lokaal: gratis, werkt offline, niets verlaat je computer — eenmalig een download van ongeveer 1 GB; 25 Europese talen, de tekst komt nadat je stopt. Ideaal voor privacy.",
   "Built-in local recognition (Parakeet)":"Ingebouwde lokale herkenning (Parakeet)",
   "Runs on this computer, free, and your audio never leaves it. Vito installs and runs the engine itself: parakeet.cpp with NVIDIA's Parakeet TDT 0.6B v3.":"Draait op deze computer, gratis, en je audio verlaat hem nooit. Vito installeert en draait de engine zelf: parakeet.cpp met NVIDIA's Parakeet TDT 0.6B v3.",
   "Languages (25):":"Talen (25):",
@@ -4521,17 +4629,8 @@ const TR = { nl: {
   "per month at your current usage (last 30 days)":"per maand bij je huidige gebruik (laatste 30 dagen)",
   "Welcome to Vito":"Welkom bij Vito",
   "Voice In, Text Out — your voice becomes clean text":"Voice In, Text Out — je stem wordt schone tekst",
-  "Go to settings":"Naar instellingen",
   "Got it":"Begrepen",
-  "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:":"Vito luistert naar je stem en plakt de uitgewerkte tekst direct waar je cursor staat. Zo zet je het in gebruik:",
-  "Want automatic AI cleanup? Add a key for Anthropic (Claude) or any OpenAI-compatible endpoint — Groq has a free tier, or point Vito at a local model.":"Automatische AI-opschoning erbij? Voeg een key toe voor Anthropic (Claude) of een OpenAI-compatibel endpoint — Groq heeft een gratis tier, of wijs Vito naar een lokaal model.",
   "Want automatic AI cleanup? Then also create an Anthropic API key and enter it.":"Wil je automatische AI-opschoning? Maak dan ook een Anthropic API-key aan en vul die in.",
-  "Choose your dictation key under Settings → Activation: Caps Lock (Fn on a Mac) works on its own, a key combination is possible too.":"Kies je dicteertoets onder Instellingen → Activering: Caps Lock (Fn op een Mac) werkt in zijn eentje, een toetscombinatie kan ook.",
-  "Hold the key while you speak and let go: Vito pastes the text where your cursor is.":"Houd de toets ingedrukt terwijl je spreekt en laat los: Vito plakt de tekst waar je cursor staat.",
-  "Now: {key}.":"Nu: {key}.",
-  "No key is set up yet.":"Er is nog geen toets ingesteld.",
-  "Close the welcome card?":"Welkomstkaart sluiten?",
-  "Are you sure you want to close this card? It won't be shown again.":"Weet je zeker dat je deze kaart wil sluiten? Hij wordt daarna niet meer getoond.",
   "Create an API key at {p}":"API-key aanmaken bij {p}",
   "What your key looks like:":"Zo ziet je key eruit:",
   "Get a key":"Key aanvragen",
@@ -4562,7 +4661,6 @@ const TR = { nl: {
   "{p} key works":"{p}-key werkt",
   "{p} key is invalid":"{p}-key is ongeldig",
   "Key test failed (network or service).":"Key testen mislukt (netwerk of dienst).",
-  "Tip: each API-key field on the settings page has a 'Get a key' button with step-by-step instructions to request that key.":"Tip: bij elk API-key-veld op de instellingenpagina staat een 'Key aanvragen'-knop met stap-voor-stap uitleg om die key aan te vragen.",
   "Open the sign-up page and create a free account (email or Google).":"Open de aanmeldpagina en maak een gratis account (e-mail of Google).",
   "Click the confirmation link in the verification email.":"Klik op de bevestigingslink in de verificatie-e-mail.",
   "Log in and click \"API Keys\" in the left-hand menu.":"Log in en klik links in het menu op \"API Keys\".",
@@ -5236,6 +5334,125 @@ const TR = { nl: {
   "Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.":"Je desktop biedt deze route aan, maar alleen een echte poging laat zien of die werkt, dus Vito probeert hem pas bij je eerste dictaat. Werkt hij niet, dan gaan je dictaten naar het klembord.",
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
+  // Vito's wardrobe, more pieces
+  "Beard":"Baard",
+  "Stubble":"Stoppels",
+  "Goatee":"Sik",
+  "Full beard":"Volle baard",
+  "Viking beard":"Vikingbaard",
+  "Santa beard":"Kerstmannenbaard",
+  "Wizard beard":"Tovenaarsbaard",
+  "Handlebar moustache":"Krulsnor",
+  "Cowboy hat":"Cowboyhoed",
+  "Chef's hat":"Koksmuts",
+  "Viking helmet":"Vikinghelm",
+  "Propeller cap":"Propellerpet",
+  "Halo":"Stralenkrans",
+  "Flower crown":"Bloemenkrans",
+  "3D glasses":"3D-bril",
+  "Star glasses":"Sterrenbril",
+  "Hero mask":"Heldenmasker",
+  "Bow tie":"Vlinderdas",
+  "Scarf":"Sjaal",
+  "Cherry earrings":"Kersenoorbellen",
+  "Clown nose":"Clownsneus",
+  "Whiskers":"Snorharen",
+  // The introduction (onboarding)
+  "The speech model is still downloading. Wait until it is done — then you can go on.":"Het spraakmodel wordt nog gedownload. Wacht tot dat klaar is — daarna kun je verder.",
+  "Almost there — I'm still downloading. A moment, please!":"Bijna — ik ben nog aan het downloaden. Momentje!",
+  "Downloaded — we can go on!":"Gedownload — we kunnen verder!",
+  "You haven't tried a dictation yet. One sentence is enough to feel how it works — and to know everything is set up right. Rather go on without practising? Click Next again.":"Je hebt nog geen dictaat geprobeerd. Eén zin is genoeg om te voelen hoe het werkt — en om te weten dat alles goed staat. Toch liever door zonder te oefenen? Klik dan nog een keer op Volgende.",
+  "Shall we give it one go first? Just one sentence!":"Zullen we het eerst één keer proberen? Eén zinnetje maar!",
+  "And look: you've earned your first achievement! A few more things worth knowing — you'll find them all in Vito's menu.":"En kijk: je hebt je eerste prestatie verdiend! Nog een paar dingen die handig zijn om te weten — je vindt ze allemaal in het menu van Vito.",
+  "The first of {n}, plus {s} secret ones. Collect them on the Achievements page; each brings something new for me to wear.":"De eerste van {n}, plus {s} geheime. Verzamel ze op de pagina Prestaties; ze leveren steeds iets nieuws op om mij aan te trekken.",
+  "Dictated five times":"Vijf keer gedicteerd",
+  "Long recordings":"Lange opnames",
+  "Record a lecture, a meeting or a long session — for hours if need be — and read it back as text. An audio file works too.":"Neem een college, een vergadering of een lange sessie op — desnoods urenlang — en lees het terug als tekst. Een audiobestand kan ook.",
+  "Followed Vito's introduction":"Vito's introductie gevolgd",
+  "Hold {key} and speak, as if you were talking to someone.":"Houd {key} ingedrukt en praat, alsof je het tegen iemand zegt.",
+  "Your dictation key is {key}: hold it while you speak, double-tap it to keep talking hands-free. Capitals? Shift still works. Rather a key combination? You can set one here.":"Je dicteertoets is {key}: houd hem ingedrukt terwijl je praat, of tik twee keer om handsfree door te praten. Hoofdletters? Shift werkt gewoon. Liever een toetscombinatie? Die stel je hier in.",
+  "Vito works a lot better with the AI cleanup: no ums, proper punctuation, your dictionary applied. Setting it up takes five minutes at most. Rather go on without it? Click Next again.":"Vito werkt een stuk beter met de AI-opschoning: geen ehs, goede leestekens, je woordenboek toegepast. Instellen kost hooguit vijf minuten. Toch liever zonder verder? Klik dan nog een keer op Volgende.",
+  "Are you sure? With the cleanup on, your texts come out much tidier.":"Weet je het zeker? Met de opschoning aan worden je teksten een stuk netter.",
+  "While you dictate, the pill at the bottom of your screen shows that Vito is listening. Point at it: ✓ stops, × cancels.":"Terwijl je dicteert, laat het pilletje onder in je scherm zien dat Vito luistert. Wijs het aan: ✓ stopt, × annuleert.",
+  "Point at the resting pill for a moment and the island opens: your last dictation, today's numbers and quick settings. The pin keeps it open.":"Wijs het rustende pilletje even aan en het eiland gaat open: je laatste dictaat, de cijfers van vandaag en snelle instellingen. Met het speldje blijft het open.",
+  "Cancelled by mistake? For five minutes the pill offers to paste that dictation after all.":"Per ongeluk geannuleerd? Vijf minuten lang biedt het pilletje aan dat dictaat alsnog te plakken.",
+  "Show it on my screen":"Laat het op mijn scherm zien",
+  "This little pill is how you see me while you work in other programs. Shall I show you?":"Via dit kleine pilletje zie je mij terwijl je in andere programma's werkt. Zal ik het je laten zien?",
+  "Look at the bottom of your screen: that is me, listening, then writing it down. Pick a style below and I show it at once.":"Kijk onder in je scherm: dat ben ik, eerst luisterend, dan aan het opschrijven. Kies hieronder een stijl en ik laat hem meteen zien.",
+  "Speech recognition not set up":"Spraakherkenning niet ingesteld",
+  "This step is needed: without a speech model Vito cannot turn your voice into text. Choose one below and set it up — enter its key, or download it.":"Deze stap is nodig: zonder spraakmodel kan Vito je stem niet in tekst omzetten. Kies er hieronder een en stel het in — vul de sleutel in, of download het.",
+  "Wait a moment — I can't do anything without this one. Choose a speech model first!":"Wacht even — zonder deze stap kan ik niets. Kies eerst een spraakmodel!",
+  "Vito can be dressed up too: hats, glasses and more. You unlock them with achievements, and choose them on the Achievements page.":"Vito kun je ook aankleden: hoedjes, brillen en meer. Die speel je vrij met prestaties, en je kiest ze op de pagina Prestaties.",
+  "Close the introduction":"Introductie sluiten",
+  "Back":"Terug",
+  "Skip this step":"Stap overslaan",
+  "Next":"Volgende",
+  "Introduction":"Introductie",
+  "Vito walks you through the settings that matter, your dictation key and a few practice dictations. Skip whatever you like.":"Vito loopt met je door de instellingen die ertoe doen, je dicteertoets en een paar oefendicteringen. Sla over wat je wilt.",
+  "Start the introduction again":"Introductie opnieuw starten",
+  "Welcome":"Welkom",
+  "Look":"Uiterlijk",
+  "Speech":"Spraak",
+  "Cleanup":"Opschoning",
+  "Dictation key":"Dicteertoets",
+  "Practice":"Oefenen",
+  "More":"Meer",
+  "your dictation key":"je dicteertoets",
+  "Hold {key}, say a sentence and let go.":"Houd {key} ingedrukt, zeg een zin en laat los.",
+  "Double-tap {key} and speak hands-free. Press it once more to stop.":"Tik twee keer op {key} en spreek handsfree. Druk nog een keer om te stoppen.",
+  "Start a dictation and cancel it: point at the pill at the bottom of your screen and click ×.":"Start een dictaat en annuleer het: wijs het pilletje onder in je scherm aan en klik op ×.",
+  "Press {key}, say a sentence and press it again.":"Druk op {key}, zeg een zin en druk nog een keer.",
+  "Dictate a second sentence — try a name or a number.":"Dicteer een tweede zin — probeer eens een naam of een getal.",
+  "You've got it! That is really all there is to it. On to the last few things.":"Je hebt het door! Meer is het eigenlijk niet. Nog even een paar laatste dingen.",
+  "Cancelled — nothing was typed.":"Geannuleerd — er is niets getypt.",
+  "Nicely done!":"Goed gedaan!",
+  "Next:":"Nu:",
+  "I'm listening… say something!":"Ik luister… zeg maar iets!",
+  "Writing it down…":"Ik schrijf het op…",
+  "I didn't hear anything. Is the right microphone chosen?":"Ik hoorde niets. Is de goede microfoon gekozen?",
+  "Hmm, that didn't work. Check the speech recognition step, then try again.":"Hmm, dat lukte niet. Kijk even bij de stap Spraak en probeer het dan opnieuw.",
+  "Vito turns your voice into clean text, right where your cursor is — in your e-mail, a chat, a document, anywhere you can type.":"Vito maakt van je stem nette tekst, precies waar je cursor staat — in je mail, een chat, een document, overal waar je kunt typen.",
+  "Press your dictation key and speak, as if you were talking to someone.":"Druk op je dicteertoets en praat, alsof je het tegen iemand zegt.",
+  "Vito writes it down and tidies it up: punctuation, capitals, no ums.":"Vito schrijft het op en maakt het netjes: leestekens, hoofdletters, geen ehs.",
+  "The text appears where your cursor is.":"De tekst verschijnt waar je cursor staat.",
+  "This introduction sets up the essentials and lets you practise. Skip any step you like, and close it whenever you want.":"Deze introductie stelt het belangrijkste in en laat je oefenen. Sla elke stap over die je wilt, en sluit hem wanneer je wilt.",
+  "Click in the box below so your cursor is there, then try these:":"Klik in het vak hieronder zodat je cursor daar staat, en probeer dan dit:",
+  "Your text appears here…":"Je tekst verschijnt hier…",
+  "No key? Start with this button":"Geen toets? Start met deze knop",
+  "The pill":"Het pilletje",
+  "While you dictate, a small pill shows at the bottom of your screen. Point at it for the island: your last dictation, today's numbers and quick settings.":"Terwijl je dicteert, staat er een klein pilletje onder in je scherm. Wijs het aan voor het eiland: je laatste dictaat, de cijfers van vandaag en snelle instellingen.",
+  "Every dictation is kept, with its recording. Copy it, paste it again or give it a star.":"Elk dictaat wordt bewaard, met de opname. Kopieer het, plak het opnieuw of geef het een ster.",
+  "Teach Vito names and jargon. It also suggests corrections from your own dictations.":"Leer Vito namen en vakjargon. Het stelt ook zelf correcties voor uit je eigen dictaten.",
+  "Rule sets and programs":"Regelsets en programma's",
+  "Choose how the cleanup writes — verbatim, tidy, e-mail — and set it per program.":"Kies hoe de opschoning schrijft — letterlijk, netjes, e-mail — en stel het per programma in.",
+  "Say “Vito, …” with an instruction, such as “Vito, translate to English”, and it is applied to your next dictation.":"Zeg “Vito, …” met een opdracht, zoals “Vito, vertaal naar het Engels”, en die wordt op je volgende dictaat toegepast.",
+  "Collect medals as you dictate, and dress Vito up with what you unlock.":"Verzamel medailles terwijl je dicteert, en kleed Vito aan met wat je vrijspeelt.",
+  "Always at hand":"Altijd bij de hand",
+  "Vito runs in the background, with an icon by the clock. Open this window from there whenever you like.":"Vito draait op de achtergrond, met een icoon bij de klok. Open dit venster daar wanneer je wilt.",
+  "This is how Vito is set up now:":"Zo staat Vito nu ingesteld:",
+  "You can change all of this under Settings, and open this introduction again under Settings → About.":"Je kunt dit allemaal wijzigen onder Instellingen, en deze introductie opnieuw openen onder Instellingen → Over.",
+  "Hi, I'm Vito!":"Hoi, ik ben Vito!",
+  "I'll show you around. It takes about five minutes.":"Ik laat je even rondkijken. Dat duurt zo'n vijf minuten.",
+  "Make Vito your own":"Maak Vito van jou",
+  "The fun part first: colours, a font and a background. You see it change straight away. Can't choose? Let me surprise you!":"Eerst het leuke deel: kleuren, een lettertype en een achtergrond. Je ziet het meteen veranderen. Kun je niet kiezen? Laat mij je verrassen!",
+  "How your speech becomes text":"Hoe je spraak tekst wordt",
+  "Pick the language you usually speak, and a speech engine. The cloud engines are the most accurate and show your words while you speak; Vito local is free and keeps everything on your computer.":"Kies de taal die je meestal spreekt, en een spraakherkenning. De cloudmodellen zijn het nauwkeurigst en tonen je woorden terwijl je spreekt; Vito lokaal is gratis en houdt alles op je computer.",
+  "Optional, but nice: an AI model takes out the ums, fixes the punctuation and uses your dictionary. Groq has a free tier. You can also leave this for later.":"Niet verplicht, wel fijn: een AI-model haalt de ehs eruit, verbetert de leestekens en gebruikt je woordenboek. Groq heeft een gratis variant. Je kunt dit ook voor later laten.",
+  "Your microphone":"Je microfoon",
+  "Choose the microphone you want to use. With “Test microphone” you hear how you sound.":"Kies de microfoon die je wilt gebruiken. Met “Microfoon testen” hoor je hoe je klinkt.",
+  "This is the key that wakes me up. Caps Lock on its own is handy: hold it while you speak. A key combination works too.":"Dit is de toets die mij wakker maakt. Caps Lock alleen is handig: houd hem ingedrukt terwijl je praat. Een toetscombinatie kan ook.",
+  "Let's practise":"Even oefenen",
+  "What else Vito can do":"Wat Vito nog meer kan",
+  "Ready to go!":"Klaar voor de start!",
+  "That's it! Press your key wherever you type, and I'll do the rest.":"Dat was het! Druk op je toets waar je ook typt, en ik doe de rest.",
+  "Step {n} of {total}":"Stap {n} van {total}",
+  "Click in the box, then use {key}. I'll listen along!":"Klik in het vak en gebruik dan {key}. Ik luister mee!",
+  "No dictation key is set up yet. Go back a step, or use the button under the box.":"Er is nog geen dicteertoets ingesteld. Ga een stap terug, of gebruik de knop onder het vak.",
+  "Let's go":"Aan de slag",
+  "Start using Vito":"Vito gaan gebruiken",
+  "All set — have fun dictating! The introduction is under Settings → About.":"Helemaal klaar — veel dicteerplezier! De introductie staat onder Instellingen → Over.",
+  "Introduction closed. You can open it again under Settings → About.":"Introductie gesloten. Je kunt hem opnieuw openen onder Instellingen → Over.",
+  "Show me":"Laat zien",
 }, en: {} };
 // Languages the UI is translated into (nl + en are inline; the rest load from
 // /i18n/<code>.json on demand). Kept in sync with the Soniox language list.
@@ -5333,6 +5550,7 @@ async function setUiLang(choice, persist){
   if (typeof fillDictWhen === "function") try { fillDictWhen(); } catch {}
   if (typeof syncAssistMode === "function") try { syncAssistMode(); } catch {}
   if ($("tab-status").classList.contains("active")) loadStats();
+  try { if (ob.open) obGo(ob.i); } catch {} // the introduction, in the new language
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { lang: choice });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
@@ -5762,11 +5980,11 @@ function surpriseLook(){
   const backdrop = pick(BACKDROPS.slice(1).map(b => b.c));
   setAccent(accent, false); setGradient(gradient, false); setFont(font, false); setRadius(radius, false); setBackdrop(backdrop, false);
   const outfit = {};
-  ["head", "glasses", "paint"].forEach(slot => {
+  ["head", "glasses", "paint", "beard"].forEach(slot => {
     const open = Object.keys(VM_ACC).filter(k => VM_ACC[k].slot === slot && vmUnlocked(k) === true);
-    if (open.length && Math.random() < .75) outfit[slot] = pick(open);
+    if (open.length && Math.random() < (slot === "beard" ? .35 : .75)) outfit[slot] = pick(open);
   });
-  ["head", "glasses", "paint"].forEach(slot => setOutfit(slot, outfit[slot] || "", false));
+  ["head", "glasses", "paint", "beard"].forEach(slot => setOutfit(slot, outfit[slot] || "", false));
   if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { accent, gradient, font, radius, backdrop, outfit: Object.assign({}, vmOutfit) });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
   vmFlash("happy", 1800);
@@ -5986,7 +6204,7 @@ const SPEECH_MODELS_ALL = [
   { id:"vito-local", provider:"local", name:"Vito local (Parakeet)", price:0, langs:PARAKEET_LANGS, logo:LOGO_VITO,
     sub:"On this computer, free, nothing leaves it. One download of about 1 GB.",
     needs:"Requires: nothing but the one-time download below — no account, no key, no server of your own.",
-    bullets:["Best for: privacy and zero cost", "25 European languages, detected automatically", "About a second per dictation on a CPU", "Needs ≈ 1 GB RAM while active, 0.9 GB disk", "No live transcript: the text arrives after you stop"] },
+    bullets:["Best for: privacy and zero cost", "25 European languages, detected automatically", "Live transcript while you speak, a piece at each pause (with the AI cleanup on)", "About a second per dictation on a CPU", "Needs ≈ 1 GB RAM while active, 0.9 GB disk"] },
   { id:"stt-rt-v6", provider:"soniox", name:"Soniox stt-rt-v6", price:0.12, langs:SONIOX_LANGS, logo:LOGO_IMG("soniox"),
     sub:"The cheapest option, with the most languages.",
     needs:"Requires: a Soniox account (free to create) and its API key, entered below. Audio is sent to Soniox.",
@@ -6005,7 +6223,7 @@ const SPEECH_MODELS_ALL = [
   { id:"openai-compatible", provider:"openai", name:"Local or OpenAI-compatible endpoint", price:0, langs:SONIOX_LANGS, logo:LOGO_SERVER,
     sub:"Whisper, Parakeet or any server that speaks the OpenAI audio API.",
     needs:"Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.",
-    bullets:["Best for: privacy — runs on your own machine", "Any language the model supports", "No live transcript: the text arrives after you stop"] },
+    bullets:["Best for: privacy — runs on your own machine", "Any language the model supports", STANDALONE ? "No live transcript: the text arrives after you stop" : "On this computer: live transcript at each pause (with the AI cleanup on); a hosted endpoint sends the text after you stop"] },
 ];
 // In the browser: Whistle, and the services a page can reach itself — Soniox
 // (its WebSocket takes the key in a message) and OpenAI-compatible endpoints.
@@ -6250,8 +6468,22 @@ function askDownload(p){
       : "Vito local runs on this computer, so it is installed once first (about 1 GB). Until then Vito can't dictate with it.")}</p>`,
     () => { whistle ? installWhistle() : installLocalStt(); }, whistle ? "Download now" : "Install now", false, null, false, "Later");
 }
+// The model the cards show as chosen. The configuration always names one
+// (Soniox by default), but a fresh install has no key for it: then no card is
+// marked, so a new user really chooses. A card clicked on this page counts at
+// once, ready or not, so its key field or download shows under it.
+let sttPicked = false;
+function sttCur(){
+  const id = $("s-model").value || "", m = SPEECH_MODELS.find(x => x.id === id);
+  return m && (sttPicked || providerReady(m.provider) || fetching(m.provider)) ? id : "";
+}
+// Whether Vito can dictate with the configured speech recognition (or soon
+// can: its download is running).
+function sttUsable(){
+  return !!(cfg && cfg.stt && (providerReady(cfg.stt.provider) || fetching(cfg.stt.provider)));
+}
 function buildModelCards(){
-  const box = $("model-cards"), cur = $("s-model").value || "";
+  const box = $("model-cards"), cur = sttCur();
   updateLangNote();
   // Re-rendering moves the settings blocks, and a moved input loses focus — so
   // while the selection and language stand, only the volatile bits are updated.
@@ -6313,6 +6545,7 @@ function buildModelCards(){
   });
   box.querySelectorAll(".modelcard:not(.am-card)").forEach(c => c.onclick = () => {
     if (c.disabled) return;
+    sttPicked = true;
     $("s-model").value = c.dataset.id;
     // The provider follows the card, so choosing a model is the whole decision —
     // and its settings unfold, since that is where you go next.
@@ -6336,7 +6569,7 @@ function buildModelCards(){
 // refreshModelCards updates selection, availability, price and tag on the cards
 // that are already on the page. False when the page has no cards yet.
 function refreshModelCards(){
-  const box = $("model-cards"), cur = $("s-model").value || "";
+  const box = $("model-cards"), cur = sttCur();
   let ok = true;
   SPEECH_MODELS.forEach(m => {
     const c = box.querySelector(`.modelcard[data-id="${m.id}"]`);
@@ -7757,6 +7990,7 @@ function connectWS() {
 // handleEvent takes one event from the daemon (or, in the browser, from
 // standalone/backend.js).
 function handleEvent(e) {
+    obEvent(e);
     if (e.type === "long" || e.type === "long_doc" || e.type === "long_files") { longEvent(e); return; }
     if (e.type === "long_level") { lrLevel(e); return; }
     // The island asks to see a page (the running long recording).
@@ -8618,6 +8852,25 @@ const vmHeart = (cx, cy, s) => `M${cx} ${cy + s * .9} C${cx - s * 1.25} ${cy + s
 const vmCurve = (n, f) => Array.from({ length: n }, (_, i) => f(i / (n - 1)));
 const vmQpt = (t, a, c, b) => [(1 - t) ** 2 * a[0] + 2 * (1 - t) * t * c[0] + t * t * b[0], (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * c[1] + t * t * b[1]];
 const VM_NECK = [[29, 88], [60, 116], [91, 88]];
+const vmStarD = (cx, cy, r) => {
+  const p = [];
+  for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, d = i % 2 ? r * .5 : r; p.push((cx + Math.cos(a) * d).toFixed(1) + " " + (cy + Math.sin(a) * d).toFixed(1)); }
+  return "M" + p.join(" L") + "Z";
+};
+const vmStubble = () => {
+  const out = [];
+  [[24, 128, 96], [30, 120, 90], [36, 112, 84]].forEach(([x0, ym, x1], row) => {
+    for (let i = 0; i <= 16; i++) {
+      const t = i / 16, x = (1 - t) * (1 - t) * x0 + 2 * t * (1 - t) * 60 + t * t * x1, y = (1 - t) * (1 - t) * 80 + 2 * t * (1 - t) * ym + t * t * 80;
+      if (Math.abs(x - 60) < 15 && y < 106) continue;
+      out.push(`<circle cx="${(x + (row % 2 ? 1.6 : 0)).toFixed(1)}" cy="${y.toFixed(1)}" r=".95"/>`);
+    }
+  });
+  return `<g fill="${VM_INK}" opacity=".38">${out.join("")}</g>`;
+};
+// The band of a beard round the mouth, from cheek to cheek under the chin.
+const VM_BEARD = "M22 78 C22 104 40 122 60 124 C80 122 98 104 98 78 C92 92 80 100 70 102 C66 106 54 106 50 102 C40 100 28 92 22 78Z";
+const vmMirror = (svg) => `<g transform="translate(120 0) scale(-1 1)">${svg}</g>`;
 
 // space "face": the face group's coordinates (eyes at 45/75, 68); "body": the body's.
 const VM_ACC = {
@@ -8645,7 +8898,7 @@ const VM_ACC = {
     vmSpark(91, 56, 5, VM_GOLD) + vmSpark(97, 66, 3, "var(--violet-l)") + vmSpark(86, 81, 3.4, "#fff") + vmStar(28, 82, 4.2, VM_GOLD) + vmSpark(23, 57, 3, "#fff") },
   heartcheeks: { name: "Heart cheeks", slot: "paint", space: "face", svg:
     `<g fill="#FF6F91" stroke="#fff" stroke-width="1"><path d="${vmHeart(33, 84, 5.5)}"/><path d="${vmHeart(87, 84, 5.5)}"/></g>` },
-  mustache: { name: "Moustache", slot: "paint", space: "face", svg:
+  mustache: { name: "Moustache", slot: "beard", space: "face", svg:
     `<path d="M60 83.5 C56 79 48 78.5 44.5 83 C42.5 86 44.6 88.6 47 87 C50 84.6 55.5 85.4 60 86.6 C64.5 85.4 70 84.6 73 87 C75.4 88.6 77.5 86 75.5 83 C72 78.5 64 79 60 83.5Z" fill="#4A3426" stroke="#2E2018" stroke-width="1"/>` },
   bow: { name: "Bow", slot: "head", space: "body", svg:
     `<g transform="rotate(22 88 40)" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" style="fill:var(--coral)">
@@ -8686,20 +8939,127 @@ const VM_ACC = {
     `<path d="M14 66 V71M106 66 V71" stroke="${VM_VM_GOLDD}" stroke-width="1.2"/>${vmStar(14, 75, 5, VM_GOLD)}${vmStar(106, 75, 5, VM_GOLD)}` },
   pearls: { name: "Pearl necklace", slot: "neck", space: "body", svg:
     vmCurve(15, t => vmQpt(t, ...VM_NECK)).map(([x, y], i) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${i === 7 ? 3.4 : 2.6}" fill="#FFFDF7" stroke="#D9D2C4" stroke-width=".8"/><circle cx="${(x - .8).toFixed(1)}" cy="${(y - .9).toFixed(1)}" r=".8" fill="#fff"/>`).join("") },
+  stubble: { name: "Stubble", slot: "beard", space: "face", svg: vmStubble() },
+  goatee: { name: "Goatee", slot: "beard", space: "face", svg:
+    `<path d="M50 86.5 Q55 81.5 60 85 Q65 81.5 70 86.5 Q65 85.2 60 87.4 Q55 85.2 50 86.5Z" fill="#4A3426"/>
+     <path d="M52 105 Q60 101 68 105 Q67 117 60 123 Q53 117 52 105Z" fill="#5A3E2B" stroke="#3B281C" stroke-width="1"/>
+     <path d="M57 109 L58 117M63 109 L62 117" stroke="#7A5A42" stroke-width="1" stroke-linecap="round"/>` },
+  beard: { name: "Full beard", slot: "beard", space: "face", svg:
+    `<path d="${VM_BEARD}" fill="#6B4A33" stroke="#4A3426" stroke-width="1.2" stroke-linejoin="round"/>
+     <path d="M60 83.5 C56 79 48 78.5 44.5 83 C42.5 86 44.6 88.6 47 87 C50 84.6 55.5 85.4 60 86.6 C64.5 85.4 70 84.6 73 87 C75.4 88.6 77.5 86 75.5 83 C72 78.5 64 79 60 83.5Z" fill="#5A3E2B"/>
+     <path d="M30 92 L33 99M40 103 L42 110M50 109 L51 117M60 111 V119M70 109 L69 117M80 103 L78 110M90 92 L87 99" stroke="#8A6446" stroke-width="1.3" stroke-linecap="round"/>` },
+  viking: { name: "Viking beard", slot: "beard", space: "face", svg:
+    `<path d="${VM_BEARD}" fill="#C8642B" stroke="#8E3F14" stroke-width="1.2" stroke-linejoin="round"/>
+     <path d="M60 83.5 C56 79 48 78.5 44.5 83 C42.5 86 44.6 88.6 47 87 C50 84.6 55.5 85.4 60 86.6 C64.5 85.4 70 84.6 73 87 C75.4 88.6 77.5 86 75.5 83 C72 78.5 64 79 60 83.5Z" fill="#B0531F"/>
+     <g fill="#C8642B" stroke="#8E3F14" stroke-width="1"><ellipse cx="52" cy="122" rx="4" ry="4.6"/><ellipse cx="52" cy="129" rx="3.6" ry="4.2"/><ellipse cx="68" cy="122" rx="4" ry="4.6"/><ellipse cx="68" cy="129" rx="3.6" ry="4.2"/></g>
+     <g fill="${VM_GOLD}" stroke="${VM_VM_GOLDD}" stroke-width="1"><rect x="48" y="132" width="8" height="4" rx="1.5"/><rect x="64" y="132" width="8" height="4" rx="1.5"/></g>
+     <path d="M32 94 L35 100M44 105 L45 111M76 105 L75 111M88 94 L85 100" stroke="#E08A4F" stroke-width="1.3" stroke-linecap="round"/>` },
+  santa: { name: "Santa beard", slot: "beard", space: "face", svg:
+    `<g fill="#fff" stroke="#E3E0EA" stroke-width="1">${[[24, 82, 7], [27, 95, 8], [35, 106, 8.5], [46, 115, 9], [60, 119, 9.5], [74, 115, 9], [85, 106, 8.5], [93, 95, 8], [96, 82, 7], [52, 108, 6.5], [68, 108, 6.5]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join("")}</g>
+     <path d="M60 85 C55 79 45 78 40 83 C37 87 40 91 44 89 C49 85 55 86 60 88 C65 86 71 85 76 89 C80 91 83 87 80 83 C75 78 65 79 60 85Z" fill="#fff" stroke="#E3E0EA" stroke-width="1"/>` },
+  wizbeard: { name: "Wizard beard", slot: "beard", space: "face", svg:
+    `<path d="M22 78 C24 98 38 110 47 116 Q56 128 60 142 Q64 128 73 116 C82 110 96 98 98 78 C92 92 80 100 70 102 C66 106 54 106 50 102 C40 100 28 92 22 78Z" fill="#D9DCE3" stroke="#A9AEB9" stroke-width="1.2" stroke-linejoin="round"/>
+     <path d="M60 85 C55 79 45 78 40 83 C37 87 40 91 44 89 C49 85 55 86 60 88 C65 86 71 85 76 89 C80 91 83 87 80 83 C75 78 65 79 60 85Z" fill="#E9EBF0" stroke="#A9AEB9" stroke-width="1"/>
+     <path d="M36 100 Q44 110 50 116M84 100 Q76 110 70 116M55 108 Q58 122 60 134M65 108 Q62 122 60 134" fill="none" stroke="#B8BDC7" stroke-width="1.3" stroke-linecap="round"/>` },
+  handlebar: { name: "Handlebar moustache", slot: "beard", space: "face", svg:
+    `<path d="M60 85 C54 79 45 80 40 85 C36 89 31 87 31 82 C31 78 35 77 36.5 80 C34.5 81 35 84 38 82.5 C43 78.5 53 78.5 60 83Z" fill="#3E2A1E"/>
+     <path d="M60 85 C66 79 75 80 80 85 C84 89 89 87 89 82 C89 78 85 77 83.5 80 C85.5 81 85 84 82 82.5 C77 78.5 67 78.5 60 83Z" fill="#3E2A1E"/>` },
+  cowboy: { name: "Cowboy hat", slot: "head", space: "body", svg:
+    `<g transform="translate(0 4)"><path d="M38 40 C35 20 44 11 52 16 Q60 21 68 16 C76 11 85 20 82 40 Z" fill="#A86B3C" stroke="#6E4422" stroke-width="1.6" stroke-linejoin="round"/>
+     <path d="M39 34 Q60 39 81 34 L81.6 39 Q60 44 38.4 39Z" style="fill:var(--coral)"/>
+     <path d="M14 38 Q20 46 60 46 Q100 46 106 38 Q104 50 60 51 Q16 50 14 38Z" fill="#A86B3C" stroke="#6E4422" stroke-width="1.6" stroke-linejoin="round"/>
+     <path d="M52 22 Q60 26 68 22" fill="none" stroke="#6E4422" stroke-width="1.4" stroke-linecap="round"/></g>` },
+  chef: { name: "Chef's hat", slot: "head", space: "body", svg:
+    `<g fill="#fff" stroke="#DCD7E6" stroke-width="1.4"><circle cx="45" cy="22" r="11"/><circle cx="75" cy="22" r="11"/><circle cx="60" cy="15" r="13"/>
+     <rect x="40" y="22" width="40" height="22" rx="3"/></g>
+     <path d="M41 24 H79" stroke="#fff" stroke-width="3"/>
+     <path d="M48 30 V41M56 30 V42M64 30 V42M72 30 V41" stroke="#E6E1EF" stroke-width="1.2" stroke-linecap="round"/>` },
+  vikinghelm: { name: "Viking helmet", slot: "head", space: "body", svg:
+    `<path d="M35 33 C24 30 15 19 18 4 C23 15 31 21 42 24 Z" fill="#F3E7C9" stroke="#C9B88E" stroke-width="1.4" stroke-linejoin="round"/>
+     <path d="M85 33 C96 30 105 19 102 4 C97 15 89 21 78 24 Z" fill="#F3E7C9" stroke="#C9B88E" stroke-width="1.4" stroke-linejoin="round"/>
+     <path d="M32 46 C32 16 88 16 88 46 Z" fill="#C9CED8" stroke="#7E8796" stroke-width="1.6" stroke-linejoin="round"/>
+     <path d="M60 18 V46" stroke="#A9B0BD" stroke-width="5"/>
+     <rect x="29" y="40" width="62" height="9" rx="4" fill="#A9B0BD" stroke="#7E8796" stroke-width="1.4"/>
+     <g fill="#7E8796">${[36, 48, 60, 72, 84].map(x => `<circle cx="${x}" cy="44.5" r="1.4"/>`).join("")}</g>
+     <path d="M42 26 Q48 21 55 21" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".7"/>` },
+  propeller: { name: "Propeller cap", slot: "head", space: "body", svg:
+    `<g transform="translate(0 6)"><path d="M34 40 C34 16 86 16 86 40 Z" style="fill:var(--violet)" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+     <path d="M52 19 Q49 30 49 40M68 19 Q71 30 71 40" fill="none" style="stroke:var(--coral)" stroke-width="5"/>
+     <rect x="58.5" y="5" width="3" height="14" rx="1.5" fill="${VM_INK}"/>
+     <ellipse cx="49" cy="5" rx="11" ry="3.2" fill="${VM_GOLD}" stroke="${VM_VM_GOLDD}" stroke-width="1"/><ellipse cx="71" cy="5" rx="11" ry="3.2" style="fill:var(--coral)" stroke="#fff" stroke-width="1"/>
+     <circle cx="60" cy="5" r="3" fill="${VM_INK}"/><circle cx="60" cy="5" r="1.2" fill="#fff"/></g>` },
+  halo: { name: "Halo", slot: "head", space: "body", svg:
+    `<g transform="rotate(-6 60 14)"><ellipse cx="60" cy="14" rx="25" ry="6.5" fill="none" stroke="${VM_VM_GOLDD}" stroke-width="5"/>
+     <ellipse cx="60" cy="14" rx="25" ry="6.5" fill="none" stroke="${VM_GOLD}" stroke-width="3"/>
+     <ellipse cx="60" cy="14" rx="25" ry="6.5" fill="none" stroke="#FFF3C4" stroke-width="1" stroke-dasharray="10 14"/></g>
+     ${vmSpark(90, 8, 3, VM_GOLD)}${vmSpark(30, 18, 2.4, "#fff")}` },
+  flowers: { name: "Flower crown", slot: "head", space: "body", svg:
+    `<path d="M24 44 Q60 26 96 44" fill="none" stroke="#5FA84E" stroke-width="2.4" stroke-linecap="round"/>
+     <g fill="#6BBF59">${[[32, 40, -30], [52, 33, 20], [69, 33, -20], [88, 40, 30]].map(([x, y, a]) => `<ellipse cx="${x}" cy="${y}" rx="4.6" ry="2.2" transform="rotate(${a} ${x} ${y})"/>`).join("")}</g>
+     ${[[26, 43, "var(--coral)"], [42, 36, "#fff"], [60, 33, "var(--violet-l)"], [78, 36, "#fff"], [94, 43, "var(--coral)"]].map(([x, y, c]) =>
+       `<g style="fill:${c}" stroke="#fff" stroke-width=".7">${[0, 1, 2, 3, 4].map(i => { const a = i * 2 * Math.PI / 5 - Math.PI / 2; return `<circle cx="${(x + Math.cos(a) * 3.6).toFixed(1)}" cy="${(y + Math.sin(a) * 3.6).toFixed(1)}" r="3"/>`; }).join("")}</g><circle cx="${x}" cy="${y}" r="2.2" fill="${VM_GOLD}"/>`).join("")}` },
+  glasses3d: { name: "3D glasses", slot: "glasses", space: "face", svg:
+    `<rect x="30" y="58" width="29" height="21" rx="3" fill="#FF4D5E" opacity=".8"/><rect x="61" y="58" width="29" height="21" rx="3" fill="#2EC4F0" opacity=".8"/>
+     <g fill="none" stroke="#F7F5FB" stroke-width="3.4" stroke-linejoin="round"><rect x="30" y="58" width="29" height="21" rx="3"/><rect x="61" y="58" width="29" height="21" rx="3"/></g>
+     <path d="M59 63 H61M30 61 L22 58M90 61 L98 58" stroke="#F7F5FB" stroke-width="3.4" stroke-linecap="round"/>
+     <g fill="none" stroke="${VM_INK}" stroke-width="1"><rect x="28.3" y="56.3" width="32.4" height="24.4" rx="4"/><rect x="59.3" y="56.3" width="32.4" height="24.4" rx="4"/></g>` },
+  starglasses: { name: "Star glasses", slot: "glasses", space: "face", svg:
+    `<g style="fill:color-mix(in srgb, var(--violet-l) 65%, transparent)" stroke="${VM_INK}" stroke-width="2.4" stroke-linejoin="round"><path d="${vmStarD(45, 68, 16)}"/><path d="${vmStarD(75, 68, 16)}"/></g>
+     <path d="M58 65 Q60 62 62 65M31 63 L23 60M89 63 L97 60" fill="none" stroke="${VM_INK}" stroke-width="2.4" stroke-linecap="round"/>
+     ${vmSpark(98, 52, 3, VM_GOLD)}${vmSpark(24, 80, 2.4, "#fff")}` },
+  mask: { name: "Hero mask", slot: "glasses", space: "face", svg:
+    `<path d="M33 66 Q27 58 18 61 Q23 66 21 73 Q28 74 33 70Z M87 66 Q93 58 102 61 Q97 66 99 73 Q92 74 87 70Z" fill="${VM_INK}"/>
+     <g fill="none" stroke="${VM_INK}" stroke-width="7"><circle cx="45" cy="68" r="13.5"/><circle cx="75" cy="68" r="13.5"/></g>
+     <path d="M57 62 Q60 59 63 62" fill="none" stroke="${VM_INK}" stroke-width="7"/>
+     <path d="M35 57 Q40 54 46 54M65 54 Q70 54 75 56" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity=".45"/>` },
+  bowtie: { name: "Bow tie", slot: "neck", space: "body", svg:
+    `<g style="fill:var(--coral)" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"><path d="M60 108 L47 100 Q44 108 47 116 Z"/><path d="M60 108 L73 100 Q76 108 73 116 Z"/></g>
+     <g fill="#fff" opacity=".8"><circle cx="51" cy="105" r="1.2"/><circle cx="50" cy="111" r="1.2"/><circle cx="69" cy="105" r="1.2"/><circle cx="70" cy="111" r="1.2"/></g>
+     <rect x="56.5" y="104.5" width="7" height="7" rx="2" style="fill:var(--violet)" stroke="#fff" stroke-width="1.2"/>` },
+  scarf: { name: "Scarf", slot: "neck", space: "body", svg:
+    // Its own wool colours: in the theme's colours it vanished into the body.
+    `<path d="M73 104 L77 125 L86 122 L80 101 Z" fill="#2E7D5B" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+     <path d="M74.6 111.5 L81.9 109.2M76 118 L83.6 115.5" stroke="#F4EBD9" stroke-width="2"/>
+     <path d="M77 125 L78 128M80 124.2 L81 127M83 123.2 L84 126" stroke="#F4EBD9" stroke-width="1.2" stroke-linecap="round"/>
+     <path d="M26 86 Q60 124 94 86" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+     <path d="M26 86 Q60 124 94 86" fill="none" stroke="#2E7D5B" stroke-width="9" stroke-linecap="round"/>
+     <path d="M26 86 Q60 124 94 86" fill="none" stroke="#F4EBD9" stroke-width="9" stroke-dasharray="4 6"/>` },
+  cherries: { name: "Cherry earrings", slot: "ears", space: "body", svg:
+    [0, 1].map(m => { const g = `<path d="M13 66 Q15 72 11 78M13 66 Q18 72 18 79" fill="none" stroke="#4E8A3A" stroke-width="1.2"/>
+       <ellipse cx="16" cy="66" rx="3.6" ry="1.8" fill="#6BBF59" transform="rotate(-20 16 66)"/>
+       <circle cx="11" cy="80" r="3.6" fill="#E0304E" stroke="#9E1B33" stroke-width=".9"/><circle cx="18" cy="81" r="3.6" fill="#E0304E" stroke="#9E1B33" stroke-width=".9"/>
+       <circle cx="10" cy="78.8" r="1" fill="#fff" opacity=".8"/><circle cx="17" cy="79.8" r="1" fill="#fff" opacity=".8"/>`; return m ? vmMirror(g) : g; }).join("") },
+  clown: { name: "Clown nose", slot: "paint", space: "face", svg:
+    `<circle cx="60" cy="79" r="6.2" fill="#E8344E" stroke="#B81F37" stroke-width="1"/><circle cx="57.8" cy="76.8" r="1.9" fill="#fff" opacity=".85"/>` },
+  whiskers: { name: "Whiskers", slot: "paint", space: "face", svg:
+    `<path d="M56 79 H64 L60 83.5Z" fill="#FF8FA8" stroke="#E0567A" stroke-width=".8" stroke-linejoin="round"/>
+     <g fill="none" stroke="${VM_INK}" stroke-width="1.5" stroke-linecap="round" opacity=".7"><path d="M31 82 L15 78M31 86 L14 87M31 90 L16 95"/><path d="M89 82 L105 78M89 86 L106 87M89 90 L104 95"/></g>` },
   chain: { name: "Gold chain", slot: "neck", space: "body", svg:
     `<path d="M${VM_NECK[0]} Q${VM_NECK[1]} ${VM_NECK[2]}" fill="none" stroke="${VM_VM_GOLDD}" stroke-width="2" stroke-dasharray="2.6 1.4"/>
      <circle cx="60" cy="106" r="7.5" fill="${VM_GOLD}" stroke="${VM_VM_GOLDD}" stroke-width="1.6"/>
      <g fill="${VM_VM_GOLDD}">${[[56, 2.4], [58, 4], [60, 5.6], [62, 4], [64, 2.4]].map(([x, h]) => `<rect x="${x - .6}" y="${106 - h / 2}" width="1.2" height="${h}" rx=".6"/>`).join("")}</g>` },
 };
 
-const VM_SLOTS = [["head", "On the head"], ["glasses", "Glasses"], ["ears", "Earrings"], ["neck", "Necklace"], ["paint", "Face paint"]];
+const VM_SLOTS = [["head", "On the head"], ["glasses", "Glasses"], ["beard", "Beard"], ["ears", "Earrings"], ["neck", "Necklace"], ["paint", "Face paint"]];
 // What unlocks each piece: free, a number of achievements, or one achievement.
 const VM_UNLOCK = { glasses: 0, bow: 0, freckles: 0, heartcheeks: 0, shades: 3, hoops: 5, party: 8, pearls: 12, mustache: 16,
   hearts: 20, glitter: 25, stars: 35, crown: 45, nightcap: "night", headphones: "spoken-1h", monocle: "words-250k",
-  chain: "words-1m", wizard: "vito-wizard" };
+  chain: "words-1m", wizard: "vito-wizard",
+  // Only the stubble is free; many come early, so a new piece turns up often.
+  stubble: 0, bowtie: 1, goatee: 2, whiskers: 4, flowers: 6, beard: 7, cowboy: 10, cherries: 14, handlebar: 18,
+  glasses3d: 22, scarf: 28, starglasses: 30, propeller: 40, halo: 50,
+  vikinghelm: "streak-7", viking: "streak-30", chef: "words-10k", santa: "saved-10h", mask: "comeback",
+  clown: "apps-5", wizbeard: "vito-wizard" };
 let vmAch = null; // the achievements as last loaded, for what is unlocked
 const ICON_LOCK_SM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
-let vmOutfit = (() => { try { return JSON.parse(localStorage.getItem("vito-outfit") || "{}") || {}; } catch { return {}; } })();
+// The moustache moved from the face paint to the beards (the daemon's config
+// does the same in Go; this covers the browser version and the saved copy).
+function vmMigrate(o) {
+  o = Object.assign({}, o || {});
+  if (o.paint === "mustache") { delete o.paint; if (!o.beard) o.beard = "mustache"; }
+  return o;
+}
+let vmOutfit = (() => { try { return vmMigrate(JSON.parse(localStorage.getItem("vito-outfit") || "{}")); } catch { return {}; } })();
 // Whether piece k may be worn: unknown while the achievements have not loaded,
 // and then the saved outfit is trusted.
 function vmUnlocked(k){
@@ -8712,8 +9072,10 @@ function vmUnlocked(k){
 // The outfit's drawings for one space ("face" or "body"). Without an outfit
 // given, the one chosen, less what is (no longer) unlocked; a given one is a
 // preview and drawn whole.
+const VM_ORDER = ["paint", "beard", "glasses", "ears", "neck", "head"];
 function vmWorn(space, outfit){
-  return Object.values(outfit || vmOutfit).filter(k => VM_ACC[k] && VM_ACC[k].space === space && (outfit || vmUnlocked(k) !== false))
+  const o = outfit || vmOutfit;
+  return Object.keys(o).sort((a, b) => VM_ORDER.indexOf(a) - VM_ORDER.indexOf(b)).map(s => o[s]).filter(k => VM_ACC[k] && VM_ACC[k].space === space && (outfit || vmUnlocked(k) !== false))
     .map(k => `<g class="vm-acc vm-acc-${k}">${VM_ACC[k].svg}</g>`).join("");
 }
 // Every copy of Vito redrawn in the outfit now chosen.
@@ -9650,29 +10012,14 @@ $("s-openaikey").addEventListener("paste", () => setTimeout(testOpenAI, 250));
 
 /* ---- welcome / onboarding card ---- */
 function dismissWelcome(){
-  // In the browser the card moves into the ? button instead: it is the
-  // manual of this version and should stay at hand.
-  if (STANDALONE) {
+  // The card is the browser version's manual; closed, it moves into the ?
+  // button and stays at hand. The app has the introduction instead.
     $("welcome-card").hidden = true;
     if (cfg && cfg.ui && !cfg.ui.welcome_done) { cfg.ui.welcome_done = true; api("/api/welcome-done", { method:"POST" }).catch(()=>{}); }
     const h = $("help-web"); h.classList.remove("on", "ping"); void h.offsetWidth; h.classList.add("ping");
-    return;
-  }
-  modal(t("Close the welcome card?"),
-    `<p style="color:var(--text2);font-size:13px;line-height:1.55;margin:0;">${t("Are you sure you want to close this card? It won't be shown again.")}</p>`,
-    () => {
-      const c = $("welcome-card"); if (c) c.hidden = true;
-      if (cfg && cfg.ui) cfg.ui.welcome_done = true;
-      // Persist to Vito's own config, not localStorage: a settings-wiping
-      // reinstall must bring the card back. (localStorage is keyed by the
-      // unchanged 127.0.0.1 origin, so it would remember "seen" forever.)
-      api("/api/welcome-done", { method:"POST" }).catch(()=>{});
-    },
-    "Close", false);
 }
 $("welcome-ok").onclick = dismissWelcome;
 $("welcome-dismiss").onclick = dismissWelcome;
-$("welcome-settings").onclick = () => selectTab("settings");
 $("help-web").onclick = () => {
   const c = $("welcome-card"), show = c.hidden;
   c.hidden = !show; $("help-web").classList.toggle("on", show);
@@ -9785,9 +10132,402 @@ document.querySelectorAll(".js-get-app").forEach(a => a.onclick = (e) => { if (S
 // dismissed yet — a state that lives in the config, so wiping settings resets it.
 function maybeShowWelcome(){
   const c = $("welcome-card");
-  if (c && cfg && cfg.ui) c.hidden = !!cfg.ui.welcome_done;
+  if (c && cfg && cfg.ui) c.hidden = !!cfg.ui.welcome_done || !STANDALONE;
+  if (!STANDALONE && cfg && cfg.ui && !cfg.ui.welcome_done) openOnboarding();
   maybeShowLinuxHint();
 }
+/* ---- the introduction (onboarding) ----
+   A full-screen walk through the settings that matter, with Vito as guide.
+   Shown once on the app's first start (instead of the welcome card, which the
+   browser version keeps) and from Settings → About. Every step can be skipped
+   and the whole thing closed at any time; closing says where to find it again.
+   The setting steps borrow the real cards from the settings page and put them
+   back when the step changes, so nothing is written twice. */
+const OB_STEPS = [
+  { id: "hello", label: "Welcome" },
+  { id: "look", label: "Look", cards: () => [$("set-look")] },
+  { id: "speech", label: "Speech", need: () => !!(cfg && cfg.stt && providerReady(cfg.stt.provider)), cards: () => [$("lang-sel").closest(".card"), $("model-cards").closest(".card")] },
+  { id: "cleanup", label: "Cleanup", advise: obCleanupUsable,
+    warn: "Vito works a lot better with the AI cleanup: no ums, proper punctuation, your dictionary applied. Setting it up takes five minutes at most. Rather go on without it? Click Next again.",
+    say: "Are you sure? With the cleanup on, your texts come out much tidier.", cards: () => [$("s-cleanup").closest(".card")] },
+  { id: "mic", label: "Microphone", cards: () => [$("s-input").closest(".card")] },
+  { id: "key", label: "Dictation key", cards: () => [$("activation-body").closest(".card")] },
+  { id: "pill", label: "Pill", when: () => { const c = $("set-pill"); return !!c && c.style.display !== "none"; }, cards: () => [$("set-pill")] },
+  { id: "practice", label: "Practice", advise: () => ob.practised,
+    warn: "You haven't tried a dictation yet. One sentence is enough to feel how it works — and to know everything is set up right. Rather go on without practising? Click Next again.",
+    say: "Shall we give it one go first? Just one sentence!" },
+  { id: "tour", label: "More" },
+  { id: "done", label: "Done" },
+];
+const ob = { steps: OB_STEPS, open: false, i: 0, seen: new Set(), skipped: new Set(), advised: new Set(), borrowed: [], vito: null, tasks: [], rec: false, proc: false };
+function obBorrow(cards, into){
+  cards.filter(Boolean).forEach(c => {
+    const ph = document.createComment("onboarding");
+    c.before(ph);
+    ob.borrowed.push({ c, ph, hidden: c.hidden });
+    c.hidden = false;
+    into.appendChild(c);
+  });
+}
+function obReturn(){
+  ob.borrowed.forEach(({ c, ph, hidden }) => { ph.replaceWith(c); c.hidden = hidden; });
+  ob.borrowed = [];
+}
+function obSay(html){
+  const b = $("ob-say"); if (!b) return;
+  obHush();
+  b.style.minHeight = "";
+  b.innerHTML = html;
+  b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop");
+  if (reducedMotion()) return;
+  // Hold the bubble at its full size, so it does not grow line by line.
+  b.style.minHeight = b.offsetHeight + "px";
+  const w = document.createTreeWalker(b, NodeFilter.SHOW_TEXT), nodes = [];
+  while (w.nextNode()) nodes.push({ n: w.currentNode, text: w.currentNode.nodeValue });
+  nodes.forEach(x => { x.n.nodeValue = ""; });
+  // Not while you dictate: then the mouth follows your voice.
+  if (!ob.rec && uiState !== "recording") obMouth(true);
+  let k = 0, pos = 0;
+  const done = () => { nodes.forEach(x => { x.n.nodeValue = x.text; }); b.style.minHeight = ""; };
+  obType.finish = done;
+  const step = () => {
+    if (k >= nodes.length) { obType.finish = null; done(); obMouth(false); return; }
+    const x = nodes[k];
+    pos = Math.min(pos + 2, x.text.length);
+    x.n.nodeValue = x.text.slice(0, pos);
+    const ch = x.text.charAt(pos - 1);
+    if (pos >= x.text.length) { k++; pos = 0; }
+    obType.timer = setTimeout(step, /[.!?…]/.test(ch) ? 260 : /[,:;—]/.test(ch) ? 120 : 30);
+  };
+  step();
+}
+// Vito types what it says into its bubble, a few letters at a time, its mouth
+// moving as it does with your voice when you dictate, so a new step's line
+// draws the eye instead of just being there. A click on the bubble shows the
+// rest at once; under reduced motion it is all there at once.
+const obType = { timer: null, mouth: null, finish: null };
+function obMouth(on){
+  clearInterval(obType.mouth); obType.mouth = null;
+  if (on) {
+    vm.forced = "recording";
+    let t0 = Math.random() * 6;
+    obType.mouth = setInterval(() => { t0 += .35; vmLevel(Math.max(0, 55 + 45 * Math.sin(t0) * Math.sin(t0 * 2.7))); }, 80);
+  } else if (vm.forced === "recording") { vm.forced = null; vm.lvl = 0; vm.quiet = false; vmRender(); }
+}
+function obHush(){
+  clearTimeout(obType.timer); obType.timer = null;
+  if (obType.finish) { const f = obType.finish; obType.finish = null; f(); }
+  obMouth(false);
+}
+// The dictation key as the Activation tab names it, and whether it is a key of
+// its own (Caps Lock, Fn: hold, double-tap) or a combination.
+function obKey(){
+  const info = lastHotkeyInfo;
+  if (!info) return { name: "", one: false };
+  const kind = dictKeyKind(info), niri = info.niri_caps || {};
+  const conf = (info.toggle && (info.toggle.configured || info.toggle.spec)) || "";
+  const one = kind === "niri" ? niri.state === "on" : conf === "capslock" || conf === "fn";
+  const name = kind === "niri" ? (niri.state === "on" ? "Caps Lock" : "")
+    : conf === "capslock" ? "Caps Lock" : conf === "fn" ? "Fn (🌐)"
+    : kind === "portal" ? (info.toggle && fmtPortalShortcut(info.toggle.spec)) || prettyKey(conf)
+    : kind ? prettyKey(conf) : "";
+  return { name, one };
+}
+const obKeyTag = (k) => `<span class="ob-keyname">${ahEsc(k.name || t("your dictation key"))}</span>`;
+function obTasks(){
+  const k = obKey(), key = obKeyTag(k);
+  const ptt = !(cfg && cfg.push_to_talk === false);
+  if (k.one) return [
+    { id: "hold", text: t("Hold {key}, say a sentence and let go.").replace("{key}", key) },
+    { id: "free", text: t("Double-tap {key} and speak hands-free. Press it once more to stop.").replace("{key}", key) },
+    { id: "cancel", text: t("Start a dictation and cancel it: point at the pill at the bottom of your screen and click ×.") },
+  ];
+  return [
+    { id: "hold", text: (ptt ? t("Hold {key}, say a sentence and let go.") : t("Press {key}, say a sentence and press it again.")).replace("{key}", key) },
+    { id: "free", text: t("Dictate a second sentence — try a name or a number.") },
+    { id: "cancel", text: t("Start a dictation and cancel it: point at the pill at the bottom of your screen and click ×.") },
+  ];
+}
+function obRenderTasks(){
+  const ul = $("ob-tasks"); if (!ul) return;
+  const next = ob.tasks.find(x => !x.done);
+  ul.innerHTML = ob.tasks.map(x => `<li class="${x.done ? "done" : x === next ? "now" : ""}"><span class="ob-chk">✓</span><span class="ob-tt">${x.text}</span></li>`).join("");
+}
+function obTaskDone(id){
+  const task = id === "cancel" ? ob.tasks.find(x => x.id === "cancel") : ob.tasks.find(x => !x.done && x.id !== "cancel");
+  if (!task || task.done) return;
+  task.done = true;
+  ob.practised = true;
+  obRenderTasks();
+  vmFlash("happy", 2200);
+  const next = ob.tasks.find(x => !x.done);
+  if (!next) {
+    obSay(t("You've got it! That is really all there is to it. On to the last few things."));
+    const n = $("ob-next"); n.classList.remove("ping"); void n.offsetWidth; n.classList.add("ping");
+  } else obSay((id === "cancel" ? t("Cancelled — nothing was typed.") : t("Nicely done!")) + " " + t("Next:") + " " + next.text);
+}
+// Events from the daemon, while the practice step is open.
+function obEvent(e){
+  if (ob.open && ob.steps[ob.i].id === "speech" && (e.type === "local_stt" || e.type === "whistle")) {
+    // The page takes the new state in after this call.
+    setTimeout(() => {
+      if (!ob.open || ob.steps[ob.i].id !== "speech" || !ob.steps[ob.i].need()) return;
+      const w = $("ob-warn");
+      if (w) { w.remove(); obSay(t("Downloaded — we can go on!")); vmFlash("happy", 2000); }
+    }, 0);
+    return;
+  }
+  if (!ob.open || ob.steps[ob.i].id !== "practice") return;
+  if (e.type === "state") {
+    if (e.state === "recording") { obHush(); ob.rec = true; ob.proc = false; obSay(t("I'm listening… say something!")); }
+    else if (e.state === "processing") { ob.proc = true; obSay(t("Writing it down…")); }
+    else if (e.state === "idle") { if (ob.rec && !ob.proc) obTaskDone("cancel"); ob.rec = false; }
+  } else if (e.type === "final") {
+    ob.rec = false;
+    if ((e.cleaned || e.raw || "").trim()) obTaskDone("dictation");
+    else obSay(t("I didn't hear anything. Is the right microphone chosen?"));
+  } else if (e.type === "error") {
+    ob.rec = false;
+    obSay(t("Hmm, that didn't work. Check the speech recognition step, then try again."));
+  }
+}
+const OB_ICON = {
+  pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="8" width="18" height="8" rx="4"/><path d="M8 11v2M11 10v4M14 11v2"/></svg>',
+  hist: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>',
+  dict: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M18 16H7a2 2 0 0 0-2 2"/></svg>',
+  rules: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z"/></svg>',
+  assist: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+  rec: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none"/></svg>',
+  medal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="6"/><path d="M8.5 9 6 3h4l2 4 2-4h4l-2.5 6"/></svg>',
+  tray: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="15" width="18" height="6" rx="1.5"/><path d="M15 18h.01M18 18h.01M12 4v7M9 8l3 3 3-3"/></svg>',
+};
+function obStepHTML(id){
+  if (id === "hello") return `<div class="card">
+      <div class="ob-uilang"><span class="fld">${t("Interface language")}</span><div id="ob-uilang-slot"></div></div>
+      <p class="ob-lead">${t("Vito turns your voice into clean text, right where your cursor is — in your e-mail, a chat, a document, anywhere you can type.")}</p>
+      <ul class="ob-points">
+        <li><span class="ob-n">1</span><span>${obKey().one
+          ? t("Hold {key} and speak, as if you were talking to someone.").replace("{key}", obKeyTag(obKey()))
+          : t("Press your dictation key and speak, as if you were talking to someone.")}</span></li>
+        <li><span class="ob-n">2</span><span>${t("Vito writes it down and tidies it up: punctuation, capitals, no ums.")}</span></li>
+        <li><span class="ob-n">3</span><span>${t("The text appears where your cursor is.")}</span></li>
+      </ul>
+      <p class="ob-note">${t("This introduction sets up the essentials and lets you practise. Skip any step you like, and close it whenever you want.")}</p>
+    </div>`;
+  if (id === "pill") return `<div class="card">
+      <ul class="ob-points">
+        <li><span class="ob-n">1</span><span>${t("While you dictate, the pill at the bottom of your screen shows that Vito is listening. Point at it: ✓ stops, × cancels.")}</span></li>
+        <li><span class="ob-n">2</span><span>${t("Point at the resting pill for a moment and the island opens: your last dictation, today's numbers and quick settings. The pin keeps it open.")}</span></li>
+        <li><span class="ob-n">3</span><span>${t("Cancelled by mistake? For five minutes the pill offers to paste that dictation after all.")}</span></li>
+      </ul>
+      <div class="ob-row"><button type="button" class="btn primary small" id="ob-pill-demo">${t("Show it on my screen")}</button></div>
+    </div>`;
+  if (id === "practice") return `<div class="card">
+      <p class="ob-lead">${t("Click in the box below so your cursor is there, then try these:")}</p>
+      <ul class="ob-tasks" id="ob-tasks"></ul>
+      <textarea class="ob-pad" id="ob-pad" placeholder="${t("Your text appears here…")}"></textarea>
+      <div class="ob-row"><button type="button" class="btn ghost small" id="ob-rec">${t("No key? Start with this button")}</button></div>
+    </div>`;
+  if (id === "tour") {
+    const it = (ico, title, text) => `<div><b>${OB_ICON[ico]}${t(title)}</b><span>${t(text)}</span></div>`;
+    return `<div class="ob-award" id="ob-award" hidden></div>
+    <div class="ob-tour">
+      ${ob.steps.some(x => x.id === "pill") ? "" : it("pill", "The pill", "While you dictate, a small pill shows at the bottom of your screen. Point at it for the island: your last dictation, today's numbers and quick settings.")}
+      ${it("hist", "History", "Every dictation is kept, with its recording. Copy it, paste it again or give it a star.")}
+      ${it("dict", "Dictionary", "Teach Vito names and jargon. It also suggests corrections from your own dictations.")}
+      ${it("rules", "Rule sets and programs", "Choose how the cleanup writes — verbatim, tidy, e-mail — and set it per program.")}
+      ${it("rec", "Long recordings", "Record a lecture, a meeting or a long session — for hours if need be — and read it back as text. An audio file works too.")}
+      ${it("assist", "Vito Assist", "Say “Vito, …” with an instruction, such as “Vito, translate to English”, and it is applied to your next dictation.")}
+      ${it("medal", "Achievements", "Collect medals as you dictate, and dress Vito up with what you unlock.")}
+      ${it("tray", "Always at hand", "Vito runs in the background, with an icon by the clock. Open this window from there whenever you like.")}
+    </div>`;
+  }
+  if (id === "done") return `<div class="card">
+      <p class="ob-lead">${t("This is how Vito is set up now:")}</p>
+      <div class="ob-sum" id="ob-sum"></div>
+      <p class="ob-note">${t("You can change all of this under Settings, and open this introduction again under Settings → About.")}</p>
+    </div>`;
+  return "";
+}
+const OB_TEXT = {
+  pill: ["The pill", "This little pill is how you see me while you work in other programs. Shall I show you?"],
+  hello: ["Hi, I'm Vito!", "I'll show you around. It takes about five minutes."],
+  look: ["Make Vito your own", "The fun part first: colours, a font and a background. You see it change straight away. Can't choose? Let me surprise you!"],
+  speech: ["How your speech becomes text", "Pick the language you usually speak, and a speech engine. The cloud engines are the most accurate and show your words while you speak; Vito local is free and keeps everything on your computer."],
+  cleanup: ["AI cleanup", "Optional, but nice: an AI model takes out the ums, fixes the punctuation and uses your dictionary. Groq has a free tier. You can also leave this for later."],
+  mic: ["Your microphone", "Choose the microphone you want to use. With “Test microphone” you hear how you sound."],
+  key: ["Your dictation key", "This is the key that wakes me up. Caps Lock on its own is handy: hold it while you speak. A key combination works too."],
+  practice: ["Let's practise", ""],
+  tour: ["What else Vito can do", "And look: you've earned your first achievement! A few more things worth knowing — you'll find them all in Vito's menu."],
+  done: ["Ready to go!", "That's it! Press your key wherever you type, and I'll do the rest."],
+};
+// A step Vito cannot work without (need) can be closed, but not skipped:
+// going past it while it is not done stops there, with a word from Vito.
+// A step that is recommended (advise) says so once when it is passed without
+// being done, in yellow; going on a second time goes on.
+function obBlocked(from, to){
+  for (let r = from; r < to; r++) {
+    const x = ob.steps[r];
+    if (x.need && !x.need()) return { r, hard: true };
+    if (x.advise && !x.advise() && !ob.advised.has(r)) return { r, hard: false };
+  }
+  return null;
+}
+// The AI cleanup can run: on, and with a key or an endpoint (a hosted one
+// with its key). Read from the fields, which are ahead of the saved config.
+function obCleanupUsable(){
+  if (!$("s-cleanup").checked) return false;
+  if ($("s-cleanupprovider").value !== "openai") return !!$("s-cleanupkey").value.trim();
+  const url = $("s-openaibaseurl").value.trim();
+  return !!url && (!!$("s-openaikey").value.trim() || /^https?:\/\/(localhost|127\.|\[::1\])/i.test(url));
+}
+function obWarn(hard, step){
+  const body = $("ob-body"); if (!body) return;
+  let w = $("ob-warn");
+  if (!w) { w = document.createElement("div"); w.id = "ob-warn"; w.setAttribute("role", "alert"); body.prepend(w); }
+  w.className = "ob-warn" + (hard ? "" : " soft");
+  w.textContent = hard
+    ? t("This step is needed: without a speech model Vito cannot turn your voice into text. Choose one below and set it up — enter its key, or download it.")
+    : t(step.warn);
+  w.classList.remove("shake"); void w.offsetWidth; w.classList.add("shake");
+  $("ob-main").scrollTop = 0;
+  const loading = hard && cfg && cfg.stt && fetching(cfg.stt.provider);
+  if (loading) {
+    w.className = "ob-warn soft";
+    w.textContent = t("The speech model is still downloading. Wait until it is done — then you can go on.");
+    obSay(t("Almost there — I'm still downloading. A moment, please!"));
+  } else if (hard) {
+    vmFlash("dizzy", 1200);
+    obSay(t("Wait a moment — I can't do anything without this one. Choose a speech model first!"));
+  } else obSay(t(step.say));
+}
+function obGo(i){
+  if (i < 0 || i >= ob.steps.length) return;
+  const b = ob.open && i > ob.i ? obBlocked(ob.i, i) : null;
+  if (b) {
+    if (!b.hard) ob.advised.add(b.r);
+    if (b.r !== ob.i) obGo(b.r);
+    obWarn(b.hard, ob.steps[b.r]);
+    return;
+  }
+  obReturn();
+  ob.i = i;
+  const st = ob.steps[i];
+  ob.seen.add(i);
+  const [title, say] = OB_TEXT[st.id];
+  $("ob-title").textContent = t(title);
+  $("ob-count").textContent = t("Step {n} of {total}").replace("{n}", i + 1).replace("{total}", ob.steps.length);
+  const body = $("ob-body");
+  body.innerHTML = obStepHTML(st.id);
+  if (st.cards) obBorrow(st.cards(), body);
+  if (st.id === "hello") obBorrow([$("uilang-sel")], $("ob-uilang-slot"));
+  if (st.id === "look") body.insertAdjacentHTML("beforeend", `<p class="ob-tip">${OB_ICON.medal}<span>${t("Vito can be dressed up too: hats, glasses and more. You unlock them with achievements, and choose them on the Achievements page.")}</span></p>`);
+  if (st.id === "practice") {
+    ob.tasks = obTasks(); ob.rec = false; ob.proc = false;
+    obRenderTasks();
+    const k = obKey();
+    obSay(k.name ? t("Click in the box, then use {key}. I'll listen along!").replace("{key}", obKeyTag(k))
+      : t("No dictation key is set up yet. Go back a step, or use the button under the box."));
+    $("ob-rec").onclick = () => { $("ob-pad").focus(); $("btn-toggle").click(); };
+    setTimeout(() => { const p = $("ob-pad"); if (p) p.focus(); }, 60);
+  } else if (st.id === "key") {
+    const k = obKey();
+    obSay(k.one ? t("Your dictation key is {key}: hold it while you speak, double-tap it to keep talking hands-free. Capitals? Shift still works. Rather a key combination? You can set one here.").replace("{key}", obKeyTag(k))
+      : t(say));
+  } else obSay(t(say));
+  if (st.id === "pill") $("ob-pill-demo").onclick = () => {
+    api("/api/pill/preview?style=" + encodeURIComponent($("s-pillstyle").value || "glow"), { method: "POST" }).catch(() => {});
+    obSay(t("Look at the bottom of your screen: that is me, listening, then writing it down. Pick a style below and I show it at once."));
+  };
+  if (st.id === "tour") obAward();
+  if (st.id === "done") {
+    renderStatusTags();
+    const tags = $("status-tags");
+    $("ob-sum").innerHTML = tags ? `<div class="${tags.className}">${tags.innerHTML}</div>` : "";
+  }
+  // The progress bar.
+  $("ob-steps").innerHTML = ob.steps.map((x, j) => `<li class="${j === i ? "cur" : ""}${ob.seen.has(j) ? " seen" : ""}${ob.skipped.has(j) ? " skipped" : ""}">
+      <button type="button" data-ob="${j}" aria-label="${ahEsc(t(x.label))}"${j === i ? ' aria-current="step"' : ""}><span class="ob-dot">${ob.seen.has(j) && j !== i && !ob.skipped.has(j) ? "✓" : j + 1}</span><span class="ob-lbl">${t(x.label)}</span></button></li>`).join("");
+  $("ob-steps").querySelectorAll("button").forEach(b => b.onclick = () => obGo(+b.dataset.ob));
+  $("ob-bar").style.width = (i / (ob.steps.length - 1) * 100) + "%";
+  $("ob-back").style.visibility = i === 0 ? "hidden" : "";
+  $("ob-skip").hidden = st.id === "hello" || st.id === "done" || !!st.need;
+  const n = $("ob-next");
+  n.classList.remove("ping");
+  n.textContent = st.id === "hello" ? t("Let's go") : st.id === "done" ? t("Start using Vito") : t("Next");
+  $("ob-main").scrollTop = 0;
+  if (!reducedMotion() && typeof vmPose === "function") vmPose(st.id === "done" ? "party" : "hop");
+  if (st.id === "done") vmFlash("happy", 3000);
+}
+// Arriving at the step that explains achievements earns the first one, shown
+// there as a medal of its own rather than a passing toast (the toast is kept
+// away by marking it seen first), with the way to the others.
+async function obAward(){
+  try {
+    const fresh = !(cfg && cfg.ui && cfg.ui.intro_done);
+    if (fresh) {
+      await api("/api/intro-done", { method: "POST" });
+      if (cfg && cfg.ui) { cfg.ui.intro_done = true; cfg.ui.welcome_done = true; }
+    }
+    try {
+      const seen = JSON.parse(localStorage.getItem("vito-ach-seen") || "null");
+      if (Array.isArray(seen) && !seen.includes("intro")) { seen.push("intro"); localStorage.setItem("vito-ach-seen", JSON.stringify(seen)); }
+    } catch {}
+    const a = await loadAchievements(true);
+    const x = a && a.achievements.find(y => y.id === "intro");
+    const box = $("ob-award");
+    if (!x || !x.earned || !box || ob.steps[ob.i].id !== "tour") return;
+    const total = a.achievements.filter(y => !y.secret).length, secret = a.achievements.length - total;
+    box.innerHTML = `<span class="ob-award-medal">${achMedalInner(x)}</span>
+      <div class="ob-award-text"><span class="ob-award-t">${t("Achievement unlocked")}</span>
+        <b class="ob-award-n"></b><span class="ob-award-d">${ahEsc(t(x.desc))}</span>
+        <span class="ob-award-more">${t("The first of {n}, plus {s} secret ones. Collect them on the Achievements page; each brings something new for me to wear.").replace("{n}", total).replace("{s}", secret)}</span></div>`;
+    box.querySelector(".ob-award-n").textContent = x.name; // names are English, never run through t()
+    box.hidden = false;
+    if (fresh) {
+      if (achAnim.has(x.id)) mountLottie(box.querySelector(".ob-award-medal"), x.id, false);
+      playAchSound();
+      vmFlash("happy", 3000);
+      if (!reducedMotion()) vmPose("party");
+    }
+  } catch {}
+}
+function openOnboarding(){
+  if (STANDALONE || ob.open) return;
+  ob.steps = OB_STEPS.filter(x => !x.when || x.when());
+  ob.open = true; ob.i = 0; ob.seen = new Set(); ob.skipped = new Set(); ob.advised = new Set(); ob.practised = false;
+  const o = $("onboarding");
+  if (!ob.vito) { ob.vito = makeMascot(document); $("ob-vito").appendChild(ob.vito); }
+  o.hidden = false;
+  document.documentElement.classList.add("ob-open");
+  obGo(0);
+  setTimeout(() => $("ob-next").focus(), 50);
+}
+function closeOnboarding(finished){
+  if (!ob.open) return;
+  obReturn();
+  obHush();
+  ob.open = false;
+  $("onboarding").hidden = true;
+  document.documentElement.classList.remove("ob-open");
+  if (finished && !(cfg && cfg.ui && cfg.ui.intro_done)) {
+    // Followed to the end without passing the tour step: the award now.
+    if (cfg && cfg.ui) { cfg.ui.welcome_done = true; cfg.ui.intro_done = true; }
+    api("/api/intro-done", { method: "POST" }).then(() => loadAchievements(true)).catch(() => {});
+  } else if (cfg && cfg.ui && !cfg.ui.welcome_done) { cfg.ui.welcome_done = true; api("/api/welcome-done", { method: "POST" }).catch(() => {}); }
+  maybeShowLinuxHint();
+  setTimeout(() => loadAchievements(true), 1500); // what was earned meanwhile
+  const go = () => { selectTab("settings"); selectSetSection("about"); setTimeout(() => { const c = $("about-intro"); if (c) c.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }); }, 60); };
+  actionToast(finished ? t("All set — have fun dictating! The introduction is under Settings → About.")
+    : t("Introduction closed. You can open it again under Settings → About."), t("Show me"), go, 9000, "info");
+}
+$("ob-next").onclick = () => { if (ob.steps[ob.i].id === "done") closeOnboarding(true); else obGo(ob.i + 1); };
+$("ob-skip").onclick = () => { ob.skipped.add(ob.i); obGo(ob.i + 1); };
+$("ob-back").onclick = () => obGo(ob.i - 1);
+$("ob-close").onclick = () => closeOnboarding(false);
+$("ob-say").addEventListener("click", obHush);
+$("ob-restart").onclick = () => openOnboarding();
+if (STANDALONE) { const c = $("about-intro"); if (c) c.remove(); }
 // A one-off status-page bar for Linux users on first run: Vito needs a couple of
 // helper tools and a hotkey binding to work on Linux, so point them at the Linux
 // settings. Dismissible any time (remembered locally). renderLinuxCard supplies
@@ -10833,6 +11573,9 @@ function celebrateNew(a){
     try { localStorage.setItem("vito-ach-seen", JSON.stringify(earned)); } catch {}
     return;
   }
+  // Held while the introduction is open: they stay unseen and parade past
+  // once it closes (closeOnboarding loads them again).
+  if (ob.open) return;
   const set = new Set(seen);
   const fresh = a.achievements.filter(x => x.earned && !set.has(x.id));
   if (!fresh.length) return;
@@ -12339,8 +13082,12 @@ async function fillSettings() {
   if (cfg.ui && !!cfg.ui.settings_all !== setAll) setSetAll(!!cfg.ui.settings_all, false);
   if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
   if (cfg.ui && (cfg.ui.gradient || "") !== gradPref) setGradient(cfg.ui.gradient || "", false);
-  if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {
-    vmOutfit = Object.assign({}, cfg.ui.outfit);
+  // The config is what Vito wears; the browser's copy only saves a flash on
+  // load. No outfit in the config means none, also when this browser still
+  // remembers one (a reinstall, or another Vito on the same address).
+  const cfgOutfit = vmMigrate(cfg.ui && cfg.ui.outfit);
+  if (JSON.stringify(cfgOutfit) !== JSON.stringify(vmOutfit)) {
+    vmOutfit = Object.assign({}, cfgOutfit);
     try { localStorage.setItem("vito-outfit", JSON.stringify(vmOutfit)); } catch {}
     vmRedress();
   }
@@ -12439,7 +13186,8 @@ function renderStatusTags(){
     : sm && sm.provider === "local" ? t("Vito local") + " · Parakeet" + (localStt && localStt.phase !== "running" ? " · " + localSttTag() : "")
     : sm && sm.provider === "whistle" ? "Whistle" + (whistleSt && whistleSt.phase !== "ready" ? " · " + whistleTag() : "")
     : sm ? sm.name : null;
-  tags.push({ ico: ICON_MIC2, text: sttLabel || ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
+  if (!STANDALONE && !sttUsable()) tags.push({ ico: ICON_MIC2, text: t("Speech recognition not set up"), sec: "stt", muted: true });
+  else tags.push({ ico: ICON_MIC2, text: sttLabel || ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
   tags.push({ raw: langIcon((cfg.stt && cfg.stt.language) || ""), text: langShortName(cfg.stt && cfg.stt.language), sec: "stt" });
   const cl = cfg.cleanup || {};
   if (STANDALONE) tags.push({ ico: SPARK_SVG, text: t("Tidied by rules"), sec: "stt", muted: true });
@@ -12716,25 +13464,12 @@ function dictKeyHTML(info){
     <p class="act-note dk-other" style="margin:8px 0 0;">${t("You can always use another key or combination instead; see below.")}</p>
   </div>`;
 }
-// The welcome card names the key that works now, from the same information
-// as the Activation tab's card.
 // prettyKey writes a combination as keyboards label it ("Ctrl + Shift + D").
 function prettyKey(spec){
   return hkIsMac || !spec || spec === "capslock" || spec === "fn" ? hkDisplaySpec(spec)
     : spec.split("+").map(p => p.trim()).map(p => ({ ctrl:"Ctrl", alt:"Alt", shift:"Shift", win:"Super", super:"Super" }[p] || (p.charAt(0).toUpperCase() + p.slice(1)))).join(" + ");
 }
-function renderWelcomeKey(info){
-  const el = $("wl-app-key"); if (!el || !info) return;
-  const kind = dictKeyKind(info), niri = info.niri_caps || {};
-  const conf = (info.toggle && (info.toggle.configured || info.toggle.spec)) || "";
-  const key = kind === "niri" ? (niri.state === "on" ? "Caps Lock" : "")
-    : conf === "capslock" ? "Caps Lock" : conf === "fn" ? "Fn (🌐)"
-    : kind === "portal" ? (info.toggle && fmtPortalShortcut(info.toggle.spec)) || prettyKey(conf)
-    : kind ? prettyKey(conf) : "";
-  el.innerHTML = key ? t("Now: {key}.").replace("{key}", "<b>" + ahEsc(key) + "</b>") : t("No key is set up yet.");
-}
 function wireDictKey(info){
-  renderWelcomeKey(info);
   const kind = dictKeyKind(info), on = $("dk-on"), off = $("dk-off");
   const msg = (text) => { const m = $("dk-msg"); if (m) { m.textContent = text; m.hidden = !text; } };
   // GNOME/KDE/Hyprland: the portal binds the key again, its dialog may show.

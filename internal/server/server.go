@@ -165,6 +165,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("POST /api/achievements/{id}", s.auth(s.handleAchievementSet))
 	mux.HandleFunc("POST /api/pill/preview", s.auth(s.handlePillPreview))
 	mux.HandleFunc("POST /api/welcome-done", s.auth(s.handleWelcomeDone))
+	mux.HandleFunc("POST /api/intro-done", s.auth(s.handleIntroDone))
 	mux.HandleFunc("POST /api/credit/dismiss", s.auth(s.handleDismissCredit))
 	mux.HandleFunc("GET /api/local-stt", s.auth(s.handleLocalSTT))
 	mux.HandleFunc("POST /api/local-stt/install", s.auth(s.handleLocalSTTInstall))
@@ -1123,6 +1124,7 @@ func (s *Server) evaluateAchievements() (st achievements.Stats, earned map[strin
 		}
 	}
 
+	st.IntroDone = s.d.Config().UI.IntroDone
 	earned = achievements.Evaluate(st)
 	s.recordAchievements(earned)
 	return st, earned, months, currency, nil
@@ -1151,7 +1153,10 @@ func (s *Server) recordAchievements(earned map[string]bool) {
 	if err != nil {
 		s.log.Warn("recording achievements failed", "err", err)
 	}
-	if had == 0 || len(added) > 3 {
+	// Quiet too while a new user is still in the introduction (it ends with
+	// welcome_done): practising there should not pop up medals before the
+	// step that explains them. The page shows them once it is closed.
+	if had == 0 || len(added) > 3 || !s.d.Config().UI.WelcomeDone {
 		return
 	}
 	for _, id := range added {
@@ -1210,6 +1215,27 @@ func (s *Server) handleAchievementSet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "earned": body.Earned})
+}
+
+// handleIntroDone records that the introduction was followed to its end:
+// welcome_done and intro_done, which earns the "intro" achievement at once.
+// Not announced to the pill: the page shows it as a medal of its own on the
+// introduction's step about achievements, and a card at the screen's edge
+// beat it there.
+func (s *Server) handleIntroDone(w http.ResponseWriter, r *http.Request) {
+	cfg := s.d.Config()
+	if !cfg.UI.IntroDone || !cfg.UI.WelcomeDone {
+		cfg.UI.IntroDone, cfg.UI.WelcomeDone = true, true
+		if err := cfg.Save(); err != nil {
+			s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+			return
+		}
+		s.d.UpdateConfig(&cfg)
+	}
+	if _, _, _, _, err := s.evaluateAchievements(); err != nil {
+		s.log.Debug("achievements not checked", "err", err)
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
 // handleWelcomeDone records that the onboarding welcome card was dismissed. It
