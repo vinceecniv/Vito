@@ -4185,6 +4185,7 @@ const TR = { nl: {
   "Languages (25):":"Talen (25):",
   "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.":"Nederlands, Engels, Duits, Frans, Spaans, Italiaans, Portugees, Pools, Tsjechisch, Slowaaks, Hongaars, Roemeens, Bulgaars, Kroatisch, Sloveens, Grieks, Zweeds, Deens, Fins, Estisch, Lets, Litouws, Maltees, Russisch en Oekraïens — automatisch herkend. Niet geschikt voor andere talen.",
   "Vito local (Parakeet)":"Vito lokaal (Parakeet)",
+  "Whistle (small, local)":"Whistle (klein, lokaal)",
   "Vito local":"Vito lokaal",
   "On this computer, free, nothing leaves it. One download of about 1 GB.":"Op deze computer, gratis, niets verlaat hem. Eén download van ongeveer 1 GB.",
   "Best for: privacy and zero cost":"Ideaal voor: privacy en nul kosten",
@@ -6203,7 +6204,7 @@ const SPEECH_MODELS_ALL = [
   // The engine Vito installs and runs itself (see internal/localstt) comes
   // first: it is the one choice that needs no account and sends nothing away.
   // The picker's languages are the model's 25, minus Maltese, which has no flag here.
-  { id:"whistle", provider:"whistle", name:"Whistle (small, built-in)", price:0, langs:WHISTLE_LANGS, logo:LOGO_VITO,
+  { id:"whistle", provider:"whistle", name:"Whistle (small, local)", price:0, langs:WHISTLE_LANGS, logo:LOGO_VITO,
     sub:"On this computer, free, nothing leaves it. A download of 18 MB.",
     needs:"Requires: nothing but the small download below — no account, no key, no server of your own.",
     bullets:["Best for: trying Vito, and dictating offline", "7 languages: English, Dutch, German, French, Spanish, Italian, Polish", "Live transcript while you speak", "Less accurate than Parakeet or Soniox, mostly with names and jargon"] },
@@ -6749,7 +6750,7 @@ function syncSttEndpointUI(){
 // Its state comes from /api/local-stt once, then follows "local_stt" events:
 // install progress, the process starting, running, or dying.
 let localStt = null;
-// Whistle, the small built-in model: a download of 18 MB, then ready. Nothing
+// Whistle, the small local model: a download of 18 MB, then ready. Nothing
 // to start — each clip runs on its own.
 let whistleSt = null;
 async function loadWhistle(){
