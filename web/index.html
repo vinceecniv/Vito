@@ -5332,10 +5332,13 @@ const TR = { nl: {
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
   // The introduction (onboarding)
+  "The speech model is still downloading. Wait until it is done — then you can go on.":"Het spraakmodel wordt nog gedownload. Wacht tot dat klaar is — daarna kun je verder.",
+  "Almost there — I'm still downloading. A moment, please!":"Bijna — ik ben nog aan het downloaden. Momentje!",
+  "Downloaded — we can go on!":"Gedownload — we kunnen verder!",
   "You haven't tried a dictation yet. One sentence is enough to feel how it works — and to know everything is set up right. Rather go on without practising? Click Next again.":"Je hebt nog geen dictaat geprobeerd. Eén zin is genoeg om te voelen hoe het werkt — en om te weten dat alles goed staat. Toch liever door zonder te oefenen? Klik dan nog een keer op Volgende.",
   "Shall we give it one go first? Just one sentence!":"Zullen we het eerst één keer proberen? Eén zinnetje maar!",
   "And look: you've earned your first achievement! A few more things worth knowing — all of them are in the menu on the left.":"En kijk: je hebt je eerste prestatie verdiend! Nog een paar dingen die handig zijn om te weten — je vindt ze allemaal in het menu links.",
-  "The first of {n}, and a few secret ones. Collect them on the Achievements page; each brings something new for me to wear.":"De eerste van {n}, plus een paar geheime. Verzamel ze op de pagina Prestaties; ze leveren steeds iets nieuws op om mij aan te trekken.",
+  "The first of {n}, plus {s} secret ones. Collect them on the Achievements page; each brings something new for me to wear.":"De eerste van {n}, plus {s} geheime. Verzamel ze op de pagina Prestaties; ze leveren steeds iets nieuws op om mij aan te trekken.",
   "Dictated five times":"Vijf keer gedicteerd",
   "Long recordings":"Lange opnames",
   "Record a lecture, a meeting or a long session — for hours if need be — and read it back as text. An audio file works too.":"Neem een college, een vergadering of een lange sessie op — desnoods urenlang — en lees het terug als tekst. Een audiobestand kan ook.",
@@ -9988,7 +9991,7 @@ function maybeShowWelcome(){
 const OB_STEPS = [
   { id: "hello", label: "Welcome" },
   { id: "look", label: "Look", cards: () => [$("set-look")] },
-  { id: "speech", label: "Speech", need: sttUsable, cards: () => [$("lang-sel").closest(".card"), $("model-cards").closest(".card")] },
+  { id: "speech", label: "Speech", need: () => !!(cfg && cfg.stt && providerReady(cfg.stt.provider)), cards: () => [$("lang-sel").closest(".card"), $("model-cards").closest(".card")] },
   { id: "cleanup", label: "Cleanup", advise: obCleanupUsable,
     warn: "Vito works a lot better with the AI cleanup: no ums, proper punctuation, your dictionary applied. Setting it up takes five minutes at most. Rather go on without it? Click Next again.",
     say: "Are you sure? With the cleanup on, your texts come out much tidier.", cards: () => [$("s-cleanup").closest(".card")] },
@@ -10110,6 +10113,15 @@ function obTaskDone(id){
 }
 // Events from the daemon, while the practice step is open.
 function obEvent(e){
+  if (ob.open && ob.steps[ob.i].id === "speech" && (e.type === "local_stt" || e.type === "whistle")) {
+    // The page takes the new state in after this call.
+    setTimeout(() => {
+      if (!ob.open || ob.steps[ob.i].id !== "speech" || !ob.steps[ob.i].need()) return;
+      const w = $("ob-warn");
+      if (w) { w.remove(); obSay(t("Downloaded — we can go on!")); vmFlash("happy", 2000); }
+    }, 0);
+    return;
+  }
   if (!ob.open || ob.steps[ob.i].id !== "practice") return;
   if (e.type === "state") {
     if (e.state === "recording") { obHush(); ob.rec = true; ob.proc = false; obSay(t("I'm listening… say something!")); }
@@ -10223,7 +10235,12 @@ function obWarn(hard, step){
     : t(step.warn);
   w.classList.remove("shake"); void w.offsetWidth; w.classList.add("shake");
   $("ob-main").scrollTop = 0;
-  if (hard) {
+  const loading = hard && cfg && cfg.stt && fetching(cfg.stt.provider);
+  if (loading) {
+    w.className = "ob-warn soft";
+    w.textContent = t("The speech model is still downloading. Wait until it is done — then you can go on.");
+    obSay(t("Almost there — I'm still downloading. A moment, please!"));
+  } else if (hard) {
     vmFlash("dizzy", 1200);
     obSay(t("Wait a moment — I can't do anything without this one. Choose a speech model first!"));
   } else obSay(t(step.say));
@@ -10303,11 +10320,11 @@ async function obAward(){
     const x = a && a.achievements.find(y => y.id === "intro");
     const box = $("ob-award");
     if (!x || !x.earned || !box || ob.steps[ob.i].id !== "tour") return;
-    const total = a.achievements.filter(y => !y.secret).length;
+    const total = a.achievements.filter(y => !y.secret).length, secret = a.achievements.length - total;
     box.innerHTML = `<span class="ob-award-medal">${achMedalInner(x)}</span>
       <div class="ob-award-text"><span class="ob-award-t">${t("Achievement unlocked")}</span>
         <b class="ob-award-n"></b><span class="ob-award-d">${ahEsc(t(x.desc))}</span>
-        <span class="ob-award-more">${t("The first of {n}, and a few secret ones. Collect them on the Achievements page; each brings something new for me to wear.").replace("{n}", total)}</span></div>`;
+        <span class="ob-award-more">${t("The first of {n}, plus {s} secret ones. Collect them on the Achievements page; each brings something new for me to wear.").replace("{n}", total).replace("{s}", secret)}</span></div>`;
     box.querySelector(".ob-award-n").textContent = x.name; // names are English, never run through t()
     box.hidden = false;
     if (fresh) {
