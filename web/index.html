@@ -10359,6 +10359,7 @@ function closeOnboarding(finished){
     api("/api/intro-done", { method: "POST" }).then(() => loadAchievements(true)).catch(() => {});
   } else if (cfg && cfg.ui && !cfg.ui.welcome_done) { cfg.ui.welcome_done = true; api("/api/welcome-done", { method: "POST" }).catch(() => {}); }
   maybeShowLinuxHint();
+  setTimeout(() => loadAchievements(true), 1500); // what was earned meanwhile
   const go = () => { selectTab("settings"); selectSetSection("about"); setTimeout(() => { const c = $("about-intro"); if (c) c.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }); }, 60); };
   actionToast(finished ? t("All set — have fun dictating! The introduction is under Settings → About.")
     : t("Introduction closed. You can open it again under Settings → About."), t("Show me"), go, 9000, "info");
@@ -11415,6 +11416,9 @@ function celebrateNew(a){
     try { localStorage.setItem("vito-ach-seen", JSON.stringify(earned)); } catch {}
     return;
   }
+  // Held while the introduction is open: they stay unseen and parade past
+  // once it closes (closeOnboarding loads them again).
+  if (ob.open) return;
   const set = new Set(seen);
   const fresh = a.achievements.filter(x => x.earned && !set.has(x.id));
   if (!fresh.length) return;

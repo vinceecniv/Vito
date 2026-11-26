@@ -1153,7 +1153,10 @@ func (s *Server) recordAchievements(earned map[string]bool) {
 	if err != nil {
 		s.log.Warn("recording achievements failed", "err", err)
 	}
-	if had == 0 || len(added) > 3 {
+	// Quiet too while a new user is still in the introduction (it ends with
+	// welcome_done): practising there should not pop up medals before the
+	// step that explains them. The page shows them once it is closed.
+	if had == 0 || len(added) > 3 || !s.d.Config().UI.WelcomeDone {
 		return
 	}
 	for _, id := range added {
@@ -1216,9 +1219,9 @@ func (s *Server) handleAchievementSet(w http.ResponseWriter, r *http.Request) {
 
 // handleIntroDone records that the introduction was followed to its end:
 // welcome_done and intro_done, which earns the "intro" achievement at once.
-// recordAchievements stays quiet about the very first achievement (a first
-// pass over a long history); this one is earned on purpose, so it is announced
-// for the pill even then.
+// Not announced to the pill: the page shows it as a medal of its own on the
+// introduction's step about achievements, and a card at the screen's edge
+// beat it there.
 func (s *Server) handleIntroDone(w http.ResponseWriter, r *http.Request) {
 	cfg := s.d.Config()
 	if !cfg.UI.IntroDone || !cfg.UI.WelcomeDone {
@@ -1229,22 +1232,8 @@ func (s *Server) handleIntroDone(w http.ResponseWriter, r *http.Request) {
 		}
 		s.d.UpdateConfig(&cfg)
 	}
-	before, _ := s.hist.UnlockedAchievements()
-	had := 0
-	for id := range before {
-		if id != "_seeded" {
-			had++
-		}
-	}
 	if _, _, _, _, err := s.evaluateAchievements(); err != nil {
 		s.log.Debug("achievements not checked", "err", err)
-	}
-	if _, ok := before["intro"]; !ok && had == 0 {
-		if after, err := s.hist.UnlockedAchievements(); err == nil {
-			if _, ok := after["intro"]; ok {
-				s.d.Announce(daemon.Event{Type: "achievement", Text: "intro"})
-			}
-		}
 	}
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
