@@ -5320,6 +5320,11 @@ const TR = { nl: {
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
   // The introduction (onboarding)
+  "Dictated five times":"Vijf keer gedicteerd",
+  "Long recordings":"Lange opnames",
+  "Record a lecture, a meeting or a long session — for hours if need be — and read it back as text. An audio file works too.":"Neem een college, een vergadering of een lange sessie op — desnoods urenlang — en lees het terug als tekst. Een audiobestand kan ook.",
+  "Finished the introduction":"De introductie afgerond",
+  "Finish with the button below and you earn your first achievement.":"Rond af met de knop hieronder en je verdient je eerste prestatie.",
   "Hold {key} and speak, as if you were talking to someone.":"Houd {key} ingedrukt en praat, alsof je het tegen iemand zegt.",
   "Your dictation key is {key}: hold it while you speak, double-tap it to keep talking hands-free. Capitals? Shift still works. Rather a key combination? You can set one here.":"Je dicteertoets is {key}: houd hem ingedrukt terwijl je praat, of tik twee keer om handsfree door te praten. Hoofdletters? Shift werkt gewoon. Liever een toetscombinatie? Die stel je hier in.",
   "Vito works a lot better with the AI cleanup: no ums, proper punctuation, your dictionary applied. Setting it up takes five minutes at most. Rather go on without it? Click Next again.":"Vito werkt een stuk beter met de AI-opschoning: geen ehs, goede leestekens, je woordenboek toegepast. Instellen kost hooguit vijf minuten. Toch liever zonder verder? Klik dan nog een keer op Volgende.",
@@ -10106,6 +10111,7 @@ const OB_ICON = {
   dict: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M18 16H7a2 2 0 0 0-2 2"/></svg>',
   rules: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z"/></svg>',
   assist: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+  rec: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none"/></svg>',
   medal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="6"/><path d="M8.5 9 6 3h4l2 4 2-4h4l-2.5 6"/></svg>',
   tray: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="15" width="18" height="6" rx="1.5"/><path d="M15 18h.01M18 18h.01M12 4v7M9 8l3 3 3-3"/></svg>',
 };
@@ -10142,6 +10148,7 @@ function obStepHTML(id){
       ${it("hist", "History", "Every dictation is kept, with its recording. Copy it, paste it again or give it a star.")}
       ${it("dict", "Dictionary", "Teach Vito names and jargon. It also suggests corrections from your own dictations.")}
       ${it("rules", "Rule sets and programs", "Choose how the cleanup writes — verbatim, tidy, e-mail — and set it per program.")}
+      ${it("rec", "Long recordings", "Record a lecture, a meeting or a long session — for hours if need be — and read it back as text. An audio file works too.")}
       ${it("assist", "Vito Assist", "Say “Vito, …” with an instruction, such as “Vito, translate to English”, and it is applied to your next dictation.")}
       ${it("medal", "Achievements", "Collect medals as you dictate, and dress Vito up with what you unlock.")}
       ${it("tray", "Always at hand", "Vito runs in the background, with an icon by the clock. Open this window from there whenever you like.")}
@@ -10151,6 +10158,7 @@ function obStepHTML(id){
       <p class="ob-lead">${t("This is how Vito is set up now:")}</p>
       <div class="ob-sum" id="ob-sum"></div>
       <p class="ob-note">${t("You can change all of this under Settings, and open this introduction again under Settings → About.")}</p>
+      <p class="ob-tip">${OB_ICON.medal}<span>${t("Finish with the button below and you earn your first achievement.")}</span></p>
     </div>`;
   return "";
 }
@@ -10275,7 +10283,11 @@ function closeOnboarding(finished){
   ob.open = false;
   $("onboarding").hidden = true;
   document.documentElement.classList.remove("ob-open");
-  if (cfg && cfg.ui && !cfg.ui.welcome_done) { cfg.ui.welcome_done = true; api("/api/welcome-done", { method: "POST" }).catch(() => {}); }
+  if (finished) {
+    // Followed to the end: that earns an achievement, shown at once.
+    if (cfg && cfg.ui) { cfg.ui.welcome_done = true; cfg.ui.intro_done = true; }
+    api("/api/intro-done", { method: "POST" }).then(() => loadAchievements(true)).catch(() => {});
+  } else if (cfg && cfg.ui && !cfg.ui.welcome_done) { cfg.ui.welcome_done = true; api("/api/welcome-done", { method: "POST" }).catch(() => {}); }
   maybeShowLinuxHint();
   const go = () => { selectTab("settings"); selectSetSection("about"); setTimeout(() => { const c = $("about-intro"); if (c) c.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }); }, 60); };
   actionToast(finished ? t("All set — have fun dictating! The introduction is under Settings → About.")

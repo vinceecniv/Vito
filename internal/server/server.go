@@ -165,6 +165,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("POST /api/achievements/{id}", s.auth(s.handleAchievementSet))
 	mux.HandleFunc("POST /api/pill/preview", s.auth(s.handlePillPreview))
 	mux.HandleFunc("POST /api/welcome-done", s.auth(s.handleWelcomeDone))
+	mux.HandleFunc("POST /api/intro-done", s.auth(s.handleIntroDone))
 	mux.HandleFunc("POST /api/credit/dismiss", s.auth(s.handleDismissCredit))
 	mux.HandleFunc("GET /api/local-stt", s.auth(s.handleLocalSTT))
 	mux.HandleFunc("POST /api/local-stt/install", s.auth(s.handleLocalSTTInstall))
@@ -1123,6 +1124,7 @@ func (s *Server) evaluateAchievements() (st achievements.Stats, earned map[strin
 		}
 	}
 
+	st.IntroDone = s.d.Config().UI.IntroDone
 	earned = achievements.Evaluate(st)
 	s.recordAchievements(earned)
 	return st, earned, months, currency, nil
@@ -1210,6 +1212,41 @@ func (s *Server) handleAchievementSet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true, "earned": body.Earned})
+}
+
+// handleIntroDone records that the introduction was followed to its end:
+// welcome_done and intro_done, which earns the "intro" achievement at once.
+// recordAchievements stays quiet about the very first achievement (a first
+// pass over a long history); this one is earned on purpose, so it is announced
+// for the pill even then.
+func (s *Server) handleIntroDone(w http.ResponseWriter, r *http.Request) {
+	cfg := s.d.Config()
+	if !cfg.UI.IntroDone || !cfg.UI.WelcomeDone {
+		cfg.UI.IntroDone, cfg.UI.WelcomeDone = true, true
+		if err := cfg.Save(); err != nil {
+			s.writeJSON(w, http.StatusInternalServerError, map[string]any{"ok": false, "error": err.Error()})
+			return
+		}
+		s.d.UpdateConfig(&cfg)
+	}
+	before, _ := s.hist.UnlockedAchievements()
+	had := 0
+	for id := range before {
+		if id != "_seeded" {
+			had++
+		}
+	}
+	if _, _, _, _, err := s.evaluateAchievements(); err != nil {
+		s.log.Debug("achievements not checked", "err", err)
+	}
+	if _, ok := before["intro"]; !ok && had == 0 {
+		if after, err := s.hist.UnlockedAchievements(); err == nil {
+			if _, ok := after["intro"]; ok {
+				s.d.Announce(daemon.Event{Type: "achievement", Text: "intro"})
+			}
+		}
+	}
+	s.writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
 // handleWelcomeDone records that the onboarding welcome card was dismissed. It

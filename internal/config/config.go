@@ -371,6 +371,9 @@ type UI struct {
 	// welcome card back, and localStorage (keyed by the unchanged 127.0.0.1 origin)
 	// would otherwise silently remember "seen" across a clean reinstall.
 	WelcomeDone bool `json:"welcome_done"`
+	// IntroDone: the introduction was followed to its end (POST /api/intro-done),
+	// which earns the "intro" achievement. Closing it early sets only WelcomeDone.
+	IntroDone bool `json:"intro_done,omitempty"`
 	// Dashboard is the dashboard's card layout — order, widths, hidden cards and
 	// the cards' own options — as the web UI stores it. Kept here, besides in
 	// the browser, so it survives a change of browser and travels with a

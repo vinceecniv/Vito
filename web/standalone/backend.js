@@ -1171,7 +1171,7 @@ registerProcessor("vito-pcm",P)`;
       activations: st.activations, commands: st.commands, money: 0, recordings: 0 }[g] || 0); // no recordings in the browser
     const earned = (d) => {
       if (d.manual) return false;
-      if (d.group === "special") return { first: st.activations > 0, night: st.night, early: st.early, comeback: st.comeback, polyglot: st.languages >= 3, wizard: st.wizard }[d.flag] || false;
+      if (d.group === "special") return { first: st.activations >= 5, night: st.night, early: st.early, comeback: st.comeback, polyglot: st.languages >= 3, wizard: st.wizard }[d.flag] || false;
       return value(d.group) >= d.threshold;
     };
     let changed = false;

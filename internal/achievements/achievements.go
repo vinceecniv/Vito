@@ -82,6 +82,9 @@ type Stats struct {
 	UsedDictation     bool
 	UsedAssist        bool
 	UsedLongRecording bool
+	// IntroDone: the introduction was followed to its last step (not closed
+	// early), config.UI.IntroDone.
+	IntroDone bool
 }
 
 // Value is the current progress figure for a group (used for progress bars).
@@ -136,7 +139,8 @@ func (d Def) Earned(s Stats) bool {
 	if d.Group == GroupSpecial {
 		switch d.Flag {
 		case "first":
-			return s.Activations > 0
+			// Five, not one: the introduction's practice is no achievement yet.
+			return s.Activations >= 5
 		case "night":
 			return s.Night
 		case "early":
@@ -145,6 +149,8 @@ func (d Def) Earned(s Stats) bool {
 			return s.Comeback
 		case "upload":
 			return s.Uploads > 0
+		case "intro":
+			return s.IntroDone
 		case "polyglot":
 			return s.Languages >= 3
 		case "apps5":
@@ -247,8 +253,10 @@ var List = []Def{
 	{ID: "rec-10", Group: GroupRecordings, Icon: "📦", Name: "Archivist", Desc: "Finished {n} long recordings", Flag: "count", Threshold: 10},
 	{ID: "rec-100k", Group: GroupRecordings, Icon: "✍️", Name: "Spoken Library", Desc: "{n} words in long recordings", Flag: "words", Threshold: 100000},
 
-	// One-offs. The first is a welcome; the rest stay hidden until you stumble on them.
-	{ID: "first", Group: GroupSpecial, Icon: "👋", Name: "Hello, Vito", Desc: "Your first dictation", Flag: "first"},
+	// One-offs. The first two are a welcome (five dictations, the introduction
+	// followed to its end); the rest stay hidden until you stumble on them.
+	{ID: "first", Group: GroupSpecial, Icon: "👋", Name: "Hello, Vito", Desc: "Dictated five times", Flag: "first"},
+	{ID: "intro", Group: GroupSpecial, Icon: "🧭", Name: "Guided Tour", Desc: "Finished the introduction", Flag: "intro"},
 	{ID: "night", Group: GroupSpecial, Icon: "🦉", Name: "Night Owl", Desc: "Dictated after midnight", Flag: "night", Secret: true},
 	{ID: "early", Group: GroupSpecial, Icon: "🐦", Name: "Early Bird", Desc: "Dictated before 7 in the morning", Flag: "early", Secret: true},
 	{ID: "comeback", Group: GroupSpecial, Icon: "🪃", Name: "Welcome Back", Desc: "Came back after 30 quiet days", Flag: "comeback", Secret: true},

@@ -70,7 +70,7 @@ func app(args []string) error {
 		return err
 	}
 	ach, err := json.Marshal(map[string]any{
-		"list":     achievements.List,
+		"list":     webAchievements(),
 		"images":   assetIDs("achievements", ".png"),
 		"animated": assetIDs("achievements/lottie", ".json"),
 	})
@@ -165,4 +165,16 @@ func writeFile(path string, data []byte) error {
 		return err
 	}
 	return os.WriteFile(path, data, 0o644)
+}
+
+// webAchievements is the list the browser version shows: without the one for
+// the introduction, which only the app has.
+func webAchievements() []achievements.Def {
+	var out []achievements.Def
+	for _, d := range achievements.List {
+		if d.ID != "intro" {
+			out = append(out, d)
+		}
+	}
+	return out
 }
