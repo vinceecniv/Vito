@@ -341,7 +341,7 @@ type UI struct {
 	// "medium", "subtle" or "none" (one flat colour). The page, the pill and
 	// the icons (pill.SetGradient).
 	Gradient string `json:"gradient,omitempty"`
-	// Outfit is what Vito wears, a piece per slot (head, glasses, ears, neck,
+	// Outfit is what Vito wears, a piece per slot (head, glasses, beard, ears, neck,
 	// paint), as the page names them (VM_ACC in web/index.html).
 	Outfit map[string]string `json:"outfit,omitempty"`
 	// ReduceMotion stills the page's animations, for whoever has not found

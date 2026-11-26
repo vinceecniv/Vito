@@ -5334,6 +5334,29 @@ const TR = { nl: {
   "Your desktop advertises this route, but only a real attempt shows whether it works, so Vito first tries it when you dictate. If it doesn't work, your dictations go to the clipboard instead.":"Je desktop biedt deze route aan, maar alleen een echte poging laat zien of die werkt, dus Vito probeert hem pas bij je eerste dictaat. Werkt hij niet, dan gaan je dictaten naar het klembord.",
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
+  // Vito's wardrobe, more pieces
+  "Beard":"Baard",
+  "Stubble":"Stoppels",
+  "Goatee":"Sik",
+  "Full beard":"Volle baard",
+  "Viking beard":"Vikingbaard",
+  "Santa beard":"Kerstmannenbaard",
+  "Wizard beard":"Tovenaarsbaard",
+  "Handlebar moustache":"Krulsnor",
+  "Cowboy hat":"Cowboyhoed",
+  "Chef's hat":"Koksmuts",
+  "Viking helmet":"Vikinghelm",
+  "Propeller cap":"Propellerpet",
+  "Halo":"Stralenkrans",
+  "Flower crown":"Bloemenkrans",
+  "3D glasses":"3D-bril",
+  "Star glasses":"Sterrenbril",
+  "Hero mask":"Heldenmasker",
+  "Bow tie":"Vlinderdas",
+  "Scarf":"Sjaal",
+  "Cherry earrings":"Kersenoorbellen",
+  "Clown nose":"Clownsneus",
+  "Whiskers":"Snorharen",
   // The introduction (onboarding)
   "The speech model is still downloading. Wait until it is done — then you can go on.":"Het spraakmodel wordt nog gedownload. Wacht tot dat klaar is — daarna kun je verder.",
   "Almost there — I'm still downloading. A moment, please!":"Bijna — ik ben nog aan het downloaden. Momentje!",
@@ -5957,11 +5980,11 @@ function surpriseLook(){
   const backdrop = pick(BACKDROPS.slice(1).map(b => b.c));
   setAccent(accent, false); setGradient(gradient, false); setFont(font, false); setRadius(radius, false); setBackdrop(backdrop, false);
   const outfit = {};
-  ["head", "glasses", "paint"].forEach(slot => {
+  ["head", "glasses", "paint", "beard"].forEach(slot => {
     const open = Object.keys(VM_ACC).filter(k => VM_ACC[k].slot === slot && vmUnlocked(k) === true);
-    if (open.length && Math.random() < .75) outfit[slot] = pick(open);
+    if (open.length && Math.random() < (slot === "beard" ? .35 : .75)) outfit[slot] = pick(open);
   });
-  ["head", "glasses", "paint"].forEach(slot => setOutfit(slot, outfit[slot] || "", false));
+  ["head", "glasses", "paint", "beard"].forEach(slot => setOutfit(slot, outfit[slot] || "", false));
   if (cfg) { cfg.ui = Object.assign(cfg.ui || {}, { accent, gradient, font, radius, backdrop, outfit: Object.assign({}, vmOutfit) });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
   vmFlash("happy", 1800);
@@ -8829,6 +8852,25 @@ const vmHeart = (cx, cy, s) => `M${cx} ${cy + s * .9} C${cx - s * 1.25} ${cy + s
 const vmCurve = (n, f) => Array.from({ length: n }, (_, i) => f(i / (n - 1)));
 const vmQpt = (t, a, c, b) => [(1 - t) ** 2 * a[0] + 2 * (1 - t) * t * c[0] + t * t * b[0], (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * c[1] + t * t * b[1]];
 const VM_NECK = [[29, 88], [60, 116], [91, 88]];
+const vmStarD = (cx, cy, r) => {
+  const p = [];
+  for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, d = i % 2 ? r * .5 : r; p.push((cx + Math.cos(a) * d).toFixed(1) + " " + (cy + Math.sin(a) * d).toFixed(1)); }
+  return "M" + p.join(" L") + "Z";
+};
+const vmStubble = () => {
+  const out = [];
+  [[24, 128, 96], [30, 120, 90], [36, 112, 84]].forEach(([x0, ym, x1], row) => {
+    for (let i = 0; i <= 16; i++) {
+      const t = i / 16, x = (1 - t) * (1 - t) * x0 + 2 * t * (1 - t) * 60 + t * t * x1, y = (1 - t) * (1 - t) * 80 + 2 * t * (1 - t) * ym + t * t * 80;
+      if (Math.abs(x - 60) < 15 && y < 106) continue;
+      out.push(`<circle cx="${(x + (row % 2 ? 1.6 : 0)).toFixed(1)}" cy="${y.toFixed(1)}" r=".95"/>`);
+    }
+  });
+  return `<g fill="${VM_INK}" opacity=".38">${out.join("")}</g>`;
+};
+// The band of a beard round the mouth, from cheek to cheek under the chin.
+const VM_BEARD = "M22 78 C22 104 40 122 60 124 C80 122 98 104 98 78 C92 92 80 100 70 102 C66 106 54 106 50 102 C40 100 28 92 22 78Z";
+const vmMirror = (svg) => `<g transform="translate(120 0) scale(-1 1)">${svg}</g>`;
 
 // space "face": the face group's coordinates (eyes at 45/75, 68); "body": the body's.
 const VM_ACC = {
@@ -8897,17 +8939,114 @@ const VM_ACC = {
     `<path d="M14 66 V71M106 66 V71" stroke="${VM_VM_GOLDD}" stroke-width="1.2"/>${vmStar(14, 75, 5, VM_GOLD)}${vmStar(106, 75, 5, VM_GOLD)}` },
   pearls: { name: "Pearl necklace", slot: "neck", space: "body", svg:
     vmCurve(15, t => vmQpt(t, ...VM_NECK)).map(([x, y], i) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${i === 7 ? 3.4 : 2.6}" fill="#FFFDF7" stroke="#D9D2C4" stroke-width=".8"/><circle cx="${(x - .8).toFixed(1)}" cy="${(y - .9).toFixed(1)}" r=".8" fill="#fff"/>`).join("") },
+  stubble: { name: "Stubble", slot: "beard", space: "face", svg: vmStubble() },
+  goatee: { name: "Goatee", slot: "beard", space: "face", svg:
+    `<path d="M50 86.5 Q55 81.5 60 85 Q65 81.5 70 86.5 Q65 85.2 60 87.4 Q55 85.2 50 86.5Z" fill="#4A3426"/>
+     <path d="M52 105 Q60 101 68 105 Q67 117 60 123 Q53 117 52 105Z" fill="#5A3E2B" stroke="#3B281C" stroke-width="1"/>
+     <path d="M57 109 L58 117M63 109 L62 117" stroke="#7A5A42" stroke-width="1" stroke-linecap="round"/>` },
+  beard: { name: "Full beard", slot: "beard", space: "face", svg:
+    `<path d="${VM_BEARD}" fill="#6B4A33" stroke="#4A3426" stroke-width="1.2" stroke-linejoin="round"/>
+     <path d="M60 83.5 C56 79 48 78.5 44.5 83 C42.5 86 44.6 88.6 47 87 C50 84.6 55.5 85.4 60 86.6 C64.5 85.4 70 84.6 73 87 C75.4 88.6 77.5 86 75.5 83 C72 78.5 64 79 60 83.5Z" fill="#5A3E2B"/>
+     <path d="M30 92 L33 99M40 103 L42 110M50 109 L51 117M60 111 V119M70 109 L69 117M80 103 L78 110M90 92 L87 99" stroke="#8A6446" stroke-width="1.3" stroke-linecap="round"/>` },
+  viking: { name: "Viking beard", slot: "beard", space: "face", svg:
+    `<path d="${VM_BEARD}" fill="#C8642B" stroke="#8E3F14" stroke-width="1.2" stroke-linejoin="round"/>
+     <path d="M60 83.5 C56 79 48 78.5 44.5 83 C42.5 86 44.6 88.6 47 87 C50 84.6 55.5 85.4 60 86.6 C64.5 85.4 70 84.6 73 87 C75.4 88.6 77.5 86 75.5 83 C72 78.5 64 79 60 83.5Z" fill="#B0531F"/>
+     <g fill="#C8642B" stroke="#8E3F14" stroke-width="1"><ellipse cx="52" cy="122" rx="4" ry="4.6"/><ellipse cx="52" cy="129" rx="3.6" ry="4.2"/><ellipse cx="68" cy="122" rx="4" ry="4.6"/><ellipse cx="68" cy="129" rx="3.6" ry="4.2"/></g>
+     <g fill="${VM_GOLD}" stroke="${VM_VM_GOLDD}" stroke-width="1"><rect x="48" y="132" width="8" height="4" rx="1.5"/><rect x="64" y="132" width="8" height="4" rx="1.5"/></g>
+     <path d="M32 94 L35 100M44 105 L45 111M76 105 L75 111M88 94 L85 100" stroke="#E08A4F" stroke-width="1.3" stroke-linecap="round"/>` },
+  santa: { name: "Santa beard", slot: "beard", space: "face", svg:
+    `<g fill="#fff" stroke="#E3E0EA" stroke-width="1">${[[24, 82, 7], [27, 95, 8], [35, 106, 8.5], [46, 115, 9], [60, 119, 9.5], [74, 115, 9], [85, 106, 8.5], [93, 95, 8], [96, 82, 7], [52, 108, 6.5], [68, 108, 6.5]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join("")}</g>
+     <path d="M60 85 C55 79 45 78 40 83 C37 87 40 91 44 89 C49 85 55 86 60 88 C65 86 71 85 76 89 C80 91 83 87 80 83 C75 78 65 79 60 85Z" fill="#fff" stroke="#E3E0EA" stroke-width="1"/>` },
+  wizbeard: { name: "Wizard beard", slot: "beard", space: "face", svg:
+    `<path d="M22 78 C24 98 38 110 47 116 Q56 128 60 142 Q64 128 73 116 C82 110 96 98 98 78 C92 92 80 100 70 102 C66 106 54 106 50 102 C40 100 28 92 22 78Z" fill="#D9DCE3" stroke="#A9AEB9" stroke-width="1.2" stroke-linejoin="round"/>
+     <path d="M60 85 C55 79 45 78 40 83 C37 87 40 91 44 89 C49 85 55 86 60 88 C65 86 71 85 76 89 C80 91 83 87 80 83 C75 78 65 79 60 85Z" fill="#E9EBF0" stroke="#A9AEB9" stroke-width="1"/>
+     <path d="M36 100 Q44 110 50 116M84 100 Q76 110 70 116M55 108 Q58 122 60 134M65 108 Q62 122 60 134" fill="none" stroke="#B8BDC7" stroke-width="1.3" stroke-linecap="round"/>` },
+  handlebar: { name: "Handlebar moustache", slot: "beard", space: "face", svg:
+    `<path d="M60 85 C54 79 45 80 40 85 C36 89 31 87 31 82 C31 78 35 77 36.5 80 C34.5 81 35 84 38 82.5 C43 78.5 53 78.5 60 83Z" fill="#3E2A1E"/>
+     <path d="M60 85 C66 79 75 80 80 85 C84 89 89 87 89 82 C89 78 85 77 83.5 80 C85.5 81 85 84 82 82.5 C77 78.5 67 78.5 60 83Z" fill="#3E2A1E"/>` },
+  cowboy: { name: "Cowboy hat", slot: "head", space: "body", svg:
+    `<g transform="translate(0 4)"><path d="M38 40 C35 20 44 11 52 16 Q60 21 68 16 C76 11 85 20 82 40 Z" fill="#A86B3C" stroke="#6E4422" stroke-width="1.6" stroke-linejoin="round"/>
+     <path d="M39 34 Q60 39 81 34 L81.6 39 Q60 44 38.4 39Z" style="fill:var(--coral)"/>
+     <path d="M14 38 Q20 46 60 46 Q100 46 106 38 Q104 50 60 51 Q16 50 14 38Z" fill="#A86B3C" stroke="#6E4422" stroke-width="1.6" stroke-linejoin="round"/>
+     <path d="M52 22 Q60 26 68 22" fill="none" stroke="#6E4422" stroke-width="1.4" stroke-linecap="round"/></g>` },
+  chef: { name: "Chef's hat", slot: "head", space: "body", svg:
+    `<g fill="#fff" stroke="#DCD7E6" stroke-width="1.4"><circle cx="45" cy="22" r="11"/><circle cx="75" cy="22" r="11"/><circle cx="60" cy="15" r="13"/>
+     <rect x="40" y="22" width="40" height="22" rx="3"/></g>
+     <path d="M41 24 H79" stroke="#fff" stroke-width="3"/>
+     <path d="M48 30 V41M56 30 V42M64 30 V42M72 30 V41" stroke="#E6E1EF" stroke-width="1.2" stroke-linecap="round"/>` },
+  vikinghelm: { name: "Viking helmet", slot: "head", space: "body", svg:
+    `<path d="M35 33 C24 30 15 19 18 4 C23 15 31 21 42 24 Z" fill="#F3E7C9" stroke="#C9B88E" stroke-width="1.4" stroke-linejoin="round"/>
+     <path d="M85 33 C96 30 105 19 102 4 C97 15 89 21 78 24 Z" fill="#F3E7C9" stroke="#C9B88E" stroke-width="1.4" stroke-linejoin="round"/>
+     <path d="M32 46 C32 16 88 16 88 46 Z" fill="#C9CED8" stroke="#7E8796" stroke-width="1.6" stroke-linejoin="round"/>
+     <path d="M60 18 V46" stroke="#A9B0BD" stroke-width="5"/>
+     <rect x="29" y="40" width="62" height="9" rx="4" fill="#A9B0BD" stroke="#7E8796" stroke-width="1.4"/>
+     <g fill="#7E8796">${[36, 48, 60, 72, 84].map(x => `<circle cx="${x}" cy="44.5" r="1.4"/>`).join("")}</g>
+     <path d="M42 26 Q48 21 55 21" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".7"/>` },
+  propeller: { name: "Propeller cap", slot: "head", space: "body", svg:
+    `<g transform="translate(0 6)"><path d="M34 40 C34 16 86 16 86 40 Z" style="fill:var(--violet)" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+     <path d="M52 19 Q49 30 49 40M68 19 Q71 30 71 40" fill="none" style="stroke:var(--coral)" stroke-width="5"/>
+     <rect x="58.5" y="5" width="3" height="14" rx="1.5" fill="${VM_INK}"/>
+     <ellipse cx="49" cy="5" rx="11" ry="3.2" fill="${VM_GOLD}" stroke="${VM_VM_GOLDD}" stroke-width="1"/><ellipse cx="71" cy="5" rx="11" ry="3.2" style="fill:var(--coral)" stroke="#fff" stroke-width="1"/>
+     <circle cx="60" cy="5" r="3" fill="${VM_INK}"/><circle cx="60" cy="5" r="1.2" fill="#fff"/></g>` },
+  halo: { name: "Halo", slot: "head", space: "body", svg:
+    `<g transform="rotate(-6 60 14)"><ellipse cx="60" cy="14" rx="25" ry="6.5" fill="none" stroke="${VM_VM_GOLDD}" stroke-width="5"/>
+     <ellipse cx="60" cy="14" rx="25" ry="6.5" fill="none" stroke="${VM_GOLD}" stroke-width="3"/>
+     <ellipse cx="60" cy="14" rx="25" ry="6.5" fill="none" stroke="#FFF3C4" stroke-width="1" stroke-dasharray="10 14"/></g>
+     ${vmSpark(90, 8, 3, VM_GOLD)}${vmSpark(30, 18, 2.4, "#fff")}` },
+  flowers: { name: "Flower crown", slot: "head", space: "body", svg:
+    `<path d="M24 44 Q60 26 96 44" fill="none" stroke="#5FA84E" stroke-width="2.4" stroke-linecap="round"/>
+     <g fill="#6BBF59">${[[32, 40, -30], [52, 33, 20], [69, 33, -20], [88, 40, 30]].map(([x, y, a]) => `<ellipse cx="${x}" cy="${y}" rx="4.6" ry="2.2" transform="rotate(${a} ${x} ${y})"/>`).join("")}</g>
+     ${[[26, 43, "var(--coral)"], [42, 36, "#fff"], [60, 33, "var(--violet-l)"], [78, 36, "#fff"], [94, 43, "var(--coral)"]].map(([x, y, c]) =>
+       `<g style="fill:${c}" stroke="#fff" stroke-width=".7">${[0, 1, 2, 3, 4].map(i => { const a = i * 2 * Math.PI / 5 - Math.PI / 2; return `<circle cx="${(x + Math.cos(a) * 3.6).toFixed(1)}" cy="${(y + Math.sin(a) * 3.6).toFixed(1)}" r="3"/>`; }).join("")}</g><circle cx="${x}" cy="${y}" r="2.2" fill="${VM_GOLD}"/>`).join("")}` },
+  glasses3d: { name: "3D glasses", slot: "glasses", space: "face", svg:
+    `<rect x="30" y="58" width="29" height="21" rx="3" fill="#FF4D5E" opacity=".8"/><rect x="61" y="58" width="29" height="21" rx="3" fill="#2EC4F0" opacity=".8"/>
+     <g fill="none" stroke="#F7F5FB" stroke-width="3.4" stroke-linejoin="round"><rect x="30" y="58" width="29" height="21" rx="3"/><rect x="61" y="58" width="29" height="21" rx="3"/></g>
+     <path d="M59 63 H61M30 61 L22 58M90 61 L98 58" stroke="#F7F5FB" stroke-width="3.4" stroke-linecap="round"/>
+     <g fill="none" stroke="${VM_INK}" stroke-width="1"><rect x="28.3" y="56.3" width="32.4" height="24.4" rx="4"/><rect x="59.3" y="56.3" width="32.4" height="24.4" rx="4"/></g>` },
+  starglasses: { name: "Star glasses", slot: "glasses", space: "face", svg:
+    `<g style="fill:color-mix(in srgb, var(--violet-l) 65%, transparent)" stroke="${VM_INK}" stroke-width="2.4" stroke-linejoin="round"><path d="${vmStarD(45, 68, 16)}"/><path d="${vmStarD(75, 68, 16)}"/></g>
+     <path d="M58 65 Q60 62 62 65M31 63 L23 60M89 63 L97 60" fill="none" stroke="${VM_INK}" stroke-width="2.4" stroke-linecap="round"/>
+     ${vmSpark(98, 52, 3, VM_GOLD)}${vmSpark(24, 80, 2.4, "#fff")}` },
+  mask: { name: "Hero mask", slot: "glasses", space: "face", svg:
+    `<path d="M33 66 Q27 58 18 61 Q23 66 21 73 Q28 74 33 70Z M87 66 Q93 58 102 61 Q97 66 99 73 Q92 74 87 70Z" fill="${VM_INK}"/>
+     <g fill="none" stroke="${VM_INK}" stroke-width="7"><circle cx="45" cy="68" r="13.5"/><circle cx="75" cy="68" r="13.5"/></g>
+     <path d="M57 62 Q60 59 63 62" fill="none" stroke="${VM_INK}" stroke-width="7"/>
+     <path d="M35 57 Q40 54 46 54M65 54 Q70 54 75 56" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity=".45"/>` },
+  bowtie: { name: "Bow tie", slot: "neck", space: "body", svg:
+    `<g style="fill:var(--coral)" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"><path d="M60 108 L47 100 Q44 108 47 116 Z"/><path d="M60 108 L73 100 Q76 108 73 116 Z"/></g>
+     <g fill="#fff" opacity=".8"><circle cx="51" cy="105" r="1.2"/><circle cx="50" cy="111" r="1.2"/><circle cx="69" cy="105" r="1.2"/><circle cx="70" cy="111" r="1.2"/></g>
+     <rect x="56.5" y="104.5" width="7" height="7" rx="2" style="fill:var(--violet)" stroke="#fff" stroke-width="1.2"/>` },
+  scarf: { name: "Scarf", slot: "neck", space: "body", svg:
+    `<path d="M73 104 L77 125 L86 122 L80 101 Z" style="fill:var(--violet)" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+     <path d="M77 125 L78 128M80 124.2 L81 127M83 123.2 L84 126" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+     <path d="M26 86 Q60 124 94 86" fill="none" style="stroke:var(--violet)" stroke-width="9" stroke-linecap="round"/>
+     <path d="M26 86 Q60 124 94 86" fill="none" style="stroke:var(--coral)" stroke-width="9" stroke-dasharray="4 6"/>` },
+  cherries: { name: "Cherry earrings", slot: "ears", space: "body", svg:
+    [0, 1].map(m => { const g = `<path d="M13 66 Q15 72 11 78M13 66 Q18 72 18 79" fill="none" stroke="#4E8A3A" stroke-width="1.2"/>
+       <ellipse cx="16" cy="66" rx="3.6" ry="1.8" fill="#6BBF59" transform="rotate(-20 16 66)"/>
+       <circle cx="11" cy="80" r="3.6" fill="#E0304E" stroke="#9E1B33" stroke-width=".9"/><circle cx="18" cy="81" r="3.6" fill="#E0304E" stroke="#9E1B33" stroke-width=".9"/>
+       <circle cx="10" cy="78.8" r="1" fill="#fff" opacity=".8"/><circle cx="17" cy="79.8" r="1" fill="#fff" opacity=".8"/>`; return m ? vmMirror(g) : g; }).join("") },
+  clown: { name: "Clown nose", slot: "paint", space: "face", svg:
+    `<circle cx="60" cy="79" r="6.2" fill="#E8344E" stroke="#B81F37" stroke-width="1"/><circle cx="57.8" cy="76.8" r="1.9" fill="#fff" opacity=".85"/>` },
+  whiskers: { name: "Whiskers", slot: "paint", space: "face", svg:
+    `<path d="M56 79 H64 L60 83.5Z" fill="#FF8FA8" stroke="#E0567A" stroke-width=".8" stroke-linejoin="round"/>
+     <g fill="none" stroke="${VM_INK}" stroke-width="1.5" stroke-linecap="round" opacity=".7"><path d="M31 82 L15 78M31 86 L14 87M31 90 L16 95"/><path d="M89 82 L105 78M89 86 L106 87M89 90 L104 95"/></g>` },
   chain: { name: "Gold chain", slot: "neck", space: "body", svg:
     `<path d="M${VM_NECK[0]} Q${VM_NECK[1]} ${VM_NECK[2]}" fill="none" stroke="${VM_VM_GOLDD}" stroke-width="2" stroke-dasharray="2.6 1.4"/>
      <circle cx="60" cy="106" r="7.5" fill="${VM_GOLD}" stroke="${VM_VM_GOLDD}" stroke-width="1.6"/>
      <g fill="${VM_VM_GOLDD}">${[[56, 2.4], [58, 4], [60, 5.6], [62, 4], [64, 2.4]].map(([x, h]) => `<rect x="${x - .6}" y="${106 - h / 2}" width="1.2" height="${h}" rx=".6"/>`).join("")}</g>` },
 };
 
-const VM_SLOTS = [["head", "On the head"], ["glasses", "Glasses"], ["ears", "Earrings"], ["neck", "Necklace"], ["paint", "Face paint"]];
+const VM_SLOTS = [["head", "On the head"], ["glasses", "Glasses"], ["beard", "Beard"], ["ears", "Earrings"], ["neck", "Necklace"], ["paint", "Face paint"]];
 // What unlocks each piece: free, a number of achievements, or one achievement.
 const VM_UNLOCK = { glasses: 0, bow: 0, freckles: 0, heartcheeks: 0, shades: 3, hoops: 5, party: 8, pearls: 12, mustache: 16,
   hearts: 20, glitter: 25, stars: 35, crown: 45, nightcap: "night", headphones: "spoken-1h", monocle: "words-250k",
-  chain: "words-1m", wizard: "vito-wizard" };
+  chain: "words-1m", wizard: "vito-wizard",
+  // Only the stubble is free; many come early, so a new piece turns up often.
+  stubble: 0, bowtie: 1, goatee: 2, whiskers: 4, flowers: 6, beard: 7, cowboy: 10, cherries: 14, handlebar: 18,
+  glasses3d: 22, scarf: 28, starglasses: 30, propeller: 40, halo: 50,
+  vikinghelm: "streak-7", viking: "streak-30", chef: "words-10k", santa: "saved-10h", mask: "comeback",
+  clown: "apps-5", wizbeard: "vito-wizard" };
 let vmAch = null; // the achievements as last loaded, for what is unlocked
 const ICON_LOCK_SM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 let vmOutfit = (() => { try { return JSON.parse(localStorage.getItem("vito-outfit") || "{}") || {}; } catch { return {}; } })();
@@ -8923,8 +9062,10 @@ function vmUnlocked(k){
 // The outfit's drawings for one space ("face" or "body"). Without an outfit
 // given, the one chosen, less what is (no longer) unlocked; a given one is a
 // preview and drawn whole.
+const VM_ORDER = ["paint", "beard", "glasses", "ears", "neck", "head"];
 function vmWorn(space, outfit){
-  return Object.values(outfit || vmOutfit).filter(k => VM_ACC[k] && VM_ACC[k].space === space && (outfit || vmUnlocked(k) !== false))
+  const o = outfit || vmOutfit;
+  return Object.keys(o).sort((a, b) => VM_ORDER.indexOf(a) - VM_ORDER.indexOf(b)).map(s => o[s]).filter(k => VM_ACC[k] && VM_ACC[k].space === space && (outfit || vmUnlocked(k) !== false))
     .map(k => `<g class="vm-acc vm-acc-${k}">${VM_ACC[k].svg}</g>`).join("");
 }
 // Every copy of Vito redrawn in the outfit now chosen.
