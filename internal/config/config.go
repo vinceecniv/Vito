@@ -658,12 +658,8 @@ func Load() (*Config, error) {
 	data, err := os.ReadFile(p)
 	if errors.Is(err, os.ErrNotExist) {
 		cfg := Default()
-		// Fresh install: show sample data so the UI has something to explain
-		// itself with, until a real speech-recognition key arrives. Set here and
-		// not in Default(), because Default() is also the base for parsing an
-		// existing file — an upgrade whose config predates this field must not
-		// suddenly hide the user's own data behind a demo.
-		cfg.Demo = true
+		// A fresh install no longer starts in demo mode: the introduction
+		// explains the app now, and sample data moving behind it confused.
 		if cfg.Server.Token, err = newToken(); err != nil {
 			return nil, err
 		}

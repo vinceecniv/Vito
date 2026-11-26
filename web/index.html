@@ -840,6 +840,12 @@
   .ob-foot .grow { flex:1; }
   #ob-next.ping { animation:obPing 1.2s ease 2; }
   @keyframes obPing { 50% { box-shadow:0 0 0 8px color-mix(in srgb, var(--violet) 22%, transparent); } }
+  /* The first step's button breathes, inviting a start (stills under reduced motion). */
+  #ob-next.invite { animation:obInvite 1.8s ease-in-out infinite; }
+  @keyframes obInvite {
+    0%, 100% { transform:scale(1); box-shadow:0 0 0 0 color-mix(in srgb, var(--coral) 45%, transparent); }
+    50% { transform:scale(1.05); box-shadow:0 0 0 10px color-mix(in srgb, var(--coral) 0%, transparent); }
+  }
   .ob-points { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
   .ob-points li { display:flex; gap:12px; align-items:flex-start; font-size:14px; line-height:1.5; }
   .ob-points .ob-n { flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; background:var(--accent-soft); color:var(--accent); font-weight:700; font-size:13px; }
@@ -4179,6 +4185,7 @@ const TR = { nl: {
   "Languages (25):":"Talen (25):",
   "Dutch, English, German, French, Spanish, Italian, Portuguese, Polish, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Slovenian, Greek, Swedish, Danish, Finnish, Estonian, Latvian, Lithuanian, Maltese, Russian and Ukrainian — detected automatically. Not suitable for other languages.":"Nederlands, Engels, Duits, Frans, Spaans, Italiaans, Portugees, Pools, Tsjechisch, Slowaaks, Hongaars, Roemeens, Bulgaars, Kroatisch, Sloveens, Grieks, Zweeds, Deens, Fins, Estisch, Lets, Litouws, Maltees, Russisch en Oekraïens — automatisch herkend. Niet geschikt voor andere talen.",
   "Vito local (Parakeet)":"Vito lokaal (Parakeet)",
+  "Whistle (small, local)":"Whistle (klein, lokaal)",
   "Vito local":"Vito lokaal",
   "On this computer, free, nothing leaves it. One download of about 1 GB.":"Op deze computer, gratis, niets verlaat hem. Eén download van ongeveer 1 GB.",
   "Best for: privacy and zero cost":"Ideaal voor: privacy en nul kosten",
@@ -6197,7 +6204,7 @@ const SPEECH_MODELS_ALL = [
   // The engine Vito installs and runs itself (see internal/localstt) comes
   // first: it is the one choice that needs no account and sends nothing away.
   // The picker's languages are the model's 25, minus Maltese, which has no flag here.
-  { id:"whistle", provider:"whistle", name:"Whistle (small, built-in)", price:0, langs:WHISTLE_LANGS, logo:LOGO_VITO,
+  { id:"whistle", provider:"whistle", name:"Whistle (small, local)", price:0, langs:WHISTLE_LANGS, logo:LOGO_VITO,
     sub:"On this computer, free, nothing leaves it. A download of 18 MB.",
     needs:"Requires: nothing but the small download below — no account, no key, no server of your own.",
     bullets:["Best for: trying Vito, and dictating offline", "7 languages: English, Dutch, German, French, Spanish, Italian, Polish", "Live transcript while you speak", "Less accurate than Parakeet or Soniox, mostly with names and jargon"] },
@@ -6743,7 +6750,7 @@ function syncSttEndpointUI(){
 // Its state comes from /api/local-stt once, then follows "local_stt" events:
 // install progress, the process starting, running, or dying.
 let localStt = null;
-// Whistle, the small built-in model: a download of 18 MB, then ready. Nothing
+// Whistle, the small local model: a download of 18 MB, then ready. Nothing
 // to start — each clip runs on its own.
 let whistleSt = null;
 async function loadWhistle(){
@@ -10454,6 +10461,7 @@ function obGo(i){
   $("ob-skip").hidden = st.id === "hello" || st.id === "done" || !!st.need;
   const n = $("ob-next");
   n.classList.remove("ping");
+  n.classList.toggle("invite", st.id === "hello");
   n.textContent = st.id === "hello" ? t("Let's go") : st.id === "done" ? t("Start using Vito") : t("Next");
   $("ob-main").scrollTop = 0;
   if (!reducedMotion() && typeof vmPose === "function") vmPose(st.id === "done" ? "party" : "hop");
@@ -10484,8 +10492,14 @@ async function obAward(){
         <span class="ob-award-more">${t("The first of {n}, plus {s} secret ones. Collect them on the Achievements page; each brings something new for me to wear.").replace("{n}", total).replace("{s}", secret)}</span></div>`;
     box.querySelector(".ob-award-n").textContent = x.name; // names are English, never run through t()
     box.hidden = false;
+    // After the award, the medal plays while the pointer is on it, as on the Achievements page.
+    const medal = box.querySelector(".ob-award-medal");
+    if (achAnim.has(x.id)) {
+      medal.onmouseenter = () => { unmountLottie(medal); mountLottie(medal, x.id, true); };
+      medal.onmouseleave = () => { unmountLottie(medal); medal.innerHTML = achMedalInner(x); };
+    }
     if (fresh) {
-      if (achAnim.has(x.id)) mountLottie(box.querySelector(".ob-award-medal"), x.id, false);
+      if (achAnim.has(x.id)) mountLottie(box.querySelector(".ob-award-medal"), x.id, 2);
       playAchSound();
       vmFlash("happy", 3000);
       if (!reducedMotion()) vmPose("party");
@@ -11515,14 +11529,17 @@ function ensureLottie(){
   });
   return _lottieLoad;
 }
+// loop: true plays on until unmounted, a number plays that many rounds.
 function mountLottie(container, id, loop){
   ensureLottie().then(lottie => {
     if (!container.isConnected) return;
     container.innerHTML = ""; // swap the static PNG for the animation once it's ready
-    container._anim = lottie.loadAnimation({
-      container, renderer: "svg", loop: !!loop, autoplay: true,
+    const anim = container._anim = lottie.loadAnimation({
+      container, renderer: "svg", loop: loop === true, autoplay: true,
       path: "achievements/lottie/" + id + ".json" + assetV(),
     });
+    let rounds = typeof loop === "number" ? loop : 1;
+    anim.addEventListener("complete", () => { if (--rounds > 0) anim.goToAndPlay(0, true); });
   }).catch(() => {}); // no player, no problem — the static PNG stays
 }
 function unmountLottie(container){
