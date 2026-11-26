@@ -5320,6 +5320,8 @@ const TR = { nl: {
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
   // The introduction (onboarding)
+  "Hold {key} and speak, as if you were talking to someone.":"Houd {key} ingedrukt en praat, alsof je het tegen iemand zegt.",
+  "Your dictation key is {key}: hold it while you speak, double-tap it to keep talking hands-free. Capitals? Shift still works. Rather a key combination? You can set one here.":"Je dicteertoets is {key}: houd hem ingedrukt terwijl je praat, of tik twee keer om handsfree door te praten. Hoofdletters? Shift werkt gewoon. Liever een toetscombinatie? Die stel je hier in.",
   "Vito works a lot better with the AI cleanup: no ums, proper punctuation, your dictionary applied. Setting it up takes five minutes at most. Rather go on without it? Click Next again.":"Vito werkt een stuk beter met de AI-opschoning: geen ehs, goede leestekens, je woordenboek toegepast. Instellen kost hooguit vijf minuten. Toch liever zonder verder? Klik dan nog een keer op Volgende.",
   "Are you sure? With the cleanup on, your texts come out much tidier.":"Weet je het zeker? Met de opschoning aan worden je teksten een stuk netter.",
   "While you dictate, the pill at the bottom of your screen shows that Vito is listening. Point at it: ✓ stops, × cancels.":"Terwijl je dicteert, laat het pilletje onder in je scherm zien dat Vito luistert. Wijs het aan: ✓ stopt, × annuleert.",
@@ -10111,7 +10113,9 @@ function obStepHTML(id){
   if (id === "hello") return `<div class="card">
       <p class="ob-lead">${t("Vito turns your voice into clean text, right where your cursor is — in your e-mail, a chat, a document, anywhere you can type.")}</p>
       <ul class="ob-points">
-        <li><span class="ob-n">1</span><span>${t("Press your dictation key and speak, as if you were talking to someone.")}</span></li>
+        <li><span class="ob-n">1</span><span>${obKey().one
+          ? t("Hold {key} and speak, as if you were talking to someone.").replace("{key}", obKeyTag(obKey()))
+          : t("Press your dictation key and speak, as if you were talking to someone.")}</span></li>
         <li><span class="ob-n">2</span><span>${t("Vito writes it down and tidies it up: punctuation, capitals, no ums.")}</span></li>
         <li><span class="ob-n">3</span><span>${t("The text appears where your cursor is.")}</span></li>
       </ul>
@@ -10225,6 +10229,10 @@ function obGo(i){
       : t("No dictation key is set up yet. Go back a step, or use the button under the box."));
     $("ob-rec").onclick = () => { $("ob-pad").focus(); $("btn-toggle").click(); };
     setTimeout(() => { const p = $("ob-pad"); if (p) p.focus(); }, 60);
+  } else if (st.id === "key") {
+    const k = obKey();
+    obSay(k.one ? t("Your dictation key is {key}: hold it while you speak, double-tap it to keep talking hands-free. Capitals? Shift still works. Rather a key combination? You can set one here.").replace("{key}", obKeyTag(k))
+      : t(say));
   } else obSay(t(say));
   if (st.id === "pill") $("ob-pill-demo").onclick = () => {
     api("/api/pill/preview?style=" + encodeURIComponent($("s-pillstyle").value || "glow"), { method: "POST" }).catch(() => {});

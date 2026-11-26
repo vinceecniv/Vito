@@ -58,7 +58,11 @@ func app(args []string) error {
 	}
 
 	sa := filepath.Join(*out, "standalone")
-	def, err := json.MarshalIndent(config.Default(), "", " ")
+	// The browser's defaults, whatever system builds them: a page sees only
+	// key combinations, so not the app's Caps Lock (Windows) or Fn (macOS).
+	dc := config.Default()
+	dc.HotkeyWindows = "ctrl+shift+d"
+	def, err := json.MarshalIndent(dc, "", " ")
 	if err != nil {
 		return err
 	}

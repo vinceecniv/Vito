@@ -577,12 +577,18 @@ func Default() *Config {
 	}
 }
 
-// defaultHotkey is the dictation key a new install starts with. A Mac gets
-// Fn: hold it to dictate, as in Wispr Flow, which Mac users switching over
-// already know. Elsewhere Ctrl+Shift+D; Ctrl+Alt+Space is often taken (Claude,
-// among others).
+// defaultHotkey is the dictation key a new install starts with: one key of
+// its own, hold to dictate and double-tap for hands-free (hotkey.Gesture).
+// Windows gets Caps Lock, read by Vito's own keyboard hook and swallowed, so
+// capitals never lock. A Mac gets Fn, as in Wispr Flow, which Mac users
+// switching over already know. Linux keeps Ctrl+Shift+D: Caps Lock there needs
+// the desktop's keyboard layout changed (caps:menu), which Vito only does when
+// asked. Ctrl+Alt+Space is often taken (Claude, among others).
 func defaultHotkey() string {
-	if runtime.GOOS == "darwin" {
+	switch runtime.GOOS {
+	case "windows":
+		return "capslock"
+	case "darwin":
 		return "fn"
 	}
 	return "ctrl+shift+d"
