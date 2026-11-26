@@ -3327,7 +3327,8 @@
           </div>
           </div>
           <div class="prov-settings" id="prov-openai" hidden>
-          <p class="act-note" style="margin:0 0 8px;">No live transcript with this provider: the whole recording is sent when you stop, and the text follows once the endpoint is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.</p>
+          <p class="act-note helper-only" style="margin:0 0 8px;">A server on this computer gets the recording a piece at each pause, so the text grows while you speak (with the AI cleanup on). A hosted endpoint gets the whole recording when you stop, and the text follows once it is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.</p>
+          <p class="act-note web-only" style="margin:0 0 8px;">No live transcript with this provider: the whole recording is sent when you stop, and the text follows once the endpoint is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.</p>
           <label class="fld" data-help="sttpreset">Preset</label>
           <input type="hidden" id="s-sttpreset">
           <div class="flagsel" id="sttpreset-sel">
@@ -4142,8 +4143,11 @@ const TR = { nl: {
   "Whisper, Parakeet or any server that speaks the OpenAI audio API.":"Whisper, Parakeet of elke server die de OpenAI-audio-API spreekt.",
   "Best for: privacy — runs on your own machine":"Ideaal voor: privacy — draait op je eigen computer",
   "Any language the model supports":"Elke taal die het model ondersteunt",
+  "Live transcript while you speak, a piece at each pause (with the AI cleanup on)":"Live transcript terwijl je praat, een stuk bij elke pauze (met de AI-opschoning aan)",
   "No live transcript: the text arrives after you stop":"Geen live transcript: de tekst komt nadat je stopt",
   "No live transcript with this provider: the whole recording is sent when you stop, and the text follows once the endpoint is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.":"Geen live transcript bij deze provider: de hele opname wordt verstuurd zodra je stopt, en de tekst volgt als het endpoint klaar is. Kies hierboven een vaste taal in plaats van 'Automatisch' — Whisper raadt de taal uit de eerste seconden en zit er bij een kort dictaat naast.",
+  "On this computer: live transcript at each pause (with the AI cleanup on); a hosted endpoint sends the text after you stop":"Op deze computer: live transcript bij elke pauze (met de AI-opschoning aan); een gehost endpoint stuurt de tekst nadat je stopt",
+  "A server on this computer gets the recording a piece at each pause, so the text grows while you speak (with the AI cleanup on). A hosted endpoint gets the whole recording when you stop, and the text follows once it is done. Pin the language above rather than 'Automatic' — Whisper guesses it from the first seconds and gets a short dictation wrong.":"Een server op deze computer krijgt de opname per stuk bij elke pauze, zodat de tekst meegroeit terwijl je praat (met de AI-opschoning aan). Een gehost endpoint krijgt de hele opname als je stopt, en de tekst volgt zodra het klaar is. Zet de taal hierboven vast in plaats van 'Automatisch' — Whisper raadt hem uit de eerste seconden en zit er bij een kort dictaat naast.",
   "Endpoint missing":"Endpoint ontbreekt",
   "Requires: a Soniox account (free to create) and its API key, entered below. Audio is sent to Soniox.":"Vereist: een Soniox-account (gratis aan te maken) en de API-key daarvan, hieronder in te vullen. Audio gaat naar Soniox.",
   "Requires: an AssemblyAI account (free starting credit) and its API key, entered below. Audio is sent to AssemblyAI.":"Vereist: een AssemblyAI-account (gratis starttegoed) en de API-key daarvan, hieronder in te vullen. Audio gaat naar AssemblyAI.",
@@ -6132,7 +6136,7 @@ const SPEECH_MODELS_ALL = [
   { id:"vito-local", provider:"local", name:"Vito local (Parakeet)", price:0, langs:PARAKEET_LANGS, logo:LOGO_VITO,
     sub:"On this computer, free, nothing leaves it. One download of about 1 GB.",
     needs:"Requires: nothing but the one-time download below — no account, no key, no server of your own.",
-    bullets:["Best for: privacy and zero cost", "25 European languages, detected automatically", "About a second per dictation on a CPU", "Needs ≈ 1 GB RAM while active, 0.9 GB disk", "No live transcript: the text arrives after you stop"] },
+    bullets:["Best for: privacy and zero cost", "25 European languages, detected automatically", "Live transcript while you speak, a piece at each pause (with the AI cleanup on)", "About a second per dictation on a CPU", "Needs ≈ 1 GB RAM while active, 0.9 GB disk"] },
   { id:"stt-rt-v6", provider:"soniox", name:"Soniox stt-rt-v6", price:0.12, langs:SONIOX_LANGS, logo:LOGO_IMG("soniox"),
     sub:"The cheapest option, with the most languages.",
     needs:"Requires: a Soniox account (free to create) and its API key, entered below. Audio is sent to Soniox.",
@@ -6151,7 +6155,7 @@ const SPEECH_MODELS_ALL = [
   { id:"openai-compatible", provider:"openai", name:"Local or OpenAI-compatible endpoint", price:0, langs:SONIOX_LANGS, logo:LOGO_SERVER,
     sub:"Whisper, Parakeet or any server that speaks the OpenAI audio API.",
     needs:"Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.",
-    bullets:["Best for: privacy — runs on your own machine", "Any language the model supports", "No live transcript: the text arrives after you stop"] },
+    bullets:["Best for: privacy — runs on your own machine", "Any language the model supports", STANDALONE ? "No live transcript: the text arrives after you stop" : "On this computer: live transcript at each pause (with the AI cleanup on); a hosted endpoint sends the text after you stop"] },
 ];
 // In the browser: Whistle, and the services a page can reach itself — Soniox
 // (its WebSocket takes the key in a message) and OpenAI-compatible endpoints.
