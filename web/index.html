@@ -846,6 +846,8 @@
   .ob-note { margin:16px 0 0; font-size:12.5px; color:var(--text3); line-height:1.5; }
   .ob-warn { margin:0 0 16px; padding:12px 14px; border-radius:12px; background:var(--danger-soft); color:var(--danger-ink);
     border:1px solid color-mix(in srgb, var(--danger) 35%, transparent); font-size:13.5px; line-height:1.5; font-weight:500; }
+  .ob-warn.soft { background:color-mix(in srgb, #F59E0B 14%, transparent); color:var(--amber-ink);
+    border-color:color-mix(in srgb, #F59E0B 45%, transparent); }
   .ob-warn.shake { animation:obShake .4s ease; }
   @keyframes obShake { 20%, 60% { transform:translateX(-5px); } 40%, 80% { transform:translateX(5px); } }
   .ob-tasks { list-style:none; margin:0 0 14px; padding:0; display:grid; gap:8px; }
@@ -5318,6 +5320,14 @@ const TR = { nl: {
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
   // The introduction (onboarding)
+  "Vito works a lot better with the AI cleanup: no ums, proper punctuation, your dictionary applied. Setting it up takes five minutes at most. Rather go on without it? Click Next again.":"Vito werkt een stuk beter met de AI-opschoning: geen ehs, goede leestekens, je woordenboek toegepast. Instellen kost hooguit vijf minuten. Toch liever zonder verder? Klik dan nog een keer op Volgende.",
+  "Are you sure? With the cleanup on, your texts come out much tidier.":"Weet je het zeker? Met de opschoning aan worden je teksten een stuk netter.",
+  "While you dictate, the pill at the bottom of your screen shows that Vito is listening. Point at it: ✓ stops, × cancels.":"Terwijl je dicteert, laat het pilletje onder in je scherm zien dat Vito luistert. Wijs het aan: ✓ stopt, × annuleert.",
+  "Point at the resting pill for a moment and the island opens: your last dictation, today's numbers and quick settings. The pin keeps it open.":"Wijs het rustende pilletje even aan en het eiland gaat open: je laatste dictaat, de cijfers van vandaag en snelle instellingen. Met het speldje blijft het open.",
+  "Cancelled by mistake? For five minutes the pill offers to paste that dictation after all.":"Per ongeluk geannuleerd? Vijf minuten lang biedt het pilletje aan dat dictaat alsnog te plakken.",
+  "Show it on my screen":"Laat het op mijn scherm zien",
+  "This little pill is how you see me while you work in other programs. Shall I show you?":"Via dit kleine pilletje zie je mij terwijl je in andere programma's werkt. Zal ik het je laten zien?",
+  "Look at the bottom of your screen: that is me, listening, then writing it down. Pick a style below and I show it at once.":"Kijk onder in je scherm: dat ben ik, eerst luisterend, dan aan het opschrijven. Kies hieronder een stijl en ik laat hem meteen zien.",
   "Speech recognition not set up":"Spraakherkenning niet ingesteld",
   "This step is needed: without a speech model Vito cannot turn your voice into text. Choose one below and set it up — enter its key, or download it.":"Deze stap is nodig: zonder spraakmodel kan Vito je stem niet in tekst omzetten. Kies er hieronder een en stel het in — vul de sleutel in, of download het.",
   "Wait a moment — I can't do anything without this one. Choose a speech model first!":"Wacht even — zonder deze stap kan ik niets. Kies eerst een spraakmodel!",
@@ -9958,14 +9968,15 @@ const OB_STEPS = [
   { id: "hello", label: "Welcome" },
   { id: "look", label: "Look", cards: () => [$("set-look")] },
   { id: "speech", label: "Speech", need: sttUsable, cards: () => [$("lang-sel").closest(".card"), $("model-cards").closest(".card")] },
-  { id: "cleanup", label: "Cleanup", cards: () => [$("s-cleanup").closest(".card")] },
+  { id: "cleanup", label: "Cleanup", advise: obCleanupUsable, cards: () => [$("s-cleanup").closest(".card")] },
   { id: "mic", label: "Microphone", cards: () => [$("s-input").closest(".card")] },
   { id: "key", label: "Dictation key", cards: () => [$("activation-body").closest(".card")] },
+  { id: "pill", label: "Pill", when: () => { const c = $("set-pill"); return !!c && c.style.display !== "none"; }, cards: () => [$("set-pill")] },
   { id: "practice", label: "Practice" },
   { id: "tour", label: "More" },
   { id: "done", label: "Done" },
 ];
-const ob = { open: false, i: 0, seen: new Set(), skipped: new Set(), borrowed: [], vito: null, tasks: [], rec: false, proc: false };
+const ob = { steps: OB_STEPS, open: false, i: 0, seen: new Set(), skipped: new Set(), advised: new Set(), borrowed: [], vito: null, tasks: [], rec: false, proc: false };
 function obBorrow(cards, into){
   cards.filter(Boolean).forEach(c => {
     const ph = document.createComment("onboarding");
@@ -10073,7 +10084,7 @@ function obTaskDone(id){
 }
 // Events from the daemon, while the practice step is open.
 function obEvent(e){
-  if (!ob.open || OB_STEPS[ob.i].id !== "practice") return;
+  if (!ob.open || ob.steps[ob.i].id !== "practice") return;
   if (e.type === "state") {
     if (e.state === "recording") { obHush(); ob.rec = true; ob.proc = false; obSay(t("I'm listening… say something!")); }
     else if (e.state === "processing") { ob.proc = true; obSay(t("Writing it down…")); }
@@ -10106,6 +10117,14 @@ function obStepHTML(id){
       </ul>
       <p class="ob-note">${t("This introduction sets up the essentials and lets you practise. Skip any step you like, and close it whenever you want.")}</p>
     </div>`;
+  if (id === "pill") return `<div class="card">
+      <ul class="ob-points">
+        <li><span class="ob-n">1</span><span>${t("While you dictate, the pill at the bottom of your screen shows that Vito is listening. Point at it: ✓ stops, × cancels.")}</span></li>
+        <li><span class="ob-n">2</span><span>${t("Point at the resting pill for a moment and the island opens: your last dictation, today's numbers and quick settings. The pin keeps it open.")}</span></li>
+        <li><span class="ob-n">3</span><span>${t("Cancelled by mistake? For five minutes the pill offers to paste that dictation after all.")}</span></li>
+      </ul>
+      <div class="ob-row"><button type="button" class="btn primary small" id="ob-pill-demo">${t("Show it on my screen")}</button></div>
+    </div>`;
   if (id === "practice") return `<div class="card">
       <p class="ob-lead">${t("Click in the box below so your cursor is there, then try these:")}</p>
       <ul class="ob-tasks" id="ob-tasks"></ul>
@@ -10115,7 +10134,7 @@ function obStepHTML(id){
   if (id === "tour") {
     const it = (ico, title, text) => `<div><b>${OB_ICON[ico]}${t(title)}</b><span>${t(text)}</span></div>`;
     return `<div class="ob-tour">
-      ${it("pill", "The pill", "While you dictate, a small pill shows at the bottom of your screen. Point at it for the island: your last dictation, today's numbers and quick settings.")}
+      ${ob.steps.some(x => x.id === "pill") ? "" : it("pill", "The pill", "While you dictate, a small pill shows at the bottom of your screen. Point at it for the island: your last dictation, today's numbers and quick settings.")}
       ${it("hist", "History", "Every dictation is kept, with its recording. Copy it, paste it again or give it a star.")}
       ${it("dict", "Dictionary", "Teach Vito names and jargon. It also suggests corrections from your own dictations.")}
       ${it("rules", "Rule sets and programs", "Choose how the cleanup writes — verbatim, tidy, e-mail — and set it per program.")}
@@ -10132,6 +10151,7 @@ function obStepHTML(id){
   return "";
 }
 const OB_TEXT = {
+  pill: ["The pill", "This little pill is how you see me while you work in other programs. Shall I show you?"],
   hello: ["Hi, I'm Vito!", "I'll show you around. It takes about three minutes."],
   look: ["Make Vito your own", "The fun part first: colours, a font and a background. You see it change straight away. Can't choose? Let me surprise you!"],
   speech: ["How your speech becomes text", "Pick the language you usually speak, and a speech engine. The cloud engines are the most accurate and show your words while you speak; Vito local is free and keeps everything on your computer."],
@@ -10144,31 +10164,55 @@ const OB_TEXT = {
 };
 // A step Vito cannot work without (need) can be closed, but not skipped:
 // going past it while it is not done stops there, with a word from Vito.
+// A step that is recommended (advise) says so once when it is passed without
+// being done, in yellow; going on a second time goes on.
 function obBlocked(from, to){
-  for (let r = from; r < to; r++) if (OB_STEPS[r].need && !OB_STEPS[r].need()) return r;
-  return -1;
+  for (let r = from; r < to; r++) {
+    const x = ob.steps[r];
+    if (x.need && !x.need()) return { r, hard: true };
+    if (x.advise && !x.advise() && !ob.advised.has(r)) return { r, hard: false };
+  }
+  return null;
 }
-function obWarn(){
+// The AI cleanup can run: on, and with a key or an endpoint (a hosted one
+// with its key). Read from the fields, which are ahead of the saved config.
+function obCleanupUsable(){
+  if (!$("s-cleanup").checked) return false;
+  if ($("s-cleanupprovider").value !== "openai") return !!$("s-cleanupkey").value.trim();
+  const url = $("s-openaibaseurl").value.trim();
+  return !!url && (!!$("s-openaikey").value.trim() || /^https?:\/\/(localhost|127\.|\[::1\])/i.test(url));
+}
+function obWarn(hard){
   const body = $("ob-body"); if (!body) return;
   let w = $("ob-warn");
-  if (!w) { w = document.createElement("div"); w.id = "ob-warn"; w.className = "ob-warn"; w.setAttribute("role", "alert"); body.prepend(w); }
-  w.textContent = t("This step is needed: without a speech model Vito cannot turn your voice into text. Choose one below and set it up — enter its key, or download it.");
+  if (!w) { w = document.createElement("div"); w.id = "ob-warn"; w.setAttribute("role", "alert"); body.prepend(w); }
+  w.className = "ob-warn" + (hard ? "" : " soft");
+  w.textContent = hard
+    ? t("This step is needed: without a speech model Vito cannot turn your voice into text. Choose one below and set it up — enter its key, or download it.")
+    : t("Vito works a lot better with the AI cleanup: no ums, proper punctuation, your dictionary applied. Setting it up takes five minutes at most. Rather go on without it? Click Next again.");
   w.classList.remove("shake"); void w.offsetWidth; w.classList.add("shake");
   $("ob-main").scrollTop = 0;
-  vmFlash("dizzy", 1200);
-  obSay(t("Wait a moment — I can't do anything without this one. Choose a speech model first!"));
+  if (hard) {
+    vmFlash("dizzy", 1200);
+    obSay(t("Wait a moment — I can't do anything without this one. Choose a speech model first!"));
+  } else obSay(t("Are you sure? With the cleanup on, your texts come out much tidier."));
 }
 function obGo(i){
-  if (i < 0 || i >= OB_STEPS.length) return;
-  const r = ob.open && i > ob.i ? obBlocked(ob.i, i) : -1;
-  if (r >= 0) { if (r !== ob.i) obGo(r); obWarn(); return; }
+  if (i < 0 || i >= ob.steps.length) return;
+  const b = ob.open && i > ob.i ? obBlocked(ob.i, i) : null;
+  if (b) {
+    if (!b.hard) ob.advised.add(b.r);
+    if (b.r !== ob.i) obGo(b.r);
+    obWarn(b.hard);
+    return;
+  }
   obReturn();
   ob.i = i;
-  const st = OB_STEPS[i];
+  const st = ob.steps[i];
   ob.seen.add(i);
   const [title, say] = OB_TEXT[st.id];
   $("ob-title").textContent = t(title);
-  $("ob-count").textContent = t("Step {n} of {total}").replace("{n}", i + 1).replace("{total}", OB_STEPS.length);
+  $("ob-count").textContent = t("Step {n} of {total}").replace("{n}", i + 1).replace("{total}", ob.steps.length);
   const body = $("ob-body");
   body.innerHTML = obStepHTML(st.id);
   if (st.cards) obBorrow(st.cards(), body);
@@ -10182,16 +10226,20 @@ function obGo(i){
     $("ob-rec").onclick = () => { $("ob-pad").focus(); $("btn-toggle").click(); };
     setTimeout(() => { const p = $("ob-pad"); if (p) p.focus(); }, 60);
   } else obSay(t(say));
+  if (st.id === "pill") $("ob-pill-demo").onclick = () => {
+    api("/api/pill/preview?style=" + encodeURIComponent($("s-pillstyle").value || "glow"), { method: "POST" }).catch(() => {});
+    obSay(t("Look at the bottom of your screen: that is me, listening, then writing it down. Pick a style below and I show it at once."));
+  };
   if (st.id === "done") {
     renderStatusTags();
     const tags = $("status-tags");
     $("ob-sum").innerHTML = tags ? `<div class="${tags.className}">${tags.innerHTML}</div>` : "";
   }
   // The progress bar.
-  $("ob-steps").innerHTML = OB_STEPS.map((x, j) => `<li class="${j === i ? "cur" : ""}${ob.seen.has(j) ? " seen" : ""}${ob.skipped.has(j) ? " skipped" : ""}">
+  $("ob-steps").innerHTML = ob.steps.map((x, j) => `<li class="${j === i ? "cur" : ""}${ob.seen.has(j) ? " seen" : ""}${ob.skipped.has(j) ? " skipped" : ""}">
       <button type="button" data-ob="${j}" aria-label="${ahEsc(t(x.label))}"${j === i ? ' aria-current="step"' : ""}><span class="ob-dot">${ob.seen.has(j) && j !== i && !ob.skipped.has(j) ? "✓" : j + 1}</span><span class="ob-lbl">${t(x.label)}</span></button></li>`).join("");
   $("ob-steps").querySelectorAll("button").forEach(b => b.onclick = () => obGo(+b.dataset.ob));
-  $("ob-bar").style.width = (i / (OB_STEPS.length - 1) * 100) + "%";
+  $("ob-bar").style.width = (i / (ob.steps.length - 1) * 100) + "%";
   $("ob-back").style.visibility = i === 0 ? "hidden" : "";
   $("ob-skip").hidden = st.id === "hello" || st.id === "done" || !!st.need;
   const n = $("ob-next");
@@ -10203,7 +10251,8 @@ function obGo(i){
 }
 function openOnboarding(){
   if (STANDALONE || ob.open) return;
-  ob.open = true; ob.i = 0; ob.seen = new Set(); ob.skipped = new Set();
+  ob.steps = OB_STEPS.filter(x => !x.when || x.when());
+  ob.open = true; ob.i = 0; ob.seen = new Set(); ob.skipped = new Set(); ob.advised = new Set();
   const o = $("onboarding");
   if (!ob.vito) { ob.vito = makeMascot(document); $("ob-vito").appendChild(ob.vito); }
   o.hidden = false;
@@ -10224,7 +10273,7 @@ function closeOnboarding(finished){
   actionToast(finished ? t("All set — have fun dictating! The introduction is under Settings → About.")
     : t("Introduction closed. You can open it again under Settings → About."), t("Show me"), go, 9000, "info");
 }
-$("ob-next").onclick = () => { if (OB_STEPS[ob.i].id === "done") closeOnboarding(true); else obGo(ob.i + 1); };
+$("ob-next").onclick = () => { if (ob.steps[ob.i].id === "done") closeOnboarding(true); else obGo(ob.i + 1); };
 $("ob-skip").onclick = () => { ob.skipped.add(ob.i); obGo(ob.i + 1); };
 $("ob-back").onclick = () => obGo(ob.i - 1);
 $("ob-close").onclick = () => closeOnboarding(false);
