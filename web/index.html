@@ -12839,8 +12839,12 @@ async function fillSettings() {
   if (cfg.ui && !!cfg.ui.settings_all !== setAll) setSetAll(!!cfg.ui.settings_all, false);
   if (cfg.ui && (cfg.ui.radius || "") !== radiusPref) setRadius(cfg.ui.radius || "", false);
   if (cfg.ui && (cfg.ui.gradient || "") !== gradPref) setGradient(cfg.ui.gradient || "", false);
-  if (cfg.ui && cfg.ui.outfit && JSON.stringify(cfg.ui.outfit) !== JSON.stringify(vmOutfit)) {
-    vmOutfit = Object.assign({}, cfg.ui.outfit);
+  // The config is what Vito wears; the browser's copy only saves a flash on
+  // load. No outfit in the config means none, also when this browser still
+  // remembers one (a reinstall, or another Vito on the same address).
+  const cfgOutfit = (cfg.ui && cfg.ui.outfit) || {};
+  if (JSON.stringify(cfgOutfit) !== JSON.stringify(vmOutfit)) {
+    vmOutfit = Object.assign({}, cfgOutfit);
     try { localStorage.setItem("vito-outfit", JSON.stringify(vmOutfit)); } catch {}
     vmRedress();
   }

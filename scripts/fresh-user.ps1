@@ -1,6 +1,8 @@
 # Starts the dev build as a brand-new user: an empty profile (config, history,
 # achievements, dictionary, cache) in %TEMP%\vito-fresh, on its own port, next
-# to the installed Vito, which is not touched. Each run starts from scratch.
+# to the installed Vito, which is not touched. Each run starts from scratch, on
+# a new port: the page keeps things in the browser per address (localStorage),
+# so a new address is a browser that has never seen Vito either.
 #
 #   pwsh -File scripts/fresh-user.ps1          # rebuild, wipe, start, open the browser
 #   pwsh -File scripts/fresh-user.ps1 -Keep    # start again with the profile as it was
@@ -14,7 +16,7 @@
 # The fresh daemon registers the default dictation key too. If the installed
 # Vito uses the same key, both answer it: quit the installed one from its tray
 # icon while you test, and start it again afterwards.
-param([switch]$Stop, [switch]$Keep, [int]$Port = 4599)
+param([switch]$Stop, [switch]$Keep, [int]$Port = 0)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $dir = Join-Path $env:TEMP 'vito-fresh'
@@ -39,6 +41,7 @@ New-Item -ItemType Directory -Force (Join-Path $dir 'roaming\vito'), (Join-Path 
 $cfgPath = Join-Path $dir 'roaming\vito\config.json'
 if (-not (Test-Path $cfgPath)) {
   $token = -join ((48..57) + (97..122) | Get-Random -Count 24 | ForEach-Object { [char]$_ })
+  if (-not $Port) { $Port = Get-Random -Minimum 45000 -Maximum 46000 }
   @{ server = @{ port = $Port; token = $token } } | ConvertTo-Json | Set-Content -Encoding utf8NoBOM $cfgPath
 }
 $token = (Get-Content $cfgPath | ConvertFrom-Json).server.token
