@@ -844,6 +844,10 @@
   .ob-points li { display:flex; gap:12px; align-items:flex-start; font-size:14px; line-height:1.5; }
   .ob-points .ob-n { flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; background:var(--accent-soft); color:var(--accent); font-weight:700; font-size:13px; }
   .ob-note { margin:16px 0 0; font-size:12.5px; color:var(--text3); line-height:1.5; }
+  .ob-warn { margin:0 0 16px; padding:12px 14px; border-radius:12px; background:var(--danger-soft); color:var(--danger-ink);
+    border:1px solid color-mix(in srgb, var(--danger) 35%, transparent); font-size:13.5px; line-height:1.5; font-weight:500; }
+  .ob-warn.shake { animation:obShake .4s ease; }
+  @keyframes obShake { 20%, 60% { transform:translateX(-5px); } 40%, 80% { transform:translateX(5px); } }
   .ob-tasks { list-style:none; margin:0 0 14px; padding:0; display:grid; gap:8px; }
   .ob-tasks li { display:flex; gap:10px; align-items:flex-start; font-size:14px; line-height:1.5; padding:10px 12px; border-radius:12px;
     background:var(--input-bg); border:1px solid var(--input-border); transition:background .25s, border-color .25s; }
@@ -5314,6 +5318,9 @@ const TR = { nl: {
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
   // The introduction (onboarding)
+  "Speech recognition not set up":"Spraakherkenning niet ingesteld",
+  "This step is needed: without a speech model Vito cannot turn your voice into text. Choose one below and set it up — enter its key, or download it.":"Deze stap is nodig: zonder spraakmodel kan Vito je stem niet in tekst omzetten. Kies er hieronder een en stel het in — vul de sleutel in, of download het.",
+  "Wait a moment — I can't do anything without this one. Choose a speech model first!":"Wacht even — zonder deze stap kan ik niets. Kies eerst een spraakmodel!",
   "Vito can be dressed up too: hats, glasses and more. You unlock them with achievements, and choose them on the Achievements page.":"Vito kun je ook aankleden: hoedjes, brillen en meer. Die speel je vrij met prestaties, en je kiest ze op de pagina Prestaties.",
   "Close the introduction":"Introductie sluiten",
   "Back":"Terug",
@@ -6400,8 +6407,22 @@ function askDownload(p){
       : "Vito local runs on this computer, so it is installed once first (about 1 GB). Until then Vito can't dictate with it.")}</p>`,
     () => { whistle ? installWhistle() : installLocalStt(); }, whistle ? "Download now" : "Install now", false, null, false, "Later");
 }
+// The model the cards show as chosen. The configuration always names one
+// (Soniox by default), but a fresh install has no key for it: then no card is
+// marked, so a new user really chooses. A card clicked on this page counts at
+// once, ready or not, so its key field or download shows under it.
+let sttPicked = false;
+function sttCur(){
+  const id = $("s-model").value || "", m = SPEECH_MODELS.find(x => x.id === id);
+  return m && (sttPicked || providerReady(m.provider) || fetching(m.provider)) ? id : "";
+}
+// Whether Vito can dictate with the configured speech recognition (or soon
+// can: its download is running).
+function sttUsable(){
+  return !!(cfg && cfg.stt && (providerReady(cfg.stt.provider) || fetching(cfg.stt.provider)));
+}
 function buildModelCards(){
-  const box = $("model-cards"), cur = $("s-model").value || "";
+  const box = $("model-cards"), cur = sttCur();
   updateLangNote();
   // Re-rendering moves the settings blocks, and a moved input loses focus — so
   // while the selection and language stand, only the volatile bits are updated.
@@ -6463,6 +6484,7 @@ function buildModelCards(){
   });
   box.querySelectorAll(".modelcard:not(.am-card)").forEach(c => c.onclick = () => {
     if (c.disabled) return;
+    sttPicked = true;
     $("s-model").value = c.dataset.id;
     // The provider follows the card, so choosing a model is the whole decision —
     // and its settings unfold, since that is where you go next.
@@ -6486,7 +6508,7 @@ function buildModelCards(){
 // refreshModelCards updates selection, availability, price and tag on the cards
 // that are already on the page. False when the page has no cards yet.
 function refreshModelCards(){
-  const box = $("model-cards"), cur = $("s-model").value || "";
+  const box = $("model-cards"), cur = sttCur();
   let ok = true;
   SPEECH_MODELS.forEach(m => {
     const c = box.querySelector(`.modelcard[data-id="${m.id}"]`);
@@ -9935,7 +9957,7 @@ function maybeShowWelcome(){
 const OB_STEPS = [
   { id: "hello", label: "Welcome" },
   { id: "look", label: "Look", cards: () => [$("set-look")] },
-  { id: "speech", label: "Speech", cards: () => [$("lang-sel").closest(".card"), $("model-cards").closest(".card")] },
+  { id: "speech", label: "Speech", need: sttUsable, cards: () => [$("lang-sel").closest(".card"), $("model-cards").closest(".card")] },
   { id: "cleanup", label: "Cleanup", cards: () => [$("s-cleanup").closest(".card")] },
   { id: "mic", label: "Microphone", cards: () => [$("s-input").closest(".card")] },
   { id: "key", label: "Dictation key", cards: () => [$("activation-body").closest(".card")] },
@@ -10120,8 +10142,26 @@ const OB_TEXT = {
   tour: ["What else Vito can do", "A few things worth knowing. You'll find them all in the menu on the left."],
   done: ["Ready to go!", "That's it! Press your key wherever you type, and I'll do the rest."],
 };
+// A step Vito cannot work without (need) can be closed, but not skipped:
+// going past it while it is not done stops there, with a word from Vito.
+function obBlocked(from, to){
+  for (let r = from; r < to; r++) if (OB_STEPS[r].need && !OB_STEPS[r].need()) return r;
+  return -1;
+}
+function obWarn(){
+  const body = $("ob-body"); if (!body) return;
+  let w = $("ob-warn");
+  if (!w) { w = document.createElement("div"); w.id = "ob-warn"; w.className = "ob-warn"; w.setAttribute("role", "alert"); body.prepend(w); }
+  w.textContent = t("This step is needed: without a speech model Vito cannot turn your voice into text. Choose one below and set it up — enter its key, or download it.");
+  w.classList.remove("shake"); void w.offsetWidth; w.classList.add("shake");
+  $("ob-main").scrollTop = 0;
+  vmFlash("dizzy", 1200);
+  obSay(t("Wait a moment — I can't do anything without this one. Choose a speech model first!"));
+}
 function obGo(i){
   if (i < 0 || i >= OB_STEPS.length) return;
+  const r = ob.open && i > ob.i ? obBlocked(ob.i, i) : -1;
+  if (r >= 0) { if (r !== ob.i) obGo(r); obWarn(); return; }
   obReturn();
   ob.i = i;
   const st = OB_STEPS[i];
@@ -10153,7 +10193,7 @@ function obGo(i){
   $("ob-steps").querySelectorAll("button").forEach(b => b.onclick = () => obGo(+b.dataset.ob));
   $("ob-bar").style.width = (i / (OB_STEPS.length - 1) * 100) + "%";
   $("ob-back").style.visibility = i === 0 ? "hidden" : "";
-  $("ob-skip").hidden = st.id === "hello" || st.id === "done";
+  $("ob-skip").hidden = st.id === "hello" || st.id === "done" || !!st.need;
   const n = $("ob-next");
   n.classList.remove("ping");
   n.textContent = st.id === "hello" ? t("Let's go") : st.id === "done" ? t("Start using Vito") : t("Next");
@@ -10163,7 +10203,7 @@ function obGo(i){
 }
 function openOnboarding(){
   if (STANDALONE || ob.open) return;
-  ob.open = true; ob.seen = new Set(); ob.skipped = new Set();
+  ob.open = true; ob.i = 0; ob.seen = new Set(); ob.skipped = new Set();
   const o = $("onboarding");
   if (!ob.vito) { ob.vito = makeMascot(document); $("ob-vito").appendChild(ob.vito); }
   o.hidden = false;
@@ -12842,7 +12882,8 @@ function renderStatusTags(){
     : sm && sm.provider === "local" ? t("Vito local") + " · Parakeet" + (localStt && localStt.phase !== "running" ? " · " + localSttTag() : "")
     : sm && sm.provider === "whistle" ? "Whistle" + (whistleSt && whistleSt.phase !== "ready" ? " · " + whistleTag() : "")
     : sm ? sm.name : null;
-  tags.push({ ico: ICON_MIC2, text: sttLabel || ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
+  if (!STANDALONE && !sttUsable()) tags.push({ ico: ICON_MIC2, text: t("Speech recognition not set up"), sec: "stt", muted: true });
+  else tags.push({ ico: ICON_MIC2, text: sttLabel || ((cfg.stt && PROVIDER_NAMES[cfg.stt.provider]) || "—"), sec: "stt" });
   tags.push({ raw: langIcon((cfg.stt && cfg.stt.language) || ""), text: langShortName(cfg.stt && cfg.stt.language), sec: "stt" });
   const cl = cfg.cleanup || {};
   if (STANDALONE) tags.push({ ico: SPARK_SVG, text: t("Tidied by rules"), sec: "stt", muted: true });
