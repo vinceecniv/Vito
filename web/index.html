@@ -840,6 +840,12 @@
   .ob-foot .grow { flex:1; }
   #ob-next.ping { animation:obPing 1.2s ease 2; }
   @keyframes obPing { 50% { box-shadow:0 0 0 8px color-mix(in srgb, var(--violet) 22%, transparent); } }
+  /* The first step's button breathes, inviting a start (stills under reduced motion). */
+  #ob-next.invite { animation:obInvite 1.8s ease-in-out infinite; }
+  @keyframes obInvite {
+    0%, 100% { transform:scale(1); box-shadow:0 0 0 0 color-mix(in srgb, var(--coral) 45%, transparent); }
+    50% { transform:scale(1.05); box-shadow:0 0 0 10px color-mix(in srgb, var(--coral) 0%, transparent); }
+  }
   .ob-points { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
   .ob-points li { display:flex; gap:12px; align-items:flex-start; font-size:14px; line-height:1.5; }
   .ob-points .ob-n { flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; background:var(--accent-soft); color:var(--accent); font-weight:700; font-size:13px; }
@@ -10454,6 +10460,7 @@ function obGo(i){
   $("ob-skip").hidden = st.id === "hello" || st.id === "done" || !!st.need;
   const n = $("ob-next");
   n.classList.remove("ping");
+  n.classList.toggle("invite", st.id === "hello");
   n.textContent = st.id === "hello" ? t("Let's go") : st.id === "done" ? t("Start using Vito") : t("Next");
   $("ob-main").scrollTop = 0;
   if (!reducedMotion() && typeof vmPose === "function") vmPose(st.id === "done" ? "party" : "hop");

@@ -256,7 +256,7 @@ var List = []Def{
 	// One-offs. The first two are a welcome (five dictations, the introduction
 	// followed); the rest stay hidden until you stumble on them.
 	{ID: "first", Group: GroupSpecial, Icon: "👋", Name: "Hello, Vito", Desc: "Dictated five times", Flag: "first"},
-	{ID: "intro", Group: GroupSpecial, Icon: "🧭", Name: "Guided Tour", Desc: "Followed Vito's introduction", Flag: "intro"},
+	{ID: "intro", Group: GroupSpecial, Icon: "🎓", Name: "Guided Tour", Desc: "Followed Vito's introduction", Flag: "intro"},
 	{ID: "night", Group: GroupSpecial, Icon: "🦉", Name: "Night Owl", Desc: "Dictated after midnight", Flag: "night", Secret: true},
 	{ID: "early", Group: GroupSpecial, Icon: "🐦", Name: "Early Bird", Desc: "Dictated before 7 in the morning", Flag: "early", Secret: true},
 	{ID: "comeback", Group: GroupSpecial, Icon: "🪃", Name: "Welcome Back", Desc: "Came back after 30 quiet days", Flag: "comeback", Secret: true},
