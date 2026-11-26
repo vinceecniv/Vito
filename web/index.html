@@ -816,8 +816,6 @@
   .ob-x { all:unset; cursor:pointer; width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:22px; line-height:1;
     color:var(--text2); background:var(--card); border:1px solid var(--card-border); flex:none; }
   .ob-x:hover { color:var(--text); }
-  .ob-voice svg { width:18px; height:18px; }
-  .ob-voice[aria-pressed="true"] { color:var(--accent); }
   .ob-x:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   .ob-main { flex:1; min-height:0; overflow:auto; display:grid; grid-template-columns:220px minmax(0, 1fr); gap:28px; align-items:start;
     max-width:1040px; width:100%; margin:0 auto; padding:calc(18px * var(--dn, 1)) 20px 24px; box-sizing:border-box; }
@@ -2888,7 +2886,6 @@
 <div id="onboarding" class="ob" hidden role="dialog" aria-modal="true" aria-labelledby="ob-title">
   <div class="ob-top">
     <div class="ob-prog"><ol class="ob-steps" id="ob-steps"></ol><div class="ob-bar"><i id="ob-bar"></i></div></div>
-    <button type="button" class="ob-x ob-voice" id="ob-voice" aria-pressed="true" aria-label="Vito's voice" data-tip-text="Vito's voice"></button>
     <button type="button" class="ob-x" id="ob-close" aria-label="Close the introduction" data-tip-text="Close the introduction">×</button>
   </div>
   <div class="ob-main" id="ob-main">
@@ -5317,9 +5314,6 @@ const TR = { nl: {
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
   // The introduction (onboarding)
-  "Vito's voice":"Vito's stem",
-  "Turn Vito's voice off":"Vito's stem uitzetten",
-  "Turn Vito's voice on":"Vito's stem aanzetten",
   "Vito can be dressed up too: hats, glasses and more. You unlock them with achievements, and choose them on the Achievements page.":"Vito kun je ook aankleden: hoedjes, brillen en meer. Die speel je vrij met prestaties, en je kiest ze op de pagina Prestaties.",
   "Close the introduction":"Introductie sluiten",
   "Back":"Terug",
@@ -9963,70 +9957,51 @@ function obReturn(){
   ob.borrowed.forEach(({ c, ph, hidden }) => { ph.replaceWith(c); c.hidden = hidden; });
   ob.borrowed = [];
 }
-function obSay(html, speak){
+function obSay(html){
   const b = $("ob-say"); if (!b) return;
+  obHush();
+  b.style.minHeight = "";
   b.innerHTML = html;
   b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop");
-  if (speak) obSpeak(html);
+  if (reducedMotion()) return;
+  // Hold the bubble at its full size, so it does not grow line by line.
+  b.style.minHeight = b.offsetHeight + "px";
+  const w = document.createTreeWalker(b, NodeFilter.SHOW_TEXT), nodes = [];
+  while (w.nextNode()) nodes.push({ n: w.currentNode, text: w.currentNode.nodeValue });
+  nodes.forEach(x => { x.n.nodeValue = ""; });
+  // Not while you dictate: then the mouth follows your voice.
+  if (!ob.rec && uiState !== "recording") obMouth(true);
+  let k = 0, pos = 0;
+  const done = () => { nodes.forEach(x => { x.n.nodeValue = x.text; }); b.style.minHeight = ""; };
+  obType.finish = done;
+  const step = () => {
+    if (k >= nodes.length) { obType.finish = null; done(); obMouth(false); return; }
+    const x = nodes[k];
+    pos = Math.min(pos + 2, x.text.length);
+    x.n.nodeValue = x.text.slice(0, pos);
+    const ch = x.text.charAt(pos - 1);
+    if (pos >= x.text.length) { k++; pos = 0; }
+    obType.timer = setTimeout(step, /[.!?…]/.test(ch) ? 260 : /[,:;—]/.test(ch) ? 120 : 30);
+  };
+  step();
 }
-// Vito reads each step's bubble aloud (the system's speech voices, through
-// speechSynthesis) and moves its mouth while it does, as when you dictate.
-// Only a step's opening line: what it says during the practice would go
-// into the microphone. A browser may refuse to speak before the first click;
-// that line is then spoken at the first click on the page.
-const obVoice = { on: true, timer: null, utt: null, pending: "" };
-try { obVoice.on = localStorage.getItem("vito-ob-voice") !== "0"; } catch {}
-const OB_SPK_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg>';
-const OB_SPK_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m16 9 6 6M22 9l-6 6"/></svg>';
-function obVoiceButton(){
-  const b = $("ob-voice"); if (!b) return;
-  b.hidden = !("speechSynthesis" in window);
-  b.innerHTML = obVoice.on ? OB_SPK_ON : OB_SPK_OFF;
-  b.setAttribute("aria-pressed", obVoice.on ? "true" : "false");
-  b.dataset.tipText = obVoice.on ? t("Turn Vito's voice off") : t("Turn Vito's voice on");
-}
-function obPickVoice(){
-  const lang = (uiLang || "en").toLowerCase().split("-")[0];
-  const mine = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().split(/[-_]/)[0] === lang);
-  return mine.find(v => /natural/i.test(v.name)) || mine.find(v => /online/i.test(v.name)) || mine.find(v => v.localService) || mine[0] || null;
-}
+// Vito types what it says into its bubble, a few letters at a time, its mouth
+// moving as it does with your voice when you dictate, so a new step's line
+// draws the eye instead of just being there. A click on the bubble shows the
+// rest at once; under reduced motion it is all there at once.
+const obType = { timer: null, mouth: null, finish: null };
 function obMouth(on){
-  clearInterval(obVoice.timer); obVoice.timer = null;
+  clearInterval(obType.mouth); obType.mouth = null;
   if (on) {
     vm.forced = "recording";
     let t0 = Math.random() * 6;
-    const since = Date.now();
-    // Chromium does not always report the start and end of an utterance that
-    // follows a cancel(), so the mouth also stops once nothing is spoken.
-    obVoice.timer = setInterval(() => {
-      if (Date.now() - since > 900 && !speechSynthesis.speaking) { obMouth(false); return; }
-      t0 += .35; vmLevel(Math.max(0, 55 + 45 * Math.sin(t0) * Math.sin(t0 * 2.7)));
-    }, 80);
+    obType.mouth = setInterval(() => { t0 += .35; vmLevel(Math.max(0, 55 + 45 * Math.sin(t0) * Math.sin(t0 * 2.7))); }, 80);
   } else if (vm.forced === "recording") { vm.forced = null; vm.lvl = 0; vm.quiet = false; vmRender(); }
 }
 function obHush(){
-  obVoice.pending = ""; obVoice.utt = null;
-  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  clearTimeout(obType.timer); obType.timer = null;
+  if (obType.finish) { const f = obType.finish; obType.finish = null; f(); }
   obMouth(false);
-}
-function obSpeak(html){
-  obHush();
-  if (!("speechSynthesis" in window) || !obVoice.on || !ob.open) return;
-  const text = (new DOMParser().parseFromString(html, "text/html").body.textContent || "").trim();
-  if (!text) return;
-  const u = new SpeechSynthesisUtterance(text);
-  const v = obPickVoice();
-  if (v) { u.voice = v; u.lang = v.lang; } else u.lang = uiLang || "en";
-  u.rate = 1.04; u.pitch = 1.15;
-  u.onend = () => { if (obVoice.utt === u) { obVoice.utt = null; obMouth(false); } };
-  u.onerror = (e) => {
-    if (obVoice.utt !== u) return;
-    obVoice.utt = null; obMouth(false);
-    if (e.error === "not-allowed") obVoice.pending = html;
-  };
-  obVoice.utt = u;
-  speechSynthesis.speak(u);
-  obMouth(true);
 }
 // The dictation key as the Activation tab names it, and whether it is a key of
 // its own (Caps Lock, Fn: hold, double-tap) or a combination.
@@ -10163,10 +10138,10 @@ function obGo(i){
     obRenderTasks();
     const k = obKey();
     obSay(k.name ? t("Click in the box, then use {key}. I'll listen along!").replace("{key}", obKeyTag(k))
-      : t("No dictation key is set up yet. Go back a step, or use the button under the box."), true);
+      : t("No dictation key is set up yet. Go back a step, or use the button under the box."));
     $("ob-rec").onclick = () => { $("ob-pad").focus(); $("btn-toggle").click(); };
     setTimeout(() => { const p = $("ob-pad"); if (p) p.focus(); }, 60);
-  } else obSay(t(say), true);
+  } else obSay(t(say));
   if (st.id === "done") {
     renderStatusTags();
     const tags = $("status-tags");
@@ -10193,7 +10168,6 @@ function openOnboarding(){
   if (!ob.vito) { ob.vito = makeMascot(document); $("ob-vito").appendChild(ob.vito); }
   o.hidden = false;
   document.documentElement.classList.add("ob-open");
-  obVoiceButton();
   obGo(0);
   setTimeout(() => $("ob-next").focus(), 50);
 }
@@ -10214,16 +10188,7 @@ $("ob-next").onclick = () => { if (OB_STEPS[ob.i].id === "done") closeOnboarding
 $("ob-skip").onclick = () => { ob.skipped.add(ob.i); obGo(ob.i + 1); };
 $("ob-back").onclick = () => obGo(ob.i - 1);
 $("ob-close").onclick = () => closeOnboarding(false);
-$("ob-voice").onclick = () => {
-  obVoice.on = !obVoice.on;
-  try { localStorage.setItem("vito-ob-voice", obVoice.on ? "1" : "0"); } catch {}
-  obVoiceButton();
-  if (obVoice.on) obSpeak($("ob-say").innerHTML); else obHush();
-};
-// A line the browser would not speak before the first click: at that click.
-$("onboarding").addEventListener("pointerdown", (e) => {
-  if (obVoice.pending && !e.target.closest("button")) obSpeak(obVoice.pending);
-});
+$("ob-say").addEventListener("click", obHush);
 $("ob-restart").onclick = () => openOnboarding();
 if (STANDALONE) { const c = $("about-intro"); if (c) c.remove(); }
 // A one-off status-page bar for Linux users on first run: Vito needs a couple of
