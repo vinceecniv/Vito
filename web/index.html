@@ -8898,7 +8898,7 @@ const VM_ACC = {
     vmSpark(91, 56, 5, VM_GOLD) + vmSpark(97, 66, 3, "var(--violet-l)") + vmSpark(86, 81, 3.4, "#fff") + vmStar(28, 82, 4.2, VM_GOLD) + vmSpark(23, 57, 3, "#fff") },
   heartcheeks: { name: "Heart cheeks", slot: "paint", space: "face", svg:
     `<g fill="#FF6F91" stroke="#fff" stroke-width="1"><path d="${vmHeart(33, 84, 5.5)}"/><path d="${vmHeart(87, 84, 5.5)}"/></g>` },
-  mustache: { name: "Moustache", slot: "paint", space: "face", svg:
+  mustache: { name: "Moustache", slot: "beard", space: "face", svg:
     `<path d="M60 83.5 C56 79 48 78.5 44.5 83 C42.5 86 44.6 88.6 47 87 C50 84.6 55.5 85.4 60 86.6 C64.5 85.4 70 84.6 73 87 C75.4 88.6 77.5 86 75.5 83 C72 78.5 64 79 60 83.5Z" fill="#4A3426" stroke="#2E2018" stroke-width="1"/>` },
   bow: { name: "Bow", slot: "head", space: "body", svg:
     `<g transform="rotate(22 88 40)" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" style="fill:var(--coral)">
@@ -9049,7 +9049,14 @@ const VM_UNLOCK = { glasses: 0, bow: 0, freckles: 0, heartcheeks: 0, shades: 3, 
   clown: "apps-5", wizbeard: "vito-wizard" };
 let vmAch = null; // the achievements as last loaded, for what is unlocked
 const ICON_LOCK_SM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
-let vmOutfit = (() => { try { return JSON.parse(localStorage.getItem("vito-outfit") || "{}") || {}; } catch { return {}; } })();
+// The moustache moved from the face paint to the beards (the daemon's config
+// does the same in Go; this covers the browser version and the saved copy).
+function vmMigrate(o) {
+  o = Object.assign({}, o || {});
+  if (o.paint === "mustache") { delete o.paint; if (!o.beard) o.beard = "mustache"; }
+  return o;
+}
+let vmOutfit = (() => { try { return vmMigrate(JSON.parse(localStorage.getItem("vito-outfit") || "{}")); } catch { return {}; } })();
 // Whether piece k may be worn: unknown while the achievements have not loaded,
 // and then the saved outfit is trusted.
 function vmUnlocked(k){
@@ -13075,7 +13082,7 @@ async function fillSettings() {
   // The config is what Vito wears; the browser's copy only saves a flash on
   // load. No outfit in the config means none, also when this browser still
   // remembers one (a reinstall, or another Vito on the same address).
-  const cfgOutfit = (cfg.ui && cfg.ui.outfit) || {};
+  const cfgOutfit = vmMigrate(cfg.ui && cfg.ui.outfit);
   if (JSON.stringify(cfgOutfit) !== JSON.stringify(vmOutfit)) {
     vmOutfit = Object.assign({}, cfgOutfit);
     try { localStorage.setItem("vito-outfit", JSON.stringify(vmOutfit)); } catch {}

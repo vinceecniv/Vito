@@ -718,6 +718,16 @@ func Load() (*Config, error) {
 			return nil, err
 		}
 	}
+	// The moustache moved from the face paint to the beards.
+	if cfg.UI.Outfit["paint"] == "mustache" {
+		delete(cfg.UI.Outfit, "paint")
+		if cfg.UI.Outfit["beard"] == "" {
+			cfg.UI.Outfit["beard"] = "mustache"
+		}
+		if err := cfg.Save(); err != nil {
+			return nil, err
+		}
+	}
 	// Soniox replaced stt-rt-v5 by stt-rt-v6 (v5 goes on 15 December 2026,
 	// then routed to v6): the setting names the model that runs.
 	if cfg.STT.Model == "stt-rt-v5" {
