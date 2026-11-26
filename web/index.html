@@ -862,6 +862,18 @@
   .ob-keyname { display:inline-block; padding:1px 8px; border-radius:6px; background:var(--card); border:1px solid var(--card-border); font-weight:600; white-space:nowrap; }
   .ob-pad { width:100%; min-height:110px; box-sizing:border-box; resize:vertical; font:inherit; font-size:14.5px; line-height:1.55; }
   .ob-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:12px; }
+  .ob-award { display:flex; gap:18px; align-items:center; margin-bottom:16px; padding:18px 20px; border-radius:16px;
+    background:var(--grad); color:var(--on-grad); box-shadow:var(--save-shadow); animation:obAward .6s cubic-bezier(.2,1.4,.4,1); }
+  .ob-award[hidden] { display:none; }
+  @keyframes obAward { from { transform:scale(.85); opacity:0; } to { transform:none; opacity:1; } }
+  .ob-award-medal { flex:none; width:84px; height:84px; display:grid; place-items:center; font-size:58px; line-height:1;
+    background:rgba(255,255,255,.18); border-radius:50%; }
+  .ob-award-medal img, .ob-award-medal svg { width:72px; height:72px; }
+  .ob-award-text { display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .ob-award-t { font-size:11.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; opacity:.9; }
+  .ob-award-n { font-family:var(--font-head); font-size:22px; line-height:1.2; }
+  .ob-award-d { font-size:14px; opacity:.95; }
+  .ob-award-more { font-size:12.5px; line-height:1.5; opacity:.9; margin-top:6px; }
   .ob-tour { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:12px; }
   .ob-tour > div { background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:14px; }
   .ob-tour b { display:flex; align-items:center; gap:8px; font-size:14px; margin-bottom:5px; }
@@ -5320,11 +5332,12 @@ const TR = { nl: {
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
   // The introduction (onboarding)
+  "And look: you've earned your first achievement! A few more things worth knowing — all of them are in the menu on the left.":"En kijk: je hebt je eerste prestatie verdiend! Nog een paar dingen die handig zijn om te weten — je vindt ze allemaal in het menu links.",
+  "The first of {n}, and a few secret ones. Collect them on the Achievements page; each brings something new for me to wear.":"De eerste van {n}, plus een paar geheime. Verzamel ze op de pagina Prestaties; ze leveren steeds iets nieuws op om mij aan te trekken.",
   "Dictated five times":"Vijf keer gedicteerd",
   "Long recordings":"Lange opnames",
   "Record a lecture, a meeting or a long session — for hours if need be — and read it back as text. An audio file works too.":"Neem een college, een vergadering of een lange sessie op — desnoods urenlang — en lees het terug als tekst. Een audiobestand kan ook.",
-  "Finished the introduction":"De introductie afgerond",
-  "Finish with the button below and you earn your first achievement.":"Rond af met de knop hieronder en je verdient je eerste prestatie.",
+  "Followed Vito's introduction":"Vito's introductie gevolgd",
   "Hold {key} and speak, as if you were talking to someone.":"Houd {key} ingedrukt en praat, alsof je het tegen iemand zegt.",
   "Your dictation key is {key}: hold it while you speak, double-tap it to keep talking hands-free. Capitals? Shift still works. Rather a key combination? You can set one here.":"Je dicteertoets is {key}: houd hem ingedrukt terwijl je praat, of tik twee keer om handsfree door te praten. Hoofdletters? Shift werkt gewoon. Liever een toetscombinatie? Die stel je hier in.",
   "Vito works a lot better with the AI cleanup: no ums, proper punctuation, your dictionary applied. Setting it up takes five minutes at most. Rather go on without it? Click Next again.":"Vito werkt een stuk beter met de AI-opschoning: geen ehs, goede leestekens, je woordenboek toegepast. Instellen kost hooguit vijf minuten. Toch liever zonder verder? Klik dan nog een keer op Volgende.",
@@ -5399,7 +5412,6 @@ const TR = { nl: {
   "This is the key that wakes me up. Caps Lock on its own is handy: hold it while you speak. A key combination works too.":"Dit is de toets die mij wakker maakt. Caps Lock alleen is handig: houd hem ingedrukt terwijl je praat. Een toetscombinatie kan ook.",
   "Let's practise":"Even oefenen",
   "What else Vito can do":"Wat Vito nog meer kan",
-  "A few things worth knowing. You'll find them all in the menu on the left.":"Een paar dingen die handig zijn om te weten. Je vindt ze allemaal in het menu links.",
   "Ready to go!":"Klaar voor de start!",
   "That's it! Press your key wherever you type, and I'll do the rest.":"Dat was het! Druk op je toets waar je ook typt, en ik doe de rest.",
   "Step {n} of {total}":"Stap {n} van {total}",
@@ -10143,7 +10155,8 @@ function obStepHTML(id){
     </div>`;
   if (id === "tour") {
     const it = (ico, title, text) => `<div><b>${OB_ICON[ico]}${t(title)}</b><span>${t(text)}</span></div>`;
-    return `<div class="ob-tour">
+    return `<div class="ob-award" id="ob-award" hidden></div>
+    <div class="ob-tour">
       ${ob.steps.some(x => x.id === "pill") ? "" : it("pill", "The pill", "While you dictate, a small pill shows at the bottom of your screen. Point at it for the island: your last dictation, today's numbers and quick settings.")}
       ${it("hist", "History", "Every dictation is kept, with its recording. Copy it, paste it again or give it a star.")}
       ${it("dict", "Dictionary", "Teach Vito names and jargon. It also suggests corrections from your own dictations.")}
@@ -10158,7 +10171,6 @@ function obStepHTML(id){
       <p class="ob-lead">${t("This is how Vito is set up now:")}</p>
       <div class="ob-sum" id="ob-sum"></div>
       <p class="ob-note">${t("You can change all of this under Settings, and open this introduction again under Settings → About.")}</p>
-      <p class="ob-tip">${OB_ICON.medal}<span>${t("Finish with the button below and you earn your first achievement.")}</span></p>
     </div>`;
   return "";
 }
@@ -10171,7 +10183,7 @@ const OB_TEXT = {
   mic: ["Your microphone", "Choose the microphone you want to use. With “Test microphone” you hear how you sound."],
   key: ["Your dictation key", "This is the key that wakes me up. Caps Lock on its own is handy: hold it while you speak. A key combination works too."],
   practice: ["Let's practise", ""],
-  tour: ["What else Vito can do", "A few things worth knowing. You'll find them all in the menu on the left."],
+  tour: ["What else Vito can do", "And look: you've earned your first achievement! A few more things worth knowing — all of them are in the menu on the left."],
   done: ["Ready to go!", "That's it! Press your key wherever you type, and I'll do the rest."],
 };
 // A step Vito cannot work without (need) can be closed, but not skipped:
@@ -10246,6 +10258,7 @@ function obGo(i){
     api("/api/pill/preview?style=" + encodeURIComponent($("s-pillstyle").value || "glow"), { method: "POST" }).catch(() => {});
     obSay(t("Look at the bottom of your screen: that is me, listening, then writing it down. Pick a style below and I show it at once."));
   };
+  if (st.id === "tour") obAward();
   if (st.id === "done") {
     renderStatusTags();
     const tags = $("status-tags");
@@ -10265,6 +10278,39 @@ function obGo(i){
   if (!reducedMotion() && typeof vmPose === "function") vmPose(st.id === "done" ? "party" : "hop");
   if (st.id === "done") vmFlash("happy", 3000);
 }
+// Arriving at the step that explains achievements earns the first one, shown
+// there as a medal of its own rather than a passing toast (the toast is kept
+// away by marking it seen first), with the way to the others.
+async function obAward(){
+  try {
+    const fresh = !(cfg && cfg.ui && cfg.ui.intro_done);
+    if (fresh) {
+      await api("/api/intro-done", { method: "POST" });
+      if (cfg && cfg.ui) { cfg.ui.intro_done = true; cfg.ui.welcome_done = true; }
+    }
+    try {
+      const seen = JSON.parse(localStorage.getItem("vito-ach-seen") || "null");
+      if (Array.isArray(seen) && !seen.includes("intro")) { seen.push("intro"); localStorage.setItem("vito-ach-seen", JSON.stringify(seen)); }
+    } catch {}
+    const a = await loadAchievements(true);
+    const x = a && a.achievements.find(y => y.id === "intro");
+    const box = $("ob-award");
+    if (!x || !x.earned || !box || ob.steps[ob.i].id !== "tour") return;
+    const total = a.achievements.filter(y => !y.secret).length;
+    box.innerHTML = `<span class="ob-award-medal">${achMedalInner(x)}</span>
+      <div class="ob-award-text"><span class="ob-award-t">${t("Achievement unlocked")}</span>
+        <b class="ob-award-n"></b><span class="ob-award-d">${ahEsc(t(x.desc))}</span>
+        <span class="ob-award-more">${t("The first of {n}, and a few secret ones. Collect them on the Achievements page; each brings something new for me to wear.").replace("{n}", total)}</span></div>`;
+    box.querySelector(".ob-award-n").textContent = x.name; // names are English, never run through t()
+    box.hidden = false;
+    if (fresh) {
+      if (achAnim.has(x.id)) mountLottie(box.querySelector(".ob-award-medal"), x.id, false);
+      playAchSound();
+      vmFlash("happy", 3000);
+      if (!reducedMotion()) vmPose("party");
+    }
+  } catch {}
+}
 function openOnboarding(){
   if (STANDALONE || ob.open) return;
   ob.steps = OB_STEPS.filter(x => !x.when || x.when());
@@ -10283,8 +10329,8 @@ function closeOnboarding(finished){
   ob.open = false;
   $("onboarding").hidden = true;
   document.documentElement.classList.remove("ob-open");
-  if (finished) {
-    // Followed to the end: that earns an achievement, shown at once.
+  if (finished && !(cfg && cfg.ui && cfg.ui.intro_done)) {
+    // Followed to the end without passing the tour step: the award now.
     if (cfg && cfg.ui) { cfg.ui.welcome_done = true; cfg.ui.intro_done = true; }
     api("/api/intro-done", { method: "POST" }).then(() => loadAchievements(true)).catch(() => {});
   } else if (cfg && cfg.ui && !cfg.ui.welcome_done) { cfg.ui.welcome_done = true; api("/api/welcome-done", { method: "POST" }).catch(() => {}); }
