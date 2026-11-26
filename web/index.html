@@ -9017,10 +9017,13 @@ const VM_ACC = {
      <g fill="#fff" opacity=".8"><circle cx="51" cy="105" r="1.2"/><circle cx="50" cy="111" r="1.2"/><circle cx="69" cy="105" r="1.2"/><circle cx="70" cy="111" r="1.2"/></g>
      <rect x="56.5" y="104.5" width="7" height="7" rx="2" style="fill:var(--violet)" stroke="#fff" stroke-width="1.2"/>` },
   scarf: { name: "Scarf", slot: "neck", space: "body", svg:
-    `<path d="M73 104 L77 125 L86 122 L80 101 Z" style="fill:var(--violet)" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
-     <path d="M77 125 L78 128M80 124.2 L81 127M83 123.2 L84 126" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
-     <path d="M26 86 Q60 124 94 86" fill="none" style="stroke:var(--violet)" stroke-width="9" stroke-linecap="round"/>
-     <path d="M26 86 Q60 124 94 86" fill="none" style="stroke:var(--coral)" stroke-width="9" stroke-dasharray="4 6"/>` },
+    // Its own wool colours: in the theme's colours it vanished into the body.
+    `<path d="M73 104 L77 125 L86 122 L80 101 Z" fill="#2E7D5B" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+     <path d="M74.6 111.5 L81.9 109.2M76 118 L83.6 115.5" stroke="#F4EBD9" stroke-width="2"/>
+     <path d="M77 125 L78 128M80 124.2 L81 127M83 123.2 L84 126" stroke="#F4EBD9" stroke-width="1.2" stroke-linecap="round"/>
+     <path d="M26 86 Q60 124 94 86" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+     <path d="M26 86 Q60 124 94 86" fill="none" stroke="#2E7D5B" stroke-width="9" stroke-linecap="round"/>
+     <path d="M26 86 Q60 124 94 86" fill="none" stroke="#F4EBD9" stroke-width="9" stroke-dasharray="4 6"/>` },
   cherries: { name: "Cherry earrings", slot: "ears", space: "body", svg:
     [0, 1].map(m => { const g = `<path d="M13 66 Q15 72 11 78M13 66 Q18 72 18 79" fill="none" stroke="#4E8A3A" stroke-width="1.2"/>
        <ellipse cx="16" cy="66" rx="3.6" ry="1.8" fill="#6BBF59" transform="rotate(-20 16 66)"/>
