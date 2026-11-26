@@ -843,6 +843,9 @@
   .ob-points { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
   .ob-points li { display:flex; gap:12px; align-items:flex-start; font-size:14px; line-height:1.5; }
   .ob-points .ob-n { flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; background:var(--accent-soft); color:var(--accent); font-weight:700; font-size:13px; }
+  .ob-uilang { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 16px; padding-bottom:14px; border-bottom:1px solid var(--line); }
+  .ob-uilang .fld { margin:0; }
+  .ob-uilang .flagsel { min-width:220px; }
   .ob-note { margin:16px 0 0; font-size:12.5px; color:var(--text3); line-height:1.5; }
   .ob-warn { margin:0 0 16px; padding:12px 14px; border-radius:12px; background:var(--danger-soft); color:var(--danger-ink);
     border:1px solid color-mix(in srgb, var(--danger) 35%, transparent); font-size:13.5px; line-height:1.5; font-weight:500; }
@@ -5524,6 +5527,7 @@ async function setUiLang(choice, persist){
   if (typeof fillDictWhen === "function") try { fillDictWhen(); } catch {}
   if (typeof syncAssistMode === "function") try { syncAssistMode(); } catch {}
   if ($("tab-status").classList.contains("active")) loadStats();
+  try { if (ob.open) obGo(ob.i); } catch {} // the introduction, in the new language
   if (persist && cfg) { cfg.ui = Object.assign(cfg.ui || {}, { lang: choice });
     api("/api/config", { method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(cfg) }).catch(()=>{}); }
 }
@@ -10148,6 +10152,7 @@ const OB_ICON = {
 };
 function obStepHTML(id){
   if (id === "hello") return `<div class="card">
+      <div class="ob-uilang"><span class="fld">${t("Interface language")}</span><div id="ob-uilang-slot"></div></div>
       <p class="ob-lead">${t("Vito turns your voice into clean text, right where your cursor is — in your e-mail, a chat, a document, anywhere you can type.")}</p>
       <ul class="ob-points">
         <li><span class="ob-n">1</span><span>${obKey().one
@@ -10264,6 +10269,7 @@ function obGo(i){
   const body = $("ob-body");
   body.innerHTML = obStepHTML(st.id);
   if (st.cards) obBorrow(st.cards(), body);
+  if (st.id === "hello") obBorrow([$("uilang-sel")], $("ob-uilang-slot"));
   if (st.id === "look") body.insertAdjacentHTML("beforeend", `<p class="ob-tip">${OB_ICON.medal}<span>${t("Vito can be dressed up too: hats, glasses and more. You unlock them with achievements, and choose them on the Achievements page.")}</span></p>`);
   if (st.id === "practice") {
     ob.tasks = obTasks(); ob.rec = false; ob.proc = false;
