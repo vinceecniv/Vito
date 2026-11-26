@@ -831,7 +831,9 @@
   .ob-count { font-size:12px; color:var(--text3); letter-spacing:.02em; }
   .ob-title { font-family:var(--font-head); font-size:26px; line-height:1.2; margin:2px 0 16px; }
   .ob-body > .card + .card { margin-top:calc(18px * var(--dn, 1)); }
-  .ob-body [data-adv] { display:none !important; }
+  .ob-body [data-adv], .ob-body .s-vito-row { display:none !important; }
+  .ob-tip { display:flex; gap:10px; align-items:flex-start; margin-top:14px; font-size:13px; line-height:1.5; color:var(--text2); }
+  .ob-tip svg { width:18px; height:18px; flex:none; color:var(--accent); margin-top:1px; }
   .ob-body .ob-lead { color:var(--text2); font-size:14px; line-height:1.6; margin:0 0 16px; }
   .ob-foot { display:flex; align-items:center; gap:10px; padding:12px 20px calc(14px * var(--dn, 1)); max-width:1040px; width:100%; margin:0 auto; box-sizing:border-box;
     border-top:1px solid var(--card-border); }
@@ -5343,6 +5345,7 @@ const TR = { nl: {
   // Cleanup endpoint without a chat route (#50)
   "This endpoint answers, but has no /chat/completions. Use the OpenAI-compatible URL — it usually ends in /v1 (LM Studio: http://localhost:1234/v1).":"Dit endpoint reageert, maar heeft geen /chat/completions. Gebruik de OpenAI-compatibele URL — die eindigt meestal op /v1 (LM Studio: http://localhost:1234/v1).",
   // The introduction (onboarding)
+  "Vito can be dressed up too: hats, glasses and more. You unlock them with achievements, and choose them on the Achievements page.":"Vito kun je ook aankleden: hoedjes, brillen en meer. Die speel je vrij met prestaties, en je kiest ze op de pagina Prestaties.",
   "Close the introduction":"Introductie sluiten",
   "Back":"Terug",
   "Skip this step":"Stap overslaan",
@@ -10134,6 +10137,7 @@ function obGo(i){
   const body = $("ob-body");
   body.innerHTML = obStepHTML(st.id);
   if (st.cards) obBorrow(st.cards(), body);
+  if (st.id === "look") body.insertAdjacentHTML("beforeend", `<p class="ob-tip">${OB_ICON.medal}<span>${t("Vito can be dressed up too: hats, glasses and more. You unlock them with achievements, and choose them on the Achievements page.")}</span></p>`);
   if (st.id === "practice") {
     ob.tasks = obTasks(); ob.rec = false; ob.proc = false;
     obRenderTasks();
