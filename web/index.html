@@ -880,12 +880,6 @@
   .welcome-title { font-family:var(--font-head); font-size:24px; font-weight:700; line-height:1.1; }
   .welcome-sub { font-size:13px; opacity:.92; margin-top:2px; }
   .welcome-intro { position:relative; margin:16px 0 10px; font-size:14px; opacity:.96; line-height:1.55; max-width:900px; }
-  .welcome-steps { position:relative; margin:0; padding-left:20px; display:flex; flex-direction:column; gap:7px; font-size:13.5px; line-height:1.5; max-width:900px; }
-  .welcome-steps li::marker { font-weight:700; }
-  /* The two ways speech becomes text, as a sub-list of step 1: a choice, not a step. */
-  .welcome-opts { margin:6px 0 0; padding-left:18px; display:flex; flex-direction:column; gap:4px; font-size:13px; opacity:.95; }
-  .welcome-opts li::marker { font-weight:400; }
-  .welcome-tip { position:relative; margin:14px 0 0; font-size:12.5px; line-height:1.5; opacity:.95; background:rgba(255,255,255,.15); padding:10px 13px; border-radius:10px; max-width:900px; }
   .welcome-actions { position:relative; display:flex; gap:10px; margin-top:20px; flex-wrap:wrap; }
   .welcome-actions .btn { background:#fff; color:var(--violet); border:none; font-weight:600; }
   .welcome-actions .btn:hover { filter:brightness(.97); }
@@ -2557,7 +2551,7 @@
   .help-web.ping { animation:helpPing .9s ease-out 2; }
   .wl-bar { display:block; height:6px; border-radius:99px; background:rgba(255,255,255,.25); margin:6px 0 2px; overflow:hidden; max-width:320px; }
   .wl-bar i { display:block; height:100%; background:#fff; border-radius:99px; transition:width .2s; }
-  .welcome-steps .linkbtn, .wl-grid .linkbtn { color:#fff; text-decoration:underline; font:inherit; padding:0; }
+  .wl-grid .linkbtn { color:#fff; text-decoration:underline; font:inherit; padding:0; }
   .wl-grid { position:relative; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; max-width:760px; margin:4px 0 12px; }
   @media (max-width:640px){ .wl-grid { grid-template-columns:1fr; } }
   .wl-wide { grid-column:1 / -1; }
@@ -3019,28 +3013,12 @@
         </div>
         <p class="wl-note"><b>Good to know:</b> in the browser Vito uses Whistle, a small speech model — fine for trying, not the best recognition. Better: Soniox with your own key, or the Vito app.</p>
         </div>
-        <div class="helper-only">
-        <p class="welcome-intro">Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:</p>
-        <ol class="welcome-steps">
-          <li>Choose how your speech becomes text, under Settings → Speech recognition:
-            <ul class="welcome-opts">
-              <li>Cloud (Soniox or AssemblyAI): the most accurate, live transcript while you speak, all languages — needs a free API key; from $0.10 per hour of audio after the starting credit.</li>
-              <li>Vito local: free, works offline, nothing leaves your computer — one download of about 1 GB; 25 European languages, the text arrives after you stop. Best for privacy.</li>
-            </ul>
-          </li>
-          <li>Want automatic AI cleanup? Add a key for Anthropic (Claude) or any OpenAI-compatible endpoint — Groq has a free tier, or point Vito at a local model.</li>
-          <li>Choose your dictation key under Settings → Activation: Caps Lock (Fn on a Mac) works on its own, a key combination is possible too. <span id="wl-app-key"></span></li>
-          <li>Hold the key while you speak and let go: Vito pastes the text where your cursor is.</li>
-        </ol>
-        </div>
-        <p class="welcome-tip helper-only"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/></svg> Tip: each API-key field on the settings page has a 'Get a key' button with step-by-step instructions to request that key.</p>
         <div class="welcome-actions">
           <span class="web-only-inline">
             <a class="btn js-get-app" href="https://vito.talk/#download" target="_blank" rel="noopener">Get the app</a>
             <button type="button" class="btn js-to-app" hidden>Move to the app</button>
             <button type="button" class="btn ghost js-find-app">I have the app</button>
           </span>
-          <button class="btn helper-only" id="welcome-settings">Go to settings</button>
           <button class="btn ghost" id="welcome-ok">Got it</button>
         </div>
       </div>
@@ -4171,9 +4149,6 @@ const TR = { nl: {
   "Requires: an AssemblyAI account (free starting credit) and its API key, entered below. Audio is sent to AssemblyAI.":"Vereist: een AssemblyAI-account (gratis starttegoed) en de API-key daarvan, hieronder in te vullen. Audio gaat naar AssemblyAI.",
   "Requires: a server you set up yourself (whisper-server, Speaches, LocalAI) or an account at Groq or OpenAI — its base URL below, plus an API key for the hosted ones.":"Vereist: een server die je zelf opzet (whisper-server, Speaches, LocalAI) of een account bij Groq of OpenAI — de base-URL hieronder, plus een API-key voor de gehoste varianten.",
   "Requires: nothing but the one-time download below — no account, no key, no server of your own.":"Vereist: alleen de eenmalige download hieronder — geen account, geen key, geen eigen server.",
-  "Choose how your speech becomes text, under Settings → Speech recognition:":"Kies hoe je spraak tekst wordt, onder Instellingen → Spraakherkenning:",
-  "Cloud (Soniox or AssemblyAI): the most accurate, live transcript while you speak, all languages — needs a free API key; from $0.10 per hour of audio after the starting credit.":"Cloud (Soniox of AssemblyAI): het nauwkeurigst, live transcript terwijl je spreekt, alle talen — vereist een gratis API-key; vanaf $0,10 per uur audio na het starttegoed.",
-  "Vito local: free, works offline, nothing leaves your computer — one download of about 1 GB; 25 European languages, the text arrives after you stop. Best for privacy.":"Vito lokaal: gratis, werkt offline, niets verlaat je computer — eenmalig een download van ongeveer 1 GB; 25 Europese talen, de tekst komt nadat je stopt. Ideaal voor privacy.",
   "Built-in local recognition (Parakeet)":"Ingebouwde lokale herkenning (Parakeet)",
   "Runs on this computer, free, and your audio never leaves it. Vito installs and runs the engine itself: parakeet.cpp with NVIDIA's Parakeet TDT 0.6B v3.":"Draait op deze computer, gratis, en je audio verlaat hem nooit. Vito installeert en draait de engine zelf: parakeet.cpp met NVIDIA's Parakeet TDT 0.6B v3.",
   "Languages (25):":"Talen (25):",
@@ -4629,17 +4604,8 @@ const TR = { nl: {
   "per month at your current usage (last 30 days)":"per maand bij je huidige gebruik (laatste 30 dagen)",
   "Welcome to Vito":"Welkom bij Vito",
   "Voice In, Text Out — your voice becomes clean text":"Voice In, Text Out — je stem wordt schone tekst",
-  "Go to settings":"Naar instellingen",
   "Got it":"Begrepen",
-  "Vito listens to your voice and pastes the finished text right where your cursor is. Here's how to get started:":"Vito luistert naar je stem en plakt de uitgewerkte tekst direct waar je cursor staat. Zo zet je het in gebruik:",
-  "Want automatic AI cleanup? Add a key for Anthropic (Claude) or any OpenAI-compatible endpoint — Groq has a free tier, or point Vito at a local model.":"Automatische AI-opschoning erbij? Voeg een key toe voor Anthropic (Claude) of een OpenAI-compatibel endpoint — Groq heeft een gratis tier, of wijs Vito naar een lokaal model.",
   "Want automatic AI cleanup? Then also create an Anthropic API key and enter it.":"Wil je automatische AI-opschoning? Maak dan ook een Anthropic API-key aan en vul die in.",
-  "Choose your dictation key under Settings → Activation: Caps Lock (Fn on a Mac) works on its own, a key combination is possible too.":"Kies je dicteertoets onder Instellingen → Activering: Caps Lock (Fn op een Mac) werkt in zijn eentje, een toetscombinatie kan ook.",
-  "Hold the key while you speak and let go: Vito pastes the text where your cursor is.":"Houd de toets ingedrukt terwijl je spreekt en laat los: Vito plakt de tekst waar je cursor staat.",
-  "Now: {key}.":"Nu: {key}.",
-  "No key is set up yet.":"Er is nog geen toets ingesteld.",
-  "Close the welcome card?":"Welkomstkaart sluiten?",
-  "Are you sure you want to close this card? It won't be shown again.":"Weet je zeker dat je deze kaart wil sluiten? Hij wordt daarna niet meer getoond.",
   "Create an API key at {p}":"API-key aanmaken bij {p}",
   "What your key looks like:":"Zo ziet je key eruit:",
   "Get a key":"Key aanvragen",
@@ -4670,7 +4636,6 @@ const TR = { nl: {
   "{p} key works":"{p}-key werkt",
   "{p} key is invalid":"{p}-key is ongeldig",
   "Key test failed (network or service).":"Key testen mislukt (netwerk of dienst).",
-  "Tip: each API-key field on the settings page has a 'Get a key' button with step-by-step instructions to request that key.":"Tip: bij elk API-key-veld op de instellingenpagina staat een 'Key aanvragen'-knop met stap-voor-stap uitleg om die key aan te vragen.",
   "Open the sign-up page and create a free account (email or Google).":"Open de aanmeldpagina en maak een gratis account (e-mail of Google).",
   "Click the confirmation link in the verification email.":"Klik op de bevestigingslink in de verificatie-e-mail.",
   "Log in and click \"API Keys\" in the left-hand menu.":"Log in en klik links in het menu op \"API Keys\".",
@@ -9832,29 +9797,14 @@ $("s-openaikey").addEventListener("paste", () => setTimeout(testOpenAI, 250));
 
 /* ---- welcome / onboarding card ---- */
 function dismissWelcome(){
-  // In the browser the card moves into the ? button instead: it is the
-  // manual of this version and should stay at hand.
-  if (STANDALONE) {
+  // The card is the browser version's manual; closed, it moves into the ?
+  // button and stays at hand. The app has the introduction instead.
     $("welcome-card").hidden = true;
     if (cfg && cfg.ui && !cfg.ui.welcome_done) { cfg.ui.welcome_done = true; api("/api/welcome-done", { method:"POST" }).catch(()=>{}); }
     const h = $("help-web"); h.classList.remove("on", "ping"); void h.offsetWidth; h.classList.add("ping");
-    return;
-  }
-  modal(t("Close the welcome card?"),
-    `<p style="color:var(--text2);font-size:13px;line-height:1.55;margin:0;">${t("Are you sure you want to close this card? It won't be shown again.")}</p>`,
-    () => {
-      const c = $("welcome-card"); if (c) c.hidden = true;
-      if (cfg && cfg.ui) cfg.ui.welcome_done = true;
-      // Persist to Vito's own config, not localStorage: a settings-wiping
-      // reinstall must bring the card back. (localStorage is keyed by the
-      // unchanged 127.0.0.1 origin, so it would remember "seen" forever.)
-      api("/api/welcome-done", { method:"POST" }).catch(()=>{});
-    },
-    "Close", false);
 }
 $("welcome-ok").onclick = dismissWelcome;
 $("welcome-dismiss").onclick = dismissWelcome;
-$("welcome-settings").onclick = () => selectTab("settings");
 $("help-web").onclick = () => {
   const c = $("welcome-card"), show = c.hidden;
   c.hidden = !show; $("help-web").classList.toggle("on", show);
@@ -13122,25 +13072,12 @@ function dictKeyHTML(info){
     <p class="act-note dk-other" style="margin:8px 0 0;">${t("You can always use another key or combination instead; see below.")}</p>
   </div>`;
 }
-// The welcome card names the key that works now, from the same information
-// as the Activation tab's card.
 // prettyKey writes a combination as keyboards label it ("Ctrl + Shift + D").
 function prettyKey(spec){
   return hkIsMac || !spec || spec === "capslock" || spec === "fn" ? hkDisplaySpec(spec)
     : spec.split("+").map(p => p.trim()).map(p => ({ ctrl:"Ctrl", alt:"Alt", shift:"Shift", win:"Super", super:"Super" }[p] || (p.charAt(0).toUpperCase() + p.slice(1)))).join(" + ");
 }
-function renderWelcomeKey(info){
-  const el = $("wl-app-key"); if (!el || !info) return;
-  const kind = dictKeyKind(info), niri = info.niri_caps || {};
-  const conf = (info.toggle && (info.toggle.configured || info.toggle.spec)) || "";
-  const key = kind === "niri" ? (niri.state === "on" ? "Caps Lock" : "")
-    : conf === "capslock" ? "Caps Lock" : conf === "fn" ? "Fn (🌐)"
-    : kind === "portal" ? (info.toggle && fmtPortalShortcut(info.toggle.spec)) || prettyKey(conf)
-    : kind ? prettyKey(conf) : "";
-  el.innerHTML = key ? t("Now: {key}.").replace("{key}", "<b>" + ahEsc(key) + "</b>") : t("No key is set up yet.");
-}
 function wireDictKey(info){
-  renderWelcomeKey(info);
   const kind = dictKeyKind(info), on = $("dk-on"), off = $("dk-off");
   const msg = (text) => { const m = $("dk-msg"); if (m) { m.textContent = text; m.hidden = !text; } };
   // GNOME/KDE/Hyprland: the portal binds the key again, its dialog may show.
