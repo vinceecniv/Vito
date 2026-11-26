@@ -10492,8 +10492,14 @@ async function obAward(){
         <span class="ob-award-more">${t("The first of {n}, plus {s} secret ones. Collect them on the Achievements page; each brings something new for me to wear.").replace("{n}", total).replace("{s}", secret)}</span></div>`;
     box.querySelector(".ob-award-n").textContent = x.name; // names are English, never run through t()
     box.hidden = false;
+    // After the award, the medal plays while the pointer is on it, as on the Achievements page.
+    const medal = box.querySelector(".ob-award-medal");
+    if (achAnim.has(x.id)) {
+      medal.onmouseenter = () => { unmountLottie(medal); mountLottie(medal, x.id, true); };
+      medal.onmouseleave = () => { unmountLottie(medal); medal.innerHTML = achMedalInner(x); };
+    }
     if (fresh) {
-      if (achAnim.has(x.id)) mountLottie(box.querySelector(".ob-award-medal"), x.id, false);
+      if (achAnim.has(x.id)) mountLottie(box.querySelector(".ob-award-medal"), x.id, 2);
       playAchSound();
       vmFlash("happy", 3000);
       if (!reducedMotion()) vmPose("party");
@@ -11523,14 +11529,17 @@ function ensureLottie(){
   });
   return _lottieLoad;
 }
+// loop: true plays on until unmounted, a number plays that many rounds.
 function mountLottie(container, id, loop){
   ensureLottie().then(lottie => {
     if (!container.isConnected) return;
     container.innerHTML = ""; // swap the static PNG for the animation once it's ready
-    container._anim = lottie.loadAnimation({
-      container, renderer: "svg", loop: !!loop, autoplay: true,
+    const anim = container._anim = lottie.loadAnimation({
+      container, renderer: "svg", loop: loop === true, autoplay: true,
       path: "achievements/lottie/" + id + ".json" + assetV(),
     });
+    let rounds = typeof loop === "number" ? loop : 1;
+    anim.addEventListener("complete", () => { if (--rounds > 0) anim.goToAndPlay(0, true); });
   }).catch(() => {}); // no player, no problem — the static PNG stays
 }
 function unmountLottie(container){
