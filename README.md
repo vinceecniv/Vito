@@ -439,6 +439,48 @@ After installing, open Vito, pick a speech-to-text engine — paste an API key, 
 ones — pick your dictation key (Caps Lock is one click), and start talking. Tried it in the browser first? Open
 [vito.talk/app](https://vito.talk/app) once more: it finds the app and offers to move your dictations over.
 
+### Uninstalling
+
+Vito keeps your settings, API keys, dictionary, history and recordings in your user profile, apart from the
+program itself. Remove those too only if you won't be coming back — or make a backup first (Settings →
+Backup).
+
+- **Windows** — **Settings → Apps → Installed apps → Vito → Uninstall** (or *Add or remove programs*). The
+  uninstaller stops Vito, removes the login entry and asks whether to delete your data as well; it keeps it
+  unless you say yes. By hand that is `%APPDATA%\vito` and `%LOCALAPPDATA%\vito`.
+- **Linux, Flatpak** —
+
+  ```sh
+  flatpak uninstall --user io.github.vinceecniv.vito
+  flatpak uninstall --user --delete-data io.github.vinceecniv.vito   # also your data (~/.var/app/io.github.vinceecniv.vito)
+  ```
+
+- **Linux, AppImage** — quit Vito from the tray (or `vito quit`), run `./Vito-<version>.AppImage autostart off`,
+  then delete the AppImage. What it wrote beside it:
+
+  ```sh
+  rm -f ~/.config/autostart/vito.desktop ~/.local/share/applications/vito.desktop
+  rm -f ~/.local/share/icons/hicolor/512x512/apps/vito-*.png
+  rm -rf ~/.local/share/gnome-shell/extensions/vito-pill@vito.talk   # GNOME only
+  rm -rf ~/.config/vito ~/.cache/vito                                # your data
+  ```
+
+  If you let Vito turn Caps Lock into your dictation key, it set the XKB option `caps:menu` in your desktop's
+  keyboard settings (GNOME, KDE, Cinnamon) or a marked block in niri's `config.kdl` (between `// Vito: Caps
+  Lock` and `// Vito: end`) — switch it off in Settings → Activation before uninstalling, or remove it there
+  by hand.
+- **macOS** — quit Vito from the menu bar, then:
+
+  ```sh
+  rm -f ~/Library/LaunchAgents/io.github.vinceecniv.vito.plist
+  rm -rf /Applications/Vito.app
+  rm -rf ~/Library/Application\ Support/vito ~/Library/Caches/vito   # your data
+  tccutil reset All io.github.vinceecniv.vito                       # the Microphone and Accessibility grants
+  ```
+
+- **Browser version** — clear the site data for vito.talk in your browser (in Chrome or Edge: the padlock in
+  the address bar → *Site settings* → *Delete data*), and uninstall the installed web app if you added one.
+
 ---
 
 ## Build from source
